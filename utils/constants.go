@@ -73,13 +73,70 @@ RestartSec=5
 WantedBy=multi-user.target
 `
 
+const K8S_ADMIN_USER_CONFIG_TEMPLATE = `
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: admin-user
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: admin-user
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: admin-user
+  namespace: kube-system
+`
+
+const K8S_KUBELET_CONFIG_TEMPLATE = `
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  annotations:
+    rbac.authorization.kubernetes.io/autoupdate: "true"
+  labels:
+    kubernetes.io/bootstrapping: rbac-defaults
+  name: system:kube-apiserver-to-kubelet
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - nodes/proxy
+      - nodes/stats
+      - nodes/log
+      - nodes/spec
+      - nodes/metrics
+    verbs:
+      - "*"
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: system:kube-apiserver
+  namespace: ""
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:kube-apiserver-to-kubelet
+subjects:
+  - apiGroup: rbac.authorization.k8s.io
+    kind: User
+    name: kubernetes
+`
+
 const PROJECT_TITLE = "Kubernetes - The Easier Way"
 const RSA_SIZE = 2048
 const CA_VALIDITY_PERIOD = 5
 const CLIENT_VALIDITY_PERIOD = 1
 const ETCD_VERSION = "3.2.11"
 const FLANNELD_VERSION = "0.9.1"
-const K8S_VERSION = "1.9.0"
+const K8S_VERSION = "1.8.5"
 const CNI_VERSION = "0.6.0"
 const CRI_VERSION = "1.0.0-alpha.1"
 
@@ -175,6 +232,10 @@ const NET_CONFIG = "net-config.json"
 // Security
 const ENCRYPTION_CONFIG = "encryption-config.yml"
 
+// K8S Config
+const K8S_KUBELET_CONFIG = "kubelet.yml"
+const K8S_ADMIN_USER_CONFIG = "admin-user.yml"
+
 // Logging
 const AUDIT_LOG = "audit.log"
 
@@ -203,6 +264,10 @@ func GetFullCNIConfigDirectory() string {
 
 func GetFullSecurityConfigDirectory() string {
 	return path.Join(GetFullConfigDirectory(), SECURITY_DIRECTORY)
+}
+
+func GetFullK8SConfigDirectory() string {
+	return path.Join(GetFullConfigDirectory(), K8S_DIRECTORY)
 }
 
 func GetFullBinariesDirectory() string {

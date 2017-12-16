@@ -72,6 +72,42 @@ func (generator *Generator) generateCNIFiles() error {
 	return nil
 }
 
+func (generator *Generator) generateK8SKubeletConfigFile() error {
+	fullFilename := generator.config.GetFullDeploymentFilename(utils.K8S_KUBELET_CONFIG)
+
+	if utils.FileExists(fullFilename) {
+		log.WithFields(log.Fields{"filename": fullFilename}).Info("skipping")
+
+	} else {
+
+		if error := ioutil.WriteFile(fullFilename, []byte(utils.K8S_KUBELET_CONFIG_TEMPLATE), 0644); error != nil {
+			return error
+		}
+
+		log.WithFields(log.Fields{"filename": fullFilename}).Info("generated")
+	}
+
+	return nil
+}
+
+func (generator *Generator) generateK8SAdminUserConfigFile() error {
+	fullFilename := generator.config.GetFullDeploymentFilename(utils.K8S_ADMIN_USER_CONFIG)
+
+	if utils.FileExists(fullFilename) {
+		log.WithFields(log.Fields{"filename": fullFilename}).Info("skipping")
+
+	} else {
+
+		if error := ioutil.WriteFile(fullFilename, []byte(utils.K8S_ADMIN_USER_CONFIG_TEMPLATE), 0644); error != nil {
+			return error
+		}
+
+		log.WithFields(log.Fields{"filename": fullFilename}).Info("generated")
+	}
+
+	return nil
+}
+
 func (generator *Generator) generateEncryptionFile() error {
 	fullEncryptionConfigFilename := generator.config.GetFullDeploymentFilename(utils.ENCRYPTION_CONFIG)
 
@@ -235,6 +271,16 @@ func (generator *Generator) generateKubernetesFiles(ca *pki.CertificateAndPrivat
 func (generator *Generator) GenerateFiles() error {
 	// Generate systemd file
 	if error := generator.generateServiceFile(); error != nil {
+		return error
+	}
+
+	// Generate kubelet configuration
+	if error := generator.generateK8SKubeletConfigFile(); error != nil {
+		return error
+	}
+
+	// Generate dashboard admin user configuration
+	if error := generator.generateK8SAdminUserConfigFile(); error != nil {
 		return error
 	}
 

@@ -97,6 +97,34 @@ func (servers *Servers) forwarder() error {
 	return nil
 }
 
+func (servers *Servers) runCommand(name, command string) error {
+	newCommand, error := servers.config.ApplyTemplate(name, command)
+	if error != nil {
+		return error
+	}
+
+	go func() {
+		for {
+			// Run command
+			_, error := utils.RunCommandWithOutput(newCommand)
+
+			// Successful
+			if error == nil {
+				log.WithFields(log.Fields{"name": name, "command": newCommand}).Info("command executed")
+
+				break
+			}
+
+			// Keep trying until succeeding
+			log.WithFields(log.Fields{"name": name, "command": newCommand, "error": error}).Error("command failed")
+
+			time.Sleep(5 * time.Second)
+		}
+	}()
+
+	return nil
+}
+
 func (servers *Servers) Run() error {
 	if error := servers.forwarder(); error != nil {
 		return error
@@ -109,25 +137,9 @@ func (servers *Servers) Run() error {
 			continue
 		}
 
-		newCommand, error := servers.config.ApplyTemplate(commandName, command.Command)
-		if error != nil {
+		if error := servers.runCommand(commandName, command.Command); error != nil {
 			return error
 		}
-
-		go func() {
-			for {
-				// Keep trying until succeeding
-				if _, error = utils.RunCommandWithOutput(newCommand); error == nil {
-					log.WithFields(log.Fields{"command": newCommand}).Info("command executed")
-
-					return
-				}
-
-				log.WithFields(log.Fields{"command": newCommand}).Error("command failed")
-
-				time.Sleep(5 * time.Second)
-			}
-		}()
 	}
 
 	for name, serverConfig := range servers.config.Config.Servers {
@@ -151,7 +163,6 @@ func (servers *Servers) Run() error {
 			return error
 		}
 
-		log.WithFields(log.Fields{"name": server.Name()}).Info("started server")
 	}
 
 	defer func() {

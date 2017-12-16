@@ -20,7 +20,7 @@ var nodeSelf bool
 
 func addNode() error {
 	// Load config and check the rights
-	if error := Bootstrap(); error != nil {
+	if error := Bootstrap(false); error != nil {
 		return error
 	}
 

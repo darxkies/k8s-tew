@@ -63,7 +63,7 @@ The arguments:
 
 * -n - the name of the node
 * -i - the ip of the node
-* -x - each node needs a unique number 
+* -x - each node needs a unique number
 * -l - the role of the node in the cluster: controller and/or worker
 
 k8s-tew is also able to start a cluster on the local computer and for that the local computer has to be added as a node:
@@ -98,7 +98,7 @@ k8s-tew generate
 
 The versions of the binaries used can be specified as command line arguments:
 
-* --k8s-version - Kubernetes version (default "1.9.0")
+* --k8s-version - Kubernetes version (default "1.8.5")
 * --cni-version - CNI version (default "0.6.0")
 * --cri-version - CRI version (default "1.0.0-alpha.1")
 * --etcd-version - Etcd version (default "3.2.11")
@@ -129,6 +129,26 @@ Either remote or locally, after starting the cluster, the user will need some en
 ```shell
 eval $(k8s-tew environment)
 ```
+
+## Dashboard
+
+k8s-tew also installs the Kubernetes Dashboard. To access it, the token of the admin user has to be retrieved:
+
+```shell
+kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}') | grep token: | awk '{print $2}'
+```
+
+Next, the dashboard has to be made accessible:
+
+```shell
+kubectl proxy
+```
+
+And finally in the web browser, the following page has to be opened:
+
+[http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/](http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/)
+
+When asked to login, enter the token from the first step.
 
 ## Config File
 
@@ -478,7 +498,7 @@ servers:
       tls-private-key-file: '{{deployment_file "kubelet-{{.Name}}-key.pem"}}'
       v: "0"
 ```
-and the file structure in artifacts (provided no other base directory was used) will look like this 
+and the file structure in artifacts (provided no other base directory was used) will look like this
 
 ```
 .

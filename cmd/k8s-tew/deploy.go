@@ -16,7 +16,7 @@ var deployCmd = &cobra.Command{
 	Short: "Deploy",
 	Long:  "Deploy artifacts",
 	Run: func(cmd *cobra.Command, args []string) {
-		if error := Bootstrap(); error != nil {
+		if error := Bootstrap(false); error != nil {
 			log.WithFields(log.Fields{"error": error}).Error("deploy failed")
 
 			os.Exit(-1)

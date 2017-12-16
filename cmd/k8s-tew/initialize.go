@@ -4,29 +4,26 @@ import (
 	"os"
 
 	"github.com/darxkies/k8s-tew/config"
-	"github.com/darxkies/k8s-tew/utils"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
+
+var force bool
 
 var initializeCmd = &cobra.Command{
 	Use:   "initialize",
 	Short: "Initialize the configuration",
 	Long:  "Initialize the configuration",
 	Run: func(cmd *cobra.Command, args []string) {
-		if !utils.IsRoot() {
-			log.WithFields(log.Fields{"error": "this program needs root rights"}).Error("nitialize failed")
+		_config = config.DefaultInternalConfig(baseDirectory)
 
-			os.Exit(-1)
-		}
+		if !force {
+			if error := _config.Load(); error == nil {
+				log.WithFields(log.Fields{"error": "already initialized"}).Error("initialize failed")
 
-		_config = config.DefaultInternalConfig()
-
-		if error := _config.Load(baseDirectory); error == nil {
-			log.WithFields(log.Fields{"error": "already initialized"}).Error("initialize failed")
-
-			os.Exit(-1)
+				os.Exit(-1)
+			}
 		}
 
 		if error := _config.Save(); error != nil {
@@ -34,9 +31,12 @@ var initializeCmd = &cobra.Command{
 
 			os.Exit(-1)
 		}
+
+		log.Info("initialized")
 	},
 }
 
 func init() {
+	initializeCmd.Flags().BoolVarP(&force, "force", "f", false, "Force initialization if already initialized. This will remove any config changes.")
 	RootCmd.AddCommand(initializeCmd)
 }

@@ -17,7 +17,7 @@ var generateCmd = &cobra.Command{
 	Long:  "Generate artifacts",
 	Run: func(cmd *cobra.Command, args []string) {
 		// Load config and check the rights
-		if error := Bootstrap(); error != nil {
+		if error := Bootstrap(false); error != nil {
 			log.WithFields(log.Fields{"error": error}).Error("generate failed")
 
 			os.Exit(-1)

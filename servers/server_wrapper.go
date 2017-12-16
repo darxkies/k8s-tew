@@ -63,6 +63,8 @@ func (server *ServerWrapper) Start() error {
 
 	go func() {
 		for !server.stop {
+			log.WithFields(log.Fields{"name": server.Name()}).Info("starting server")
+
 			logFile, error := os.OpenFile(logFilename, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 
 			if error != nil {

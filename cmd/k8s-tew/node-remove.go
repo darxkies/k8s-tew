@@ -9,7 +9,7 @@ import (
 
 func removeNode() error {
 	// Load config and check the rights
-	if error := Bootstrap(); error != nil {
+	if error := Bootstrap(false); error != nil {
 		return error
 	}
 

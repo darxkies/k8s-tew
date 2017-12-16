@@ -41,16 +41,16 @@ func GetBaseDirectory() string {
 	return path.Join(directory, utils.BASE_DIRECTORY)
 }
 
-func Bootstrap() error {
-	if !utils.IsRoot() {
+func Bootstrap(needsRoot bool) error {
+	if needsRoot && !utils.IsRoot() {
 		return errors.New("this program needs root rights")
 	}
 
-	_config = config.DefaultInternalConfig()
+	_config = config.DefaultInternalConfig(baseDirectory)
 
 	// TODO use environment to load the base directory
 
-	return _config.Load(baseDirectory)
+	return _config.Load()
 }
 
 func main() {
