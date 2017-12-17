@@ -1,6 +1,6 @@
 # Kubernetes - The Easier Way (k8s-tew)
 
-[Kubernetes](https://kubernetes.io/) is a fairly complex project. For a newbie it is hard to understand and also to use. While [Kelsey Tower's Kubernetes The Hard Way](https://github.com/kelseyhightower/kubernetes-the-hard-way), on which this project is based, helps a lot to understand Kubernetes, it is optimized for the use with Google Cloud Platform.
+[Kubernetes](https://kubernetes.io/) is a fairly complex project. For a newbie it is hard to understand and also to use. While [Kelsey Hightower's Kubernetes The Hard Way](https://github.com/kelseyhightower/kubernetes-the-hard-way), on which this project is based, helps a lot to understand Kubernetes, it is optimized for the use with Google Cloud Platform.
 
 This project's aim is to give newbies a tool that allows them to easily tinker with Kubernetes. k8s-tew is a CLI tool to generate the configuration for a Kubernetes cluster (local single node or remote multi node with support for HA). Besides that, k8s-tew is also a supervisor that starts all cluster components. And finally, k8s-tew is a proxy for the HA setup.
 
