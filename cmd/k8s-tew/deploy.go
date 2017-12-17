@@ -2,6 +2,7 @@ package main
 
 import (
 	"os"
+	"path"
 
 	"github.com/darxkies/k8s-tew/deployment"
 
@@ -31,6 +32,6 @@ var deployCmd = &cobra.Command{
 }
 
 func init() {
-	deployCmd.Flags().StringVarP(&identityFile, "identity-file", "i", "~/.ssh/id_rsa", "SSH identity file")
+	deployCmd.Flags().StringVarP(&identityFile, "identity-file", "i", path.Join(os.Getenv("HOME"), ".ssh/id_rsa"), "SSH identity file")
 	RootCmd.AddCommand(deployCmd)
 }
