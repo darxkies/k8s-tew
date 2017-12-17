@@ -235,7 +235,7 @@ func DefaultInternalConfig(baseDirectory string) *InternalConfig {
 	config.addCommand("k8s-kubelet-configuration", Labels{utils.NODE_CONTROLLER}, fmt.Sprintf("%s --server=127.0.0.1:8080 apply -f %s", config.GetTemplateDeploymentFilename(utils.KUBECTL_BINARY), config.GetTemplateDeploymentFilename(utils.K8S_KUBELET_CONFIG)))
 	config.addCommand("k8s-admin-user-configuration", Labels{utils.NODE_CONTROLLER}, fmt.Sprintf("%s --server=127.0.0.1:8080 apply -f %s", config.GetTemplateDeploymentFilename(utils.KUBECTL_BINARY), config.GetTemplateDeploymentFilename(utils.K8S_ADMIN_USER_CONFIG)))
 	config.addCommand("k8s-kube-dns", Labels{utils.NODE_CONTROLLER}, fmt.Sprintf("%s --server=127.0.0.1:8080 apply -f https://storage.googleapis.com/kubernetes-the-hard-way/kube-dns.yaml", config.GetTemplateDeploymentFilename(utils.KUBECTL_BINARY)))
-	config.addCommand("k8s-kubernetes-dashboard", Labels{utils.NODE_CONTROLLER}, fmt.Sprintf("%s --server=127.0.0.1:8080 apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml", config.GetTemplateDeploymentFilename(utils.KUBECTL_BINARY)))
+	config.addCommand("k8s-kubernetes-dashboard", Labels{utils.NODE_CONTROLLER}, fmt.Sprintf("%s convert -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml | %s --server=127.0.0.1:8080 apply -f -", config.GetTemplateDeploymentFilename(utils.KUBECTL_BINARY), config.GetTemplateDeploymentFilename(utils.KUBECTL_BINARY)))
 
 	// Servers
 	config.addServer("etcd", Labels{utils.NODE_CONTROLLER}, config.GetTemplateDeploymentFilename(utils.ETCD_BINARY), map[string]string{

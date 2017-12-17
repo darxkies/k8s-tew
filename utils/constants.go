@@ -136,7 +136,7 @@ const CA_VALIDITY_PERIOD = 5
 const CLIENT_VALIDITY_PERIOD = 1
 const ETCD_VERSION = "3.2.11"
 const FLANNELD_VERSION = "0.9.1"
-const K8S_VERSION = "1.8.5"
+const K8S_VERSION = "1.9.0"
 const CNI_VERSION = "0.6.0"
 const CRI_VERSION = "1.0.0-alpha.1"
 
