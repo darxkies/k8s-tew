@@ -61,7 +61,7 @@ k8s-tew node-add -n controller00 -i 192.168.122.157 -x 0 -l controller
 
 The arguments:
 
-* -n - the name of the node
+* -n - the name of the node. This name has to match the hostname of that node.
 * -i - the ip of the node
 * -x - each node needs a unique number
 * -l - the role of the node in the cluster: controller and/or worker
@@ -124,11 +124,20 @@ The files are copied using scp and the ssh private key $HOME/.ssh/id_rsa. If ano
 
 ## Environment
 
-Either remote or locally, after starting the cluster, the user will need some environment variables set to make the work with the cluster easier. This is done with this command:
+After starting the cluster locally, the user will need some environment variables set to make the work with the cluster easier. This is done with this command:
 
 ```shell
 eval $(k8s-tew environment)
 ```
+
+For a remote cluster, additionally to the command above the following command has to be executed outside the cluster:
+
+
+```shell
+export KUBECTL=<base-directory>/etc/k8s-tew/kubeconfig/admin-<controller-name>.kubeconfig
+```
+
+<base-directory> and <controller-name> are place holders, that need to be replaced.
 
 ## Dashboard
 
