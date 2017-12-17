@@ -3,6 +3,9 @@ go:
 - 1.9.1
 env:
 - CGO_ENABLED=0
+install: true
+script:
+    - make compile
 deploy:
   provider: releases
   api_key:

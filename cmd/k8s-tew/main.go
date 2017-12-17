@@ -8,6 +8,7 @@ import (
 
 	"github.com/darxkies/k8s-tew/config"
 	"github.com/darxkies/k8s-tew/utils"
+	"github.com/darxkies/k8s-tew/version"
 
 	log "github.com/sirupsen/logrus"
 
@@ -25,7 +26,7 @@ var RootCmd = &cobra.Command{
 	Short: utils.PROJECT_TITLE,
 	Long:  utils.PROJECT_TITLE,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("Version: %s\n", Version)
+		fmt.Printf("Version: %s\n", version.Version)
 		fmt.Println()
 
 		cmd.Help()
