@@ -1,5 +1,5 @@
 language: go
 go:
     - 1.9.1
-script:
+install:
     - CGO_ENABLED=0 go install github.com/darxkies/k8s-tew/cmd/k8s-tew
