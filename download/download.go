@@ -55,6 +55,10 @@ func (downloader Downloader) downloadFile(url, filename string) error {
 
 	_, error = io.Copy(output, response.Body)
 
+	if error == nil {
+		log.WithFields(log.Fields{"filename": filename}).Info("downloaded")
+	}
+
 	return error
 }
 

@@ -35,6 +35,8 @@ var environmentCmd = &cobra.Command{
 		_kubeConfig := fmt.Sprintf("export KUBECONFIG=%s", adminKubeConfig)
 
 		fmt.Println(_kubeConfig)
+
+		fmt.Println("export CRI_RUNTIME_ENDPOINT=/run/cri-containerd.sock")
 	},
 }
 
