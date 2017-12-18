@@ -26,7 +26,8 @@ var environmentCmd = &cobra.Command{
 		currentPath := os.Getenv("PATH")
 		k8sPath := path.Join(_config.BaseDirectory, utils.GetFullK8SBinariesDirectory())
 		etcdPath := path.Join(_config.BaseDirectory, utils.GetFullETCDBinariesDirectory())
-		_path := fmt.Sprintf("export PATH=%s:%s:%s", k8sPath, etcdPath, currentPath)
+		criPath := path.Join(_config.BaseDirectory, utils.GetFullCRIBinariesDirectory())
+		_path := fmt.Sprintf("export PATH=%s:%s:%s:%s", k8sPath, etcdPath, criPath, currentPath)
 
 		fmt.Println(_path)
 
