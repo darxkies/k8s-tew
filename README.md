@@ -10,13 +10,13 @@ k8s-tew was tested so far only on Ubuntu 17.10 and Ubuntu Server 16.04.3. But it
 
 # Features
 
-* No docker installation required
+* No docker installation required (uses cri-containerd)
 * No cloud provider required
 * Runs locally
 * Support for deployment to a HA cluster using ssh
 * Only the changed files are deployed
 * Nodes management from the command line
-* Downloads all the used binaries (kubernetes, etcd, flanneld...) from the internet
+* Downloads all the used binaries (kubernetes, etcd, flanneld...) from the Internet
 * Lower storage and RAM footprint compared to other solutions (kubespray, kubeadm, minikube...)
 
 # Install
