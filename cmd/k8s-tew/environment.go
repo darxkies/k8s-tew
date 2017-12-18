@@ -13,7 +13,7 @@ import (
 
 var environmentCmd = &cobra.Command{
 	Use:   "environment",
-	Short: "Environment",
+	Short: "Displays environment variables",
 	Long:  "Displays environment variables",
 	Run: func(cmd *cobra.Command, args []string) {
 		// Load config and check the rights

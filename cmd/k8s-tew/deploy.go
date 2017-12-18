@@ -14,8 +14,8 @@ var identityFile string
 
 var deployCmd = &cobra.Command{
 	Use:   "deploy",
-	Short: "Deploy",
-	Long:  "Deploy artifacts",
+	Short: "Deploy artifacts to a remote cluster",
+	Long:  "Deploy artifacts to a remote cluster",
 	Run: func(cmd *cobra.Command, args []string) {
 		if error := Bootstrap(false); error != nil {
 			log.WithFields(log.Fields{"error": error}).Error("deploy failed")
