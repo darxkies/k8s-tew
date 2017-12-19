@@ -25,6 +25,12 @@ k8s-tew was tested so far only on Ubuntu 17.10 and Ubuntu Server 16.04.3. But it
 
 The 64-bit binary can be downloaded from the following address: https://github.com/darxkies/k8s-tew/releases
 
+Additionally the these commands can be used to download it and install it in /usr/local/bin
+
+```shell
+curl -s https://api.github.com/repos/darxkies/k8s-tew/releases/latest | grep "browser_download_url" | cut -d : -f 2,3 | tr -d \" | sudo wget -O /usr/local/bin/k8s-tew -qi - && sudo chmod a+x /usr/local/bin/k8s-tew
+```
+
 ## From source
 
 To compile it from source you will need a Go (version 1.8+) environment. Once Go is configured, enter the following command:
