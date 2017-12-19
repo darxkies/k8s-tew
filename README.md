@@ -23,7 +23,7 @@ k8s-tew was tested so far only on Ubuntu 17.10 and Ubuntu Server 16.04.3. But it
 
 ## From binary
 
-The 64-bit binary can be downloaded from the following address: https://github.com/darxkies/t8s-tew/releases
+The 64-bit binary can be downloaded from the following address: https://github.com/darxkies/k8s-tew/releases
 
 ## From source
 
