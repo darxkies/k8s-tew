@@ -33,15 +33,22 @@ curl -s https://api.github.com/repos/darxkies/k8s-tew/releases/latest | grep "br
 
 ## From source
 
-To compile it from source you will need a Go (version 1.8+) environment. Once Go is configured, enter the following command:
+To compile it from source you will need a Go (version 1.8+) environment and Git installed. Once Go is configured, enter the following commands:
 
 ```shell
-go install github.com/darxkies/k8s-tew/cmd/k8s-tew
+export GOPATH=~/go
+mkdir $GOPATH
+go get github.com/darxkies/k8s-tew
+cd ~/go/src/github.com/darxkies/k8s-tew
+make
+sudo mv ~/go/bin/k8s-tew /usr/local/bin
 ```
+
+The k8s-tew binary will be moved to directory /usr/local/bin.
 
 # Usage
 
-This section will assume that k8s-tew was copied to the folder /usr/local/bin and that the commands are executed using root privileges.
+This section will assume that k8s-tew is already in the folder /usr/local/bin and that the commands are executed using root privileges.
 
 All k8s-tew commands accept the argument --base-directory which defines where all the files will be stored. If no value is defined then it will create a subdirectory called artifacts in the working directory.
 
