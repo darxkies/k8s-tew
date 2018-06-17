@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"path"
 
 	"github.com/darxkies/k8s-tew/utils"
 
@@ -23,20 +22,33 @@ var environmentCmd = &cobra.Command{
 			os.Exit(-1)
 		}
 
-		currentPath := os.Getenv("PATH")
-		k8sPath := path.Join(_config.BaseDirectory, utils.GetFullK8SBinariesDirectory())
-		etcdPath := path.Join(_config.BaseDirectory, utils.GetFullETCDBinariesDirectory())
-		criPath := path.Join(_config.BaseDirectory, utils.GetFullCRIBinariesDirectory())
-		_path := fmt.Sprintf("export PATH=%s:%s:%s:%s", k8sPath, etcdPath, criPath, currentPath)
+		content, error := utils.ApplyTemplate(utils.ENVIRONMENT_TEMPLATE, struct {
+			CurrentPath    string
+			K8STEWPath     string
+			K8SPath        string
+			EtcdPath       string
+			CRIPath        string
+			CNIPath        string
+			KubeConfig     string
+			ContainerdSock string
+		}{
+			CurrentPath:    os.Getenv("PATH"),
+			K8STEWPath:     _config.GetFullLocalAssetDirectory(utils.BINARIES_DIRECTORY),
+			K8SPath:        _config.GetFullLocalAssetDirectory(utils.K8S_BINARIES_DIRECTORY),
+			EtcdPath:       _config.GetFullLocalAssetDirectory(utils.ETCD_BINARIES_DIRECTORY),
+			CRIPath:        _config.GetFullLocalAssetDirectory(utils.CRI_BINARIES_DIRECTORY),
+			CNIPath:        _config.GetFullLocalAssetDirectory(utils.CNI_BINARIES_DIRECTORY),
+			KubeConfig:     _config.GetFullLocalAssetFilename(utils.ADMIN_KUBECONFIG),
+			ContainerdSock: _config.GetFullTargetAssetFilename(utils.CONTAINERD_SOCK),
+		})
 
-		fmt.Println(_path)
+		if error != nil {
+			log.WithFields(log.Fields{"error": error}).Error("environment failed")
 
-		adminKubeConfig := _config.GetFullDeploymentFilename(utils.ADMIN_KUBECONFIG)
-		_kubeConfig := fmt.Sprintf("export KUBECONFIG=%s", adminKubeConfig)
+			os.Exit(-1)
+		}
 
-		fmt.Println(_kubeConfig)
-
-		fmt.Println("export CRI_RUNTIME_ENDPOINT=/run/cri-containerd.sock")
+		fmt.Println(content)
 	},
 }
 

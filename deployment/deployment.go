@@ -10,6 +10,7 @@ import (
 	"os"
 	"path"
 	"strings"
+	"time"
 
 	"github.com/darxkies/k8s-tew/config"
 	"github.com/darxkies/k8s-tew/utils"
@@ -21,16 +22,16 @@ import (
 	"github.com/tmc/scp"
 )
 
-type Deployment struct {
+type Asset struct {
 	address      string
 	identityFile string
 }
 
-func NewDeployment(address string, identityFile string) *Deployment {
-	return &Deployment{address: address, identityFile: identityFile}
+func NewAsset(address string, identityFile string) *Asset {
+	return &Asset{address: address, identityFile: identityFile}
 }
 
-func (deployment *Deployment) md5sum(filename string) (result string, error error) {
+func (deployment *Asset) md5sum(filename string) (result string, error error) {
 	file, error := os.Open(filename)
 
 	if error != nil {
@@ -50,7 +51,7 @@ func (deployment *Deployment) md5sum(filename string) (result string, error erro
 	return
 
 }
-func (deployment *Deployment) CopyFilesTo(files map[string]string) error {
+func (deployment *Asset) CopyFilesTo(files map[string]string) error {
 	// Collect remote directories
 	directories := map[string]bool{}
 
@@ -120,7 +121,7 @@ func (deployment *Deployment) CopyFilesTo(files map[string]string) error {
 	return error
 }
 
-func (deployment *Deployment) getSession() (*ssh.Session, error) {
+func (deployment *Asset) getSession() (*ssh.Session, error) {
 	privateKeyContent, error := ioutil.ReadFile(deployment.identityFile)
 	if error != nil {
 		return nil, error
@@ -145,7 +146,7 @@ func (deployment *Deployment) getSession() (*ssh.Session, error) {
 	return client.NewSession()
 }
 
-func (deployment *Deployment) Execute(command string) (string, error) {
+func (deployment *Asset) Execute(command string) (string, error) {
 	log.WithFields(log.Fields{"command": command, "target": deployment.address}).Info("executing")
 
 	session, error := deployment.getSession()
@@ -164,7 +165,7 @@ func (deployment *Deployment) Execute(command string) (string, error) {
 	return buffer.String(), error
 }
 
-func (deployment *Deployment) CopyTo(from, to string) error {
+func (deployment *Asset) CopyTo(from, to string) error {
 	log.WithFields(log.Fields{"source-filename": from, "destination-filename": to, "target": deployment.address}).Info("deploying")
 
 	session, error := deployment.getSession()
@@ -178,26 +179,60 @@ func (deployment *Deployment) CopyTo(from, to string) error {
 }
 
 func Deploy(_config *config.InternalConfig, identityFile string) error {
-	for nodeName, node := range _config.Config.Nodes {
+	sortedNodeKeys := _config.GetSortedNodeKeys()
+
+	for _, nodeName := range sortedNodeKeys {
+		node := _config.Config.Nodes[nodeName]
+
 		_config.SetNode(nodeName, node)
 
-		deployment := NewDeployment(node.IP, identityFile)
+		deployment := NewAsset(node.IP, identityFile)
 
 		files := map[string]string{}
 
-		for name, deploymentFile := range _config.Config.DeploymentFiles {
+		for name, deploymentFile := range _config.Config.Assets.Files {
 			if !config.CompareLabels(node.Labels, deploymentFile.Labels) {
 				continue
 			}
 
-			fromFile := _config.GetFullDeploymentFilename(name)
-			toFile := _config.GetFullTargetDeploymentFilename(name)
+			fromFile := _config.GetFullLocalAssetFilename(name)
+			toFile := _config.GetFullTargetAssetFilename(name)
 
 			files[fromFile] = toFile
 		}
 
 		if error := deployment.CopyFilesTo(files); error != nil {
 			return error
+		}
+	}
+
+	return nil
+}
+
+func Setup(_config *config.InternalConfig) error {
+	for _, command := range _config.Config.Commands {
+		if !command.Labels.HasLabels([]string{utils.NODE_BOOTSTRAPPER}) {
+			continue
+		}
+
+		newCommand, error := _config.ApplyTemplate(command.Name, command.Command)
+		if error != nil {
+			return error
+		}
+
+		for {
+			// Run command
+			if error := utils.RunCommand(newCommand); error != nil {
+				log.WithFields(log.Fields{"name": command.Name, "command": newCommand, "error": error}).Error("command failed")
+
+				time.Sleep(3 * time.Second)
+
+				continue
+			}
+
+			log.WithFields(log.Fields{"name": command.Name, "command": newCommand}).Info("command executed")
+
+			break
 		}
 	}
 

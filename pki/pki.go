@@ -17,22 +17,19 @@ import (
 	"time"
 
 	"github.com/darxkies/k8s-tew/utils"
+	log "github.com/sirupsen/logrus"
 )
 
-func GenerateEncryptionConfig(filename string) error {
+func GenerateEncryptionConfig() (string, error) {
 	buffer := make([]byte, 32)
 
 	_, error := rand.Read(buffer)
 
 	if error != nil {
-		return error
+		return "", error
 	}
 
-	key := base64.StdEncoding.EncodeToString(buffer)
-
-	result := fmt.Sprintf(utils.ENCRYPTION_CONFIG_TEMPLATE, key)
-
-	return ioutil.WriteFile(filename, []byte(result), 0644)
+	return base64.StdEncoding.EncodeToString(buffer), nil
 }
 
 func newBigInt() (*big.Int, error) {
@@ -167,10 +164,20 @@ func createAndSaveCertificate(signer *CertificateAndPrivateKey, template *x509.C
 		return error
 	}
 
+	log.WithFields(log.Fields{"filename": certificateFilename}).Info("generated")
+	log.WithFields(log.Fields{"filename": privateKeyFilename}).Info("generated")
+
 	return nil
 }
 
 func GenerateCA(rsaSize int, validityPeriod int, commonName, organization, certificateFilename, privateKeyFilename string) error {
+	if utils.FileExists(certificateFilename) && utils.FileExists(privateKeyFilename) {
+		log.WithFields(log.Fields{"filename": certificateFilename}).Info("skipped")
+		log.WithFields(log.Fields{"filename": privateKeyFilename}).Info("skipped")
+
+		return nil
+	}
+
 	template, error := newTemplate(validityPeriod, commonName, organization)
 	if error != nil {
 		return error
@@ -184,7 +191,14 @@ func GenerateCA(rsaSize int, validityPeriod int, commonName, organization, certi
 	return createAndSaveCertificate(nil, template, rsaSize, certificateFilename, privateKeyFilename)
 }
 
-func GenerateClient(signer *CertificateAndPrivateKey, rsaSize int, validityPeriod int, commonName, organization string, dnsNames []string, ipAddresses []string, certificateFilename, privateKeyFilename string) error {
+func GenerateClient(signer *CertificateAndPrivateKey, rsaSize int, validityPeriod int, commonName, organization string, dnsNames []string, ipAddresses []string, certificateFilename, privateKeyFilename string, force bool) error {
+	if utils.FileExists(certificateFilename) && utils.FileExists(privateKeyFilename) && !force {
+		log.WithFields(log.Fields{"filename": certificateFilename}).Info("skipped")
+		log.WithFields(log.Fields{"filename": privateKeyFilename}).Info("skipped")
+
+		return nil
+	}
+
 	template, error := newTemplate(validityPeriod, commonName, organization)
 	if error != nil {
 		return error

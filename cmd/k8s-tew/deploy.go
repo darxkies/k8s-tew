@@ -14,8 +14,8 @@ var identityFile string
 
 var deployCmd = &cobra.Command{
 	Use:   "deploy",
-	Short: "Deploy artifacts to a remote cluster",
-	Long:  "Deploy artifacts to a remote cluster",
+	Short: "Deploy assets to a remote cluster",
+	Long:  "Deploy assets to a remote cluster",
 	Run: func(cmd *cobra.Command, args []string) {
 		if error := Bootstrap(false); error != nil {
 			log.WithFields(log.Fields{"error": error}).Error("deploy failed")
@@ -26,7 +26,13 @@ var deployCmd = &cobra.Command{
 		if error := deployment.Deploy(_config, identityFile); error != nil {
 			log.WithFields(log.Fields{"error": error}).Error("deploy failed")
 
-			os.Exit(-1)
+			os.Exit(-2)
+		}
+
+		if error := deployment.Setup(_config); error != nil {
+			log.WithFields(log.Fields{"error": error}).Error("setup failed")
+
+			os.Exit(-3)
 		}
 	},
 }

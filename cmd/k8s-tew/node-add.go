@@ -37,7 +37,7 @@ func addNode() error {
 
 		if len(nodeIP) == 0 {
 
-			nodeIP, error = utils.RunCommandWithOutput("ip route get 8.8.8.8 | awk 'NR==1 {print $NF}'")
+			nodeIP, error = utils.RunCommandWithOutput("ip route get 8.8.8.8 | cut -d ' ' -f 7")
 			if error != nil {
 				return error
 			}
@@ -57,7 +57,7 @@ func addNode() error {
 		}
 
 		if len(labels) == 0 {
-			labels = []string{utils.NODE_CONTROLLER, utils.NODE_WORKER}
+			labels = []string{utils.NODE_BOOTSTRAPPER, utils.NODE_CONTROLLER, utils.NODE_WORKER}
 		}
 	}
 
@@ -89,7 +89,7 @@ func init() {
 	nodeAddCmd.Flags().StringVarP(&nodeName, "name", "n", "", "Unique name of the node")
 	nodeAddCmd.Flags().StringVarP(&nodeIP, "ip", "i", "", "IP of the node")
 	nodeAddCmd.Flags().UintVarP(&nodeIndex, "index", "x", 0, "The unique index of the node.")
-	nodeAddCmd.Flags().StringVarP(&nodeLabels, "labels", "l", fmt.Sprintf("%s,%s", utils.NODE_CONTROLLER, utils.NODE_WORKER), "The labels of the node which define the attributes of the node.")
+	nodeAddCmd.Flags().StringVarP(&nodeLabels, "labels", "l", fmt.Sprintf("%s,%s,%s", utils.NODE_BOOTSTRAPPER, utils.NODE_CONTROLLER, utils.NODE_WORKER), "The labels of the node which define the attributes of the node.")
 	nodeAddCmd.Flags().BoolVarP(&nodeSelf, "self", "s", false, "Add this machine by infering the name, the ip and assuming it is a controller and a worker")
 	RootCmd.AddCommand(nodeAddCmd)
 }

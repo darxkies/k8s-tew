@@ -16,7 +16,7 @@ var initializeCmd = &cobra.Command{
 	Short: "Initialize the configuration",
 	Long:  "Initialize the configuration",
 	Run: func(cmd *cobra.Command, args []string) {
-		_config = config.DefaultInternalConfig(baseDirectory)
+		_config = config.NewInternalConfig(baseDirectory)
 
 		if !force {
 			if error := _config.Load(); error == nil {
@@ -24,6 +24,8 @@ var initializeCmd = &cobra.Command{
 
 				os.Exit(-1)
 			}
+		} else {
+			log.Info("forcing initialization")
 		}
 
 		if error := _config.Save(); error != nil {

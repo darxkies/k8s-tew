@@ -47,9 +47,13 @@ func Bootstrap(needsRoot bool) error {
 		return errors.New("this program needs root rights")
 	}
 
-	_config = config.DefaultInternalConfig(baseDirectory)
+	environmentBaseDirectory := os.Getenv(utils.K8S_TEW_BASE_DIRECTORY)
 
-	// TODO use environment to load the base directory
+	if len(environmentBaseDirectory) > 0 {
+		baseDirectory = environmentBaseDirectory
+	}
+
+	_config = config.NewInternalConfig(baseDirectory)
 
 	return _config.Load()
 }

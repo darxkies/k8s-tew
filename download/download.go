@@ -3,7 +3,6 @@ package download
 import (
 	"archive/tar"
 	"compress/gzip"
-	"fmt"
 	"io"
 	"net/http"
 	"os"
@@ -15,24 +14,55 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+type Versions struct {
+	Etcd       string
+	Flanneld   string
+	K8S        string
+	Helm       string
+	CNI        string
+	Containerd string
+	Runc       string
+	CriCtl     string
+	Gobetween  string
+}
+
+type CompressedFile struct {
+	SourceFile string
+	TargetFile string
+}
+
 type Downloader struct {
-	config          *config.InternalConfig
-	etcdVersion     string
-	flanneldVersion string
-	k8sVersion      string
-	cniVersion      string
-	criVersion      string
+	config   *config.InternalConfig
+	versions Versions
 }
 
-func NewDownloader(config *config.InternalConfig, etcdVersion string, flanneldVersion string, k8sVersion string, cniVersion string, criVersion string) Downloader {
-	return Downloader{config: config, etcdVersion: etcdVersion, flanneldVersion: flanneldVersion, k8sVersion: k8sVersion, cniVersion: cniVersion, criVersion: criVersion}
+func NewDownloader(config *config.InternalConfig, versions Versions) Downloader {
+	return Downloader{config: config, versions: versions}
 }
 
-func (downloader Downloader) downloadFile(url, filename string) error {
+func (downloader Downloader) getURL(url, filename string) (string, error) {
+	data := struct {
+		Filename string
+		Versions Versions
+	}{
+		Filename: filename,
+		Versions: downloader.versions,
+	}
+
+	return utils.ApplyTemplate(url, data)
+}
+
+func (downloader Downloader) downloadFile(urlTemplate, remoteFilename, filename string) (bool, error) {
+	url, error := downloader.getURL(urlTemplate, remoteFilename)
+
+	if error != nil {
+		return false, error
+	}
+
 	if utils.FileExists(filename) {
-		log.WithFields(log.Fields{"filename": filename}).Info("skipping")
+		log.WithFields(log.Fields{"filename": filename}).Info("skipped")
 
-		return nil
+		return false, nil
 	}
 
 	log.WithFields(log.Fields{"url": url}).Info("downloading")
@@ -40,7 +70,7 @@ func (downloader Downloader) downloadFile(url, filename string) error {
 	output, error := os.Create(filename)
 
 	if error != nil {
-		return error
+		return false, error
 	}
 
 	defer output.Close()
@@ -48,22 +78,25 @@ func (downloader Downloader) downloadFile(url, filename string) error {
 	response, error := http.Get(url)
 
 	if error != nil {
-		return error
+		return false, error
 	}
 
 	defer response.Body.Close()
 
 	_, error = io.Copy(output, response.Body)
 
-	if error == nil {
-		log.WithFields(log.Fields{"filename": filename}).Info("downloaded")
-	}
-
-	return error
+	return true, error
 }
 
-func (downloader Downloader) downloadExecutable(url, filename string) error {
-	if error := downloader.downloadFile(url, filename); error != nil {
+func (downloader Downloader) downloadExecutable(urlTemplate, remoteFilename, filename string) error {
+	url, error := downloader.getURL(urlTemplate, remoteFilename)
+
+	if error != nil {
+		return error
+	}
+
+	installed, error := downloader.downloadFile(url, remoteFilename, filename)
+	if error != nil {
 		return error
 	}
 
@@ -71,10 +104,18 @@ func (downloader Downloader) downloadExecutable(url, filename string) error {
 		return error
 	}
 
+	if installed {
+		log.WithFields(log.Fields{"filename": filename}).Info("installed")
+	}
+
 	return nil
 }
 
 func (downloader Downloader) extractTGZ(filename string, targetDirectory string) error {
+	if error := utils.CreateDirectoryIfMissing(targetDirectory); error != nil {
+		return error
+	}
+
 	file, error := os.Open(filename)
 
 	if error != nil {
@@ -129,171 +170,68 @@ func (downloader Downloader) extractTGZ(filename string, targetDirectory string)
 	return nil
 }
 
-func (downloader Downloader) downloadEtcdBinaries() error {
-	etcdFullName := downloader.config.GetFullDeploymentFilename(utils.ETCD_BINARY)
-	etcdctlFullName := downloader.config.GetFullDeploymentFilename(utils.ETCDCTL_BINARY)
+func (downloader Downloader) downloadAndExtractTGZFiles(urlTemplate, baseName string, files []CompressedFile) error {
+	// Check if files already exist
+	exist := true
+	temporaryDirectory := downloader.config.GetFullLocalAssetDirectory(utils.TEMPORARY_DIRECTORY)
 
-	if utils.FileExists(etcdFullName) && utils.FileExists(etcdctlFullName) {
-		log.WithFields(log.Fields{"filename": etcdFullName}).Info("skipping")
-		log.WithFields(log.Fields{"filename": etcdctlFullName}).Info("skipping")
+	for _, compressedFile := range files {
+		if !utils.FileExists(compressedFile.TargetFile) {
+			exist = false
 
-		return nil
-	}
-
-	temporaryFile := path.Join(utils.GetFullTemporaryDirectory(), "etcd.tgz")
-
-	baseName := fmt.Sprintf(utils.ETCD_BASE_NAME, downloader.etcdVersion)
-
-	if error := downloader.downloadFile(fmt.Sprintf(utils.ETCD_DOWNLOAD_URL, downloader.etcdVersion, baseName), temporaryFile); error != nil {
-		return error
-	}
-
-	defer func() {
-		_ = os.Remove(temporaryFile)
-	}()
-
-	if error := downloader.extractTGZ(temporaryFile, utils.GetFullTemporaryDirectory()); error != nil {
-		return error
-	}
-
-	extractedDirectoryName := path.Join(utils.GetFullTemporaryDirectory(), baseName)
-
-	defer func() {
-		_ = os.RemoveAll(extractedDirectoryName)
-	}()
-
-	if error := os.Rename(path.Join(extractedDirectoryName, utils.ETCD_BINARY), etcdFullName); error != nil {
-		return nil
-	}
-
-	if error := os.Rename(path.Join(extractedDirectoryName, utils.ETCDCTL_BINARY), etcdctlFullName); error != nil {
-		return nil
-	}
-
-	log.WithFields(log.Fields{"filename": etcdFullName}).Info("downloaded")
-	log.WithFields(log.Fields{"filename": etcdctlFullName}).Info("downloaded")
-
-	return nil
-}
-
-func (downloader Downloader) downloadFlanneldBinary() error {
-	flanneldFullName := downloader.config.GetFullDeploymentFilename(utils.FLANNELD_BINARY)
-
-	if utils.FileExists(flanneldFullName) {
-		log.WithFields(log.Fields{"filename": flanneldFullName}).Info("skipping")
-
-		return nil
-	}
-
-	if error := downloader.downloadExecutable(fmt.Sprintf(utils.FLANNELD_DOWNLOAD_URL, downloader.flanneldVersion), downloader.config.GetFullDeploymentFilename(utils.FLANNELD_BINARY)); error != nil {
-		return nil
-	}
-
-	log.WithFields(log.Fields{"filename": flanneldFullName}).Info("downloaded")
-
-	return nil
-}
-
-func (downloader Downloader) downloadCNIBinaries() error {
-	cniDirectory := path.Join(downloader.config.BaseDirectory, utils.GetFullCNIBinariesDirectory())
-
-	bridgeFullName := downloader.config.GetFullDeploymentFilename(utils.BRIDGE_BINARY)
-
-	if utils.FileExists(bridgeFullName) {
-		log.WithFields(log.Fields{"filename": bridgeFullName}).Info("skipping")
-
-		return nil
-	}
-
-	temporaryFile := path.Join(utils.GetFullTemporaryDirectory(), "cni.tgz")
-
-	baseName := fmt.Sprintf(utils.CNI_BASE_NAME, downloader.cniVersion)
-
-	if error := downloader.downloadFile(fmt.Sprintf(utils.CNI_DOWNLOAD_URL, downloader.cniVersion, baseName), temporaryFile); error != nil {
-		return error
-	}
-
-	defer func() {
-		_ = os.Remove(temporaryFile)
-	}()
-
-	if error := downloader.extractTGZ(temporaryFile, cniDirectory); error != nil {
-		return error
-	}
-
-	log.WithFields(log.Fields{"filename": bridgeFullName}).Info("downloaded")
-
-	return nil
-}
-
-func (downloader Downloader) downloadCRIBinaries() error {
-	criDirectory := path.Join(downloader.config.BaseDirectory, utils.GetFullCRIBinariesDirectory())
-
-	runcFullName := downloader.config.GetFullDeploymentFilename(utils.RUNC_BINARY)
-
-	if utils.FileExists(runcFullName) {
-		log.WithFields(log.Fields{"filename": runcFullName}).Info("skipping")
-
-		return nil
-	}
-
-	temporaryBaseFilename := "cri"
-	temporaryFile := path.Join(utils.GetFullTemporaryDirectory(), temporaryBaseFilename+".tgz")
-
-	if error := downloader.downloadFile(fmt.Sprintf(utils.CRI_DOWNLOAD_URL, downloader.criVersion, downloader.criVersion), temporaryFile); error != nil {
-		return error
-	}
-
-	defer func() {
-		_ = os.Remove(temporaryFile)
-	}()
-
-	temporaryCRIDirectory := path.Join(utils.GetFullTemporaryDirectory(), temporaryBaseFilename)
-
-	if error := downloader.extractTGZ(temporaryFile, temporaryCRIDirectory); error != nil {
-		return error
-	}
-
-	defer func() {
-		_ = os.RemoveAll(temporaryCRIDirectory)
-	}()
-
-	if error := os.Rename(path.Join(temporaryCRIDirectory, "usr", "local", "sbin", "runc"), runcFullName); error != nil {
-		return nil
-	}
-
-	for _, binary := range []string{utils.CONTAINERD_BINARY, utils.CRI_CONTAINERD_BINARY, utils.CONTAINERD_SHIM_BINARY, utils.CTR_BINARY, utils.CRICTL_BINARY} {
-		if error := os.Rename(path.Join(temporaryCRIDirectory, "usr", "local", "bin", binary), path.Join(criDirectory, binary)); error != nil {
-			return nil
+			break
 		}
 	}
 
-	return nil
-}
+	// All files exist, print skip message and bail out
+	if exist {
+		for _, compressedFile := range files {
+			log.WithFields(log.Fields{"filename": compressedFile.TargetFile}).Info("skipped")
+		}
 
-func (downloader Downloader) downloadK8SBinaries() error {
-	if error := downloader.downloadExecutable(fmt.Sprintf(utils.K8S_DOWNLOAD_URL, downloader.k8sVersion, utils.KUBECTL_BINARY), downloader.config.GetFullDeploymentFilename(utils.KUBECTL_BINARY)); error != nil {
+		return nil
+	}
+
+	// Build base name including the version number
+	baseName, error := downloader.getURL(baseName, "")
+	if error != nil {
 		return error
 	}
 
-	if error := downloader.downloadExecutable(fmt.Sprintf(utils.K8S_DOWNLOAD_URL, downloader.k8sVersion, utils.KUBE_APISERVER_BINARY), downloader.config.GetFullDeploymentFilename(utils.KUBE_APISERVER_BINARY)); error != nil {
+	// Create temporary download filename
+	temporaryFile := path.Join(temporaryDirectory, baseName+".tgz")
+
+	// Download file
+	_, error = downloader.downloadFile(urlTemplate, baseName, temporaryFile)
+	if error != nil {
 		return error
 	}
 
-	if error := downloader.downloadExecutable(fmt.Sprintf(utils.K8S_DOWNLOAD_URL, downloader.k8sVersion, utils.KUBE_CONTROLLER_MANAGER_BINARY), downloader.config.GetFullDeploymentFilename(utils.KUBE_CONTROLLER_MANAGER_BINARY)); error != nil {
+	// Make sure the file is deleted once done
+	defer func() {
+		_ = os.Remove(temporaryFile)
+	}()
+
+	// Create temporary directory to extract to
+	temporaryExtractedDirectory := path.Join(temporaryDirectory, baseName)
+
+	// Extrace files
+	if error := downloader.extractTGZ(temporaryFile, temporaryExtractedDirectory); error != nil {
 		return error
 	}
 
-	if error := downloader.downloadExecutable(fmt.Sprintf(utils.K8S_DOWNLOAD_URL, downloader.k8sVersion, utils.KUBE_SCHEDULER_BINARY), downloader.config.GetFullDeploymentFilename(utils.KUBE_SCHEDULER_BINARY)); error != nil {
-		return error
-	}
+	// Make sure the temporary directory is removed once done
+	defer func() {
+		_ = os.RemoveAll(temporaryExtractedDirectory)
+	}()
 
-	if error := downloader.downloadExecutable(fmt.Sprintf(utils.K8S_DOWNLOAD_URL, downloader.k8sVersion, utils.KUBE_PROXY_BINARY), downloader.config.GetFullDeploymentFilename(utils.KUBE_PROXY_BINARY)); error != nil {
-		return error
-	}
+	// Move files from temporary directory to target directory
+	for _, compressedFile := range files {
+		if error := os.Rename(path.Join(temporaryExtractedDirectory, compressedFile.SourceFile), compressedFile.TargetFile); error != nil {
+			return error
+		}
 
-	if error := downloader.downloadExecutable(fmt.Sprintf(utils.K8S_DOWNLOAD_URL, downloader.k8sVersion, utils.KUBELET_BINARY), downloader.config.GetFullDeploymentFilename(utils.KUBELET_BINARY)); error != nil {
-		return error
+		log.WithFields(log.Fields{"filename": compressedFile.TargetFile}).Info("installed")
 	}
 
 	return nil
@@ -306,7 +244,7 @@ func (downloader Downloader) copyK8STEW() error {
 		return error
 	}
 
-	targetFilename := downloader.config.GetFullDeploymentFilename(utils.K8S_TEW_BINARY)
+	targetFilename := downloader.config.GetFullLocalAssetFilename(utils.K8S_TEW_BINARY)
 
 	sourceFile, error := os.Open(binaryName)
 
@@ -335,7 +273,155 @@ func (downloader Downloader) copyK8STEW() error {
 	return targetFile.Sync()
 }
 
+func (downloader Downloader) downloadK8SBinaries() error {
+	if error := downloader.downloadExecutable(utils.K8S_DOWNLOAD_URL, utils.KUBECTL_BINARY, downloader.config.GetFullLocalAssetFilename(utils.KUBECTL_BINARY)); error != nil {
+		return error
+	}
+
+	if error := downloader.downloadExecutable(utils.K8S_DOWNLOAD_URL, utils.KUBE_APISERVER_BINARY, downloader.config.GetFullLocalAssetFilename(utils.KUBE_APISERVER_BINARY)); error != nil {
+		return error
+	}
+
+	if error := downloader.downloadExecutable(utils.K8S_DOWNLOAD_URL, utils.KUBE_CONTROLLER_MANAGER_BINARY, downloader.config.GetFullLocalAssetFilename(utils.KUBE_CONTROLLER_MANAGER_BINARY)); error != nil {
+		return error
+	}
+
+	if error := downloader.downloadExecutable(utils.K8S_DOWNLOAD_URL, utils.KUBE_SCHEDULER_BINARY, downloader.config.GetFullLocalAssetFilename(utils.KUBE_SCHEDULER_BINARY)); error != nil {
+		return error
+	}
+
+	if error := downloader.downloadExecutable(utils.K8S_DOWNLOAD_URL, utils.KUBE_PROXY_BINARY, downloader.config.GetFullLocalAssetFilename(utils.KUBE_PROXY_BINARY)); error != nil {
+		return error
+	}
+
+	if error := downloader.downloadExecutable(utils.K8S_DOWNLOAD_URL, utils.KUBELET_BINARY, downloader.config.GetFullLocalAssetFilename(utils.KUBELET_BINARY)); error != nil {
+		return error
+	}
+
+	return nil
+}
+
+func (downloader Downloader) downloadHelmBinary() error {
+	compressedFiles := []CompressedFile{
+		CompressedFile{
+			SourceFile: path.Join("linux-amd64", utils.HELM_BINARY),
+			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.HELM_BINARY),
+		},
+	}
+
+	return downloader.downloadAndExtractTGZFiles(utils.HELM_DOWNLOAD_URL, utils.HELM_BASE_NAME, compressedFiles)
+}
+
+func (downloader Downloader) downloadRuncBinary() error {
+	return downloader.downloadExecutable(utils.RUNC_DOWNLOAD_URL, "", downloader.config.GetFullLocalAssetFilename(utils.RUNC_BINARY))
+}
+
+func (downloader Downloader) downloadFlanneldBinary() error {
+	return downloader.downloadExecutable(utils.FLANNELD_DOWNLOAD_URL, "", downloader.config.GetFullLocalAssetFilename(utils.FLANNELD_BINARY))
+}
+
+func (downloader Downloader) downloadEtcdBinaries() error {
+	// Build base name including the version number
+	baseName, error := downloader.getURL(utils.ETCD_BASE_NAME, "")
+	if error != nil {
+		return error
+	}
+
+	compressedFiles := []CompressedFile{
+		CompressedFile{
+			SourceFile: path.Join(baseName, utils.ETCD_BINARY),
+			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.ETCD_BINARY),
+		},
+		CompressedFile{
+			SourceFile: path.Join(baseName, utils.ETCDCTL_BINARY),
+			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.ETCDCTL_BINARY),
+		},
+	}
+
+	return downloader.downloadAndExtractTGZFiles(utils.ETCD_DOWNLOAD_URL, utils.ETCD_BASE_NAME, compressedFiles)
+}
+
+func (downloader Downloader) downloadCNIBinaries() error {
+	compressedFiles := []CompressedFile{
+		CompressedFile{
+			SourceFile: utils.BRIDGE_BINARY,
+			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.BRIDGE_BINARY),
+		},
+		CompressedFile{
+			SourceFile: utils.FLANNEL_BINARY,
+			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.FLANNEL_BINARY),
+		},
+		CompressedFile{
+			SourceFile: utils.LOOPBACK_BINARY,
+			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.LOOPBACK_BINARY),
+		},
+		CompressedFile{
+			SourceFile: utils.HOST_LOCAL_BINARY,
+			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.HOST_LOCAL_BINARY),
+		},
+	}
+
+	return downloader.downloadAndExtractTGZFiles(utils.CNI_DOWNLOAD_URL, utils.CNI_BASE_NAME, compressedFiles)
+}
+
+func (downloader Downloader) downloadContainerdBinaries() error {
+	compressedFiles := []CompressedFile{
+		CompressedFile{
+			SourceFile: path.Join("bin", utils.CONTAINERD_BINARY),
+			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.CONTAINERD_BINARY),
+		},
+		CompressedFile{
+			SourceFile: path.Join("bin", utils.CONTAINERD_SHIM_BINARY),
+			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.CONTAINERD_SHIM_BINARY),
+		},
+		CompressedFile{
+			SourceFile: path.Join("bin", utils.CTR_BINARY),
+			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.CTR_BINARY),
+		},
+	}
+
+	return downloader.downloadAndExtractTGZFiles(utils.CONTAINERD_DOWNLOAD_URL, utils.CONTAINERD_BASE_NAME, compressedFiles)
+}
+
+func (downloader Downloader) downloadCriCtlBinary() error {
+	compressedFiles := []CompressedFile{
+		CompressedFile{
+			SourceFile: utils.CRICTL_BINARY,
+			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.CRICTL_BINARY),
+		},
+	}
+
+	return downloader.downloadAndExtractTGZFiles(utils.CRICTL_DOWNLOAD_URL, utils.CRICTL_BASE_NAME, compressedFiles)
+}
+
+func (downloader Downloader) downloadGobetweenBinary() error {
+	compressedFiles := []CompressedFile{
+		CompressedFile{
+			SourceFile: utils.GOBETWEEN_BINARY,
+			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.GOBETWEEN_BINARY),
+		},
+	}
+
+	return downloader.downloadAndExtractTGZFiles(utils.GOBETWEEN_DOWNLOAD_URL, utils.GOBETWEEN_BASE_NAME, compressedFiles)
+}
+
+func (downloader Downloader) createLocalDirectories() error {
+	for name := range downloader.config.Config.Assets.Directories {
+		localDirectory := downloader.config.GetFullLocalAssetDirectory(name)
+
+		if error := utils.CreateDirectoryIfMissing(localDirectory); error != nil {
+			return error
+		}
+	}
+
+	return nil
+}
+
 func (downloader Downloader) DownloadBinaries() error {
+	if error := downloader.createLocalDirectories(); error != nil {
+		return error
+	}
+
 	if error := downloader.copyK8STEW(); error != nil {
 		return error
 	}
@@ -352,11 +438,27 @@ func (downloader Downloader) DownloadBinaries() error {
 		return error
 	}
 
+	if error := downloader.downloadHelmBinary(); error != nil {
+		return error
+	}
+
 	if error := downloader.downloadCNIBinaries(); error != nil {
 		return error
 	}
 
-	if error := downloader.downloadCRIBinaries(); error != nil {
+	if error := downloader.downloadContainerdBinaries(); error != nil {
+		return error
+	}
+
+	if error := downloader.downloadRuncBinary(); error != nil {
+		return error
+	}
+
+	if error := downloader.downloadCriCtlBinary(); error != nil {
+		return error
+	}
+
+	if error := downloader.downloadGobetweenBinary(); error != nil {
 		return error
 	}
 
