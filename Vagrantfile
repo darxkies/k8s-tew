@@ -50,14 +50,14 @@ if $os == "ubuntu"
     $box = "ubuntu/bionic64"
 
     $script += <<-SCRIPT
-apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y apt-transport-https socat
+apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y apt-transport-https socat conntrack ipset
 SCRIPT
 
 else
     $box = "centos/7"
 
     $script += <<-SCRIPT
-yum install socat -y
+yum install socat conntrack ipset -y
 SCRIPT
 
 end
