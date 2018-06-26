@@ -7,6 +7,8 @@ SSH_PUBLIC_KEY = File.readlines("#{Dir.home}/.ssh/id_rsa.pub").first.strip
 # Cluster information
 $single_node = true
 $os = "ubuntu"
+$ip_prefix = "192.168.100"
+
 $script = <<-SCRIPT
 mkdir -p /root/.ssh
 echo #{SSH_PUBLIC_KEY} >> /root/.ssh/authorized_keys
@@ -40,7 +42,7 @@ end
 
 if ENV["OS"] 
     if ENV["OS"] != "ubuntu" && ENV["OS"] != "centos"
-        panic("Unsupported OS")
+        raise "Unsupported OS: '" + ENV["OS"] + "'"
     end
 
     $os = ENV["OS"]
@@ -77,6 +79,10 @@ if ENV["WORKERS"]
     $workers_count = ENV["WORKERS"]
 end
 
+if ENV["IP_PREFIX"]
+    $ip_prefix = ENV["IP_PREFIX"]
+end
+
 ############################################################
 # Routines
 def index_padding(index)
@@ -96,15 +102,15 @@ def worker_name(index)
 end
 
 def single_node_ip()
-    return "192.168.100.50"
+    return $ip_prefix + ".50"
 end
 
 def controller_ip(index)
-	return "192.168.100.1" + index_padding(index)
+	return $ip_prefix + ".2" + index_padding(index)
 end
 
 def worker_ip(index)
-	return "192.168.100.2" + index_padding(index)
+	return $ip_prefix + ".1" + index_padding(index)
 end
 
 def add_machine(config, ram, cpus, name, ip)
