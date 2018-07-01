@@ -8,7 +8,6 @@ import (
 	"io"
 	"io/ioutil"
 	"os"
-	"path"
 	"strings"
 	"time"
 
@@ -22,16 +21,17 @@ import (
 	"github.com/tmc/scp"
 )
 
-type Asset struct {
-	address      string
+type Deployment struct {
 	identityFile string
+	node         *config.Node
+	config       *config.InternalConfig
 }
 
-func NewAsset(address string, identityFile string) *Asset {
-	return &Asset{address: address, identityFile: identityFile}
+func NewDeployment(identityFile string, node *config.Node, config *config.InternalConfig) *Deployment {
+	return &Deployment{identityFile: identityFile, node: node, config: config}
 }
 
-func (deployment *Asset) md5sum(filename string) (result string, error error) {
+func (deployment *Deployment) md5sum(filename string) (result string, error error) {
 	file, error := os.Open(filename)
 
 	if error != nil {
@@ -49,14 +49,27 @@ func (deployment *Asset) md5sum(filename string) (result string, error error) {
 	result = hex.EncodeToString(hash.Sum(nil)[:16])
 
 	return
-
 }
-func (deployment *Asset) CopyFilesTo(files map[string]string) error {
-	// Collect remote directories
+
+func (deployment *Deployment) CreateDirectories() error {
 	directories := map[string]bool{}
 
-	for _, remoteFile := range files {
-		directories[path.Dir(remoteFile)] = true
+	// Collect remote directories based on the files that have to be uploaded
+	for _, file := range deployment.config.Config.Assets.Files {
+		if !config.CompareLabels(deployment.node.Labels, file.Labels) {
+			continue
+		}
+
+		directories[deployment.config.GetFullTargetAssetDirectory(file.Directory)] = true
+	}
+
+	// Collect remote directories based on their labels
+	for name, directory := range deployment.config.Config.Assets.Directories {
+		if !config.CompareLabels(deployment.node.Labels, directory.Labels) {
+			continue
+		}
+
+		directories[deployment.config.GetFullTargetAssetDirectory(name)] = true
 	}
 
 	// Create remote directories
@@ -70,17 +83,39 @@ func (deployment *Asset) CopyFilesTo(files map[string]string) error {
 		return error
 	}
 
+	return nil
+}
+
+func (deployment *Deployment) getFiles() map[string]string {
+	files := map[string]string{}
+
+	// Collect files to be deployed
+	for name, file := range deployment.config.Config.Assets.Files {
+		if !config.CompareLabels(deployment.node.Labels, file.Labels) {
+			continue
+		}
+
+		fromFile := deployment.config.GetFullLocalAssetFilename(name)
+		toFile := deployment.config.GetFullTargetAssetFilename(name)
+
+		files[fromFile] = toFile
+	}
+
+	return files
+}
+
+func (deployment *Deployment) getRemoteFileChecksums() map[string]string {
 	// Calculate checksums of remote files
 	checksumCommand := "md5sum"
 
-	for _, remoteFile := range files {
-		checksumCommand += " " + remoteFile
+	for _, toFile := range deployment.getFiles() {
+		checksumCommand += " " + toFile
 	}
 
 	output, _ := deployment.Execute(checksumCommand)
 
 	// Parse remote checksum values
-	targetFileChecksums := map[string]string{}
+	checksums := map[string]string{}
 	lines := strings.Split(output, "\n")
 
 	for _, line := range lines {
@@ -90,17 +125,19 @@ func (deployment *Asset) CopyFilesTo(files map[string]string) error {
 
 		tokens := strings.Split(line, " ")
 
-		targetFileChecksums[tokens[len(tokens)-1]] = tokens[0]
+		checksums[tokens[len(tokens)-1]] = tokens[0]
 	}
 
-	// Stop service
-	serviceCommand := fmt.Sprintf("systemctl stop %s", utils.SERVICE_NAME)
+	return checksums
+}
 
-	_, _ = deployment.Execute(serviceCommand)
+func (deployment *Deployment) getChangedFiles() map[string]string {
+	remoteFileChecksums := deployment.getRemoteFileChecksums()
 
-	// Copy changed files
-	for fromFile, toFile := range files {
-		if remoteChecksum, ok := targetFileChecksums[toFile]; ok {
+	files := map[string]string{}
+
+	for fromFile, toFile := range deployment.getFiles() {
+		if remoteChecksum, ok := remoteFileChecksums[toFile]; ok {
 			localChecksum, error := deployment.md5sum(fromFile)
 
 			if error == nil && localChecksum == remoteChecksum {
@@ -108,20 +145,36 @@ func (deployment *Asset) CopyFilesTo(files map[string]string) error {
 			}
 		}
 
-		if error := deployment.CopyTo(fromFile, toFile); error != nil {
+		files[fromFile] = toFile
+	}
+
+	return files
+}
+
+func (deployment *Deployment) UploadFiles() error {
+	changedFiles := deployment.getChangedFiles()
+
+	if len(changedFiles) == 0 {
+		return nil
+	}
+
+	// Stop service
+	_, _ = deployment.Execute(fmt.Sprintf("systemctl stop %s", utils.SERVICE_NAME))
+
+	// Copy changed files
+	for fromFile, toFile := range changedFiles {
+		if error := deployment.UploadFile(fromFile, toFile); error != nil {
 			return error
 		}
 	}
 
 	// Registrate and start service
-	serviceCommand = fmt.Sprintf("systemctl daemon-reload && systemctl enable %s && systemctl start %s", utils.SERVICE_NAME, utils.SERVICE_NAME)
-
-	_, error := deployment.Execute(serviceCommand)
+	_, error := deployment.Execute(fmt.Sprintf("systemctl daemon-reload && systemctl enable %s && systemctl start %s", utils.SERVICE_NAME, utils.SERVICE_NAME))
 
 	return error
 }
 
-func (deployment *Asset) getSession() (*ssh.Session, error) {
+func (deployment *Deployment) getSession() (*ssh.Session, error) {
 	privateKeyContent, error := ioutil.ReadFile(deployment.identityFile)
 	if error != nil {
 		return nil, error
@@ -132,7 +185,7 @@ func (deployment *Asset) getSession() (*ssh.Session, error) {
 		return nil, error
 	}
 
-	client, error := ssh.Dial("tcp", deployment.address+":22", &ssh.ClientConfig{
+	client, error := ssh.Dial("tcp", deployment.node.IP+":22", &ssh.ClientConfig{
 		User: utils.DEPLOYMENT_USER,
 		Auth: []ssh.AuthMethod{
 			ssh.PublicKeys(privateKey),
@@ -146,8 +199,8 @@ func (deployment *Asset) getSession() (*ssh.Session, error) {
 	return client.NewSession()
 }
 
-func (deployment *Asset) Execute(command string) (string, error) {
-	log.WithFields(log.Fields{"command": command, "target": deployment.address}).Info("executing")
+func (deployment *Deployment) Execute(command string) (string, error) {
+	log.WithFields(log.Fields{"target": deployment.node.IP, "command": command}).Info("executing")
 
 	session, error := deployment.getSession()
 	if error != nil {
@@ -165,8 +218,8 @@ func (deployment *Asset) Execute(command string) (string, error) {
 	return buffer.String(), error
 }
 
-func (deployment *Asset) CopyTo(from, to string) error {
-	log.WithFields(log.Fields{"source-filename": from, "destination-filename": to, "target": deployment.address}).Info("deploying")
+func (deployment *Deployment) UploadFile(from, to string) error {
+	log.WithFields(log.Fields{"target": deployment.node.IP, "source-filename": from, "destination-filename": to}).Info("deploying")
 
 	session, error := deployment.getSession()
 	if error != nil {
@@ -178,6 +231,7 @@ func (deployment *Asset) CopyTo(from, to string) error {
 	return scp.CopyPath(from, to, session)
 }
 
+// Deploy all files to the nodes over SSH
 func Deploy(_config *config.InternalConfig, identityFile string) error {
 	sortedNodeKeys := _config.GetSortedNodeKeys()
 
@@ -186,22 +240,13 @@ func Deploy(_config *config.InternalConfig, identityFile string) error {
 
 		_config.SetNode(nodeName, node)
 
-		deployment := NewAsset(node.IP, identityFile)
+		deployment := NewDeployment(identityFile, node, _config)
 
-		files := map[string]string{}
-
-		for name, deploymentFile := range _config.Config.Assets.Files {
-			if !config.CompareLabels(node.Labels, deploymentFile.Labels) {
-				continue
-			}
-
-			fromFile := _config.GetFullLocalAssetFilename(name)
-			toFile := _config.GetFullTargetAssetFilename(name)
-
-			files[fromFile] = toFile
+		if error := deployment.CreateDirectories(); error != nil {
+			return error
 		}
 
-		if error := deployment.CopyFilesTo(files); error != nil {
+		if error := deployment.UploadFiles(); error != nil {
 			return error
 		}
 	}
@@ -209,6 +254,7 @@ func Deploy(_config *config.InternalConfig, identityFile string) error {
 	return nil
 }
 
+// Run bootstrapper commands
 func Setup(_config *config.InternalConfig) error {
 	for _, command := range _config.Config.Commands {
 		if !command.Labels.HasLabels([]string{utils.NODE_BOOTSTRAPPER}) {

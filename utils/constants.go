@@ -76,6 +76,7 @@ const PROFILE_D_SUBDIRECTORY = "profile.d"
 const LOAD_BALANCER_SUBDIRECTORY = "lb"
 const HELM_SUBDIRECTORY = "helm"
 const KUBELET_SUBDIRECTORY = "kubelet"
+const MANIFESTS_SUBDIRECTORY = "manifests"
 
 // Directories
 const CONFIG_DIRECTORY = "config"
@@ -103,6 +104,7 @@ const GOBETWEEN_CONFIG_DIRECTORY = "gobetween-config"
 const HELM_DATA_DIRECTORY = "helm-data"
 const KUBELET_DATA_DIRECTORY = "kubelet-data"
 const TEMPORARY_DIRECTORY = "temporary"
+const K8S_MANIFESTS_DIRECTORY = "kubelet-manifests"
 
 // Binaries
 const K8S_TEW_BINARY = "k8s-tew"
@@ -374,6 +376,7 @@ podCIDR: "{{.PODCIDR}}"
 runtimeRequestTimeout: "15m"
 tlsCertFile: "{{.CertificateFilename}}"
 tlsPrivateKeyFile: "{{.KeyFilename}}"
+staticPodPath: "{{.StaticPodPath}}"
 `
 
 const ENCRYPTION_CONFIG_TEMPLATE = `apiVersion: v1

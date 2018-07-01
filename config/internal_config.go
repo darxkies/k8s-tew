@@ -98,37 +98,38 @@ func NewInternalConfig(baseDirectory string) *InternalConfig {
 
 func (config *InternalConfig) registerAssetDirectories() {
 	// Config
-	config.addAssetDirectory(utils.CONFIG_DIRECTORY, config.getRelativeConfigDirectory())
-	config.addAssetDirectory(utils.CERTIFICATES_DIRECTORY, path.Join(config.GetRelativeAssetDirectory(utils.CONFIG_DIRECTORY), utils.CERTIFICATES_SUBDIRECTORY))
-	config.addAssetDirectory(utils.CNI_CONFIG_DIRECTORY, path.Join(config.GetRelativeAssetDirectory(utils.CONFIG_DIRECTORY), utils.CNI_SUBDIRECTORY))
-	config.addAssetDirectory(utils.CRI_CONFIG_DIRECTORY, path.Join(config.GetRelativeAssetDirectory(utils.CONFIG_DIRECTORY), utils.CRI_SUBDIRECTORY))
+	config.addAssetDirectory(utils.CONFIG_DIRECTORY, Labels{}, config.getRelativeConfigDirectory())
+	config.addAssetDirectory(utils.CERTIFICATES_DIRECTORY, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.CONFIG_DIRECTORY), utils.CERTIFICATES_SUBDIRECTORY))
+	config.addAssetDirectory(utils.CNI_CONFIG_DIRECTORY, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.CONFIG_DIRECTORY), utils.CNI_SUBDIRECTORY))
+	config.addAssetDirectory(utils.CRI_CONFIG_DIRECTORY, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.CONFIG_DIRECTORY), utils.CRI_SUBDIRECTORY))
 
 	// K8S Config
-	config.addAssetDirectory(utils.K8S_CONFIG_DIRECTORY, path.Join(config.GetRelativeAssetDirectory(utils.CONFIG_DIRECTORY), utils.K8S_SUBDIRECTORY))
-	config.addAssetDirectory(utils.K8S_KUBE_CONFIG_DIRECTORY, path.Join(config.GetRelativeAssetDirectory(utils.K8S_CONFIG_DIRECTORY), utils.KUBECONFIG_SUBDIRECTORY))
-	config.addAssetDirectory(utils.K8S_SECURITY_CONFIG_DIRECTORY, path.Join(config.GetRelativeAssetDirectory(utils.K8S_CONFIG_DIRECTORY), utils.SECURITY_SUBDIRECTORY))
-	config.addAssetDirectory(utils.K8S_SETUP_CONFIG_DIRECTORY, path.Join(config.GetRelativeAssetDirectory(utils.K8S_CONFIG_DIRECTORY), utils.SETUP_SUBDIRECTORY))
+	config.addAssetDirectory(utils.K8S_CONFIG_DIRECTORY, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.CONFIG_DIRECTORY), utils.K8S_SUBDIRECTORY))
+	config.addAssetDirectory(utils.K8S_KUBE_CONFIG_DIRECTORY, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.K8S_CONFIG_DIRECTORY), utils.KUBECONFIG_SUBDIRECTORY))
+	config.addAssetDirectory(utils.K8S_SECURITY_CONFIG_DIRECTORY, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.K8S_CONFIG_DIRECTORY), utils.SECURITY_SUBDIRECTORY))
+	config.addAssetDirectory(utils.K8S_SETUP_CONFIG_DIRECTORY, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.K8S_CONFIG_DIRECTORY), utils.SETUP_SUBDIRECTORY))
+	config.addAssetDirectory(utils.K8S_MANIFESTS_DIRECTORY, Labels{utils.NODE_WORKER}, path.Join(config.GetRelativeAssetDirectory(utils.K8S_CONFIG_DIRECTORY), utils.MANIFESTS_SUBDIRECTORY))
 
 	// Binaries
-	config.addAssetDirectory(utils.BINARIES_DIRECTORY, path.Join(utils.OPTIONAL_SUBDIRECTORY, utils.K8S_TEW_SUBDIRECTORY, utils.BINARY_SUBDIRECTORY))
-	config.addAssetDirectory(utils.K8S_BINARIES_DIRECTORY, path.Join(config.GetRelativeAssetDirectory(utils.BINARIES_DIRECTORY), utils.K8S_SUBDIRECTORY))
-	config.addAssetDirectory(utils.ETCD_BINARIES_DIRECTORY, path.Join(config.GetRelativeAssetDirectory(utils.BINARIES_DIRECTORY), utils.ETCD_SUBDIRECTORY))
-	config.addAssetDirectory(utils.CRI_BINARIES_DIRECTORY, path.Join(config.GetRelativeAssetDirectory(utils.BINARIES_DIRECTORY), utils.CRI_SUBDIRECTORY))
-	config.addAssetDirectory(utils.CNI_BINARIES_DIRECTORY, path.Join(config.GetRelativeAssetDirectory(utils.BINARIES_DIRECTORY), utils.CNI_SUBDIRECTORY))
-	config.addAssetDirectory(utils.GOBETWEEN_BINARIES_DIRECTORY, path.Join(config.GetRelativeAssetDirectory(utils.BINARIES_DIRECTORY), utils.LOAD_BALANCER_SUBDIRECTORY))
+	config.addAssetDirectory(utils.BINARIES_DIRECTORY, Labels{}, path.Join(utils.OPTIONAL_SUBDIRECTORY, utils.K8S_TEW_SUBDIRECTORY, utils.BINARY_SUBDIRECTORY))
+	config.addAssetDirectory(utils.K8S_BINARIES_DIRECTORY, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.BINARIES_DIRECTORY), utils.K8S_SUBDIRECTORY))
+	config.addAssetDirectory(utils.ETCD_BINARIES_DIRECTORY, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.BINARIES_DIRECTORY), utils.ETCD_SUBDIRECTORY))
+	config.addAssetDirectory(utils.CRI_BINARIES_DIRECTORY, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.BINARIES_DIRECTORY), utils.CRI_SUBDIRECTORY))
+	config.addAssetDirectory(utils.CNI_BINARIES_DIRECTORY, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.BINARIES_DIRECTORY), utils.CNI_SUBDIRECTORY))
+	config.addAssetDirectory(utils.GOBETWEEN_BINARIES_DIRECTORY, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.BINARIES_DIRECTORY), utils.LOAD_BALANCER_SUBDIRECTORY))
 
 	// Misc
-	config.addAssetDirectory(utils.GOBETWEEN_CONFIG_DIRECTORY, path.Join(config.GetRelativeAssetDirectory(utils.CONFIG_DIRECTORY), utils.LOAD_BALANCER_SUBDIRECTORY))
-	config.addAssetDirectory(utils.DYNAMIC_DATA_DIRECTORY, path.Join(utils.VARIABLE_SUBDIRECTORY, utils.LIBRARY_SUBDIRECTORY, utils.K8S_TEW_SUBDIRECTORY))
-	config.addAssetDirectory(utils.ETCD_DATA_DIRECTORY, path.Join(config.GetRelativeAssetDirectory(utils.DYNAMIC_DATA_DIRECTORY), utils.ETCD_SUBDIRECTORY))
-	config.addAssetDirectory(utils.CONTAINERD_DATA_DIRECTORY, path.Join(config.GetRelativeAssetDirectory(utils.DYNAMIC_DATA_DIRECTORY), utils.CONTAINERD_SUBDIRECTORY))
-	config.addAssetDirectory(utils.KUBELET_DATA_DIRECTORY, path.Join(config.GetRelativeAssetDirectory(utils.DYNAMIC_DATA_DIRECTORY), utils.KUBELET_SUBDIRECTORY))
-	config.addAssetDirectory(utils.LOGGING_DIRECTORY, path.Join(utils.VARIABLE_SUBDIRECTORY, utils.LOGGING_SUBDIRECTORY, utils.K8S_TEW_SUBDIRECTORY))
-	config.addAssetDirectory(utils.SERVICE_DIRECTORY, path.Join(utils.CONFIG_SUBDIRECTORY, utils.SYSTEMD_SUBDIRECTORY, utils.SYSTEM_SUBDIRECTORY))
-	config.addAssetDirectory(utils.CONTAINERD_STATE_DIRECTORY, path.Join(utils.VARIABLE_SUBDIRECTORY, utils.RUN_SUBDIRECTORY, utils.K8S_TEW_SUBDIRECTORY, utils.CONTAINERD_SUBDIRECTORY))
-	config.addAssetDirectory(utils.PROFILE_DIRECTORY, path.Join(utils.CONFIG_SUBDIRECTORY, utils.PROFILE_D_SUBDIRECTORY))
-	config.addAssetDirectory(utils.HELM_DATA_DIRECTORY, path.Join(config.GetRelativeAssetDirectory(utils.DYNAMIC_DATA_DIRECTORY), utils.HELM_SUBDIRECTORY))
-	config.addAssetDirectory(utils.TEMPORARY_DIRECTORY, path.Join(utils.TEMPORARY_SUBDIRECTORY))
+	config.addAssetDirectory(utils.GOBETWEEN_CONFIG_DIRECTORY, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.CONFIG_DIRECTORY), utils.LOAD_BALANCER_SUBDIRECTORY))
+	config.addAssetDirectory(utils.DYNAMIC_DATA_DIRECTORY, Labels{}, path.Join(utils.VARIABLE_SUBDIRECTORY, utils.LIBRARY_SUBDIRECTORY, utils.K8S_TEW_SUBDIRECTORY))
+	config.addAssetDirectory(utils.ETCD_DATA_DIRECTORY, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.DYNAMIC_DATA_DIRECTORY), utils.ETCD_SUBDIRECTORY))
+	config.addAssetDirectory(utils.CONTAINERD_DATA_DIRECTORY, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.DYNAMIC_DATA_DIRECTORY), utils.CONTAINERD_SUBDIRECTORY))
+	config.addAssetDirectory(utils.KUBELET_DATA_DIRECTORY, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.DYNAMIC_DATA_DIRECTORY), utils.KUBELET_SUBDIRECTORY))
+	config.addAssetDirectory(utils.LOGGING_DIRECTORY, Labels{}, path.Join(utils.VARIABLE_SUBDIRECTORY, utils.LOGGING_SUBDIRECTORY, utils.K8S_TEW_SUBDIRECTORY))
+	config.addAssetDirectory(utils.SERVICE_DIRECTORY, Labels{}, path.Join(utils.CONFIG_SUBDIRECTORY, utils.SYSTEMD_SUBDIRECTORY, utils.SYSTEM_SUBDIRECTORY))
+	config.addAssetDirectory(utils.CONTAINERD_STATE_DIRECTORY, Labels{}, path.Join(utils.VARIABLE_SUBDIRECTORY, utils.RUN_SUBDIRECTORY, utils.K8S_TEW_SUBDIRECTORY, utils.CONTAINERD_SUBDIRECTORY))
+	config.addAssetDirectory(utils.PROFILE_DIRECTORY, Labels{}, path.Join(utils.CONFIG_SUBDIRECTORY, utils.PROFILE_D_SUBDIRECTORY))
+	config.addAssetDirectory(utils.HELM_DATA_DIRECTORY, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.DYNAMIC_DATA_DIRECTORY), utils.HELM_SUBDIRECTORY))
+	config.addAssetDirectory(utils.TEMPORARY_DIRECTORY, Labels{}, path.Join(utils.TEMPORARY_SUBDIRECTORY))
 }
 
 func (config *InternalConfig) registerAssetFiles() {
@@ -399,8 +400,8 @@ func (config *InternalConfig) addAssetFile(name string, labels Labels, _path str
 	config.Config.Assets.Files[name] = NewAssetFile(labels, _path)
 }
 
-func (config *InternalConfig) addAssetDirectory(name string, directory string) {
-	config.Config.Assets.Directories[name] = NewAssetDirectory(directory)
+func (config *InternalConfig) addAssetDirectory(name string, labels Labels, directory string) {
+	config.Config.Assets.Directories[name] = NewAssetDirectory(labels, directory)
 }
 
 func (config *InternalConfig) Dump() {
