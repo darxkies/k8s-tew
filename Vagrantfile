@@ -72,11 +72,11 @@ SCRIPT
 end
 
 if ENV["CONTROLLERS"]
-    $controllers_count = ENV["CONTROLLERS"]
+    $controllers_count = Integer(ENV["CONTROLLERS"])
 end
 
 if ENV["WORKERS"]
-    $workers_count = ENV["WORKERS"]
+    $workers_count = Integer(ENV["WORKERS"])
 end
 
 if ENV["IP_PREFIX"]
