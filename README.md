@@ -1,5 +1,7 @@
 <p align="center"><img src="logo.svg" width="360"></p>
 
+<p align="center"><a href="https://github.com/cncf/k8s-conformance/tree/master/v1.10/k8s-tew"><img src="conformance/certified-kubernetes-1.10-color.svg" width="120"></a></p>
+
 # Kubernetes - The Easier Way (k8s-tew)
 
 [Kubernetes](https://kubernetes.io/) is a fairly complex project. For a newbie it is hard to understand and also to use. While [Kelsey Hightower's Kubernetes The Hard Way](https://github.com/kelseyhightower/kubernetes-the-hard-way), on which this project is based, helps a lot to understand Kubernetes, it is optimized for the use with Google Cloud Platform.
