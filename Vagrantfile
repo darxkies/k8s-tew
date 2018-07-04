@@ -118,7 +118,7 @@ def add_machine(config, ram, cpus, name, ip)
         machine.vm.hostname = name
         machine.vm.network :private_network, ip: ip
 
-        config.vm.provider :virtualbox do |vb|
+        machine.vm.provider :virtualbox do |vb|
             vb.memory = ram
             vb.cpus = cpus
         end

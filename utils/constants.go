@@ -1,10 +1,10 @@
 package utils
 
 // Versions
+const K8S_VERSION = "1.11.0"
 const CONFIG_VERSION = "2.0.0"
 const ETCD_VERSION = "3.3.7"
 const FLANNELD_VERSION = "0.10.0"
-const K8S_VERSION = "1.10.4"
 const CNI_VERSION = "0.6.0"
 const CONTAINERD_VERSION = "1.1.0"
 const RUNC_VERSION = "1.0.0-rc5"
