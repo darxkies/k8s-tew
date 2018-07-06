@@ -1,6 +1,6 @@
 <p align="center"><img src="logo.svg" width="360"></p>
 
-<p align="center"><a href="https://github.com/cncf/k8s-conformance/tree/master/v1.10/k8s-tew"><img src="conformance/certified-kubernetes-1.10-color.svg" width="120"></a></p>
+<p align="center"><a href="https://github.com/cncf/k8s-conformance/tree/master/v1.10/k8s-tew"><img src="conformance/certified-kubernetes-1.10-color.svg" width="120"></a><a href="https://github.com/cncf/k8s-conformance/tree/master/v1.11/k8s-tew"><img src="conformance/certified-kubernetes-1.11-color.svg" width="120"></a></p>
 
 # Kubernetes - The Easier Way (k8s-tew)
 
@@ -14,7 +14,7 @@ k8s-tew was tested so far on Ubuntu 18.04 and CentOS 7. But it should be able to
 
 # Features
 
-* Multi node setup (Ubuntu 18.04 / Kubernetes 1.10.4 / 3 Controllers / 2 Workers) passes all CNCF conformance tests
+* Multi node setup (Ubuntu 18.04 / Kubernetes 1.11.0 / 3 Controllers / 2 Workers) passes all CNCF conformance tests
 * Kubernetes Dashboard and Helm installed
 * The communication between the components is encrypted
 * RBAC is enabled
