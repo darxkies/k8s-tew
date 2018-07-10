@@ -5,25 +5,17 @@
   name = "github.com/coreos/etcd"
   packages = [
     "auth/authpb",
-    "client",
     "clientv3",
     "clientv3/concurrency",
     "etcdserver/api/v3rpc/rpctypes",
     "etcdserver/etcdserverpb",
     "mvcc/mvccpb",
-    "pkg/pathutil",
-    "pkg/srv",
-    "pkg/types",
-    "version"
+    "pkg/tlsutil",
+    "pkg/transport",
+    "pkg/types"
   ]
   revision = "932c3c01f9d67471d67ff82c38acca196847f039"
   version = "v3.3.6"
-
-[[projects]]
-  name = "github.com/coreos/go-semver"
-  packages = ["semver"]
-  revision = "8ab6407b697782a06568d4b7f1db25550ec2e4c6"
-  version = "v0.2.0"
 
 [[projects]]
   name = "github.com/fsnotify/fsnotify"
@@ -100,6 +92,12 @@
   version = "v1.0.1"
 
 [[projects]]
+  name = "github.com/satori/go.uuid"
+  packages = ["."]
+  revision = "f58768cc1a7a7e77a3bd49e98cdd21419399b6a3"
+  version = "v1.2.0"
+
+[[projects]]
   name = "github.com/sirupsen/logrus"
   packages = ["."]
   revision = "d682213848ed68c0a260ca37d6dd5ace8423f5ba"
@@ -149,12 +147,6 @@
   name = "github.com/tmc/scp"
   packages = ["."]
   revision = "f7b48647feef3e30991f2ecc16b2b9a977d9a7c3"
-
-[[projects]]
-  name = "github.com/ugorji/go"
-  packages = ["codec"]
-  revision = "b4c50a2b199d93b13dc15e78929cfb23bfdf21ab"
-  version = "v1.1.1"
 
 [[projects]]
   branch = "master"
@@ -259,6 +251,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "fee4a6db587719634125e99f6d242ec6b1d01d75d02f940bcc928943e3e568a1"
+  inputs-digest = "8cdf75071df2e3bc46677193b09533fb38680d8e1d3fcd99c6a18248283b3a73"
   solver-name = "gps-cdcl"
   solver-version = 1

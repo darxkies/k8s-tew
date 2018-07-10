@@ -19,6 +19,7 @@ var clusterCIDR string
 var resolvConf string
 var apiServerPort uint16
 var loadBalancerPort uint16
+var publicNetwork string
 
 const CONTROLLER_VIRTUAL_IP = "controller-virtual-ip"
 const CONTROLLER_VIRTUAL_IP_INTERFACE = "controller-virtual-ip-interface"
@@ -30,6 +31,7 @@ const CLUSTER_CIDR = "cluster-cidr"
 const RESOLV_CONF = "resolv-conf"
 const API_SERVER_PORT = "api-server-port"
 const LOAD_BALANCER_PORT = "load-balancer-port"
+const PUBLIC_NETWORK = "public-network"
 
 var configureCmd = &cobra.Command{
 	Use:   "configure",
@@ -83,6 +85,10 @@ var configureCmd = &cobra.Command{
 			if flag.Name == LOAD_BALANCER_PORT {
 				_config.Config.LoadBalancerPort = loadBalancerPort
 			}
+
+			if flag.Name == PUBLIC_NETWORK {
+				_config.Config.PublicNetwork = publicNetwork
+			}
 		})
 
 		if error := _config.Save(); error != nil {
@@ -104,5 +110,6 @@ func init() {
 	configureCmd.Flags().StringVar(&resolvConf, RESOLV_CONF, utils.RESOLV_CONF, "Custom resolv.conf")
 	configureCmd.Flags().Uint16Var(&apiServerPort, API_SERVER_PORT, utils.API_SERVER_PORT, "API Server Port")
 	configureCmd.Flags().Uint16Var(&loadBalancerPort, LOAD_BALANCER_PORT, utils.LOAD_BALANCER_PORT, "Load Balancer Port")
+	configureCmd.Flags().StringVar(&publicNetwork, PUBLIC_NETWORK, utils.PUBLIC_NETWORK, "Public Network")
 	RootCmd.AddCommand(configureCmd)
 }

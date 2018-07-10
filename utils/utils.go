@@ -2,7 +2,9 @@ package utils
 
 import (
 	"bytes"
+	"crypto/rand"
 	"encoding/base64"
+	"encoding/binary"
 	"errors"
 	"fmt"
 	"html/template"
@@ -100,6 +102,9 @@ func ApplyTemplate(content string, data interface{}) (string, error) {
 		"unescape": func(value string) template.HTML {
 			return template.HTML(value)
 		},
+		"base64": func(value string) template.HTML {
+			return template.HTML(base64.StdEncoding.EncodeToString([]byte(value)))
+		},
 		"quoted_string_list": func(values []string) template.HTML {
 			result := ""
 
@@ -156,4 +161,22 @@ func GetBase64OfPEM(filename string) (string, error) {
 	}
 
 	return base64.StdEncoding.EncodeToString(content), nil
+}
+
+func GenerateCephKey() string {
+	headerSize := 2 + 4 + 4 + 2
+	keySize := 16
+	buffer := make([]byte, headerSize+keySize)
+	timestamp := time.Now().UnixNano()
+	seconds := timestamp / 1000000000
+	nanos := timestamp % 1000000000
+
+	binary.LittleEndian.PutUint16(buffer[0:], 1)
+	binary.LittleEndian.PutUint32(buffer[2:], uint32(seconds))
+	binary.LittleEndian.PutUint32(buffer[6:], uint32(nanos))
+	binary.LittleEndian.PutUint16(buffer[10:], uint16(keySize))
+
+	rand.Read(buffer[headerSize:])
+
+	return base64.StdEncoding.EncodeToString(buffer)
 }

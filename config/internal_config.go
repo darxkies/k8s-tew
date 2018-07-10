@@ -50,10 +50,16 @@ func (config *InternalConfig) GetRelativeAssetFilename(name string) string {
 	}
 
 	if directory, ok = config.Config.Assets.Directories[result.Directory]; !ok {
-		log.WithFields(log.Fields{"name": name}).Fatal("missing asset directory")
+		log.WithFields(log.Fields{"name": name, "directory": result.Directory, "file": name}).Fatal("missing asset directory")
 	}
 
-	filename := path.Join(directory.Directory, name)
+	filename := name
+
+	if len(result.Filename) > 0 {
+		filename = result.Filename
+	}
+
+	filename = path.Join(directory.Directory, filename)
 
 	resultFilename, error := config.ApplyTemplate("asset-file", filename)
 	if error != nil {
@@ -76,7 +82,7 @@ func (config *InternalConfig) GetRelativeAssetDirectory(name string) string {
 	var ok bool
 
 	if result, ok = config.Config.Assets.Directories[name]; !ok {
-		log.WithFields(log.Fields{"name": name}).Fatal("missing asset directory")
+		log.WithFields(log.Fields{"name": name, "directory": name}).Fatal("missing asset directory")
 	}
 
 	return result.Directory
@@ -130,104 +136,123 @@ func (config *InternalConfig) registerAssetDirectories() {
 	config.addAssetDirectory(utils.PROFILE_DIRECTORY, Labels{}, path.Join(utils.CONFIG_SUBDIRECTORY, utils.PROFILE_D_SUBDIRECTORY))
 	config.addAssetDirectory(utils.HELM_DATA_DIRECTORY, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.DYNAMIC_DATA_DIRECTORY), utils.HELM_SUBDIRECTORY))
 	config.addAssetDirectory(utils.TEMPORARY_DIRECTORY, Labels{}, path.Join(utils.TEMPORARY_SUBDIRECTORY))
+
+	// Ceph
+	config.addAssetDirectory(utils.CEPH_CONFIG_DIRECTORY, Labels{utils.NODE_WORKER}, path.Join(config.GetRelativeAssetDirectory(utils.CONFIG_DIRECTORY), utils.CEPH_SUBDIRECTORY))
+	config.addAssetDirectory(utils.CEPH_DATA_DIRECTORY, Labels{utils.NODE_WORKER}, path.Join(config.GetRelativeAssetDirectory(utils.DYNAMIC_DATA_DIRECTORY), utils.CEPH_SUBDIRECTORY))
+	config.addAssetDirectory(utils.CEPH_BOOTSTRAP_MDS_DIRECTORY, Labels{utils.NODE_WORKER}, path.Join(config.GetRelativeAssetDirectory(utils.CEPH_DATA_DIRECTORY), utils.CEPH_BOOTSTRAP_MDS_DIRECTORY))
+	config.addAssetDirectory(utils.CEPH_BOOTSTRAP_OSD_DIRECTORY, Labels{utils.NODE_WORKER}, path.Join(config.GetRelativeAssetDirectory(utils.CEPH_DATA_DIRECTORY), utils.CEPH_BOOTSTRAP_OSD_DIRECTORY))
+	config.addAssetDirectory(utils.CEPH_BOOTSTRAP_RBD_DIRECTORY, Labels{utils.NODE_WORKER}, path.Join(config.GetRelativeAssetDirectory(utils.CEPH_DATA_DIRECTORY), utils.CEPH_BOOTSTRAP_RBD_DIRECTORY))
+	config.addAssetDirectory(utils.CEPH_BOOTSTRAP_RGW_DIRECTORY, Labels{utils.NODE_WORKER}, path.Join(config.GetRelativeAssetDirectory(utils.CEPH_DATA_DIRECTORY), utils.CEPH_BOOTSTRAP_RGW_DIRECTORY))
 }
 
 func (config *InternalConfig) registerAssetFiles() {
 	// Config
-	config.addAssetFile(utils.CONFIG_FILENAME, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, utils.CONFIG_DIRECTORY)
+	config.addAssetFile(utils.CONFIG_FILENAME, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, "", utils.CONFIG_DIRECTORY)
 
 	// Binaries
-	config.addAssetFile(utils.K8S_TEW_BINARY, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, utils.BINARIES_DIRECTORY)
+	config.addAssetFile(utils.K8S_TEW_BINARY, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, "", utils.BINARIES_DIRECTORY)
 
 	// CNI Binaries
-	config.addAssetFile(utils.BRIDGE_BINARY, Labels{utils.NODE_WORKER}, utils.CNI_BINARIES_DIRECTORY)
-	config.addAssetFile(utils.FLANNEL_BINARY, Labels{utils.NODE_WORKER}, utils.CNI_BINARIES_DIRECTORY)
-	config.addAssetFile(utils.LOOPBACK_BINARY, Labels{utils.NODE_WORKER}, utils.CNI_BINARIES_DIRECTORY)
-	config.addAssetFile(utils.HOST_LOCAL_BINARY, Labels{utils.NODE_WORKER}, utils.CNI_BINARIES_DIRECTORY)
+	config.addAssetFile(utils.BRIDGE_BINARY, Labels{utils.NODE_WORKER}, "", utils.CNI_BINARIES_DIRECTORY)
+	config.addAssetFile(utils.FLANNEL_BINARY, Labels{utils.NODE_WORKER}, "", utils.CNI_BINARIES_DIRECTORY)
+	config.addAssetFile(utils.LOOPBACK_BINARY, Labels{utils.NODE_WORKER}, "", utils.CNI_BINARIES_DIRECTORY)
+	config.addAssetFile(utils.HOST_LOCAL_BINARY, Labels{utils.NODE_WORKER}, "", utils.CNI_BINARIES_DIRECTORY)
 
 	// ContainerD Binaries
-	config.addAssetFile(utils.CONTAINERD_BINARY, Labels{utils.NODE_WORKER}, utils.CRI_BINARIES_DIRECTORY)
-	config.addAssetFile(utils.CONTAINERD_SHIM_BINARY, Labels{utils.NODE_WORKER}, utils.CRI_BINARIES_DIRECTORY)
-	config.addAssetFile(utils.CTR_BINARY, Labels{utils.NODE_WORKER}, utils.CRI_BINARIES_DIRECTORY)
-	config.addAssetFile(utils.RUNC_BINARY, Labels{utils.NODE_WORKER}, utils.CRI_BINARIES_DIRECTORY)
-	config.addAssetFile(utils.CRICTL_BINARY, Labels{utils.NODE_WORKER}, utils.CRI_BINARIES_DIRECTORY)
+	config.addAssetFile(utils.CONTAINERD_BINARY, Labels{utils.NODE_WORKER}, "", utils.CRI_BINARIES_DIRECTORY)
+	config.addAssetFile(utils.CONTAINERD_SHIM_BINARY, Labels{utils.NODE_WORKER}, "", utils.CRI_BINARIES_DIRECTORY)
+	config.addAssetFile(utils.CTR_BINARY, Labels{utils.NODE_WORKER}, "", utils.CRI_BINARIES_DIRECTORY)
+	config.addAssetFile(utils.RUNC_BINARY, Labels{utils.NODE_WORKER}, "", utils.CRI_BINARIES_DIRECTORY)
+	config.addAssetFile(utils.CRICTL_BINARY, Labels{utils.NODE_WORKER}, "", utils.CRI_BINARIES_DIRECTORY)
 
 	// Etcd Binaries
-	config.addAssetFile(utils.ETCD_BINARY, Labels{utils.NODE_CONTROLLER}, utils.ETCD_BINARIES_DIRECTORY)
-	config.addAssetFile(utils.ETCDCTL_BINARY, Labels{utils.NODE_CONTROLLER}, utils.ETCD_BINARIES_DIRECTORY)
-	config.addAssetFile(utils.FLANNELD_BINARY, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, utils.ETCD_BINARIES_DIRECTORY)
+	config.addAssetFile(utils.ETCD_BINARY, Labels{utils.NODE_CONTROLLER}, "", utils.ETCD_BINARIES_DIRECTORY)
+	config.addAssetFile(utils.ETCDCTL_BINARY, Labels{utils.NODE_CONTROLLER}, "", utils.ETCD_BINARIES_DIRECTORY)
+	config.addAssetFile(utils.FLANNELD_BINARY, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, "", utils.ETCD_BINARIES_DIRECTORY)
 
 	// K8S Binaries
-	config.addAssetFile(utils.KUBECTL_BINARY, Labels{utils.NODE_CONTROLLER}, utils.K8S_BINARIES_DIRECTORY)
-	config.addAssetFile(utils.KUBE_APISERVER_BINARY, Labels{utils.NODE_CONTROLLER}, utils.K8S_BINARIES_DIRECTORY)
-	config.addAssetFile(utils.KUBE_CONTROLLER_MANAGER_BINARY, Labels{utils.NODE_CONTROLLER}, utils.K8S_BINARIES_DIRECTORY)
-	config.addAssetFile(utils.KUBELET_BINARY, Labels{utils.NODE_WORKER}, utils.K8S_BINARIES_DIRECTORY)
-	config.addAssetFile(utils.KUBE_PROXY_BINARY, Labels{utils.NODE_WORKER}, utils.K8S_BINARIES_DIRECTORY)
-	config.addAssetFile(utils.KUBE_SCHEDULER_BINARY, Labels{utils.NODE_CONTROLLER}, utils.K8S_BINARIES_DIRECTORY)
+	config.addAssetFile(utils.KUBECTL_BINARY, Labels{utils.NODE_CONTROLLER}, "", utils.K8S_BINARIES_DIRECTORY)
+	config.addAssetFile(utils.KUBE_APISERVER_BINARY, Labels{utils.NODE_CONTROLLER}, "", utils.K8S_BINARIES_DIRECTORY)
+	config.addAssetFile(utils.KUBE_CONTROLLER_MANAGER_BINARY, Labels{utils.NODE_CONTROLLER}, "", utils.K8S_BINARIES_DIRECTORY)
+	config.addAssetFile(utils.KUBELET_BINARY, Labels{utils.NODE_WORKER}, "", utils.K8S_BINARIES_DIRECTORY)
+	config.addAssetFile(utils.KUBE_PROXY_BINARY, Labels{utils.NODE_WORKER}, "", utils.K8S_BINARIES_DIRECTORY)
+	config.addAssetFile(utils.KUBE_SCHEDULER_BINARY, Labels{utils.NODE_CONTROLLER}, "", utils.K8S_BINARIES_DIRECTORY)
 
 	// Helm Binary
-	config.addAssetFile(utils.HELM_BINARY, Labels{}, utils.K8S_BINARIES_DIRECTORY)
+	config.addAssetFile(utils.HELM_BINARY, Labels{}, "", utils.K8S_BINARIES_DIRECTORY)
 
 	// Gobetween Binary
-	config.addAssetFile(utils.GOBETWEEN_BINARY, Labels{utils.NODE_CONTROLLER}, utils.GOBETWEEN_BINARIES_DIRECTORY)
+	config.addAssetFile(utils.GOBETWEEN_BINARY, Labels{utils.NODE_CONTROLLER}, "", utils.GOBETWEEN_BINARIES_DIRECTORY)
 
 	// Certificates
-	config.addAssetFile(utils.CA_PEM, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, utils.CERTIFICATES_DIRECTORY)
-	config.addAssetFile(utils.CA_KEY_PEM, Labels{utils.NODE_CONTROLLER}, utils.CERTIFICATES_DIRECTORY)
-	config.addAssetFile(utils.VIRTUAL_IP_PEM, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, utils.CERTIFICATES_DIRECTORY)
-	config.addAssetFile(utils.VIRTUAL_IP_KEY_PEM, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, utils.CERTIFICATES_DIRECTORY)
-	config.addAssetFile(utils.FLANNELD_PEM, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, utils.CERTIFICATES_DIRECTORY)
-	config.addAssetFile(utils.FLANNELD_KEY_PEM, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, utils.CERTIFICATES_DIRECTORY)
-	config.addAssetFile(utils.KUBERNETES_PEM, Labels{utils.NODE_CONTROLLER}, utils.CERTIFICATES_DIRECTORY)
-	config.addAssetFile(utils.KUBERNETES_KEY_PEM, Labels{utils.NODE_CONTROLLER}, utils.CERTIFICATES_DIRECTORY)
-	config.addAssetFile(utils.SERVICE_ACCOUNT_PEM, Labels{utils.NODE_CONTROLLER}, utils.CERTIFICATES_DIRECTORY)
-	config.addAssetFile(utils.SERVICE_ACCOUNT_KEY_PEM, Labels{utils.NODE_CONTROLLER}, utils.CERTIFICATES_DIRECTORY)
-	config.addAssetFile(utils.ADMIN_PEM, Labels{}, utils.CERTIFICATES_DIRECTORY)
-	config.addAssetFile(utils.ADMIN_KEY_PEM, Labels{}, utils.CERTIFICATES_DIRECTORY)
-	config.addAssetFile(utils.CONTROLLER_MANAGER_PEM, Labels{}, utils.CERTIFICATES_DIRECTORY)
-	config.addAssetFile(utils.CONTROLLER_MANAGER_KEY_PEM, Labels{}, utils.CERTIFICATES_DIRECTORY)
-	config.addAssetFile(utils.SCHEDULER_PEM, Labels{}, utils.CERTIFICATES_DIRECTORY)
-	config.addAssetFile(utils.SCHEDULER_KEY_PEM, Labels{}, utils.CERTIFICATES_DIRECTORY)
-	config.addAssetFile(utils.PROXY_PEM, Labels{}, utils.CERTIFICATES_DIRECTORY)
-	config.addAssetFile(utils.PROXY_KEY_PEM, Labels{}, utils.CERTIFICATES_DIRECTORY)
-	config.addAssetFile(utils.KUBELET_PEM, Labels{utils.NODE_WORKER}, utils.CERTIFICATES_DIRECTORY)
-	config.addAssetFile(utils.KUBELET_KEY_PEM, Labels{utils.NODE_WORKER}, utils.CERTIFICATES_DIRECTORY)
+	config.addAssetFile(utils.CA_PEM, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, "", utils.CERTIFICATES_DIRECTORY)
+	config.addAssetFile(utils.CA_KEY_PEM, Labels{utils.NODE_CONTROLLER}, "", utils.CERTIFICATES_DIRECTORY)
+	config.addAssetFile(utils.VIRTUAL_IP_PEM, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, "", utils.CERTIFICATES_DIRECTORY)
+	config.addAssetFile(utils.VIRTUAL_IP_KEY_PEM, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, "", utils.CERTIFICATES_DIRECTORY)
+	config.addAssetFile(utils.FLANNELD_PEM, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, "", utils.CERTIFICATES_DIRECTORY)
+	config.addAssetFile(utils.FLANNELD_KEY_PEM, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, "", utils.CERTIFICATES_DIRECTORY)
+	config.addAssetFile(utils.KUBERNETES_PEM, Labels{utils.NODE_CONTROLLER}, "", utils.CERTIFICATES_DIRECTORY)
+	config.addAssetFile(utils.KUBERNETES_KEY_PEM, Labels{utils.NODE_CONTROLLER}, "", utils.CERTIFICATES_DIRECTORY)
+	config.addAssetFile(utils.SERVICE_ACCOUNT_PEM, Labels{utils.NODE_CONTROLLER}, "", utils.CERTIFICATES_DIRECTORY)
+	config.addAssetFile(utils.SERVICE_ACCOUNT_KEY_PEM, Labels{utils.NODE_CONTROLLER}, "", utils.CERTIFICATES_DIRECTORY)
+	config.addAssetFile(utils.ADMIN_PEM, Labels{}, "", utils.CERTIFICATES_DIRECTORY)
+	config.addAssetFile(utils.ADMIN_KEY_PEM, Labels{}, "", utils.CERTIFICATES_DIRECTORY)
+	config.addAssetFile(utils.CONTROLLER_MANAGER_PEM, Labels{}, "", utils.CERTIFICATES_DIRECTORY)
+	config.addAssetFile(utils.CONTROLLER_MANAGER_KEY_PEM, Labels{}, "", utils.CERTIFICATES_DIRECTORY)
+	config.addAssetFile(utils.SCHEDULER_PEM, Labels{}, "", utils.CERTIFICATES_DIRECTORY)
+	config.addAssetFile(utils.SCHEDULER_KEY_PEM, Labels{}, "", utils.CERTIFICATES_DIRECTORY)
+	config.addAssetFile(utils.PROXY_PEM, Labels{}, "", utils.CERTIFICATES_DIRECTORY)
+	config.addAssetFile(utils.PROXY_KEY_PEM, Labels{}, "", utils.CERTIFICATES_DIRECTORY)
+	config.addAssetFile(utils.KUBELET_PEM, Labels{utils.NODE_WORKER}, "", utils.CERTIFICATES_DIRECTORY)
+	config.addAssetFile(utils.KUBELET_KEY_PEM, Labels{utils.NODE_WORKER}, "", utils.CERTIFICATES_DIRECTORY)
 
 	// Kubeconfig
-	config.addAssetFile(utils.ADMIN_KUBECONFIG, Labels{}, utils.K8S_KUBE_CONFIG_DIRECTORY)
-	config.addAssetFile(utils.CONTROLLER_MANAGER_KUBECONFIG, Labels{utils.NODE_CONTROLLER}, utils.K8S_KUBE_CONFIG_DIRECTORY)
-	config.addAssetFile(utils.SCHEDULER_KUBECONFIG, Labels{utils.NODE_CONTROLLER}, utils.K8S_KUBE_CONFIG_DIRECTORY)
-	config.addAssetFile(utils.PROXY_KUBECONFIG, Labels{utils.NODE_WORKER}, utils.K8S_KUBE_CONFIG_DIRECTORY)
-	config.addAssetFile(utils.KUBELET_KUBECONFIG, Labels{utils.NODE_WORKER}, utils.K8S_KUBE_CONFIG_DIRECTORY)
+	config.addAssetFile(utils.ADMIN_KUBECONFIG, Labels{}, "", utils.K8S_KUBE_CONFIG_DIRECTORY)
+	config.addAssetFile(utils.CONTROLLER_MANAGER_KUBECONFIG, Labels{utils.NODE_CONTROLLER}, "", utils.K8S_KUBE_CONFIG_DIRECTORY)
+	config.addAssetFile(utils.SCHEDULER_KUBECONFIG, Labels{utils.NODE_CONTROLLER}, "", utils.K8S_KUBE_CONFIG_DIRECTORY)
+	config.addAssetFile(utils.PROXY_KUBECONFIG, Labels{utils.NODE_WORKER}, "", utils.K8S_KUBE_CONFIG_DIRECTORY)
+	config.addAssetFile(utils.KUBELET_KUBECONFIG, Labels{utils.NODE_WORKER}, "", utils.K8S_KUBE_CONFIG_DIRECTORY)
 
 	// Security
-	config.addAssetFile(utils.ENCRYPTION_CONFIG, Labels{utils.NODE_CONTROLLER}, utils.K8S_SECURITY_CONFIG_DIRECTORY)
+	config.addAssetFile(utils.ENCRYPTION_CONFIG, Labels{utils.NODE_CONTROLLER}, "", utils.K8S_SECURITY_CONFIG_DIRECTORY)
 
 	// CNI
-	config.addAssetFile(utils.NET_CONFIG, Labels{utils.NODE_WORKER}, utils.CNI_CONFIG_DIRECTORY)
-	config.addAssetFile(utils.CNI_CONFIG, Labels{utils.NODE_WORKER}, utils.CNI_CONFIG_DIRECTORY)
+	config.addAssetFile(utils.NET_CONFIG, Labels{utils.NODE_WORKER}, "", utils.CNI_CONFIG_DIRECTORY)
+	config.addAssetFile(utils.CNI_CONFIG, Labels{utils.NODE_WORKER}, "", utils.CNI_CONFIG_DIRECTORY)
 
 	// CRI
-	config.addAssetFile(utils.CONTAINERD_CONFIG, Labels{utils.NODE_WORKER}, utils.CRI_CONFIG_DIRECTORY)
-	config.addAssetFile(utils.CONTAINERD_SOCK, Labels{}, utils.CONTAINERD_STATE_DIRECTORY)
+	config.addAssetFile(utils.CONTAINERD_CONFIG, Labels{utils.NODE_WORKER}, "", utils.CRI_CONFIG_DIRECTORY)
+	config.addAssetFile(utils.CONTAINERD_SOCK, Labels{}, "", utils.CONTAINERD_STATE_DIRECTORY)
 
 	// Service
-	config.addAssetFile(utils.SERVICE_CONFIG, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, utils.SERVICE_DIRECTORY)
+	config.addAssetFile(utils.SERVICE_CONFIG, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, "", utils.SERVICE_DIRECTORY)
 
 	// K8S Setup
-	config.addAssetFile(utils.K8S_KUBELET_SETUP, Labels{}, utils.K8S_SETUP_CONFIG_DIRECTORY)
-	config.addAssetFile(utils.K8S_ADMIN_USER_SETUP, Labels{}, utils.K8S_SETUP_CONFIG_DIRECTORY)
-	config.addAssetFile(utils.K8S_HELM_USER_SETUP, Labels{}, utils.K8S_SETUP_CONFIG_DIRECTORY)
+	config.addAssetFile(utils.K8S_KUBELET_SETUP, Labels{}, "", utils.K8S_SETUP_CONFIG_DIRECTORY)
+	config.addAssetFile(utils.K8S_ADMIN_USER_SETUP, Labels{}, "", utils.K8S_SETUP_CONFIG_DIRECTORY)
+	config.addAssetFile(utils.K8S_HELM_USER_SETUP, Labels{}, "", utils.K8S_SETUP_CONFIG_DIRECTORY)
+	config.addAssetFile(utils.CEPH_SECRETS, Labels{}, "", utils.K8S_SETUP_CONFIG_DIRECTORY)
+	config.addAssetFile(utils.CEPH_SETUP, Labels{}, "", utils.K8S_SETUP_CONFIG_DIRECTORY)
 
 	// K8S Config
-	config.addAssetFile(utils.K8S_KUBE_SCHEDULER_CONFIG, Labels{utils.NODE_CONTROLLER}, utils.K8S_CONFIG_DIRECTORY)
-	config.addAssetFile(utils.K8S_KUBELET_CONFIG, Labels{utils.NODE_WORKER}, utils.K8S_CONFIG_DIRECTORY)
+	config.addAssetFile(utils.K8S_KUBE_SCHEDULER_CONFIG, Labels{utils.NODE_CONTROLLER}, "", utils.K8S_CONFIG_DIRECTORY)
+	config.addAssetFile(utils.K8S_KUBELET_CONFIG, Labels{utils.NODE_WORKER}, "", utils.K8S_CONFIG_DIRECTORY)
 
 	// Profile
-	config.addAssetFile(utils.K8S_TEW_PROFILE, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, utils.PROFILE_DIRECTORY)
+	config.addAssetFile(utils.K8S_TEW_PROFILE, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, "", utils.PROFILE_DIRECTORY)
 
 	// Gobetween
-	config.addAssetFile(utils.GOBETWEEN_CONFIG, Labels{utils.NODE_CONTROLLER}, utils.GOBETWEEN_CONFIG_DIRECTORY)
+	config.addAssetFile(utils.GOBETWEEN_CONFIG, Labels{utils.NODE_CONTROLLER}, "", utils.GOBETWEEN_CONFIG_DIRECTORY)
+
+	// Ceph
+	config.addAssetFile(utils.CEPH_CONFIG, Labels{utils.NODE_WORKER}, "", utils.CEPH_CONFIG_DIRECTORY)
+	config.addAssetFile(utils.CEPH_CLIENT_ADMIN_KEYRING, Labels{utils.NODE_WORKER}, "", utils.CEPH_CONFIG_DIRECTORY)
+	config.addAssetFile(utils.CEPH_MONITOR_KEYRING, Labels{utils.NODE_WORKER}, "", utils.CEPH_CONFIG_DIRECTORY)
+	config.addAssetFile(utils.CEPH_BOOTSTRAP_MDS_KEYRING, Labels{utils.NODE_WORKER}, utils.CEPH_KEYRING, utils.CEPH_BOOTSTRAP_MDS_DIRECTORY)
+	config.addAssetFile(utils.CEPH_BOOTSTRAP_OSD_KEYRING, Labels{utils.NODE_WORKER}, utils.CEPH_KEYRING, utils.CEPH_BOOTSTRAP_OSD_DIRECTORY)
+	config.addAssetFile(utils.CEPH_BOOTSTRAP_RBD_KEYRING, Labels{utils.NODE_WORKER}, utils.CEPH_KEYRING, utils.CEPH_BOOTSTRAP_RBD_DIRECTORY)
+	config.addAssetFile(utils.CEPH_BOOTSTRAP_RGW_KEYRING, Labels{utils.NODE_WORKER}, utils.CEPH_KEYRING, utils.CEPH_BOOTSTRAP_RGW_DIRECTORY)
 }
 
 func (config *InternalConfig) registerServers() {
@@ -362,6 +387,10 @@ func (config *InternalConfig) registerCommands() {
 	config.addCommand("helm-init", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s init --service-account %s --upgrade", helmCommand, utils.HELM_SERVICE_ACCOUNT))
 	config.addCommand("helm-repo-update", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s repo update", helmCommand))
 	config.addCommand("helm-kubernetes-dashboard", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s get svc kubernetes-dashboard -n kube-system || %s install stable/kubernetes-dashboard --name kubernetes-dashboard --set=service.type=NodePort,service.nodePort=32443 --namespace kube-system", kubectlCommand, helmCommand))
+	config.addCommand("ceph-secrets", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.CEPH_SECRETS)))
+	config.addCommand("ceph-setup", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.CEPH_SETUP)))
+	config.addCommand("ceph-create-pool", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s exec -t -i ceph-mgr -n ceph -- ceph osd pool create %s 256 256", kubectlCommand, utils.CEPH_POOL_NAME))
+	config.addCommand("ceph-enable-dashboard", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s exec -t -i ceph-mgr -n ceph -- ceph mgr module enable dashboard", kubectlCommand))
 }
 
 func (config *InternalConfig) Generate(deploymentDirectory string) {
@@ -396,8 +425,8 @@ func (config *InternalConfig) addCommand(name string, labels Labels, command str
 	config.Config.Commands = append(config.Config.Commands, NewCommand(name, labels, command))
 }
 
-func (config *InternalConfig) addAssetFile(name string, labels Labels, _path string) {
-	config.Config.Assets.Files[name] = NewAssetFile(labels, _path)
+func (config *InternalConfig) addAssetFile(name string, labels Labels, filename, directory string) {
+	config.Config.Assets.Files[name] = NewAssetFile(labels, filename, directory)
 }
 
 func (config *InternalConfig) addAssetDirectory(name string, labels Labels, directory string) {
@@ -642,6 +671,27 @@ func (config *InternalConfig) GetKubeAPIServerAddresses() []string {
 	for _, node := range config.Config.Nodes {
 		if node.IsController() {
 			result = append(result, fmt.Sprintf("%s:%d", node.IP, config.Config.APIServerPort))
+		}
+	}
+
+	return result
+}
+
+type NodeData struct {
+	Name string
+	IP   string
+}
+
+func (config *InternalConfig) GetStorageControllers() []NodeData {
+	return config.GetStorageNodes()
+}
+
+func (config *InternalConfig) GetStorageNodes() []NodeData {
+	result := []NodeData{}
+
+	for nodeName, node := range config.Config.Nodes {
+		if node.IsWorker() {
+			result = append(result, NodeData{Name: nodeName, IP: node.IP})
 		}
 	}
 

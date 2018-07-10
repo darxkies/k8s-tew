@@ -23,6 +23,7 @@ const CLUSTER_DNS_IP = "10.32.0.10"
 const CLUSTER_CIDR = "10.200.0.0/16"
 const RESOLV_CONF = "/etc/resolv.conf"
 const API_SERVER_PORT = 6443
+const PUBLIC_NETWORK = "192.168.0.0/24"
 const LOAD_BALANCER_PORT = 16443
 const HELM_SERVICE_ACCOUNT = "tiller"
 
@@ -77,6 +78,11 @@ const LOAD_BALANCER_SUBDIRECTORY = "lb"
 const HELM_SUBDIRECTORY = "helm"
 const KUBELET_SUBDIRECTORY = "kubelet"
 const MANIFESTS_SUBDIRECTORY = "manifests"
+const CEPH_SUBDIRECTORY = "ceph"
+const CEPH_BOOTSTRAP_MDS_SUBDIRECTORY = "bootstrap-mds"
+const CEPH_BOOTSTRAP_OSD_SUBDIRECTORY = "bootstrap-osd"
+const CEPH_BOOTSTRAP_RBD_SUBDIRECTORY = "bootstrap-rbd"
+const CEPH_BOOTSTRAP_RGW_SUBDIRECTORY = "bootstrap-rgw"
 
 // Directories
 const CONFIG_DIRECTORY = "config"
@@ -105,6 +111,13 @@ const HELM_DATA_DIRECTORY = "helm-data"
 const KUBELET_DATA_DIRECTORY = "kubelet-data"
 const TEMPORARY_DIRECTORY = "temporary"
 const K8S_MANIFESTS_DIRECTORY = "kubelet-manifests"
+const CEPH_DIRECTORY = "ceph"
+const CEPH_CONFIG_DIRECTORY = "ceph-config"
+const CEPH_DATA_DIRECTORY = "ceph-data"
+const CEPH_BOOTSTRAP_MDS_DIRECTORY = "bootstrap-mds"
+const CEPH_BOOTSTRAP_OSD_DIRECTORY = "bootstrap-osd"
+const CEPH_BOOTSTRAP_RBD_DIRECTORY = "bootstrap-rbd"
+const CEPH_BOOTSTRAP_RGW_DIRECTORY = "bootstrap-rgw"
 
 // Binaries
 const K8S_TEW_BINARY = "k8s-tew"
@@ -203,6 +216,19 @@ const DEPLOYMENT_USER = "root"
 // Service
 const SERVICE_NAME = "k8s-tew"
 const SERVICE_CONFIG = SERVICE_NAME + ".service"
+
+// Ceph
+const CEPH_POOL_NAME = "ceph"
+const CEPH_CONFIG = "ceph.conf"
+const CEPH_CLIENT_ADMIN_KEYRING = "ceph.client.admin.keyring"
+const CEPH_MONITOR_KEYRING = "ceph.mon.keyring"
+const CEPH_KEYRING = "ceph.keyring"
+const CEPH_BOOTSTRAP_MDS_KEYRING = "ceph.bootstrap.mds.keyring"
+const CEPH_BOOTSTRAP_OSD_KEYRING = "ceph.bootstrap.osd.keyring"
+const CEPH_BOOTSTRAP_RBD_KEYRING = "ceph.bootstrap.rbd.keyring"
+const CEPH_BOOTSTRAP_RGW_KEYRING = "ceph.bootstrap.rgw.keyring"
+const CEPH_SECRETS = "ceph-secrets.yaml"
+const CEPH_SETUP = "ceph-setup.yaml"
 
 // Environment variables
 const K8S_TEW_BASE_DIRECTORY = "K8S_TEW_BASE_DIRECTORY"
@@ -482,4 +508,304 @@ spec:
       targetPort: 8443
   selector:
     k8s-app: kubernetes-dashboard
+`
+
+const CEPH_KEYRING_TEMPLATE = `[client.{{.Name}}]
+        key = {{.Key | unescape}}
+        caps mon = "allow profile {{.Name}}"
+`
+
+const CEPH_CLIENT_ADMIN_KEYRING_TEMPLATE = `[client.admin]
+        key = {{.Key | unescape}}
+        auid = 0
+        caps mds = "allow"
+        caps mgr = "allow *"
+        caps mon = "allow *"
+        caps osd = "allow *"
+`
+
+const CEPH_MONITOR_KEYRING_TEMPLATE = `[mon.]
+        key = {{.MonitorKey | unescape}}
+        caps mon = "allow *"
+[client.admin]
+        key = {{.ClientAdminKey | unescape}}
+        auid = 0
+        caps mds = "allow"
+        caps mgr = "allow *"
+        caps mon = "allow *"
+        caps osd = "allow *"
+[client.bootstrap-mds]
+        key = {{.ClientBootstrapMetadataServerKey | unescape}}
+        caps mon = "allow profile bootstrap-mds"
+[client.bootstrap-osd]
+        key = {{.ClientBootstrapObjectStorageKey | unescape}}
+        caps mon = "allow profile bootstrap-osd"
+[client.bootstrap-rbd]
+        key = {{.ClientBootstrapRadosBlockDeviceKey | unescape}}
+        caps mon = "allow profile bootstrap-rbd"
+[client.bootstrap-rgw]
+        key = {{.ClientBootstrapRadosGatewayKey | unescape}}
+        caps mon = "allow profile bootstrap-rgw"
+[client.k8s-tew]
+        key = {{.ClientK8STEWKey | unescape}}
+		caps mon = "allow r"
+		caps osd = "allow rwx pool={{.CephPoolName}}"
+`
+
+const CEPH_CONFIG_TEMPLATE = `[global]
+fsid = {{.ClusterID}}
+
+auth cluster required = cephx
+auth service required = cephx
+auth client required = cephx
+
+mon initial members = {{range $index,$node := .StorageControllers}}{{if $index}},{{end}}{{$node.Name}}{{end}}
+mon host = {{range $index,$node := .StorageControllers}}{{if $index}},{{end}}{{$node.IP}}{{end}}
+public network = {{.PublicNetwork}}
+cluster network = {{.ClusterNetwork}}
+osd journal size = 100
+log file = /dev/null
+osd max object name len = 256
+osd max object namespace len = 64
+mon_max_pg_per_osd = 1000
+osd pg bits = 11
+osd pgp bits = 11
+osd pool default size = 1
+osd pool default min size = 1
+osd pool default pg num = 100
+osd pool default pgp num = 100
+osd objectstore = filestore
+rbd_default_features = 3
+fatal signal handlers = false
+mon_allow_pool_delete = true
+`
+
+const CEPH_SECRETS_TEMPLATE = `apiVersion: v1
+kind: Secret
+metadata:
+    name: ceph-admin
+    namespace: kube-system
+type: "kubernetes.io/rbd"
+data:
+    key: {{.ClientAdminKey | base64}}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+    name: ceph-k8s-tew
+    namespace: kube-system
+type: "kubernetes.io/rbd"
+data:
+    key: {{.ClientK8STEWKey | base64}}
+`
+
+const CEPH_SETUP_TEMPLATE = `
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ceph
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: rbd-provisioner
+  namespace: kube-system
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: rbd-provisioner
+rules:
+  - apiGroups: [""]
+    resources: ["persistentvolumes"]
+    verbs: ["get", "list", "watch", "create", "delete"]
+  - apiGroups: [""]
+    resources: ["persistentvolumeclaims"]
+    verbs: ["get", "list", "watch", "update"]
+  - apiGroups: ["storage.k8s.io"]
+    resources: ["storageclasses"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: [""]
+    resources: ["events"]
+    verbs: ["list", "watch", "create", "update", "patch"]
+  - apiGroups: [""]
+    resources: ["services"]
+    resourceNames: ["kube-dns"]
+    verbs: ["list", "get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: rbd-provisioner
+  namespace: kube-system
+rules:
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["get"]
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: rbd-provisioner
+subjects:
+  - kind: ServiceAccount
+    name: rbd-provisioner
+    namespace: kube-system
+roleRef:
+  kind: ClusterRole
+  name: rbd-provisioner
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: rbd-provisioner
+  namespace: kube-system
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: rbd-provisioner
+subjects:
+- kind: ServiceAccount
+  name: rbd-provisioner
+  namespace: kube-system
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: ceph
+provisioner: ceph.com/rbd
+parameters:
+  monitors: {{range $index, $node := .StorageControllers}}{{if $index}},{{end}}{{$node.IP}}:6789{{end}}
+  pool: {{.CephPoolName}}
+  adminId: admin
+  adminSecretName: ceph-admin
+  adminSecretNamespace: kube-system
+  userId: k8s-tew
+  userSecretName: ceph-k8s-tew
+  userSecretNamespace: kube-system
+  imageFormat: "2"
+  imageFeatures: layering
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: rbd-provisioner
+  namespace: kube-system
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: rbd-provisioner
+    spec:
+      containers:
+      - name: rbd-provisioner
+        image: "quay.io/external_storage/rbd-provisioner:v1.0.0-k8s1.10"
+        env:
+        - name: PROVISIONER_NAME
+          value: ceph.com/rbd
+      serviceAccount: rbd-provisioner
+{{range $index, $node := .StorageControllers}}---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ceph-mon-{{$index}}
+  namespace: ceph
+spec:
+  hostNetwork: true
+  volumes:
+  - name: ceph-config
+    hostPath:
+      path: /etc/k8s-tew/ceph
+      type: DirectoryOrCreate
+  - name: ceph-data
+    hostPath:
+      path: /var/lib/k8s-tew/ceph
+      type: DirectoryOrCreate
+  nodeSelector:
+    kubernetes.io/hostname: {{$node.Name}}
+  containers:
+  - name: ceph-mon
+    image: ceph/daemon:v3.0.5-stable-3.0-luminous-ubuntu-16.04-x86_64
+    args: ["mon"]
+    env:
+    - name: MON_IP
+      value: {{$node.IP}}
+    - name: CEPH_PUBLIC_NETWORK
+      value: {{$.PublicNetwork}}
+    volumeMounts:
+    - name: ceph-config
+      mountPath: /etc/ceph
+    - name: ceph-data
+      mountPath: /var/lib/ceph
+{{end}}{{range $index, $node := .StorageControllers}}---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ceph-osd-{{$index}}
+  namespace: ceph
+spec:
+  hostNetwork: true
+  volumes:
+  - name: ceph-config
+    hostPath:
+      path: /etc/k8s-tew/ceph
+      type: DirectoryOrCreate
+  - name: ceph-data
+    hostPath:
+      path: /var/lib/k8s-tew/ceph
+      type: DirectoryOrCreate
+  - name: ceph-dev
+    hostPath:
+      path: /dev
+      type: DirectoryOrCreate
+  nodeSelector:
+    kubernetes.io/hostname: {{$node.Name}}
+  containers:
+  - name: ceph-osd
+    image: ceph/daemon:v3.0.5-stable-3.0-luminous-ubuntu-16.04-x86_64
+    args: ["osd"]
+    securityContext:
+      privileged: true
+    env:
+    - name: OSD_TYPE
+      value: directory
+    volumeMounts:
+    - name: ceph-config
+      mountPath: /etc/ceph
+    - name: ceph-data
+      mountPath: /var/lib/ceph
+    - name: ceph-dev
+      mountPath: /dev
+{{end}}---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ceph-mgr
+  namespace: ceph
+spec:
+  hostNetwork: true
+  volumes:
+  - name: ceph-config
+    hostPath:
+      path: /etc/k8s-tew/ceph
+      type: DirectoryOrCreate
+  - name: ceph-data
+    hostPath:
+      path: /var/lib/k8s-tew/ceph
+      type: DirectoryOrCreate
+  containers:
+  - name: ceph-mgr
+    image: ceph/daemon:v3.0.5-stable-3.0-luminous-ubuntu-16.04-x86_64
+    securityContext:
+      privileged: true
+    args: ["mgr"]
+    volumeMounts:
+    - name: ceph-config
+      mountPath: /etc/ceph
+    - name: ceph-data
+      mountPath: /var/lib/ceph
 `

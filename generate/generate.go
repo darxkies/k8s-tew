@@ -343,6 +343,138 @@ func (generator *Generator) generateKubeConfigs(ca *pki.CertificateAndPrivateKey
 	return nil
 }
 
+func (generator *Generator) generateCephConfig() error {
+	return utils.ApplyTemplateAndSave(utils.CEPH_CONFIG_TEMPLATE, struct {
+		ClusterID          string
+		StorageControllers []config.NodeData
+		PublicNetwork      string
+		ClusterNetwork     string
+	}{
+		ClusterID:          generator.config.Config.ClusterID,
+		StorageControllers: generator.config.GetStorageControllers(),
+		PublicNetwork:      generator.config.Config.PublicNetwork,
+		ClusterNetwork:     generator.config.Config.PublicNetwork,
+	}, generator.config.GetFullLocalAssetFilename(utils.CEPH_CONFIG), true)
+}
+
+func (generator *Generator) generateCephSetup() error {
+	return utils.ApplyTemplateAndSave(utils.CEPH_SETUP_TEMPLATE, struct {
+		CephPoolName       string
+		PublicNetwork      string
+		StorageControllers []config.NodeData
+		StorageNodes       []config.NodeData
+	}{
+		CephPoolName:       utils.CEPH_POOL_NAME,
+		PublicNetwork:      generator.config.Config.PublicNetwork,
+		StorageControllers: generator.config.GetStorageControllers(),
+		StorageNodes:       generator.config.GetStorageNodes(),
+	}, generator.config.GetFullLocalAssetFilename(utils.CEPH_SETUP), true)
+}
+
+func (generator *Generator) generateCephFiles() error {
+	if error := generator.generateCephConfig(); error != nil {
+		return error
+	}
+
+	if error := generator.generateCephSetup(); error != nil {
+		return error
+	}
+
+	if utils.FileExists(generator.config.GetFullLocalAssetFilename(utils.CEPH_MONITOR_KEYRING)) {
+		return nil
+	}
+
+	monitorKey := utils.GenerateCephKey()
+	clientAdminKey := utils.GenerateCephKey()
+	clientBootstrapMetadataServerKey := utils.GenerateCephKey()
+	clientBootstrapObjectStorageKey := utils.GenerateCephKey()
+	clientBootstrapRadosBlockDeviceKey := utils.GenerateCephKey()
+	clientBootstrapRadosGatewayKey := utils.GenerateCephKey()
+	clientK8STEWKey := utils.GenerateCephKey()
+
+	if error := utils.ApplyTemplateAndSave(utils.CEPH_MONITOR_KEYRING_TEMPLATE, struct {
+		MonitorKey                         string
+		ClientAdminKey                     string
+		ClientBootstrapMetadataServerKey   string
+		ClientBootstrapObjectStorageKey    string
+		ClientBootstrapRadosBlockDeviceKey string
+		ClientBootstrapRadosGatewayKey     string
+		ClientK8STEWKey                    string
+		CephPoolName                       string
+	}{
+		MonitorKey:                         monitorKey,
+		ClientAdminKey:                     clientAdminKey,
+		ClientBootstrapMetadataServerKey:   clientBootstrapMetadataServerKey,
+		ClientBootstrapObjectStorageKey:    clientBootstrapObjectStorageKey,
+		ClientBootstrapRadosBlockDeviceKey: clientBootstrapRadosBlockDeviceKey,
+		ClientBootstrapRadosGatewayKey:     clientBootstrapRadosGatewayKey,
+		ClientK8STEWKey:                    clientK8STEWKey,
+		CephPoolName:                       utils.CEPH_POOL_NAME,
+	}, generator.config.GetFullLocalAssetFilename(utils.CEPH_MONITOR_KEYRING), false); error != nil {
+		return error
+	}
+
+	if error := utils.ApplyTemplateAndSave(utils.CEPH_CLIENT_ADMIN_KEYRING_TEMPLATE, struct {
+		Key string
+	}{
+		Key: clientAdminKey,
+	}, generator.config.GetFullLocalAssetFilename(utils.CEPH_CLIENT_ADMIN_KEYRING), false); error != nil {
+		return error
+	}
+
+	if error := utils.ApplyTemplateAndSave(utils.CEPH_KEYRING_TEMPLATE, struct {
+		Name string
+		Key  string
+	}{
+		Name: "bootstrap-mds",
+		Key:  clientBootstrapMetadataServerKey,
+	}, generator.config.GetFullLocalAssetFilename(utils.CEPH_BOOTSTRAP_MDS_KEYRING), false); error != nil {
+		return error
+	}
+
+	if error := utils.ApplyTemplateAndSave(utils.CEPH_KEYRING_TEMPLATE, struct {
+		Name string
+		Key  string
+	}{
+		Name: "bootstrap-osd",
+		Key:  clientBootstrapObjectStorageKey,
+	}, generator.config.GetFullLocalAssetFilename(utils.CEPH_BOOTSTRAP_OSD_KEYRING), false); error != nil {
+		return error
+	}
+
+	if error := utils.ApplyTemplateAndSave(utils.CEPH_KEYRING_TEMPLATE, struct {
+		Name string
+		Key  string
+	}{
+		Name: "bootstrap-rbd",
+		Key:  clientBootstrapRadosBlockDeviceKey,
+	}, generator.config.GetFullLocalAssetFilename(utils.CEPH_BOOTSTRAP_RBD_KEYRING), false); error != nil {
+		return error
+	}
+
+	if error := utils.ApplyTemplateAndSave(utils.CEPH_KEYRING_TEMPLATE, struct {
+		Name string
+		Key  string
+	}{
+		Name: "bootstrap-rgw",
+		Key:  clientBootstrapRadosGatewayKey,
+	}, generator.config.GetFullLocalAssetFilename(utils.CEPH_BOOTSTRAP_RGW_KEYRING), false); error != nil {
+		return error
+	}
+
+	if error := utils.ApplyTemplateAndSave(utils.CEPH_SECRETS_TEMPLATE, struct {
+		ClientAdminKey  string
+		ClientK8STEWKey string
+	}{
+		ClientAdminKey:  clientAdminKey,
+		ClientK8STEWKey: clientK8STEWKey,
+	}, generator.config.GetFullLocalAssetFilename(utils.CEPH_SECRETS), false); error != nil {
+		return error
+	}
+
+	return nil
+}
+
 func (generator *Generator) GenerateFiles() error {
 	// Generate profile file
 	if error := generator.generateProfileFile(); error != nil {
@@ -406,6 +538,11 @@ func (generator *Generator) GenerateFiles() error {
 
 	// Generate kubeconfig files
 	if error := generator.generateKubeConfigs(ca); error != nil {
+		return error
+	}
+
+	// Generate ceph files
+	if error := generator.generateCephFiles(); error != nil {
 		return error
 	}
 

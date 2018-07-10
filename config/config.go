@@ -1,11 +1,18 @@
 package config
 
-import "github.com/darxkies/k8s-tew/utils"
+import (
+	"fmt"
+
+	"github.com/darxkies/k8s-tew/utils"
+	"github.com/satori/go.uuid"
+)
 
 type Config struct {
 	Version                      string      `yaml:"version"`
+	ClusterID                    string      `yaml:"cluster-id"`
 	LoadBalancerPort             uint16      `yaml:"load-balancer-port"`
 	APIServerPort                uint16      `yaml:"apiserver-port,omitempty"`
+	PublicNetwork                string      `yaml:"public-network"`
 	ControllerVirtualIP          string      `yaml:"controller-virtual-ip,omitempty"`
 	ControllerVirtualIPInterface string      `yaml:"controller-virtual-ip-interface,omitempty"`
 	WorkerVirtualIP              string      `yaml:"worker-virtual-ip,omitempty"`
@@ -24,8 +31,10 @@ type Config struct {
 func NewConfig() *Config {
 	config := &Config{Version: utils.CONFIG_VERSION}
 
+	config.ClusterID = fmt.Sprintf("%s", uuid.NewV4())
 	config.LoadBalancerPort = utils.LOAD_BALANCER_PORT
 	config.APIServerPort = utils.API_SERVER_PORT
+	config.PublicNetwork = utils.PUBLIC_NETWORK
 	config.ClusterIPRange = utils.CLUSTER_IP_RANGE
 	config.ClusterDNSIP = utils.CLUSTER_DNS_IP
 	config.ClusterCIDR = utils.CLUSTER_CIDR
