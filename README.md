@@ -118,7 +118,7 @@ The arguments:
 A node can be removed like this:
 
 ```shell
-k8s-tew node-add -n controller00
+k8s-tew node-remove -n controller00
 ```
 
 And all the nodes can be listed with the command:
