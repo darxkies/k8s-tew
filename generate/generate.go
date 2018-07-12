@@ -346,14 +346,16 @@ func (generator *Generator) generateKubeConfigs(ca *pki.CertificateAndPrivateKey
 func (generator *Generator) generateCephConfig() error {
 	return utils.ApplyTemplateAndSave(utils.CEPH_CONFIG_TEMPLATE, struct {
 		ClusterID          string
-		StorageControllers []config.NodeData
 		PublicNetwork      string
 		ClusterNetwork     string
+		StorageControllers []config.NodeData
+		StorageNodes       []config.NodeData
 	}{
 		ClusterID:          generator.config.Config.ClusterID,
-		StorageControllers: generator.config.GetStorageControllers(),
 		PublicNetwork:      generator.config.Config.PublicNetwork,
 		ClusterNetwork:     generator.config.Config.PublicNetwork,
+		StorageControllers: generator.config.GetStorageControllers(),
+		StorageNodes:       generator.config.GetStorageNodes(),
 	}, generator.config.GetFullLocalAssetFilename(utils.CEPH_CONFIG), true)
 }
 

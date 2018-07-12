@@ -570,7 +570,7 @@ osd max object namespace len = 64
 mon_max_pg_per_osd = 1000
 osd pg bits = 11
 osd pgp bits = 11
-osd pool default size = 1
+osd pool default size = {{len .StorageNodes}}
 osd pool default min size = 1
 osd pool default pg num = 100
 osd pool default pgp num = 100
@@ -709,103 +709,127 @@ spec:
           value: ceph.com/rbd
       serviceAccount: rbd-provisioner
 {{range $index, $node := .StorageControllers}}---
-apiVersion: v1
-kind: Pod
+apiVersion: extensions/v1beta1
+kind: Deployment
 metadata:
-  name: ceph-mon-{{$index}}
+  name: ceph-mon-{{$node.Name}}
   namespace: ceph
 spec:
-  hostNetwork: true
-  volumes:
-  - name: ceph-config
-    hostPath:
-      path: /etc/k8s-tew/ceph
-      type: DirectoryOrCreate
-  - name: ceph-data
-    hostPath:
-      path: /var/lib/k8s-tew/ceph
-      type: DirectoryOrCreate
-  nodeSelector:
-    kubernetes.io/hostname: {{$node.Name}}
-  containers:
-  - name: ceph-mon
-    image: ceph/daemon:v3.0.5-stable-3.0-luminous-ubuntu-16.04-x86_64
-    args: ["mon"]
-    env:
-    - name: MON_IP
-      value: {{$node.IP}}
-    - name: CEPH_PUBLIC_NETWORK
-      value: {{$.PublicNetwork}}
-    volumeMounts:
-    - name: ceph-config
-      mountPath: /etc/ceph
-    - name: ceph-data
-      mountPath: /var/lib/ceph
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: ceph-mon-{{$node.Name}}
+    spec:
+      hostNetwork: true
+      volumes:
+      - name: ceph-config
+        hostPath:
+          path: /etc/k8s-tew/ceph
+          type: DirectoryOrCreate
+      - name: ceph-data
+        hostPath:
+          path: /var/lib/k8s-tew/ceph
+          type: DirectoryOrCreate
+      nodeSelector:
+        kubernetes.io/hostname: {{$node.Name}}
+      containers:
+      - name: ceph-mon
+        image: ceph/daemon:v3.0.5-stable-3.0-luminous-ubuntu-16.04-x86_64
+        args: ["mon"]
+        env:
+        - name: MON_IP
+          value: {{$node.IP}}
+        - name: CEPH_PUBLIC_NETWORK
+          value: {{$.PublicNetwork}}
+        volumeMounts:
+        - name: ceph-config
+          mountPath: /etc/ceph
+        - name: ceph-data
+          mountPath: /var/lib/ceph
 {{end}}{{range $index, $node := .StorageControllers}}---
-apiVersion: v1
-kind: Pod
+apiVersion: extensions/v1beta1
+kind: Deployment
 metadata:
-  name: ceph-osd-{{$index}}
+  name: ceph-osd-{{$node.Name}}
   namespace: ceph
 spec:
-  hostNetwork: true
-  volumes:
-  - name: ceph-config
-    hostPath:
-      path: /etc/k8s-tew/ceph
-      type: DirectoryOrCreate
-  - name: ceph-data
-    hostPath:
-      path: /var/lib/k8s-tew/ceph
-      type: DirectoryOrCreate
-  - name: ceph-dev
-    hostPath:
-      path: /dev
-      type: DirectoryOrCreate
-  nodeSelector:
-    kubernetes.io/hostname: {{$node.Name}}
-  containers:
-  - name: ceph-osd
-    image: ceph/daemon:v3.0.5-stable-3.0-luminous-ubuntu-16.04-x86_64
-    args: ["osd"]
-    securityContext:
-      privileged: true
-    env:
-    - name: OSD_TYPE
-      value: directory
-    volumeMounts:
-    - name: ceph-config
-      mountPath: /etc/ceph
-    - name: ceph-data
-      mountPath: /var/lib/ceph
-    - name: ceph-dev
-      mountPath: /dev
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: ceph-osd-{{$node.Name}}
+    spec:
+      hostNetwork: true
+      volumes:
+      - name: ceph-config
+        hostPath:
+          path: /etc/k8s-tew/ceph
+          type: DirectoryOrCreate
+      - name: ceph-data
+        hostPath:
+          path: /var/lib/k8s-tew/ceph
+          type: DirectoryOrCreate
+      - name: ceph-dev
+        hostPath:
+          path: /dev
+          type: DirectoryOrCreate
+      nodeSelector:
+        kubernetes.io/hostname: {{$node.Name}}
+      containers:
+      - name: ceph-osd
+        image: ceph/daemon:v3.0.5-stable-3.0-luminous-ubuntu-16.04-x86_64
+        args: ["osd"]
+        securityContext:
+          privileged: true
+        env:
+        - name: OSD_TYPE
+          value: directory
+        volumeMounts:
+        - name: ceph-config
+          mountPath: /etc/ceph
+        - name: ceph-data
+          mountPath: /var/lib/ceph
+        - name: ceph-dev
+          mountPath: /dev
 {{end}}---
-apiVersion: v1
-kind: Pod
+apiVersion: extensions/v1beta1
+kind: Deployment
 metadata:
   name: ceph-mgr
   namespace: ceph
 spec:
-  hostNetwork: true
-  volumes:
-  - name: ceph-config
-    hostPath:
-      path: /etc/k8s-tew/ceph
-      type: DirectoryOrCreate
-  - name: ceph-data
-    hostPath:
-      path: /var/lib/k8s-tew/ceph
-      type: DirectoryOrCreate
-  containers:
-  - name: ceph-mgr
-    image: ceph/daemon:v3.0.5-stable-3.0-luminous-ubuntu-16.04-x86_64
-    securityContext:
-      privileged: true
-    args: ["mgr"]
-    volumeMounts:
-    - name: ceph-config
-      mountPath: /etc/ceph
-    - name: ceph-data
-      mountPath: /var/lib/ceph
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: ceph-mgr
+    spec:
+      hostNetwork: true
+      volumes:
+      - name: ceph-config
+        hostPath:
+          path: /etc/k8s-tew/ceph
+          type: DirectoryOrCreate
+      - name: ceph-data
+        hostPath:
+          path: /var/lib/k8s-tew/ceph
+          type: DirectoryOrCreate
+      containers:
+      - name: ceph-mgr
+        image: ceph/daemon:v3.0.5-stable-3.0-luminous-ubuntu-16.04-x86_64
+        securityContext:
+          privileged: true
+        args: ["mgr"]
+        volumeMounts:
+        - name: ceph-config
+          mountPath: /etc/ceph
+        - name: ceph-data
+          mountPath: /var/lib/ceph
 `

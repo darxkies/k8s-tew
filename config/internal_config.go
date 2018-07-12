@@ -372,6 +372,7 @@ func (config *InternalConfig) registerServers() {
 func (config *InternalConfig) registerCommands() {
 	kubectlCommand := fmt.Sprintf("%s --kubeconfig %s", config.GetFullLocalAssetFilename(utils.KUBECTL_BINARY), config.GetFullLocalAssetFilename(utils.ADMIN_KUBECONFIG))
 	helmCommand := fmt.Sprintf("KUBECONFIG=%s HELM_HOME=%s %s", config.GetFullLocalAssetFilename(utils.ADMIN_KUBECONFIG), config.GetFullLocalAssetDirectory(utils.HELM_DATA_DIRECTORY), config.GetFullLocalAssetFilename(utils.HELM_BINARY))
+	cephCommand := fmt.Sprintf("%s exec -t -i $(%s get pods  -n ceph | grep ceph-mgr | cut -d ' ' -f 1) -n ceph -- ceph", kubectlCommand, kubectlCommand)
 
 	// Dependencies
 	config.addCommand("swapoff", Labels{utils.NODE_WORKER}, "swapoff -a")
@@ -389,8 +390,8 @@ func (config *InternalConfig) registerCommands() {
 	config.addCommand("helm-kubernetes-dashboard", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s get svc kubernetes-dashboard -n kube-system || %s install stable/kubernetes-dashboard --name kubernetes-dashboard --set=service.type=NodePort,service.nodePort=32443 --namespace kube-system", kubectlCommand, helmCommand))
 	config.addCommand("ceph-secrets", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.CEPH_SECRETS)))
 	config.addCommand("ceph-setup", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.CEPH_SETUP)))
-	config.addCommand("ceph-create-pool", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s exec -t -i ceph-mgr -n ceph -- ceph osd pool create %s 256 256", kubectlCommand, utils.CEPH_POOL_NAME))
-	config.addCommand("ceph-enable-dashboard", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s exec -t -i ceph-mgr -n ceph -- ceph mgr module enable dashboard", kubectlCommand))
+	config.addCommand("ceph-create-pool", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s osd pool create %s 256 256", cephCommand, utils.CEPH_POOL_NAME))
+	config.addCommand("ceph-enable-dashboard", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s mgr module enable dashboard", cephCommand))
 }
 
 func (config *InternalConfig) Generate(deploymentDirectory string) {
@@ -678,8 +679,9 @@ func (config *InternalConfig) GetKubeAPIServerAddresses() []string {
 }
 
 type NodeData struct {
-	Name string
-	IP   string
+	Index uint
+	Name  string
+	IP    string
 }
 
 func (config *InternalConfig) GetStorageControllers() []NodeData {
@@ -691,9 +693,13 @@ func (config *InternalConfig) GetStorageNodes() []NodeData {
 
 	for nodeName, node := range config.Config.Nodes {
 		if node.IsWorker() {
-			result = append(result, NodeData{Name: nodeName, IP: node.IP})
+			result = append(result, NodeData{Index: node.Index, Name: nodeName, IP: node.IP})
 		}
 	}
+
+	sort.Slice(result, func(i, j int) bool {
+		return result[i].Index < result[j].Index
+	})
 
 	return result
 }
