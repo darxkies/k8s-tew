@@ -11,6 +11,7 @@ import (
 )
 
 var identityFile string
+var commandRetries uint
 
 var deployCmd = &cobra.Command{
 	Use:   "deploy",
@@ -29,7 +30,7 @@ var deployCmd = &cobra.Command{
 			os.Exit(-2)
 		}
 
-		if error := deployment.Setup(_config); error != nil {
+		if error := deployment.Setup(_config, commandRetries); error != nil {
 			log.WithFields(log.Fields{"error": error}).Error("setup failed")
 
 			os.Exit(-3)
@@ -39,5 +40,6 @@ var deployCmd = &cobra.Command{
 
 func init() {
 	deployCmd.Flags().StringVarP(&identityFile, "identity-file", "i", path.Join(os.Getenv("HOME"), ".ssh/id_rsa"), "SSH identity file")
+	deployCmd.Flags().UintVarP(&commandRetries, "command-retries", "r", 60, "The count of command retries during the setup")
 	RootCmd.AddCommand(deployCmd)
 }

@@ -200,7 +200,7 @@ func (deployment *Deployment) getSession() (*ssh.Session, error) {
 }
 
 func (deployment *Deployment) Execute(command string) (string, error) {
-	log.WithFields(log.Fields{"target": deployment.node.IP, "command": command}).Info("executing")
+	log.WithFields(log.Fields{"target": deployment.node.IP, "command": command}).Info("executing remote command")
 
 	session, error := deployment.getSession()
 	if error != nil {
@@ -255,7 +255,7 @@ func Deploy(_config *config.InternalConfig, identityFile string) error {
 }
 
 // Run bootstrapper commands
-func Setup(_config *config.InternalConfig) error {
+func Setup(_config *config.InternalConfig, commandRetries uint) error {
 	for _, command := range _config.Config.Commands {
 		if !command.Labels.HasLabels([]string{utils.NODE_BOOTSTRAPPER}) {
 			continue
@@ -266,19 +266,23 @@ func Setup(_config *config.InternalConfig) error {
 			return error
 		}
 
-		for {
+		log.WithFields(log.Fields{"name": command.Name, "command": newCommand}).Info("executing command")
+
+		for retries := uint(0); retries < commandRetries; retries++ {
 			// Run command
-			if error := utils.RunCommand(newCommand); error != nil {
-				log.WithFields(log.Fields{"name": command.Name, "command": newCommand, "error": error}).Error("command failed")
+			error = utils.RunCommand(newCommand)
 
-				time.Sleep(3 * time.Second)
-
-				continue
+			if error == nil {
+				break
 			}
 
-			log.WithFields(log.Fields{"name": command.Name, "command": newCommand}).Info("command executed")
+			time.Sleep(time.Second)
+		}
 
-			break
+		if error != nil {
+			log.WithFields(log.Fields{"name": command.Name, "command": newCommand, "error": error}).Error("command failed")
+
+			return error
 		}
 	}
 
