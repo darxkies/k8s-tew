@@ -36,7 +36,6 @@ func addNode() error {
 		log.Println("adding self as node")
 
 		if len(nodeIP) == 0 {
-
 			nodeIP, error = utils.RunCommandWithOutput("ip route get 8.8.8.8 | cut -d ' ' -f 7")
 			if error != nil {
 				return error
@@ -59,6 +58,13 @@ func addNode() error {
 		if len(labels) == 0 {
 			labels = []string{utils.NODE_BOOTSTRAPPER, utils.NODE_CONTROLLER, utils.NODE_WORKER}
 		}
+
+		network, error := utils.RunCommandWithOutput(fmt.Sprintf("ip address | grep %s | cut -d ' ' -f 6", nodeIP))
+		if error != nil {
+			return error
+		}
+
+		_config.Config.PublicNetwork = network
 	}
 
 	if _, error = _config.AddNode(nodeName, nodeIP, nodeIndex, labels); error != nil {

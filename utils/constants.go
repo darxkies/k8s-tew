@@ -599,8 +599,7 @@ data:
     key: {{.ClientK8STEWKey | base64}}
 `
 
-const CEPH_SETUP_TEMPLATE = `
-apiVersion: v1
+const CEPH_SETUP_TEMPLATE = `apiVersion: v1
 kind: Namespace
 metadata:
   name: ceph
@@ -727,11 +726,11 @@ spec:
       volumes:
       - name: ceph-config
         hostPath:
-          path: /etc/k8s-tew/ceph
+          path: {{$.CephConfigDirectory}}
           type: DirectoryOrCreate
       - name: ceph-data
         hostPath:
-          path: /var/lib/k8s-tew/ceph
+          path: {{$.CephDataDirectory}}
           type: DirectoryOrCreate
       nodeSelector:
         kubernetes.io/hostname: {{$node.Name}}
@@ -768,11 +767,11 @@ spec:
       volumes:
       - name: ceph-config
         hostPath:
-          path: /etc/k8s-tew/ceph
+          path: {{$.CephConfigDirectory}}
           type: DirectoryOrCreate
       - name: ceph-data
         hostPath:
-          path: /var/lib/k8s-tew/ceph
+          path: {{$.CephDataDirectory}}
           type: DirectoryOrCreate
       - name: ceph-dev
         hostPath:
@@ -815,11 +814,11 @@ spec:
       volumes:
       - name: ceph-config
         hostPath:
-          path: /etc/k8s-tew/ceph
+          path: {{$.CephConfigDirectory}}
           type: DirectoryOrCreate
       - name: ceph-data
         hostPath:
-          path: /var/lib/k8s-tew/ceph
+          path: {{$.CephDataDirectory}}
           type: DirectoryOrCreate
       containers:
       - name: ceph-mgr

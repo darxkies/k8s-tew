@@ -361,15 +361,19 @@ func (generator *Generator) generateCephConfig() error {
 
 func (generator *Generator) generateCephSetup() error {
 	return utils.ApplyTemplateAndSave(utils.CEPH_SETUP_TEMPLATE, struct {
-		CephPoolName       string
-		PublicNetwork      string
-		StorageControllers []config.NodeData
-		StorageNodes       []config.NodeData
+		CephPoolName        string
+		PublicNetwork       string
+		StorageControllers  []config.NodeData
+		StorageNodes        []config.NodeData
+		CephConfigDirectory string
+		CephDataDirectory   string
 	}{
-		CephPoolName:       utils.CEPH_POOL_NAME,
-		PublicNetwork:      generator.config.Config.PublicNetwork,
-		StorageControllers: generator.config.GetStorageControllers(),
-		StorageNodes:       generator.config.GetStorageNodes(),
+		CephPoolName:        utils.CEPH_POOL_NAME,
+		PublicNetwork:       generator.config.Config.PublicNetwork,
+		StorageControllers:  generator.config.GetStorageControllers(),
+		StorageNodes:        generator.config.GetStorageNodes(),
+		CephConfigDirectory: generator.config.GetFullTargetAssetDirectory(utils.CEPH_CONFIG_DIRECTORY),
+		CephDataDirectory:   generator.config.GetFullTargetAssetDirectory(utils.CEPH_DATA_DIRECTORY),
 	}, generator.config.GetFullLocalAssetFilename(utils.CEPH_SETUP), true)
 }
 
