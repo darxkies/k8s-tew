@@ -199,7 +199,7 @@ func (generator *Generator) generateCertificates() (*pki.CertificateAndPrivateKe
 	}
 
 	// Collect dns names and ip addresses
-	kubernetesDNSNames := []string{"kubenetes.default"}
+	kubernetesDNSNames := []string{"kubernetes", "kubenetes.default", "kubenetes.default.svc", "kubenetes.default.svc.cluster.local", "localhost"}
 	kubernetesIPAddresses := []string{"127.0.0.1", "10.32.0.1"}
 
 	if len(generator.config.Config.ControllerVirtualIP) > 0 {
@@ -228,6 +228,11 @@ func (generator *Generator) generateCertificates() (*pki.CertificateAndPrivateKe
 
 	// Generate kuberentes certificate
 	if error := pki.GenerateClient(ca, generator.rsaSize, generator.clientValidityPeriod, "kubernetes", "Kubernetes", kubernetesDNSNames, kubernetesIPAddresses, generator.config.GetFullLocalAssetFilename(utils.KUBERNETES_PEM), generator.config.GetFullLocalAssetFilename(utils.KUBERNETES_KEY_PEM), true); error != nil {
+		return nil, error
+	}
+
+	// Generate aggregator certificate
+	if error := pki.GenerateClient(ca, generator.rsaSize, generator.clientValidityPeriod, "aggregator", "Kubernetes", kubernetesDNSNames, kubernetesIPAddresses, generator.config.GetFullLocalAssetFilename(utils.AGGREGATOR_PEM), generator.config.GetFullLocalAssetFilename(utils.AGGREGATOR_KEY_PEM), true); error != nil {
 		return nil, error
 	}
 

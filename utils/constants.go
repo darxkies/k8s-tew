@@ -51,6 +51,8 @@ const CONFIG_FILENAME = "config.yaml"
 const NODE_BOOTSTRAPPER = "bootstrapper"
 const NODE_CONTROLLER = "controller"
 const NODE_WORKER = "worker"
+const NODE_STORAGE_CONTROLLER = "storage-controller"
+const NODE_STORAGE_NODE = "storage-node"
 
 // Sub-Directories
 const TEMPORARY_SUBDIRECTORY = "tmp"
@@ -175,6 +177,8 @@ const FLANNELD_PEM = "flanneld.pem"
 const FLANNELD_KEY_PEM = "flanneld-key.pem"
 const VIRTUAL_IP_PEM = "virtual-ip.pem"
 const VIRTUAL_IP_KEY_PEM = "virtual-ip-key.pem"
+const AGGREGATOR_PEM = "aggregator.pem"
+const AGGREGATOR_KEY_PEM = "aggregator-key.pem"
 
 // Kubeconfig
 const ADMIN_KUBECONFIG = "admin.kubeconfig"
@@ -673,6 +677,8 @@ apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
   name: ceph
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "true"
 provisioner: ceph.com/rbd
 parameters:
   monitors: {{range $index, $node := .StorageControllers}}{{if $index}},{{end}}{{$node.IP}}:6789{{end}}

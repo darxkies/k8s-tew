@@ -206,6 +206,8 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.PROXY_KEY_PEM, Labels{}, "", utils.CERTIFICATES_DIRECTORY)
 	config.addAssetFile(utils.KUBELET_PEM, Labels{utils.NODE_WORKER}, "", utils.CERTIFICATES_DIRECTORY)
 	config.addAssetFile(utils.KUBELET_KEY_PEM, Labels{utils.NODE_WORKER}, "", utils.CERTIFICATES_DIRECTORY)
+	config.addAssetFile(utils.AGGREGATOR_PEM, Labels{utils.NODE_CONTROLLER}, "", utils.CERTIFICATES_DIRECTORY)
+	config.addAssetFile(utils.AGGREGATOR_KEY_PEM, Labels{utils.NODE_CONTROLLER}, "", utils.CERTIFICATES_DIRECTORY)
 
 	// Kubeconfig
 	config.addAssetFile(utils.ADMIN_KUBECONFIG, Labels{}, "", utils.K8S_KUBE_CONFIG_DIRECTORY)
@@ -307,6 +309,7 @@ func (config *InternalConfig) registerServers() {
 		"secure-port":                             "{{.Config.APIServerPort}}",
 		"client-ca-file":                          config.GetTemplateAssetFilename(utils.CA_PEM),
 		"enable-admission-plugins":                "Initializers,NamespaceLifecycle,NodeRestriction,LimitRanger,ServiceAccount,DefaultStorageClass,ResourceQuota",
+		"enable-aggregator-routing":               "true",
 		"enable-swagger-ui":                       "true",
 		"etcd-cafile":                             config.GetTemplateAssetFilename(utils.CA_PEM),
 		"etcd-certfile":                           config.GetTemplateAssetFilename(utils.KUBERNETES_PEM),
@@ -318,12 +321,19 @@ func (config *InternalConfig) registerServers() {
 		"kubelet-client-certificate":              config.GetTemplateAssetFilename(utils.KUBERNETES_PEM),
 		"kubelet-client-key":                      config.GetTemplateAssetFilename(utils.KUBERNETES_KEY_PEM),
 		"kubelet-https":                           "true",
+		"proxy-client-cert-file":                  config.GetTemplateAssetFilename(utils.AGGREGATOR_PEM),
+		"proxy-client-key-file":                   config.GetTemplateAssetFilename(utils.AGGREGATOR_KEY_PEM),
 		"runtime-config":                          "api/all",
 		"service-account-key-file":                config.GetTemplateAssetFilename(utils.SERVICE_ACCOUNT_PEM),
 		"service-cluster-ip-range":                "{{.Config.ClusterIPRange}}",
 		"service-node-port-range":                 "30000-32767",
 		"tls-cert-file":                           config.GetTemplateAssetFilename(utils.KUBERNETES_PEM),
 		"tls-private-key-file":                    config.GetTemplateAssetFilename(utils.KUBERNETES_KEY_PEM),
+		"requestheader-client-ca-file":            config.GetTemplateAssetFilename(utils.CA_PEM),
+		"requestheader-allowed-names":             "aggregator",
+		"requestheader-extra-headers-prefix":      "X-Remote-Extra-",
+		"requestheader-group-headers":             "X-Remote-Group",
+		"requestheader-username-headers":          "X-Remote-User",
 		"v": "0",
 	})
 
@@ -365,6 +375,7 @@ func (config *InternalConfig) registerServers() {
 		"allow-privileged":             "true",
 		"resolv-conf":                  "{{.Config.ResolvConf}}",
 		"root-dir":                     config.GetTemplateAssetDirectory(utils.KUBELET_DATA_DIRECTORY),
+		"read-only-port":               "10255",
 		"v":                            "0",
 	})
 }
@@ -388,6 +399,7 @@ func (config *InternalConfig) registerCommands() {
 	config.addCommand("helm-init", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s init --service-account %s --upgrade", helmCommand, utils.HELM_SERVICE_ACCOUNT))
 	config.addCommand("helm-repo-update", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s repo update", helmCommand))
 	config.addCommand("helm-kubernetes-dashboard", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s get svc kubernetes-dashboard -n kube-system || %s install stable/kubernetes-dashboard --name kubernetes-dashboard --set=service.type=NodePort,service.nodePort=32443 --namespace kube-system", kubectlCommand, helmCommand))
+	config.addCommand("helm-metrics-server", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s get svc metrics-server || %s install stable/metrics-server --name metrics-server --set serviceAccount.name=metrics-server", kubectlCommand, helmCommand))
 	config.addCommand("ceph-secrets", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.CEPH_SECRETS)))
 	config.addCommand("ceph-setup", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.CEPH_SETUP)))
 	config.addCommand("ceph-create-pool", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s osd pool create %s 256 256", cephCommand, utils.CEPH_POOL_NAME))
@@ -684,22 +696,37 @@ type NodeData struct {
 	IP    string
 }
 
-func (config *InternalConfig) GetStorageControllers() []NodeData {
-	return config.GetStorageNodes()
-}
-
-func (config *InternalConfig) GetStorageNodes() []NodeData {
+func (config *InternalConfig) getLabeldOrAllNodes(label string) []NodeData {
 	result := []NodeData{}
 
+	// Add only labeld nodes
 	for nodeName, node := range config.Config.Nodes {
-		if node.IsWorker() {
+		if node.IsWorker() && node.Labels.HasLabels(Labels{label}) {
 			result = append(result, NodeData{Index: node.Index, Name: nodeName, IP: node.IP})
 		}
 	}
 
+	// If no labeld nodes found get all nodes
+	if len(result) == 0 {
+		for nodeName, node := range config.Config.Nodes {
+			if node.IsWorker() {
+				result = append(result, NodeData{Index: node.Index, Name: nodeName, IP: node.IP})
+			}
+		}
+	}
+
+	// Sort nodes by index
 	sort.Slice(result, func(i, j int) bool {
 		return result[i].Index < result[j].Index
 	})
 
 	return result
+}
+
+func (config *InternalConfig) GetStorageControllers() []NodeData {
+	return config.getLabeldOrAllNodes(utils.NODE_STORAGE_CONTROLLER)
+}
+
+func (config *InternalConfig) GetStorageNodes() []NodeData {
+	return config.getLabeldOrAllNodes(utils.NODE_STORAGE_NODE)
 }
