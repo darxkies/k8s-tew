@@ -6,6 +6,7 @@ import (
 
 type ServerConfig struct {
 	Name      string            `yaml:"name"`
+	Enabled   bool              `yaml:"enabled"`
 	Labels    Labels            `yaml:"labels"`
 	Logger    LoggerConfig      `yaml:"logger"`
 	Command   string            `yaml:"command"`

@@ -330,7 +330,7 @@ func (config *InternalConfig) registerServers() {
 		"tls-cert-file":                           config.GetTemplateAssetFilename(utils.KUBERNETES_PEM),
 		"tls-private-key-file":                    config.GetTemplateAssetFilename(utils.KUBERNETES_KEY_PEM),
 		"requestheader-client-ca-file":            config.GetTemplateAssetFilename(utils.CA_PEM),
-		"requestheader-allowed-names":             "aggregator",
+		"requestheader-allowed-names":             config.GetAllowedCommonNames(),
 		"requestheader-extra-headers-prefix":      "X-Remote-Extra-",
 		"requestheader-group-headers":             "X-Remote-Group",
 		"requestheader-username-headers":          "X-Remote-User",
@@ -424,7 +424,7 @@ func (config *InternalConfig) addServer(name string, labels []string, command st
 		}
 	}
 
-	config.Config.Servers = append(config.Config.Servers, ServerConfig{Name: name, Labels: labels, Command: command, Arguments: arguments, Logger: LoggerConfig{Enabled: true, Filename: path.Join(config.GetTemplateAssetDirectory(utils.LOGGING_DIRECTORY), name+".log")}})
+	config.Config.Servers = append(config.Config.Servers, ServerConfig{Name: name, Enabled: true, Labels: labels, Command: command, Arguments: arguments, Logger: LoggerConfig{Enabled: true, Filename: path.Join(config.GetTemplateAssetDirectory(utils.LOGGING_DIRECTORY), name+".log")}})
 }
 
 func (config *InternalConfig) addCommand(name string, labels Labels, command string) {
@@ -729,4 +729,16 @@ func (config *InternalConfig) GetStorageControllers() []NodeData {
 
 func (config *InternalConfig) GetStorageNodes() []NodeData {
 	return config.getLabeldOrAllNodes(utils.NODE_STORAGE_NODE)
+}
+
+func (config *InternalConfig) GetAllowedCommonNames() string {
+	result := []string{utils.CN_AGGREGATOR, utils.CN_ADMIN, utils.CN_SYSTEM_KUBE_CONTROLLER_MANAGER, utils.CN_SYSTEM_KUBE_CONTROLLER_MANAGER, utils.CN_SYSTEM_KUBE_SCHEDULER}
+
+	for nodeName, node := range config.Config.Nodes {
+		if node.IsWorker() {
+			result = append(result, fmt.Sprintf(utils.CN_SYSTEM_NODE_PREFIX, nodeName))
+		}
+	}
+
+	return strings.Join(result, ",")
 }

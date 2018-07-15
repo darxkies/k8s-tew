@@ -242,6 +242,14 @@ const ELECTION_NAMESPACE = "/k8s-tew"
 const ELECTION_CONTROLLER = "/controller-vip-manager"
 const ELECTION_WORKER = "/worker-vip-manager"
 
+// Common Names
+const CN_ADMIN = "admin"
+const CN_AGGREGATOR = "aggregator"
+const CN_SYSTEM_KUBE_CONTROLLER_MANAGER = "system:kube-controller-manager"
+const CN_SYSTEM_KUBE_SCHEDULER = "system:kube-scheduler"
+const CN_SYSTEM_KUBE_PROXY = "system:kube-proxy"
+const CN_SYSTEM_NODE_PREFIX = "system:node:%s"
+
 // Templates
 const CONTAINERD_CONFIG_TEMPLATE = `root = "{{.ContainerdRootDirectory}}"
 
@@ -369,14 +377,6 @@ backend_connection_timeout = "2s"
 [servers.kube-apiserver.discovery]
 kind = "static"
 static_list = [ {{ .KubeAPIServers | quoted_string_list }} ]
-
-[servers.kube-apiserver.healthcheck]
-fails = 1                      
-passes = 1
-interval = "2s"   
-timeout = "1s"             
-kind = "ping"
-ping_timeout_duration = "500ms"
 `
 
 const KUBE_SCHEDULER_CONFIGURATION_TEMPLATE = `apiVersion: componentconfig/v1alpha1
@@ -754,7 +754,7 @@ spec:
           mountPath: /etc/ceph
         - name: ceph-data
           mountPath: /var/lib/ceph
-{{end}}{{range $index, $node := .StorageControllers}}---
+{{end}}{{range $index, $node := .StorageNodes}}---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:

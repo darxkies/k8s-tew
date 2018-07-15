@@ -146,6 +146,7 @@ end
 Vagrant.configure("2") do |config|
     config.vm.box = $box
     config.vm.synced_folder '.', '/vagrant', disabled: true
+    config.vm.box_check_update = false
 
     config.vm.provider "virtualbox" do |vb|
         vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]

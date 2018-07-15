@@ -65,6 +65,10 @@ func (servers *Servers) Run() error {
 
 	// Add servers
 	for _, serverConfig := range servers.config.Config.Servers {
+		if !serverConfig.Enabled {
+			continue
+		}
+
 		if !config.CompareLabels(servers.config.Node.Labels, serverConfig.Labels) {
 			continue
 		}
