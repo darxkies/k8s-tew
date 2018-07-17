@@ -236,6 +236,7 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.K8S_HELM_USER_SETUP, Labels{}, "", utils.K8S_SETUP_CONFIG_DIRECTORY)
 	config.addAssetFile(utils.CEPH_SECRETS, Labels{}, "", utils.K8S_SETUP_CONFIG_DIRECTORY)
 	config.addAssetFile(utils.CEPH_SETUP, Labels{}, "", utils.K8S_SETUP_CONFIG_DIRECTORY)
+	config.addAssetFile(utils.LETSENCRYPT_CLUSTER_ISSUER, Labels{}, "", utils.K8S_SETUP_CONFIG_DIRECTORY)
 
 	// K8S Config
 	config.addAssetFile(utils.K8S_KUBE_SCHEDULER_CONFIG, Labels{utils.NODE_CONTROLLER}, "", utils.K8S_CONFIG_DIRECTORY)
@@ -396,14 +397,17 @@ func (config *InternalConfig) registerCommands() {
 	config.addCommand("k8s-admin-user-setup", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_ADMIN_USER_SETUP)))
 	config.addCommand("k8s-kube-dns", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s apply -f https://storage.googleapis.com/kubernetes-the-hard-way/kube-dns.yaml", kubectlCommand))
 	config.addCommand("k8s-helm-user-setup", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_HELM_USER_SETUP)))
-	config.addCommand("helm-init", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s init --service-account %s --upgrade", helmCommand, utils.HELM_SERVICE_ACCOUNT))
-	config.addCommand("helm-repo-update", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s repo update", helmCommand))
-	config.addCommand("helm-kubernetes-dashboard", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s get svc kubernetes-dashboard -n kube-system || %s install stable/kubernetes-dashboard --name kubernetes-dashboard --set=service.type=NodePort,service.nodePort=32443 --namespace kube-system", kubectlCommand, helmCommand))
-	config.addCommand("helm-metrics-server", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s get svc metrics-server || %s install stable/metrics-server --name metrics-server --set serviceAccount.name=metrics-server", kubectlCommand, helmCommand))
 	config.addCommand("ceph-secrets", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.CEPH_SECRETS)))
 	config.addCommand("ceph-setup", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.CEPH_SETUP)))
 	config.addCommand("ceph-create-pool", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s osd pool create %s 256 256", cephCommand, utils.CEPH_POOL_NAME))
 	config.addCommand("ceph-enable-dashboard", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s mgr module enable dashboard", cephCommand))
+	config.addCommand("helm-init", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s init --service-account %s --upgrade", helmCommand, utils.HELM_SERVICE_ACCOUNT))
+	config.addCommand("helm-repo-update", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s repo update", helmCommand))
+	config.addCommand("helm-kubernetes-dashboard", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s get svc kubernetes-dashboard -n kube-system || %s install stable/kubernetes-dashboard --name kubernetes-dashboard --set=service.type=NodePort,service.nodePort=32443 --namespace kube-system", kubectlCommand, helmCommand))
+	config.addCommand("helm-metrics-server", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s get svc metrics-server || %s install stable/metrics-server --name metrics-server --namespace kube-system --set serviceAccount.name=metrics-server", kubectlCommand, helmCommand))
+	config.addCommand("helm-cert-manager", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s list -q | grep cert-manager || %s install --name cert-manager --namespace kube-system stable/cert-manager", helmCommand, helmCommand))
+	config.addCommand("helm-nginx-ingress", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s list -q | grep nginx-ingress || %s install --namespace kube-system --name nginx-ingress stable/nginx-ingress --set rbac.create=true,controller.kind=DaemonSet,controller.service.type=NodePort,controller.service.nodePorts.http=30080,controller.service.nodePorts.https=30443", helmCommand, helmCommand))
+	config.addCommand("k8s-letsencrypt-cluster-issuer", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.LETSENCRYPT_CLUSTER_ISSUER)))
 }
 
 func (config *InternalConfig) Generate(deploymentDirectory string) {

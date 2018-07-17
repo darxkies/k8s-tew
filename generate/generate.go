@@ -486,6 +486,14 @@ func (generator *Generator) generateCephFiles() error {
 	return nil
 }
 
+func (generator *Generator) generateLetsEncryptClusterIssuer() error {
+	return utils.ApplyTemplateAndSave(utils.LETSENCRYPT_CLUSTER_ISSUER_TEMPLATE, struct {
+		Email string
+	}{
+		Email: generator.config.Config.Email,
+	}, generator.config.GetFullLocalAssetFilename(utils.LETSENCRYPT_CLUSTER_ISSUER), true)
+}
+
 func (generator *Generator) GenerateFiles() error {
 	// Generate profile file
 	if error := generator.generateProfileFile(); error != nil {
@@ -554,6 +562,11 @@ func (generator *Generator) GenerateFiles() error {
 
 	// Generate ceph files
 	if error := generator.generateCephFiles(); error != nil {
+		return error
+	}
+
+	// Generate Let's Encrypt Cluster Issuer
+	if error := generator.generateLetsEncryptClusterIssuer(); error != nil {
 		return error
 	}
 

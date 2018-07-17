@@ -10,6 +10,7 @@ import (
 type Config struct {
 	Version                      string      `yaml:"version"`
 	ClusterID                    string      `yaml:"cluster-id"`
+	Email                        string      `ỳaml:"email"`
 	LoadBalancerPort             uint16      `yaml:"load-balancer-port"`
 	APIServerPort                uint16      `yaml:"apiserver-port,omitempty"`
 	PublicNetwork                string      `yaml:"public-network"`
@@ -32,6 +33,7 @@ func NewConfig() *Config {
 	config := &Config{Version: utils.CONFIG_VERSION}
 
 	config.ClusterID = fmt.Sprintf("%s", uuid.NewV4())
+	config.Email = utils.EMAIL
 	config.LoadBalancerPort = utils.LOAD_BALANCER_PORT
 	config.APIServerPort = utils.API_SERVER_PORT
 	config.PublicNetwork = utils.PUBLIC_NETWORK

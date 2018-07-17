@@ -26,6 +26,7 @@ const API_SERVER_PORT = 6443
 const PUBLIC_NETWORK = "192.168.0.0/24"
 const LOAD_BALANCER_PORT = 16443
 const HELM_SERVICE_ACCOUNT = "tiller"
+const EMAIL = "k8s-tew@gmail.com"
 
 // URLs
 const K8S_DOWNLOAD_URL = "https://storage.googleapis.com/kubernetes-release/release/v{{.Versions.K8S}}/bin/linux/amd64/{{.Filename}}"
@@ -233,6 +234,9 @@ const CEPH_BOOTSTRAP_RBD_KEYRING = "ceph.bootstrap.rbd.keyring"
 const CEPH_BOOTSTRAP_RGW_KEYRING = "ceph.bootstrap.rgw.keyring"
 const CEPH_SECRETS = "ceph-secrets.yaml"
 const CEPH_SETUP = "ceph-setup.yaml"
+
+// Cluster Issuer
+const LETSENCRYPT_CLUSTER_ISSUER = "letsencrypt-cluster-issuer.yaml"
 
 // Environment variables
 const K8S_TEW_BASE_DIRECTORY = "K8S_TEW_BASE_DIRECTORY"
@@ -837,4 +841,18 @@ spec:
           mountPath: /etc/ceph
         - name: ceph-data
           mountPath: /var/lib/ceph
+`
+
+const LETSENCRYPT_CLUSTER_ISSUER_TEMPLATE = `apiVersion: certmanager.k8s.io/v1alpha1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-production
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: "{{.Email}}"
+    http01: {}
+    privateKeySecretRef:
+      key: ""
+      name: letsencrypt-production
 `
