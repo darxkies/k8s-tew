@@ -402,12 +402,18 @@ func (config *InternalConfig) registerCommands() {
 	config.addCommand("ceph-create-pool", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s osd pool create %s 256 256", cephCommand, utils.CEPH_POOL_NAME))
 	config.addCommand("ceph-enable-dashboard", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s mgr module enable dashboard", cephCommand))
 	config.addCommand("helm-init", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s init --service-account %s --upgrade", helmCommand, utils.HELM_SERVICE_ACCOUNT))
-	config.addCommand("helm-repo-update", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s repo update", helmCommand))
+	config.addCommand("helm-add-coreos-repository", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s repo add coreos https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/", helmCommand))
+	config.addCommand("helm-repository-update", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s repo update", helmCommand))
 	config.addCommand("helm-kubernetes-dashboard", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s get svc kubernetes-dashboard -n kube-system || %s install stable/kubernetes-dashboard --name kubernetes-dashboard --set=service.type=NodePort,service.nodePort=32443 --namespace kube-system", kubectlCommand, helmCommand))
-	config.addCommand("helm-metrics-server", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s get svc metrics-server || %s install stable/metrics-server --name metrics-server --namespace kube-system --set serviceAccount.name=metrics-server", kubectlCommand, helmCommand))
+	config.addCommand("helm-metrics-server", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s list -q | grep metrics-server || %s install stable/metrics-server --name metrics-server --namespace kube-system --set serviceAccount.name=metrics-server", helmCommand, helmCommand))
 	config.addCommand("helm-cert-manager", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s list -q | grep cert-manager || %s install --name cert-manager --namespace kube-system stable/cert-manager", helmCommand, helmCommand))
 	config.addCommand("helm-nginx-ingress", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s list -q | grep nginx-ingress || %s install --namespace kube-system --name nginx-ingress stable/nginx-ingress --set rbac.create=true,controller.kind=DaemonSet,controller.service.type=NodePort,controller.service.nodePorts.http=30080,controller.service.nodePorts.https=30443", helmCommand, helmCommand))
 	config.addCommand("k8s-letsencrypt-cluster-issuer", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.LETSENCRYPT_CLUSTER_ISSUER)))
+	config.addCommand("monitoring-namespace", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s get namespace monitoring|| %s create namespace monitoring", kubectlCommand, kubectlCommand))
+	config.addCommand("helm-heapster", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s list -q | grep heapster || %s install --name heapster --namespace kube-system stable/heapster --set rbac.create=true", helmCommand, helmCommand))
+	config.addCommand("helm-prometheus-operator", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s list -q | grep prometheus-operator || %s install coreos/prometheus-operator --name prometheus-operator --namespace monitoring", helmCommand, helmCommand))
+	config.addCommand("helm-kube-prometheus", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s list -q | grep kube-prometheus || %s install coreos/kube-prometheus --name kube-prometheus --namespace monitoring", helmCommand, helmCommand))
+	config.addCommand("patch-grafana-service", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf(`%s get svc kube-prometheus-grafana -n monitoring --output=jsonpath={.spec..nodePort} | grep 30900 || %s patch service kube-prometheus-grafana -n monitoring -p '{"spec":{"type":"NodePort","ports":[{"port":80,"nodePort":30900}]}}'`, kubectlCommand, kubectlCommand))
 }
 
 func (config *InternalConfig) Generate(deploymentDirectory string) {

@@ -1,7 +1,7 @@
 package utils
 
 // Versions
-const K8S_VERSION = "1.11.0"
+const K8S_VERSION = "1.11.1"
 const CONFIG_VERSION = "2.0.0"
 const ETCD_VERSION = "3.3.7"
 const FLANNELD_VERSION = "0.10.0"
