@@ -405,7 +405,7 @@ func (config *InternalConfig) registerCommands() {
 	config.addCommand("helm-init", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s init --service-account %s --upgrade", helmCommand, utils.HELM_SERVICE_ACCOUNT))
 	config.addCommand("helm-add-coreos-repository", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s repo add coreos https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/", helmCommand))
 	config.addCommand("helm-repository-update", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s repo update", helmCommand))
-	config.addCommand("helm-kubernetes-dashboard", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s get svc kubernetes-dashboard -n kube-system || %s install stable/kubernetes-dashboard --name kubernetes-dashboard --set=service.type=NodePort,service.nodePort=32443 --namespace kube-system", kubectlCommand, helmCommand))
+	config.addCommand("helm-kubernetes-dashboard", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s get svc kubernetes-dashboard -n kube-system || %s install stable/kubernetes-dashboard --name kubernetes-dashboard --set=service.type=NodePort,service.nodePort=%d --namespace kube-system", kubectlCommand, helmCommand, config.Config.DashboardPort))
 	config.addCommand("helm-metrics-server", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s list -q | grep metrics-server || %s install stable/metrics-server --name metrics-server --namespace kube-system --set serviceAccount.name=metrics-server", helmCommand, helmCommand))
 	config.addCommand("helm-cert-manager", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s list -q | grep cert-manager || %s install --name cert-manager --namespace kube-system stable/cert-manager", helmCommand, helmCommand))
 	config.addCommand("helm-nginx-ingress", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s list -q | grep nginx-ingress || %s install --namespace kube-system --name nginx-ingress stable/nginx-ingress --set rbac.create=true,controller.kind=DaemonSet,controller.service.type=NodePort,controller.service.nodePorts.http=30080,controller.service.nodePorts.https=30443", helmCommand, helmCommand))
@@ -675,6 +675,20 @@ func (config *InternalConfig) GetAPIServerIP() (string, error) {
 	}
 
 	return "", errors.New("No API Server IP found")
+}
+
+func (config *InternalConfig) GetWorkerIP() (string, error) {
+	if len(config.Config.WorkerVirtualIP) > 0 {
+		return config.Config.WorkerVirtualIP, nil
+	}
+
+	for _, node := range config.Config.Nodes {
+		if node.IsWorker() {
+			return node.IP, nil
+		}
+	}
+
+	return "", errors.New("No Worker IP found")
 }
 
 func (config *InternalConfig) GetSortedNodeKeys() []string {

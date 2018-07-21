@@ -276,7 +276,7 @@ This steps can be used to get k8s-tew to run locally without any virtual machine
 k8s-tew initialize -f
 k8s-tew node-add -s
 k8s-tew generate
-sudo bin/k8s-tew run
+sudo k8s-tew run
 ```
 
 __NOTE__: To access Kuberntes Dashboard use the internal IP address and 127.0.0.1/localhost. Depending on the hardware used, it might take a while until it starts and setups everything.

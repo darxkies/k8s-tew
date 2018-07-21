@@ -12,6 +12,7 @@ type Config struct {
 	ClusterID                    string      `yaml:"cluster-id"`
 	Email                        string      `ỳaml:"email"`
 	LoadBalancerPort             uint16      `yaml:"load-balancer-port"`
+	DashboardPort                uint16      `yaml:"dashboard-port"`
 	APIServerPort                uint16      `yaml:"apiserver-port,omitempty"`
 	PublicNetwork                string      `yaml:"public-network"`
 	ControllerVirtualIP          string      `yaml:"controller-virtual-ip,omitempty"`
@@ -36,6 +37,7 @@ func NewConfig() *Config {
 	config.ClusterID = fmt.Sprintf("%s", uuid.NewV4())
 	config.Email = utils.EMAIL
 	config.LoadBalancerPort = utils.LOAD_BALANCER_PORT
+	config.DashboardPort = utils.DASHBOARD_PORT
 	config.APIServerPort = utils.API_SERVER_PORT
 	config.PublicNetwork = utils.PUBLIC_NETWORK
 	config.ClusterDomain = utils.CLUSTER_DOMAIN

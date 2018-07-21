@@ -26,6 +26,7 @@ const RESOLV_CONF = "/etc/resolv.conf"
 const API_SERVER_PORT = 6443
 const PUBLIC_NETWORK = "192.168.0.0/24"
 const LOAD_BALANCER_PORT = 16443
+const DASHBOARD_PORT = 32443
 const HELM_SERVICE_ACCOUNT = "tiller"
 const EMAIL = "k8s-tew@gmail.com"
 
@@ -501,23 +502,6 @@ subjects:
   - apiGroup: rbac.authorization.k8s.io
     kind: User
     name: kubernetes
-`
-
-const K8S_KUBERNETES_DASHBOARD_PORT_UPDATE_TEMPLATE = `kind: Service
-apiVersion: v1
-metadata:
-  labels:
-    k8s-app: kubernetes-dashboard
-  name: kubernetes-dashboard
-  namespace: kube-system
-spec:
-  type: NodePort
-  ports:
-    - port: 443
-      nodePort: 32443
-      targetPort: 8443
-  selector:
-    k8s-app: kubernetes-dashboard
 `
 
 const CEPH_KEYRING_TEMPLATE = `[client.{{.Name}}]
