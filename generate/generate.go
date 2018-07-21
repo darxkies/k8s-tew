@@ -165,6 +165,7 @@ func (generator *Generator) generateKubeletConfig() error {
 			CA                  string
 			CertificateFilename string
 			KeyFilename         string
+			ClusterDomain       string
 			ClusterDNSIP        string
 			PODCIDR             string
 			StaticPodPath       string
@@ -172,6 +173,7 @@ func (generator *Generator) generateKubeletConfig() error {
 			CA:                  generator.config.GetFullTargetAssetFilename(utils.CA_PEM),
 			CertificateFilename: generator.config.GetFullTargetAssetFilename(utils.KUBELET_PEM),
 			KeyFilename:         generator.config.GetFullTargetAssetFilename(utils.KUBELET_KEY_PEM),
+			ClusterDomain:       generator.config.Config.ClusterDomain,
 			ClusterDNSIP:        generator.config.Config.ClusterDNSIP,
 			PODCIDR:             generator.config.Config.ClusterCIDR,
 			StaticPodPath:       generator.config.GetFullTargetAssetDirectory(utils.K8S_MANIFESTS_DIRECTORY),
@@ -494,6 +496,16 @@ func (generator *Generator) generateLetsEncryptClusterIssuer() error {
 	}, generator.config.GetFullLocalAssetFilename(utils.LETSENCRYPT_CLUSTER_ISSUER), true)
 }
 
+func (generator *Generator) generateCoreDNSSetup() error {
+	return utils.ApplyTemplateAndSave(utils.K8S_COREDNS_SETUP_TEMPLATE, struct {
+		ClusterDomain string
+		ClusterDNSIP  string
+	}{
+		ClusterDomain: generator.config.Config.ClusterDomain,
+		ClusterDNSIP:  generator.config.Config.ClusterDNSIP,
+	}, generator.config.GetFullLocalAssetFilename(utils.K8S_COREDNS_SETUP), true)
+}
+
 func (generator *Generator) GenerateFiles() error {
 	// Generate profile file
 	if error := generator.generateProfileFile(); error != nil {
@@ -567,6 +579,11 @@ func (generator *Generator) GenerateFiles() error {
 
 	// Generate Let's Encrypt Cluster Issuer
 	if error := generator.generateLetsEncryptClusterIssuer(); error != nil {
+		return error
+	}
+
+	// Generate CoreDNS setup file
+	if error := generator.generateCoreDNSSetup(); error != nil {
 		return error
 	}
 

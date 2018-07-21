@@ -18,6 +18,7 @@ type Config struct {
 	ControllerVirtualIPInterface string      `yaml:"controller-virtual-ip-interface,omitempty"`
 	WorkerVirtualIP              string      `yaml:"worker-virtual-ip,omitempty"`
 	WorkerVirtualIPInterface     string      `yaml:"worker-virtual-ip-interface,omitempty"`
+	ClusterDomain                string      `yaml:"cluster-domain"`
 	ClusterIPRange               string      `yaml:"cluster-ip-range"`
 	ClusterDNSIP                 string      `yaml:"cluster-dns-ip"`
 	ClusterCIDR                  string      `yaml:"cluster-cidr"`
@@ -37,6 +38,7 @@ func NewConfig() *Config {
 	config.LoadBalancerPort = utils.LOAD_BALANCER_PORT
 	config.APIServerPort = utils.API_SERVER_PORT
 	config.PublicNetwork = utils.PUBLIC_NETWORK
+	config.ClusterDomain = utils.CLUSTER_DOMAIN
 	config.ClusterIPRange = utils.CLUSTER_IP_RANGE
 	config.ClusterDNSIP = utils.CLUSTER_DNS_IP
 	config.ClusterCIDR = utils.CLUSTER_CIDR

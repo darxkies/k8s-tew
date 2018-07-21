@@ -237,6 +237,7 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.CEPH_SECRETS, Labels{}, "", utils.K8S_SETUP_CONFIG_DIRECTORY)
 	config.addAssetFile(utils.CEPH_SETUP, Labels{}, "", utils.K8S_SETUP_CONFIG_DIRECTORY)
 	config.addAssetFile(utils.LETSENCRYPT_CLUSTER_ISSUER, Labels{}, "", utils.K8S_SETUP_CONFIG_DIRECTORY)
+	config.addAssetFile(utils.K8S_COREDNS_SETUP, Labels{}, "", utils.K8S_SETUP_CONFIG_DIRECTORY)
 
 	// K8S Config
 	config.addAssetFile(utils.K8S_KUBE_SCHEDULER_CONFIG, Labels{utils.NODE_CONTROLLER}, "", utils.K8S_CONFIG_DIRECTORY)
@@ -395,7 +396,7 @@ func (config *InternalConfig) registerCommands() {
 	config.addCommand("flanneld-configuration", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s --ca-file=%s --cert-file=%s --key-file=%s --endpoints=%s set /coreos.com/network/config '{ \"Network\": \"%s\" }'", config.GetFullLocalAssetFilename(utils.ETCDCTL_BINARY), config.GetFullLocalAssetFilename(utils.CA_PEM), config.GetFullLocalAssetFilename(utils.KUBERNETES_PEM), config.GetFullLocalAssetFilename(utils.KUBERNETES_KEY_PEM), strings.Join(config.GetETCDClientEndpoints(), ","), config.Config.ClusterCIDR))
 	config.addCommand("k8s-kubelet-setup", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_KUBELET_SETUP)))
 	config.addCommand("k8s-admin-user-setup", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_ADMIN_USER_SETUP)))
-	config.addCommand("k8s-kube-dns", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s apply -f https://storage.googleapis.com/kubernetes-the-hard-way/kube-dns.yaml", kubectlCommand))
+	config.addCommand("k8s-kube-dns", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_COREDNS_SETUP)))
 	config.addCommand("k8s-helm-user-setup", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_HELM_USER_SETUP)))
 	config.addCommand("ceph-secrets", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.CEPH_SECRETS)))
 	config.addCommand("ceph-setup", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.CEPH_SETUP)))

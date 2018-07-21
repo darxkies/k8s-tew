@@ -18,6 +18,7 @@ const RSA_SIZE = 2048
 const CA_VALIDITY_PERIOD = 5
 const CLIENT_VALIDITY_PERIOD = 1
 const BASE_DIRECTORY = "assets"
+const CLUSTER_DOMAIN = "cluster.local"
 const CLUSTER_IP_RANGE = "10.32.0.0/24"
 const CLUSTER_DNS_IP = "10.32.0.10"
 const CLUSTER_CIDR = "10.200.0.0/16"
@@ -200,11 +201,12 @@ const CONTAINERD_CONFIG = "config-{{.Name}}.toml"
 const CONTAINERD_SOCK = "containerd.sock"
 
 // K8S Config
-const K8S_KUBELET_SETUP = "kubelet-setup.yml"
-const K8S_ADMIN_USER_SETUP = "admin-user-setup.yml"
-const K8S_HELM_USER_SETUP = "helm-user-setup.yml"
+const K8S_KUBELET_SETUP = "kubelet-setup.yaml"
+const K8S_ADMIN_USER_SETUP = "admin-user-setup.yaml"
+const K8S_HELM_USER_SETUP = "helm-user-setup.yaml"
 const K8S_KUBE_SCHEDULER_CONFIG = "kube-scheduler-config.yaml"
 const K8S_KUBELET_CONFIG = "kubelet-{{.Name}}-config.yaml"
+const K8S_COREDNS_SETUP = "coredns-setup.yaml"
 
 // Gobetween Config
 const GOBETWEEN_CONFIG = "config.toml"
@@ -855,4 +857,163 @@ spec:
     privateKeySecretRef:
       key: ""
       name: letsencrypt-production
+`
+
+const K8S_COREDNS_SETUP_TEMPLATE = `apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: coredns
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  labels:
+    kubernetes.io/bootstrapping: rbac-defaults
+  name: system:coredns
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - endpoints
+  - services
+  - pods
+  - namespaces
+  verbs:
+  - list
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  annotations:
+    rbac.authorization.kubernetes.io/autoupdate: "true"
+  labels:
+    kubernetes.io/bootstrapping: rbac-defaults
+  name: system:coredns
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:coredns
+subjects:
+- kind: ServiceAccount
+  name: coredns
+  namespace: kube-system
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coredns
+  namespace: kube-system
+data:
+  Corefile: |
+    .:53 {
+        errors
+        health
+        kubernetes {{.ClusterDomain}} in-addr.arpa ip6.arpa {
+          pods insecure
+          upstream
+          fallthrough in-addr.arpa ip6.arpa
+        }
+        prometheus :9153
+        proxy . /etc/resolv.conf
+        cache 30
+        reload
+        loadbalance
+    }
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: coredns
+  namespace: kube-system
+  labels:
+    k8s-app: kube-dns
+    kubernetes.io/name: "CoreDNS"
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      k8s-app: kube-dns
+  template:
+    metadata:
+      labels:
+        k8s-app: kube-dns
+    spec:
+      serviceAccountName: coredns
+      tolerations:
+        - key: "CriticalAddonsOnly"
+          operator: "Exists"
+      containers:
+      - name: coredns
+        image: coredns/coredns:1.2.0
+        imagePullPolicy: IfNotPresent
+        args: [ "-conf", "/etc/coredns/Corefile" ]
+        volumeMounts:
+        - name: config-volume
+          mountPath: /etc/coredns
+          readOnly: true
+        ports:
+        - containerPort: 53
+          name: dns
+          protocol: UDP
+        - containerPort: 53
+          name: dns-tcp
+          protocol: TCP
+        - containerPort: 9153
+          name: metrics
+          protocol: TCP
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            add:
+            - NET_BIND_SERVICE
+            drop:
+            - all
+          readOnlyRootFilesystem: true
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 60
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 5
+      dnsPolicy: Default
+      volumes:
+        - name: config-volume
+          configMap:
+            name: coredns
+            items:
+            - key: Corefile
+              path: Corefile
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kube-dns
+  namespace: kube-system
+  annotations:
+    prometheus.io/port: "9153"
+    prometheus.io/scrape: "true"
+  labels:
+    k8s-app: kube-dns
+    kubernetes.io/cluster-service: "true"
+    kubernetes.io/name: "CoreDNS"
+spec:
+  selector:
+    k8s-app: kube-dns
+  clusterIP: {{.ClusterDNSIP}}
+  ports:
+  - name: dns
+    port: 53
+    protocol: UDP
+  - name: dns-tcp
+    port: 53
+    protocol: TCP
 `
