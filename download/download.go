@@ -246,6 +246,12 @@ func (downloader Downloader) copyK8STEW() error {
 
 	targetFilename := downloader.config.GetFullLocalAssetFilename(utils.K8S_TEW_BINARY)
 
+	if binaryName == targetFilename {
+		log.WithFields(log.Fields{"filename": targetFilename}).Info("skipped")
+
+		return nil
+	}
+
 	sourceFile, error := os.Open(binaryName)
 
 	if error != nil {
@@ -268,7 +274,7 @@ func (downloader Downloader) copyK8STEW() error {
 		return error
 	}
 
-	log.WithFields(log.Fields{"filename": utils.K8S_TEW_BINARY}).Info("copied")
+	log.WithFields(log.Fields{"filename": targetFilename}).Info("copied")
 
 	return targetFile.Sync()
 }
