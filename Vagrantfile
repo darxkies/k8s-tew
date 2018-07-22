@@ -49,7 +49,7 @@ if ENV["OS"]
 end
 
 if $os == "ubuntu"
-    $box = "ubuntu/bionic64"
+    $box = "bento/ubuntu-18.04"
 
     $script += <<-SCRIPT
 apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y apt-transport-https socat conntrack ipset ceph-common
