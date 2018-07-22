@@ -417,10 +417,7 @@ func (config *InternalConfig) registerCommands() {
 	config.addCommand("patch-grafana-service", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf(`%s get svc kube-prometheus-grafana -n monitoring --output=jsonpath={.spec..nodePort} | grep 30900 || %s patch service kube-prometheus-grafana -n monitoring -p '{"spec":{"type":"NodePort","ports":[{"port":80,"nodePort":30900}]}}'`, kubectlCommand, kubectlCommand))
 }
 
-func (config *InternalConfig) Generate(deploymentDirectory string) {
-	config.Config.APIServerPort = 6443
-	config.Config.DeploymentDirectory = deploymentDirectory
-
+func (config *InternalConfig) Generate() {
 	config.registerAssetDirectories()
 	config.registerAssetFiles()
 	config.registerCommands()

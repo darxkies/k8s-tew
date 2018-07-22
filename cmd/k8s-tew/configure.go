@@ -1,39 +1,15 @@
 package main
 
 import (
+	"fmt"
 	"os"
+	"strconv"
 
 	"github.com/darxkies/k8s-tew/utils"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 )
-
-var controllerVirtualIP string
-var controllerVirtualIPInterface string
-var workerVirtualIP string
-var workerVirtualIPInterface string
-var clusterIPRange string
-var clusterDNSIP string
-var clusterCIDR string
-var resolvConf string
-var apiServerPort uint16
-var loadBalancerPort uint16
-var publicNetwork string
-var email string
-
-const CONTROLLER_VIRTUAL_IP = "controller-virtual-ip"
-const CONTROLLER_VIRTUAL_IP_INTERFACE = "controller-virtual-ip-interface"
-const WORKER_VIRTUAL_IP = "worker-virtual-ip"
-const WORKER_VIRTUAL_IP_INTERFACE = "worker-virtual-ip-interface"
-const CLUSTER_IP_RANGE = "cluster-ip-range"
-const CLUSTER_DNS_IP = "cluster-dns-ip"
-const CLUSTER_CIDR = "cluster-cidr"
-const RESOLV_CONF = "resolv-conf"
-const API_SERVER_PORT = "api-server-port"
-const LOAD_BALANCER_PORT = "load-balancer-port"
-const PUBLIC_NETWORK = "public-network"
-const EMAIL = "email"
 
 var configureCmd = &cobra.Command{
 	Use:   "configure",
@@ -48,52 +24,16 @@ var configureCmd = &cobra.Command{
 		}
 
 		cmd.Flags().Visit(func(flag *pflag.Flag) {
-			if flag.Name == CONTROLLER_VIRTUAL_IP {
-				_config.Config.ControllerVirtualIP = controllerVirtualIP
-			}
+			for key, handler := range setterHandlers {
+				if flag.Name != key {
+					continue
+				}
 
-			if flag.Name == CONTROLLER_VIRTUAL_IP_INTERFACE {
-				_config.Config.ControllerVirtualIPInterface = controllerVirtualIPInterface
-			}
+				handler(flag.Value.String())
 
-			if flag.Name == WORKER_VIRTUAL_IP {
-				_config.Config.WorkerVirtualIP = workerVirtualIP
-			}
+				fmt.Printf("%s = %s\n", flag.Name, flag.Value)
 
-			if flag.Name == WORKER_VIRTUAL_IP_INTERFACE {
-				_config.Config.WorkerVirtualIPInterface = workerVirtualIPInterface
-			}
-
-			if flag.Name == CLUSTER_IP_RANGE {
-				_config.Config.ClusterIPRange = clusterIPRange
-			}
-
-			if flag.Name == CLUSTER_DNS_IP {
-				_config.Config.ClusterDNSIP = clusterDNSIP
-			}
-
-			if flag.Name == CLUSTER_CIDR {
-				_config.Config.ClusterCIDR = clusterCIDR
-			}
-
-			if flag.Name == RESOLV_CONF {
-				_config.Config.ResolvConf = resolvConf
-			}
-
-			if flag.Name == API_SERVER_PORT {
-				_config.Config.APIServerPort = apiServerPort
-			}
-
-			if flag.Name == LOAD_BALANCER_PORT {
-				_config.Config.LoadBalancerPort = loadBalancerPort
-			}
-
-			if flag.Name == PUBLIC_NETWORK {
-				_config.Config.PublicNetwork = publicNetwork
-			}
-
-			if flag.Name == EMAIL {
-				_config.Config.Email = email
+				break
 			}
 		})
 
@@ -105,18 +45,125 @@ var configureCmd = &cobra.Command{
 	},
 }
 
+type stringSetter func(value string)
+type uint16Setter func(value uint16)
+
+var setterHandlers map[string]stringSetter
+
+func addStringOption(name string, value string, description string, handler stringSetter) {
+	configureCmd.Flags().String(name, value, description)
+
+	setterHandlers[name] = handler
+}
+
+func addUint16Option(name string, value uint16, description string, handler uint16Setter) {
+	configureCmd.Flags().Uint16(name, value, description)
+
+	setterHandlers[name] = func(value string) {
+		fmt.Printf("%s\n", value)
+
+		_value, _ := strconv.ParseUint(value, 10, 16)
+
+		fmt.Printf("%d\n", _value)
+
+		handler(uint16(_value))
+	}
+}
+
 func init() {
-	configureCmd.Flags().StringVar(&controllerVirtualIP, CONTROLLER_VIRTUAL_IP, "", "Controller Virtual IP for the cluster")
-	configureCmd.Flags().StringVar(&controllerVirtualIPInterface, CONTROLLER_VIRTUAL_IP_INTERFACE, "", "Controller Virtual IP interface for the cluster")
-	configureCmd.Flags().StringVar(&workerVirtualIP, WORKER_VIRTUAL_IP, "", "Worker Virtual IP for the cluster")
-	configureCmd.Flags().StringVar(&workerVirtualIPInterface, WORKER_VIRTUAL_IP_INTERFACE, "", "Worker Virtual IP interface for the cluster")
-	configureCmd.Flags().StringVar(&clusterIPRange, CLUSTER_IP_RANGE, utils.CLUSTER_IP_RANGE, "Cluster IP range")
-	configureCmd.Flags().StringVar(&clusterDNSIP, CLUSTER_DNS_IP, utils.CLUSTER_DNS_IP, "Cluster DNS IP")
-	configureCmd.Flags().StringVar(&clusterCIDR, CLUSTER_CIDR, utils.CLUSTER_CIDR, "Cluster CIDR")
-	configureCmd.Flags().StringVar(&resolvConf, RESOLV_CONF, utils.RESOLV_CONF, "Custom resolv.conf")
-	configureCmd.Flags().Uint16Var(&apiServerPort, API_SERVER_PORT, utils.API_SERVER_PORT, "API Server Port")
-	configureCmd.Flags().Uint16Var(&loadBalancerPort, LOAD_BALANCER_PORT, utils.LOAD_BALANCER_PORT, "Load Balancer Port")
-	configureCmd.Flags().StringVar(&publicNetwork, PUBLIC_NETWORK, utils.PUBLIC_NETWORK, "Public Network")
-	configureCmd.Flags().StringVar(&email, EMAIL, utils.EMAIL, "Email address used for example for Let's Encrypt")
+	setterHandlers = map[string]stringSetter{}
+
+	addUint16Option("apiserver-port", utils.API_SERVER_PORT, "API Server Port", func(value uint16) {
+		_config.Config.APIServerPort = value
+	})
+
+	addUint16Option("load-balancer-port", utils.LOAD_BALANCER_PORT, "Load Balancer Port", func(value uint16) {
+		_config.Config.LoadBalancerPort = value
+	})
+
+	addUint16Option("dashboard-port", utils.DASHBOARD_PORT, "Dashboard Port", func(value uint16) {
+		_config.Config.DashboardPort = value
+	})
+
+	addStringOption("controller-virtual-ip", "", "Controller Virtual IP for the cluster", func(value string) {
+		_config.Config.ControllerVirtualIP = value
+	})
+
+	addStringOption("controller-virtual-ip-interface", "", "Controller Virtual IP interface for the cluster", func(value string) {
+		_config.Config.ControllerVirtualIPInterface = value
+	})
+
+	addStringOption("worker-virtual-ip", "", "Worker Virtual IP for the cluster", func(value string) {
+		_config.Config.WorkerVirtualIP = value
+	})
+
+	addStringOption("worker-virtual-ip-interface", "", "Worker Virtual IP interface for the cluster", func(value string) {
+		_config.Config.WorkerVirtualIPInterface = value
+	})
+
+	addStringOption("cluster-domain", utils.CLUSTER_DOMAIN, "Cluster domain", func(value string) {
+		_config.Config.ClusterDomain = value
+	})
+
+	addStringOption("cluster-ip-range", utils.CLUSTER_IP_RANGE, "Cluster IP range", func(value string) {
+		_config.Config.ClusterIPRange = value
+	})
+
+	addStringOption("cluster-dns-ip", utils.CLUSTER_DNS_IP, "Cluster DNS IP", func(value string) {
+		_config.Config.ClusterDNSIP = value
+	})
+
+	addStringOption("cluster-cidr", utils.CLUSTER_CIDR, "Cluster CIDR", func(value string) {
+		_config.Config.ClusterCIDR = value
+	})
+
+	addStringOption("resolv-conf", utils.RESOLV_CONF, "Custom resolv.conf", func(value string) {
+		_config.Config.ResolvConf = value
+	})
+
+	addStringOption("public-network", utils.PUBLIC_NETWORK, "Public Network", func(value string) {
+		_config.Config.PublicNetwork = value
+	})
+
+	addStringOption("email", utils.EMAIL, "Email address used for example for Let's Encrypt", func(value string) {
+		_config.Config.Email = value
+	})
+
+	addStringOption("deployment-directory", utils.DEPLOYMENT_DIRECTORY, "Deployment directory", func(value string) {
+		_config.Config.DeploymentDirectory = value
+	})
+
+	addStringOption("version-etcd", utils.ETCD_VERSION, "Etcd version", func(value string) {
+		_config.Config.Versions.Etcd = value
+	})
+
+	addStringOption("version-flanneld", utils.FLANNELD_VERSION, "Flanneld  version", func(value string) {
+		_config.Config.Versions.Flanneld = value
+	})
+
+	addStringOption("version-k8s", utils.K8S_VERSION, "Kubernetes version", func(value string) {
+		_config.Config.Versions.K8S = value
+	})
+
+	addStringOption("version-helm", utils.HELM_VERSION, "Helm version", func(value string) {
+		_config.Config.Versions.Helm = value
+	})
+
+	addStringOption("version-containerd", utils.CONTAINERD_VERSION, "Containerd version", func(value string) {
+		_config.Config.Versions.Containerd = value
+	})
+
+	addStringOption("version-runc", utils.RUNC_VERSION, "Runc version", func(value string) {
+		_config.Config.Versions.Runc = value
+	})
+
+	addStringOption("version-crictl", utils.CRICTL_VERSION, "CriCtl version", func(value string) {
+		_config.Config.Versions.CriCtl = value
+	})
+
+	addStringOption("version-gobetween", utils.GOBETWEEN_VERSION, "Gobetween version", func(value string) {
+		_config.Config.Versions.Gobetween = value
+	})
+
 	RootCmd.AddCommand(configureCmd)
 }

@@ -25,6 +25,10 @@ type Config struct {
 	ClusterCIDR                  string      `yaml:"cluster-cidr"`
 	ResolvConf                   string      `yaml:"resolv-conf"`
 	DeploymentDirectory          string      `yaml:"deployment-directory,omitempty"`
+	RSASize                      uint16      `yaml:"rsa-size"`
+	CAValidityPeriod             uint        `yaml:"ca-validity-period"`
+	ClientValidityPeriod         uint        `yaml:"client-validity-period"`
+	Versions                     Versions    `yaml:"versions"`
 	Assets                       AssetConfig `yaml:"assets,omitempty"`
 	Nodes                        Nodes       `yaml:"nodes"`
 	Commands                     Commands    `yaml:"commands,omitempty"`
@@ -45,6 +49,11 @@ func NewConfig() *Config {
 	config.ClusterDNSIP = utils.CLUSTER_DNS_IP
 	config.ClusterCIDR = utils.CLUSTER_CIDR
 	config.ResolvConf = utils.RESOLV_CONF
+	config.DeploymentDirectory = utils.DEPLOYMENT_DIRECTORY
+	config.RSASize = utils.RSA_SIZE
+	config.CAValidityPeriod = utils.CA_VALIDITY_PERIOD
+	config.ClientValidityPeriod = utils.CLIENT_VALIDITY_PERIOD
+	config.Versions = NewVersions()
 	config.Assets = AssetConfig{Directories: map[string]*AssetDirectory{}, Files: map[string]*AssetFile{}}
 	config.Nodes = Nodes{}
 	config.Commands = Commands{}

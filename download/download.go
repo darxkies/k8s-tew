@@ -14,39 +14,26 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-type Versions struct {
-	Etcd       string
-	Flanneld   string
-	K8S        string
-	Helm       string
-	CNI        string
-	Containerd string
-	Runc       string
-	CriCtl     string
-	Gobetween  string
-}
-
 type CompressedFile struct {
 	SourceFile string
 	TargetFile string
 }
 
 type Downloader struct {
-	config   *config.InternalConfig
-	versions Versions
+	config *config.InternalConfig
 }
 
-func NewDownloader(config *config.InternalConfig, versions Versions) Downloader {
-	return Downloader{config: config, versions: versions}
+func NewDownloader(config *config.InternalConfig) Downloader {
+	return Downloader{config: config}
 }
 
 func (downloader Downloader) getURL(url, filename string) (string, error) {
 	data := struct {
 		Filename string
-		Versions Versions
+		Versions config.Versions
 	}{
 		Filename: filename,
-		Versions: downloader.versions,
+		Versions: downloader.config.Config.Versions,
 	}
 
 	return utils.ApplyTemplate(url, data)

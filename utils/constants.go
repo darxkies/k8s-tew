@@ -29,6 +29,7 @@ const LOAD_BALANCER_PORT = 16443
 const DASHBOARD_PORT = 32443
 const HELM_SERVICE_ACCOUNT = "tiller"
 const EMAIL = "k8s-tew@gmail.com"
+const DEPLOYMENT_DIRECTORY = "/"
 
 // URLs
 const K8S_DOWNLOAD_URL = "https://storage.googleapis.com/kubernetes-release/release/v{{.Versions.K8S}}/bin/linux/amd64/{{.Filename}}"

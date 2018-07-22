@@ -27,6 +27,7 @@ var RootCmd = &cobra.Command{
 	Long:  utils.PROJECT_TITLE,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Printf("Version: %s\n", version.Version)
+		fmt.Printf("OS: %s\n", utils.GetOSNameAndRelease())
 		fmt.Println()
 
 		cmd.Help()

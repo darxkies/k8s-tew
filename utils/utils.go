@@ -12,8 +12,10 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 	"time"
 
+	oslib "github.com/redpois0n/goslib"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -179,4 +181,16 @@ func GenerateCephKey() string {
 	rand.Read(buffer[headerSize:])
 
 	return base64.StdEncoding.EncodeToString(buffer)
+}
+
+func GetOSName() string {
+	return strings.ToLower(oslib.GetDist().Display)
+}
+
+func GetOSRelease() string {
+	return oslib.GetDist().Release
+}
+
+func GetOSNameAndRelease() string {
+	return fmt.Sprintf("%s/%s", GetOSName(), GetOSRelease())
 }

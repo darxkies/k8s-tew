@@ -170,7 +170,7 @@ func createAndSaveCertificate(signer *CertificateAndPrivateKey, template *x509.C
 	return nil
 }
 
-func GenerateCA(rsaSize int, validityPeriod int, commonName, organization, certificateFilename, privateKeyFilename string) error {
+func GenerateCA(rsaSize uint16, validityPeriod uint, commonName, organization, certificateFilename, privateKeyFilename string) error {
 	if utils.FileExists(certificateFilename) && utils.FileExists(privateKeyFilename) {
 		log.WithFields(log.Fields{"filename": certificateFilename}).Info("skipped")
 		log.WithFields(log.Fields{"filename": privateKeyFilename}).Info("skipped")
@@ -178,7 +178,7 @@ func GenerateCA(rsaSize int, validityPeriod int, commonName, organization, certi
 		return nil
 	}
 
-	template, error := newTemplate(validityPeriod, commonName, organization)
+	template, error := newTemplate(int(validityPeriod), commonName, organization)
 	if error != nil {
 		return error
 	}
@@ -188,10 +188,10 @@ func GenerateCA(rsaSize int, validityPeriod int, commonName, organization, certi
 	template.IsCA = true
 	template.MaxPathLen = 2
 
-	return createAndSaveCertificate(nil, template, rsaSize, certificateFilename, privateKeyFilename)
+	return createAndSaveCertificate(nil, template, int(rsaSize), certificateFilename, privateKeyFilename)
 }
 
-func GenerateClient(signer *CertificateAndPrivateKey, rsaSize int, validityPeriod int, commonName, organization string, dnsNames []string, ipAddresses []string, certificateFilename, privateKeyFilename string, force bool) error {
+func GenerateClient(signer *CertificateAndPrivateKey, rsaSize uint16, validityPeriod uint, commonName, organization string, dnsNames []string, ipAddresses []string, certificateFilename, privateKeyFilename string, force bool) error {
 	if utils.FileExists(certificateFilename) && utils.FileExists(privateKeyFilename) && !force {
 		log.WithFields(log.Fields{"filename": certificateFilename}).Info("skipped")
 		log.WithFields(log.Fields{"filename": privateKeyFilename}).Info("skipped")
@@ -199,7 +199,7 @@ func GenerateClient(signer *CertificateAndPrivateKey, rsaSize int, validityPerio
 		return nil
 	}
 
-	template, error := newTemplate(validityPeriod, commonName, organization)
+	template, error := newTemplate(int(validityPeriod), commonName, organization)
 	if error != nil {
 		return error
 	}
@@ -221,5 +221,5 @@ func GenerateClient(signer *CertificateAndPrivateKey, rsaSize int, validityPerio
 
 	template.DNSNames = dnsNames
 
-	return createAndSaveCertificate(signer, template, rsaSize, certificateFilename, privateKeyFilename)
+	return createAndSaveCertificate(signer, template, int(rsaSize), certificateFilename, privateKeyFilename)
 }

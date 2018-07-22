@@ -12,14 +12,11 @@ import (
 )
 
 type Generator struct {
-	config               *config.InternalConfig
-	rsaSize              int
-	caValidityPeriod     int
-	clientValidityPeriod int
+	config *config.InternalConfig
 }
 
-func NewGenerator(config *config.InternalConfig, rsaSize, caValidityPeriod int, clientValidityPeriod int) *Generator {
-	return &Generator{config: config, rsaSize: rsaSize, caValidityPeriod: caValidityPeriod, clientValidityPeriod: clientValidityPeriod}
+func NewGenerator(config *config.InternalConfig) *Generator {
+	return &Generator{config: config}
 }
 
 func (generator *Generator) generateProfileFile() error {
@@ -190,7 +187,7 @@ func (generator *Generator) generateCertificates() (*pki.CertificateAndPrivateKe
 	fullCAKeyFilename := generator.config.GetFullLocalAssetFilename(utils.CA_KEY_PEM)
 
 	// Generate CA if not done already
-	if error := pki.GenerateCA(generator.rsaSize, generator.caValidityPeriod, "Kubernetes", "Kubernetes", fullCAFilename, fullCAKeyFilename); error != nil {
+	if error := pki.GenerateCA(generator.config.Config.RSASize, generator.config.Config.CAValidityPeriod, "Kubernetes", "Kubernetes", fullCAFilename, fullCAKeyFilename); error != nil {
 		return nil, error
 	}
 
@@ -214,54 +211,54 @@ func (generator *Generator) generateCertificates() (*pki.CertificateAndPrivateKe
 	}
 
 	// Generate flanneld certificate
-	if error := pki.GenerateClient(ca, generator.rsaSize, generator.clientValidityPeriod, "flanneld", "flanneld", []string{}, []string{}, generator.config.GetFullLocalAssetFilename(utils.FLANNELD_PEM), generator.config.GetFullLocalAssetFilename(utils.FLANNELD_KEY_PEM), false); error != nil {
+	if error := pki.GenerateClient(ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, "flanneld", "flanneld", []string{}, []string{}, generator.config.GetFullLocalAssetFilename(utils.FLANNELD_PEM), generator.config.GetFullLocalAssetFilename(utils.FLANNELD_KEY_PEM), false); error != nil {
 		return nil, error
 	}
 
 	// Generate virtual-ip certificate
-	if error := pki.GenerateClient(ca, generator.rsaSize, generator.clientValidityPeriod, "virtual-ip", "virtual-ip", []string{}, []string{}, generator.config.GetFullLocalAssetFilename(utils.VIRTUAL_IP_PEM), generator.config.GetFullLocalAssetFilename(utils.VIRTUAL_IP_KEY_PEM), false); error != nil {
+	if error := pki.GenerateClient(ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, "virtual-ip", "virtual-ip", []string{}, []string{}, generator.config.GetFullLocalAssetFilename(utils.VIRTUAL_IP_PEM), generator.config.GetFullLocalAssetFilename(utils.VIRTUAL_IP_KEY_PEM), false); error != nil {
 		return nil, error
 	}
 
 	// Generate admin certificate
-	if error := pki.GenerateClient(ca, generator.rsaSize, generator.clientValidityPeriod, utils.CN_ADMIN, "system:masters", []string{}, []string{}, generator.config.GetFullLocalAssetFilename(utils.ADMIN_PEM), generator.config.GetFullLocalAssetFilename(utils.ADMIN_KEY_PEM), false); error != nil {
+	if error := pki.GenerateClient(ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, utils.CN_ADMIN, "system:masters", []string{}, []string{}, generator.config.GetFullLocalAssetFilename(utils.ADMIN_PEM), generator.config.GetFullLocalAssetFilename(utils.ADMIN_KEY_PEM), false); error != nil {
 		return nil, error
 	}
 
 	// Generate kuberentes certificate
-	if error := pki.GenerateClient(ca, generator.rsaSize, generator.clientValidityPeriod, "kubernetes", "Kubernetes", kubernetesDNSNames, kubernetesIPAddresses, generator.config.GetFullLocalAssetFilename(utils.KUBERNETES_PEM), generator.config.GetFullLocalAssetFilename(utils.KUBERNETES_KEY_PEM), true); error != nil {
+	if error := pki.GenerateClient(ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, "kubernetes", "Kubernetes", kubernetesDNSNames, kubernetesIPAddresses, generator.config.GetFullLocalAssetFilename(utils.KUBERNETES_PEM), generator.config.GetFullLocalAssetFilename(utils.KUBERNETES_KEY_PEM), true); error != nil {
 		return nil, error
 	}
 
 	// Generate aggregator certificate
-	if error := pki.GenerateClient(ca, generator.rsaSize, generator.clientValidityPeriod, utils.CN_AGGREGATOR, "Kubernetes", kubernetesDNSNames, kubernetesIPAddresses, generator.config.GetFullLocalAssetFilename(utils.AGGREGATOR_PEM), generator.config.GetFullLocalAssetFilename(utils.AGGREGATOR_KEY_PEM), true); error != nil {
+	if error := pki.GenerateClient(ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, utils.CN_AGGREGATOR, "Kubernetes", kubernetesDNSNames, kubernetesIPAddresses, generator.config.GetFullLocalAssetFilename(utils.AGGREGATOR_PEM), generator.config.GetFullLocalAssetFilename(utils.AGGREGATOR_KEY_PEM), true); error != nil {
 		return nil, error
 	}
 
 	// Generate service accounts certificate
-	if error := pki.GenerateClient(ca, generator.rsaSize, generator.clientValidityPeriod, "service-accounts", "Kubernetes", kubernetesDNSNames, kubernetesIPAddresses, generator.config.GetFullLocalAssetFilename(utils.SERVICE_ACCOUNT_PEM), generator.config.GetFullLocalAssetFilename(utils.SERVICE_ACCOUNT_KEY_PEM), false); error != nil {
+	if error := pki.GenerateClient(ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, "service-accounts", "Kubernetes", kubernetesDNSNames, kubernetesIPAddresses, generator.config.GetFullLocalAssetFilename(utils.SERVICE_ACCOUNT_PEM), generator.config.GetFullLocalAssetFilename(utils.SERVICE_ACCOUNT_KEY_PEM), false); error != nil {
 		return nil, error
 	}
 
 	// Generate controller manager certificate
-	if error := pki.GenerateClient(ca, generator.rsaSize, generator.clientValidityPeriod, utils.CN_SYSTEM_KUBE_CONTROLLER_MANAGER, "system:node-controller-manager", []string{}, []string{}, generator.config.GetFullLocalAssetFilename(utils.CONTROLLER_MANAGER_PEM), generator.config.GetFullLocalAssetFilename(utils.CONTROLLER_MANAGER_KEY_PEM), false); error != nil {
+	if error := pki.GenerateClient(ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, utils.CN_SYSTEM_KUBE_CONTROLLER_MANAGER, "system:node-controller-manager", []string{}, []string{}, generator.config.GetFullLocalAssetFilename(utils.CONTROLLER_MANAGER_PEM), generator.config.GetFullLocalAssetFilename(utils.CONTROLLER_MANAGER_KEY_PEM), false); error != nil {
 		return nil, error
 	}
 
 	// Generate scheduler certificate
-	if error := pki.GenerateClient(ca, generator.rsaSize, generator.clientValidityPeriod, utils.CN_SYSTEM_KUBE_SCHEDULER, "system:kube-scheduler", []string{}, []string{}, generator.config.GetFullLocalAssetFilename(utils.SCHEDULER_PEM), generator.config.GetFullLocalAssetFilename(utils.SCHEDULER_KEY_PEM), false); error != nil {
+	if error := pki.GenerateClient(ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, utils.CN_SYSTEM_KUBE_SCHEDULER, "system:kube-scheduler", []string{}, []string{}, generator.config.GetFullLocalAssetFilename(utils.SCHEDULER_PEM), generator.config.GetFullLocalAssetFilename(utils.SCHEDULER_KEY_PEM), false); error != nil {
 		return nil, error
 	}
 
 	// Generate proxy certificate
-	if error := pki.GenerateClient(ca, generator.rsaSize, generator.clientValidityPeriod, utils.CN_SYSTEM_KUBE_PROXY, "system:node-proxier", []string{}, []string{}, generator.config.GetFullLocalAssetFilename(utils.PROXY_PEM), generator.config.GetFullLocalAssetFilename(utils.PROXY_KEY_PEM), false); error != nil {
+	if error := pki.GenerateClient(ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, utils.CN_SYSTEM_KUBE_PROXY, "system:node-proxier", []string{}, []string{}, generator.config.GetFullLocalAssetFilename(utils.PROXY_PEM), generator.config.GetFullLocalAssetFilename(utils.PROXY_KEY_PEM), false); error != nil {
 		return nil, error
 	}
 
 	for nodeName, node := range generator.config.Config.Nodes {
 		generator.config.SetNode(nodeName, node)
 
-		if error := pki.GenerateClient(ca, generator.rsaSize, generator.clientValidityPeriod, fmt.Sprintf(utils.CN_SYSTEM_NODE_PREFIX, nodeName), "system:nodes", []string{nodeName}, []string{node.IP}, generator.config.GetFullLocalAssetFilename(utils.KUBELET_PEM), generator.config.GetFullLocalAssetFilename(utils.KUBELET_KEY_PEM), false); error != nil {
+		if error := pki.GenerateClient(ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, fmt.Sprintf(utils.CN_SYSTEM_NODE_PREFIX, nodeName), "system:nodes", []string{nodeName}, []string{node.IP}, generator.config.GetFullLocalAssetFilename(utils.KUBELET_PEM), generator.config.GetFullLocalAssetFilename(utils.KUBELET_KEY_PEM), false); error != nil {
 			return nil, error
 		}
 	}

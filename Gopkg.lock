@@ -92,6 +92,12 @@
   version = "v1.0.1"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/redpois0n/goslib"
+  packages = ["."]
+  revision = "31d6236edf039c86430dabd84ce93c4f71dff469"
+
+[[projects]]
   name = "github.com/satori/go.uuid"
   packages = ["."]
   revision = "f58768cc1a7a7e77a3bd49e98cdd21419399b6a3"
@@ -251,6 +257,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "8cdf75071df2e3bc46677193b09533fb38680d8e1d3fcd99c6a18248283b3a73"
+  inputs-digest = "87fd8deec381852c126d5187f23d19dc4d4dcd1ca9a701f56a3843069257fea6"
   solver-name = "gps-cdcl"
   solver-version = 1
