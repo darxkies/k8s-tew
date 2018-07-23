@@ -119,6 +119,10 @@ func (servers *Servers) Run() error {
 			continue
 		}
 
+		if !utils.HasOS(command.OS) {
+			continue
+		}
+
 		if error := servers.runCommand(command); error != nil {
 			return error
 		}

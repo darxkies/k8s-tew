@@ -58,6 +58,12 @@ const NODE_WORKER = "worker"
 const NODE_STORAGE_CONTROLLER = "storage-controller"
 const NODE_STORAGE_NODE = "storage-node"
 
+// OS
+const OS_UBUNTU = "ubuntu"
+const OS_UBUNTU_18_04 = "ubuntu/18.04"
+const OS_CENTOS = "centos"
+const OS_CENTOS_7_5 = "centos/7.5"
+
 // Sub-Directories
 const TEMPORARY_SUBDIRECTORY = "tmp"
 const CONFIG_SUBDIRECTORY = "etc"

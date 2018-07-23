@@ -388,33 +388,35 @@ func (config *InternalConfig) registerCommands() {
 	cephCommand := fmt.Sprintf("%s exec -t -i $(%s get pods  -n ceph | grep ceph-mgr | cut -d ' ' -f 1) -n ceph -- ceph", kubectlCommand, kubectlCommand)
 
 	// Dependencies
-	config.addCommand("swapoff", Labels{utils.NODE_WORKER}, "swapoff -a")
-	config.addCommand("load-overlay", Labels{utils.NODE_WORKER}, "modprobe overlay")
-	config.addCommand("load-btrfs", Labels{utils.NODE_WORKER}, "modprobe btrfs")
-	config.addCommand("load-br_netfilter", Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, "modprobe br_netfilter")
-	config.addCommand("enable-br_netfilter", Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, "echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables")
-	config.addCommand("flanneld-configuration", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s --ca-file=%s --cert-file=%s --key-file=%s --endpoints=%s set /coreos.com/network/config '{ \"Network\": \"%s\" }'", config.GetFullLocalAssetFilename(utils.ETCDCTL_BINARY), config.GetFullLocalAssetFilename(utils.CA_PEM), config.GetFullLocalAssetFilename(utils.KUBERNETES_PEM), config.GetFullLocalAssetFilename(utils.KUBERNETES_KEY_PEM), strings.Join(config.GetETCDClientEndpoints(), ","), config.Config.ClusterCIDR))
-	config.addCommand("k8s-kubelet-setup", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_KUBELET_SETUP)))
-	config.addCommand("k8s-admin-user-setup", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_ADMIN_USER_SETUP)))
-	config.addCommand("k8s-kube-dns", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_COREDNS_SETUP)))
-	config.addCommand("k8s-helm-user-setup", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_HELM_USER_SETUP)))
-	config.addCommand("ceph-secrets", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.CEPH_SECRETS)))
-	config.addCommand("ceph-setup", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.CEPH_SETUP)))
-	config.addCommand("ceph-create-pool", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s osd pool create %s 256 256", cephCommand, utils.CEPH_POOL_NAME))
-	config.addCommand("ceph-enable-dashboard", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s mgr module enable dashboard", cephCommand))
-	config.addCommand("helm-init", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s init --service-account %s --upgrade", helmCommand, utils.HELM_SERVICE_ACCOUNT))
-	config.addCommand("helm-add-coreos-repository", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s repo add coreos https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/", helmCommand))
-	config.addCommand("helm-repository-update", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s repo update", helmCommand))
-	config.addCommand("helm-kubernetes-dashboard", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s get svc kubernetes-dashboard -n kube-system || %s install stable/kubernetes-dashboard --name kubernetes-dashboard --set=service.type=NodePort,service.nodePort=%d --namespace kube-system", kubectlCommand, helmCommand, config.Config.DashboardPort))
-	config.addCommand("helm-metrics-server", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s list -q | grep metrics-server || %s install stable/metrics-server --name metrics-server --namespace kube-system --set serviceAccount.name=metrics-server", helmCommand, helmCommand))
-	config.addCommand("helm-cert-manager", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s list -q | grep cert-manager || %s install --name cert-manager --namespace kube-system stable/cert-manager", helmCommand, helmCommand))
-	config.addCommand("helm-nginx-ingress", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s list -q | grep nginx-ingress || %s install --namespace kube-system --name nginx-ingress stable/nginx-ingress --set rbac.create=true,controller.kind=DaemonSet,controller.service.type=NodePort,controller.service.nodePorts.http=30080,controller.service.nodePorts.https=30443", helmCommand, helmCommand))
-	config.addCommand("k8s-letsencrypt-cluster-issuer", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.LETSENCRYPT_CLUSTER_ISSUER)))
-	config.addCommand("monitoring-namespace", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s get namespace monitoring|| %s create namespace monitoring", kubectlCommand, kubectlCommand))
-	config.addCommand("helm-heapster", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s list -q | grep heapster || %s install --name heapster --namespace kube-system stable/heapster --set rbac.create=true", helmCommand, helmCommand))
-	config.addCommand("helm-prometheus-operator", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s list -q | grep prometheus-operator || %s install coreos/prometheus-operator --name prometheus-operator --namespace monitoring", helmCommand, helmCommand))
-	config.addCommand("helm-kube-prometheus", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf("%s list -q | grep kube-prometheus || %s install coreos/kube-prometheus --name kube-prometheus --namespace monitoring", helmCommand, helmCommand))
-	config.addCommand("patch-grafana-service", Labels{utils.NODE_BOOTSTRAPPER}, fmt.Sprintf(`%s get svc kube-prometheus-grafana -n monitoring --output=jsonpath={.spec..nodePort} | grep 30900 || %s patch service kube-prometheus-grafana -n monitoring -p '{"spec":{"type":"NodePort","ports":[{"port":80,"nodePort":30900}]}}'`, kubectlCommand, kubectlCommand))
+	config.addCommand("setup-ubuntu", Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, OS{utils.OS_UBUNTU}, "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y apt-transport-https socat conntrack ipset ceph-common")
+	config.addCommand("setup-centos-disable-selinux", Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, OS{utils.OS_CENTOS}, "setenforce 0")
+	config.addCommand("swapoff", Labels{utils.NODE_WORKER}, OS{}, "swapoff -a")
+	config.addCommand("load-overlay", Labels{utils.NODE_WORKER}, OS{}, "modprobe overlay")
+	config.addCommand("load-btrfs", Labels{utils.NODE_WORKER}, OS{}, "modprobe btrfs")
+	config.addCommand("load-br_netfilter", Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, OS{}, "modprobe br_netfilter")
+	config.addCommand("enable-br_netfilter", Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, OS{}, "echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables")
+	config.addCommand("flanneld-configuration", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s --ca-file=%s --cert-file=%s --key-file=%s --endpoints=%s set /coreos.com/network/config '{ \"Network\": \"%s\" }'", config.GetFullLocalAssetFilename(utils.ETCDCTL_BINARY), config.GetFullLocalAssetFilename(utils.CA_PEM), config.GetFullLocalAssetFilename(utils.KUBERNETES_PEM), config.GetFullLocalAssetFilename(utils.KUBERNETES_KEY_PEM), strings.Join(config.GetETCDClientEndpoints(), ","), config.Config.ClusterCIDR))
+	config.addCommand("k8s-kubelet-setup", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_KUBELET_SETUP)))
+	config.addCommand("k8s-admin-user-setup", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_ADMIN_USER_SETUP)))
+	config.addCommand("k8s-kube-dns", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_COREDNS_SETUP)))
+	config.addCommand("k8s-helm-user-setup", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_HELM_USER_SETUP)))
+	config.addCommand("ceph-secrets", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.CEPH_SECRETS)))
+	config.addCommand("ceph-setup", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.CEPH_SETUP)))
+	config.addCommand("ceph-create-pool", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s osd pool create %s 256 256", cephCommand, utils.CEPH_POOL_NAME))
+	config.addCommand("ceph-enable-dashboard", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s mgr module enable dashboard", cephCommand))
+	config.addCommand("helm-init", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s init --service-account %s --upgrade", helmCommand, utils.HELM_SERVICE_ACCOUNT))
+	config.addCommand("helm-add-coreos-repository", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s repo add coreos https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/", helmCommand))
+	config.addCommand("helm-repository-update", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s repo update", helmCommand))
+	config.addCommand("helm-kubernetes-dashboard", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s get svc kubernetes-dashboard -n kube-system || %s install stable/kubernetes-dashboard --name kubernetes-dashboard --set=service.type=NodePort,service.nodePort=%d --namespace kube-system", kubectlCommand, helmCommand, config.Config.DashboardPort))
+	config.addCommand("helm-metrics-server", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s list -q | grep metrics-server || %s install stable/metrics-server --name metrics-server --namespace kube-system --set serviceAccount.name=metrics-server", helmCommand, helmCommand))
+	config.addCommand("helm-cert-manager", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s list -q | grep cert-manager || %s install --name cert-manager --namespace kube-system stable/cert-manager", helmCommand, helmCommand))
+	config.addCommand("helm-nginx-ingress", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s list -q | grep nginx-ingress || %s install --namespace kube-system --name nginx-ingress stable/nginx-ingress --set rbac.create=true,controller.kind=DaemonSet,controller.service.type=NodePort,controller.service.nodePorts.http=30080,controller.service.nodePorts.https=30443", helmCommand, helmCommand))
+	config.addCommand("k8s-letsencrypt-cluster-issuer", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.LETSENCRYPT_CLUSTER_ISSUER)))
+	config.addCommand("monitoring-namespace", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s get namespace monitoring|| %s create namespace monitoring", kubectlCommand, kubectlCommand))
+	config.addCommand("helm-heapster", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s list -q | grep heapster || %s install --name heapster --namespace kube-system stable/heapster --set rbac.create=true", helmCommand, helmCommand))
+	config.addCommand("helm-prometheus-operator", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s list -q | grep prometheus-operator || %s install coreos/prometheus-operator --name prometheus-operator --namespace monitoring", helmCommand, helmCommand))
+	config.addCommand("helm-kube-prometheus", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s list -q | grep kube-prometheus || %s install coreos/kube-prometheus --name kube-prometheus --namespace monitoring", helmCommand, helmCommand))
+	config.addCommand("patch-grafana-service", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf(`%s get svc kube-prometheus-grafana -n monitoring --output=jsonpath={.spec..nodePort} | grep 30900 || %s patch service kube-prometheus-grafana -n monitoring -p '{"spec":{"type":"NodePort","ports":[{"port":80,"nodePort":30900}]}}'`, kubectlCommand, kubectlCommand))
 }
 
 func (config *InternalConfig) Generate() {
@@ -435,7 +437,7 @@ func (config *InternalConfig) addServer(name string, labels []string, command st
 	config.Config.Servers = append(config.Config.Servers, ServerConfig{Name: name, Enabled: true, Labels: labels, Command: command, Arguments: arguments, Logger: LoggerConfig{Enabled: true, Filename: path.Join(config.GetTemplateAssetDirectory(utils.LOGGING_DIRECTORY), name+".log")}})
 }
 
-func (config *InternalConfig) addCommand(name string, labels Labels, command string) {
+func (config *InternalConfig) addCommand(name string, labels Labels, os OS, command string) {
 	// Do not add if already in the list
 	for _, command := range config.Config.Commands {
 		if command.Name == name {
@@ -443,7 +445,7 @@ func (config *InternalConfig) addCommand(name string, labels Labels, command str
 		}
 	}
 
-	config.Config.Commands = append(config.Config.Commands, NewCommand(name, labels, command))
+	config.Config.Commands = append(config.Config.Commands, NewCommand(name, labels, os, command))
 }
 
 func (config *InternalConfig) addAssetFile(name string, labels Labels, filename, directory string) {

@@ -194,3 +194,17 @@ func GetOSRelease() string {
 func GetOSNameAndRelease() string {
 	return fmt.Sprintf("%s/%s", GetOSName(), GetOSRelease())
 }
+
+func HasOS(os []string) bool {
+	if len(os) == 0 {
+		return true
+	}
+
+	for _, entry := range os {
+		if entry == GetOSName() || entry == GetOSNameAndRelease() {
+			return true
+		}
+	}
+
+	return false
+}
