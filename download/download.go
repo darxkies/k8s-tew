@@ -309,10 +309,6 @@ func (downloader Downloader) downloadRuncBinary() error {
 	return downloader.downloadExecutable(utils.RUNC_DOWNLOAD_URL, "", downloader.config.GetFullLocalAssetFilename(utils.RUNC_BINARY))
 }
 
-func (downloader Downloader) downloadFlanneldBinary() error {
-	return downloader.downloadExecutable(utils.FLANNELD_DOWNLOAD_URL, "", downloader.config.GetFullLocalAssetFilename(utils.FLANNELD_BINARY))
-}
-
 func (downloader Downloader) downloadEtcdBinaries() error {
 	// Build base name including the version number
 	baseName, error := downloader.getURL(utils.ETCD_BASE_NAME, "")
@@ -332,29 +328,6 @@ func (downloader Downloader) downloadEtcdBinaries() error {
 	}
 
 	return downloader.downloadAndExtractTGZFiles(utils.ETCD_DOWNLOAD_URL, utils.ETCD_BASE_NAME, compressedFiles)
-}
-
-func (downloader Downloader) downloadCNIBinaries() error {
-	compressedFiles := []CompressedFile{
-		CompressedFile{
-			SourceFile: utils.BRIDGE_BINARY,
-			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.BRIDGE_BINARY),
-		},
-		CompressedFile{
-			SourceFile: utils.FLANNEL_BINARY,
-			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.FLANNEL_BINARY),
-		},
-		CompressedFile{
-			SourceFile: utils.LOOPBACK_BINARY,
-			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.LOOPBACK_BINARY),
-		},
-		CompressedFile{
-			SourceFile: utils.HOST_LOCAL_BINARY,
-			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.HOST_LOCAL_BINARY),
-		},
-	}
-
-	return downloader.downloadAndExtractTGZFiles(utils.CNI_DOWNLOAD_URL, utils.CNI_BASE_NAME, compressedFiles)
 }
 
 func (downloader Downloader) downloadContainerdBinaries() error {
@@ -423,19 +396,11 @@ func (downloader Downloader) DownloadBinaries() error {
 		return error
 	}
 
-	if error := downloader.downloadFlanneldBinary(); error != nil {
-		return error
-	}
-
 	if error := downloader.downloadK8SBinaries(); error != nil {
 		return error
 	}
 
 	if error := downloader.downloadHelmBinary(); error != nil {
-		return error
-	}
-
-	if error := downloader.downloadCNIBinaries(); error != nil {
 		return error
 	}
 

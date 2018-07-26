@@ -53,16 +53,16 @@ func (generator *Generator) generateGobetweenConfig() error {
 	}, generator.config.GetFullLocalAssetFilename(utils.GOBETWEEN_CONFIG), true)
 }
 
-func (generator *Generator) generateCNIFiles() error {
-	if error := utils.ApplyTemplateAndSave(utils.NET_CONFIG_TEMPLATE, struct {
-		ClusterCIDR string
+func (generator *Generator) generateCalicoSetup() error {
+	return utils.ApplyTemplateAndSave(utils.CALICO_SETUP_TEMPLATE, struct {
+		ClusterCIDR          string
+		CNIConfigDirectory   string
+		CNIBinariesDirectory string
 	}{
-		ClusterCIDR: generator.config.Config.ClusterCIDR,
-	}, generator.config.GetFullLocalAssetFilename(utils.NET_CONFIG), false); error != nil {
-		return error
-	}
-
-	return utils.ApplyTemplateAndSave(utils.CNI_CONFIG_TEMPLATE, nil, generator.config.GetFullLocalAssetFilename(utils.CNI_CONFIG), false)
+		ClusterCIDR:          generator.config.Config.ClusterCIDR,
+		CNIConfigDirectory:   generator.config.GetFullTargetAssetDirectory(utils.CNI_CONFIG_DIRECTORY),
+		CNIBinariesDirectory: generator.config.GetFullTargetAssetDirectory(utils.CNI_BINARIES_DIRECTORY),
+	}, generator.config.GetFullLocalAssetFilename(utils.K8S_CALICO_SETUP), true)
 }
 
 func (generator *Generator) generateK8SKubeletConfigFile() error {
@@ -114,10 +114,6 @@ func (generator *Generator) generateContainerdConfig() error {
 	for nodeName, node := range generator.config.Config.Nodes {
 		generator.config.SetNode(nodeName, node)
 
-		if !node.IsWorker() {
-			continue
-		}
-
 		if error := utils.ApplyTemplateAndSave(utils.CONTAINERD_CONFIG_TEMPLATE, struct {
 			ContainerdRootDirectory  string
 			ContainerdStateDirectory string
@@ -153,10 +149,6 @@ func (generator *Generator) generateKubeSchedulerConfig() error {
 func (generator *Generator) generateKubeletConfig() error {
 	for nodeName, node := range generator.config.Config.Nodes {
 		generator.config.SetNode(nodeName, node)
-
-		if !node.IsWorker() {
-			continue
-		}
 
 		if error := utils.ApplyTemplateAndSave(utils.KUBELET_CONFIGURATION_TEMPLATE, struct {
 			CA                  string
@@ -518,6 +510,12 @@ func (generator *Generator) GenerateFiles() error {
 	if error := generator.generateGobetweenConfig(); error != nil {
 		return error
 	}
+
+	// Generate calico setup
+	if error := generator.generateCalicoSetup(); error != nil {
+		return error
+	}
+
 	// Generate scheduler config
 	if error := generator.generateKubeSchedulerConfig(); error != nil {
 		return error
@@ -545,11 +543,6 @@ func (generator *Generator) GenerateFiles() error {
 
 	// Generate containerd config
 	if error := generator.generateContainerdConfig(); error != nil {
-		return error
-	}
-
-	// Generate container network interface files
-	if error := generator.generateCNIFiles(); error != nil {
 		return error
 	}
 

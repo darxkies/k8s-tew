@@ -106,7 +106,7 @@ func (config *InternalConfig) registerAssetDirectories() {
 	// Config
 	config.addAssetDirectory(utils.CONFIG_DIRECTORY, Labels{}, config.getRelativeConfigDirectory())
 	config.addAssetDirectory(utils.CERTIFICATES_DIRECTORY, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.CONFIG_DIRECTORY), utils.CERTIFICATES_SUBDIRECTORY))
-	config.addAssetDirectory(utils.CNI_CONFIG_DIRECTORY, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.CONFIG_DIRECTORY), utils.CNI_SUBDIRECTORY))
+	config.addAssetDirectory(utils.CNI_CONFIG_DIRECTORY, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, path.Join(config.GetRelativeAssetDirectory(utils.CONFIG_DIRECTORY), utils.CNI_SUBDIRECTORY))
 	config.addAssetDirectory(utils.CRI_CONFIG_DIRECTORY, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.CONFIG_DIRECTORY), utils.CRI_SUBDIRECTORY))
 
 	// K8S Config
@@ -121,7 +121,7 @@ func (config *InternalConfig) registerAssetDirectories() {
 	config.addAssetDirectory(utils.K8S_BINARIES_DIRECTORY, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.BINARIES_DIRECTORY), utils.K8S_SUBDIRECTORY))
 	config.addAssetDirectory(utils.ETCD_BINARIES_DIRECTORY, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.BINARIES_DIRECTORY), utils.ETCD_SUBDIRECTORY))
 	config.addAssetDirectory(utils.CRI_BINARIES_DIRECTORY, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.BINARIES_DIRECTORY), utils.CRI_SUBDIRECTORY))
-	config.addAssetDirectory(utils.CNI_BINARIES_DIRECTORY, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.BINARIES_DIRECTORY), utils.CNI_SUBDIRECTORY))
+	config.addAssetDirectory(utils.CNI_BINARIES_DIRECTORY, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, path.Join(config.GetRelativeAssetDirectory(utils.BINARIES_DIRECTORY), utils.CNI_SUBDIRECTORY))
 	config.addAssetDirectory(utils.GOBETWEEN_BINARIES_DIRECTORY, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.BINARIES_DIRECTORY), utils.LOAD_BALANCER_SUBDIRECTORY))
 
 	// Misc
@@ -153,31 +153,24 @@ func (config *InternalConfig) registerAssetFiles() {
 	// Binaries
 	config.addAssetFile(utils.K8S_TEW_BINARY, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, "", utils.BINARIES_DIRECTORY)
 
-	// CNI Binaries
-	config.addAssetFile(utils.BRIDGE_BINARY, Labels{utils.NODE_WORKER}, "", utils.CNI_BINARIES_DIRECTORY)
-	config.addAssetFile(utils.FLANNEL_BINARY, Labels{utils.NODE_WORKER}, "", utils.CNI_BINARIES_DIRECTORY)
-	config.addAssetFile(utils.LOOPBACK_BINARY, Labels{utils.NODE_WORKER}, "", utils.CNI_BINARIES_DIRECTORY)
-	config.addAssetFile(utils.HOST_LOCAL_BINARY, Labels{utils.NODE_WORKER}, "", utils.CNI_BINARIES_DIRECTORY)
-
 	// ContainerD Binaries
-	config.addAssetFile(utils.CONTAINERD_BINARY, Labels{utils.NODE_WORKER}, "", utils.CRI_BINARIES_DIRECTORY)
-	config.addAssetFile(utils.CONTAINERD_SHIM_BINARY, Labels{utils.NODE_WORKER}, "", utils.CRI_BINARIES_DIRECTORY)
-	config.addAssetFile(utils.CTR_BINARY, Labels{utils.NODE_WORKER}, "", utils.CRI_BINARIES_DIRECTORY)
-	config.addAssetFile(utils.RUNC_BINARY, Labels{utils.NODE_WORKER}, "", utils.CRI_BINARIES_DIRECTORY)
-	config.addAssetFile(utils.CRICTL_BINARY, Labels{utils.NODE_WORKER}, "", utils.CRI_BINARIES_DIRECTORY)
+	config.addAssetFile(utils.CONTAINERD_BINARY, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, "", utils.CRI_BINARIES_DIRECTORY)
+	config.addAssetFile(utils.CONTAINERD_SHIM_BINARY, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, "", utils.CRI_BINARIES_DIRECTORY)
+	config.addAssetFile(utils.CTR_BINARY, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, "", utils.CRI_BINARIES_DIRECTORY)
+	config.addAssetFile(utils.RUNC_BINARY, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, "", utils.CRI_BINARIES_DIRECTORY)
+	config.addAssetFile(utils.CRICTL_BINARY, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, "", utils.CRI_BINARIES_DIRECTORY)
 
 	// Etcd Binaries
 	config.addAssetFile(utils.ETCD_BINARY, Labels{utils.NODE_CONTROLLER}, "", utils.ETCD_BINARIES_DIRECTORY)
 	config.addAssetFile(utils.ETCDCTL_BINARY, Labels{utils.NODE_CONTROLLER}, "", utils.ETCD_BINARIES_DIRECTORY)
-	config.addAssetFile(utils.FLANNELD_BINARY, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, "", utils.ETCD_BINARIES_DIRECTORY)
 
 	// K8S Binaries
 	config.addAssetFile(utils.KUBECTL_BINARY, Labels{utils.NODE_CONTROLLER}, "", utils.K8S_BINARIES_DIRECTORY)
 	config.addAssetFile(utils.KUBE_APISERVER_BINARY, Labels{utils.NODE_CONTROLLER}, "", utils.K8S_BINARIES_DIRECTORY)
 	config.addAssetFile(utils.KUBE_CONTROLLER_MANAGER_BINARY, Labels{utils.NODE_CONTROLLER}, "", utils.K8S_BINARIES_DIRECTORY)
-	config.addAssetFile(utils.KUBELET_BINARY, Labels{utils.NODE_WORKER}, "", utils.K8S_BINARIES_DIRECTORY)
-	config.addAssetFile(utils.KUBE_PROXY_BINARY, Labels{utils.NODE_WORKER}, "", utils.K8S_BINARIES_DIRECTORY)
 	config.addAssetFile(utils.KUBE_SCHEDULER_BINARY, Labels{utils.NODE_CONTROLLER}, "", utils.K8S_BINARIES_DIRECTORY)
+	config.addAssetFile(utils.KUBE_PROXY_BINARY, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, "", utils.K8S_BINARIES_DIRECTORY)
+	config.addAssetFile(utils.KUBELET_BINARY, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, "", utils.K8S_BINARIES_DIRECTORY)
 
 	// Helm Binary
 	config.addAssetFile(utils.HELM_BINARY, Labels{}, "", utils.K8S_BINARIES_DIRECTORY)
@@ -204,8 +197,8 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.SCHEDULER_KEY_PEM, Labels{}, "", utils.CERTIFICATES_DIRECTORY)
 	config.addAssetFile(utils.PROXY_PEM, Labels{}, "", utils.CERTIFICATES_DIRECTORY)
 	config.addAssetFile(utils.PROXY_KEY_PEM, Labels{}, "", utils.CERTIFICATES_DIRECTORY)
-	config.addAssetFile(utils.KUBELET_PEM, Labels{utils.NODE_WORKER}, "", utils.CERTIFICATES_DIRECTORY)
-	config.addAssetFile(utils.KUBELET_KEY_PEM, Labels{utils.NODE_WORKER}, "", utils.CERTIFICATES_DIRECTORY)
+	config.addAssetFile(utils.KUBELET_PEM, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, "", utils.CERTIFICATES_DIRECTORY)
+	config.addAssetFile(utils.KUBELET_KEY_PEM, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, "", utils.CERTIFICATES_DIRECTORY)
 	config.addAssetFile(utils.AGGREGATOR_PEM, Labels{utils.NODE_CONTROLLER}, "", utils.CERTIFICATES_DIRECTORY)
 	config.addAssetFile(utils.AGGREGATOR_KEY_PEM, Labels{utils.NODE_CONTROLLER}, "", utils.CERTIFICATES_DIRECTORY)
 
@@ -213,18 +206,14 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.ADMIN_KUBECONFIG, Labels{}, "", utils.K8S_KUBE_CONFIG_DIRECTORY)
 	config.addAssetFile(utils.CONTROLLER_MANAGER_KUBECONFIG, Labels{utils.NODE_CONTROLLER}, "", utils.K8S_KUBE_CONFIG_DIRECTORY)
 	config.addAssetFile(utils.SCHEDULER_KUBECONFIG, Labels{utils.NODE_CONTROLLER}, "", utils.K8S_KUBE_CONFIG_DIRECTORY)
-	config.addAssetFile(utils.PROXY_KUBECONFIG, Labels{utils.NODE_WORKER}, "", utils.K8S_KUBE_CONFIG_DIRECTORY)
-	config.addAssetFile(utils.KUBELET_KUBECONFIG, Labels{utils.NODE_WORKER}, "", utils.K8S_KUBE_CONFIG_DIRECTORY)
+	config.addAssetFile(utils.PROXY_KUBECONFIG, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, "", utils.K8S_KUBE_CONFIG_DIRECTORY)
+	config.addAssetFile(utils.KUBELET_KUBECONFIG, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, "", utils.K8S_KUBE_CONFIG_DIRECTORY)
 
 	// Security
 	config.addAssetFile(utils.ENCRYPTION_CONFIG, Labels{utils.NODE_CONTROLLER}, "", utils.K8S_SECURITY_CONFIG_DIRECTORY)
 
-	// CNI
-	config.addAssetFile(utils.NET_CONFIG, Labels{utils.NODE_WORKER}, "", utils.CNI_CONFIG_DIRECTORY)
-	config.addAssetFile(utils.CNI_CONFIG, Labels{utils.NODE_WORKER}, "", utils.CNI_CONFIG_DIRECTORY)
-
 	// CRI
-	config.addAssetFile(utils.CONTAINERD_CONFIG, Labels{utils.NODE_WORKER}, "", utils.CRI_CONFIG_DIRECTORY)
+	config.addAssetFile(utils.CONTAINERD_CONFIG, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, "", utils.CRI_CONFIG_DIRECTORY)
 	config.addAssetFile(utils.CONTAINERD_SOCK, Labels{}, "", utils.CONTAINERD_STATE_DIRECTORY)
 
 	// Service
@@ -237,11 +226,12 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.CEPH_SECRETS, Labels{}, "", utils.K8S_SETUP_CONFIG_DIRECTORY)
 	config.addAssetFile(utils.CEPH_SETUP, Labels{}, "", utils.K8S_SETUP_CONFIG_DIRECTORY)
 	config.addAssetFile(utils.LETSENCRYPT_CLUSTER_ISSUER, Labels{}, "", utils.K8S_SETUP_CONFIG_DIRECTORY)
+	config.addAssetFile(utils.K8S_CALICO_SETUP, Labels{}, "", utils.K8S_SETUP_CONFIG_DIRECTORY)
 	config.addAssetFile(utils.K8S_COREDNS_SETUP, Labels{}, "", utils.K8S_SETUP_CONFIG_DIRECTORY)
 
 	// K8S Config
 	config.addAssetFile(utils.K8S_KUBE_SCHEDULER_CONFIG, Labels{utils.NODE_CONTROLLER}, "", utils.K8S_CONFIG_DIRECTORY)
-	config.addAssetFile(utils.K8S_KUBELET_CONFIG, Labels{utils.NODE_WORKER}, "", utils.K8S_CONFIG_DIRECTORY)
+	config.addAssetFile(utils.K8S_KUBELET_CONFIG, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, "", utils.K8S_CONFIG_DIRECTORY)
 
 	// Profile
 	config.addAssetFile(utils.K8S_TEW_PROFILE, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, "", utils.PROFILE_DIRECTORY)
@@ -250,13 +240,13 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.GOBETWEEN_CONFIG, Labels{utils.NODE_CONTROLLER}, "", utils.GOBETWEEN_CONFIG_DIRECTORY)
 
 	// Ceph
-	config.addAssetFile(utils.CEPH_CONFIG, Labels{utils.NODE_WORKER}, "", utils.CEPH_CONFIG_DIRECTORY)
-	config.addAssetFile(utils.CEPH_CLIENT_ADMIN_KEYRING, Labels{utils.NODE_WORKER}, "", utils.CEPH_CONFIG_DIRECTORY)
-	config.addAssetFile(utils.CEPH_MONITOR_KEYRING, Labels{utils.NODE_WORKER}, "", utils.CEPH_CONFIG_DIRECTORY)
-	config.addAssetFile(utils.CEPH_BOOTSTRAP_MDS_KEYRING, Labels{utils.NODE_WORKER}, utils.CEPH_KEYRING, utils.CEPH_BOOTSTRAP_MDS_DIRECTORY)
-	config.addAssetFile(utils.CEPH_BOOTSTRAP_OSD_KEYRING, Labels{utils.NODE_WORKER}, utils.CEPH_KEYRING, utils.CEPH_BOOTSTRAP_OSD_DIRECTORY)
-	config.addAssetFile(utils.CEPH_BOOTSTRAP_RBD_KEYRING, Labels{utils.NODE_WORKER}, utils.CEPH_KEYRING, utils.CEPH_BOOTSTRAP_RBD_DIRECTORY)
-	config.addAssetFile(utils.CEPH_BOOTSTRAP_RGW_KEYRING, Labels{utils.NODE_WORKER}, utils.CEPH_KEYRING, utils.CEPH_BOOTSTRAP_RGW_DIRECTORY)
+	config.addAssetFile(utils.CEPH_CONFIG, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, "", utils.CEPH_CONFIG_DIRECTORY)
+	config.addAssetFile(utils.CEPH_CLIENT_ADMIN_KEYRING, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, "", utils.CEPH_CONFIG_DIRECTORY)
+	config.addAssetFile(utils.CEPH_MONITOR_KEYRING, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, "", utils.CEPH_CONFIG_DIRECTORY)
+	config.addAssetFile(utils.CEPH_BOOTSTRAP_MDS_KEYRING, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, utils.CEPH_KEYRING, utils.CEPH_BOOTSTRAP_MDS_DIRECTORY)
+	config.addAssetFile(utils.CEPH_BOOTSTRAP_OSD_KEYRING, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, utils.CEPH_KEYRING, utils.CEPH_BOOTSTRAP_OSD_DIRECTORY)
+	config.addAssetFile(utils.CEPH_BOOTSTRAP_RBD_KEYRING, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, utils.CEPH_KEYRING, utils.CEPH_BOOTSTRAP_RBD_DIRECTORY)
+	config.addAssetFile(utils.CEPH_BOOTSTRAP_RGW_KEYRING, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, utils.CEPH_KEYRING, utils.CEPH_BOOTSTRAP_RGW_DIRECTORY)
 }
 
 func (config *InternalConfig) registerServers() {
@@ -281,16 +271,7 @@ func (config *InternalConfig) registerServers() {
 		"data-dir":                    config.GetTemplateAssetDirectory(utils.ETCD_DATA_DIRECTORY),
 	})
 
-	config.addServer("flanneld", Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, config.GetTemplateAssetFilename(utils.FLANNELD_BINARY), map[string]string{
-		"etcd-endpoints": "{{etcd_servers}}",
-		"etcd-cafile":    config.GetTemplateAssetFilename(utils.CA_PEM),
-		"etcd-certfile":  config.GetTemplateAssetFilename(utils.FLANNELD_PEM),
-		"etcd-keyfile":   config.GetTemplateAssetFilename(utils.FLANNELD_KEY_PEM),
-		"iface-regex":    "{{.Node.IP}}",
-		"v":              "0",
-	})
-
-	config.addServer("containerd", Labels{utils.NODE_WORKER}, config.GetTemplateAssetFilename(utils.CONTAINERD_BINARY), map[string]string{
+	config.addServer("containerd", Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, config.GetTemplateAssetFilename(utils.CONTAINERD_BINARY), map[string]string{
 		"config": config.GetTemplateAssetFilename(utils.CONTAINERD_CONFIG),
 	})
 
@@ -341,6 +322,7 @@ func (config *InternalConfig) registerServers() {
 
 	config.addServer("kube-controller-manager", Labels{utils.NODE_CONTROLLER}, config.GetTemplateAssetFilename(utils.KUBE_CONTROLLER_MANAGER_BINARY), map[string]string{
 		"address":                          "0.0.0.0",
+		"allocate-node-cidrs":              "true",
 		"cluster-cidr":                     "{{.Config.ClusterCIDR}}",
 		"cluster-name":                     "kubernetes",
 		"cluster-signing-cert-file":        config.GetTemplateAssetFilename(utils.CA_PEM),
@@ -359,14 +341,14 @@ func (config *InternalConfig) registerServers() {
 		"v":      "0",
 	})
 
-	config.addServer("kube-proxy", Labels{utils.NODE_WORKER}, config.GetTemplateAssetFilename(utils.KUBE_PROXY_BINARY), map[string]string{
+	config.addServer("kube-proxy", Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, config.GetTemplateAssetFilename(utils.KUBE_PROXY_BINARY), map[string]string{
 		"cluster-cidr": "{{.Config.ClusterCIDR}}",
 		"kubeconfig":   config.GetTemplateAssetFilename(utils.PROXY_KUBECONFIG),
 		"proxy-mode":   "iptables",
 		"v":            "0",
 	})
 
-	config.addServer("kubelet", Labels{utils.NODE_WORKER}, config.GetTemplateAssetFilename(utils.KUBELET_BINARY), map[string]string{
+	config.addServer("kubelet", Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, config.GetTemplateAssetFilename(utils.KUBELET_BINARY), map[string]string{
 		"config":                       config.GetTemplateAssetFilename(utils.K8S_KUBELET_CONFIG),
 		"container-runtime":            "remote",
 		"container-runtime-endpoint":   "unix://" + config.GetTemplateAssetFilename(utils.CONTAINERD_SOCK),
@@ -390,15 +372,16 @@ func (config *InternalConfig) registerCommands() {
 	// Dependencies
 	config.addCommand("setup-ubuntu", Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, OS{utils.OS_UBUNTU}, "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y apt-transport-https socat conntrack ipset ceph-common")
 	config.addCommand("setup-centos-disable-selinux", Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, OS{utils.OS_CENTOS}, "setenforce 0")
-	config.addCommand("swapoff", Labels{utils.NODE_WORKER}, OS{}, "swapoff -a")
-	config.addCommand("load-overlay", Labels{utils.NODE_WORKER}, OS{}, "modprobe overlay")
-	config.addCommand("load-btrfs", Labels{utils.NODE_WORKER}, OS{}, "modprobe btrfs")
+	config.addCommand("swapoff", Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, OS{}, "swapoff -a")
+	config.addCommand("load-overlay", Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, OS{}, "modprobe overlay")
+	config.addCommand("load-btrfs", Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, OS{}, "modprobe btrfs")
 	config.addCommand("load-br_netfilter", Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, OS{}, "modprobe br_netfilter")
 	config.addCommand("enable-br_netfilter", Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, OS{}, "echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables")
-	config.addCommand("flanneld-configuration", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s --ca-file=%s --cert-file=%s --key-file=%s --endpoints=%s set /coreos.com/network/config '{ \"Network\": \"%s\" }'", config.GetFullLocalAssetFilename(utils.ETCDCTL_BINARY), config.GetFullLocalAssetFilename(utils.CA_PEM), config.GetFullLocalAssetFilename(utils.KUBERNETES_PEM), config.GetFullLocalAssetFilename(utils.KUBERNETES_KEY_PEM), strings.Join(config.GetETCDClientEndpoints(), ","), config.Config.ClusterCIDR))
+	config.addCommand("enable-net-forwarding", Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, OS{}, "sysctl net.ipv4.conf.all.forwarding=1")
 	config.addCommand("k8s-kubelet-setup", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_KUBELET_SETUP)))
 	config.addCommand("k8s-admin-user-setup", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_ADMIN_USER_SETUP)))
-	config.addCommand("k8s-kube-dns", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_COREDNS_SETUP)))
+	config.addCommand("k8s-calico", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_CALICO_SETUP)))
+	config.addCommand("k8s-coredns", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_COREDNS_SETUP)))
 	config.addCommand("k8s-helm-user-setup", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_HELM_USER_SETUP)))
 	config.addCommand("ceph-secrets", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.CEPH_SECRETS)))
 	config.addCommand("ceph-setup", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.CEPH_SETUP)))
