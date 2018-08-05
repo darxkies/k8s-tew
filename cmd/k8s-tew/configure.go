@@ -137,10 +137,6 @@ func init() {
 		_config.Config.Versions.Etcd = value
 	})
 
-	addStringOption("version-flanneld", utils.FLANNELD_VERSION, "Flanneld  version", func(value string) {
-		_config.Config.Versions.Flanneld = value
-	})
-
 	addStringOption("version-k8s", utils.K8S_VERSION, "Kubernetes version", func(value string) {
 		_config.Config.Versions.K8S = value
 	})

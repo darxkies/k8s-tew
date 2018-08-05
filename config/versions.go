@@ -17,10 +17,8 @@ type Versions struct {
 func NewVersions() Versions {
 	return Versions{
 		Etcd:       utils.ETCD_VERSION,
-		Flanneld:   utils.FLANNELD_VERSION,
 		K8S:        utils.K8S_VERSION,
 		Helm:       utils.HELM_VERSION,
-		CNI:        utils.CNI_VERSION,
 		Containerd: utils.CONTAINERD_VERSION,
 		Runc:       utils.RUNC_VERSION,
 		CriCtl:     utils.CRICTL_VERSION,
