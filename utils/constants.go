@@ -331,6 +331,7 @@ ExecStart={{.Command}} run --base-directory={{.BaseDirectory}}
 ExecStop=/usr/bin/killall -INT {{.Binary}}
 Restart=on-failure
 RestartSec=5
+LimitNOFILE=1000000
 
 [Install]
 WantedBy=multi-user.target
