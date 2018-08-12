@@ -1,12 +1,12 @@
 package utils
 
 // Versions
-const K8S_VERSION = "1.11.1"
+const K8S_VERSION = "1.11.2"
 const CONFIG_VERSION = "2.0.0"
 const ETCD_VERSION = "3.3.7"
 const CONTAINERD_VERSION = "1.1.2"
 const RUNC_VERSION = "1.0.0-rc5"
-const CRICTL_VERSION = "1.0.0-beta.0"
+const CRICTL_VERSION = "1.11.1"
 const GOBETWEEN_VERSION = "0.5.0"
 const HELM_VERSION = "2.9.1"
 
