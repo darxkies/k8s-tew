@@ -495,6 +495,14 @@ func (generator *Generator) generateCoreDNSSetup() error {
 	}, generator.config.GetFullLocalAssetFilename(utils.K8S_COREDNS_SETUP), true)
 }
 
+func (generator *Generator) generateElasticSearchOperatorSetup() error {
+	return utils.ApplyTemplateAndSave(utils.K8S_ELASTICSEARCH_OPERATOR_SETUP_TEMPLATE, struct{}{}, generator.config.GetFullLocalAssetFilename(utils.K8S_ELASTICSEARCH_OPERATOR_SETUP), true)
+}
+
+func (generator *Generator) generateEFKSetup() error {
+	return utils.ApplyTemplateAndSave(utils.K8S_EFK_SETUP_TEMPLATE, struct{}{}, generator.config.GetFullLocalAssetFilename(utils.K8S_EFK_SETUP), true)
+}
+
 func (generator *Generator) GenerateFiles() error {
 	// Generate profile file
 	if error := generator.generateProfileFile(); error != nil {
@@ -574,6 +582,16 @@ func (generator *Generator) GenerateFiles() error {
 
 	// Generate CoreDNS setup file
 	if error := generator.generateCoreDNSSetup(); error != nil {
+		return error
+	}
+
+	// Generate ElasticSearch Operator setup file
+	if error := generator.generateElasticSearchOperatorSetup(); error != nil {
+		return error
+	}
+
+	// Generate ElasticSearch/Fluent-Bit/Kibana setup file
+	if error := generator.generateEFKSetup(); error != nil {
 		return error
 	}
 

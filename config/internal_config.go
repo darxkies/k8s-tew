@@ -228,6 +228,8 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.LETSENCRYPT_CLUSTER_ISSUER, Labels{}, "", utils.K8S_SETUP_CONFIG_DIRECTORY)
 	config.addAssetFile(utils.K8S_CALICO_SETUP, Labels{}, "", utils.K8S_SETUP_CONFIG_DIRECTORY)
 	config.addAssetFile(utils.K8S_COREDNS_SETUP, Labels{}, "", utils.K8S_SETUP_CONFIG_DIRECTORY)
+	config.addAssetFile(utils.K8S_ELASTICSEARCH_OPERATOR_SETUP, Labels{}, "", utils.K8S_SETUP_CONFIG_DIRECTORY)
+	config.addAssetFile(utils.K8S_EFK_SETUP, Labels{}, "", utils.K8S_SETUP_CONFIG_DIRECTORY)
 
 	// K8S Config
 	config.addAssetFile(utils.K8S_KUBE_SCHEDULER_CONFIG, Labels{utils.NODE_CONTROLLER}, "", utils.K8S_CONFIG_DIRECTORY)
@@ -400,6 +402,10 @@ func (config *InternalConfig) registerCommands() {
 	config.addCommand("helm-prometheus-operator", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s list -q | grep prometheus-operator || %s install coreos/prometheus-operator --name prometheus-operator --namespace monitoring", helmCommand, helmCommand))
 	config.addCommand("helm-kube-prometheus", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s list -q | grep kube-prometheus || %s install coreos/kube-prometheus --name kube-prometheus --namespace monitoring", helmCommand, helmCommand))
 	config.addCommand("patch-grafana-service", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf(`%s get svc kube-prometheus-grafana -n monitoring --output=jsonpath={.spec..nodePort} | grep 30900 || %s patch service kube-prometheus-grafana -n monitoring -p '{"spec":{"type":"NodePort","ports":[{"port":80,"nodePort":30900}]}}'`, kubectlCommand, kubectlCommand))
+	config.addCommand("k8s-elasticsearch-operator-setup", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_ELASTICSEARCH_OPERATOR_SETUP)))
+	config.addCommand("k8s-efk-setup", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_EFK_SETUP)))
+	config.addCommand("patch-kibana-service", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf(`%s get svc kibana-elasticsearch-cluster -n logging --output=jsonpath={.spec..nodePort} | grep 30980 || %s patch service kibana-elasticsearch-cluster -n logging -p '{"spec":{"type":"NodePort","ports":[{"port":80,"nodePort":30980}]}}'`, kubectlCommand, kubectlCommand))
+	config.addCommand("patch-cerebro-service", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf(`%s get svc cerebro-elasticsearch-cluster -n logging --output=jsonpath={.spec..nodePort} | grep 30990 || %s patch service cerebro-elasticsearch-cluster -n logging -p '{"spec":{"type":"NodePort","ports":[{"port":80,"nodePort":30990}]}}'`, kubectlCommand, kubectlCommand))
 }
 
 func (config *InternalConfig) Generate() {

@@ -203,6 +203,8 @@ const K8S_KUBE_SCHEDULER_CONFIG = "kube-scheduler-config.yaml"
 const K8S_KUBELET_CONFIG = "kubelet-{{.Name}}-config.yaml"
 const K8S_COREDNS_SETUP = "coredns-setup.yaml"
 const K8S_CALICO_SETUP = "calico-setup.yaml"
+const K8S_ELASTICSEARCH_OPERATOR_SETUP = "elasticsearch-operator-setup.yaml"
+const K8S_EFK_SETUP = "efk-setup.yaml"
 
 // Gobetween Config
 const GOBETWEEN_CONFIG = "config.toml"
@@ -1440,4 +1442,306 @@ subjects:
 - kind: ServiceAccount
   name: calico-node
   namespace: kube-system
+`
+
+const K8S_ELASTICSEARCH_OPERATOR_SETUP_TEMPLATE = `apiVersion: v1
+kind: Namespace
+metadata:
+  name: logging
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: elasticsearch-operator
+  namespace: logging
+  labels:
+    app: elasticsearch-operator
+    release: elasticsearch-operator
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: elasticsearch-operator
+  labels:
+    app: elasticsearch-operator
+    release: elasticsearch-operator
+rules:
+- apiGroups: ["extensions"]
+  resources: ["deployments", "replicasets", "daemonsets"]
+  verbs: ["create", "get", "update", "delete", "list"]
+- apiGroups: ["apiextensions.k8s.io"]
+  resources: ["customresourcedefinitions"]
+  verbs: ["create", "get", "update", "delete", "list"]
+- apiGroups: ["storage.k8s.io"]
+  resources: ["storageclasses"]
+  verbs: ["get", "list", "create", "delete", "deletecollection"]
+- apiGroups: [""]
+  resources: ["persistentvolumes", "persistentvolumeclaims", "services", "secrets", "configmaps"]
+  verbs: ["create", "get", "update", "delete", "list"]
+- apiGroups: ["batch"]
+  resources: ["cronjobs", "jobs"]
+  verbs: ["create", "get", "deletecollection", "delete"]
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["list", "get", "watch"]
+- apiGroups: ["apps"]
+  resources: ["statefulsets", "deployments"]
+  verbs: ["*"]
+- apiGroups: ["enterprises.upmc.com"]
+  resources: ["elasticsearchclusters"]
+  verbs: ["*"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: elasticsearch-operator
+  labels:
+    app: elasticsearch-operator
+    release: elasticsearch-operator
+  namespace: logging
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: elasticsearch-operator
+subjects:
+- kind: ServiceAccount
+  name: elasticsearch-operator
+  namespace: logging
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: elasticsearch-operator
+  namespace: logging
+  labels:
+    app: elasticsearch-operator
+    release: elasticsearch-operator
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: elasticsearch-operator
+        release: elasticsearch-operator
+    spec:
+      containers:
+      - name: elasticsearch-operator
+        image: "upmcenterprises/elasticsearch-operator:0.0.12"
+        imagePullPolicy: Always
+        env:
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        ports:
+        - containerPort: 8000
+          name: http
+        livenessProbe:
+          httpGet:
+            path: /live
+            port: 8000
+          initialDelaySeconds: 10
+          timeoutSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8000
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: 100m
+            memory: 128Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+      serviceAccountName: elasticsearch-operator
+`
+
+const K8S_EFK_SETUP_TEMPLATE = `apiVersion: enterprises.upmc.com/v1
+kind: ElasticsearchCluster
+metadata:
+  name: elasticsearch-cluster
+  namespace: logging
+  labels:
+    app: elasticsearch
+    release: elasticsearch
+spec:
+  kibana:
+    image: docker.elastic.co/kibana/kibana-oss:6.1.3
+  cerebro:
+    image: upmcenterprises/cerebro:0.6.8
+  elastic-search-image: "upmcenterprises/docker-elasticsearch-kubernetes:6.1.3_0"
+  client-node-replicas: 1
+  master-node-replicas: 1
+  data-node-replicas: 1
+  network-host: 0.0.0.0
+  zones: []
+  data-volume-size: 1Gi
+  java-options: -Xms256m -Xmx256m
+  snapshot:
+    scheduler-enabled: false
+    bucket-name: elasticsnapshots
+    cron-schedule: "@every 2m"
+    image: "upmcenterprises/elasticsearch-cron:0.0.3"
+  resources:
+    limits:
+      cpu: "1"
+      memory: 1024Mi
+    requests:
+      cpu: 500m
+      memory: 512Mi
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app: fluent-bit
+  name: efk-fluent-bit
+  namespace: logging
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: efk-fluent-bit
+  namespace: logging
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - get
+  - list
+  - watch
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: efk-fluent-bit
+roleRef:
+  kind: ClusterRole
+  name: efk-fluent-bit
+  apiGroup: rbac.authorization.k8s.io
+subjects:
+- kind: ServiceAccount
+  name: efk-fluent-bit
+  namespace: logging
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: efk-fluent-bit-config
+  namespace: logging
+  labels:
+    app: efk-fluent-bit
+data:
+  fluent-bit.conf: |-
+    [SERVICE]
+        Flush        1
+        Daemon       Off
+        Log_Level    info
+        Parsers_File parsers.conf
+    [INPUT]
+        Name             tail
+        Path             /var/log/containers/*.log
+        Parser           docker
+        Tag              kube.*
+        Refresh_Interval 5
+        Mem_Buf_Limit    5MB
+        Skip_Long_Lines  On
+    [INPUT]
+        Name             tail
+        Path             /var/log/k8s-tew/*.log
+        Parser           syslog
+        Tag              k8s-tew.*
+        Refresh_Interval 5
+        Mem_Buf_Limit    5MB
+        Skip_Long_Lines  On
+    [FILTER]
+        Name                kubernetes
+        Match               kube.*
+        Kube_URL            https://kubernetes.default.svc:443
+        Kube_CA_File        /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        Kube_Token_File     /var/run/secrets/kubernetes.io/serviceaccount/token
+        tls.verify 0
+        tls.debug 1
+    [OUTPUT]
+        Name  es
+        Match *
+        Host  elasticsearch-elasticsearch-cluster
+        Port  9200
+        Logstash_Format On
+        Retry_Limit False
+        Type  flb_type
+        Logstash_Prefix kubernetes_cluster
+        tls on
+        tls.verify 0
+        tls.debug 1
+  parsers.conf: |-
+    [PARSER]
+        Name        docker
+        Format      json
+        Time_Key    time
+        Time_Format %Y-%m-%dT%H:%M:%S.%L
+        Time_Keep   On
+
+    [PARSER]
+        Name        syslog
+        Format      regex
+        Regex       ^\<(?<pri>[0-9]+)\>(?<time>[^ ]* {1,2}[^ ]* [^ ]*) (?<host>[^ ]*) (?<ident>[a-zA-Z0-9_\/\.\-]*)(?:\[(?<pid>[0-9]+)\])?(?:[^\:]*\:)? *(?<message>.*)$
+        Time_Key    time
+        Time_Format %b %d %H:%M:%S
+---
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: fluent-bit
+  namespace: logging
+  labels:
+    app: efk-fluent-bit
+spec:
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: efk-fluent-bit
+    spec:
+      serviceAccountName: efk-fluent-bit
+      containers:
+      - name: fluent-bit
+        image: "fluent/fluent-bit:0.13.0"
+        imagePullPolicy: "Always"
+        resources:
+          limits:
+            memory: 100Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        volumeMounts:
+        - name: varlog
+          mountPath: /var/log
+        - name: varlogk8stew
+          mountPath: /var/log/k8s-tew
+        - name: varlogcontainers
+          mountPath: /var/log/containers
+          readOnly: true
+        - name: config
+          mountPath: /fluent-bit/etc/fluent-bit.conf
+          subPath: fluent-bit.conf
+      terminationGracePeriodSeconds: 10
+      volumes:
+      - name: varlog
+        hostPath:
+          path: /var/log
+      - name: varlogk8stew
+        hostPath:
+          path: /var/log/k8s-tew
+      - name: varlogcontainers
+        hostPath:
+          path: /var/log/containers
+      - name: config
+        configMap:
+          name: efk-fluent-bit-config
 `
