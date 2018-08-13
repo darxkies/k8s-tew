@@ -25,8 +25,8 @@ $single_node_cpus = 4
 ############################################################
 # Controllers
 $controllers_count = 3
-$controllers_ram = 2048
-$controllers_cpus = 1
+$controllers_ram = 4096
+$controllers_cpus = 4
 
 ############################################################
 # Workers
