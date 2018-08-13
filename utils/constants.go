@@ -53,8 +53,7 @@ const CONFIG_FILENAME = "config.yaml"
 const NODE_BOOTSTRAPPER = "bootstrapper"
 const NODE_CONTROLLER = "controller"
 const NODE_WORKER = "worker"
-const NODE_STORAGE_CONTROLLER = "storage-controller"
-const NODE_STORAGE_NODE = "storage-node"
+const NODE_STORAGE = "storage"
 
 // OS
 const OS_UBUNTU = "ubuntu"

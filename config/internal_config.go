@@ -709,12 +709,12 @@ type NodeData struct {
 	IP    string
 }
 
-func (config *InternalConfig) getLabeldOrAllNodes(label string) []NodeData {
+func (config *InternalConfig) getLabeledOrAllNodes(label string) []NodeData {
 	result := []NodeData{}
 
-	// Add only labeld nodes
+	// Add only labeled nodes
 	for nodeName, node := range config.Config.Nodes {
-		if node.IsWorker() && node.Labels.HasLabels(Labels{label}) {
+		if node.Labels.HasLabels(Labels{label}) && node.Labels.HasLabels(Labels{utils.NODE_STORAGE}) {
 			result = append(result, NodeData{Index: node.Index, Name: nodeName, IP: node.IP})
 		}
 	}
@@ -722,7 +722,7 @@ func (config *InternalConfig) getLabeldOrAllNodes(label string) []NodeData {
 	// If no labeld nodes found get all nodes
 	if len(result) == 0 {
 		for nodeName, node := range config.Config.Nodes {
-			if node.IsWorker() {
+			if node.Labels.HasLabels(Labels{label}) {
 				result = append(result, NodeData{Index: node.Index, Name: nodeName, IP: node.IP})
 			}
 		}
@@ -737,11 +737,11 @@ func (config *InternalConfig) getLabeldOrAllNodes(label string) []NodeData {
 }
 
 func (config *InternalConfig) GetStorageControllers() []NodeData {
-	return config.getLabeldOrAllNodes(utils.NODE_STORAGE_CONTROLLER)
+	return config.getLabeledOrAllNodes(utils.NODE_CONTROLLER)
 }
 
 func (config *InternalConfig) GetStorageNodes() []NodeData {
-	return config.getLabeldOrAllNodes(utils.NODE_STORAGE_NODE)
+	return config.getLabeledOrAllNodes(utils.NODE_WORKER)
 }
 
 func (config *InternalConfig) GetAllowedCommonNames() string {
