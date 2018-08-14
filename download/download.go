@@ -372,8 +372,12 @@ func (downloader Downloader) downloadGobetweenBinary() error {
 }
 
 func (downloader Downloader) createLocalDirectories() error {
-	for name := range downloader.config.Config.Assets.Directories {
+	for name, directory := range downloader.config.Config.Assets.Directories {
 		localDirectory := downloader.config.GetFullLocalAssetDirectory(name)
+
+		if directory.Absolute {
+			localDirectory = path.Join("/", localDirectory)
+		}
 
 		if error := utils.CreateDirectoryIfMissing(localDirectory); error != nil {
 			return error

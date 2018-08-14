@@ -3,7 +3,7 @@ package config
 type AssetDirectory struct {
 	Labels    Labels `yaml:"labels,omitempty"`
 	Directory string `yaml:"directory"`
-	Absolute  bool   `yaml:"absolute"`
+	Absolute  bool   `yaml:"absolute,omitempty"`
 }
 
 func NewAssetDirectory(labels []string, directory string, absolute bool) *AssetDirectory {
