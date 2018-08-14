@@ -15,6 +15,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/briandowns/spinner"
 	oslib "github.com/redpois0n/goslib"
 	log "github.com/sirupsen/logrus"
 )
@@ -207,4 +208,15 @@ func HasOS(os []string) bool {
 	}
 
 	return false
+}
+
+func ShowProgress(label string, step, count int) func() {
+	_spinner := spinner.New(spinner.CharSets[9], 100*time.Millisecond)
+	_spinner.Prefix = "["
+	_spinner.Suffix = fmt.Sprintf("] %s: %d/%d", label, step, count)
+	_spinner.Start()
+
+	return func() {
+		defer _spinner.Stop()
+	}
 }

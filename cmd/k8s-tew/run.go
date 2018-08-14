@@ -34,7 +34,7 @@ var runCmd = &cobra.Command{
 
 		serversContainer := servers.NewServers(_config)
 
-		if error := serversContainer.Run(); error != nil {
+		if error := serversContainer.Run(commandRetries); error != nil {
 			log.WithFields(log.Fields{"error": error}).Error("run failed")
 
 			os.Exit(-1)
@@ -43,5 +43,6 @@ var runCmd = &cobra.Command{
 }
 
 func init() {
+	runCmd.Flags().UintVarP(&commandRetries, "command-retries", "r", 300, "The count of command retries")
 	RootCmd.AddCommand(runCmd)
 }

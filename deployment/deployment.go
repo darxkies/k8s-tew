@@ -271,7 +271,6 @@ func Setup(_config *config.InternalConfig, commandRetries uint) error {
 		for retries := uint(0); retries < commandRetries; retries++ {
 			// Run command
 			error = utils.RunCommand(newCommand)
-
 			if error == nil {
 				break
 			}

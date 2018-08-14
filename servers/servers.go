@@ -27,39 +27,40 @@ func (servers *Servers) add(server Server) {
 	servers.servers = append(servers.servers, server)
 }
 
-func (servers *Servers) runCommand(command *config.Command) error {
+func (servers *Servers) runCommand(command *config.Command, commandRetries uint, step, count int) error {
 	newCommand, error := servers.config.ApplyTemplate(command.Name, command.Command)
 	if error != nil {
 		return error
 	}
 
-	go func() {
-		for {
-			if servers.stop {
-				break
-			}
+	log.WithFields(log.Fields{"name": command.Name, "command": newCommand}).Info("executing command")
 
-			// Run command
-			error := utils.RunCommand(newCommand)
+	stop := utils.ShowProgress("cluster setup", step, count)
+	defer stop()
 
-			// Successful
-			if error == nil {
-				log.WithFields(log.Fields{"name": command.Name, "command": newCommand}).Info("command executed")
-
-				break
-			}
-
-			// Keep trying until succeeding
-			log.WithFields(log.Fields{"name": command.Name, "command": newCommand, "error": error}).Error("command failed")
-
-			time.Sleep(3 * time.Second)
+	for retries := uint(0); retries < commandRetries; retries++ {
+		if servers.stop {
+			break
 		}
-	}()
+
+		// Run command
+		if error = utils.RunCommand(newCommand); error == nil {
+			break
+		}
+
+		time.Sleep(time.Second)
+	}
+
+	if error != nil {
+		log.WithFields(log.Fields{"name": command.Name, "command": newCommand, "error": error}).Error("command failed")
+
+		return error
+	}
 
 	return nil
 }
 
-func (servers *Servers) Run() error {
+func (servers *Servers) Run(commandRetries uint) error {
 	// Dump configuration
 	servers.config.Dump()
 
@@ -113,20 +114,24 @@ func (servers *Servers) Run() error {
 		log.Info("stopped all servers")
 	}()
 
-	// Register commands based on labels to be executed asynchronously
-	for _, command := range servers.config.Config.Commands {
-		if !config.CompareLabels(servers.config.Node.Labels, command.Labels) {
-			continue
+	go func() {
+		// Register commands based on labels to be executed asynchronously
+		for index, command := range servers.config.Config.Commands {
+			if !config.CompareLabels(servers.config.Node.Labels, command.Labels) {
+				continue
+			}
+
+			if !utils.HasOS(command.OS) {
+				continue
+			}
+
+			if error := servers.runCommand(command, commandRetries, index+1, len(servers.config.Config.Commands)); error != nil {
+				log.WithFields(log.Fields{"error": error}).Fatal("cluster setup failed")
+			}
 		}
 
-		if !utils.HasOS(command.OS) {
-			continue
-		}
-
-		if error := servers.runCommand(command); error != nil {
-			return error
-		}
-	}
+		log.Info("cluster setup finished")
+	}()
 
 	// Wait for signals to stop
 	signals := make(chan os.Signal, 1)
