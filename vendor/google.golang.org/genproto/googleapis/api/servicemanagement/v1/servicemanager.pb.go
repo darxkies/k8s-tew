@@ -55,24 +55,24 @@ func (x GetServiceConfigRequest_ConfigView) String() string {
 	return proto.EnumName(GetServiceConfigRequest_ConfigView_name, int32(x))
 }
 func (GetServiceConfigRequest_ConfigView) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_servicemanager_d51f49ba7441c014, []int{7, 0}
+	return fileDescriptor_servicemanager_0ec806067c572a23, []int{7, 0}
 }
 
 // Request message for `ListServices` method.
 type ListServicesRequest struct {
 	// Include services produced by the specified project.
-	ProducerProjectId string `protobuf:"bytes,1,opt,name=producer_project_id,json=producerProjectId" json:"producer_project_id,omitempty"`
+	ProducerProjectId string `protobuf:"bytes,1,opt,name=producer_project_id,json=producerProjectId,proto3" json:"producer_project_id,omitempty"`
 	// Requested size of the next page of data.
-	PageSize int32 `protobuf:"varint,5,opt,name=page_size,json=pageSize" json:"page_size,omitempty"`
+	PageSize int32 `protobuf:"varint,5,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// Token identifying which result to start with; returned by a previous list
 	// call.
-	PageToken string `protobuf:"bytes,6,opt,name=page_token,json=pageToken" json:"page_token,omitempty"`
+	PageToken string `protobuf:"bytes,6,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	// Include services consumed by the specified consumer.
 	//
 	// The Google Service Management implementation accepts the following
 	// forms:
 	// - project:<project_id>
-	ConsumerId           string   `protobuf:"bytes,7,opt,name=consumer_id,json=consumerId" json:"consumer_id,omitempty"`
+	ConsumerId           string   `protobuf:"bytes,7,opt,name=consumer_id,json=consumerId,proto3" json:"consumer_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -82,7 +82,7 @@ func (m *ListServicesRequest) Reset()         { *m = ListServicesRequest{} }
 func (m *ListServicesRequest) String() string { return proto.CompactTextString(m) }
 func (*ListServicesRequest) ProtoMessage()    {}
 func (*ListServicesRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_servicemanager_d51f49ba7441c014, []int{0}
+	return fileDescriptor_servicemanager_0ec806067c572a23, []int{0}
 }
 func (m *ListServicesRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListServicesRequest.Unmarshal(m, b)
@@ -133,9 +133,9 @@ func (m *ListServicesRequest) GetConsumerId() string {
 // Response message for `ListServices` method.
 type ListServicesResponse struct {
 	// The returned services will only have the name field set.
-	Services []*ManagedService `protobuf:"bytes,1,rep,name=services" json:"services,omitempty"`
+	Services []*ManagedService `protobuf:"bytes,1,rep,name=services,proto3" json:"services,omitempty"`
 	// Token that can be passed to `ListServices` to resume a paginated query.
-	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken" json:"next_page_token,omitempty"`
+	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -145,7 +145,7 @@ func (m *ListServicesResponse) Reset()         { *m = ListServicesResponse{} }
 func (m *ListServicesResponse) String() string { return proto.CompactTextString(m) }
 func (*ListServicesResponse) ProtoMessage()    {}
 func (*ListServicesResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_servicemanager_d51f49ba7441c014, []int{1}
+	return fileDescriptor_servicemanager_0ec806067c572a23, []int{1}
 }
 func (m *ListServicesResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListServicesResponse.Unmarshal(m, b)
@@ -183,7 +183,7 @@ func (m *ListServicesResponse) GetNextPageToken() string {
 type GetServiceRequest struct {
 	// The name of the service.  See the `ServiceManager` overview for naming
 	// requirements.  For example: `example.googleapis.com`.
-	ServiceName          string   `protobuf:"bytes,1,opt,name=service_name,json=serviceName" json:"service_name,omitempty"`
+	ServiceName          string   `protobuf:"bytes,1,opt,name=service_name,json=serviceName,proto3" json:"service_name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -193,7 +193,7 @@ func (m *GetServiceRequest) Reset()         { *m = GetServiceRequest{} }
 func (m *GetServiceRequest) String() string { return proto.CompactTextString(m) }
 func (*GetServiceRequest) ProtoMessage()    {}
 func (*GetServiceRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_servicemanager_d51f49ba7441c014, []int{2}
+	return fileDescriptor_servicemanager_0ec806067c572a23, []int{2}
 }
 func (m *GetServiceRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetServiceRequest.Unmarshal(m, b)
@@ -223,7 +223,7 @@ func (m *GetServiceRequest) GetServiceName() string {
 // Request message for CreateService method.
 type CreateServiceRequest struct {
 	// Initial values for the service resource.
-	Service              *ManagedService `protobuf:"bytes,1,opt,name=service" json:"service,omitempty"`
+	Service              *ManagedService `protobuf:"bytes,1,opt,name=service,proto3" json:"service,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
 	XXX_unrecognized     []byte          `json:"-"`
 	XXX_sizecache        int32           `json:"-"`
@@ -233,7 +233,7 @@ func (m *CreateServiceRequest) Reset()         { *m = CreateServiceRequest{} }
 func (m *CreateServiceRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateServiceRequest) ProtoMessage()    {}
 func (*CreateServiceRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_servicemanager_d51f49ba7441c014, []int{3}
+	return fileDescriptor_servicemanager_0ec806067c572a23, []int{3}
 }
 func (m *CreateServiceRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CreateServiceRequest.Unmarshal(m, b)
@@ -264,7 +264,7 @@ func (m *CreateServiceRequest) GetService() *ManagedService {
 type DeleteServiceRequest struct {
 	// The name of the service.  See the [overview](/service-management/overview)
 	// for naming requirements.  For example: `example.googleapis.com`.
-	ServiceName          string   `protobuf:"bytes,1,opt,name=service_name,json=serviceName" json:"service_name,omitempty"`
+	ServiceName          string   `protobuf:"bytes,1,opt,name=service_name,json=serviceName,proto3" json:"service_name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -274,7 +274,7 @@ func (m *DeleteServiceRequest) Reset()         { *m = DeleteServiceRequest{} }
 func (m *DeleteServiceRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteServiceRequest) ProtoMessage()    {}
 func (*DeleteServiceRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_servicemanager_d51f49ba7441c014, []int{4}
+	return fileDescriptor_servicemanager_0ec806067c572a23, []int{4}
 }
 func (m *DeleteServiceRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeleteServiceRequest.Unmarshal(m, b)
@@ -305,7 +305,7 @@ func (m *DeleteServiceRequest) GetServiceName() string {
 type UndeleteServiceRequest struct {
 	// The name of the service. See the [overview](/service-management/overview)
 	// for naming requirements. For example: `example.googleapis.com`.
-	ServiceName          string   `protobuf:"bytes,1,opt,name=service_name,json=serviceName" json:"service_name,omitempty"`
+	ServiceName          string   `protobuf:"bytes,1,opt,name=service_name,json=serviceName,proto3" json:"service_name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -315,7 +315,7 @@ func (m *UndeleteServiceRequest) Reset()         { *m = UndeleteServiceRequest{}
 func (m *UndeleteServiceRequest) String() string { return proto.CompactTextString(m) }
 func (*UndeleteServiceRequest) ProtoMessage()    {}
 func (*UndeleteServiceRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_servicemanager_d51f49ba7441c014, []int{5}
+	return fileDescriptor_servicemanager_0ec806067c572a23, []int{5}
 }
 func (m *UndeleteServiceRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UndeleteServiceRequest.Unmarshal(m, b)
@@ -345,7 +345,7 @@ func (m *UndeleteServiceRequest) GetServiceName() string {
 // Response message for UndeleteService method.
 type UndeleteServiceResponse struct {
 	// Revived service resource.
-	Service              *ManagedService `protobuf:"bytes,1,opt,name=service" json:"service,omitempty"`
+	Service              *ManagedService `protobuf:"bytes,1,opt,name=service,proto3" json:"service,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
 	XXX_unrecognized     []byte          `json:"-"`
 	XXX_sizecache        int32           `json:"-"`
@@ -355,7 +355,7 @@ func (m *UndeleteServiceResponse) Reset()         { *m = UndeleteServiceResponse
 func (m *UndeleteServiceResponse) String() string { return proto.CompactTextString(m) }
 func (*UndeleteServiceResponse) ProtoMessage()    {}
 func (*UndeleteServiceResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_servicemanager_d51f49ba7441c014, []int{6}
+	return fileDescriptor_servicemanager_0ec806067c572a23, []int{6}
 }
 func (m *UndeleteServiceResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UndeleteServiceResponse.Unmarshal(m, b)
@@ -386,12 +386,12 @@ func (m *UndeleteServiceResponse) GetService() *ManagedService {
 type GetServiceConfigRequest struct {
 	// The name of the service.  See the [overview](/service-management/overview)
 	// for naming requirements.  For example: `example.googleapis.com`.
-	ServiceName string `protobuf:"bytes,1,opt,name=service_name,json=serviceName" json:"service_name,omitempty"`
+	ServiceName string `protobuf:"bytes,1,opt,name=service_name,json=serviceName,proto3" json:"service_name,omitempty"`
 	// The id of the service configuration resource.
-	ConfigId string `protobuf:"bytes,2,opt,name=config_id,json=configId" json:"config_id,omitempty"`
+	ConfigId string `protobuf:"bytes,2,opt,name=config_id,json=configId,proto3" json:"config_id,omitempty"`
 	// Specifies which parts of the Service Config should be returned in the
 	// response.
-	View                 GetServiceConfigRequest_ConfigView `protobuf:"varint,3,opt,name=view,enum=google.api.servicemanagement.v1.GetServiceConfigRequest_ConfigView" json:"view,omitempty"`
+	View                 GetServiceConfigRequest_ConfigView `protobuf:"varint,3,opt,name=view,proto3,enum=google.api.servicemanagement.v1.GetServiceConfigRequest_ConfigView" json:"view,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                           `json:"-"`
 	XXX_unrecognized     []byte                             `json:"-"`
 	XXX_sizecache        int32                              `json:"-"`
@@ -401,7 +401,7 @@ func (m *GetServiceConfigRequest) Reset()         { *m = GetServiceConfigRequest
 func (m *GetServiceConfigRequest) String() string { return proto.CompactTextString(m) }
 func (*GetServiceConfigRequest) ProtoMessage()    {}
 func (*GetServiceConfigRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_servicemanager_d51f49ba7441c014, []int{7}
+	return fileDescriptor_servicemanager_0ec806067c572a23, []int{7}
 }
 func (m *GetServiceConfigRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetServiceConfigRequest.Unmarshal(m, b)
@@ -446,11 +446,11 @@ func (m *GetServiceConfigRequest) GetView() GetServiceConfigRequest_ConfigView {
 type ListServiceConfigsRequest struct {
 	// The name of the service.  See the [overview](/service-management/overview)
 	// for naming requirements.  For example: `example.googleapis.com`.
-	ServiceName string `protobuf:"bytes,1,opt,name=service_name,json=serviceName" json:"service_name,omitempty"`
+	ServiceName string `protobuf:"bytes,1,opt,name=service_name,json=serviceName,proto3" json:"service_name,omitempty"`
 	// The token of the page to retrieve.
-	PageToken string `protobuf:"bytes,2,opt,name=page_token,json=pageToken" json:"page_token,omitempty"`
+	PageToken string `protobuf:"bytes,2,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	// The max number of items to include in the response list.
-	PageSize             int32    `protobuf:"varint,3,opt,name=page_size,json=pageSize" json:"page_size,omitempty"`
+	PageSize             int32    `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -460,7 +460,7 @@ func (m *ListServiceConfigsRequest) Reset()         { *m = ListServiceConfigsReq
 func (m *ListServiceConfigsRequest) String() string { return proto.CompactTextString(m) }
 func (*ListServiceConfigsRequest) ProtoMessage()    {}
 func (*ListServiceConfigsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_servicemanager_d51f49ba7441c014, []int{8}
+	return fileDescriptor_servicemanager_0ec806067c572a23, []int{8}
 }
 func (m *ListServiceConfigsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListServiceConfigsRequest.Unmarshal(m, b)
@@ -504,9 +504,9 @@ func (m *ListServiceConfigsRequest) GetPageSize() int32 {
 // Response message for ListServiceConfigs method.
 type ListServiceConfigsResponse struct {
 	// The list of service configuration resources.
-	ServiceConfigs []*serviceconfig.Service `protobuf:"bytes,1,rep,name=service_configs,json=serviceConfigs" json:"service_configs,omitempty"`
+	ServiceConfigs []*serviceconfig.Service `protobuf:"bytes,1,rep,name=service_configs,json=serviceConfigs,proto3" json:"service_configs,omitempty"`
 	// The token of the next page of results.
-	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken" json:"next_page_token,omitempty"`
+	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -516,7 +516,7 @@ func (m *ListServiceConfigsResponse) Reset()         { *m = ListServiceConfigsRe
 func (m *ListServiceConfigsResponse) String() string { return proto.CompactTextString(m) }
 func (*ListServiceConfigsResponse) ProtoMessage()    {}
 func (*ListServiceConfigsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_servicemanager_d51f49ba7441c014, []int{9}
+	return fileDescriptor_servicemanager_0ec806067c572a23, []int{9}
 }
 func (m *ListServiceConfigsResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListServiceConfigsResponse.Unmarshal(m, b)
@@ -554,9 +554,9 @@ func (m *ListServiceConfigsResponse) GetNextPageToken() string {
 type CreateServiceConfigRequest struct {
 	// The name of the service.  See the [overview](/service-management/overview)
 	// for naming requirements.  For example: `example.googleapis.com`.
-	ServiceName string `protobuf:"bytes,1,opt,name=service_name,json=serviceName" json:"service_name,omitempty"`
+	ServiceName string `protobuf:"bytes,1,opt,name=service_name,json=serviceName,proto3" json:"service_name,omitempty"`
 	// The service configuration resource.
-	ServiceConfig        *serviceconfig.Service `protobuf:"bytes,2,opt,name=service_config,json=serviceConfig" json:"service_config,omitempty"`
+	ServiceConfig        *serviceconfig.Service `protobuf:"bytes,2,opt,name=service_config,json=serviceConfig,proto3" json:"service_config,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}               `json:"-"`
 	XXX_unrecognized     []byte                 `json:"-"`
 	XXX_sizecache        int32                  `json:"-"`
@@ -566,7 +566,7 @@ func (m *CreateServiceConfigRequest) Reset()         { *m = CreateServiceConfigR
 func (m *CreateServiceConfigRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateServiceConfigRequest) ProtoMessage()    {}
 func (*CreateServiceConfigRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_servicemanager_d51f49ba7441c014, []int{10}
+	return fileDescriptor_servicemanager_0ec806067c572a23, []int{10}
 }
 func (m *CreateServiceConfigRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CreateServiceConfigRequest.Unmarshal(m, b)
@@ -604,13 +604,13 @@ func (m *CreateServiceConfigRequest) GetServiceConfig() *serviceconfig.Service {
 type SubmitConfigSourceRequest struct {
 	// The name of the service.  See the [overview](/service-management/overview)
 	// for naming requirements.  For example: `example.googleapis.com`.
-	ServiceName string `protobuf:"bytes,1,opt,name=service_name,json=serviceName" json:"service_name,omitempty"`
+	ServiceName string `protobuf:"bytes,1,opt,name=service_name,json=serviceName,proto3" json:"service_name,omitempty"`
 	// The source configuration for the service.
-	ConfigSource *ConfigSource `protobuf:"bytes,2,opt,name=config_source,json=configSource" json:"config_source,omitempty"`
+	ConfigSource *ConfigSource `protobuf:"bytes,2,opt,name=config_source,json=configSource,proto3" json:"config_source,omitempty"`
 	// Optional. If set, this will result in the generation of a
 	// `google.api.Service` configuration based on the `ConfigSource` provided,
 	// but the generated config and the sources will NOT be persisted.
-	ValidateOnly         bool     `protobuf:"varint,3,opt,name=validate_only,json=validateOnly" json:"validate_only,omitempty"`
+	ValidateOnly         bool     `protobuf:"varint,3,opt,name=validate_only,json=validateOnly,proto3" json:"validate_only,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -620,7 +620,7 @@ func (m *SubmitConfigSourceRequest) Reset()         { *m = SubmitConfigSourceReq
 func (m *SubmitConfigSourceRequest) String() string { return proto.CompactTextString(m) }
 func (*SubmitConfigSourceRequest) ProtoMessage()    {}
 func (*SubmitConfigSourceRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_servicemanager_d51f49ba7441c014, []int{11}
+	return fileDescriptor_servicemanager_0ec806067c572a23, []int{11}
 }
 func (m *SubmitConfigSourceRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SubmitConfigSourceRequest.Unmarshal(m, b)
@@ -664,7 +664,7 @@ func (m *SubmitConfigSourceRequest) GetValidateOnly() bool {
 // Response message for SubmitConfigSource method.
 type SubmitConfigSourceResponse struct {
 	// The generated service configuration.
-	ServiceConfig        *serviceconfig.Service `protobuf:"bytes,1,opt,name=service_config,json=serviceConfig" json:"service_config,omitempty"`
+	ServiceConfig        *serviceconfig.Service `protobuf:"bytes,1,opt,name=service_config,json=serviceConfig,proto3" json:"service_config,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}               `json:"-"`
 	XXX_unrecognized     []byte                 `json:"-"`
 	XXX_sizecache        int32                  `json:"-"`
@@ -674,7 +674,7 @@ func (m *SubmitConfigSourceResponse) Reset()         { *m = SubmitConfigSourceRe
 func (m *SubmitConfigSourceResponse) String() string { return proto.CompactTextString(m) }
 func (*SubmitConfigSourceResponse) ProtoMessage()    {}
 func (*SubmitConfigSourceResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_servicemanager_d51f49ba7441c014, []int{12}
+	return fileDescriptor_servicemanager_0ec806067c572a23, []int{12}
 }
 func (m *SubmitConfigSourceResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SubmitConfigSourceResponse.Unmarshal(m, b)
@@ -705,9 +705,9 @@ func (m *SubmitConfigSourceResponse) GetServiceConfig() *serviceconfig.Service {
 type CreateServiceRolloutRequest struct {
 	// The name of the service.  See the [overview](/service-management/overview)
 	// for naming requirements.  For example: `example.googleapis.com`.
-	ServiceName string `protobuf:"bytes,1,opt,name=service_name,json=serviceName" json:"service_name,omitempty"`
+	ServiceName string `protobuf:"bytes,1,opt,name=service_name,json=serviceName,proto3" json:"service_name,omitempty"`
 	// The rollout resource. The `service_name` field is output only.
-	Rollout              *Rollout `protobuf:"bytes,2,opt,name=rollout" json:"rollout,omitempty"`
+	Rollout              *Rollout `protobuf:"bytes,2,opt,name=rollout,proto3" json:"rollout,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -717,7 +717,7 @@ func (m *CreateServiceRolloutRequest) Reset()         { *m = CreateServiceRollou
 func (m *CreateServiceRolloutRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateServiceRolloutRequest) ProtoMessage()    {}
 func (*CreateServiceRolloutRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_servicemanager_d51f49ba7441c014, []int{13}
+	return fileDescriptor_servicemanager_0ec806067c572a23, []int{13}
 }
 func (m *CreateServiceRolloutRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CreateServiceRolloutRequest.Unmarshal(m, b)
@@ -755,11 +755,11 @@ func (m *CreateServiceRolloutRequest) GetRollout() *Rollout {
 type ListServiceRolloutsRequest struct {
 	// The name of the service.  See the [overview](/service-management/overview)
 	// for naming requirements.  For example: `example.googleapis.com`.
-	ServiceName string `protobuf:"bytes,1,opt,name=service_name,json=serviceName" json:"service_name,omitempty"`
+	ServiceName string `protobuf:"bytes,1,opt,name=service_name,json=serviceName,proto3" json:"service_name,omitempty"`
 	// The token of the page to retrieve.
-	PageToken string `protobuf:"bytes,2,opt,name=page_token,json=pageToken" json:"page_token,omitempty"`
+	PageToken string `protobuf:"bytes,2,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	// The max number of items to include in the response list.
-	PageSize int32 `protobuf:"varint,3,opt,name=page_size,json=pageSize" json:"page_size,omitempty"`
+	PageSize int32 `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// Use `filter` to return subset of rollouts.
 	// The following filters are supported:
 	//   -- To limit the results to only those in
@@ -768,7 +768,7 @@ type ListServiceRolloutsRequest struct {
 	//   -- To limit the results to those in
 	//      [status](google.api.servicemanagement.v1.RolloutStatus) 'CANCELLED'
 	//      or 'FAILED', use filter='status=CANCELLED OR status=FAILED'
-	Filter               string   `protobuf:"bytes,4,opt,name=filter" json:"filter,omitempty"`
+	Filter               string   `protobuf:"bytes,4,opt,name=filter,proto3" json:"filter,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -778,7 +778,7 @@ func (m *ListServiceRolloutsRequest) Reset()         { *m = ListServiceRolloutsR
 func (m *ListServiceRolloutsRequest) String() string { return proto.CompactTextString(m) }
 func (*ListServiceRolloutsRequest) ProtoMessage()    {}
 func (*ListServiceRolloutsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_servicemanager_d51f49ba7441c014, []int{14}
+	return fileDescriptor_servicemanager_0ec806067c572a23, []int{14}
 }
 func (m *ListServiceRolloutsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListServiceRolloutsRequest.Unmarshal(m, b)
@@ -829,9 +829,9 @@ func (m *ListServiceRolloutsRequest) GetFilter() string {
 // Response message for ListServiceRollouts method.
 type ListServiceRolloutsResponse struct {
 	// The list of rollout resources.
-	Rollouts []*Rollout `protobuf:"bytes,1,rep,name=rollouts" json:"rollouts,omitempty"`
+	Rollouts []*Rollout `protobuf:"bytes,1,rep,name=rollouts,proto3" json:"rollouts,omitempty"`
 	// The token of the next page of results.
-	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken" json:"next_page_token,omitempty"`
+	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -841,7 +841,7 @@ func (m *ListServiceRolloutsResponse) Reset()         { *m = ListServiceRollouts
 func (m *ListServiceRolloutsResponse) String() string { return proto.CompactTextString(m) }
 func (*ListServiceRolloutsResponse) ProtoMessage()    {}
 func (*ListServiceRolloutsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_servicemanager_d51f49ba7441c014, []int{15}
+	return fileDescriptor_servicemanager_0ec806067c572a23, []int{15}
 }
 func (m *ListServiceRolloutsResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListServiceRolloutsResponse.Unmarshal(m, b)
@@ -879,9 +879,9 @@ func (m *ListServiceRolloutsResponse) GetNextPageToken() string {
 type GetServiceRolloutRequest struct {
 	// The name of the service.  See the [overview](/service-management/overview)
 	// for naming requirements.  For example: `example.googleapis.com`.
-	ServiceName string `protobuf:"bytes,1,opt,name=service_name,json=serviceName" json:"service_name,omitempty"`
+	ServiceName string `protobuf:"bytes,1,opt,name=service_name,json=serviceName,proto3" json:"service_name,omitempty"`
 	// The id of the rollout resource.
-	RolloutId            string   `protobuf:"bytes,2,opt,name=rollout_id,json=rolloutId" json:"rollout_id,omitempty"`
+	RolloutId            string   `protobuf:"bytes,2,opt,name=rollout_id,json=rolloutId,proto3" json:"rollout_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -891,7 +891,7 @@ func (m *GetServiceRolloutRequest) Reset()         { *m = GetServiceRolloutReque
 func (m *GetServiceRolloutRequest) String() string { return proto.CompactTextString(m) }
 func (*GetServiceRolloutRequest) ProtoMessage()    {}
 func (*GetServiceRolloutRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_servicemanager_d51f49ba7441c014, []int{16}
+	return fileDescriptor_servicemanager_0ec806067c572a23, []int{16}
 }
 func (m *GetServiceRolloutRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetServiceRolloutRequest.Unmarshal(m, b)
@@ -929,7 +929,7 @@ func (m *GetServiceRolloutRequest) GetRolloutId() string {
 type EnableServiceRequest struct {
 	// Name of the service to enable. Specifying an unknown service name will
 	// cause the request to fail.
-	ServiceName string `protobuf:"bytes,1,opt,name=service_name,json=serviceName" json:"service_name,omitempty"`
+	ServiceName string `protobuf:"bytes,1,opt,name=service_name,json=serviceName,proto3" json:"service_name,omitempty"`
 	// The identity of consumer resource which service enablement will be
 	// applied to.
 	//
@@ -939,7 +939,7 @@ type EnableServiceRequest struct {
 	//
 	// Note: this is made compatible with
 	// google.api.servicecontrol.v1.Operation.consumer_id.
-	ConsumerId           string   `protobuf:"bytes,2,opt,name=consumer_id,json=consumerId" json:"consumer_id,omitempty"`
+	ConsumerId           string   `protobuf:"bytes,2,opt,name=consumer_id,json=consumerId,proto3" json:"consumer_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -949,7 +949,7 @@ func (m *EnableServiceRequest) Reset()         { *m = EnableServiceRequest{} }
 func (m *EnableServiceRequest) String() string { return proto.CompactTextString(m) }
 func (*EnableServiceRequest) ProtoMessage()    {}
 func (*EnableServiceRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_servicemanager_d51f49ba7441c014, []int{17}
+	return fileDescriptor_servicemanager_0ec806067c572a23, []int{17}
 }
 func (m *EnableServiceRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_EnableServiceRequest.Unmarshal(m, b)
@@ -987,7 +987,7 @@ func (m *EnableServiceRequest) GetConsumerId() string {
 type DisableServiceRequest struct {
 	// Name of the service to disable. Specifying an unknown service name
 	// will cause the request to fail.
-	ServiceName string `protobuf:"bytes,1,opt,name=service_name,json=serviceName" json:"service_name,omitempty"`
+	ServiceName string `protobuf:"bytes,1,opt,name=service_name,json=serviceName,proto3" json:"service_name,omitempty"`
 	// The identity of consumer resource which service disablement will be
 	// applied to.
 	//
@@ -997,7 +997,7 @@ type DisableServiceRequest struct {
 	//
 	// Note: this is made compatible with
 	// google.api.servicecontrol.v1.Operation.consumer_id.
-	ConsumerId           string   `protobuf:"bytes,2,opt,name=consumer_id,json=consumerId" json:"consumer_id,omitempty"`
+	ConsumerId           string   `protobuf:"bytes,2,opt,name=consumer_id,json=consumerId,proto3" json:"consumer_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1007,7 +1007,7 @@ func (m *DisableServiceRequest) Reset()         { *m = DisableServiceRequest{} }
 func (m *DisableServiceRequest) String() string { return proto.CompactTextString(m) }
 func (*DisableServiceRequest) ProtoMessage()    {}
 func (*DisableServiceRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_servicemanager_d51f49ba7441c014, []int{18}
+	return fileDescriptor_servicemanager_0ec806067c572a23, []int{18}
 }
 func (m *DisableServiceRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DisableServiceRequest.Unmarshal(m, b)
@@ -1048,13 +1048,13 @@ type GenerateConfigReportRequest struct {
 	// [google.api.servicemanagement.v1.ConfigRef][google.api.servicemanagement.v1.ConfigRef],
 	// [google.api.servicemanagement.v1.ConfigSource][google.api.servicemanagement.v1.ConfigSource],
 	// and [google.api.Service][google.api.Service]
-	NewConfig *any.Any `protobuf:"bytes,1,opt,name=new_config,json=newConfig" json:"new_config,omitempty"`
+	NewConfig *any.Any `protobuf:"bytes,1,opt,name=new_config,json=newConfig,proto3" json:"new_config,omitempty"`
 	// Service configuration against which the comparison will be done.
 	// For this version of API, the supported types are
 	// [google.api.servicemanagement.v1.ConfigRef][google.api.servicemanagement.v1.ConfigRef],
 	// [google.api.servicemanagement.v1.ConfigSource][google.api.servicemanagement.v1.ConfigSource],
 	// and [google.api.Service][google.api.Service]
-	OldConfig            *any.Any `protobuf:"bytes,2,opt,name=old_config,json=oldConfig" json:"old_config,omitempty"`
+	OldConfig            *any.Any `protobuf:"bytes,2,opt,name=old_config,json=oldConfig,proto3" json:"old_config,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1064,7 +1064,7 @@ func (m *GenerateConfigReportRequest) Reset()         { *m = GenerateConfigRepor
 func (m *GenerateConfigReportRequest) String() string { return proto.CompactTextString(m) }
 func (*GenerateConfigReportRequest) ProtoMessage()    {}
 func (*GenerateConfigReportRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_servicemanager_d51f49ba7441c014, []int{19}
+	return fileDescriptor_servicemanager_0ec806067c572a23, []int{19}
 }
 func (m *GenerateConfigReportRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GenerateConfigReportRequest.Unmarshal(m, b)
@@ -1101,16 +1101,16 @@ func (m *GenerateConfigReportRequest) GetOldConfig() *any.Any {
 // Response message for GenerateConfigReport method.
 type GenerateConfigReportResponse struct {
 	// Name of the service this report belongs to.
-	ServiceName string `protobuf:"bytes,1,opt,name=service_name,json=serviceName" json:"service_name,omitempty"`
+	ServiceName string `protobuf:"bytes,1,opt,name=service_name,json=serviceName,proto3" json:"service_name,omitempty"`
 	// ID of the service configuration this report belongs to.
-	Id string `protobuf:"bytes,2,opt,name=id" json:"id,omitempty"`
+	Id string `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
 	// list of ChangeReport, each corresponding to comparison between two
 	// service configurations.
-	ChangeReports []*ChangeReport `protobuf:"bytes,3,rep,name=change_reports,json=changeReports" json:"change_reports,omitempty"`
+	ChangeReports []*ChangeReport `protobuf:"bytes,3,rep,name=change_reports,json=changeReports,proto3" json:"change_reports,omitempty"`
 	// Errors / Linter warnings associated with the service definition this
 	// report
 	// belongs to.
-	Diagnostics          []*Diagnostic `protobuf:"bytes,4,rep,name=diagnostics" json:"diagnostics,omitempty"`
+	Diagnostics          []*Diagnostic `protobuf:"bytes,4,rep,name=diagnostics,proto3" json:"diagnostics,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}      `json:"-"`
 	XXX_unrecognized     []byte        `json:"-"`
 	XXX_sizecache        int32         `json:"-"`
@@ -1120,7 +1120,7 @@ func (m *GenerateConfigReportResponse) Reset()         { *m = GenerateConfigRepo
 func (m *GenerateConfigReportResponse) String() string { return proto.CompactTextString(m) }
 func (*GenerateConfigReportResponse) ProtoMessage()    {}
 func (*GenerateConfigReportResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_servicemanager_d51f49ba7441c014, []int{20}
+	return fileDescriptor_servicemanager_0ec806067c572a23, []int{20}
 }
 func (m *GenerateConfigReportResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GenerateConfigReportResponse.Unmarshal(m, b)
@@ -1455,8 +1455,7 @@ func (c *serviceManagerClient) DisableService(ctx context.Context, in *DisableSe
 	return out, nil
 }
 
-// Server API for ServiceManager service
-
+// ServiceManagerServer is the server API for ServiceManager service.
 type ServiceManagerServer interface {
 	// Lists managed services.
 	//
@@ -1909,10 +1908,10 @@ var _ServiceManager_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("google/api/servicemanagement/v1/servicemanager.proto", fileDescriptor_servicemanager_d51f49ba7441c014)
+	proto.RegisterFile("google/api/servicemanagement/v1/servicemanager.proto", fileDescriptor_servicemanager_0ec806067c572a23)
 }
 
-var fileDescriptor_servicemanager_d51f49ba7441c014 = []byte{
+var fileDescriptor_servicemanager_0ec806067c572a23 = []byte{
 	// 1447 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xbc, 0x58, 0xcf, 0x6f, 0xdc, 0x44,
 	0x14, 0x66, 0x36, 0x69, 0x9b, 0xbc, 0x64, 0xb7, 0xed, 0x64, 0x69, 0xb6, 0x9b, 0x46, 0x4d, 0x9c,

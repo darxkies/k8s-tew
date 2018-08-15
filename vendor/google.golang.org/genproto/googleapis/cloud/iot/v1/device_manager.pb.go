@@ -33,11 +33,11 @@ const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 type CreateDeviceRegistryRequest struct {
 	// The project and cloud region where this device registry must be created.
 	// For example, `projects/example-project/locations/us-central1`.
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// The device registry. The field `name` must be empty. The server will
 	// generate that field from the device registry `id` provided and the
 	// `parent` field.
-	DeviceRegistry       *DeviceRegistry `protobuf:"bytes,2,opt,name=device_registry,json=deviceRegistry" json:"device_registry,omitempty"`
+	DeviceRegistry       *DeviceRegistry `protobuf:"bytes,2,opt,name=device_registry,json=deviceRegistry,proto3" json:"device_registry,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
 	XXX_unrecognized     []byte          `json:"-"`
 	XXX_sizecache        int32           `json:"-"`
@@ -47,7 +47,7 @@ func (m *CreateDeviceRegistryRequest) Reset()         { *m = CreateDeviceRegistr
 func (m *CreateDeviceRegistryRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateDeviceRegistryRequest) ProtoMessage()    {}
 func (*CreateDeviceRegistryRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_device_manager_c83d83bf4e59b202, []int{0}
+	return fileDescriptor_device_manager_2617478a41a48425, []int{0}
 }
 func (m *CreateDeviceRegistryRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CreateDeviceRegistryRequest.Unmarshal(m, b)
@@ -85,7 +85,7 @@ func (m *CreateDeviceRegistryRequest) GetDeviceRegistry() *DeviceRegistry {
 type GetDeviceRegistryRequest struct {
 	// The name of the device registry. For example,
 	// `projects/example-project/locations/us-central1/registries/my-registry`.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -95,7 +95,7 @@ func (m *GetDeviceRegistryRequest) Reset()         { *m = GetDeviceRegistryReque
 func (m *GetDeviceRegistryRequest) String() string { return proto.CompactTextString(m) }
 func (*GetDeviceRegistryRequest) ProtoMessage()    {}
 func (*GetDeviceRegistryRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_device_manager_c83d83bf4e59b202, []int{1}
+	return fileDescriptor_device_manager_2617478a41a48425, []int{1}
 }
 func (m *GetDeviceRegistryRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetDeviceRegistryRequest.Unmarshal(m, b)
@@ -126,7 +126,7 @@ func (m *GetDeviceRegistryRequest) GetName() string {
 type DeleteDeviceRegistryRequest struct {
 	// The name of the device registry. For example,
 	// `projects/example-project/locations/us-central1/registries/my-registry`.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -136,7 +136,7 @@ func (m *DeleteDeviceRegistryRequest) Reset()         { *m = DeleteDeviceRegistr
 func (m *DeleteDeviceRegistryRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteDeviceRegistryRequest) ProtoMessage()    {}
 func (*DeleteDeviceRegistryRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_device_manager_c83d83bf4e59b202, []int{2}
+	return fileDescriptor_device_manager_2617478a41a48425, []int{2}
 }
 func (m *DeleteDeviceRegistryRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeleteDeviceRegistryRequest.Unmarshal(m, b)
@@ -168,13 +168,13 @@ type UpdateDeviceRegistryRequest struct {
 	// The new values for the device registry. The `id` field must be empty, and
 	// the `name` field must indicate the path of the resource. For example,
 	// `projects/example-project/locations/us-central1/registries/my-registry`.
-	DeviceRegistry *DeviceRegistry `protobuf:"bytes,1,opt,name=device_registry,json=deviceRegistry" json:"device_registry,omitempty"`
+	DeviceRegistry *DeviceRegistry `protobuf:"bytes,1,opt,name=device_registry,json=deviceRegistry,proto3" json:"device_registry,omitempty"`
 	// Only updates the `device_registry` fields indicated by this mask.
 	// The field mask must not be empty, and it must not contain fields that
 	// are immutable or only set by the server.
 	// Mutable top-level fields: `event_notification_config`, `http_config`,
 	// `mqtt_config`, and `state_notification_config`.
-	UpdateMask           *field_mask.FieldMask `protobuf:"bytes,2,opt,name=update_mask,json=updateMask" json:"update_mask,omitempty"`
+	UpdateMask           *field_mask.FieldMask `protobuf:"bytes,2,opt,name=update_mask,json=updateMask,proto3" json:"update_mask,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}              `json:"-"`
 	XXX_unrecognized     []byte                `json:"-"`
 	XXX_sizecache        int32                 `json:"-"`
@@ -184,7 +184,7 @@ func (m *UpdateDeviceRegistryRequest) Reset()         { *m = UpdateDeviceRegistr
 func (m *UpdateDeviceRegistryRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateDeviceRegistryRequest) ProtoMessage()    {}
 func (*UpdateDeviceRegistryRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_device_manager_c83d83bf4e59b202, []int{3}
+	return fileDescriptor_device_manager_2617478a41a48425, []int{3}
 }
 func (m *UpdateDeviceRegistryRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UpdateDeviceRegistryRequest.Unmarshal(m, b)
@@ -222,16 +222,16 @@ func (m *UpdateDeviceRegistryRequest) GetUpdateMask() *field_mask.FieldMask {
 type ListDeviceRegistriesRequest struct {
 	// The project and cloud region path. For example,
 	// `projects/example-project/locations/us-central1`.
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// The maximum number of registries to return in the response. If this value
 	// is zero, the service will select a default size. A call may return fewer
 	// objects than requested, but if there is a non-empty `page_token`, it
 	// indicates that more entries are available.
-	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize" json:"page_size,omitempty"`
+	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// The value returned by the last `ListDeviceRegistriesResponse`; indicates
 	// that this is a continuation of a prior `ListDeviceRegistries` call, and
 	// that the system should return the next page of data.
-	PageToken            string   `protobuf:"bytes,3,opt,name=page_token,json=pageToken" json:"page_token,omitempty"`
+	PageToken            string   `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -241,7 +241,7 @@ func (m *ListDeviceRegistriesRequest) Reset()         { *m = ListDeviceRegistrie
 func (m *ListDeviceRegistriesRequest) String() string { return proto.CompactTextString(m) }
 func (*ListDeviceRegistriesRequest) ProtoMessage()    {}
 func (*ListDeviceRegistriesRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_device_manager_c83d83bf4e59b202, []int{4}
+	return fileDescriptor_device_manager_2617478a41a48425, []int{4}
 }
 func (m *ListDeviceRegistriesRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListDeviceRegistriesRequest.Unmarshal(m, b)
@@ -285,11 +285,11 @@ func (m *ListDeviceRegistriesRequest) GetPageToken() string {
 // Response for `ListDeviceRegistries`.
 type ListDeviceRegistriesResponse struct {
 	// The registries that matched the query.
-	DeviceRegistries []*DeviceRegistry `protobuf:"bytes,1,rep,name=device_registries,json=deviceRegistries" json:"device_registries,omitempty"`
+	DeviceRegistries []*DeviceRegistry `protobuf:"bytes,1,rep,name=device_registries,json=deviceRegistries,proto3" json:"device_registries,omitempty"`
 	// If not empty, indicates that there may be more registries that match the
 	// request; this value should be passed in a new
 	// `ListDeviceRegistriesRequest`.
-	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken" json:"next_page_token,omitempty"`
+	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -299,7 +299,7 @@ func (m *ListDeviceRegistriesResponse) Reset()         { *m = ListDeviceRegistri
 func (m *ListDeviceRegistriesResponse) String() string { return proto.CompactTextString(m) }
 func (*ListDeviceRegistriesResponse) ProtoMessage()    {}
 func (*ListDeviceRegistriesResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_device_manager_c83d83bf4e59b202, []int{5}
+	return fileDescriptor_device_manager_2617478a41a48425, []int{5}
 }
 func (m *ListDeviceRegistriesResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListDeviceRegistriesResponse.Unmarshal(m, b)
@@ -338,11 +338,11 @@ type CreateDeviceRequest struct {
 	// The name of the device registry where this device should be created.
 	// For example,
 	// `projects/example-project/locations/us-central1/registries/my-registry`.
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// The device registration details. The field `name` must be empty. The server
 	// will generate that field from the device registry `id` provided and the
 	// `parent` field.
-	Device               *Device  `protobuf:"bytes,2,opt,name=device" json:"device,omitempty"`
+	Device               *Device  `protobuf:"bytes,2,opt,name=device,proto3" json:"device,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -352,7 +352,7 @@ func (m *CreateDeviceRequest) Reset()         { *m = CreateDeviceRequest{} }
 func (m *CreateDeviceRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateDeviceRequest) ProtoMessage()    {}
 func (*CreateDeviceRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_device_manager_c83d83bf4e59b202, []int{6}
+	return fileDescriptor_device_manager_2617478a41a48425, []int{6}
 }
 func (m *CreateDeviceRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CreateDeviceRequest.Unmarshal(m, b)
@@ -391,10 +391,10 @@ type GetDeviceRequest struct {
 	// The name of the device. For example,
 	// `projects/p0/locations/us-central1/registries/registry0/devices/device0` or
 	// `projects/p0/locations/us-central1/registries/registry0/devices/{num_id}`.
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// The fields of the `Device` resource to be returned in the response. If the
 	// field mask is unset or empty, all fields are returned.
-	FieldMask            *field_mask.FieldMask `protobuf:"bytes,2,opt,name=field_mask,json=fieldMask" json:"field_mask,omitempty"`
+	FieldMask            *field_mask.FieldMask `protobuf:"bytes,2,opt,name=field_mask,json=fieldMask,proto3" json:"field_mask,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}              `json:"-"`
 	XXX_unrecognized     []byte                `json:"-"`
 	XXX_sizecache        int32                 `json:"-"`
@@ -404,7 +404,7 @@ func (m *GetDeviceRequest) Reset()         { *m = GetDeviceRequest{} }
 func (m *GetDeviceRequest) String() string { return proto.CompactTextString(m) }
 func (*GetDeviceRequest) ProtoMessage()    {}
 func (*GetDeviceRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_device_manager_c83d83bf4e59b202, []int{7}
+	return fileDescriptor_device_manager_2617478a41a48425, []int{7}
 }
 func (m *GetDeviceRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetDeviceRequest.Unmarshal(m, b)
@@ -444,12 +444,12 @@ type UpdateDeviceRequest struct {
 	// be empty, and the field `name` must specify the name path. For example,
 	// `projects/p0/locations/us-central1/registries/registry0/devices/device0`or
 	// `projects/p0/locations/us-central1/registries/registry0/devices/{num_id}`.
-	Device *Device `protobuf:"bytes,2,opt,name=device" json:"device,omitempty"`
+	Device *Device `protobuf:"bytes,2,opt,name=device,proto3" json:"device,omitempty"`
 	// Only updates the `device` fields indicated by this mask.
 	// The field mask must not be empty, and it must not contain fields that
 	// are immutable or only set by the server.
 	// Mutable top-level fields: `credentials`, `blocked`, and `metadata`
-	UpdateMask           *field_mask.FieldMask `protobuf:"bytes,3,opt,name=update_mask,json=updateMask" json:"update_mask,omitempty"`
+	UpdateMask           *field_mask.FieldMask `protobuf:"bytes,3,opt,name=update_mask,json=updateMask,proto3" json:"update_mask,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}              `json:"-"`
 	XXX_unrecognized     []byte                `json:"-"`
 	XXX_sizecache        int32                 `json:"-"`
@@ -459,7 +459,7 @@ func (m *UpdateDeviceRequest) Reset()         { *m = UpdateDeviceRequest{} }
 func (m *UpdateDeviceRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateDeviceRequest) ProtoMessage()    {}
 func (*UpdateDeviceRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_device_manager_c83d83bf4e59b202, []int{8}
+	return fileDescriptor_device_manager_2617478a41a48425, []int{8}
 }
 func (m *UpdateDeviceRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UpdateDeviceRequest.Unmarshal(m, b)
@@ -498,7 +498,7 @@ type DeleteDeviceRequest struct {
 	// The name of the device. For example,
 	// `projects/p0/locations/us-central1/registries/registry0/devices/device0` or
 	// `projects/p0/locations/us-central1/registries/registry0/devices/{num_id}`.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -508,7 +508,7 @@ func (m *DeleteDeviceRequest) Reset()         { *m = DeleteDeviceRequest{} }
 func (m *DeleteDeviceRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteDeviceRequest) ProtoMessage()    {}
 func (*DeleteDeviceRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_device_manager_c83d83bf4e59b202, []int{9}
+	return fileDescriptor_device_manager_2617478a41a48425, []int{9}
 }
 func (m *DeleteDeviceRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeleteDeviceRequest.Unmarshal(m, b)
@@ -539,27 +539,27 @@ func (m *DeleteDeviceRequest) GetName() string {
 type ListDevicesRequest struct {
 	// The device registry path. Required. For example,
 	// `projects/my-project/locations/us-central1/registries/my-registry`.
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// A list of device numerical ids. If empty, it will ignore this field. This
 	// field cannot hold more than 10,000 entries.
-	DeviceNumIds []uint64 `protobuf:"varint,2,rep,packed,name=device_num_ids,json=deviceNumIds" json:"device_num_ids,omitempty"`
+	DeviceNumIds []uint64 `protobuf:"varint,2,rep,packed,name=device_num_ids,json=deviceNumIds,proto3" json:"device_num_ids,omitempty"`
 	// A list of device string identifiers. If empty, it will ignore this field.
 	// For example, `['device0', 'device12']`. This field cannot hold more than
 	// 10,000 entries.
-	DeviceIds []string `protobuf:"bytes,3,rep,name=device_ids,json=deviceIds" json:"device_ids,omitempty"`
+	DeviceIds []string `protobuf:"bytes,3,rep,name=device_ids,json=deviceIds,proto3" json:"device_ids,omitempty"`
 	// The fields of the `Device` resource to be returned in the response. The
 	// fields `id`, and `num_id` are always returned by default, along with any
 	// other fields specified.
-	FieldMask *field_mask.FieldMask `protobuf:"bytes,4,opt,name=field_mask,json=fieldMask" json:"field_mask,omitempty"`
+	FieldMask *field_mask.FieldMask `protobuf:"bytes,4,opt,name=field_mask,json=fieldMask,proto3" json:"field_mask,omitempty"`
 	// The maximum number of devices to return in the response. If this value
 	// is zero, the service will select a default size. A call may return fewer
 	// objects than requested, but if there is a non-empty `page_token`, it
 	// indicates that more entries are available.
-	PageSize int32 `protobuf:"varint,100,opt,name=page_size,json=pageSize" json:"page_size,omitempty"`
+	PageSize int32 `protobuf:"varint,100,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// The value returned by the last `ListDevicesResponse`; indicates
 	// that this is a continuation of a prior `ListDevices` call, and
 	// that the system should return the next page of data.
-	PageToken            string   `protobuf:"bytes,101,opt,name=page_token,json=pageToken" json:"page_token,omitempty"`
+	PageToken            string   `protobuf:"bytes,101,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -569,7 +569,7 @@ func (m *ListDevicesRequest) Reset()         { *m = ListDevicesRequest{} }
 func (m *ListDevicesRequest) String() string { return proto.CompactTextString(m) }
 func (*ListDevicesRequest) ProtoMessage()    {}
 func (*ListDevicesRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_device_manager_c83d83bf4e59b202, []int{10}
+	return fileDescriptor_device_manager_2617478a41a48425, []int{10}
 }
 func (m *ListDevicesRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListDevicesRequest.Unmarshal(m, b)
@@ -634,10 +634,10 @@ func (m *ListDevicesRequest) GetPageToken() string {
 // Response for `ListDevices`.
 type ListDevicesResponse struct {
 	// The devices that match the request.
-	Devices []*Device `protobuf:"bytes,1,rep,name=devices" json:"devices,omitempty"`
+	Devices []*Device `protobuf:"bytes,1,rep,name=devices,proto3" json:"devices,omitempty"`
 	// If not empty, indicates that there may be more devices that match the
 	// request; this value should be passed in a new `ListDevicesRequest`.
-	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken" json:"next_page_token,omitempty"`
+	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -647,7 +647,7 @@ func (m *ListDevicesResponse) Reset()         { *m = ListDevicesResponse{} }
 func (m *ListDevicesResponse) String() string { return proto.CompactTextString(m) }
 func (*ListDevicesResponse) ProtoMessage()    {}
 func (*ListDevicesResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_device_manager_c83d83bf4e59b202, []int{11}
+	return fileDescriptor_device_manager_2617478a41a48425, []int{11}
 }
 func (m *ListDevicesResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListDevicesResponse.Unmarshal(m, b)
@@ -686,13 +686,13 @@ type ModifyCloudToDeviceConfigRequest struct {
 	// The name of the device. For example,
 	// `projects/p0/locations/us-central1/registries/registry0/devices/device0` or
 	// `projects/p0/locations/us-central1/registries/registry0/devices/{num_id}`.
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// The version number to update. If this value is zero, it will not check the
 	// version number of the server and will always update the current version;
 	// otherwise, this update will fail if the version number found on the server
 	// does not match this version number. This is used to support multiple
 	// simultaneous updates without losing data.
-	VersionToUpdate int64 `protobuf:"varint,2,opt,name=version_to_update,json=versionToUpdate" json:"version_to_update,omitempty"`
+	VersionToUpdate int64 `protobuf:"varint,2,opt,name=version_to_update,json=versionToUpdate,proto3" json:"version_to_update,omitempty"`
 	// The configuration data for the device.
 	BinaryData           []byte   `protobuf:"bytes,3,opt,name=binary_data,json=binaryData,proto3" json:"binary_data,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -704,7 +704,7 @@ func (m *ModifyCloudToDeviceConfigRequest) Reset()         { *m = ModifyCloudToD
 func (m *ModifyCloudToDeviceConfigRequest) String() string { return proto.CompactTextString(m) }
 func (*ModifyCloudToDeviceConfigRequest) ProtoMessage()    {}
 func (*ModifyCloudToDeviceConfigRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_device_manager_c83d83bf4e59b202, []int{12}
+	return fileDescriptor_device_manager_2617478a41a48425, []int{12}
 }
 func (m *ModifyCloudToDeviceConfigRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ModifyCloudToDeviceConfigRequest.Unmarshal(m, b)
@@ -750,11 +750,11 @@ type ListDeviceConfigVersionsRequest struct {
 	// The name of the device. For example,
 	// `projects/p0/locations/us-central1/registries/registry0/devices/device0` or
 	// `projects/p0/locations/us-central1/registries/registry0/devices/{num_id}`.
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// The number of versions to list. Versions are listed in decreasing order of
 	// the version number. The maximum number of versions retained is 10. If this
 	// value is zero, it will return all the versions available.
-	NumVersions          int32    `protobuf:"varint,2,opt,name=num_versions,json=numVersions" json:"num_versions,omitempty"`
+	NumVersions          int32    `protobuf:"varint,2,opt,name=num_versions,json=numVersions,proto3" json:"num_versions,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -764,7 +764,7 @@ func (m *ListDeviceConfigVersionsRequest) Reset()         { *m = ListDeviceConfi
 func (m *ListDeviceConfigVersionsRequest) String() string { return proto.CompactTextString(m) }
 func (*ListDeviceConfigVersionsRequest) ProtoMessage()    {}
 func (*ListDeviceConfigVersionsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_device_manager_c83d83bf4e59b202, []int{13}
+	return fileDescriptor_device_manager_2617478a41a48425, []int{13}
 }
 func (m *ListDeviceConfigVersionsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListDeviceConfigVersionsRequest.Unmarshal(m, b)
@@ -802,7 +802,7 @@ func (m *ListDeviceConfigVersionsRequest) GetNumVersions() int32 {
 type ListDeviceConfigVersionsResponse struct {
 	// The device configuration for the last few versions. Versions are listed
 	// in decreasing order, starting from the most recent one.
-	DeviceConfigs        []*DeviceConfig `protobuf:"bytes,1,rep,name=device_configs,json=deviceConfigs" json:"device_configs,omitempty"`
+	DeviceConfigs        []*DeviceConfig `protobuf:"bytes,1,rep,name=device_configs,json=deviceConfigs,proto3" json:"device_configs,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
 	XXX_unrecognized     []byte          `json:"-"`
 	XXX_sizecache        int32           `json:"-"`
@@ -812,7 +812,7 @@ func (m *ListDeviceConfigVersionsResponse) Reset()         { *m = ListDeviceConf
 func (m *ListDeviceConfigVersionsResponse) String() string { return proto.CompactTextString(m) }
 func (*ListDeviceConfigVersionsResponse) ProtoMessage()    {}
 func (*ListDeviceConfigVersionsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_device_manager_c83d83bf4e59b202, []int{14}
+	return fileDescriptor_device_manager_2617478a41a48425, []int{14}
 }
 func (m *ListDeviceConfigVersionsResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListDeviceConfigVersionsResponse.Unmarshal(m, b)
@@ -844,11 +844,11 @@ type ListDeviceStatesRequest struct {
 	// The name of the device. For example,
 	// `projects/p0/locations/us-central1/registries/registry0/devices/device0` or
 	// `projects/p0/locations/us-central1/registries/registry0/devices/{num_id}`.
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// The number of states to list. States are listed in descending order of
 	// update time. The maximum number of states retained is 10. If this
 	// value is zero, it will return all the states available.
-	NumStates            int32    `protobuf:"varint,2,opt,name=num_states,json=numStates" json:"num_states,omitempty"`
+	NumStates            int32    `protobuf:"varint,2,opt,name=num_states,json=numStates,proto3" json:"num_states,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -858,7 +858,7 @@ func (m *ListDeviceStatesRequest) Reset()         { *m = ListDeviceStatesRequest
 func (m *ListDeviceStatesRequest) String() string { return proto.CompactTextString(m) }
 func (*ListDeviceStatesRequest) ProtoMessage()    {}
 func (*ListDeviceStatesRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_device_manager_c83d83bf4e59b202, []int{15}
+	return fileDescriptor_device_manager_2617478a41a48425, []int{15}
 }
 func (m *ListDeviceStatesRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListDeviceStatesRequest.Unmarshal(m, b)
@@ -896,7 +896,7 @@ func (m *ListDeviceStatesRequest) GetNumStates() int32 {
 type ListDeviceStatesResponse struct {
 	// The last few device states. States are listed in descending order of server
 	// update time, starting from the most recent one.
-	DeviceStates         []*DeviceState `protobuf:"bytes,1,rep,name=device_states,json=deviceStates" json:"device_states,omitempty"`
+	DeviceStates         []*DeviceState `protobuf:"bytes,1,rep,name=device_states,json=deviceStates,proto3" json:"device_states,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
 	XXX_unrecognized     []byte         `json:"-"`
 	XXX_sizecache        int32          `json:"-"`
@@ -906,7 +906,7 @@ func (m *ListDeviceStatesResponse) Reset()         { *m = ListDeviceStatesRespon
 func (m *ListDeviceStatesResponse) String() string { return proto.CompactTextString(m) }
 func (*ListDeviceStatesResponse) ProtoMessage()    {}
 func (*ListDeviceStatesResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_device_manager_c83d83bf4e59b202, []int{16}
+	return fileDescriptor_device_manager_2617478a41a48425, []int{16}
 }
 func (m *ListDeviceStatesResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListDeviceStatesResponse.Unmarshal(m, b)
@@ -1160,8 +1160,7 @@ func (c *deviceManagerClient) TestIamPermissions(ctx context.Context, in *v1.Tes
 	return out, nil
 }
 
-// Server API for DeviceManager service
-
+// DeviceManagerServer is the server API for DeviceManager service.
 type DeviceManagerServer interface {
 	// Creates a device registry that contains devices.
 	CreateDeviceRegistry(context.Context, *CreateDeviceRegistryRequest) (*DeviceRegistry, error)
@@ -1572,10 +1571,10 @@ var _DeviceManager_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("google/cloud/iot/v1/device_manager.proto", fileDescriptor_device_manager_c83d83bf4e59b202)
+	proto.RegisterFile("google/cloud/iot/v1/device_manager.proto", fileDescriptor_device_manager_2617478a41a48425)
 }
 
-var fileDescriptor_device_manager_c83d83bf4e59b202 = []byte{
+var fileDescriptor_device_manager_2617478a41a48425 = []byte{
 	// 1432 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xbc, 0x58, 0xcd, 0x6f, 0x1b, 0x45,
 	0x14, 0xd7, 0xd8, 0xa5, 0x90, 0x17, 0x97, 0xb6, 0x93, 0xd0, 0x1a, 0xbb, 0xa5, 0xee, 0x96, 0x0f,

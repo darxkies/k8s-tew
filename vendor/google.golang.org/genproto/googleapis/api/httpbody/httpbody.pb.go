@@ -59,12 +59,12 @@ const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 // handled, all other features will continue to work unchanged.
 type HttpBody struct {
 	// The HTTP Content-Type string representing the content type of the body.
-	ContentType string `protobuf:"bytes,1,opt,name=content_type,json=contentType" json:"content_type,omitempty"`
+	ContentType string `protobuf:"bytes,1,opt,name=content_type,json=contentType,proto3" json:"content_type,omitempty"`
 	// HTTP body binary data.
 	Data []byte `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
 	// Application specific response metadata. Must be set in the first response
 	// for streaming APIs.
-	Extensions           []*any.Any `protobuf:"bytes,3,rep,name=extensions" json:"extensions,omitempty"`
+	Extensions           []*any.Any `protobuf:"bytes,3,rep,name=extensions,proto3" json:"extensions,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}   `json:"-"`
 	XXX_unrecognized     []byte     `json:"-"`
 	XXX_sizecache        int32      `json:"-"`
@@ -74,7 +74,7 @@ func (m *HttpBody) Reset()         { *m = HttpBody{} }
 func (m *HttpBody) String() string { return proto.CompactTextString(m) }
 func (*HttpBody) ProtoMessage()    {}
 func (*HttpBody) Descriptor() ([]byte, []int) {
-	return fileDescriptor_httpbody_24933373b9bfd305, []int{0}
+	return fileDescriptor_httpbody_d3ca4c70025a4501, []int{0}
 }
 func (m *HttpBody) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_HttpBody.Unmarshal(m, b)
@@ -119,9 +119,9 @@ func init() {
 	proto.RegisterType((*HttpBody)(nil), "google.api.HttpBody")
 }
 
-func init() { proto.RegisterFile("google/api/httpbody.proto", fileDescriptor_httpbody_24933373b9bfd305) }
+func init() { proto.RegisterFile("google/api/httpbody.proto", fileDescriptor_httpbody_d3ca4c70025a4501) }
 
-var fileDescriptor_httpbody_24933373b9bfd305 = []byte{
+var fileDescriptor_httpbody_d3ca4c70025a4501 = []byte{
 	// 226 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x54, 0x8f, 0x3f, 0x4f, 0xc3, 0x30,
 	0x10, 0xc5, 0x95, 0xb6, 0x42, 0x70, 0x2d, 0x0c, 0x16, 0x43, 0x60, 0x0a, 0x4c, 0x99, 0x6c, 0x09,

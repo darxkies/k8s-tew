@@ -53,7 +53,7 @@ func (x Property_PropertyType) String() string {
 	return proto.EnumName(Property_PropertyType_name, int32(x))
 }
 func (Property_PropertyType) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_consumer_6a0820d9df0f1017, []int{1, 0}
+	return fileDescriptor_consumer_f6466e3bd2853ce5, []int{1, 0}
 }
 
 // A descriptor for defining project properties for a service. One service may
@@ -74,7 +74,7 @@ func (Property_PropertyType) EnumDescriptor() ([]byte, []int) {
 //        type: INT64
 type ProjectProperties struct {
 	// List of per consumer project-specific properties.
-	Properties           []*Property `protobuf:"bytes,1,rep,name=properties" json:"properties,omitempty"`
+	Properties           []*Property `protobuf:"bytes,1,rep,name=properties,proto3" json:"properties,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
 	XXX_unrecognized     []byte      `json:"-"`
 	XXX_sizecache        int32       `json:"-"`
@@ -84,7 +84,7 @@ func (m *ProjectProperties) Reset()         { *m = ProjectProperties{} }
 func (m *ProjectProperties) String() string { return proto.CompactTextString(m) }
 func (*ProjectProperties) ProtoMessage()    {}
 func (*ProjectProperties) Descriptor() ([]byte, []int) {
-	return fileDescriptor_consumer_6a0820d9df0f1017, []int{0}
+	return fileDescriptor_consumer_f6466e3bd2853ce5, []int{0}
 }
 func (m *ProjectProperties) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ProjectProperties.Unmarshal(m, b)
@@ -123,11 +123,11 @@ func (m *ProjectProperties) GetProperties() []*Property {
 // define and set these properties.
 type Property struct {
 	// The name of the property (a.k.a key).
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// The type of this property.
-	Type Property_PropertyType `protobuf:"varint,2,opt,name=type,enum=google.api.Property_PropertyType" json:"type,omitempty"`
+	Type Property_PropertyType `protobuf:"varint,2,opt,name=type,proto3,enum=google.api.Property_PropertyType" json:"type,omitempty"`
 	// The description of the property
-	Description          string   `protobuf:"bytes,3,opt,name=description" json:"description,omitempty"`
+	Description          string   `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -137,7 +137,7 @@ func (m *Property) Reset()         { *m = Property{} }
 func (m *Property) String() string { return proto.CompactTextString(m) }
 func (*Property) ProtoMessage()    {}
 func (*Property) Descriptor() ([]byte, []int) {
-	return fileDescriptor_consumer_6a0820d9df0f1017, []int{1}
+	return fileDescriptor_consumer_f6466e3bd2853ce5, []int{1}
 }
 func (m *Property) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Property.Unmarshal(m, b)
@@ -184,9 +184,9 @@ func init() {
 	proto.RegisterEnum("google.api.Property_PropertyType", Property_PropertyType_name, Property_PropertyType_value)
 }
 
-func init() { proto.RegisterFile("google/api/consumer.proto", fileDescriptor_consumer_6a0820d9df0f1017) }
+func init() { proto.RegisterFile("google/api/consumer.proto", fileDescriptor_consumer_f6466e3bd2853ce5) }
 
-var fileDescriptor_consumer_6a0820d9df0f1017 = []byte{
+var fileDescriptor_consumer_f6466e3bd2853ce5 = []byte{
 	// 299 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x6c, 0x90, 0x4f, 0x4f, 0xf2, 0x40,
 	0x10, 0xc6, 0xdf, 0x85, 0xbe, 0x04, 0x06, 0xc5, 0xba, 0xf1, 0x50, 0x6f, 0x95, 0x13, 0xa7, 0x36,

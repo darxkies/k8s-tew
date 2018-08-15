@@ -53,7 +53,7 @@ type AuditData struct {
 	//	*AuditData_JobQueryDoneResponse
 	Response isAuditData_Response `protobuf_oneof:"response"`
 	// A job completion event.
-	JobCompletedEvent    *JobCompletedEvent `protobuf:"bytes,17,opt,name=job_completed_event,json=jobCompletedEvent" json:"job_completed_event,omitempty"`
+	JobCompletedEvent    *JobCompletedEvent `protobuf:"bytes,17,opt,name=job_completed_event,json=jobCompletedEvent,proto3" json:"job_completed_event,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}           `json:"-"`
 	XXX_unrecognized     []byte             `json:"-"`
 	XXX_sizecache        int32              `json:"-"`
@@ -63,7 +63,7 @@ func (m *AuditData) Reset()         { *m = AuditData{} }
 func (m *AuditData) String() string { return proto.CompactTextString(m) }
 func (*AuditData) ProtoMessage()    {}
 func (*AuditData) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_data_b90959119ce397a8, []int{0}
+	return fileDescriptor_audit_data_c8c983cfffeff6d8, []int{0}
 }
 func (m *AuditData) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_AuditData.Unmarshal(m, b)
@@ -86,89 +86,64 @@ var xxx_messageInfo_AuditData proto.InternalMessageInfo
 type isAuditData_Request interface {
 	isAuditData_Request()
 }
-type isAuditData_Response interface {
-	isAuditData_Response()
-}
 
 type AuditData_TableInsertRequest struct {
-	TableInsertRequest *TableInsertRequest `protobuf:"bytes,1,opt,name=table_insert_request,json=tableInsertRequest,oneof"`
-}
-type AuditData_TableUpdateRequest struct {
-	TableUpdateRequest *TableUpdateRequest `protobuf:"bytes,16,opt,name=table_update_request,json=tableUpdateRequest,oneof"`
-}
-type AuditData_DatasetListRequest struct {
-	DatasetListRequest *DatasetListRequest `protobuf:"bytes,2,opt,name=dataset_list_request,json=datasetListRequest,oneof"`
-}
-type AuditData_DatasetInsertRequest struct {
-	DatasetInsertRequest *DatasetInsertRequest `protobuf:"bytes,3,opt,name=dataset_insert_request,json=datasetInsertRequest,oneof"`
-}
-type AuditData_DatasetUpdateRequest struct {
-	DatasetUpdateRequest *DatasetUpdateRequest `protobuf:"bytes,4,opt,name=dataset_update_request,json=datasetUpdateRequest,oneof"`
-}
-type AuditData_JobInsertRequest struct {
-	JobInsertRequest *JobInsertRequest `protobuf:"bytes,5,opt,name=job_insert_request,json=jobInsertRequest,oneof"`
-}
-type AuditData_JobQueryRequest struct {
-	JobQueryRequest *JobQueryRequest `protobuf:"bytes,6,opt,name=job_query_request,json=jobQueryRequest,oneof"`
-}
-type AuditData_JobGetQueryResultsRequest struct {
-	JobGetQueryResultsRequest *JobGetQueryResultsRequest `protobuf:"bytes,7,opt,name=job_get_query_results_request,json=jobGetQueryResultsRequest,oneof"`
-}
-type AuditData_TableDataListRequest struct {
-	TableDataListRequest *TableDataListRequest `protobuf:"bytes,8,opt,name=table_data_list_request,json=tableDataListRequest,oneof"`
-}
-type AuditData_TableInsertResponse struct {
-	TableInsertResponse *TableInsertResponse `protobuf:"bytes,9,opt,name=table_insert_response,json=tableInsertResponse,oneof"`
-}
-type AuditData_TableUpdateResponse struct {
-	TableUpdateResponse *TableUpdateResponse `protobuf:"bytes,10,opt,name=table_update_response,json=tableUpdateResponse,oneof"`
-}
-type AuditData_DatasetInsertResponse struct {
-	DatasetInsertResponse *DatasetInsertResponse `protobuf:"bytes,11,opt,name=dataset_insert_response,json=datasetInsertResponse,oneof"`
-}
-type AuditData_DatasetUpdateResponse struct {
-	DatasetUpdateResponse *DatasetUpdateResponse `protobuf:"bytes,12,opt,name=dataset_update_response,json=datasetUpdateResponse,oneof"`
-}
-type AuditData_JobInsertResponse struct {
-	JobInsertResponse *JobInsertResponse `protobuf:"bytes,18,opt,name=job_insert_response,json=jobInsertResponse,oneof"`
-}
-type AuditData_JobQueryResponse struct {
-	JobQueryResponse *JobQueryResponse `protobuf:"bytes,13,opt,name=job_query_response,json=jobQueryResponse,oneof"`
-}
-type AuditData_JobGetQueryResultsResponse struct {
-	JobGetQueryResultsResponse *JobGetQueryResultsResponse `protobuf:"bytes,14,opt,name=job_get_query_results_response,json=jobGetQueryResultsResponse,oneof"`
-}
-type AuditData_JobQueryDoneResponse struct {
-	JobQueryDoneResponse *JobQueryDoneResponse `protobuf:"bytes,15,opt,name=job_query_done_response,json=jobQueryDoneResponse,oneof"`
+	TableInsertRequest *TableInsertRequest `protobuf:"bytes,1,opt,name=table_insert_request,json=tableInsertRequest,proto3,oneof"`
 }
 
-func (*AuditData_TableInsertRequest) isAuditData_Request()          {}
-func (*AuditData_TableUpdateRequest) isAuditData_Request()          {}
-func (*AuditData_DatasetListRequest) isAuditData_Request()          {}
-func (*AuditData_DatasetInsertRequest) isAuditData_Request()        {}
-func (*AuditData_DatasetUpdateRequest) isAuditData_Request()        {}
-func (*AuditData_JobInsertRequest) isAuditData_Request()            {}
-func (*AuditData_JobQueryRequest) isAuditData_Request()             {}
-func (*AuditData_JobGetQueryResultsRequest) isAuditData_Request()   {}
-func (*AuditData_TableDataListRequest) isAuditData_Request()        {}
-func (*AuditData_TableInsertResponse) isAuditData_Response()        {}
-func (*AuditData_TableUpdateResponse) isAuditData_Response()        {}
-func (*AuditData_DatasetInsertResponse) isAuditData_Response()      {}
-func (*AuditData_DatasetUpdateResponse) isAuditData_Response()      {}
-func (*AuditData_JobInsertResponse) isAuditData_Response()          {}
-func (*AuditData_JobQueryResponse) isAuditData_Response()           {}
-func (*AuditData_JobGetQueryResultsResponse) isAuditData_Response() {}
-func (*AuditData_JobQueryDoneResponse) isAuditData_Response()       {}
+type AuditData_TableUpdateRequest struct {
+	TableUpdateRequest *TableUpdateRequest `protobuf:"bytes,16,opt,name=table_update_request,json=tableUpdateRequest,proto3,oneof"`
+}
+
+type AuditData_DatasetListRequest struct {
+	DatasetListRequest *DatasetListRequest `protobuf:"bytes,2,opt,name=dataset_list_request,json=datasetListRequest,proto3,oneof"`
+}
+
+type AuditData_DatasetInsertRequest struct {
+	DatasetInsertRequest *DatasetInsertRequest `protobuf:"bytes,3,opt,name=dataset_insert_request,json=datasetInsertRequest,proto3,oneof"`
+}
+
+type AuditData_DatasetUpdateRequest struct {
+	DatasetUpdateRequest *DatasetUpdateRequest `protobuf:"bytes,4,opt,name=dataset_update_request,json=datasetUpdateRequest,proto3,oneof"`
+}
+
+type AuditData_JobInsertRequest struct {
+	JobInsertRequest *JobInsertRequest `protobuf:"bytes,5,opt,name=job_insert_request,json=jobInsertRequest,proto3,oneof"`
+}
+
+type AuditData_JobQueryRequest struct {
+	JobQueryRequest *JobQueryRequest `protobuf:"bytes,6,opt,name=job_query_request,json=jobQueryRequest,proto3,oneof"`
+}
+
+type AuditData_JobGetQueryResultsRequest struct {
+	JobGetQueryResultsRequest *JobGetQueryResultsRequest `protobuf:"bytes,7,opt,name=job_get_query_results_request,json=jobGetQueryResultsRequest,proto3,oneof"`
+}
+
+type AuditData_TableDataListRequest struct {
+	TableDataListRequest *TableDataListRequest `protobuf:"bytes,8,opt,name=table_data_list_request,json=tableDataListRequest,proto3,oneof"`
+}
+
+func (*AuditData_TableInsertRequest) isAuditData_Request() {}
+
+func (*AuditData_TableUpdateRequest) isAuditData_Request() {}
+
+func (*AuditData_DatasetListRequest) isAuditData_Request() {}
+
+func (*AuditData_DatasetInsertRequest) isAuditData_Request() {}
+
+func (*AuditData_DatasetUpdateRequest) isAuditData_Request() {}
+
+func (*AuditData_JobInsertRequest) isAuditData_Request() {}
+
+func (*AuditData_JobQueryRequest) isAuditData_Request() {}
+
+func (*AuditData_JobGetQueryResultsRequest) isAuditData_Request() {}
+
+func (*AuditData_TableDataListRequest) isAuditData_Request() {}
 
 func (m *AuditData) GetRequest() isAuditData_Request {
 	if m != nil {
 		return m.Request
-	}
-	return nil
-}
-func (m *AuditData) GetResponse() isAuditData_Response {
-	if m != nil {
-		return m.Response
 	}
 	return nil
 }
@@ -232,6 +207,65 @@ func (m *AuditData) GetJobGetQueryResultsRequest() *JobGetQueryResultsRequest {
 func (m *AuditData) GetTableDataListRequest() *TableDataListRequest {
 	if x, ok := m.GetRequest().(*AuditData_TableDataListRequest); ok {
 		return x.TableDataListRequest
+	}
+	return nil
+}
+
+type isAuditData_Response interface {
+	isAuditData_Response()
+}
+
+type AuditData_TableInsertResponse struct {
+	TableInsertResponse *TableInsertResponse `protobuf:"bytes,9,opt,name=table_insert_response,json=tableInsertResponse,proto3,oneof"`
+}
+
+type AuditData_TableUpdateResponse struct {
+	TableUpdateResponse *TableUpdateResponse `protobuf:"bytes,10,opt,name=table_update_response,json=tableUpdateResponse,proto3,oneof"`
+}
+
+type AuditData_DatasetInsertResponse struct {
+	DatasetInsertResponse *DatasetInsertResponse `protobuf:"bytes,11,opt,name=dataset_insert_response,json=datasetInsertResponse,proto3,oneof"`
+}
+
+type AuditData_DatasetUpdateResponse struct {
+	DatasetUpdateResponse *DatasetUpdateResponse `protobuf:"bytes,12,opt,name=dataset_update_response,json=datasetUpdateResponse,proto3,oneof"`
+}
+
+type AuditData_JobInsertResponse struct {
+	JobInsertResponse *JobInsertResponse `protobuf:"bytes,18,opt,name=job_insert_response,json=jobInsertResponse,proto3,oneof"`
+}
+
+type AuditData_JobQueryResponse struct {
+	JobQueryResponse *JobQueryResponse `protobuf:"bytes,13,opt,name=job_query_response,json=jobQueryResponse,proto3,oneof"`
+}
+
+type AuditData_JobGetQueryResultsResponse struct {
+	JobGetQueryResultsResponse *JobGetQueryResultsResponse `protobuf:"bytes,14,opt,name=job_get_query_results_response,json=jobGetQueryResultsResponse,proto3,oneof"`
+}
+
+type AuditData_JobQueryDoneResponse struct {
+	JobQueryDoneResponse *JobQueryDoneResponse `protobuf:"bytes,15,opt,name=job_query_done_response,json=jobQueryDoneResponse,proto3,oneof"`
+}
+
+func (*AuditData_TableInsertResponse) isAuditData_Response() {}
+
+func (*AuditData_TableUpdateResponse) isAuditData_Response() {}
+
+func (*AuditData_DatasetInsertResponse) isAuditData_Response() {}
+
+func (*AuditData_DatasetUpdateResponse) isAuditData_Response() {}
+
+func (*AuditData_JobInsertResponse) isAuditData_Response() {}
+
+func (*AuditData_JobQueryResponse) isAuditData_Response() {}
+
+func (*AuditData_JobGetQueryResultsResponse) isAuditData_Response() {}
+
+func (*AuditData_JobQueryDoneResponse) isAuditData_Response() {}
+
+func (m *AuditData) GetResponse() isAuditData_Response {
+	if m != nil {
+		return m.Response
 	}
 	return nil
 }
@@ -673,7 +707,7 @@ func _AuditData_OneofSizer(msg proto.Message) (n int) {
 // Table insert request.
 type TableInsertRequest struct {
 	// The new table.
-	Resource             *Table   `protobuf:"bytes,1,opt,name=resource" json:"resource,omitempty"`
+	Resource             *Table   `protobuf:"bytes,1,opt,name=resource,proto3" json:"resource,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -683,7 +717,7 @@ func (m *TableInsertRequest) Reset()         { *m = TableInsertRequest{} }
 func (m *TableInsertRequest) String() string { return proto.CompactTextString(m) }
 func (*TableInsertRequest) ProtoMessage()    {}
 func (*TableInsertRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_data_b90959119ce397a8, []int{1}
+	return fileDescriptor_audit_data_c8c983cfffeff6d8, []int{1}
 }
 func (m *TableInsertRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_TableInsertRequest.Unmarshal(m, b)
@@ -713,7 +747,7 @@ func (m *TableInsertRequest) GetResource() *Table {
 // Table update request.
 type TableUpdateRequest struct {
 	// The table to be updated.
-	Resource             *Table   `protobuf:"bytes,1,opt,name=resource" json:"resource,omitempty"`
+	Resource             *Table   `protobuf:"bytes,1,opt,name=resource,proto3" json:"resource,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -723,7 +757,7 @@ func (m *TableUpdateRequest) Reset()         { *m = TableUpdateRequest{} }
 func (m *TableUpdateRequest) String() string { return proto.CompactTextString(m) }
 func (*TableUpdateRequest) ProtoMessage()    {}
 func (*TableUpdateRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_data_b90959119ce397a8, []int{2}
+	return fileDescriptor_audit_data_c8c983cfffeff6d8, []int{2}
 }
 func (m *TableUpdateRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_TableUpdateRequest.Unmarshal(m, b)
@@ -753,7 +787,7 @@ func (m *TableUpdateRequest) GetResource() *Table {
 // Table insert response.
 type TableInsertResponse struct {
 	// Final state of the inserted table.
-	Resource             *Table   `protobuf:"bytes,1,opt,name=resource" json:"resource,omitempty"`
+	Resource             *Table   `protobuf:"bytes,1,opt,name=resource,proto3" json:"resource,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -763,7 +797,7 @@ func (m *TableInsertResponse) Reset()         { *m = TableInsertResponse{} }
 func (m *TableInsertResponse) String() string { return proto.CompactTextString(m) }
 func (*TableInsertResponse) ProtoMessage()    {}
 func (*TableInsertResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_data_b90959119ce397a8, []int{3}
+	return fileDescriptor_audit_data_c8c983cfffeff6d8, []int{3}
 }
 func (m *TableInsertResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_TableInsertResponse.Unmarshal(m, b)
@@ -793,7 +827,7 @@ func (m *TableInsertResponse) GetResource() *Table {
 // Table update response.
 type TableUpdateResponse struct {
 	// Final state of the updated table.
-	Resource             *Table   `protobuf:"bytes,1,opt,name=resource" json:"resource,omitempty"`
+	Resource             *Table   `protobuf:"bytes,1,opt,name=resource,proto3" json:"resource,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -803,7 +837,7 @@ func (m *TableUpdateResponse) Reset()         { *m = TableUpdateResponse{} }
 func (m *TableUpdateResponse) String() string { return proto.CompactTextString(m) }
 func (*TableUpdateResponse) ProtoMessage()    {}
 func (*TableUpdateResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_data_b90959119ce397a8, []int{4}
+	return fileDescriptor_audit_data_c8c983cfffeff6d8, []int{4}
 }
 func (m *TableUpdateResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_TableUpdateResponse.Unmarshal(m, b)
@@ -833,7 +867,7 @@ func (m *TableUpdateResponse) GetResource() *Table {
 // Dataset list request.
 type DatasetListRequest struct {
 	// Whether to list all datasets, including hidden ones.
-	ListAll              bool     `protobuf:"varint,1,opt,name=list_all,json=listAll" json:"list_all,omitempty"`
+	ListAll              bool     `protobuf:"varint,1,opt,name=list_all,json=listAll,proto3" json:"list_all,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -843,7 +877,7 @@ func (m *DatasetListRequest) Reset()         { *m = DatasetListRequest{} }
 func (m *DatasetListRequest) String() string { return proto.CompactTextString(m) }
 func (*DatasetListRequest) ProtoMessage()    {}
 func (*DatasetListRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_data_b90959119ce397a8, []int{5}
+	return fileDescriptor_audit_data_c8c983cfffeff6d8, []int{5}
 }
 func (m *DatasetListRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DatasetListRequest.Unmarshal(m, b)
@@ -873,7 +907,7 @@ func (m *DatasetListRequest) GetListAll() bool {
 // Dataset insert request.
 type DatasetInsertRequest struct {
 	// The dataset to be inserted.
-	Resource             *Dataset `protobuf:"bytes,1,opt,name=resource" json:"resource,omitempty"`
+	Resource             *Dataset `protobuf:"bytes,1,opt,name=resource,proto3" json:"resource,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -883,7 +917,7 @@ func (m *DatasetInsertRequest) Reset()         { *m = DatasetInsertRequest{} }
 func (m *DatasetInsertRequest) String() string { return proto.CompactTextString(m) }
 func (*DatasetInsertRequest) ProtoMessage()    {}
 func (*DatasetInsertRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_data_b90959119ce397a8, []int{6}
+	return fileDescriptor_audit_data_c8c983cfffeff6d8, []int{6}
 }
 func (m *DatasetInsertRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DatasetInsertRequest.Unmarshal(m, b)
@@ -913,7 +947,7 @@ func (m *DatasetInsertRequest) GetResource() *Dataset {
 // Dataset insert response.
 type DatasetInsertResponse struct {
 	// Final state of the inserted dataset.
-	Resource             *Dataset `protobuf:"bytes,1,opt,name=resource" json:"resource,omitempty"`
+	Resource             *Dataset `protobuf:"bytes,1,opt,name=resource,proto3" json:"resource,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -923,7 +957,7 @@ func (m *DatasetInsertResponse) Reset()         { *m = DatasetInsertResponse{} }
 func (m *DatasetInsertResponse) String() string { return proto.CompactTextString(m) }
 func (*DatasetInsertResponse) ProtoMessage()    {}
 func (*DatasetInsertResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_data_b90959119ce397a8, []int{7}
+	return fileDescriptor_audit_data_c8c983cfffeff6d8, []int{7}
 }
 func (m *DatasetInsertResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DatasetInsertResponse.Unmarshal(m, b)
@@ -953,7 +987,7 @@ func (m *DatasetInsertResponse) GetResource() *Dataset {
 // Dataset update request.
 type DatasetUpdateRequest struct {
 	// The dataset to be updated.
-	Resource             *Dataset `protobuf:"bytes,1,opt,name=resource" json:"resource,omitempty"`
+	Resource             *Dataset `protobuf:"bytes,1,opt,name=resource,proto3" json:"resource,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -963,7 +997,7 @@ func (m *DatasetUpdateRequest) Reset()         { *m = DatasetUpdateRequest{} }
 func (m *DatasetUpdateRequest) String() string { return proto.CompactTextString(m) }
 func (*DatasetUpdateRequest) ProtoMessage()    {}
 func (*DatasetUpdateRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_data_b90959119ce397a8, []int{8}
+	return fileDescriptor_audit_data_c8c983cfffeff6d8, []int{8}
 }
 func (m *DatasetUpdateRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DatasetUpdateRequest.Unmarshal(m, b)
@@ -993,7 +1027,7 @@ func (m *DatasetUpdateRequest) GetResource() *Dataset {
 // Dataset update response.
 type DatasetUpdateResponse struct {
 	// Final state of the updated dataset.
-	Resource             *Dataset `protobuf:"bytes,1,opt,name=resource" json:"resource,omitempty"`
+	Resource             *Dataset `protobuf:"bytes,1,opt,name=resource,proto3" json:"resource,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1003,7 +1037,7 @@ func (m *DatasetUpdateResponse) Reset()         { *m = DatasetUpdateResponse{} }
 func (m *DatasetUpdateResponse) String() string { return proto.CompactTextString(m) }
 func (*DatasetUpdateResponse) ProtoMessage()    {}
 func (*DatasetUpdateResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_data_b90959119ce397a8, []int{9}
+	return fileDescriptor_audit_data_c8c983cfffeff6d8, []int{9}
 }
 func (m *DatasetUpdateResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DatasetUpdateResponse.Unmarshal(m, b)
@@ -1033,7 +1067,7 @@ func (m *DatasetUpdateResponse) GetResource() *Dataset {
 // Job insert request.
 type JobInsertRequest struct {
 	// Job insert request.
-	Resource             *Job     `protobuf:"bytes,1,opt,name=resource" json:"resource,omitempty"`
+	Resource             *Job     `protobuf:"bytes,1,opt,name=resource,proto3" json:"resource,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1043,7 +1077,7 @@ func (m *JobInsertRequest) Reset()         { *m = JobInsertRequest{} }
 func (m *JobInsertRequest) String() string { return proto.CompactTextString(m) }
 func (*JobInsertRequest) ProtoMessage()    {}
 func (*JobInsertRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_data_b90959119ce397a8, []int{10}
+	return fileDescriptor_audit_data_c8c983cfffeff6d8, []int{10}
 }
 func (m *JobInsertRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_JobInsertRequest.Unmarshal(m, b)
@@ -1073,7 +1107,7 @@ func (m *JobInsertRequest) GetResource() *Job {
 // Job insert response.
 type JobInsertResponse struct {
 	// Job insert response.
-	Resource             *Job     `protobuf:"bytes,1,opt,name=resource" json:"resource,omitempty"`
+	Resource             *Job     `protobuf:"bytes,1,opt,name=resource,proto3" json:"resource,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1083,7 +1117,7 @@ func (m *JobInsertResponse) Reset()         { *m = JobInsertResponse{} }
 func (m *JobInsertResponse) String() string { return proto.CompactTextString(m) }
 func (*JobInsertResponse) ProtoMessage()    {}
 func (*JobInsertResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_data_b90959119ce397a8, []int{11}
+	return fileDescriptor_audit_data_c8c983cfffeff6d8, []int{11}
 }
 func (m *JobInsertResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_JobInsertResponse.Unmarshal(m, b)
@@ -1113,15 +1147,15 @@ func (m *JobInsertResponse) GetResource() *Job {
 // Job query request.
 type JobQueryRequest struct {
 	// The query.
-	Query string `protobuf:"bytes,1,opt,name=query" json:"query,omitempty"`
+	Query string `protobuf:"bytes,1,opt,name=query,proto3" json:"query,omitempty"`
 	// The maximum number of results.
-	MaxResults uint32 `protobuf:"varint,2,opt,name=max_results,json=maxResults" json:"max_results,omitempty"`
+	MaxResults uint32 `protobuf:"varint,2,opt,name=max_results,json=maxResults,proto3" json:"max_results,omitempty"`
 	// The default dataset for tables that do not have a dataset specified.
-	DefaultDataset *DatasetName `protobuf:"bytes,3,opt,name=default_dataset,json=defaultDataset" json:"default_dataset,omitempty"`
+	DefaultDataset *DatasetName `protobuf:"bytes,3,opt,name=default_dataset,json=defaultDataset,proto3" json:"default_dataset,omitempty"`
 	// Project that the query should be charged to.
-	ProjectId string `protobuf:"bytes,4,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,4,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// If true, don't actually run the job. Just check that it would run.
-	DryRun               bool     `protobuf:"varint,5,opt,name=dry_run,json=dryRun" json:"dry_run,omitempty"`
+	DryRun               bool     `protobuf:"varint,5,opt,name=dry_run,json=dryRun,proto3" json:"dry_run,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1131,7 +1165,7 @@ func (m *JobQueryRequest) Reset()         { *m = JobQueryRequest{} }
 func (m *JobQueryRequest) String() string { return proto.CompactTextString(m) }
 func (*JobQueryRequest) ProtoMessage()    {}
 func (*JobQueryRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_data_b90959119ce397a8, []int{12}
+	return fileDescriptor_audit_data_c8c983cfffeff6d8, []int{12}
 }
 func (m *JobQueryRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_JobQueryRequest.Unmarshal(m, b)
@@ -1189,9 +1223,9 @@ func (m *JobQueryRequest) GetDryRun() bool {
 // Job query response.
 type JobQueryResponse struct {
 	// The total number of rows in the full query result set.
-	TotalResults uint64 `protobuf:"varint,1,opt,name=total_results,json=totalResults" json:"total_results,omitempty"`
+	TotalResults uint64 `protobuf:"varint,1,opt,name=total_results,json=totalResults,proto3" json:"total_results,omitempty"`
 	// Information about the queried job.
-	Job                  *Job     `protobuf:"bytes,2,opt,name=job" json:"job,omitempty"`
+	Job                  *Job     `protobuf:"bytes,2,opt,name=job,proto3" json:"job,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1201,7 +1235,7 @@ func (m *JobQueryResponse) Reset()         { *m = JobQueryResponse{} }
 func (m *JobQueryResponse) String() string { return proto.CompactTextString(m) }
 func (*JobQueryResponse) ProtoMessage()    {}
 func (*JobQueryResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_data_b90959119ce397a8, []int{13}
+	return fileDescriptor_audit_data_c8c983cfffeff6d8, []int{13}
 }
 func (m *JobQueryResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_JobQueryResponse.Unmarshal(m, b)
@@ -1238,9 +1272,9 @@ func (m *JobQueryResponse) GetJob() *Job {
 // Job getQueryResults request.
 type JobGetQueryResultsRequest struct {
 	// Maximum number of results to return.
-	MaxResults uint32 `protobuf:"varint,1,opt,name=max_results,json=maxResults" json:"max_results,omitempty"`
+	MaxResults uint32 `protobuf:"varint,1,opt,name=max_results,json=maxResults,proto3" json:"max_results,omitempty"`
 	// Zero-based row number at which to start.
-	StartRow             uint64   `protobuf:"varint,2,opt,name=start_row,json=startRow" json:"start_row,omitempty"`
+	StartRow             uint64   `protobuf:"varint,2,opt,name=start_row,json=startRow,proto3" json:"start_row,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1250,7 +1284,7 @@ func (m *JobGetQueryResultsRequest) Reset()         { *m = JobGetQueryResultsReq
 func (m *JobGetQueryResultsRequest) String() string { return proto.CompactTextString(m) }
 func (*JobGetQueryResultsRequest) ProtoMessage()    {}
 func (*JobGetQueryResultsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_data_b90959119ce397a8, []int{14}
+	return fileDescriptor_audit_data_c8c983cfffeff6d8, []int{14}
 }
 func (m *JobGetQueryResultsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_JobGetQueryResultsRequest.Unmarshal(m, b)
@@ -1287,11 +1321,11 @@ func (m *JobGetQueryResultsRequest) GetStartRow() uint64 {
 // Job getQueryResults response.
 type JobGetQueryResultsResponse struct {
 	// Total number of results in query results.
-	TotalResults uint64 `protobuf:"varint,1,opt,name=total_results,json=totalResults" json:"total_results,omitempty"`
+	TotalResults uint64 `protobuf:"varint,1,opt,name=total_results,json=totalResults,proto3" json:"total_results,omitempty"`
 	// The job that was created to run the query.
 	// It completed if `job.status.state` is `DONE`.
 	// It failed if `job.status.errorResult` is also present.
-	Job                  *Job     `protobuf:"bytes,2,opt,name=job" json:"job,omitempty"`
+	Job                  *Job     `protobuf:"bytes,2,opt,name=job,proto3" json:"job,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1301,7 +1335,7 @@ func (m *JobGetQueryResultsResponse) Reset()         { *m = JobGetQueryResultsRe
 func (m *JobGetQueryResultsResponse) String() string { return proto.CompactTextString(m) }
 func (*JobGetQueryResultsResponse) ProtoMessage()    {}
 func (*JobGetQueryResultsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_data_b90959119ce397a8, []int{15}
+	return fileDescriptor_audit_data_c8c983cfffeff6d8, []int{15}
 }
 func (m *JobGetQueryResultsResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_JobGetQueryResultsResponse.Unmarshal(m, b)
@@ -1339,7 +1373,7 @@ func (m *JobGetQueryResultsResponse) GetJob() *Job {
 type JobQueryDoneResponse struct {
 	// The job and status information.
 	// The job completed if `job.status.state` is `DONE`.
-	Job                  *Job     `protobuf:"bytes,1,opt,name=job" json:"job,omitempty"`
+	Job                  *Job     `protobuf:"bytes,1,opt,name=job,proto3" json:"job,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1349,7 +1383,7 @@ func (m *JobQueryDoneResponse) Reset()         { *m = JobQueryDoneResponse{} }
 func (m *JobQueryDoneResponse) String() string { return proto.CompactTextString(m) }
 func (*JobQueryDoneResponse) ProtoMessage()    {}
 func (*JobQueryDoneResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_data_b90959119ce397a8, []int{16}
+	return fileDescriptor_audit_data_c8c983cfffeff6d8, []int{16}
 }
 func (m *JobQueryDoneResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_JobQueryDoneResponse.Unmarshal(m, b)
@@ -1379,9 +1413,9 @@ func (m *JobQueryDoneResponse) GetJob() *Job {
 // Query job completed event.
 type JobCompletedEvent struct {
 	// Name of the event.
-	EventName string `protobuf:"bytes,1,opt,name=event_name,json=eventName" json:"event_name,omitempty"`
+	EventName string `protobuf:"bytes,1,opt,name=event_name,json=eventName,proto3" json:"event_name,omitempty"`
 	// Job information.
-	Job                  *Job     `protobuf:"bytes,2,opt,name=job" json:"job,omitempty"`
+	Job                  *Job     `protobuf:"bytes,2,opt,name=job,proto3" json:"job,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1391,7 +1425,7 @@ func (m *JobCompletedEvent) Reset()         { *m = JobCompletedEvent{} }
 func (m *JobCompletedEvent) String() string { return proto.CompactTextString(m) }
 func (*JobCompletedEvent) ProtoMessage()    {}
 func (*JobCompletedEvent) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_data_b90959119ce397a8, []int{17}
+	return fileDescriptor_audit_data_c8c983cfffeff6d8, []int{17}
 }
 func (m *JobCompletedEvent) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_JobCompletedEvent.Unmarshal(m, b)
@@ -1428,9 +1462,9 @@ func (m *JobCompletedEvent) GetJob() *Job {
 // Table data-list request.
 type TableDataListRequest struct {
 	// Starting row offset.
-	StartRow uint64 `protobuf:"varint,1,opt,name=start_row,json=startRow" json:"start_row,omitempty"`
+	StartRow uint64 `protobuf:"varint,1,opt,name=start_row,json=startRow,proto3" json:"start_row,omitempty"`
 	// Maximum number of results to return.
-	MaxResults           uint32   `protobuf:"varint,2,opt,name=max_results,json=maxResults" json:"max_results,omitempty"`
+	MaxResults           uint32   `protobuf:"varint,2,opt,name=max_results,json=maxResults,proto3" json:"max_results,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1440,7 +1474,7 @@ func (m *TableDataListRequest) Reset()         { *m = TableDataListRequest{} }
 func (m *TableDataListRequest) String() string { return proto.CompactTextString(m) }
 func (*TableDataListRequest) ProtoMessage()    {}
 func (*TableDataListRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_data_b90959119ce397a8, []int{18}
+	return fileDescriptor_audit_data_c8c983cfffeff6d8, []int{18}
 }
 func (m *TableDataListRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_TableDataListRequest.Unmarshal(m, b)
@@ -1482,22 +1516,22 @@ func (m *TableDataListRequest) GetMaxResults() uint32 {
 // transition.
 type Table struct {
 	// The name of the table.
-	TableName *TableName `protobuf:"bytes,1,opt,name=table_name,json=tableName" json:"table_name,omitempty"`
+	TableName *TableName `protobuf:"bytes,1,opt,name=table_name,json=tableName,proto3" json:"table_name,omitempty"`
 	// User-provided metadata for the table.
-	Info *TableInfo `protobuf:"bytes,2,opt,name=info" json:"info,omitempty"`
+	Info *TableInfo `protobuf:"bytes,2,opt,name=info,proto3" json:"info,omitempty"`
 	// A JSON representation of the table's schema.
-	SchemaJson string `protobuf:"bytes,8,opt,name=schema_json,json=schemaJson" json:"schema_json,omitempty"`
+	SchemaJson string `protobuf:"bytes,8,opt,name=schema_json,json=schemaJson,proto3" json:"schema_json,omitempty"`
 	// If present, this is a virtual table defined by a SQL query.
-	View *TableViewDefinition `protobuf:"bytes,4,opt,name=view" json:"view,omitempty"`
+	View *TableViewDefinition `protobuf:"bytes,4,opt,name=view,proto3" json:"view,omitempty"`
 	// The expiration date for the table, after which the table
 	// is deleted and the storage reclaimed.
 	// If not present, the table persists indefinitely.
-	ExpireTime *timestamp.Timestamp `protobuf:"bytes,5,opt,name=expire_time,json=expireTime" json:"expire_time,omitempty"`
+	ExpireTime *timestamp.Timestamp `protobuf:"bytes,5,opt,name=expire_time,json=expireTime,proto3" json:"expire_time,omitempty"`
 	// The time the table was created.
-	CreateTime *timestamp.Timestamp `protobuf:"bytes,6,opt,name=create_time,json=createTime" json:"create_time,omitempty"`
+	CreateTime *timestamp.Timestamp `protobuf:"bytes,6,opt,name=create_time,json=createTime,proto3" json:"create_time,omitempty"`
 	// The time the table was last truncated
 	// by an operation with a `writeDisposition` of `WRITE_TRUNCATE`.
-	TruncateTime         *timestamp.Timestamp `protobuf:"bytes,7,opt,name=truncate_time,json=truncateTime" json:"truncate_time,omitempty"`
+	TruncateTime         *timestamp.Timestamp `protobuf:"bytes,7,opt,name=truncate_time,json=truncateTime,proto3" json:"truncate_time,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
 	XXX_unrecognized     []byte               `json:"-"`
 	XXX_sizecache        int32                `json:"-"`
@@ -1507,7 +1541,7 @@ func (m *Table) Reset()         { *m = Table{} }
 func (m *Table) String() string { return proto.CompactTextString(m) }
 func (*Table) ProtoMessage()    {}
 func (*Table) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_data_b90959119ce397a8, []int{19}
+	return fileDescriptor_audit_data_c8c983cfffeff6d8, []int{19}
 }
 func (m *Table) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Table.Unmarshal(m, b)
@@ -1579,10 +1613,10 @@ func (m *Table) GetTruncateTime() *timestamp.Timestamp {
 // User-provided metadata for a table.
 type TableInfo struct {
 	// A short name for the table, such as`"Analytics Data - Jan 2011"`.
-	FriendlyName string `protobuf:"bytes,1,opt,name=friendly_name,json=friendlyName" json:"friendly_name,omitempty"`
+	FriendlyName string `protobuf:"bytes,1,opt,name=friendly_name,json=friendlyName,proto3" json:"friendly_name,omitempty"`
 	// A long description, perhaps several paragraphs,
 	// describing the table contents in detail.
-	Description          string   `protobuf:"bytes,2,opt,name=description" json:"description,omitempty"`
+	Description          string   `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1592,7 +1626,7 @@ func (m *TableInfo) Reset()         { *m = TableInfo{} }
 func (m *TableInfo) String() string { return proto.CompactTextString(m) }
 func (*TableInfo) ProtoMessage()    {}
 func (*TableInfo) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_data_b90959119ce397a8, []int{20}
+	return fileDescriptor_audit_data_c8c983cfffeff6d8, []int{20}
 }
 func (m *TableInfo) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_TableInfo.Unmarshal(m, b)
@@ -1629,7 +1663,7 @@ func (m *TableInfo) GetDescription() string {
 // Describes a virtual table defined by a SQL query.
 type TableViewDefinition struct {
 	// SQL query defining the view.
-	Query                string   `protobuf:"bytes,1,opt,name=query" json:"query,omitempty"`
+	Query                string   `protobuf:"bytes,1,opt,name=query,proto3" json:"query,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1639,7 +1673,7 @@ func (m *TableViewDefinition) Reset()         { *m = TableViewDefinition{} }
 func (m *TableViewDefinition) String() string { return proto.CompactTextString(m) }
 func (*TableViewDefinition) ProtoMessage()    {}
 func (*TableViewDefinition) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_data_b90959119ce397a8, []int{21}
+	return fileDescriptor_audit_data_c8c983cfffeff6d8, []int{21}
 }
 func (m *TableViewDefinition) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_TableViewDefinition.Unmarshal(m, b)
@@ -1671,20 +1705,20 @@ func (m *TableViewDefinition) GetQuery() string {
 // for more details on individual fields.
 type Dataset struct {
 	// The name of the dataset.
-	DatasetName *DatasetName `protobuf:"bytes,1,opt,name=dataset_name,json=datasetName" json:"dataset_name,omitempty"`
+	DatasetName *DatasetName `protobuf:"bytes,1,opt,name=dataset_name,json=datasetName,proto3" json:"dataset_name,omitempty"`
 	// User-provided metadata for the dataset.
-	Info *DatasetInfo `protobuf:"bytes,2,opt,name=info" json:"info,omitempty"`
+	Info *DatasetInfo `protobuf:"bytes,2,opt,name=info,proto3" json:"info,omitempty"`
 	// The time the dataset was created.
-	CreateTime *timestamp.Timestamp `protobuf:"bytes,4,opt,name=create_time,json=createTime" json:"create_time,omitempty"`
+	CreateTime *timestamp.Timestamp `protobuf:"bytes,4,opt,name=create_time,json=createTime,proto3" json:"create_time,omitempty"`
 	// The time the dataset was last modified.
-	UpdateTime *timestamp.Timestamp `protobuf:"bytes,5,opt,name=update_time,json=updateTime" json:"update_time,omitempty"`
+	UpdateTime *timestamp.Timestamp `protobuf:"bytes,5,opt,name=update_time,json=updateTime,proto3" json:"update_time,omitempty"`
 	// The access control list for the dataset.
-	Acl *BigQueryAcl `protobuf:"bytes,6,opt,name=acl" json:"acl,omitempty"`
+	Acl *BigQueryAcl `protobuf:"bytes,6,opt,name=acl,proto3" json:"acl,omitempty"`
 	// If this field is present, each table that does not specify an
 	// expiration time is assigned an expiration time by adding this
 	// duration to the table's `createTime`.  If this field is empty,
 	// there is no default table expiration time.
-	DefaultTableExpireDuration *duration.Duration `protobuf:"bytes,8,opt,name=default_table_expire_duration,json=defaultTableExpireDuration" json:"default_table_expire_duration,omitempty"`
+	DefaultTableExpireDuration *duration.Duration `protobuf:"bytes,8,opt,name=default_table_expire_duration,json=defaultTableExpireDuration,proto3" json:"default_table_expire_duration,omitempty"`
 	XXX_NoUnkeyedLiteral       struct{}           `json:"-"`
 	XXX_unrecognized           []byte             `json:"-"`
 	XXX_sizecache              int32              `json:"-"`
@@ -1694,7 +1728,7 @@ func (m *Dataset) Reset()         { *m = Dataset{} }
 func (m *Dataset) String() string { return proto.CompactTextString(m) }
 func (*Dataset) ProtoMessage()    {}
 func (*Dataset) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_data_b90959119ce397a8, []int{22}
+	return fileDescriptor_audit_data_c8c983cfffeff6d8, []int{22}
 }
 func (m *Dataset) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Dataset.Unmarshal(m, b)
@@ -1759,10 +1793,10 @@ func (m *Dataset) GetDefaultTableExpireDuration() *duration.Duration {
 // User-provided metadata for a dataset.
 type DatasetInfo struct {
 	// A short name for the dataset, such as`"Analytics Data 2011"`.
-	FriendlyName string `protobuf:"bytes,1,opt,name=friendly_name,json=friendlyName" json:"friendly_name,omitempty"`
+	FriendlyName string `protobuf:"bytes,1,opt,name=friendly_name,json=friendlyName,proto3" json:"friendly_name,omitempty"`
 	// A long description, perhaps several paragraphs,
 	// describing the dataset contents in detail.
-	Description          string   `protobuf:"bytes,2,opt,name=description" json:"description,omitempty"`
+	Description          string   `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1772,7 +1806,7 @@ func (m *DatasetInfo) Reset()         { *m = DatasetInfo{} }
 func (m *DatasetInfo) String() string { return proto.CompactTextString(m) }
 func (*DatasetInfo) ProtoMessage()    {}
 func (*DatasetInfo) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_data_b90959119ce397a8, []int{23}
+	return fileDescriptor_audit_data_c8c983cfffeff6d8, []int{23}
 }
 func (m *DatasetInfo) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DatasetInfo.Unmarshal(m, b)
@@ -1809,7 +1843,7 @@ func (m *DatasetInfo) GetDescription() string {
 // An access control list.
 type BigQueryAcl struct {
 	// Access control entry list.
-	Entries              []*BigQueryAcl_Entry `protobuf:"bytes,1,rep,name=entries" json:"entries,omitempty"`
+	Entries              []*BigQueryAcl_Entry `protobuf:"bytes,1,rep,name=entries,proto3" json:"entries,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
 	XXX_unrecognized     []byte               `json:"-"`
 	XXX_sizecache        int32                `json:"-"`
@@ -1819,7 +1853,7 @@ func (m *BigQueryAcl) Reset()         { *m = BigQueryAcl{} }
 func (m *BigQueryAcl) String() string { return proto.CompactTextString(m) }
 func (*BigQueryAcl) ProtoMessage()    {}
 func (*BigQueryAcl) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_data_b90959119ce397a8, []int{24}
+	return fileDescriptor_audit_data_c8c983cfffeff6d8, []int{24}
 }
 func (m *BigQueryAcl) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_BigQueryAcl.Unmarshal(m, b)
@@ -1849,18 +1883,18 @@ func (m *BigQueryAcl) GetEntries() []*BigQueryAcl_Entry {
 // Access control entry.
 type BigQueryAcl_Entry struct {
 	// The granted role, which can be `READER`, `WRITER`, or `OWNER`.
-	Role string `protobuf:"bytes,1,opt,name=role" json:"role,omitempty"`
+	Role string `protobuf:"bytes,1,opt,name=role,proto3" json:"role,omitempty"`
 	// Grants access to a group identified by an email address.
-	GroupEmail string `protobuf:"bytes,2,opt,name=group_email,json=groupEmail" json:"group_email,omitempty"`
+	GroupEmail string `protobuf:"bytes,2,opt,name=group_email,json=groupEmail,proto3" json:"group_email,omitempty"`
 	// Grants access to a user identified by an email address.
-	UserEmail string `protobuf:"bytes,3,opt,name=user_email,json=userEmail" json:"user_email,omitempty"`
+	UserEmail string `protobuf:"bytes,3,opt,name=user_email,json=userEmail,proto3" json:"user_email,omitempty"`
 	// Grants access to all members of a domain.
-	Domain string `protobuf:"bytes,4,opt,name=domain" json:"domain,omitempty"`
+	Domain string `protobuf:"bytes,4,opt,name=domain,proto3" json:"domain,omitempty"`
 	// Grants access to special groups. Valid groups are `PROJECT_OWNERS`,
 	// `PROJECT_READERS`, `PROJECT_WRITERS` and `ALL_AUTHENTICATED_USERS`.
-	SpecialGroup string `protobuf:"bytes,5,opt,name=special_group,json=specialGroup" json:"special_group,omitempty"`
+	SpecialGroup string `protobuf:"bytes,5,opt,name=special_group,json=specialGroup,proto3" json:"special_group,omitempty"`
 	// Grants access to a BigQuery View.
-	ViewName             *TableName `protobuf:"bytes,6,opt,name=view_name,json=viewName" json:"view_name,omitempty"`
+	ViewName             *TableName `protobuf:"bytes,6,opt,name=view_name,json=viewName,proto3" json:"view_name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}   `json:"-"`
 	XXX_unrecognized     []byte     `json:"-"`
 	XXX_sizecache        int32      `json:"-"`
@@ -1870,7 +1904,7 @@ func (m *BigQueryAcl_Entry) Reset()         { *m = BigQueryAcl_Entry{} }
 func (m *BigQueryAcl_Entry) String() string { return proto.CompactTextString(m) }
 func (*BigQueryAcl_Entry) ProtoMessage()    {}
 func (*BigQueryAcl_Entry) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_data_b90959119ce397a8, []int{24, 0}
+	return fileDescriptor_audit_data_c8c983cfffeff6d8, []int{24, 0}
 }
 func (m *BigQueryAcl_Entry) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_BigQueryAcl_Entry.Unmarshal(m, b)
@@ -1935,13 +1969,13 @@ func (m *BigQueryAcl_Entry) GetViewName() *TableName {
 // Describes a job.
 type Job struct {
 	// Job name.
-	JobName *JobName `protobuf:"bytes,1,opt,name=job_name,json=jobName" json:"job_name,omitempty"`
+	JobName *JobName `protobuf:"bytes,1,opt,name=job_name,json=jobName,proto3" json:"job_name,omitempty"`
 	// Job configuration.
-	JobConfiguration *JobConfiguration `protobuf:"bytes,2,opt,name=job_configuration,json=jobConfiguration" json:"job_configuration,omitempty"`
+	JobConfiguration *JobConfiguration `protobuf:"bytes,2,opt,name=job_configuration,json=jobConfiguration,proto3" json:"job_configuration,omitempty"`
 	// Job status.
-	JobStatus *JobStatus `protobuf:"bytes,3,opt,name=job_status,json=jobStatus" json:"job_status,omitempty"`
+	JobStatus *JobStatus `protobuf:"bytes,3,opt,name=job_status,json=jobStatus,proto3" json:"job_status,omitempty"`
 	// Job statistics.
-	JobStatistics        *JobStatistics `protobuf:"bytes,4,opt,name=job_statistics,json=jobStatistics" json:"job_statistics,omitempty"`
+	JobStatistics        *JobStatistics `protobuf:"bytes,4,opt,name=job_statistics,json=jobStatistics,proto3" json:"job_statistics,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
 	XXX_unrecognized     []byte         `json:"-"`
 	XXX_sizecache        int32          `json:"-"`
@@ -1951,7 +1985,7 @@ func (m *Job) Reset()         { *m = Job{} }
 func (m *Job) String() string { return proto.CompactTextString(m) }
 func (*Job) ProtoMessage()    {}
 func (*Job) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_data_b90959119ce397a8, []int{25}
+	return fileDescriptor_audit_data_c8c983cfffeff6d8, []int{25}
 }
 func (m *Job) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Job.Unmarshal(m, b)
@@ -2012,7 +2046,7 @@ type JobConfiguration struct {
 	//	*JobConfiguration_TableCopy_
 	Configuration isJobConfiguration_Configuration `protobuf_oneof:"configuration"`
 	// If true, don't actually run the job. Just check that it would run.
-	DryRun               bool     `protobuf:"varint,9,opt,name=dry_run,json=dryRun" json:"dry_run,omitempty"`
+	DryRun               bool     `protobuf:"varint,9,opt,name=dry_run,json=dryRun,proto3" json:"dry_run,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -2022,7 +2056,7 @@ func (m *JobConfiguration) Reset()         { *m = JobConfiguration{} }
 func (m *JobConfiguration) String() string { return proto.CompactTextString(m) }
 func (*JobConfiguration) ProtoMessage()    {}
 func (*JobConfiguration) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_data_b90959119ce397a8, []int{26}
+	return fileDescriptor_audit_data_c8c983cfffeff6d8, []int{26}
 }
 func (m *JobConfiguration) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_JobConfiguration.Unmarshal(m, b)
@@ -2047,21 +2081,27 @@ type isJobConfiguration_Configuration interface {
 }
 
 type JobConfiguration_Query_ struct {
-	Query *JobConfiguration_Query `protobuf:"bytes,5,opt,name=query,oneof"`
-}
-type JobConfiguration_Load_ struct {
-	Load *JobConfiguration_Load `protobuf:"bytes,6,opt,name=load,oneof"`
-}
-type JobConfiguration_Extract_ struct {
-	Extract *JobConfiguration_Extract `protobuf:"bytes,7,opt,name=extract,oneof"`
-}
-type JobConfiguration_TableCopy_ struct {
-	TableCopy *JobConfiguration_TableCopy `protobuf:"bytes,8,opt,name=table_copy,json=tableCopy,oneof"`
+	Query *JobConfiguration_Query `protobuf:"bytes,5,opt,name=query,proto3,oneof"`
 }
 
-func (*JobConfiguration_Query_) isJobConfiguration_Configuration()     {}
-func (*JobConfiguration_Load_) isJobConfiguration_Configuration()      {}
-func (*JobConfiguration_Extract_) isJobConfiguration_Configuration()   {}
+type JobConfiguration_Load_ struct {
+	Load *JobConfiguration_Load `protobuf:"bytes,6,opt,name=load,proto3,oneof"`
+}
+
+type JobConfiguration_Extract_ struct {
+	Extract *JobConfiguration_Extract `protobuf:"bytes,7,opt,name=extract,proto3,oneof"`
+}
+
+type JobConfiguration_TableCopy_ struct {
+	TableCopy *JobConfiguration_TableCopy `protobuf:"bytes,8,opt,name=table_copy,json=tableCopy,proto3,oneof"`
+}
+
+func (*JobConfiguration_Query_) isJobConfiguration_Configuration() {}
+
+func (*JobConfiguration_Load_) isJobConfiguration_Configuration() {}
+
+func (*JobConfiguration_Extract_) isJobConfiguration_Configuration() {}
+
 func (*JobConfiguration_TableCopy_) isJobConfiguration_Configuration() {}
 
 func (m *JobConfiguration) GetConfiguration() isJobConfiguration_Configuration {
@@ -2221,20 +2261,20 @@ func _JobConfiguration_OneofSizer(msg proto.Message) (n int) {
 // Describes a query job, which executes a SQL-like query.
 type JobConfiguration_Query struct {
 	// The SQL query to run.
-	Query string `protobuf:"bytes,1,opt,name=query" json:"query,omitempty"`
+	Query string `protobuf:"bytes,1,opt,name=query,proto3" json:"query,omitempty"`
 	// The table where results are written.
-	DestinationTable *TableName `protobuf:"bytes,2,opt,name=destination_table,json=destinationTable" json:"destination_table,omitempty"`
+	DestinationTable *TableName `protobuf:"bytes,2,opt,name=destination_table,json=destinationTable,proto3" json:"destination_table,omitempty"`
 	// Describes when a job is allowed to create a table:
 	// `CREATE_IF_NEEDED`, `CREATE_NEVER`.
-	CreateDisposition string `protobuf:"bytes,3,opt,name=create_disposition,json=createDisposition" json:"create_disposition,omitempty"`
+	CreateDisposition string `protobuf:"bytes,3,opt,name=create_disposition,json=createDisposition,proto3" json:"create_disposition,omitempty"`
 	// Describes how writes affect existing tables:
 	// `WRITE_TRUNCATE`, `WRITE_APPEND`, `WRITE_EMPTY`.
-	WriteDisposition string `protobuf:"bytes,4,opt,name=write_disposition,json=writeDisposition" json:"write_disposition,omitempty"`
+	WriteDisposition string `protobuf:"bytes,4,opt,name=write_disposition,json=writeDisposition,proto3" json:"write_disposition,omitempty"`
 	// If a table name is specified without a dataset in a query,
 	// this dataset will be added to table name.
-	DefaultDataset *DatasetName `protobuf:"bytes,5,opt,name=default_dataset,json=defaultDataset" json:"default_dataset,omitempty"`
+	DefaultDataset *DatasetName `protobuf:"bytes,5,opt,name=default_dataset,json=defaultDataset,proto3" json:"default_dataset,omitempty"`
 	// Describes data sources outside BigQuery, if needed.
-	TableDefinitions     []*TableDefinition `protobuf:"bytes,6,rep,name=table_definitions,json=tableDefinitions" json:"table_definitions,omitempty"`
+	TableDefinitions     []*TableDefinition `protobuf:"bytes,6,rep,name=table_definitions,json=tableDefinitions,proto3" json:"table_definitions,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}           `json:"-"`
 	XXX_unrecognized     []byte             `json:"-"`
 	XXX_sizecache        int32              `json:"-"`
@@ -2244,7 +2284,7 @@ func (m *JobConfiguration_Query) Reset()         { *m = JobConfiguration_Query{}
 func (m *JobConfiguration_Query) String() string { return proto.CompactTextString(m) }
 func (*JobConfiguration_Query) ProtoMessage()    {}
 func (*JobConfiguration_Query) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_data_b90959119ce397a8, []int{26, 0}
+	return fileDescriptor_audit_data_c8c983cfffeff6d8, []int{26, 0}
 }
 func (m *JobConfiguration_Query) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_JobConfiguration_Query.Unmarshal(m, b)
@@ -2311,17 +2351,17 @@ func (m *JobConfiguration_Query) GetTableDefinitions() []*TableDefinition {
 type JobConfiguration_Load struct {
 	// URIs for the data to be imported. Only Google Cloud Storage URIs are
 	// supported.
-	SourceUris []string `protobuf:"bytes,1,rep,name=source_uris,json=sourceUris" json:"source_uris,omitempty"`
+	SourceUris []string `protobuf:"bytes,1,rep,name=source_uris,json=sourceUris,proto3" json:"source_uris,omitempty"`
 	// The table schema in JSON format representation of a TableSchema.
-	SchemaJson string `protobuf:"bytes,6,opt,name=schema_json,json=schemaJson" json:"schema_json,omitempty"`
+	SchemaJson string `protobuf:"bytes,6,opt,name=schema_json,json=schemaJson,proto3" json:"schema_json,omitempty"`
 	// The table where the imported data is written.
-	DestinationTable *TableName `protobuf:"bytes,3,opt,name=destination_table,json=destinationTable" json:"destination_table,omitempty"`
+	DestinationTable *TableName `protobuf:"bytes,3,opt,name=destination_table,json=destinationTable,proto3" json:"destination_table,omitempty"`
 	// Describes when a job is allowed to create a table:
 	// `CREATE_IF_NEEDED`, `CREATE_NEVER`.
-	CreateDisposition string `protobuf:"bytes,4,opt,name=create_disposition,json=createDisposition" json:"create_disposition,omitempty"`
+	CreateDisposition string `protobuf:"bytes,4,opt,name=create_disposition,json=createDisposition,proto3" json:"create_disposition,omitempty"`
 	// Describes how writes affect existing tables:
 	// `WRITE_TRUNCATE`, `WRITE_APPEND`, `WRITE_EMPTY`.
-	WriteDisposition     string   `protobuf:"bytes,5,opt,name=write_disposition,json=writeDisposition" json:"write_disposition,omitempty"`
+	WriteDisposition     string   `protobuf:"bytes,5,opt,name=write_disposition,json=writeDisposition,proto3" json:"write_disposition,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -2331,7 +2371,7 @@ func (m *JobConfiguration_Load) Reset()         { *m = JobConfiguration_Load{} }
 func (m *JobConfiguration_Load) String() string { return proto.CompactTextString(m) }
 func (*JobConfiguration_Load) ProtoMessage()    {}
 func (*JobConfiguration_Load) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_data_b90959119ce397a8, []int{26, 1}
+	return fileDescriptor_audit_data_c8c983cfffeff6d8, []int{26, 1}
 }
 func (m *JobConfiguration_Load) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_JobConfiguration_Load.Unmarshal(m, b)
@@ -2390,9 +2430,9 @@ func (m *JobConfiguration_Load) GetWriteDisposition() string {
 // via the  export pipeline.
 type JobConfiguration_Extract struct {
 	// Google Cloud Storage URIs where extracted data should be written.
-	DestinationUris []string `protobuf:"bytes,1,rep,name=destination_uris,json=destinationUris" json:"destination_uris,omitempty"`
+	DestinationUris []string `protobuf:"bytes,1,rep,name=destination_uris,json=destinationUris,proto3" json:"destination_uris,omitempty"`
 	// The source table.
-	SourceTable          *TableName `protobuf:"bytes,2,opt,name=source_table,json=sourceTable" json:"source_table,omitempty"`
+	SourceTable          *TableName `protobuf:"bytes,2,opt,name=source_table,json=sourceTable,proto3" json:"source_table,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}   `json:"-"`
 	XXX_unrecognized     []byte     `json:"-"`
 	XXX_sizecache        int32      `json:"-"`
@@ -2402,7 +2442,7 @@ func (m *JobConfiguration_Extract) Reset()         { *m = JobConfiguration_Extra
 func (m *JobConfiguration_Extract) String() string { return proto.CompactTextString(m) }
 func (*JobConfiguration_Extract) ProtoMessage()    {}
 func (*JobConfiguration_Extract) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_data_b90959119ce397a8, []int{26, 2}
+	return fileDescriptor_audit_data_c8c983cfffeff6d8, []int{26, 2}
 }
 func (m *JobConfiguration_Extract) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_JobConfiguration_Extract.Unmarshal(m, b)
@@ -2439,15 +2479,15 @@ func (m *JobConfiguration_Extract) GetSourceTable() *TableName {
 // Describes a copy job, which copies an existing table to another table.
 type JobConfiguration_TableCopy struct {
 	// Source tables.
-	SourceTables []*TableName `protobuf:"bytes,1,rep,name=source_tables,json=sourceTables" json:"source_tables,omitempty"`
+	SourceTables []*TableName `protobuf:"bytes,1,rep,name=source_tables,json=sourceTables,proto3" json:"source_tables,omitempty"`
 	// Destination table.
-	DestinationTable *TableName `protobuf:"bytes,2,opt,name=destination_table,json=destinationTable" json:"destination_table,omitempty"`
+	DestinationTable *TableName `protobuf:"bytes,2,opt,name=destination_table,json=destinationTable,proto3" json:"destination_table,omitempty"`
 	// Describes when a job is allowed to create a table:
 	// `CREATE_IF_NEEDED`, `CREATE_NEVER`.
-	CreateDisposition string `protobuf:"bytes,3,opt,name=create_disposition,json=createDisposition" json:"create_disposition,omitempty"`
+	CreateDisposition string `protobuf:"bytes,3,opt,name=create_disposition,json=createDisposition,proto3" json:"create_disposition,omitempty"`
 	// Describes how writes affect existing tables:
 	// `WRITE_TRUNCATE`, `WRITE_APPEND`, `WRITE_EMPTY`.
-	WriteDisposition     string   `protobuf:"bytes,4,opt,name=write_disposition,json=writeDisposition" json:"write_disposition,omitempty"`
+	WriteDisposition     string   `protobuf:"bytes,4,opt,name=write_disposition,json=writeDisposition,proto3" json:"write_disposition,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -2457,7 +2497,7 @@ func (m *JobConfiguration_TableCopy) Reset()         { *m = JobConfiguration_Tab
 func (m *JobConfiguration_TableCopy) String() string { return proto.CompactTextString(m) }
 func (*JobConfiguration_TableCopy) ProtoMessage()    {}
 func (*JobConfiguration_TableCopy) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_data_b90959119ce397a8, []int{26, 3}
+	return fileDescriptor_audit_data_c8c983cfffeff6d8, []int{26, 3}
 }
 func (m *JobConfiguration_TableCopy) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_JobConfiguration_TableCopy.Unmarshal(m, b)
@@ -2508,9 +2548,9 @@ func (m *JobConfiguration_TableCopy) GetWriteDisposition() string {
 // Describes an external data source used in a query.
 type TableDefinition struct {
 	// Name of the table, used in queries.
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// Google Cloud Storage URIs for the data to be imported.
-	SourceUris           []string `protobuf:"bytes,2,rep,name=source_uris,json=sourceUris" json:"source_uris,omitempty"`
+	SourceUris           []string `protobuf:"bytes,2,rep,name=source_uris,json=sourceUris,proto3" json:"source_uris,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -2520,7 +2560,7 @@ func (m *TableDefinition) Reset()         { *m = TableDefinition{} }
 func (m *TableDefinition) String() string { return proto.CompactTextString(m) }
 func (*TableDefinition) ProtoMessage()    {}
 func (*TableDefinition) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_data_b90959119ce397a8, []int{27}
+	return fileDescriptor_audit_data_c8c983cfffeff6d8, []int{27}
 }
 func (m *TableDefinition) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_TableDefinition.Unmarshal(m, b)
@@ -2557,9 +2597,9 @@ func (m *TableDefinition) GetSourceUris() []string {
 // Running state of a job.
 type JobStatus struct {
 	// State of a job: `PENDING`, `RUNNING`, or `DONE`.
-	State string `protobuf:"bytes,1,opt,name=state" json:"state,omitempty"`
+	State string `protobuf:"bytes,1,opt,name=state,proto3" json:"state,omitempty"`
 	// If the job did not complete successfully, this field describes why.
-	Error                *status.Status `protobuf:"bytes,2,opt,name=error" json:"error,omitempty"`
+	Error                *status.Status `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
 	XXX_unrecognized     []byte         `json:"-"`
 	XXX_sizecache        int32          `json:"-"`
@@ -2569,7 +2609,7 @@ func (m *JobStatus) Reset()         { *m = JobStatus{} }
 func (m *JobStatus) String() string { return proto.CompactTextString(m) }
 func (*JobStatus) ProtoMessage()    {}
 func (*JobStatus) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_data_b90959119ce397a8, []int{28}
+	return fileDescriptor_audit_data_c8c983cfffeff6d8, []int{28}
 }
 func (m *JobStatus) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_JobStatus.Unmarshal(m, b)
@@ -2606,17 +2646,17 @@ func (m *JobStatus) GetError() *status.Status {
 // Job statistics that may change after a job starts.
 type JobStatistics struct {
 	// Time when the job was created.
-	CreateTime *timestamp.Timestamp `protobuf:"bytes,1,opt,name=create_time,json=createTime" json:"create_time,omitempty"`
+	CreateTime *timestamp.Timestamp `protobuf:"bytes,1,opt,name=create_time,json=createTime,proto3" json:"create_time,omitempty"`
 	// Time when the job started.
-	StartTime *timestamp.Timestamp `protobuf:"bytes,2,opt,name=start_time,json=startTime" json:"start_time,omitempty"`
+	StartTime *timestamp.Timestamp `protobuf:"bytes,2,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
 	// Time when the job ended.
-	EndTime *timestamp.Timestamp `protobuf:"bytes,3,opt,name=end_time,json=endTime" json:"end_time,omitempty"`
+	EndTime *timestamp.Timestamp `protobuf:"bytes,3,opt,name=end_time,json=endTime,proto3" json:"end_time,omitempty"`
 	// Total bytes processed for a job.
-	TotalProcessedBytes int64 `protobuf:"varint,4,opt,name=total_processed_bytes,json=totalProcessedBytes" json:"total_processed_bytes,omitempty"`
+	TotalProcessedBytes int64 `protobuf:"varint,4,opt,name=total_processed_bytes,json=totalProcessedBytes,proto3" json:"total_processed_bytes,omitempty"`
 	// Processed bytes, adjusted by the job's CPU usage.
-	TotalBilledBytes int64 `protobuf:"varint,5,opt,name=total_billed_bytes,json=totalBilledBytes" json:"total_billed_bytes,omitempty"`
+	TotalBilledBytes int64 `protobuf:"varint,5,opt,name=total_billed_bytes,json=totalBilledBytes,proto3" json:"total_billed_bytes,omitempty"`
 	// The tier assigned by CPU-based billing.
-	BillingTier          int32    `protobuf:"varint,7,opt,name=billing_tier,json=billingTier" json:"billing_tier,omitempty"`
+	BillingTier          int32    `protobuf:"varint,7,opt,name=billing_tier,json=billingTier,proto3" json:"billing_tier,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -2626,7 +2666,7 @@ func (m *JobStatistics) Reset()         { *m = JobStatistics{} }
 func (m *JobStatistics) String() string { return proto.CompactTextString(m) }
 func (*JobStatistics) ProtoMessage()    {}
 func (*JobStatistics) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_data_b90959119ce397a8, []int{29}
+	return fileDescriptor_audit_data_c8c983cfffeff6d8, []int{29}
 }
 func (m *JobStatistics) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_JobStatistics.Unmarshal(m, b)
@@ -2691,9 +2731,9 @@ func (m *JobStatistics) GetBillingTier() int32 {
 // The fully-qualified name for a dataset.
 type DatasetName struct {
 	// The project ID.
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// The dataset ID within the project.
-	DatasetId            string   `protobuf:"bytes,2,opt,name=dataset_id,json=datasetId" json:"dataset_id,omitempty"`
+	DatasetId            string   `protobuf:"bytes,2,opt,name=dataset_id,json=datasetId,proto3" json:"dataset_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -2703,7 +2743,7 @@ func (m *DatasetName) Reset()         { *m = DatasetName{} }
 func (m *DatasetName) String() string { return proto.CompactTextString(m) }
 func (*DatasetName) ProtoMessage()    {}
 func (*DatasetName) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_data_b90959119ce397a8, []int{30}
+	return fileDescriptor_audit_data_c8c983cfffeff6d8, []int{30}
 }
 func (m *DatasetName) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DatasetName.Unmarshal(m, b)
@@ -2740,11 +2780,11 @@ func (m *DatasetName) GetDatasetId() string {
 // The fully-qualified name for a table.
 type TableName struct {
 	// The project ID.
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// The dataset ID within the project.
-	DatasetId string `protobuf:"bytes,2,opt,name=dataset_id,json=datasetId" json:"dataset_id,omitempty"`
+	DatasetId string `protobuf:"bytes,2,opt,name=dataset_id,json=datasetId,proto3" json:"dataset_id,omitempty"`
 	// The table ID of the table within the dataset.
-	TableId              string   `protobuf:"bytes,3,opt,name=table_id,json=tableId" json:"table_id,omitempty"`
+	TableId              string   `protobuf:"bytes,3,opt,name=table_id,json=tableId,proto3" json:"table_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -2754,7 +2794,7 @@ func (m *TableName) Reset()         { *m = TableName{} }
 func (m *TableName) String() string { return proto.CompactTextString(m) }
 func (*TableName) ProtoMessage()    {}
 func (*TableName) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_data_b90959119ce397a8, []int{31}
+	return fileDescriptor_audit_data_c8c983cfffeff6d8, []int{31}
 }
 func (m *TableName) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_TableName.Unmarshal(m, b)
@@ -2798,9 +2838,9 @@ func (m *TableName) GetTableId() string {
 // The fully-qualified name for a job.
 type JobName struct {
 	// The project ID.
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// The job ID within the project.
-	JobId                string   `protobuf:"bytes,2,opt,name=job_id,json=jobId" json:"job_id,omitempty"`
+	JobId                string   `protobuf:"bytes,2,opt,name=job_id,json=jobId,proto3" json:"job_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -2810,7 +2850,7 @@ func (m *JobName) Reset()         { *m = JobName{} }
 func (m *JobName) String() string { return proto.CompactTextString(m) }
 func (*JobName) ProtoMessage()    {}
 func (*JobName) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_data_b90959119ce397a8, []int{32}
+	return fileDescriptor_audit_data_c8c983cfffeff6d8, []int{32}
 }
 func (m *JobName) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_JobName.Unmarshal(m, b)
@@ -2886,10 +2926,10 @@ func init() {
 }
 
 func init() {
-	proto.RegisterFile("google/cloud/bigquery/logging/v1/audit_data.proto", fileDescriptor_audit_data_b90959119ce397a8)
+	proto.RegisterFile("google/cloud/bigquery/logging/v1/audit_data.proto", fileDescriptor_audit_data_c8c983cfffeff6d8)
 }
 
-var fileDescriptor_audit_data_b90959119ce397a8 = []byte{
+var fileDescriptor_audit_data_c8c983cfffeff6d8 = []byte{
 	// 2036 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xd4, 0x59, 0x4f, 0x73, 0x1b, 0x49,
 	0x15, 0x8f, 0x2c, 0xc9, 0x92, 0x9e, 0xec, 0xd8, 0xee, 0xd8, 0x9b, 0x58, 0x90, 0xdd, 0x30, 0x40,

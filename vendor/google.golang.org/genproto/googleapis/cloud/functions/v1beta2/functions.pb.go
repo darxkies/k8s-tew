@@ -64,7 +64,7 @@ func (x CloudFunctionStatus) String() string {
 	return proto.EnumName(CloudFunctionStatus_name, int32(x))
 }
 func (CloudFunctionStatus) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_functions_88bcb7a2a54dc5a5, []int{0}
+	return fileDescriptor_functions_a18655d3cc58948d, []int{0}
 }
 
 // Describes a Cloud Function that contains user computation executed in
@@ -72,7 +72,7 @@ func (CloudFunctionStatus) EnumDescriptor() ([]byte, []int) {
 type CloudFunction struct {
 	// A user-defined name of the function. Function names must be unique
 	// globally and match pattern `projects/*/locations/*/functions/*`
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// The location of the function source code.
 	//
 	// Types that are valid to be assigned to SourceCode:
@@ -86,29 +86,29 @@ type CloudFunction struct {
 	//	*CloudFunction_EventTrigger
 	Trigger isCloudFunction_Trigger `protobuf_oneof:"trigger"`
 	// Output only. Status of the function deployment.
-	Status CloudFunctionStatus `protobuf:"varint,7,opt,name=status,enum=google.cloud.functions.v1beta2.CloudFunctionStatus" json:"status,omitempty"`
+	Status CloudFunctionStatus `protobuf:"varint,7,opt,name=status,proto3,enum=google.cloud.functions.v1beta2.CloudFunctionStatus" json:"status,omitempty"`
 	// Output only. Name of the most recent operation modifying the function. If
 	// the function status is `DEPLOYING` or `DELETING`, then it points to the
 	// active operation.
-	LatestOperation string `protobuf:"bytes,8,opt,name=latest_operation,json=latestOperation" json:"latest_operation,omitempty"`
+	LatestOperation string `protobuf:"bytes,8,opt,name=latest_operation,json=latestOperation,proto3" json:"latest_operation,omitempty"`
 	// The name of the function (as defined in source code) that will be
 	// executed. Defaults to the resource name suffix, if not specified. For
 	// backward compatibility, if function with given name is not found, then the
 	// system will try to use function named "function".
 	// For Node.js this is name of a function exported by the module specified
 	// in `source_location`.
-	EntryPoint string `protobuf:"bytes,9,opt,name=entry_point,json=entryPoint" json:"entry_point,omitempty"`
+	EntryPoint string `protobuf:"bytes,9,opt,name=entry_point,json=entryPoint,proto3" json:"entry_point,omitempty"`
 	// The function execution timeout. Execution is considered failed and
 	// can be terminated if the function is not completed at the end of the
 	// timeout period. Defaults to 60 seconds.
-	Timeout *duration.Duration `protobuf:"bytes,10,opt,name=timeout" json:"timeout,omitempty"`
+	Timeout *duration.Duration `protobuf:"bytes,10,opt,name=timeout,proto3" json:"timeout,omitempty"`
 	// The amount of memory in MB available for a function.
 	// Defaults to 256MB.
-	AvailableMemoryMb int32 `protobuf:"varint,11,opt,name=available_memory_mb,json=availableMemoryMb" json:"available_memory_mb,omitempty"`
+	AvailableMemoryMb int32 `protobuf:"varint,11,opt,name=available_memory_mb,json=availableMemoryMb,proto3" json:"available_memory_mb,omitempty"`
 	// Output only. The service account of the function.
-	ServiceAccount string `protobuf:"bytes,13,opt,name=service_account,json=serviceAccount" json:"service_account,omitempty"`
+	ServiceAccount string `protobuf:"bytes,13,opt,name=service_account,json=serviceAccount,proto3" json:"service_account,omitempty"`
 	// Output only. The last update timestamp of a Cloud Function.
-	UpdateTime           *timestamp.Timestamp `protobuf:"bytes,15,opt,name=update_time,json=updateTime" json:"update_time,omitempty"`
+	UpdateTime           *timestamp.Timestamp `protobuf:"bytes,15,opt,name=update_time,json=updateTime,proto3" json:"update_time,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
 	XXX_unrecognized     []byte               `json:"-"`
 	XXX_sizecache        int32                `json:"-"`
@@ -118,7 +118,7 @@ func (m *CloudFunction) Reset()         { *m = CloudFunction{} }
 func (m *CloudFunction) String() string { return proto.CompactTextString(m) }
 func (*CloudFunction) ProtoMessage()    {}
 func (*CloudFunction) Descriptor() ([]byte, []int) {
-	return fileDescriptor_functions_88bcb7a2a54dc5a5, []int{0}
+	return fileDescriptor_functions_a18655d3cc58948d, []int{0}
 }
 func (m *CloudFunction) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CloudFunction.Unmarshal(m, b)
@@ -138,49 +138,34 @@ func (m *CloudFunction) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_CloudFunction proto.InternalMessageInfo
 
+func (m *CloudFunction) GetName() string {
+	if m != nil {
+		return m.Name
+	}
+	return ""
+}
+
 type isCloudFunction_SourceCode interface {
 	isCloudFunction_SourceCode()
 }
-type isCloudFunction_Trigger interface {
-	isCloudFunction_Trigger()
-}
 
 type CloudFunction_SourceArchiveUrl struct {
-	SourceArchiveUrl string `protobuf:"bytes,14,opt,name=source_archive_url,json=sourceArchiveUrl,oneof"`
+	SourceArchiveUrl string `protobuf:"bytes,14,opt,name=source_archive_url,json=sourceArchiveUrl,proto3,oneof"`
 }
+
 type CloudFunction_SourceRepository struct {
-	SourceRepository *SourceRepository `protobuf:"bytes,3,opt,name=source_repository,json=sourceRepository,oneof"`
-}
-type CloudFunction_HttpsTrigger struct {
-	HttpsTrigger *HTTPSTrigger `protobuf:"bytes,6,opt,name=https_trigger,json=httpsTrigger,oneof"`
-}
-type CloudFunction_EventTrigger struct {
-	EventTrigger *EventTrigger `protobuf:"bytes,12,opt,name=event_trigger,json=eventTrigger,oneof"`
+	SourceRepository *SourceRepository `protobuf:"bytes,3,opt,name=source_repository,json=sourceRepository,proto3,oneof"`
 }
 
 func (*CloudFunction_SourceArchiveUrl) isCloudFunction_SourceCode() {}
+
 func (*CloudFunction_SourceRepository) isCloudFunction_SourceCode() {}
-func (*CloudFunction_HttpsTrigger) isCloudFunction_Trigger()        {}
-func (*CloudFunction_EventTrigger) isCloudFunction_Trigger()        {}
 
 func (m *CloudFunction) GetSourceCode() isCloudFunction_SourceCode {
 	if m != nil {
 		return m.SourceCode
 	}
 	return nil
-}
-func (m *CloudFunction) GetTrigger() isCloudFunction_Trigger {
-	if m != nil {
-		return m.Trigger
-	}
-	return nil
-}
-
-func (m *CloudFunction) GetName() string {
-	if m != nil {
-		return m.Name
-	}
-	return ""
 }
 
 func (m *CloudFunction) GetSourceArchiveUrl() string {
@@ -193,6 +178,29 @@ func (m *CloudFunction) GetSourceArchiveUrl() string {
 func (m *CloudFunction) GetSourceRepository() *SourceRepository {
 	if x, ok := m.GetSourceCode().(*CloudFunction_SourceRepository); ok {
 		return x.SourceRepository
+	}
+	return nil
+}
+
+type isCloudFunction_Trigger interface {
+	isCloudFunction_Trigger()
+}
+
+type CloudFunction_HttpsTrigger struct {
+	HttpsTrigger *HTTPSTrigger `protobuf:"bytes,6,opt,name=https_trigger,json=httpsTrigger,proto3,oneof"`
+}
+
+type CloudFunction_EventTrigger struct {
+	EventTrigger *EventTrigger `protobuf:"bytes,12,opt,name=event_trigger,json=eventTrigger,proto3,oneof"`
+}
+
+func (*CloudFunction_HttpsTrigger) isCloudFunction_Trigger() {}
+
+func (*CloudFunction_EventTrigger) isCloudFunction_Trigger() {}
+
+func (m *CloudFunction) GetTrigger() isCloudFunction_Trigger {
+	if m != nil {
+		return m.Trigger
 	}
 	return nil
 }
@@ -383,7 +391,7 @@ func _CloudFunction_OneofSizer(msg proto.Message) (n int) {
 // Describes HTTPSTrigger, could be used to connect web hooks to function.
 type HTTPSTrigger struct {
 	// Output only. The deployed url for the function.
-	Url                  string   `protobuf:"bytes,1,opt,name=url" json:"url,omitempty"`
+	Url                  string   `protobuf:"bytes,1,opt,name=url,proto3" json:"url,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -393,7 +401,7 @@ func (m *HTTPSTrigger) Reset()         { *m = HTTPSTrigger{} }
 func (m *HTTPSTrigger) String() string { return proto.CompactTextString(m) }
 func (*HTTPSTrigger) ProtoMessage()    {}
 func (*HTTPSTrigger) Descriptor() ([]byte, []int) {
-	return fileDescriptor_functions_88bcb7a2a54dc5a5, []int{1}
+	return fileDescriptor_functions_a18655d3cc58948d, []int{1}
 }
 func (m *HTTPSTrigger) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_HTTPSTrigger.Unmarshal(m, b)
@@ -433,13 +441,13 @@ type EventTrigger struct {
 	//
 	//      Handle a write to the Firebase Realtime Database
 	//      `providers/firebase.database/eventTypes/data.write`
-	EventType string `protobuf:"bytes,1,opt,name=event_type,json=eventType" json:"event_type,omitempty"`
+	EventType string `protobuf:"bytes,1,opt,name=event_type,json=eventType,proto3" json:"event_type,omitempty"`
 	// Which instance of the source's service should send events. E.g. for Pub/Sub
 	// this would be a Pub/Sub topic at `projects/*/topics/*`. For Google Cloud
 	// Storage this would be a bucket at `projects/*/buckets/*`. For any source
 	// that only supports one instance per-project, this should be the name of the
 	// project (`projects/*`)
-	Resource             string   `protobuf:"bytes,2,opt,name=resource" json:"resource,omitempty"`
+	Resource             string   `protobuf:"bytes,2,opt,name=resource,proto3" json:"resource,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -449,7 +457,7 @@ func (m *EventTrigger) Reset()         { *m = EventTrigger{} }
 func (m *EventTrigger) String() string { return proto.CompactTextString(m) }
 func (*EventTrigger) ProtoMessage()    {}
 func (*EventTrigger) Descriptor() ([]byte, []int) {
-	return fileDescriptor_functions_88bcb7a2a54dc5a5, []int{2}
+	return fileDescriptor_functions_a18655d3cc58948d, []int{2}
 }
 func (m *EventTrigger) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_EventTrigger.Unmarshal(m, b)
@@ -488,12 +496,12 @@ type SourceRepository struct {
 	// URL to the hosted repository where the function is defined. Only paths in
 	// https://source.developers.google.com domain are supported. The path should
 	// contain the name of the repository.
-	RepositoryUrl string `protobuf:"bytes,1,opt,name=repository_url,json=repositoryUrl" json:"repository_url,omitempty"`
+	RepositoryUrl string `protobuf:"bytes,1,opt,name=repository_url,json=repositoryUrl,proto3" json:"repository_url,omitempty"`
 	// The path within the repository where the function is defined. The path
 	// should point to the directory where Cloud Functions files are located. Use
 	// "/" if the function is defined directly in the root directory of a
 	// repository.
-	SourcePath string `protobuf:"bytes,2,opt,name=source_path,json=sourcePath" json:"source_path,omitempty"`
+	SourcePath string `protobuf:"bytes,2,opt,name=source_path,json=sourcePath,proto3" json:"source_path,omitempty"`
 	// The version of a function. Defaults to the latest version of the master
 	// branch.
 	//
@@ -507,7 +515,7 @@ type SourceRepository struct {
 	// branch, it will be the revision id of the latest change on this branch at
 	// that time. If user deployed from revision then this value will be always
 	// equal to the revision specified by the user.
-	DeployedRevision     string   `protobuf:"bytes,6,opt,name=deployed_revision,json=deployedRevision" json:"deployed_revision,omitempty"`
+	DeployedRevision     string   `protobuf:"bytes,6,opt,name=deployed_revision,json=deployedRevision,proto3" json:"deployed_revision,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -517,7 +525,7 @@ func (m *SourceRepository) Reset()         { *m = SourceRepository{} }
 func (m *SourceRepository) String() string { return proto.CompactTextString(m) }
 func (*SourceRepository) ProtoMessage()    {}
 func (*SourceRepository) Descriptor() ([]byte, []int) {
-	return fileDescriptor_functions_88bcb7a2a54dc5a5, []int{3}
+	return fileDescriptor_functions_a18655d3cc58948d, []int{3}
 }
 func (m *SourceRepository) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SourceRepository.Unmarshal(m, b)
@@ -537,31 +545,6 @@ func (m *SourceRepository) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_SourceRepository proto.InternalMessageInfo
 
-type isSourceRepository_Version interface {
-	isSourceRepository_Version()
-}
-
-type SourceRepository_Branch struct {
-	Branch string `protobuf:"bytes,3,opt,name=branch,oneof"`
-}
-type SourceRepository_Tag struct {
-	Tag string `protobuf:"bytes,4,opt,name=tag,oneof"`
-}
-type SourceRepository_Revision struct {
-	Revision string `protobuf:"bytes,5,opt,name=revision,oneof"`
-}
-
-func (*SourceRepository_Branch) isSourceRepository_Version()   {}
-func (*SourceRepository_Tag) isSourceRepository_Version()      {}
-func (*SourceRepository_Revision) isSourceRepository_Version() {}
-
-func (m *SourceRepository) GetVersion() isSourceRepository_Version {
-	if m != nil {
-		return m.Version
-	}
-	return nil
-}
-
 func (m *SourceRepository) GetRepositoryUrl() string {
 	if m != nil {
 		return m.RepositoryUrl
@@ -574,6 +557,35 @@ func (m *SourceRepository) GetSourcePath() string {
 		return m.SourcePath
 	}
 	return ""
+}
+
+type isSourceRepository_Version interface {
+	isSourceRepository_Version()
+}
+
+type SourceRepository_Branch struct {
+	Branch string `protobuf:"bytes,3,opt,name=branch,proto3,oneof"`
+}
+
+type SourceRepository_Tag struct {
+	Tag string `protobuf:"bytes,4,opt,name=tag,proto3,oneof"`
+}
+
+type SourceRepository_Revision struct {
+	Revision string `protobuf:"bytes,5,opt,name=revision,proto3,oneof"`
+}
+
+func (*SourceRepository_Branch) isSourceRepository_Version() {}
+
+func (*SourceRepository_Tag) isSourceRepository_Version() {}
+
+func (*SourceRepository_Revision) isSourceRepository_Version() {}
+
+func (m *SourceRepository) GetVersion() isSourceRepository_Version {
+	if m != nil {
+		return m.Version
+	}
+	return nil
 }
 
 func (m *SourceRepository) GetBranch() string {
@@ -689,9 +701,9 @@ func _SourceRepository_OneofSizer(msg proto.Message) (n int) {
 type CreateFunctionRequest struct {
 	// The project and location in which the function should be created, specified
 	// in the format `projects/*/locations/*`
-	Location string `protobuf:"bytes,1,opt,name=location" json:"location,omitempty"`
+	Location string `protobuf:"bytes,1,opt,name=location,proto3" json:"location,omitempty"`
 	// Function to be created.
-	Function             *CloudFunction `protobuf:"bytes,2,opt,name=function" json:"function,omitempty"`
+	Function             *CloudFunction `protobuf:"bytes,2,opt,name=function,proto3" json:"function,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
 	XXX_unrecognized     []byte         `json:"-"`
 	XXX_sizecache        int32          `json:"-"`
@@ -701,7 +713,7 @@ func (m *CreateFunctionRequest) Reset()         { *m = CreateFunctionRequest{} }
 func (m *CreateFunctionRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateFunctionRequest) ProtoMessage()    {}
 func (*CreateFunctionRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_functions_88bcb7a2a54dc5a5, []int{4}
+	return fileDescriptor_functions_a18655d3cc58948d, []int{4}
 }
 func (m *CreateFunctionRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CreateFunctionRequest.Unmarshal(m, b)
@@ -738,9 +750,9 @@ func (m *CreateFunctionRequest) GetFunction() *CloudFunction {
 // Request for the `UpdateFunction` method.
 type UpdateFunctionRequest struct {
 	// The name of the function to be updated.
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// New version of the function.
-	Function             *CloudFunction `protobuf:"bytes,2,opt,name=function" json:"function,omitempty"`
+	Function             *CloudFunction `protobuf:"bytes,2,opt,name=function,proto3" json:"function,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
 	XXX_unrecognized     []byte         `json:"-"`
 	XXX_sizecache        int32          `json:"-"`
@@ -750,7 +762,7 @@ func (m *UpdateFunctionRequest) Reset()         { *m = UpdateFunctionRequest{} }
 func (m *UpdateFunctionRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateFunctionRequest) ProtoMessage()    {}
 func (*UpdateFunctionRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_functions_88bcb7a2a54dc5a5, []int{5}
+	return fileDescriptor_functions_a18655d3cc58948d, []int{5}
 }
 func (m *UpdateFunctionRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UpdateFunctionRequest.Unmarshal(m, b)
@@ -787,7 +799,7 @@ func (m *UpdateFunctionRequest) GetFunction() *CloudFunction {
 // Request for the `GetFunction` method.
 type GetFunctionRequest struct {
 	// The name of the function which details should be obtained.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -797,7 +809,7 @@ func (m *GetFunctionRequest) Reset()         { *m = GetFunctionRequest{} }
 func (m *GetFunctionRequest) String() string { return proto.CompactTextString(m) }
 func (*GetFunctionRequest) ProtoMessage()    {}
 func (*GetFunctionRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_functions_88bcb7a2a54dc5a5, []int{6}
+	return fileDescriptor_functions_a18655d3cc58948d, []int{6}
 }
 func (m *GetFunctionRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetFunctionRequest.Unmarshal(m, b)
@@ -830,14 +842,14 @@ type ListFunctionsRequest struct {
 	// specified in the format `projects/*/locations/*`
 	// If you want to list functions in all locations, use "-" in place of a
 	// location.
-	Location string `protobuf:"bytes,1,opt,name=location" json:"location,omitempty"`
+	Location string `protobuf:"bytes,1,opt,name=location,proto3" json:"location,omitempty"`
 	// Maximum number of functions to return per call.
-	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize" json:"page_size,omitempty"`
+	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// The value returned by the last
 	// `ListFunctionsResponse`; indicates that
 	// this is a continuation of a prior `ListFunctions` call, and that the
 	// system should return the next page of data.
-	PageToken            string   `protobuf:"bytes,3,opt,name=page_token,json=pageToken" json:"page_token,omitempty"`
+	PageToken            string   `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -847,7 +859,7 @@ func (m *ListFunctionsRequest) Reset()         { *m = ListFunctionsRequest{} }
 func (m *ListFunctionsRequest) String() string { return proto.CompactTextString(m) }
 func (*ListFunctionsRequest) ProtoMessage()    {}
 func (*ListFunctionsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_functions_88bcb7a2a54dc5a5, []int{7}
+	return fileDescriptor_functions_a18655d3cc58948d, []int{7}
 }
 func (m *ListFunctionsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListFunctionsRequest.Unmarshal(m, b)
@@ -891,12 +903,12 @@ func (m *ListFunctionsRequest) GetPageToken() string {
 // Response for the `ListFunctions` method.
 type ListFunctionsResponse struct {
 	// The functions that match the request.
-	Functions []*CloudFunction `protobuf:"bytes,1,rep,name=functions" json:"functions,omitempty"`
+	Functions []*CloudFunction `protobuf:"bytes,1,rep,name=functions,proto3" json:"functions,omitempty"`
 	// If not empty, indicates that there may be more functions that match
 	// the request; this value should be passed in a new
 	// [google.cloud.functions.v1beta2.ListFunctionsRequest][]
 	// to get more functions.
-	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken" json:"next_page_token,omitempty"`
+	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -906,7 +918,7 @@ func (m *ListFunctionsResponse) Reset()         { *m = ListFunctionsResponse{} }
 func (m *ListFunctionsResponse) String() string { return proto.CompactTextString(m) }
 func (*ListFunctionsResponse) ProtoMessage()    {}
 func (*ListFunctionsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_functions_88bcb7a2a54dc5a5, []int{8}
+	return fileDescriptor_functions_a18655d3cc58948d, []int{8}
 }
 func (m *ListFunctionsResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListFunctionsResponse.Unmarshal(m, b)
@@ -943,7 +955,7 @@ func (m *ListFunctionsResponse) GetNextPageToken() string {
 // Request for the `DeleteFunction` method.
 type DeleteFunctionRequest struct {
 	// The name of the function which should be deleted.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -953,7 +965,7 @@ func (m *DeleteFunctionRequest) Reset()         { *m = DeleteFunctionRequest{} }
 func (m *DeleteFunctionRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteFunctionRequest) ProtoMessage()    {}
 func (*DeleteFunctionRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_functions_88bcb7a2a54dc5a5, []int{9}
+	return fileDescriptor_functions_a18655d3cc58948d, []int{9}
 }
 func (m *DeleteFunctionRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeleteFunctionRequest.Unmarshal(m, b)
@@ -983,9 +995,9 @@ func (m *DeleteFunctionRequest) GetName() string {
 // Request for the `CallFunction` method.
 type CallFunctionRequest struct {
 	// The name of the function to be called.
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// Input to be passed to the function.
-	Data                 string   `protobuf:"bytes,2,opt,name=data" json:"data,omitempty"`
+	Data                 string   `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -995,7 +1007,7 @@ func (m *CallFunctionRequest) Reset()         { *m = CallFunctionRequest{} }
 func (m *CallFunctionRequest) String() string { return proto.CompactTextString(m) }
 func (*CallFunctionRequest) ProtoMessage()    {}
 func (*CallFunctionRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_functions_88bcb7a2a54dc5a5, []int{10}
+	return fileDescriptor_functions_a18655d3cc58948d, []int{10}
 }
 func (m *CallFunctionRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CallFunctionRequest.Unmarshal(m, b)
@@ -1032,13 +1044,13 @@ func (m *CallFunctionRequest) GetData() string {
 // Response of `CallFunction` method.
 type CallFunctionResponse struct {
 	// Execution id of function invocation.
-	ExecutionId string `protobuf:"bytes,1,opt,name=execution_id,json=executionId" json:"execution_id,omitempty"`
+	ExecutionId string `protobuf:"bytes,1,opt,name=execution_id,json=executionId,proto3" json:"execution_id,omitempty"`
 	// Result populated for successful execution of synchronous function. Will
 	// not be populated if function does not return a result through context.
-	Result string `protobuf:"bytes,2,opt,name=result" json:"result,omitempty"`
+	Result string `protobuf:"bytes,2,opt,name=result,proto3" json:"result,omitempty"`
 	// Either system or user-function generated error. Set if execution
 	// was not successful.
-	Error                string   `protobuf:"bytes,3,opt,name=error" json:"error,omitempty"`
+	Error                string   `protobuf:"bytes,3,opt,name=error,proto3" json:"error,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1048,7 +1060,7 @@ func (m *CallFunctionResponse) Reset()         { *m = CallFunctionResponse{} }
 func (m *CallFunctionResponse) String() string { return proto.CompactTextString(m) }
 func (*CallFunctionResponse) ProtoMessage()    {}
 func (*CallFunctionResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_functions_88bcb7a2a54dc5a5, []int{11}
+	return fileDescriptor_functions_a18655d3cc58948d, []int{11}
 }
 func (m *CallFunctionResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CallFunctionResponse.Unmarshal(m, b)
@@ -1198,8 +1210,7 @@ func (c *cloudFunctionsServiceClient) CallFunction(ctx context.Context, in *Call
 	return out, nil
 }
 
-// Server API for CloudFunctionsService service
-
+// CloudFunctionsServiceServer is the server API for CloudFunctionsService service.
 type CloudFunctionsServiceServer interface {
 	// Returns a list of functions that belong to the requested project.
 	ListFunctions(context.Context, *ListFunctionsRequest) (*ListFunctionsResponse, error)
@@ -1366,10 +1377,10 @@ var _CloudFunctionsService_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("google/cloud/functions/v1beta2/functions.proto", fileDescriptor_functions_88bcb7a2a54dc5a5)
+	proto.RegisterFile("google/cloud/functions/v1beta2/functions.proto", fileDescriptor_functions_a18655d3cc58948d)
 }
 
-var fileDescriptor_functions_88bcb7a2a54dc5a5 = []byte{
+var fileDescriptor_functions_a18655d3cc58948d = []byte{
 	// 1216 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x57, 0x4d, 0x73, 0xdb, 0x44,
 	0x18, 0xae, 0xf2, 0xe1, 0xc6, 0xaf, 0x3f, 0xe2, 0x6e, 0x9b, 0x8e, 0x30, 0x2d, 0x0d, 0x62, 0x80,

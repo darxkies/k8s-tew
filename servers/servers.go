@@ -35,9 +35,6 @@ func (servers *Servers) runCommand(command *config.Command, commandRetries uint,
 
 	log.WithFields(log.Fields{"name": command.Name, "command": newCommand}).Info("executing command")
 
-	stop := utils.ShowProgress("cluster setup", step, count)
-	defer stop()
-
 	for retries := uint(0); retries < commandRetries; retries++ {
 		if servers.stop {
 			break

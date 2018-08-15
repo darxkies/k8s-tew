@@ -28,7 +28,7 @@ const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 type DocumentMask struct {
 	// The list of field paths in the mask. See [Document.fields][google.firestore.v1beta1.Document.fields] for a field
 	// path syntax reference.
-	FieldPaths           []string `protobuf:"bytes,1,rep,name=field_paths,json=fieldPaths" json:"field_paths,omitempty"`
+	FieldPaths           []string `protobuf:"bytes,1,rep,name=field_paths,json=fieldPaths,proto3" json:"field_paths,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -38,7 +38,7 @@ func (m *DocumentMask) Reset()         { *m = DocumentMask{} }
 func (m *DocumentMask) String() string { return proto.CompactTextString(m) }
 func (*DocumentMask) ProtoMessage()    {}
 func (*DocumentMask) Descriptor() ([]byte, []int) {
-	return fileDescriptor_common_8f5cdc8da3ccf6ed, []int{0}
+	return fileDescriptor_common_0837eaa712bfb362, []int{0}
 }
 func (m *DocumentMask) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DocumentMask.Unmarshal(m, b)
@@ -82,7 +82,7 @@ func (m *Precondition) Reset()         { *m = Precondition{} }
 func (m *Precondition) String() string { return proto.CompactTextString(m) }
 func (*Precondition) ProtoMessage()    {}
 func (*Precondition) Descriptor() ([]byte, []int) {
-	return fileDescriptor_common_8f5cdc8da3ccf6ed, []int{1}
+	return fileDescriptor_common_0837eaa712bfb362, []int{1}
 }
 func (m *Precondition) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Precondition.Unmarshal(m, b)
@@ -107,13 +107,15 @@ type isPrecondition_ConditionType interface {
 }
 
 type Precondition_Exists struct {
-	Exists bool `protobuf:"varint,1,opt,name=exists,oneof"`
-}
-type Precondition_UpdateTime struct {
-	UpdateTime *timestamp.Timestamp `protobuf:"bytes,2,opt,name=update_time,json=updateTime,oneof"`
+	Exists bool `protobuf:"varint,1,opt,name=exists,proto3,oneof"`
 }
 
-func (*Precondition_Exists) isPrecondition_ConditionType()     {}
+type Precondition_UpdateTime struct {
+	UpdateTime *timestamp.Timestamp `protobuf:"bytes,2,opt,name=update_time,json=updateTime,proto3,oneof"`
+}
+
+func (*Precondition_Exists) isPrecondition_ConditionType() {}
+
 func (*Precondition_UpdateTime) isPrecondition_ConditionType() {}
 
 func (m *Precondition) GetConditionType() isPrecondition_ConditionType {
@@ -227,7 +229,7 @@ func (m *TransactionOptions) Reset()         { *m = TransactionOptions{} }
 func (m *TransactionOptions) String() string { return proto.CompactTextString(m) }
 func (*TransactionOptions) ProtoMessage()    {}
 func (*TransactionOptions) Descriptor() ([]byte, []int) {
-	return fileDescriptor_common_8f5cdc8da3ccf6ed, []int{2}
+	return fileDescriptor_common_0837eaa712bfb362, []int{2}
 }
 func (m *TransactionOptions) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_TransactionOptions.Unmarshal(m, b)
@@ -252,13 +254,15 @@ type isTransactionOptions_Mode interface {
 }
 
 type TransactionOptions_ReadOnly_ struct {
-	ReadOnly *TransactionOptions_ReadOnly `protobuf:"bytes,2,opt,name=read_only,json=readOnly,oneof"`
-}
-type TransactionOptions_ReadWrite_ struct {
-	ReadWrite *TransactionOptions_ReadWrite `protobuf:"bytes,3,opt,name=read_write,json=readWrite,oneof"`
+	ReadOnly *TransactionOptions_ReadOnly `protobuf:"bytes,2,opt,name=read_only,json=readOnly,proto3,oneof"`
 }
 
-func (*TransactionOptions_ReadOnly_) isTransactionOptions_Mode()  {}
+type TransactionOptions_ReadWrite_ struct {
+	ReadWrite *TransactionOptions_ReadWrite `protobuf:"bytes,3,opt,name=read_write,json=readWrite,proto3,oneof"`
+}
+
+func (*TransactionOptions_ReadOnly_) isTransactionOptions_Mode() {}
+
 func (*TransactionOptions_ReadWrite_) isTransactionOptions_Mode() {}
 
 func (m *TransactionOptions) GetMode() isTransactionOptions_Mode {
@@ -369,7 +373,7 @@ func (m *TransactionOptions_ReadWrite) Reset()         { *m = TransactionOptions
 func (m *TransactionOptions_ReadWrite) String() string { return proto.CompactTextString(m) }
 func (*TransactionOptions_ReadWrite) ProtoMessage()    {}
 func (*TransactionOptions_ReadWrite) Descriptor() ([]byte, []int) {
-	return fileDescriptor_common_8f5cdc8da3ccf6ed, []int{2, 0}
+	return fileDescriptor_common_0837eaa712bfb362, []int{2, 0}
 }
 func (m *TransactionOptions_ReadWrite) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_TransactionOptions_ReadWrite.Unmarshal(m, b)
@@ -413,7 +417,7 @@ func (m *TransactionOptions_ReadOnly) Reset()         { *m = TransactionOptions_
 func (m *TransactionOptions_ReadOnly) String() string { return proto.CompactTextString(m) }
 func (*TransactionOptions_ReadOnly) ProtoMessage()    {}
 func (*TransactionOptions_ReadOnly) Descriptor() ([]byte, []int) {
-	return fileDescriptor_common_8f5cdc8da3ccf6ed, []int{2, 1}
+	return fileDescriptor_common_0837eaa712bfb362, []int{2, 1}
 }
 func (m *TransactionOptions_ReadOnly) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_TransactionOptions_ReadOnly.Unmarshal(m, b)
@@ -438,7 +442,7 @@ type isTransactionOptions_ReadOnly_ConsistencySelector interface {
 }
 
 type TransactionOptions_ReadOnly_ReadTime struct {
-	ReadTime *timestamp.Timestamp `protobuf:"bytes,2,opt,name=read_time,json=readTime,oneof"`
+	ReadTime *timestamp.Timestamp `protobuf:"bytes,2,opt,name=read_time,json=readTime,proto3,oneof"`
 }
 
 func (*TransactionOptions_ReadOnly_ReadTime) isTransactionOptions_ReadOnly_ConsistencySelector() {}
@@ -521,10 +525,10 @@ func init() {
 }
 
 func init() {
-	proto.RegisterFile("google/firestore/v1beta1/common.proto", fileDescriptor_common_8f5cdc8da3ccf6ed)
+	proto.RegisterFile("google/firestore/v1beta1/common.proto", fileDescriptor_common_0837eaa712bfb362)
 }
 
-var fileDescriptor_common_8f5cdc8da3ccf6ed = []byte{
+var fileDescriptor_common_0837eaa712bfb362 = []byte{
 	// 468 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x52, 0xef, 0x8a, 0xd3, 0x40,
 	0x10, 0x6f, 0x7a, 0xc7, 0xd1, 0x4e, 0x8b, 0x9c, 0x41, 0x24, 0x84, 0xc3, 0x3b, 0x0a, 0x42, 0x41,

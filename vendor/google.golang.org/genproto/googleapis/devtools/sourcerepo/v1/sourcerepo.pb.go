@@ -31,16 +31,16 @@ type Repo struct {
 	// Resource name of the repository, of the form
 	// `projects/<project>/repos/<repo>`.  The repo name may contain slashes.
 	// eg, `projects/myproject/repos/name/with/slash`
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// The disk usage of the repo, in bytes. Read-only field. Size is only
 	// returned by GetRepo.
-	Size int64 `protobuf:"varint,2,opt,name=size" json:"size,omitempty"`
+	Size int64 `protobuf:"varint,2,opt,name=size,proto3" json:"size,omitempty"`
 	// URL to clone the repository from Google Cloud Source Repositories.
 	// Read-only field.
-	Url string `protobuf:"bytes,3,opt,name=url" json:"url,omitempty"`
+	Url string `protobuf:"bytes,3,opt,name=url,proto3" json:"url,omitempty"`
 	// How this repository mirrors a repository managed by another service.
 	// Read-only field.
-	MirrorConfig         *MirrorConfig `protobuf:"bytes,4,opt,name=mirror_config,json=mirrorConfig" json:"mirror_config,omitempty"`
+	MirrorConfig         *MirrorConfig `protobuf:"bytes,4,opt,name=mirror_config,json=mirrorConfig,proto3" json:"mirror_config,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}      `json:"-"`
 	XXX_unrecognized     []byte        `json:"-"`
 	XXX_sizecache        int32         `json:"-"`
@@ -50,7 +50,7 @@ func (m *Repo) Reset()         { *m = Repo{} }
 func (m *Repo) String() string { return proto.CompactTextString(m) }
 func (*Repo) ProtoMessage()    {}
 func (*Repo) Descriptor() ([]byte, []int) {
-	return fileDescriptor_sourcerepo_d42e6dcb58a0b298, []int{0}
+	return fileDescriptor_sourcerepo_c3970ced7dbc10e1, []int{0}
 }
 func (m *Repo) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Repo.Unmarshal(m, b)
@@ -102,16 +102,16 @@ func (m *Repo) GetMirrorConfig() *MirrorConfig {
 // hosting service, for example GitHub or BitBucket.
 type MirrorConfig struct {
 	// URL of the main repository at the other hosting service.
-	Url string `protobuf:"bytes,1,opt,name=url" json:"url,omitempty"`
+	Url string `protobuf:"bytes,1,opt,name=url,proto3" json:"url,omitempty"`
 	// ID of the webhook listening to updates to trigger mirroring.
 	// Removing this webhook from the other hosting service will stop
 	// Google Cloud Source Repositories from receiving notifications,
 	// and thereby disabling mirroring.
-	WebhookId string `protobuf:"bytes,2,opt,name=webhook_id,json=webhookId" json:"webhook_id,omitempty"`
+	WebhookId string `protobuf:"bytes,2,opt,name=webhook_id,json=webhookId,proto3" json:"webhook_id,omitempty"`
 	// ID of the SSH deploy key at the other hosting service.
 	// Removing this key from the other service would deauthorize
 	// Google Cloud Source Repositories from mirroring.
-	DeployKeyId          string   `protobuf:"bytes,3,opt,name=deploy_key_id,json=deployKeyId" json:"deploy_key_id,omitempty"`
+	DeployKeyId          string   `protobuf:"bytes,3,opt,name=deploy_key_id,json=deployKeyId,proto3" json:"deploy_key_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -121,7 +121,7 @@ func (m *MirrorConfig) Reset()         { *m = MirrorConfig{} }
 func (m *MirrorConfig) String() string { return proto.CompactTextString(m) }
 func (*MirrorConfig) ProtoMessage()    {}
 func (*MirrorConfig) Descriptor() ([]byte, []int) {
-	return fileDescriptor_sourcerepo_d42e6dcb58a0b298, []int{1}
+	return fileDescriptor_sourcerepo_c3970ced7dbc10e1, []int{1}
 }
 func (m *MirrorConfig) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_MirrorConfig.Unmarshal(m, b)
@@ -166,7 +166,7 @@ func (m *MirrorConfig) GetDeployKeyId() string {
 type GetRepoRequest struct {
 	// The name of the requested repository. Values are of the form
 	// `projects/<project>/repos/<repo>`.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -176,7 +176,7 @@ func (m *GetRepoRequest) Reset()         { *m = GetRepoRequest{} }
 func (m *GetRepoRequest) String() string { return proto.CompactTextString(m) }
 func (*GetRepoRequest) ProtoMessage()    {}
 func (*GetRepoRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_sourcerepo_d42e6dcb58a0b298, []int{2}
+	return fileDescriptor_sourcerepo_c3970ced7dbc10e1, []int{2}
 }
 func (m *GetRepoRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetRepoRequest.Unmarshal(m, b)
@@ -207,14 +207,14 @@ func (m *GetRepoRequest) GetName() string {
 type ListReposRequest struct {
 	// The project ID whose repos should be listed. Values are of the form
 	// `projects/<project>`.
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// Maximum number of repositories to return; between 1 and 500.
 	// If not set or zero, defaults to 100 at the server.
-	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize" json:"page_size,omitempty"`
+	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// Resume listing repositories where a prior ListReposResponse
 	// left off. This is an opaque token that must be obtained from
 	// a recent, prior ListReposResponse's next_page_token field.
-	PageToken            string   `protobuf:"bytes,3,opt,name=page_token,json=pageToken" json:"page_token,omitempty"`
+	PageToken            string   `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -224,7 +224,7 @@ func (m *ListReposRequest) Reset()         { *m = ListReposRequest{} }
 func (m *ListReposRequest) String() string { return proto.CompactTextString(m) }
 func (*ListReposRequest) ProtoMessage()    {}
 func (*ListReposRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_sourcerepo_d42e6dcb58a0b298, []int{3}
+	return fileDescriptor_sourcerepo_c3970ced7dbc10e1, []int{3}
 }
 func (m *ListReposRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListReposRequest.Unmarshal(m, b)
@@ -268,11 +268,11 @@ func (m *ListReposRequest) GetPageToken() string {
 // Response for ListRepos.  The size is not set in the returned repositories.
 type ListReposResponse struct {
 	// The listed repos.
-	Repos []*Repo `protobuf:"bytes,1,rep,name=repos" json:"repos,omitempty"`
+	Repos []*Repo `protobuf:"bytes,1,rep,name=repos,proto3" json:"repos,omitempty"`
 	// If non-empty, additional repositories exist within the project. These
 	// can be retrieved by including this value in the next ListReposRequest's
 	// page_token field.
-	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken" json:"next_page_token,omitempty"`
+	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -282,7 +282,7 @@ func (m *ListReposResponse) Reset()         { *m = ListReposResponse{} }
 func (m *ListReposResponse) String() string { return proto.CompactTextString(m) }
 func (*ListReposResponse) ProtoMessage()    {}
 func (*ListReposResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_sourcerepo_d42e6dcb58a0b298, []int{4}
+	return fileDescriptor_sourcerepo_c3970ced7dbc10e1, []int{4}
 }
 func (m *ListReposResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListReposResponse.Unmarshal(m, b)
@@ -320,10 +320,10 @@ func (m *ListReposResponse) GetNextPageToken() string {
 type CreateRepoRequest struct {
 	// The project in which to create the repo. Values are of the form
 	// `projects/<project>`.
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// The repo to create.  Only name should be set; setting other fields
 	// is an error.  The project in the name should match the parent field.
-	Repo                 *Repo    `protobuf:"bytes,2,opt,name=repo" json:"repo,omitempty"`
+	Repo                 *Repo    `protobuf:"bytes,2,opt,name=repo,proto3" json:"repo,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -333,7 +333,7 @@ func (m *CreateRepoRequest) Reset()         { *m = CreateRepoRequest{} }
 func (m *CreateRepoRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateRepoRequest) ProtoMessage()    {}
 func (*CreateRepoRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_sourcerepo_d42e6dcb58a0b298, []int{5}
+	return fileDescriptor_sourcerepo_c3970ced7dbc10e1, []int{5}
 }
 func (m *CreateRepoRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CreateRepoRequest.Unmarshal(m, b)
@@ -371,7 +371,7 @@ func (m *CreateRepoRequest) GetRepo() *Repo {
 type DeleteRepoRequest struct {
 	// The name of the repo to delete. Values are of the form
 	// `projects/<project>/repos/<repo>`.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -381,7 +381,7 @@ func (m *DeleteRepoRequest) Reset()         { *m = DeleteRepoRequest{} }
 func (m *DeleteRepoRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteRepoRequest) ProtoMessage()    {}
 func (*DeleteRepoRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_sourcerepo_d42e6dcb58a0b298, []int{6}
+	return fileDescriptor_sourcerepo_c3970ced7dbc10e1, []int{6}
 }
 func (m *DeleteRepoRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeleteRepoRequest.Unmarshal(m, b)
@@ -526,8 +526,7 @@ func (c *sourceRepoClient) TestIamPermissions(ctx context.Context, in *v1.TestIa
 	return out, nil
 }
 
-// Server API for SourceRepo service
-
+// SourceRepoServer is the server API for SourceRepo service.
 type SourceRepoServer interface {
 	// Returns all repos belonging to a project. The sizes of the repos are
 	// not set by ListRepos.  To get the size of a repo, use GetRepo.
@@ -722,10 +721,10 @@ var _SourceRepo_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("google/devtools/sourcerepo/v1/sourcerepo.proto", fileDescriptor_sourcerepo_d42e6dcb58a0b298)
+	proto.RegisterFile("google/devtools/sourcerepo/v1/sourcerepo.proto", fileDescriptor_sourcerepo_c3970ced7dbc10e1)
 }
 
-var fileDescriptor_sourcerepo_d42e6dcb58a0b298 = []byte{
+var fileDescriptor_sourcerepo_c3970ced7dbc10e1 = []byte{
 	// 743 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x55, 0xd1, 0x6e, 0xd3, 0x4a,
 	0x10, 0xd5, 0x36, 0x69, 0x7b, 0x33, 0x4d, 0x6f, 0xdb, 0x95, 0x6e, 0x15, 0xa5, 0x37, 0x55, 0xae,

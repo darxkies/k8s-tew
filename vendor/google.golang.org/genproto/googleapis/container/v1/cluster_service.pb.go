@@ -48,7 +48,7 @@ func (x NetworkPolicy_Provider) String() string {
 	return proto.EnumName(NetworkPolicy_Provider_name, int32(x))
 }
 func (NetworkPolicy_Provider) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{10, 0}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{10, 0}
 }
 
 // The current status of the cluster.
@@ -94,7 +94,7 @@ func (x Cluster_Status) String() string {
 	return proto.EnumName(Cluster_Status_name, int32(x))
 }
 func (Cluster_Status) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{12, 0}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{12, 0}
 }
 
 // Current status of the operation.
@@ -132,7 +132,7 @@ func (x Operation_Status) String() string {
 	return proto.EnumName(Operation_Status_name, int32(x))
 }
 func (Operation_Status) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{14, 0}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{14, 0}
 }
 
 // Operation type.
@@ -218,7 +218,7 @@ func (x Operation_Type) String() string {
 	return proto.EnumName(Operation_Type_name, int32(x))
 }
 func (Operation_Type) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{14, 1}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{14, 1}
 }
 
 // Operation type: what type update to perform.
@@ -255,7 +255,7 @@ func (x SetMasterAuthRequest_Action) String() string {
 	return proto.EnumName(SetMasterAuthRequest_Action_name, int32(x))
 }
 func (SetMasterAuthRequest_Action) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{25, 0}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{25, 0}
 }
 
 // The current status of the node pool instance.
@@ -308,7 +308,7 @@ func (x NodePool_Status) String() string {
 	return proto.EnumName(NodePool_Status_name, int32(x))
 }
 func (NodePool_Status) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{39, 0}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{39, 0}
 }
 
 // Parameters that describe the nodes in a cluster.
@@ -319,12 +319,12 @@ type NodeConfig struct {
 	//
 	// If unspecified, the default machine type is
 	// `n1-standard-1`.
-	MachineType string `protobuf:"bytes,1,opt,name=machine_type,json=machineType" json:"machine_type,omitempty"`
+	MachineType string `protobuf:"bytes,1,opt,name=machine_type,json=machineType,proto3" json:"machine_type,omitempty"`
 	// Size of the disk attached to each node, specified in GB.
 	// The smallest allowed disk size is 10GB.
 	//
 	// If unspecified, the default disk size is 100GB.
-	DiskSizeGb int32 `protobuf:"varint,2,opt,name=disk_size_gb,json=diskSizeGb" json:"disk_size_gb,omitempty"`
+	DiskSizeGb int32 `protobuf:"varint,2,opt,name=disk_size_gb,json=diskSizeGb,proto3" json:"disk_size_gb,omitempty"`
 	// The set of Google API scopes to be made available on all of the
 	// node VMs under the "default" service account.
 	//
@@ -339,10 +339,10 @@ type NodeConfig struct {
 	//
 	// If unspecified, no scopes are added, unless Cloud Logging or Cloud
 	// Monitoring are enabled, in which case their required scopes will be added.
-	OauthScopes []string `protobuf:"bytes,3,rep,name=oauth_scopes,json=oauthScopes" json:"oauth_scopes,omitempty"`
+	OauthScopes []string `protobuf:"bytes,3,rep,name=oauth_scopes,json=oauthScopes,proto3" json:"oauth_scopes,omitempty"`
 	// The Google Cloud Platform Service Account to be used by the node VMs. If
 	// no Service Account is specified, the "default" service account is used.
-	ServiceAccount string `protobuf:"bytes,9,opt,name=service_account,json=serviceAccount" json:"service_account,omitempty"`
+	ServiceAccount string `protobuf:"bytes,9,opt,name=service_account,json=serviceAccount,proto3" json:"service_account,omitempty"`
 	// The metadata key/value pairs assigned to instances in the cluster.
 	//
 	// Keys must conform to the regexp [a-zA-Z0-9-_]+ and be less than 128 bytes
@@ -356,10 +356,10 @@ type NodeConfig struct {
 	// that each value's size must be less than or equal to 32 KB.
 	//
 	// The total size of all keys and values must be less than 512 KB.
-	Metadata map[string]string `protobuf:"bytes,4,rep,name=metadata" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Metadata map[string]string `protobuf:"bytes,4,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	// The image type to use for this node. Note that for a given image type,
 	// the latest version of it will be used.
-	ImageType string `protobuf:"bytes,5,opt,name=image_type,json=imageType" json:"image_type,omitempty"`
+	ImageType string `protobuf:"bytes,5,opt,name=image_type,json=imageType,proto3" json:"image_type,omitempty"`
 	// The map of Kubernetes labels (key/value pairs) to be applied to each node.
 	// These will added in addition to any default label(s) that
 	// Kubernetes may apply to the node.
@@ -368,34 +368,34 @@ type NodeConfig struct {
 	// and conflicts should be avoided.
 	// For more information, including usage and the valid values, see:
 	// https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
-	Labels map[string]string `protobuf:"bytes,6,rep,name=labels" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Labels map[string]string `protobuf:"bytes,6,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	// The number of local SSD disks to be attached to the node.
 	//
 	// The limit for this value is dependant upon the maximum number of
 	// disks available on a machine per zone. See:
 	// https://cloud.google.com/compute/docs/disks/local-ssd#local_ssd_limits
 	// for more information.
-	LocalSsdCount int32 `protobuf:"varint,7,opt,name=local_ssd_count,json=localSsdCount" json:"local_ssd_count,omitempty"`
+	LocalSsdCount int32 `protobuf:"varint,7,opt,name=local_ssd_count,json=localSsdCount,proto3" json:"local_ssd_count,omitempty"`
 	// The list of instance tags applied to all nodes. Tags are used to identify
 	// valid sources or targets for network firewalls and are specified by
 	// the client during cluster or node pool creation. Each tag within the list
 	// must comply with RFC1035.
-	Tags []string `protobuf:"bytes,8,rep,name=tags" json:"tags,omitempty"`
+	Tags []string `protobuf:"bytes,8,rep,name=tags,proto3" json:"tags,omitempty"`
 	// Whether the nodes are created as preemptible VM instances. See:
 	// https://cloud.google.com/compute/docs/instances/preemptible for more
 	// information about preemptible VM instances.
-	Preemptible bool `protobuf:"varint,10,opt,name=preemptible" json:"preemptible,omitempty"`
+	Preemptible bool `protobuf:"varint,10,opt,name=preemptible,proto3" json:"preemptible,omitempty"`
 	// A list of hardware accelerators to be attached to each node.
 	// See https://cloud.google.com/compute/docs/gpus for more information about
 	// support for GPUs.
-	Accelerators []*AcceleratorConfig `protobuf:"bytes,11,rep,name=accelerators" json:"accelerators,omitempty"`
+	Accelerators []*AcceleratorConfig `protobuf:"bytes,11,rep,name=accelerators,proto3" json:"accelerators,omitempty"`
 	// Minimum CPU platform to be used by this instance. The instance may be
 	// scheduled on the specified or newer CPU platform. Applicable values are the
 	// friendly names of CPU platforms, such as
 	// <code>minCpuPlatform: &quot;Intel Haswell&quot;</code> or
 	// <code>minCpuPlatform: &quot;Intel Sandy Bridge&quot;</code>. For more
 	// information, read [how to specify min CPU platform](https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform)
-	MinCpuPlatform       string   `protobuf:"bytes,13,opt,name=min_cpu_platform,json=minCpuPlatform" json:"min_cpu_platform,omitempty"`
+	MinCpuPlatform       string   `protobuf:"bytes,13,opt,name=min_cpu_platform,json=minCpuPlatform,proto3" json:"min_cpu_platform,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -405,7 +405,7 @@ func (m *NodeConfig) Reset()         { *m = NodeConfig{} }
 func (m *NodeConfig) String() string { return proto.CompactTextString(m) }
 func (*NodeConfig) ProtoMessage()    {}
 func (*NodeConfig) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{0}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{0}
 }
 func (m *NodeConfig) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_NodeConfig.Unmarshal(m, b)
@@ -516,24 +516,24 @@ type MasterAuth struct {
 	// The username to use for HTTP basic authentication to the master endpoint.
 	// For clusters v1.6.0 and later, you can disable basic authentication by
 	// providing an empty username.
-	Username string `protobuf:"bytes,1,opt,name=username" json:"username,omitempty"`
+	Username string `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
 	// The password to use for HTTP basic authentication to the master endpoint.
 	// Because the master endpoint is open to the Internet, you should create a
 	// strong password.  If a password is provided for cluster creation, username
 	// must be non-empty.
-	Password string `protobuf:"bytes,2,opt,name=password" json:"password,omitempty"`
+	Password string `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
 	// Configuration for client certificate authentication on the cluster.  If no
 	// configuration is specified, a client certificate is issued.
-	ClientCertificateConfig *ClientCertificateConfig `protobuf:"bytes,3,opt,name=client_certificate_config,json=clientCertificateConfig" json:"client_certificate_config,omitempty"`
+	ClientCertificateConfig *ClientCertificateConfig `protobuf:"bytes,3,opt,name=client_certificate_config,json=clientCertificateConfig,proto3" json:"client_certificate_config,omitempty"`
 	// [Output only] Base64-encoded public certificate that is the root of
 	// trust for the cluster.
-	ClusterCaCertificate string `protobuf:"bytes,100,opt,name=cluster_ca_certificate,json=clusterCaCertificate" json:"cluster_ca_certificate,omitempty"`
+	ClusterCaCertificate string `protobuf:"bytes,100,opt,name=cluster_ca_certificate,json=clusterCaCertificate,proto3" json:"cluster_ca_certificate,omitempty"`
 	// [Output only] Base64-encoded public certificate used by clients to
 	// authenticate to the cluster endpoint.
-	ClientCertificate string `protobuf:"bytes,101,opt,name=client_certificate,json=clientCertificate" json:"client_certificate,omitempty"`
+	ClientCertificate string `protobuf:"bytes,101,opt,name=client_certificate,json=clientCertificate,proto3" json:"client_certificate,omitempty"`
 	// [Output only] Base64-encoded private key used by clients to authenticate
 	// to the cluster endpoint.
-	ClientKey            string   `protobuf:"bytes,102,opt,name=client_key,json=clientKey" json:"client_key,omitempty"`
+	ClientKey            string   `protobuf:"bytes,102,opt,name=client_key,json=clientKey,proto3" json:"client_key,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -543,7 +543,7 @@ func (m *MasterAuth) Reset()         { *m = MasterAuth{} }
 func (m *MasterAuth) String() string { return proto.CompactTextString(m) }
 func (*MasterAuth) ProtoMessage()    {}
 func (*MasterAuth) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{1}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{1}
 }
 func (m *MasterAuth) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_MasterAuth.Unmarshal(m, b)
@@ -608,7 +608,7 @@ func (m *MasterAuth) GetClientKey() string {
 // Configuration for client certificates on the cluster.
 type ClientCertificateConfig struct {
 	// Issue a client certificate.
-	IssueClientCertificate bool     `protobuf:"varint,1,opt,name=issue_client_certificate,json=issueClientCertificate" json:"issue_client_certificate,omitempty"`
+	IssueClientCertificate bool     `protobuf:"varint,1,opt,name=issue_client_certificate,json=issueClientCertificate,proto3" json:"issue_client_certificate,omitempty"`
 	XXX_NoUnkeyedLiteral   struct{} `json:"-"`
 	XXX_unrecognized       []byte   `json:"-"`
 	XXX_sizecache          int32    `json:"-"`
@@ -618,7 +618,7 @@ func (m *ClientCertificateConfig) Reset()         { *m = ClientCertificateConfig
 func (m *ClientCertificateConfig) String() string { return proto.CompactTextString(m) }
 func (*ClientCertificateConfig) ProtoMessage()    {}
 func (*ClientCertificateConfig) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{2}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{2}
 }
 func (m *ClientCertificateConfig) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ClientCertificateConfig.Unmarshal(m, b)
@@ -650,17 +650,17 @@ func (m *ClientCertificateConfig) GetIssueClientCertificate() bool {
 type AddonsConfig struct {
 	// Configuration for the HTTP (L7) load balancing controller addon, which
 	// makes it easy to set up HTTP load balancers for services in a cluster.
-	HttpLoadBalancing *HttpLoadBalancing `protobuf:"bytes,1,opt,name=http_load_balancing,json=httpLoadBalancing" json:"http_load_balancing,omitempty"`
+	HttpLoadBalancing *HttpLoadBalancing `protobuf:"bytes,1,opt,name=http_load_balancing,json=httpLoadBalancing,proto3" json:"http_load_balancing,omitempty"`
 	// Configuration for the horizontal pod autoscaling feature, which
 	// increases or decreases the number of replica pods a replication controller
 	// has based on the resource usage of the existing pods.
-	HorizontalPodAutoscaling *HorizontalPodAutoscaling `protobuf:"bytes,2,opt,name=horizontal_pod_autoscaling,json=horizontalPodAutoscaling" json:"horizontal_pod_autoscaling,omitempty"`
+	HorizontalPodAutoscaling *HorizontalPodAutoscaling `protobuf:"bytes,2,opt,name=horizontal_pod_autoscaling,json=horizontalPodAutoscaling,proto3" json:"horizontal_pod_autoscaling,omitempty"`
 	// Configuration for the Kubernetes Dashboard.
-	KubernetesDashboard *KubernetesDashboard `protobuf:"bytes,3,opt,name=kubernetes_dashboard,json=kubernetesDashboard" json:"kubernetes_dashboard,omitempty"`
+	KubernetesDashboard *KubernetesDashboard `protobuf:"bytes,3,opt,name=kubernetes_dashboard,json=kubernetesDashboard,proto3" json:"kubernetes_dashboard,omitempty"`
 	// Configuration for NetworkPolicy. This only tracks whether the addon
 	// is enabled or not on the Master, it does not track whether network policy
 	// is enabled for the nodes.
-	NetworkPolicyConfig  *NetworkPolicyConfig `protobuf:"bytes,4,opt,name=network_policy_config,json=networkPolicyConfig" json:"network_policy_config,omitempty"`
+	NetworkPolicyConfig  *NetworkPolicyConfig `protobuf:"bytes,4,opt,name=network_policy_config,json=networkPolicyConfig,proto3" json:"network_policy_config,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
 	XXX_unrecognized     []byte               `json:"-"`
 	XXX_sizecache        int32                `json:"-"`
@@ -670,7 +670,7 @@ func (m *AddonsConfig) Reset()         { *m = AddonsConfig{} }
 func (m *AddonsConfig) String() string { return proto.CompactTextString(m) }
 func (*AddonsConfig) ProtoMessage()    {}
 func (*AddonsConfig) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{3}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{3}
 }
 func (m *AddonsConfig) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_AddonsConfig.Unmarshal(m, b)
@@ -724,7 +724,7 @@ type HttpLoadBalancing struct {
 	// Whether the HTTP Load Balancing controller is enabled in the cluster.
 	// When enabled, it runs a small pod in the cluster that manages the load
 	// balancers.
-	Disabled             bool     `protobuf:"varint,1,opt,name=disabled" json:"disabled,omitempty"`
+	Disabled             bool     `protobuf:"varint,1,opt,name=disabled,proto3" json:"disabled,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -734,7 +734,7 @@ func (m *HttpLoadBalancing) Reset()         { *m = HttpLoadBalancing{} }
 func (m *HttpLoadBalancing) String() string { return proto.CompactTextString(m) }
 func (*HttpLoadBalancing) ProtoMessage()    {}
 func (*HttpLoadBalancing) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{4}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{4}
 }
 func (m *HttpLoadBalancing) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_HttpLoadBalancing.Unmarshal(m, b)
@@ -768,7 +768,7 @@ type HorizontalPodAutoscaling struct {
 	// Whether the Horizontal Pod Autoscaling feature is enabled in the cluster.
 	// When enabled, it ensures that a Heapster pod is running in the cluster,
 	// which is also used by the Cloud Monitoring service.
-	Disabled             bool     `protobuf:"varint,1,opt,name=disabled" json:"disabled,omitempty"`
+	Disabled             bool     `protobuf:"varint,1,opt,name=disabled,proto3" json:"disabled,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -778,7 +778,7 @@ func (m *HorizontalPodAutoscaling) Reset()         { *m = HorizontalPodAutoscali
 func (m *HorizontalPodAutoscaling) String() string { return proto.CompactTextString(m) }
 func (*HorizontalPodAutoscaling) ProtoMessage()    {}
 func (*HorizontalPodAutoscaling) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{5}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{5}
 }
 func (m *HorizontalPodAutoscaling) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_HorizontalPodAutoscaling.Unmarshal(m, b)
@@ -808,7 +808,7 @@ func (m *HorizontalPodAutoscaling) GetDisabled() bool {
 // Configuration for the Kubernetes Dashboard.
 type KubernetesDashboard struct {
 	// Whether the Kubernetes Dashboard is enabled for this cluster.
-	Disabled             bool     `protobuf:"varint,1,opt,name=disabled" json:"disabled,omitempty"`
+	Disabled             bool     `protobuf:"varint,1,opt,name=disabled,proto3" json:"disabled,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -818,7 +818,7 @@ func (m *KubernetesDashboard) Reset()         { *m = KubernetesDashboard{} }
 func (m *KubernetesDashboard) String() string { return proto.CompactTextString(m) }
 func (*KubernetesDashboard) ProtoMessage()    {}
 func (*KubernetesDashboard) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{6}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{6}
 }
 func (m *KubernetesDashboard) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_KubernetesDashboard.Unmarshal(m, b)
@@ -850,7 +850,7 @@ func (m *KubernetesDashboard) GetDisabled() bool {
 // is enabled for the nodes.
 type NetworkPolicyConfig struct {
 	// Whether NetworkPolicy is enabled for this cluster.
-	Disabled             bool     `protobuf:"varint,1,opt,name=disabled" json:"disabled,omitempty"`
+	Disabled             bool     `protobuf:"varint,1,opt,name=disabled,proto3" json:"disabled,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -860,7 +860,7 @@ func (m *NetworkPolicyConfig) Reset()         { *m = NetworkPolicyConfig{} }
 func (m *NetworkPolicyConfig) String() string { return proto.CompactTextString(m) }
 func (*NetworkPolicyConfig) ProtoMessage()    {}
 func (*NetworkPolicyConfig) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{7}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{7}
 }
 func (m *NetworkPolicyConfig) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_NetworkPolicyConfig.Unmarshal(m, b)
@@ -894,10 +894,10 @@ func (m *NetworkPolicyConfig) GetDisabled() bool {
 // Google Compute Engine Public IPs and Google Prod IPs.
 type MasterAuthorizedNetworksConfig struct {
 	// Whether or not master authorized networks is enabled.
-	Enabled bool `protobuf:"varint,1,opt,name=enabled" json:"enabled,omitempty"`
+	Enabled bool `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
 	// cidr_blocks define up to 10 external networks that could access
 	// Kubernetes master through HTTPS.
-	CidrBlocks           []*MasterAuthorizedNetworksConfig_CidrBlock `protobuf:"bytes,2,rep,name=cidr_blocks,json=cidrBlocks" json:"cidr_blocks,omitempty"`
+	CidrBlocks           []*MasterAuthorizedNetworksConfig_CidrBlock `protobuf:"bytes,2,rep,name=cidr_blocks,json=cidrBlocks,proto3" json:"cidr_blocks,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                                    `json:"-"`
 	XXX_unrecognized     []byte                                      `json:"-"`
 	XXX_sizecache        int32                                       `json:"-"`
@@ -907,7 +907,7 @@ func (m *MasterAuthorizedNetworksConfig) Reset()         { *m = MasterAuthorized
 func (m *MasterAuthorizedNetworksConfig) String() string { return proto.CompactTextString(m) }
 func (*MasterAuthorizedNetworksConfig) ProtoMessage()    {}
 func (*MasterAuthorizedNetworksConfig) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{8}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{8}
 }
 func (m *MasterAuthorizedNetworksConfig) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_MasterAuthorizedNetworksConfig.Unmarshal(m, b)
@@ -944,9 +944,9 @@ func (m *MasterAuthorizedNetworksConfig) GetCidrBlocks() []*MasterAuthorizedNetw
 // CidrBlock contains an optional name and one CIDR block.
 type MasterAuthorizedNetworksConfig_CidrBlock struct {
 	// display_name is an optional field for users to identify CIDR blocks.
-	DisplayName string `protobuf:"bytes,1,opt,name=display_name,json=displayName" json:"display_name,omitempty"`
+	DisplayName string `protobuf:"bytes,1,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
 	// cidr_block must be specified in CIDR notation.
-	CidrBlock            string   `protobuf:"bytes,2,opt,name=cidr_block,json=cidrBlock" json:"cidr_block,omitempty"`
+	CidrBlock            string   `protobuf:"bytes,2,opt,name=cidr_block,json=cidrBlock,proto3" json:"cidr_block,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -958,7 +958,7 @@ func (m *MasterAuthorizedNetworksConfig_CidrBlock) Reset() {
 func (m *MasterAuthorizedNetworksConfig_CidrBlock) String() string { return proto.CompactTextString(m) }
 func (*MasterAuthorizedNetworksConfig_CidrBlock) ProtoMessage()    {}
 func (*MasterAuthorizedNetworksConfig_CidrBlock) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{8, 0}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{8, 0}
 }
 func (m *MasterAuthorizedNetworksConfig_CidrBlock) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_MasterAuthorizedNetworksConfig_CidrBlock.Unmarshal(m, b)
@@ -999,7 +999,7 @@ type LegacyAbac struct {
 	// identities in the system, including service accounts, nodes, and
 	// controllers, will have statically granted permissions beyond those
 	// provided by the RBAC configuration or IAM.
-	Enabled              bool     `protobuf:"varint,1,opt,name=enabled" json:"enabled,omitempty"`
+	Enabled              bool     `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1009,7 +1009,7 @@ func (m *LegacyAbac) Reset()         { *m = LegacyAbac{} }
 func (m *LegacyAbac) String() string { return proto.CompactTextString(m) }
 func (*LegacyAbac) ProtoMessage()    {}
 func (*LegacyAbac) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{9}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{9}
 }
 func (m *LegacyAbac) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_LegacyAbac.Unmarshal(m, b)
@@ -1040,9 +1040,9 @@ func (m *LegacyAbac) GetEnabled() bool {
 // https://kubernetes.io/docs/concepts/services-networking/networkpolicies/
 type NetworkPolicy struct {
 	// The selected network policy provider.
-	Provider NetworkPolicy_Provider `protobuf:"varint,1,opt,name=provider,enum=google.container.v1.NetworkPolicy_Provider" json:"provider,omitempty"`
+	Provider NetworkPolicy_Provider `protobuf:"varint,1,opt,name=provider,proto3,enum=google.container.v1.NetworkPolicy_Provider" json:"provider,omitempty"`
 	// Whether network policy is enabled on the cluster.
-	Enabled              bool     `protobuf:"varint,2,opt,name=enabled" json:"enabled,omitempty"`
+	Enabled              bool     `protobuf:"varint,2,opt,name=enabled,proto3" json:"enabled,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1052,7 +1052,7 @@ func (m *NetworkPolicy) Reset()         { *m = NetworkPolicy{} }
 func (m *NetworkPolicy) String() string { return proto.CompactTextString(m) }
 func (*NetworkPolicy) ProtoMessage()    {}
 func (*NetworkPolicy) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{10}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{10}
 }
 func (m *NetworkPolicy) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_NetworkPolicy.Unmarshal(m, b)
@@ -1089,21 +1089,21 @@ func (m *NetworkPolicy) GetEnabled() bool {
 // Configuration for controlling how IPs are allocated in the cluster.
 type IPAllocationPolicy struct {
 	// Whether alias IPs will be used for pod IPs in the cluster.
-	UseIpAliases bool `protobuf:"varint,1,opt,name=use_ip_aliases,json=useIpAliases" json:"use_ip_aliases,omitempty"`
+	UseIpAliases bool `protobuf:"varint,1,opt,name=use_ip_aliases,json=useIpAliases,proto3" json:"use_ip_aliases,omitempty"`
 	// Whether a new subnetwork will be created automatically for the cluster.
 	//
 	// This field is only applicable when `use_ip_aliases` is true.
-	CreateSubnetwork bool `protobuf:"varint,2,opt,name=create_subnetwork,json=createSubnetwork" json:"create_subnetwork,omitempty"`
+	CreateSubnetwork bool `protobuf:"varint,2,opt,name=create_subnetwork,json=createSubnetwork,proto3" json:"create_subnetwork,omitempty"`
 	// A custom subnetwork name to be used if `create_subnetwork` is true.  If
 	// this field is empty, then an automatic name will be chosen for the new
 	// subnetwork.
-	SubnetworkName string `protobuf:"bytes,3,opt,name=subnetwork_name,json=subnetworkName" json:"subnetwork_name,omitempty"`
+	SubnetworkName string `protobuf:"bytes,3,opt,name=subnetwork_name,json=subnetworkName,proto3" json:"subnetwork_name,omitempty"`
 	// This field is deprecated, use cluster_ipv4_cidr_block.
-	ClusterIpv4Cidr string `protobuf:"bytes,4,opt,name=cluster_ipv4_cidr,json=clusterIpv4Cidr" json:"cluster_ipv4_cidr,omitempty"`
+	ClusterIpv4Cidr string `protobuf:"bytes,4,opt,name=cluster_ipv4_cidr,json=clusterIpv4Cidr,proto3" json:"cluster_ipv4_cidr,omitempty"`
 	// This field is deprecated, use node_ipv4_cidr_block.
-	NodeIpv4Cidr string `protobuf:"bytes,5,opt,name=node_ipv4_cidr,json=nodeIpv4Cidr" json:"node_ipv4_cidr,omitempty"`
+	NodeIpv4Cidr string `protobuf:"bytes,5,opt,name=node_ipv4_cidr,json=nodeIpv4Cidr,proto3" json:"node_ipv4_cidr,omitempty"`
 	// This field is deprecated, use services_ipv4_cidr_block.
-	ServicesIpv4Cidr string `protobuf:"bytes,6,opt,name=services_ipv4_cidr,json=servicesIpv4Cidr" json:"services_ipv4_cidr,omitempty"`
+	ServicesIpv4Cidr string `protobuf:"bytes,6,opt,name=services_ipv4_cidr,json=servicesIpv4Cidr,proto3" json:"services_ipv4_cidr,omitempty"`
 	// The name of the secondary range to be used for the cluster CIDR
 	// block.  The secondary range will be used for pod IP
 	// addresses. This must be an existing secondary range associated
@@ -1111,7 +1111,7 @@ type IPAllocationPolicy struct {
 	//
 	// This field is only applicable with use_ip_aliases is true and
 	// create_subnetwork is false.
-	ClusterSecondaryRangeName string `protobuf:"bytes,7,opt,name=cluster_secondary_range_name,json=clusterSecondaryRangeName" json:"cluster_secondary_range_name,omitempty"`
+	ClusterSecondaryRangeName string `protobuf:"bytes,7,opt,name=cluster_secondary_range_name,json=clusterSecondaryRangeName,proto3" json:"cluster_secondary_range_name,omitempty"`
 	// The name of the secondary range to be used as for the services
 	// CIDR block.  The secondary range will be used for service
 	// ClusterIPs. This must be an existing secondary range associated
@@ -1119,7 +1119,7 @@ type IPAllocationPolicy struct {
 	//
 	// This field is only applicable with use_ip_aliases is true and
 	// create_subnetwork is false.
-	ServicesSecondaryRangeName string `protobuf:"bytes,8,opt,name=services_secondary_range_name,json=servicesSecondaryRangeName" json:"services_secondary_range_name,omitempty"`
+	ServicesSecondaryRangeName string `protobuf:"bytes,8,opt,name=services_secondary_range_name,json=servicesSecondaryRangeName,proto3" json:"services_secondary_range_name,omitempty"`
 	// The IP address range for the cluster pod IPs. If this field is set, then
 	// `cluster.cluster_ipv4_cidr` must be left blank.
 	//
@@ -1135,7 +1135,7 @@ type IPAllocationPolicy struct {
 	// notation (e.g. `10.96.0.0/14`) from the RFC-1918 private networks (e.g.
 	// `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) to pick a specific range
 	// to use.
-	ClusterIpv4CidrBlock string `protobuf:"bytes,9,opt,name=cluster_ipv4_cidr_block,json=clusterIpv4CidrBlock" json:"cluster_ipv4_cidr_block,omitempty"`
+	ClusterIpv4CidrBlock string `protobuf:"bytes,9,opt,name=cluster_ipv4_cidr_block,json=clusterIpv4CidrBlock,proto3" json:"cluster_ipv4_cidr_block,omitempty"`
 	// The IP address range of the instance IPs in this cluster.
 	//
 	// This is applicable only if `create_subnetwork` is true.
@@ -1150,7 +1150,7 @@ type IPAllocationPolicy struct {
 	// notation (e.g. `10.96.0.0/14`) from the RFC-1918 private networks (e.g.
 	// `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) to pick a specific range
 	// to use.
-	NodeIpv4CidrBlock string `protobuf:"bytes,10,opt,name=node_ipv4_cidr_block,json=nodeIpv4CidrBlock" json:"node_ipv4_cidr_block,omitempty"`
+	NodeIpv4CidrBlock string `protobuf:"bytes,10,opt,name=node_ipv4_cidr_block,json=nodeIpv4CidrBlock,proto3" json:"node_ipv4_cidr_block,omitempty"`
 	// The IP address range of the services IPs in this cluster. If blank, a range
 	// will be automatically chosen with the default size.
 	//
@@ -1166,7 +1166,7 @@ type IPAllocationPolicy struct {
 	// notation (e.g. `10.96.0.0/14`) from the RFC-1918 private networks (e.g.
 	// `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) to pick a specific range
 	// to use.
-	ServicesIpv4CidrBlock string   `protobuf:"bytes,11,opt,name=services_ipv4_cidr_block,json=servicesIpv4CidrBlock" json:"services_ipv4_cidr_block,omitempty"`
+	ServicesIpv4CidrBlock string   `protobuf:"bytes,11,opt,name=services_ipv4_cidr_block,json=servicesIpv4CidrBlock,proto3" json:"services_ipv4_cidr_block,omitempty"`
 	XXX_NoUnkeyedLiteral  struct{} `json:"-"`
 	XXX_unrecognized      []byte   `json:"-"`
 	XXX_sizecache         int32    `json:"-"`
@@ -1176,7 +1176,7 @@ func (m *IPAllocationPolicy) Reset()         { *m = IPAllocationPolicy{} }
 func (m *IPAllocationPolicy) String() string { return proto.CompactTextString(m) }
 func (*IPAllocationPolicy) ProtoMessage()    {}
 func (*IPAllocationPolicy) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{11}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{11}
 }
 func (m *IPAllocationPolicy) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_IPAllocationPolicy.Unmarshal(m, b)
@@ -1281,9 +1281,9 @@ type Cluster struct {
 	// * Lowercase letters, numbers, and hyphens only.
 	// * Must start with a letter.
 	// * Must end with a number or a letter.
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// An optional description of this cluster.
-	Description string `protobuf:"bytes,2,opt,name=description" json:"description,omitempty"`
+	Description string `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
 	// The number of nodes to create in this cluster. You must ensure that your
 	// Compute Engine <a href="/compute/docs/resource-quotas">resource quota</a>
 	// is sufficient for this number of instances. You must also have available
@@ -1292,7 +1292,7 @@ type Cluster struct {
 	// "node_pool" object, since this configuration (along with the
 	// "node_config") will be used to create a "NodePool" object with an
 	// auto-generated name. Do not use this and a node_pool at the same time.
-	InitialNodeCount int32 `protobuf:"varint,3,opt,name=initial_node_count,json=initialNodeCount" json:"initial_node_count,omitempty"`
+	InitialNodeCount int32 `protobuf:"varint,3,opt,name=initial_node_count,json=initialNodeCount,proto3" json:"initial_node_count,omitempty"`
 	// Parameters used in creating the cluster's nodes.
 	// See `nodeConfig` for the description of its properties.
 	// For requests, this field should only be used in lieu of a
@@ -1303,119 +1303,119 @@ type Cluster struct {
 	// the first node pool.
 	//
 	// If unspecified, the defaults are used.
-	NodeConfig *NodeConfig `protobuf:"bytes,4,opt,name=node_config,json=nodeConfig" json:"node_config,omitempty"`
+	NodeConfig *NodeConfig `protobuf:"bytes,4,opt,name=node_config,json=nodeConfig,proto3" json:"node_config,omitempty"`
 	// The authentication information for accessing the master endpoint.
-	MasterAuth *MasterAuth `protobuf:"bytes,5,opt,name=master_auth,json=masterAuth" json:"master_auth,omitempty"`
+	MasterAuth *MasterAuth `protobuf:"bytes,5,opt,name=master_auth,json=masterAuth,proto3" json:"master_auth,omitempty"`
 	// The logging service the cluster should use to write logs.
 	// Currently available options:
 	//
 	// * `logging.googleapis.com` - the Google Cloud Logging service.
 	// * `none` - no logs will be exported from the cluster.
 	// * if left as an empty string,`logging.googleapis.com` will be used.
-	LoggingService string `protobuf:"bytes,6,opt,name=logging_service,json=loggingService" json:"logging_service,omitempty"`
+	LoggingService string `protobuf:"bytes,6,opt,name=logging_service,json=loggingService,proto3" json:"logging_service,omitempty"`
 	// The monitoring service the cluster should use to write metrics.
 	// Currently available options:
 	//
 	// * `monitoring.googleapis.com` - the Google Cloud Monitoring service.
 	// * `none` - no metrics will be exported from the cluster.
 	// * if left as an empty string, `monitoring.googleapis.com` will be used.
-	MonitoringService string `protobuf:"bytes,7,opt,name=monitoring_service,json=monitoringService" json:"monitoring_service,omitempty"`
+	MonitoringService string `protobuf:"bytes,7,opt,name=monitoring_service,json=monitoringService,proto3" json:"monitoring_service,omitempty"`
 	// The name of the Google Compute Engine
 	// [network](/compute/docs/networks-and-firewalls#networks) to which the
 	// cluster is connected. If left unspecified, the `default` network
 	// will be used.
-	Network string `protobuf:"bytes,8,opt,name=network" json:"network,omitempty"`
+	Network string `protobuf:"bytes,8,opt,name=network,proto3" json:"network,omitempty"`
 	// The IP address range of the container pods in this cluster, in
 	// [CIDR](http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)
 	// notation (e.g. `10.96.0.0/14`). Leave blank to have
 	// one automatically chosen or specify a `/14` block in `10.0.0.0/8`.
-	ClusterIpv4Cidr string `protobuf:"bytes,9,opt,name=cluster_ipv4_cidr,json=clusterIpv4Cidr" json:"cluster_ipv4_cidr,omitempty"`
+	ClusterIpv4Cidr string `protobuf:"bytes,9,opt,name=cluster_ipv4_cidr,json=clusterIpv4Cidr,proto3" json:"cluster_ipv4_cidr,omitempty"`
 	// Configurations for the various addons available to run in the cluster.
-	AddonsConfig *AddonsConfig `protobuf:"bytes,10,opt,name=addons_config,json=addonsConfig" json:"addons_config,omitempty"`
+	AddonsConfig *AddonsConfig `protobuf:"bytes,10,opt,name=addons_config,json=addonsConfig,proto3" json:"addons_config,omitempty"`
 	// The name of the Google Compute Engine
 	// [subnetwork](/compute/docs/subnetworks) to which the
 	// cluster is connected.
-	Subnetwork string `protobuf:"bytes,11,opt,name=subnetwork" json:"subnetwork,omitempty"`
+	Subnetwork string `protobuf:"bytes,11,opt,name=subnetwork,proto3" json:"subnetwork,omitempty"`
 	// The node pools associated with this cluster.
 	// This field should not be set if "node_config" or "initial_node_count" are
 	// specified.
-	NodePools []*NodePool `protobuf:"bytes,12,rep,name=node_pools,json=nodePools" json:"node_pools,omitempty"`
+	NodePools []*NodePool `protobuf:"bytes,12,rep,name=node_pools,json=nodePools,proto3" json:"node_pools,omitempty"`
 	// The list of Google Compute Engine
 	// [locations](/compute/docs/zones#available) in which the cluster's nodes
 	// should be located.
-	Locations []string `protobuf:"bytes,13,rep,name=locations" json:"locations,omitempty"`
+	Locations []string `protobuf:"bytes,13,rep,name=locations,proto3" json:"locations,omitempty"`
 	// Kubernetes alpha features are enabled on this cluster. This includes alpha
 	// API groups (e.g. v1alpha1) and features that may not be production ready in
 	// the kubernetes version of the master and nodes.
 	// The cluster has no SLA for uptime and master/node upgrades are disabled.
 	// Alpha enabled clusters are automatically deleted thirty days after
 	// creation.
-	EnableKubernetesAlpha bool `protobuf:"varint,14,opt,name=enable_kubernetes_alpha,json=enableKubernetesAlpha" json:"enable_kubernetes_alpha,omitempty"`
+	EnableKubernetesAlpha bool `protobuf:"varint,14,opt,name=enable_kubernetes_alpha,json=enableKubernetesAlpha,proto3" json:"enable_kubernetes_alpha,omitempty"`
 	// The resource labels for the cluster to use to annotate any related
 	// Google Compute Engine resources.
-	ResourceLabels map[string]string `protobuf:"bytes,15,rep,name=resource_labels,json=resourceLabels" json:"resource_labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	ResourceLabels map[string]string `protobuf:"bytes,15,rep,name=resource_labels,json=resourceLabels,proto3" json:"resource_labels,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	// The fingerprint of the set of labels for this cluster.
-	LabelFingerprint string `protobuf:"bytes,16,opt,name=label_fingerprint,json=labelFingerprint" json:"label_fingerprint,omitempty"`
+	LabelFingerprint string `protobuf:"bytes,16,opt,name=label_fingerprint,json=labelFingerprint,proto3" json:"label_fingerprint,omitempty"`
 	// Configuration for the legacy ABAC authorization mode.
-	LegacyAbac *LegacyAbac `protobuf:"bytes,18,opt,name=legacy_abac,json=legacyAbac" json:"legacy_abac,omitempty"`
+	LegacyAbac *LegacyAbac `protobuf:"bytes,18,opt,name=legacy_abac,json=legacyAbac,proto3" json:"legacy_abac,omitempty"`
 	// Configuration options for the NetworkPolicy feature.
-	NetworkPolicy *NetworkPolicy `protobuf:"bytes,19,opt,name=network_policy,json=networkPolicy" json:"network_policy,omitempty"`
+	NetworkPolicy *NetworkPolicy `protobuf:"bytes,19,opt,name=network_policy,json=networkPolicy,proto3" json:"network_policy,omitempty"`
 	// Configuration for cluster IP allocation.
-	IpAllocationPolicy *IPAllocationPolicy `protobuf:"bytes,20,opt,name=ip_allocation_policy,json=ipAllocationPolicy" json:"ip_allocation_policy,omitempty"`
+	IpAllocationPolicy *IPAllocationPolicy `protobuf:"bytes,20,opt,name=ip_allocation_policy,json=ipAllocationPolicy,proto3" json:"ip_allocation_policy,omitempty"`
 	// Master authorized networks is a Beta feature.
 	// The configuration options for master authorized networks feature.
-	MasterAuthorizedNetworksConfig *MasterAuthorizedNetworksConfig `protobuf:"bytes,22,opt,name=master_authorized_networks_config,json=masterAuthorizedNetworksConfig" json:"master_authorized_networks_config,omitempty"`
+	MasterAuthorizedNetworksConfig *MasterAuthorizedNetworksConfig `protobuf:"bytes,22,opt,name=master_authorized_networks_config,json=masterAuthorizedNetworksConfig,proto3" json:"master_authorized_networks_config,omitempty"`
 	// Configure the maintenance policy for this cluster.
-	MaintenancePolicy *MaintenancePolicy `protobuf:"bytes,23,opt,name=maintenance_policy,json=maintenancePolicy" json:"maintenance_policy,omitempty"`
+	MaintenancePolicy *MaintenancePolicy `protobuf:"bytes,23,opt,name=maintenance_policy,json=maintenancePolicy,proto3" json:"maintenance_policy,omitempty"`
 	// [Output only] Server-defined URL for the resource.
-	SelfLink string `protobuf:"bytes,100,opt,name=self_link,json=selfLink" json:"self_link,omitempty"`
+	SelfLink string `protobuf:"bytes,100,opt,name=self_link,json=selfLink,proto3" json:"self_link,omitempty"`
 	// [Output only] The name of the Google Compute Engine
 	// [zone](/compute/docs/zones#available) in which the cluster
 	// resides.
-	Zone string `protobuf:"bytes,101,opt,name=zone" json:"zone,omitempty"`
+	Zone string `protobuf:"bytes,101,opt,name=zone,proto3" json:"zone,omitempty"`
 	// [Output only] The IP address of this cluster's master endpoint.
 	// The endpoint can be accessed from the internet at
 	// `https://username:password@endpoint/`.
 	//
 	// See the `masterAuth` property of this resource for username and
 	// password information.
-	Endpoint string `protobuf:"bytes,102,opt,name=endpoint" json:"endpoint,omitempty"`
+	Endpoint string `protobuf:"bytes,102,opt,name=endpoint,proto3" json:"endpoint,omitempty"`
 	// The initial Kubernetes version for this cluster.  Valid versions are those
 	// found in validMasterVersions returned by getServerConfig.  The version can
 	// be upgraded over time; such upgrades are reflected in
 	// currentMasterVersion and currentNodeVersion.
-	InitialClusterVersion string `protobuf:"bytes,103,opt,name=initial_cluster_version,json=initialClusterVersion" json:"initial_cluster_version,omitempty"`
+	InitialClusterVersion string `protobuf:"bytes,103,opt,name=initial_cluster_version,json=initialClusterVersion,proto3" json:"initial_cluster_version,omitempty"`
 	// [Output only] The current software version of the master endpoint.
-	CurrentMasterVersion string `protobuf:"bytes,104,opt,name=current_master_version,json=currentMasterVersion" json:"current_master_version,omitempty"`
+	CurrentMasterVersion string `protobuf:"bytes,104,opt,name=current_master_version,json=currentMasterVersion,proto3" json:"current_master_version,omitempty"`
 	// [Output only] The current version of the node software components.
 	// If they are currently at multiple versions because they're in the process
 	// of being upgraded, this reflects the minimum version of all nodes.
-	CurrentNodeVersion string `protobuf:"bytes,105,opt,name=current_node_version,json=currentNodeVersion" json:"current_node_version,omitempty"`
+	CurrentNodeVersion string `protobuf:"bytes,105,opt,name=current_node_version,json=currentNodeVersion,proto3" json:"current_node_version,omitempty"`
 	// [Output only] The time the cluster was created, in
 	// [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format.
-	CreateTime string `protobuf:"bytes,106,opt,name=create_time,json=createTime" json:"create_time,omitempty"`
+	CreateTime string `protobuf:"bytes,106,opt,name=create_time,json=createTime,proto3" json:"create_time,omitempty"`
 	// [Output only] The current status of this cluster.
-	Status Cluster_Status `protobuf:"varint,107,opt,name=status,enum=google.container.v1.Cluster_Status" json:"status,omitempty"`
+	Status Cluster_Status `protobuf:"varint,107,opt,name=status,proto3,enum=google.container.v1.Cluster_Status" json:"status,omitempty"`
 	// [Output only] Additional information about the current status of this
 	// cluster, if available.
-	StatusMessage string `protobuf:"bytes,108,opt,name=status_message,json=statusMessage" json:"status_message,omitempty"`
+	StatusMessage string `protobuf:"bytes,108,opt,name=status_message,json=statusMessage,proto3" json:"status_message,omitempty"`
 	// [Output only] The size of the address space on each node for hosting
 	// containers. This is provisioned from within the `container_ipv4_cidr`
 	// range.
-	NodeIpv4CidrSize int32 `protobuf:"varint,109,opt,name=node_ipv4_cidr_size,json=nodeIpv4CidrSize" json:"node_ipv4_cidr_size,omitempty"`
+	NodeIpv4CidrSize int32 `protobuf:"varint,109,opt,name=node_ipv4_cidr_size,json=nodeIpv4CidrSize,proto3" json:"node_ipv4_cidr_size,omitempty"`
 	// [Output only] The IP address range of the Kubernetes services in
 	// this cluster, in
 	// [CIDR](http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)
 	// notation (e.g. `1.2.3.4/29`). Service addresses are
 	// typically put in the last `/16` from the container CIDR.
-	ServicesIpv4Cidr string `protobuf:"bytes,110,opt,name=services_ipv4_cidr,json=servicesIpv4Cidr" json:"services_ipv4_cidr,omitempty"`
+	ServicesIpv4Cidr string `protobuf:"bytes,110,opt,name=services_ipv4_cidr,json=servicesIpv4Cidr,proto3" json:"services_ipv4_cidr,omitempty"`
 	// Deprecated. Use node_pools.instance_group_urls.
-	InstanceGroupUrls []string `protobuf:"bytes,111,rep,name=instance_group_urls,json=instanceGroupUrls" json:"instance_group_urls,omitempty"`
+	InstanceGroupUrls []string `protobuf:"bytes,111,rep,name=instance_group_urls,json=instanceGroupUrls,proto3" json:"instance_group_urls,omitempty"`
 	// [Output only] The number of nodes currently in the cluster.
-	CurrentNodeCount int32 `protobuf:"varint,112,opt,name=current_node_count,json=currentNodeCount" json:"current_node_count,omitempty"`
+	CurrentNodeCount int32 `protobuf:"varint,112,opt,name=current_node_count,json=currentNodeCount,proto3" json:"current_node_count,omitempty"`
 	// [Output only] The time the cluster will be automatically
 	// deleted in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format.
-	ExpireTime           string   `protobuf:"bytes,113,opt,name=expire_time,json=expireTime" json:"expire_time,omitempty"`
+	ExpireTime           string   `protobuf:"bytes,113,opt,name=expire_time,json=expireTime,proto3" json:"expire_time,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1425,7 +1425,7 @@ func (m *Cluster) Reset()         { *m = Cluster{} }
 func (m *Cluster) String() string { return proto.CompactTextString(m) }
 func (*Cluster) ProtoMessage()    {}
 func (*Cluster) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{12}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{12}
 }
 func (m *Cluster) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Cluster.Unmarshal(m, b)
@@ -1697,28 +1697,28 @@ type ClusterUpdate struct {
 	// The Kubernetes version to change the nodes to (typically an
 	// upgrade). Use `-` to upgrade to the latest version supported by
 	// the server.
-	DesiredNodeVersion string `protobuf:"bytes,4,opt,name=desired_node_version,json=desiredNodeVersion" json:"desired_node_version,omitempty"`
+	DesiredNodeVersion string `protobuf:"bytes,4,opt,name=desired_node_version,json=desiredNodeVersion,proto3" json:"desired_node_version,omitempty"`
 	// The monitoring service the cluster should use to write metrics.
 	// Currently available options:
 	//
 	// * "monitoring.googleapis.com" - the Google Cloud Monitoring service
 	// * "none" - no metrics will be exported from the cluster
-	DesiredMonitoringService string `protobuf:"bytes,5,opt,name=desired_monitoring_service,json=desiredMonitoringService" json:"desired_monitoring_service,omitempty"`
+	DesiredMonitoringService string `protobuf:"bytes,5,opt,name=desired_monitoring_service,json=desiredMonitoringService,proto3" json:"desired_monitoring_service,omitempty"`
 	// Configurations for the various addons available to run in the cluster.
-	DesiredAddonsConfig *AddonsConfig `protobuf:"bytes,6,opt,name=desired_addons_config,json=desiredAddonsConfig" json:"desired_addons_config,omitempty"`
+	DesiredAddonsConfig *AddonsConfig `protobuf:"bytes,6,opt,name=desired_addons_config,json=desiredAddonsConfig,proto3" json:"desired_addons_config,omitempty"`
 	// The node pool to be upgraded. This field is mandatory if
 	// "desired_node_version", "desired_image_family" or
 	// "desired_node_pool_autoscaling" is specified and there is more than one
 	// node pool on the cluster.
-	DesiredNodePoolId string `protobuf:"bytes,7,opt,name=desired_node_pool_id,json=desiredNodePoolId" json:"desired_node_pool_id,omitempty"`
+	DesiredNodePoolId string `protobuf:"bytes,7,opt,name=desired_node_pool_id,json=desiredNodePoolId,proto3" json:"desired_node_pool_id,omitempty"`
 	// The desired image type for the node pool.
 	// NOTE: Set the "desired_node_pool" field as well.
-	DesiredImageType string `protobuf:"bytes,8,opt,name=desired_image_type,json=desiredImageType" json:"desired_image_type,omitempty"`
+	DesiredImageType string `protobuf:"bytes,8,opt,name=desired_image_type,json=desiredImageType,proto3" json:"desired_image_type,omitempty"`
 	// Autoscaler configuration for the node pool specified in
 	// desired_node_pool_id. If there is only one pool in the
 	// cluster and desired_node_pool_id is not provided then
 	// the change applies to that single node pool.
-	DesiredNodePoolAutoscaling *NodePoolAutoscaling `protobuf:"bytes,9,opt,name=desired_node_pool_autoscaling,json=desiredNodePoolAutoscaling" json:"desired_node_pool_autoscaling,omitempty"`
+	DesiredNodePoolAutoscaling *NodePoolAutoscaling `protobuf:"bytes,9,opt,name=desired_node_pool_autoscaling,json=desiredNodePoolAutoscaling,proto3" json:"desired_node_pool_autoscaling,omitempty"`
 	// The desired list of Google Compute Engine
 	// [locations](/compute/docs/zones#available) in which the cluster's nodes
 	// should be located. Changing the locations a cluster is in will result
@@ -1726,14 +1726,14 @@ type ClusterUpdate struct {
 	// whether locations are being added or removed.
 	//
 	// This list must always include the cluster's primary zone.
-	DesiredLocations []string `protobuf:"bytes,10,rep,name=desired_locations,json=desiredLocations" json:"desired_locations,omitempty"`
+	DesiredLocations []string `protobuf:"bytes,10,rep,name=desired_locations,json=desiredLocations,proto3" json:"desired_locations,omitempty"`
 	// Master authorized networks is a Beta feature.
 	// The desired configuration options for master authorized networks feature.
-	DesiredMasterAuthorizedNetworksConfig *MasterAuthorizedNetworksConfig `protobuf:"bytes,12,opt,name=desired_master_authorized_networks_config,json=desiredMasterAuthorizedNetworksConfig" json:"desired_master_authorized_networks_config,omitempty"`
+	DesiredMasterAuthorizedNetworksConfig *MasterAuthorizedNetworksConfig `protobuf:"bytes,12,opt,name=desired_master_authorized_networks_config,json=desiredMasterAuthorizedNetworksConfig,proto3" json:"desired_master_authorized_networks_config,omitempty"`
 	// The Kubernetes version to change the master to. The only valid value is the
 	// latest supported version. Use "-" to have the server automatically select
 	// the latest version.
-	DesiredMasterVersion string   `protobuf:"bytes,100,opt,name=desired_master_version,json=desiredMasterVersion" json:"desired_master_version,omitempty"`
+	DesiredMasterVersion string   `protobuf:"bytes,100,opt,name=desired_master_version,json=desiredMasterVersion,proto3" json:"desired_master_version,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1743,7 +1743,7 @@ func (m *ClusterUpdate) Reset()         { *m = ClusterUpdate{} }
 func (m *ClusterUpdate) String() string { return proto.CompactTextString(m) }
 func (*ClusterUpdate) ProtoMessage()    {}
 func (*ClusterUpdate) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{13}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{13}
 }
 func (m *ClusterUpdate) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ClusterUpdate.Unmarshal(m, b)
@@ -1830,29 +1830,29 @@ func (m *ClusterUpdate) GetDesiredMasterVersion() string {
 // happening on the cluster. All fields are output only.
 type Operation struct {
 	// The server-assigned ID for the operation.
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// The name of the Google Compute Engine
 	// [zone](/compute/docs/zones#available) in which the operation
 	// is taking place.
-	Zone string `protobuf:"bytes,2,opt,name=zone" json:"zone,omitempty"`
+	Zone string `protobuf:"bytes,2,opt,name=zone,proto3" json:"zone,omitempty"`
 	// The operation type.
-	OperationType Operation_Type `protobuf:"varint,3,opt,name=operation_type,json=operationType,enum=google.container.v1.Operation_Type" json:"operation_type,omitempty"`
+	OperationType Operation_Type `protobuf:"varint,3,opt,name=operation_type,json=operationType,proto3,enum=google.container.v1.Operation_Type" json:"operation_type,omitempty"`
 	// The current status of the operation.
-	Status Operation_Status `protobuf:"varint,4,opt,name=status,enum=google.container.v1.Operation_Status" json:"status,omitempty"`
+	Status Operation_Status `protobuf:"varint,4,opt,name=status,proto3,enum=google.container.v1.Operation_Status" json:"status,omitempty"`
 	// Detailed operation progress, if available.
-	Detail string `protobuf:"bytes,8,opt,name=detail" json:"detail,omitempty"`
+	Detail string `protobuf:"bytes,8,opt,name=detail,proto3" json:"detail,omitempty"`
 	// If an error has occurred, a textual description of the error.
-	StatusMessage string `protobuf:"bytes,5,opt,name=status_message,json=statusMessage" json:"status_message,omitempty"`
+	StatusMessage string `protobuf:"bytes,5,opt,name=status_message,json=statusMessage,proto3" json:"status_message,omitempty"`
 	// Server-defined URL for the resource.
-	SelfLink string `protobuf:"bytes,6,opt,name=self_link,json=selfLink" json:"self_link,omitempty"`
+	SelfLink string `protobuf:"bytes,6,opt,name=self_link,json=selfLink,proto3" json:"self_link,omitempty"`
 	// Server-defined URL for the target of the operation.
-	TargetLink string `protobuf:"bytes,7,opt,name=target_link,json=targetLink" json:"target_link,omitempty"`
+	TargetLink string `protobuf:"bytes,7,opt,name=target_link,json=targetLink,proto3" json:"target_link,omitempty"`
 	// [Output only] The time the operation started, in
 	// [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format.
-	StartTime string `protobuf:"bytes,10,opt,name=start_time,json=startTime" json:"start_time,omitempty"`
+	StartTime string `protobuf:"bytes,10,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
 	// [Output only] The time the operation completed, in
 	// [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format.
-	EndTime              string   `protobuf:"bytes,11,opt,name=end_time,json=endTime" json:"end_time,omitempty"`
+	EndTime              string   `protobuf:"bytes,11,opt,name=end_time,json=endTime,proto3" json:"end_time,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1862,7 +1862,7 @@ func (m *Operation) Reset()         { *m = Operation{} }
 func (m *Operation) String() string { return proto.CompactTextString(m) }
 func (*Operation) ProtoMessage()    {}
 func (*Operation) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{14}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{14}
 }
 func (m *Operation) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Operation.Unmarshal(m, b)
@@ -1956,14 +1956,14 @@ func (m *Operation) GetEndTime() string {
 type CreateClusterRequest struct {
 	// The Google Developers Console [project ID or project
 	// number](https://support.google.com/cloud/answer/6158840).
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// The name of the Google Compute Engine
 	// [zone](/compute/docs/zones#available) in which the cluster
 	// resides.
-	Zone string `protobuf:"bytes,2,opt,name=zone" json:"zone,omitempty"`
+	Zone string `protobuf:"bytes,2,opt,name=zone,proto3" json:"zone,omitempty"`
 	// A [cluster
 	// resource](/container-engine/reference/rest/v1/projects.zones.clusters)
-	Cluster              *Cluster `protobuf:"bytes,3,opt,name=cluster" json:"cluster,omitempty"`
+	Cluster              *Cluster `protobuf:"bytes,3,opt,name=cluster,proto3" json:"cluster,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1973,7 +1973,7 @@ func (m *CreateClusterRequest) Reset()         { *m = CreateClusterRequest{} }
 func (m *CreateClusterRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateClusterRequest) ProtoMessage()    {}
 func (*CreateClusterRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{15}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{15}
 }
 func (m *CreateClusterRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CreateClusterRequest.Unmarshal(m, b)
@@ -2018,13 +2018,13 @@ func (m *CreateClusterRequest) GetCluster() *Cluster {
 type GetClusterRequest struct {
 	// The Google Developers Console [project ID or project
 	// number](https://support.google.com/cloud/answer/6158840).
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// The name of the Google Compute Engine
 	// [zone](/compute/docs/zones#available) in which the cluster
 	// resides.
-	Zone string `protobuf:"bytes,2,opt,name=zone" json:"zone,omitempty"`
+	Zone string `protobuf:"bytes,2,opt,name=zone,proto3" json:"zone,omitempty"`
 	// The name of the cluster to retrieve.
-	ClusterId            string   `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId" json:"cluster_id,omitempty"`
+	ClusterId            string   `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -2034,7 +2034,7 @@ func (m *GetClusterRequest) Reset()         { *m = GetClusterRequest{} }
 func (m *GetClusterRequest) String() string { return proto.CompactTextString(m) }
 func (*GetClusterRequest) ProtoMessage()    {}
 func (*GetClusterRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{16}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{16}
 }
 func (m *GetClusterRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetClusterRequest.Unmarshal(m, b)
@@ -2079,15 +2079,15 @@ func (m *GetClusterRequest) GetClusterId() string {
 type UpdateClusterRequest struct {
 	// The Google Developers Console [project ID or project
 	// number](https://support.google.com/cloud/answer/6158840).
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// The name of the Google Compute Engine
 	// [zone](/compute/docs/zones#available) in which the cluster
 	// resides.
-	Zone string `protobuf:"bytes,2,opt,name=zone" json:"zone,omitempty"`
+	Zone string `protobuf:"bytes,2,opt,name=zone,proto3" json:"zone,omitempty"`
 	// The name of the cluster to upgrade.
-	ClusterId string `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId" json:"cluster_id,omitempty"`
+	ClusterId string `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
 	// A description of the update.
-	Update               *ClusterUpdate `protobuf:"bytes,4,opt,name=update" json:"update,omitempty"`
+	Update               *ClusterUpdate `protobuf:"bytes,4,opt,name=update,proto3" json:"update,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
 	XXX_unrecognized     []byte         `json:"-"`
 	XXX_sizecache        int32          `json:"-"`
@@ -2097,7 +2097,7 @@ func (m *UpdateClusterRequest) Reset()         { *m = UpdateClusterRequest{} }
 func (m *UpdateClusterRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateClusterRequest) ProtoMessage()    {}
 func (*UpdateClusterRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{17}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{17}
 }
 func (m *UpdateClusterRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UpdateClusterRequest.Unmarshal(m, b)
@@ -2149,21 +2149,21 @@ func (m *UpdateClusterRequest) GetUpdate() *ClusterUpdate {
 type UpdateNodePoolRequest struct {
 	// The Google Developers Console [project ID or project
 	// number](https://support.google.com/cloud/answer/6158840).
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// The name of the Google Compute Engine
 	// [zone](/compute/docs/zones#available) in which the cluster
 	// resides.
-	Zone string `protobuf:"bytes,2,opt,name=zone" json:"zone,omitempty"`
+	Zone string `protobuf:"bytes,2,opt,name=zone,proto3" json:"zone,omitempty"`
 	// The name of the cluster to upgrade.
-	ClusterId string `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId" json:"cluster_id,omitempty"`
+	ClusterId string `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
 	// The name of the node pool to upgrade.
-	NodePoolId string `protobuf:"bytes,4,opt,name=node_pool_id,json=nodePoolId" json:"node_pool_id,omitempty"`
+	NodePoolId string `protobuf:"bytes,4,opt,name=node_pool_id,json=nodePoolId,proto3" json:"node_pool_id,omitempty"`
 	// The Kubernetes version to change the nodes to (typically an
 	// upgrade). Use `-` to upgrade to the latest version supported by
 	// the server.
-	NodeVersion string `protobuf:"bytes,5,opt,name=node_version,json=nodeVersion" json:"node_version,omitempty"`
+	NodeVersion string `protobuf:"bytes,5,opt,name=node_version,json=nodeVersion,proto3" json:"node_version,omitempty"`
 	// The desired image type for the node pool.
-	ImageType            string   `protobuf:"bytes,6,opt,name=image_type,json=imageType" json:"image_type,omitempty"`
+	ImageType            string   `protobuf:"bytes,6,opt,name=image_type,json=imageType,proto3" json:"image_type,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -2173,7 +2173,7 @@ func (m *UpdateNodePoolRequest) Reset()         { *m = UpdateNodePoolRequest{} }
 func (m *UpdateNodePoolRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateNodePoolRequest) ProtoMessage()    {}
 func (*UpdateNodePoolRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{18}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{18}
 }
 func (m *UpdateNodePoolRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UpdateNodePoolRequest.Unmarshal(m, b)
@@ -2239,17 +2239,17 @@ func (m *UpdateNodePoolRequest) GetImageType() string {
 type SetNodePoolAutoscalingRequest struct {
 	// The Google Developers Console [project ID or project
 	// number](https://support.google.com/cloud/answer/6158840).
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// The name of the Google Compute Engine
 	// [zone](/compute/docs/zones#available) in which the cluster
 	// resides.
-	Zone string `protobuf:"bytes,2,opt,name=zone" json:"zone,omitempty"`
+	Zone string `protobuf:"bytes,2,opt,name=zone,proto3" json:"zone,omitempty"`
 	// The name of the cluster to upgrade.
-	ClusterId string `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId" json:"cluster_id,omitempty"`
+	ClusterId string `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
 	// The name of the node pool to upgrade.
-	NodePoolId string `protobuf:"bytes,4,opt,name=node_pool_id,json=nodePoolId" json:"node_pool_id,omitempty"`
+	NodePoolId string `protobuf:"bytes,4,opt,name=node_pool_id,json=nodePoolId,proto3" json:"node_pool_id,omitempty"`
 	// Autoscaling configuration for the node pool.
-	Autoscaling          *NodePoolAutoscaling `protobuf:"bytes,5,opt,name=autoscaling" json:"autoscaling,omitempty"`
+	Autoscaling          *NodePoolAutoscaling `protobuf:"bytes,5,opt,name=autoscaling,proto3" json:"autoscaling,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
 	XXX_unrecognized     []byte               `json:"-"`
 	XXX_sizecache        int32                `json:"-"`
@@ -2259,7 +2259,7 @@ func (m *SetNodePoolAutoscalingRequest) Reset()         { *m = SetNodePoolAutosc
 func (m *SetNodePoolAutoscalingRequest) String() string { return proto.CompactTextString(m) }
 func (*SetNodePoolAutoscalingRequest) ProtoMessage()    {}
 func (*SetNodePoolAutoscalingRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{19}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{19}
 }
 func (m *SetNodePoolAutoscalingRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SetNodePoolAutoscalingRequest.Unmarshal(m, b)
@@ -2318,19 +2318,19 @@ func (m *SetNodePoolAutoscalingRequest) GetAutoscaling() *NodePoolAutoscaling {
 type SetLoggingServiceRequest struct {
 	// The Google Developers Console [project ID or project
 	// number](https://support.google.com/cloud/answer/6158840).
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// The name of the Google Compute Engine
 	// [zone](/compute/docs/zones#available) in which the cluster
 	// resides.
-	Zone string `protobuf:"bytes,2,opt,name=zone" json:"zone,omitempty"`
+	Zone string `protobuf:"bytes,2,opt,name=zone,proto3" json:"zone,omitempty"`
 	// The name of the cluster to upgrade.
-	ClusterId string `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId" json:"cluster_id,omitempty"`
+	ClusterId string `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
 	// The logging service the cluster should use to write metrics.
 	// Currently available options:
 	//
 	// * "logging.googleapis.com" - the Google Cloud Logging service
 	// * "none" - no metrics will be exported from the cluster
-	LoggingService       string   `protobuf:"bytes,4,opt,name=logging_service,json=loggingService" json:"logging_service,omitempty"`
+	LoggingService       string   `protobuf:"bytes,4,opt,name=logging_service,json=loggingService,proto3" json:"logging_service,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -2340,7 +2340,7 @@ func (m *SetLoggingServiceRequest) Reset()         { *m = SetLoggingServiceReque
 func (m *SetLoggingServiceRequest) String() string { return proto.CompactTextString(m) }
 func (*SetLoggingServiceRequest) ProtoMessage()    {}
 func (*SetLoggingServiceRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{20}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{20}
 }
 func (m *SetLoggingServiceRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SetLoggingServiceRequest.Unmarshal(m, b)
@@ -2392,19 +2392,19 @@ func (m *SetLoggingServiceRequest) GetLoggingService() string {
 type SetMonitoringServiceRequest struct {
 	// The Google Developers Console [project ID or project
 	// number](https://support.google.com/cloud/answer/6158840).
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// The name of the Google Compute Engine
 	// [zone](/compute/docs/zones#available) in which the cluster
 	// resides.
-	Zone string `protobuf:"bytes,2,opt,name=zone" json:"zone,omitempty"`
+	Zone string `protobuf:"bytes,2,opt,name=zone,proto3" json:"zone,omitempty"`
 	// The name of the cluster to upgrade.
-	ClusterId string `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId" json:"cluster_id,omitempty"`
+	ClusterId string `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
 	// The monitoring service the cluster should use to write metrics.
 	// Currently available options:
 	//
 	// * "monitoring.googleapis.com" - the Google Cloud Monitoring service
 	// * "none" - no metrics will be exported from the cluster
-	MonitoringService    string   `protobuf:"bytes,4,opt,name=monitoring_service,json=monitoringService" json:"monitoring_service,omitempty"`
+	MonitoringService    string   `protobuf:"bytes,4,opt,name=monitoring_service,json=monitoringService,proto3" json:"monitoring_service,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -2414,7 +2414,7 @@ func (m *SetMonitoringServiceRequest) Reset()         { *m = SetMonitoringServic
 func (m *SetMonitoringServiceRequest) String() string { return proto.CompactTextString(m) }
 func (*SetMonitoringServiceRequest) ProtoMessage()    {}
 func (*SetMonitoringServiceRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{21}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{21}
 }
 func (m *SetMonitoringServiceRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SetMonitoringServiceRequest.Unmarshal(m, b)
@@ -2466,16 +2466,16 @@ func (m *SetMonitoringServiceRequest) GetMonitoringService() string {
 type SetAddonsConfigRequest struct {
 	// The Google Developers Console [project ID or project
 	// number](https://support.google.com/cloud/answer/6158840).
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// The name of the Google Compute Engine
 	// [zone](/compute/docs/zones#available) in which the cluster
 	// resides.
-	Zone string `protobuf:"bytes,2,opt,name=zone" json:"zone,omitempty"`
+	Zone string `protobuf:"bytes,2,opt,name=zone,proto3" json:"zone,omitempty"`
 	// The name of the cluster to upgrade.
-	ClusterId string `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId" json:"cluster_id,omitempty"`
+	ClusterId string `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
 	// The desired configurations for the various addons available to run in the
 	// cluster.
-	AddonsConfig         *AddonsConfig `protobuf:"bytes,4,opt,name=addons_config,json=addonsConfig" json:"addons_config,omitempty"`
+	AddonsConfig         *AddonsConfig `protobuf:"bytes,4,opt,name=addons_config,json=addonsConfig,proto3" json:"addons_config,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}      `json:"-"`
 	XXX_unrecognized     []byte        `json:"-"`
 	XXX_sizecache        int32         `json:"-"`
@@ -2485,7 +2485,7 @@ func (m *SetAddonsConfigRequest) Reset()         { *m = SetAddonsConfigRequest{}
 func (m *SetAddonsConfigRequest) String() string { return proto.CompactTextString(m) }
 func (*SetAddonsConfigRequest) ProtoMessage()    {}
 func (*SetAddonsConfigRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{22}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{22}
 }
 func (m *SetAddonsConfigRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SetAddonsConfigRequest.Unmarshal(m, b)
@@ -2537,13 +2537,13 @@ func (m *SetAddonsConfigRequest) GetAddonsConfig() *AddonsConfig {
 type SetLocationsRequest struct {
 	// The Google Developers Console [project ID or project
 	// number](https://support.google.com/cloud/answer/6158840).
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// The name of the Google Compute Engine
 	// [zone](/compute/docs/zones#available) in which the cluster
 	// resides.
-	Zone string `protobuf:"bytes,2,opt,name=zone" json:"zone,omitempty"`
+	Zone string `protobuf:"bytes,2,opt,name=zone,proto3" json:"zone,omitempty"`
 	// The name of the cluster to upgrade.
-	ClusterId string `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId" json:"cluster_id,omitempty"`
+	ClusterId string `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
 	// The desired list of Google Compute Engine
 	// [locations](/compute/docs/zones#available) in which the cluster's nodes
 	// should be located. Changing the locations a cluster is in will result
@@ -2551,7 +2551,7 @@ type SetLocationsRequest struct {
 	// whether locations are being added or removed.
 	//
 	// This list must always include the cluster's primary zone.
-	Locations            []string `protobuf:"bytes,4,rep,name=locations" json:"locations,omitempty"`
+	Locations            []string `protobuf:"bytes,4,rep,name=locations,proto3" json:"locations,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -2561,7 +2561,7 @@ func (m *SetLocationsRequest) Reset()         { *m = SetLocationsRequest{} }
 func (m *SetLocationsRequest) String() string { return proto.CompactTextString(m) }
 func (*SetLocationsRequest) ProtoMessage()    {}
 func (*SetLocationsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{23}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{23}
 }
 func (m *SetLocationsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SetLocationsRequest.Unmarshal(m, b)
@@ -2613,17 +2613,17 @@ func (m *SetLocationsRequest) GetLocations() []string {
 type UpdateMasterRequest struct {
 	// The Google Developers Console [project ID or project
 	// number](https://support.google.com/cloud/answer/6158840).
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// The name of the Google Compute Engine
 	// [zone](/compute/docs/zones#available) in which the cluster
 	// resides.
-	Zone string `protobuf:"bytes,2,opt,name=zone" json:"zone,omitempty"`
+	Zone string `protobuf:"bytes,2,opt,name=zone,proto3" json:"zone,omitempty"`
 	// The name of the cluster to upgrade.
-	ClusterId string `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId" json:"cluster_id,omitempty"`
+	ClusterId string `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
 	// The Kubernetes version to change the master to. The only valid value is the
 	// latest supported version. Use "-" to have the server automatically select
 	// the latest version.
-	MasterVersion        string   `protobuf:"bytes,4,opt,name=master_version,json=masterVersion" json:"master_version,omitempty"`
+	MasterVersion        string   `protobuf:"bytes,4,opt,name=master_version,json=masterVersion,proto3" json:"master_version,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -2633,7 +2633,7 @@ func (m *UpdateMasterRequest) Reset()         { *m = UpdateMasterRequest{} }
 func (m *UpdateMasterRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateMasterRequest) ProtoMessage()    {}
 func (*UpdateMasterRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{24}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{24}
 }
 func (m *UpdateMasterRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UpdateMasterRequest.Unmarshal(m, b)
@@ -2685,17 +2685,17 @@ func (m *UpdateMasterRequest) GetMasterVersion() string {
 type SetMasterAuthRequest struct {
 	// The Google Developers Console [project ID or project
 	// number](https://support.google.com/cloud/answer/6158840).
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// The name of the Google Compute Engine
 	// [zone](/compute/docs/zones#available) in which the cluster
 	// resides.
-	Zone string `protobuf:"bytes,2,opt,name=zone" json:"zone,omitempty"`
+	Zone string `protobuf:"bytes,2,opt,name=zone,proto3" json:"zone,omitempty"`
 	// The name of the cluster to upgrade.
-	ClusterId string `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId" json:"cluster_id,omitempty"`
+	ClusterId string `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
 	// The exact form of action to be taken on the master auth.
-	Action SetMasterAuthRequest_Action `protobuf:"varint,4,opt,name=action,enum=google.container.v1.SetMasterAuthRequest_Action" json:"action,omitempty"`
+	Action SetMasterAuthRequest_Action `protobuf:"varint,4,opt,name=action,proto3,enum=google.container.v1.SetMasterAuthRequest_Action" json:"action,omitempty"`
 	// A description of the update.
-	Update               *MasterAuth `protobuf:"bytes,5,opt,name=update" json:"update,omitempty"`
+	Update               *MasterAuth `protobuf:"bytes,5,opt,name=update,proto3" json:"update,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
 	XXX_unrecognized     []byte      `json:"-"`
 	XXX_sizecache        int32       `json:"-"`
@@ -2705,7 +2705,7 @@ func (m *SetMasterAuthRequest) Reset()         { *m = SetMasterAuthRequest{} }
 func (m *SetMasterAuthRequest) String() string { return proto.CompactTextString(m) }
 func (*SetMasterAuthRequest) ProtoMessage()    {}
 func (*SetMasterAuthRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{25}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{25}
 }
 func (m *SetMasterAuthRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SetMasterAuthRequest.Unmarshal(m, b)
@@ -2764,13 +2764,13 @@ func (m *SetMasterAuthRequest) GetUpdate() *MasterAuth {
 type DeleteClusterRequest struct {
 	// The Google Developers Console [project ID or project
 	// number](https://support.google.com/cloud/answer/6158840).
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// The name of the Google Compute Engine
 	// [zone](/compute/docs/zones#available) in which the cluster
 	// resides.
-	Zone string `protobuf:"bytes,2,opt,name=zone" json:"zone,omitempty"`
+	Zone string `protobuf:"bytes,2,opt,name=zone,proto3" json:"zone,omitempty"`
 	// The name of the cluster to delete.
-	ClusterId            string   `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId" json:"cluster_id,omitempty"`
+	ClusterId            string   `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -2780,7 +2780,7 @@ func (m *DeleteClusterRequest) Reset()         { *m = DeleteClusterRequest{} }
 func (m *DeleteClusterRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteClusterRequest) ProtoMessage()    {}
 func (*DeleteClusterRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{26}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{26}
 }
 func (m *DeleteClusterRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeleteClusterRequest.Unmarshal(m, b)
@@ -2825,11 +2825,11 @@ func (m *DeleteClusterRequest) GetClusterId() string {
 type ListClustersRequest struct {
 	// The Google Developers Console [project ID or project
 	// number](https://support.google.com/cloud/answer/6158840).
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// The name of the Google Compute Engine
 	// [zone](/compute/docs/zones#available) in which the cluster
 	// resides, or "-" for all zones.
-	Zone                 string   `protobuf:"bytes,2,opt,name=zone" json:"zone,omitempty"`
+	Zone                 string   `protobuf:"bytes,2,opt,name=zone,proto3" json:"zone,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -2839,7 +2839,7 @@ func (m *ListClustersRequest) Reset()         { *m = ListClustersRequest{} }
 func (m *ListClustersRequest) String() string { return proto.CompactTextString(m) }
 func (*ListClustersRequest) ProtoMessage()    {}
 func (*ListClustersRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{27}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{27}
 }
 func (m *ListClustersRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListClustersRequest.Unmarshal(m, b)
@@ -2877,10 +2877,10 @@ func (m *ListClustersRequest) GetZone() string {
 type ListClustersResponse struct {
 	// A list of clusters in the project in the specified zone, or
 	// across all ones.
-	Clusters []*Cluster `protobuf:"bytes,1,rep,name=clusters" json:"clusters,omitempty"`
+	Clusters []*Cluster `protobuf:"bytes,1,rep,name=clusters,proto3" json:"clusters,omitempty"`
 	// If any zones are listed here, the list of clusters returned
 	// may be missing those zones.
-	MissingZones         []string `protobuf:"bytes,2,rep,name=missing_zones,json=missingZones" json:"missing_zones,omitempty"`
+	MissingZones         []string `protobuf:"bytes,2,rep,name=missing_zones,json=missingZones,proto3" json:"missing_zones,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -2890,7 +2890,7 @@ func (m *ListClustersResponse) Reset()         { *m = ListClustersResponse{} }
 func (m *ListClustersResponse) String() string { return proto.CompactTextString(m) }
 func (*ListClustersResponse) ProtoMessage()    {}
 func (*ListClustersResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{28}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{28}
 }
 func (m *ListClustersResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListClustersResponse.Unmarshal(m, b)
@@ -2928,13 +2928,13 @@ func (m *ListClustersResponse) GetMissingZones() []string {
 type GetOperationRequest struct {
 	// The Google Developers Console [project ID or project
 	// number](https://support.google.com/cloud/answer/6158840).
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// The name of the Google Compute Engine
 	// [zone](/compute/docs/zones#available) in which the cluster
 	// resides.
-	Zone string `protobuf:"bytes,2,opt,name=zone" json:"zone,omitempty"`
+	Zone string `protobuf:"bytes,2,opt,name=zone,proto3" json:"zone,omitempty"`
 	// The server-assigned `name` of the operation.
-	OperationId          string   `protobuf:"bytes,3,opt,name=operation_id,json=operationId" json:"operation_id,omitempty"`
+	OperationId          string   `protobuf:"bytes,3,opt,name=operation_id,json=operationId,proto3" json:"operation_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -2944,7 +2944,7 @@ func (m *GetOperationRequest) Reset()         { *m = GetOperationRequest{} }
 func (m *GetOperationRequest) String() string { return proto.CompactTextString(m) }
 func (*GetOperationRequest) ProtoMessage()    {}
 func (*GetOperationRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{29}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{29}
 }
 func (m *GetOperationRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetOperationRequest.Unmarshal(m, b)
@@ -2989,10 +2989,10 @@ func (m *GetOperationRequest) GetOperationId() string {
 type ListOperationsRequest struct {
 	// The Google Developers Console [project ID or project
 	// number](https://support.google.com/cloud/answer/6158840).
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// The name of the Google Compute Engine [zone](/compute/docs/zones#available)
 	// to return operations for, or `-` for all zones.
-	Zone                 string   `protobuf:"bytes,2,opt,name=zone" json:"zone,omitempty"`
+	Zone                 string   `protobuf:"bytes,2,opt,name=zone,proto3" json:"zone,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -3002,7 +3002,7 @@ func (m *ListOperationsRequest) Reset()         { *m = ListOperationsRequest{} }
 func (m *ListOperationsRequest) String() string { return proto.CompactTextString(m) }
 func (*ListOperationsRequest) ProtoMessage()    {}
 func (*ListOperationsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{30}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{30}
 }
 func (m *ListOperationsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListOperationsRequest.Unmarshal(m, b)
@@ -3040,12 +3040,12 @@ func (m *ListOperationsRequest) GetZone() string {
 type CancelOperationRequest struct {
 	// The Google Developers Console [project ID or project
 	// number](https://support.google.com/cloud/answer/6158840).
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// The name of the Google Compute Engine
 	// [zone](/compute/docs/zones#available) in which the operation resides.
-	Zone string `protobuf:"bytes,2,opt,name=zone" json:"zone,omitempty"`
+	Zone string `protobuf:"bytes,2,opt,name=zone,proto3" json:"zone,omitempty"`
 	// The server-assigned `name` of the operation.
-	OperationId          string   `protobuf:"bytes,3,opt,name=operation_id,json=operationId" json:"operation_id,omitempty"`
+	OperationId          string   `protobuf:"bytes,3,opt,name=operation_id,json=operationId,proto3" json:"operation_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -3055,7 +3055,7 @@ func (m *CancelOperationRequest) Reset()         { *m = CancelOperationRequest{}
 func (m *CancelOperationRequest) String() string { return proto.CompactTextString(m) }
 func (*CancelOperationRequest) ProtoMessage()    {}
 func (*CancelOperationRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{31}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{31}
 }
 func (m *CancelOperationRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CancelOperationRequest.Unmarshal(m, b)
@@ -3099,10 +3099,10 @@ func (m *CancelOperationRequest) GetOperationId() string {
 // ListOperationsResponse is the result of ListOperationsRequest.
 type ListOperationsResponse struct {
 	// A list of operations in the project in the specified zone.
-	Operations []*Operation `protobuf:"bytes,1,rep,name=operations" json:"operations,omitempty"`
+	Operations []*Operation `protobuf:"bytes,1,rep,name=operations,proto3" json:"operations,omitempty"`
 	// If any zones are listed here, the list of operations returned
 	// may be missing the operations from those zones.
-	MissingZones         []string `protobuf:"bytes,2,rep,name=missing_zones,json=missingZones" json:"missing_zones,omitempty"`
+	MissingZones         []string `protobuf:"bytes,2,rep,name=missing_zones,json=missingZones,proto3" json:"missing_zones,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -3112,7 +3112,7 @@ func (m *ListOperationsResponse) Reset()         { *m = ListOperationsResponse{}
 func (m *ListOperationsResponse) String() string { return proto.CompactTextString(m) }
 func (*ListOperationsResponse) ProtoMessage()    {}
 func (*ListOperationsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{32}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{32}
 }
 func (m *ListOperationsResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListOperationsResponse.Unmarshal(m, b)
@@ -3150,10 +3150,10 @@ func (m *ListOperationsResponse) GetMissingZones() []string {
 type GetServerConfigRequest struct {
 	// The Google Developers Console [project ID or project
 	// number](https://support.google.com/cloud/answer/6158840).
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// The name of the Google Compute Engine [zone](/compute/docs/zones#available)
 	// to return operations for.
-	Zone                 string   `protobuf:"bytes,2,opt,name=zone" json:"zone,omitempty"`
+	Zone                 string   `protobuf:"bytes,2,opt,name=zone,proto3" json:"zone,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -3163,7 +3163,7 @@ func (m *GetServerConfigRequest) Reset()         { *m = GetServerConfigRequest{}
 func (m *GetServerConfigRequest) String() string { return proto.CompactTextString(m) }
 func (*GetServerConfigRequest) ProtoMessage()    {}
 func (*GetServerConfigRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{33}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{33}
 }
 func (m *GetServerConfigRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetServerConfigRequest.Unmarshal(m, b)
@@ -3200,15 +3200,15 @@ func (m *GetServerConfigRequest) GetZone() string {
 // Container Engine service configuration.
 type ServerConfig struct {
 	// Version of Kubernetes the service deploys by default.
-	DefaultClusterVersion string `protobuf:"bytes,1,opt,name=default_cluster_version,json=defaultClusterVersion" json:"default_cluster_version,omitempty"`
+	DefaultClusterVersion string `protobuf:"bytes,1,opt,name=default_cluster_version,json=defaultClusterVersion,proto3" json:"default_cluster_version,omitempty"`
 	// List of valid node upgrade target versions.
-	ValidNodeVersions []string `protobuf:"bytes,3,rep,name=valid_node_versions,json=validNodeVersions" json:"valid_node_versions,omitempty"`
+	ValidNodeVersions []string `protobuf:"bytes,3,rep,name=valid_node_versions,json=validNodeVersions,proto3" json:"valid_node_versions,omitempty"`
 	// Default image type.
-	DefaultImageType string `protobuf:"bytes,4,opt,name=default_image_type,json=defaultImageType" json:"default_image_type,omitempty"`
+	DefaultImageType string `protobuf:"bytes,4,opt,name=default_image_type,json=defaultImageType,proto3" json:"default_image_type,omitempty"`
 	// List of valid image types.
-	ValidImageTypes []string `protobuf:"bytes,5,rep,name=valid_image_types,json=validImageTypes" json:"valid_image_types,omitempty"`
+	ValidImageTypes []string `protobuf:"bytes,5,rep,name=valid_image_types,json=validImageTypes,proto3" json:"valid_image_types,omitempty"`
 	// List of valid master versions.
-	ValidMasterVersions  []string `protobuf:"bytes,6,rep,name=valid_master_versions,json=validMasterVersions" json:"valid_master_versions,omitempty"`
+	ValidMasterVersions  []string `protobuf:"bytes,6,rep,name=valid_master_versions,json=validMasterVersions,proto3" json:"valid_master_versions,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -3218,7 +3218,7 @@ func (m *ServerConfig) Reset()         { *m = ServerConfig{} }
 func (m *ServerConfig) String() string { return proto.CompactTextString(m) }
 func (*ServerConfig) ProtoMessage()    {}
 func (*ServerConfig) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{34}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{34}
 }
 func (m *ServerConfig) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ServerConfig.Unmarshal(m, b)
@@ -3277,15 +3277,15 @@ func (m *ServerConfig) GetValidMasterVersions() []string {
 type CreateNodePoolRequest struct {
 	// The Google Developers Console [project ID or project
 	// number](https://developers.google.com/console/help/new/#projectnumber).
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// The name of the Google Compute Engine
 	// [zone](/compute/docs/zones#available) in which the cluster
 	// resides.
-	Zone string `protobuf:"bytes,2,opt,name=zone" json:"zone,omitempty"`
+	Zone string `protobuf:"bytes,2,opt,name=zone,proto3" json:"zone,omitempty"`
 	// The name of the cluster.
-	ClusterId string `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId" json:"cluster_id,omitempty"`
+	ClusterId string `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
 	// The node pool to create.
-	NodePool             *NodePool `protobuf:"bytes,4,opt,name=node_pool,json=nodePool" json:"node_pool,omitempty"`
+	NodePool             *NodePool `protobuf:"bytes,4,opt,name=node_pool,json=nodePool,proto3" json:"node_pool,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
 	XXX_unrecognized     []byte    `json:"-"`
 	XXX_sizecache        int32     `json:"-"`
@@ -3295,7 +3295,7 @@ func (m *CreateNodePoolRequest) Reset()         { *m = CreateNodePoolRequest{} }
 func (m *CreateNodePoolRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateNodePoolRequest) ProtoMessage()    {}
 func (*CreateNodePoolRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{35}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{35}
 }
 func (m *CreateNodePoolRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CreateNodePoolRequest.Unmarshal(m, b)
@@ -3347,15 +3347,15 @@ func (m *CreateNodePoolRequest) GetNodePool() *NodePool {
 type DeleteNodePoolRequest struct {
 	// The Google Developers Console [project ID or project
 	// number](https://developers.google.com/console/help/new/#projectnumber).
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// The name of the Google Compute Engine
 	// [zone](/compute/docs/zones#available) in which the cluster
 	// resides.
-	Zone string `protobuf:"bytes,2,opt,name=zone" json:"zone,omitempty"`
+	Zone string `protobuf:"bytes,2,opt,name=zone,proto3" json:"zone,omitempty"`
 	// The name of the cluster.
-	ClusterId string `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId" json:"cluster_id,omitempty"`
+	ClusterId string `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
 	// The name of the node pool to delete.
-	NodePoolId           string   `protobuf:"bytes,4,opt,name=node_pool_id,json=nodePoolId" json:"node_pool_id,omitempty"`
+	NodePoolId           string   `protobuf:"bytes,4,opt,name=node_pool_id,json=nodePoolId,proto3" json:"node_pool_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -3365,7 +3365,7 @@ func (m *DeleteNodePoolRequest) Reset()         { *m = DeleteNodePoolRequest{} }
 func (m *DeleteNodePoolRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteNodePoolRequest) ProtoMessage()    {}
 func (*DeleteNodePoolRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{36}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{36}
 }
 func (m *DeleteNodePoolRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeleteNodePoolRequest.Unmarshal(m, b)
@@ -3417,13 +3417,13 @@ func (m *DeleteNodePoolRequest) GetNodePoolId() string {
 type ListNodePoolsRequest struct {
 	// The Google Developers Console [project ID or project
 	// number](https://developers.google.com/console/help/new/#projectnumber).
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// The name of the Google Compute Engine
 	// [zone](/compute/docs/zones#available) in which the cluster
 	// resides.
-	Zone string `protobuf:"bytes,2,opt,name=zone" json:"zone,omitempty"`
+	Zone string `protobuf:"bytes,2,opt,name=zone,proto3" json:"zone,omitempty"`
 	// The name of the cluster.
-	ClusterId            string   `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId" json:"cluster_id,omitempty"`
+	ClusterId            string   `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -3433,7 +3433,7 @@ func (m *ListNodePoolsRequest) Reset()         { *m = ListNodePoolsRequest{} }
 func (m *ListNodePoolsRequest) String() string { return proto.CompactTextString(m) }
 func (*ListNodePoolsRequest) ProtoMessage()    {}
 func (*ListNodePoolsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{37}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{37}
 }
 func (m *ListNodePoolsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListNodePoolsRequest.Unmarshal(m, b)
@@ -3478,15 +3478,15 @@ func (m *ListNodePoolsRequest) GetClusterId() string {
 type GetNodePoolRequest struct {
 	// The Google Developers Console [project ID or project
 	// number](https://developers.google.com/console/help/new/#projectnumber).
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// The name of the Google Compute Engine
 	// [zone](/compute/docs/zones#available) in which the cluster
 	// resides.
-	Zone string `protobuf:"bytes,2,opt,name=zone" json:"zone,omitempty"`
+	Zone string `protobuf:"bytes,2,opt,name=zone,proto3" json:"zone,omitempty"`
 	// The name of the cluster.
-	ClusterId string `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId" json:"cluster_id,omitempty"`
+	ClusterId string `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
 	// The name of the node pool.
-	NodePoolId           string   `protobuf:"bytes,4,opt,name=node_pool_id,json=nodePoolId" json:"node_pool_id,omitempty"`
+	NodePoolId           string   `protobuf:"bytes,4,opt,name=node_pool_id,json=nodePoolId,proto3" json:"node_pool_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -3496,7 +3496,7 @@ func (m *GetNodePoolRequest) Reset()         { *m = GetNodePoolRequest{} }
 func (m *GetNodePoolRequest) String() string { return proto.CompactTextString(m) }
 func (*GetNodePoolRequest) ProtoMessage()    {}
 func (*GetNodePoolRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{38}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{38}
 }
 func (m *GetNodePoolRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetNodePoolRequest.Unmarshal(m, b)
@@ -3552,32 +3552,32 @@ func (m *GetNodePoolRequest) GetNodePoolId() string {
 // the workload.
 type NodePool struct {
 	// The name of the node pool.
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// The node configuration of the pool.
-	Config *NodeConfig `protobuf:"bytes,2,opt,name=config" json:"config,omitempty"`
+	Config *NodeConfig `protobuf:"bytes,2,opt,name=config,proto3" json:"config,omitempty"`
 	// The initial node count for the pool. You must ensure that your
 	// Compute Engine <a href="/compute/docs/resource-quotas">resource quota</a>
 	// is sufficient for this number of instances. You must also have available
 	// firewall and routes quota.
-	InitialNodeCount int32 `protobuf:"varint,3,opt,name=initial_node_count,json=initialNodeCount" json:"initial_node_count,omitempty"`
+	InitialNodeCount int32 `protobuf:"varint,3,opt,name=initial_node_count,json=initialNodeCount,proto3" json:"initial_node_count,omitempty"`
 	// [Output only] Server-defined URL for the resource.
-	SelfLink string `protobuf:"bytes,100,opt,name=self_link,json=selfLink" json:"self_link,omitempty"`
+	SelfLink string `protobuf:"bytes,100,opt,name=self_link,json=selfLink,proto3" json:"self_link,omitempty"`
 	// The version of the Kubernetes of this node.
-	Version string `protobuf:"bytes,101,opt,name=version" json:"version,omitempty"`
+	Version string `protobuf:"bytes,101,opt,name=version,proto3" json:"version,omitempty"`
 	// [Output only] The resource URLs of the [managed instance
 	// groups](/compute/docs/instance-groups/creating-groups-of-managed-instances)
 	// associated with this node pool.
-	InstanceGroupUrls []string `protobuf:"bytes,102,rep,name=instance_group_urls,json=instanceGroupUrls" json:"instance_group_urls,omitempty"`
+	InstanceGroupUrls []string `protobuf:"bytes,102,rep,name=instance_group_urls,json=instanceGroupUrls,proto3" json:"instance_group_urls,omitempty"`
 	// [Output only] The status of the nodes in this pool instance.
-	Status NodePool_Status `protobuf:"varint,103,opt,name=status,enum=google.container.v1.NodePool_Status" json:"status,omitempty"`
+	Status NodePool_Status `protobuf:"varint,103,opt,name=status,proto3,enum=google.container.v1.NodePool_Status" json:"status,omitempty"`
 	// [Output only] Additional information about the current status of this
 	// node pool instance, if available.
-	StatusMessage string `protobuf:"bytes,104,opt,name=status_message,json=statusMessage" json:"status_message,omitempty"`
+	StatusMessage string `protobuf:"bytes,104,opt,name=status_message,json=statusMessage,proto3" json:"status_message,omitempty"`
 	// Autoscaler configuration for this NodePool. Autoscaler is enabled
 	// only if a valid configuration is present.
-	Autoscaling *NodePoolAutoscaling `protobuf:"bytes,4,opt,name=autoscaling" json:"autoscaling,omitempty"`
+	Autoscaling *NodePoolAutoscaling `protobuf:"bytes,4,opt,name=autoscaling,proto3" json:"autoscaling,omitempty"`
 	// NodeManagement configuration for this NodePool.
-	Management           *NodeManagement `protobuf:"bytes,5,opt,name=management" json:"management,omitempty"`
+	Management           *NodeManagement `protobuf:"bytes,5,opt,name=management,proto3" json:"management,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
 	XXX_unrecognized     []byte          `json:"-"`
 	XXX_sizecache        int32           `json:"-"`
@@ -3587,7 +3587,7 @@ func (m *NodePool) Reset()         { *m = NodePool{} }
 func (m *NodePool) String() string { return proto.CompactTextString(m) }
 func (*NodePool) ProtoMessage()    {}
 func (*NodePool) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{39}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{39}
 }
 func (m *NodePool) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_NodePool.Unmarshal(m, b)
@@ -3683,14 +3683,14 @@ type NodeManagement struct {
 	// A flag that specifies whether node auto-upgrade is enabled for the node
 	// pool. If enabled, node auto-upgrade helps keep the nodes in your node pool
 	// up to date with the latest release version of Kubernetes.
-	AutoUpgrade bool `protobuf:"varint,1,opt,name=auto_upgrade,json=autoUpgrade" json:"auto_upgrade,omitempty"`
+	AutoUpgrade bool `protobuf:"varint,1,opt,name=auto_upgrade,json=autoUpgrade,proto3" json:"auto_upgrade,omitempty"`
 	// A flag that specifies whether the node auto-repair is enabled for the node
 	// pool. If enabled, the nodes in this node pool will be monitored and, if
 	// they fail health checks too many times, an automatic repair action will be
 	// triggered.
-	AutoRepair bool `protobuf:"varint,2,opt,name=auto_repair,json=autoRepair" json:"auto_repair,omitempty"`
+	AutoRepair bool `protobuf:"varint,2,opt,name=auto_repair,json=autoRepair,proto3" json:"auto_repair,omitempty"`
 	// Specifies the Auto Upgrade knobs for the node pool.
-	UpgradeOptions       *AutoUpgradeOptions `protobuf:"bytes,10,opt,name=upgrade_options,json=upgradeOptions" json:"upgrade_options,omitempty"`
+	UpgradeOptions       *AutoUpgradeOptions `protobuf:"bytes,10,opt,name=upgrade_options,json=upgradeOptions,proto3" json:"upgrade_options,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}            `json:"-"`
 	XXX_unrecognized     []byte              `json:"-"`
 	XXX_sizecache        int32               `json:"-"`
@@ -3700,7 +3700,7 @@ func (m *NodeManagement) Reset()         { *m = NodeManagement{} }
 func (m *NodeManagement) String() string { return proto.CompactTextString(m) }
 func (*NodeManagement) ProtoMessage()    {}
 func (*NodeManagement) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{40}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{40}
 }
 func (m *NodeManagement) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_NodeManagement.Unmarshal(m, b)
@@ -3747,10 +3747,10 @@ type AutoUpgradeOptions struct {
 	// [Output only] This field is set when upgrades are about to commence
 	// with the approximate start time for the upgrades, in
 	// [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format.
-	AutoUpgradeStartTime string `protobuf:"bytes,1,opt,name=auto_upgrade_start_time,json=autoUpgradeStartTime" json:"auto_upgrade_start_time,omitempty"`
+	AutoUpgradeStartTime string `protobuf:"bytes,1,opt,name=auto_upgrade_start_time,json=autoUpgradeStartTime,proto3" json:"auto_upgrade_start_time,omitempty"`
 	// [Output only] This field is set when upgrades are about to commence
 	// with the description of the upgrade.
-	Description          string   `protobuf:"bytes,2,opt,name=description" json:"description,omitempty"`
+	Description          string   `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -3760,7 +3760,7 @@ func (m *AutoUpgradeOptions) Reset()         { *m = AutoUpgradeOptions{} }
 func (m *AutoUpgradeOptions) String() string { return proto.CompactTextString(m) }
 func (*AutoUpgradeOptions) ProtoMessage()    {}
 func (*AutoUpgradeOptions) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{41}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{41}
 }
 func (m *AutoUpgradeOptions) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_AutoUpgradeOptions.Unmarshal(m, b)
@@ -3797,7 +3797,7 @@ func (m *AutoUpgradeOptions) GetDescription() string {
 // MaintenancePolicy defines the maintenance policy to be used for the cluster.
 type MaintenancePolicy struct {
 	// Specifies the maintenance window in which maintenance may be performed.
-	Window               *MaintenanceWindow `protobuf:"bytes,1,opt,name=window" json:"window,omitempty"`
+	Window               *MaintenanceWindow `protobuf:"bytes,1,opt,name=window,proto3" json:"window,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}           `json:"-"`
 	XXX_unrecognized     []byte             `json:"-"`
 	XXX_sizecache        int32              `json:"-"`
@@ -3807,7 +3807,7 @@ func (m *MaintenancePolicy) Reset()         { *m = MaintenancePolicy{} }
 func (m *MaintenancePolicy) String() string { return proto.CompactTextString(m) }
 func (*MaintenancePolicy) ProtoMessage()    {}
 func (*MaintenancePolicy) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{42}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{42}
 }
 func (m *MaintenancePolicy) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_MaintenancePolicy.Unmarshal(m, b)
@@ -3848,7 +3848,7 @@ func (m *MaintenanceWindow) Reset()         { *m = MaintenanceWindow{} }
 func (m *MaintenanceWindow) String() string { return proto.CompactTextString(m) }
 func (*MaintenanceWindow) ProtoMessage()    {}
 func (*MaintenanceWindow) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{43}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{43}
 }
 func (m *MaintenanceWindow) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_MaintenanceWindow.Unmarshal(m, b)
@@ -3873,7 +3873,7 @@ type isMaintenanceWindow_Policy interface {
 }
 
 type MaintenanceWindow_DailyMaintenanceWindow struct {
-	DailyMaintenanceWindow *DailyMaintenanceWindow `protobuf:"bytes,2,opt,name=daily_maintenance_window,json=dailyMaintenanceWindow,oneof"`
+	DailyMaintenanceWindow *DailyMaintenanceWindow `protobuf:"bytes,2,opt,name=daily_maintenance_window,json=dailyMaintenanceWindow,proto3,oneof"`
 }
 
 func (*MaintenanceWindow_DailyMaintenanceWindow) isMaintenanceWindow_Policy() {}
@@ -3952,12 +3952,12 @@ type DailyMaintenanceWindow struct {
 	// Time within the maintenance window to start the maintenance operations.
 	// Time format should be in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt)
 	// format "HH:MM”, where HH : [00-23] and MM : [00-59] GMT.
-	StartTime string `protobuf:"bytes,2,opt,name=start_time,json=startTime" json:"start_time,omitempty"`
+	StartTime string `protobuf:"bytes,2,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
 	// [Output only] Duration of the time window, automatically chosen to be
 	// smallest possible in the given scenario.
 	// Duration will be in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt)
 	// format "PTnHnMnS".
-	Duration             string   `protobuf:"bytes,3,opt,name=duration" json:"duration,omitempty"`
+	Duration             string   `protobuf:"bytes,3,opt,name=duration,proto3" json:"duration,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -3967,7 +3967,7 @@ func (m *DailyMaintenanceWindow) Reset()         { *m = DailyMaintenanceWindow{}
 func (m *DailyMaintenanceWindow) String() string { return proto.CompactTextString(m) }
 func (*DailyMaintenanceWindow) ProtoMessage()    {}
 func (*DailyMaintenanceWindow) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{44}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{44}
 }
 func (m *DailyMaintenanceWindow) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DailyMaintenanceWindow.Unmarshal(m, b)
@@ -4006,17 +4006,17 @@ func (m *DailyMaintenanceWindow) GetDuration() string {
 type SetNodePoolManagementRequest struct {
 	// The Google Developers Console [project ID or project
 	// number](https://support.google.com/cloud/answer/6158840).
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// The name of the Google Compute Engine
 	// [zone](/compute/docs/zones#available) in which the cluster
 	// resides.
-	Zone string `protobuf:"bytes,2,opt,name=zone" json:"zone,omitempty"`
+	Zone string `protobuf:"bytes,2,opt,name=zone,proto3" json:"zone,omitempty"`
 	// The name of the cluster to update.
-	ClusterId string `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId" json:"cluster_id,omitempty"`
+	ClusterId string `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
 	// The name of the node pool to update.
-	NodePoolId string `protobuf:"bytes,4,opt,name=node_pool_id,json=nodePoolId" json:"node_pool_id,omitempty"`
+	NodePoolId string `protobuf:"bytes,4,opt,name=node_pool_id,json=nodePoolId,proto3" json:"node_pool_id,omitempty"`
 	// NodeManagement configuration for the node pool.
-	Management           *NodeManagement `protobuf:"bytes,5,opt,name=management" json:"management,omitempty"`
+	Management           *NodeManagement `protobuf:"bytes,5,opt,name=management,proto3" json:"management,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
 	XXX_unrecognized     []byte          `json:"-"`
 	XXX_sizecache        int32           `json:"-"`
@@ -4026,7 +4026,7 @@ func (m *SetNodePoolManagementRequest) Reset()         { *m = SetNodePoolManagem
 func (m *SetNodePoolManagementRequest) String() string { return proto.CompactTextString(m) }
 func (*SetNodePoolManagementRequest) ProtoMessage()    {}
 func (*SetNodePoolManagementRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{45}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{45}
 }
 func (m *SetNodePoolManagementRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SetNodePoolManagementRequest.Unmarshal(m, b)
@@ -4086,17 +4086,17 @@ func (m *SetNodePoolManagementRequest) GetManagement() *NodeManagement {
 type SetNodePoolSizeRequest struct {
 	// The Google Developers Console [project ID or project
 	// number](https://support.google.com/cloud/answer/6158840).
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// The name of the Google Compute Engine
 	// [zone](/compute/docs/zones#available) in which the cluster
 	// resides.
-	Zone string `protobuf:"bytes,2,opt,name=zone" json:"zone,omitempty"`
+	Zone string `protobuf:"bytes,2,opt,name=zone,proto3" json:"zone,omitempty"`
 	// The name of the cluster to update.
-	ClusterId string `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId" json:"cluster_id,omitempty"`
+	ClusterId string `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
 	// The name of the node pool to update.
-	NodePoolId string `protobuf:"bytes,4,opt,name=node_pool_id,json=nodePoolId" json:"node_pool_id,omitempty"`
+	NodePoolId string `protobuf:"bytes,4,opt,name=node_pool_id,json=nodePoolId,proto3" json:"node_pool_id,omitempty"`
 	// The desired node count for the pool.
-	NodeCount            int32    `protobuf:"varint,5,opt,name=node_count,json=nodeCount" json:"node_count,omitempty"`
+	NodeCount            int32    `protobuf:"varint,5,opt,name=node_count,json=nodeCount,proto3" json:"node_count,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -4106,7 +4106,7 @@ func (m *SetNodePoolSizeRequest) Reset()         { *m = SetNodePoolSizeRequest{}
 func (m *SetNodePoolSizeRequest) String() string { return proto.CompactTextString(m) }
 func (*SetNodePoolSizeRequest) ProtoMessage()    {}
 func (*SetNodePoolSizeRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{46}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{46}
 }
 func (m *SetNodePoolSizeRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SetNodePoolSizeRequest.Unmarshal(m, b)
@@ -4167,15 +4167,15 @@ func (m *SetNodePoolSizeRequest) GetNodeCount() int32 {
 type RollbackNodePoolUpgradeRequest struct {
 	// The Google Developers Console [project ID or project
 	// number](https://support.google.com/cloud/answer/6158840).
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// The name of the Google Compute Engine
 	// [zone](/compute/docs/zones#available) in which the cluster
 	// resides.
-	Zone string `protobuf:"bytes,2,opt,name=zone" json:"zone,omitempty"`
+	Zone string `protobuf:"bytes,2,opt,name=zone,proto3" json:"zone,omitempty"`
 	// The name of the cluster to rollback.
-	ClusterId string `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId" json:"cluster_id,omitempty"`
+	ClusterId string `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
 	// The name of the node pool to rollback.
-	NodePoolId           string   `protobuf:"bytes,4,opt,name=node_pool_id,json=nodePoolId" json:"node_pool_id,omitempty"`
+	NodePoolId           string   `protobuf:"bytes,4,opt,name=node_pool_id,json=nodePoolId,proto3" json:"node_pool_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -4185,7 +4185,7 @@ func (m *RollbackNodePoolUpgradeRequest) Reset()         { *m = RollbackNodePool
 func (m *RollbackNodePoolUpgradeRequest) String() string { return proto.CompactTextString(m) }
 func (*RollbackNodePoolUpgradeRequest) ProtoMessage()    {}
 func (*RollbackNodePoolUpgradeRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{47}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{47}
 }
 func (m *RollbackNodePoolUpgradeRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_RollbackNodePoolUpgradeRequest.Unmarshal(m, b)
@@ -4236,7 +4236,7 @@ func (m *RollbackNodePoolUpgradeRequest) GetNodePoolId() string {
 // ListNodePoolsResponse is the result of ListNodePoolsRequest.
 type ListNodePoolsResponse struct {
 	// A list of node pools for a cluster.
-	NodePools            []*NodePool `protobuf:"bytes,1,rep,name=node_pools,json=nodePools" json:"node_pools,omitempty"`
+	NodePools            []*NodePool `protobuf:"bytes,1,rep,name=node_pools,json=nodePools,proto3" json:"node_pools,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
 	XXX_unrecognized     []byte      `json:"-"`
 	XXX_sizecache        int32       `json:"-"`
@@ -4246,7 +4246,7 @@ func (m *ListNodePoolsResponse) Reset()         { *m = ListNodePoolsResponse{} }
 func (m *ListNodePoolsResponse) String() string { return proto.CompactTextString(m) }
 func (*ListNodePoolsResponse) ProtoMessage()    {}
 func (*ListNodePoolsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{48}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{48}
 }
 func (m *ListNodePoolsResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListNodePoolsResponse.Unmarshal(m, b)
@@ -4277,13 +4277,13 @@ func (m *ListNodePoolsResponse) GetNodePools() []*NodePool {
 // adjust the size of the node pool to the current cluster usage.
 type NodePoolAutoscaling struct {
 	// Is autoscaling enabled for this node pool.
-	Enabled bool `protobuf:"varint,1,opt,name=enabled" json:"enabled,omitempty"`
+	Enabled bool `protobuf:"varint,1,opt,name=enabled,proto3" json:"enabled,omitempty"`
 	// Minimum number of nodes in the NodePool. Must be >= 1 and <=
 	// max_node_count.
-	MinNodeCount int32 `protobuf:"varint,2,opt,name=min_node_count,json=minNodeCount" json:"min_node_count,omitempty"`
+	MinNodeCount int32 `protobuf:"varint,2,opt,name=min_node_count,json=minNodeCount,proto3" json:"min_node_count,omitempty"`
 	// Maximum number of nodes in the NodePool. Must be >= min_node_count. There
 	// has to enough quota to scale up the cluster.
-	MaxNodeCount         int32    `protobuf:"varint,3,opt,name=max_node_count,json=maxNodeCount" json:"max_node_count,omitempty"`
+	MaxNodeCount         int32    `protobuf:"varint,3,opt,name=max_node_count,json=maxNodeCount,proto3" json:"max_node_count,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -4293,7 +4293,7 @@ func (m *NodePoolAutoscaling) Reset()         { *m = NodePoolAutoscaling{} }
 func (m *NodePoolAutoscaling) String() string { return proto.CompactTextString(m) }
 func (*NodePoolAutoscaling) ProtoMessage()    {}
 func (*NodePoolAutoscaling) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{49}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{49}
 }
 func (m *NodePoolAutoscaling) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_NodePoolAutoscaling.Unmarshal(m, b)
@@ -4340,22 +4340,22 @@ func (m *NodePoolAutoscaling) GetMaxNodeCount() int32 {
 type SetLabelsRequest struct {
 	// The Google Developers Console [project ID or project
 	// number](https://developers.google.com/console/help/new/#projectnumber).
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// The name of the Google Compute Engine
 	// [zone](/compute/docs/zones#available) in which the cluster
 	// resides.
-	Zone string `protobuf:"bytes,2,opt,name=zone" json:"zone,omitempty"`
+	Zone string `protobuf:"bytes,2,opt,name=zone,proto3" json:"zone,omitempty"`
 	// The name of the cluster.
-	ClusterId string `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId" json:"cluster_id,omitempty"`
+	ClusterId string `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
 	// The labels to set for that cluster.
-	ResourceLabels map[string]string `protobuf:"bytes,4,rep,name=resource_labels,json=resourceLabels" json:"resource_labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	ResourceLabels map[string]string `protobuf:"bytes,4,rep,name=resource_labels,json=resourceLabels,proto3" json:"resource_labels,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	// The fingerprint of the previous set of labels for this resource,
 	// used to detect conflicts. The fingerprint is initially generated by
 	// Container Engine and changes after every request to modify or update
 	// labels. You must always provide an up-to-date fingerprint hash when
 	// updating or changing labels. Make a <code>get()</code> request to the
 	// resource to get the latest fingerprint.
-	LabelFingerprint     string   `protobuf:"bytes,5,opt,name=label_fingerprint,json=labelFingerprint" json:"label_fingerprint,omitempty"`
+	LabelFingerprint     string   `protobuf:"bytes,5,opt,name=label_fingerprint,json=labelFingerprint,proto3" json:"label_fingerprint,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -4365,7 +4365,7 @@ func (m *SetLabelsRequest) Reset()         { *m = SetLabelsRequest{} }
 func (m *SetLabelsRequest) String() string { return proto.CompactTextString(m) }
 func (*SetLabelsRequest) ProtoMessage()    {}
 func (*SetLabelsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{50}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{50}
 }
 func (m *SetLabelsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SetLabelsRequest.Unmarshal(m, b)
@@ -4425,15 +4425,15 @@ func (m *SetLabelsRequest) GetLabelFingerprint() string {
 type SetLegacyAbacRequest struct {
 	// The Google Developers Console [project ID or project
 	// number](https://support.google.com/cloud/answer/6158840).
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// The name of the Google Compute Engine
 	// [zone](/compute/docs/zones#available) in which the cluster
 	// resides.
-	Zone string `protobuf:"bytes,2,opt,name=zone" json:"zone,omitempty"`
+	Zone string `protobuf:"bytes,2,opt,name=zone,proto3" json:"zone,omitempty"`
 	// The name of the cluster to update.
-	ClusterId string `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId" json:"cluster_id,omitempty"`
+	ClusterId string `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
 	// Whether ABAC authorization will be enabled in the cluster.
-	Enabled              bool     `protobuf:"varint,4,opt,name=enabled" json:"enabled,omitempty"`
+	Enabled              bool     `protobuf:"varint,4,opt,name=enabled,proto3" json:"enabled,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -4443,7 +4443,7 @@ func (m *SetLegacyAbacRequest) Reset()         { *m = SetLegacyAbacRequest{} }
 func (m *SetLegacyAbacRequest) String() string { return proto.CompactTextString(m) }
 func (*SetLegacyAbacRequest) ProtoMessage()    {}
 func (*SetLegacyAbacRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{51}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{51}
 }
 func (m *SetLegacyAbacRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SetLegacyAbacRequest.Unmarshal(m, b)
@@ -4496,13 +4496,13 @@ func (m *SetLegacyAbacRequest) GetEnabled() bool {
 type StartIPRotationRequest struct {
 	// The Google Developers Console [project ID or project
 	// number](https://developers.google.com/console/help/new/#projectnumber).
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// The name of the Google Compute Engine
 	// [zone](/compute/docs/zones#available) in which the cluster
 	// resides.
-	Zone string `protobuf:"bytes,2,opt,name=zone" json:"zone,omitempty"`
+	Zone string `protobuf:"bytes,2,opt,name=zone,proto3" json:"zone,omitempty"`
 	// The name of the cluster.
-	ClusterId            string   `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId" json:"cluster_id,omitempty"`
+	ClusterId            string   `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -4512,7 +4512,7 @@ func (m *StartIPRotationRequest) Reset()         { *m = StartIPRotationRequest{}
 func (m *StartIPRotationRequest) String() string { return proto.CompactTextString(m) }
 func (*StartIPRotationRequest) ProtoMessage()    {}
 func (*StartIPRotationRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{52}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{52}
 }
 func (m *StartIPRotationRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_StartIPRotationRequest.Unmarshal(m, b)
@@ -4557,13 +4557,13 @@ func (m *StartIPRotationRequest) GetClusterId() string {
 type CompleteIPRotationRequest struct {
 	// The Google Developers Console [project ID or project
 	// number](https://developers.google.com/console/help/new/#projectnumber).
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// The name of the Google Compute Engine
 	// [zone](/compute/docs/zones#available) in which the cluster
 	// resides.
-	Zone string `protobuf:"bytes,2,opt,name=zone" json:"zone,omitempty"`
+	Zone string `protobuf:"bytes,2,opt,name=zone,proto3" json:"zone,omitempty"`
 	// The name of the cluster.
-	ClusterId            string   `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId" json:"cluster_id,omitempty"`
+	ClusterId            string   `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -4573,7 +4573,7 @@ func (m *CompleteIPRotationRequest) Reset()         { *m = CompleteIPRotationReq
 func (m *CompleteIPRotationRequest) String() string { return proto.CompactTextString(m) }
 func (*CompleteIPRotationRequest) ProtoMessage()    {}
 func (*CompleteIPRotationRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{53}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{53}
 }
 func (m *CompleteIPRotationRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CompleteIPRotationRequest.Unmarshal(m, b)
@@ -4617,10 +4617,10 @@ func (m *CompleteIPRotationRequest) GetClusterId() string {
 // AcceleratorConfig represents a Hardware Accelerator request.
 type AcceleratorConfig struct {
 	// The number of the accelerator cards exposed to an instance.
-	AcceleratorCount int64 `protobuf:"varint,1,opt,name=accelerator_count,json=acceleratorCount" json:"accelerator_count,omitempty"`
+	AcceleratorCount int64 `protobuf:"varint,1,opt,name=accelerator_count,json=acceleratorCount,proto3" json:"accelerator_count,omitempty"`
 	// The accelerator type resource name. List of supported accelerators
 	// [here](/compute/docs/gpus/#Introduction)
-	AcceleratorType      string   `protobuf:"bytes,2,opt,name=accelerator_type,json=acceleratorType" json:"accelerator_type,omitempty"`
+	AcceleratorType      string   `protobuf:"bytes,2,opt,name=accelerator_type,json=acceleratorType,proto3" json:"accelerator_type,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -4630,7 +4630,7 @@ func (m *AcceleratorConfig) Reset()         { *m = AcceleratorConfig{} }
 func (m *AcceleratorConfig) String() string { return proto.CompactTextString(m) }
 func (*AcceleratorConfig) ProtoMessage()    {}
 func (*AcceleratorConfig) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{54}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{54}
 }
 func (m *AcceleratorConfig) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_AcceleratorConfig.Unmarshal(m, b)
@@ -4668,15 +4668,15 @@ func (m *AcceleratorConfig) GetAcceleratorType() string {
 type SetNetworkPolicyRequest struct {
 	// The Google Developers Console [project ID or project
 	// number](https://developers.google.com/console/help/new/#projectnumber).
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// The name of the Google Compute Engine
 	// [zone](/compute/docs/zones#available) in which the cluster
 	// resides.
-	Zone string `protobuf:"bytes,2,opt,name=zone" json:"zone,omitempty"`
+	Zone string `protobuf:"bytes,2,opt,name=zone,proto3" json:"zone,omitempty"`
 	// The name of the cluster.
-	ClusterId string `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId" json:"cluster_id,omitempty"`
+	ClusterId string `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
 	// Configuration options for the NetworkPolicy feature.
-	NetworkPolicy        *NetworkPolicy `protobuf:"bytes,4,opt,name=network_policy,json=networkPolicy" json:"network_policy,omitempty"`
+	NetworkPolicy        *NetworkPolicy `protobuf:"bytes,4,opt,name=network_policy,json=networkPolicy,proto3" json:"network_policy,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
 	XXX_unrecognized     []byte         `json:"-"`
 	XXX_sizecache        int32          `json:"-"`
@@ -4686,7 +4686,7 @@ func (m *SetNetworkPolicyRequest) Reset()         { *m = SetNetworkPolicyRequest
 func (m *SetNetworkPolicyRequest) String() string { return proto.CompactTextString(m) }
 func (*SetNetworkPolicyRequest) ProtoMessage()    {}
 func (*SetNetworkPolicyRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{55}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{55}
 }
 func (m *SetNetworkPolicyRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SetNetworkPolicyRequest.Unmarshal(m, b)
@@ -4738,16 +4738,16 @@ func (m *SetNetworkPolicyRequest) GetNetworkPolicy() *NetworkPolicy {
 type SetMaintenancePolicyRequest struct {
 	// The Google Developers Console [project ID or project
 	// number](https://support.google.com/cloud/answer/6158840).
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// The name of the Google Compute Engine
 	// [zone](/compute/docs/zones#available) in which the cluster
 	// resides.
-	Zone string `protobuf:"bytes,2,opt,name=zone" json:"zone,omitempty"`
+	Zone string `protobuf:"bytes,2,opt,name=zone,proto3" json:"zone,omitempty"`
 	// The name of the cluster to update.
-	ClusterId string `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId" json:"cluster_id,omitempty"`
+	ClusterId string `protobuf:"bytes,3,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
 	// The maintenance policy to be set for the cluster. An empty field
 	// clears the existing maintenance policy.
-	MaintenancePolicy    *MaintenancePolicy `protobuf:"bytes,4,opt,name=maintenance_policy,json=maintenancePolicy" json:"maintenance_policy,omitempty"`
+	MaintenancePolicy    *MaintenancePolicy `protobuf:"bytes,4,opt,name=maintenance_policy,json=maintenancePolicy,proto3" json:"maintenance_policy,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}           `json:"-"`
 	XXX_unrecognized     []byte             `json:"-"`
 	XXX_sizecache        int32              `json:"-"`
@@ -4757,7 +4757,7 @@ func (m *SetMaintenancePolicyRequest) Reset()         { *m = SetMaintenancePolic
 func (m *SetMaintenancePolicyRequest) String() string { return proto.CompactTextString(m) }
 func (*SetMaintenancePolicyRequest) ProtoMessage()    {}
 func (*SetMaintenancePolicyRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cluster_service_b0771aae25843ee0, []int{56}
+	return fileDescriptor_cluster_service_5118ef8ec5d5f37b, []int{56}
 }
 func (m *SetMaintenancePolicyRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SetMaintenancePolicyRequest.Unmarshal(m, b)
@@ -5252,8 +5252,7 @@ func (c *clusterManagerClient) SetMaintenancePolicy(ctx context.Context, in *Set
 	return out, nil
 }
 
-// Server API for ClusterManager service
-
+// ClusterManagerServer is the server API for ClusterManager service.
 type ClusterManagerServer interface {
 	// Lists all clusters owned by a project in either the specified zone or all
 	// zones.
@@ -6015,10 +6014,10 @@ var _ClusterManager_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("google/container/v1/cluster_service.proto", fileDescriptor_cluster_service_b0771aae25843ee0)
+	proto.RegisterFile("google/container/v1/cluster_service.proto", fileDescriptor_cluster_service_5118ef8ec5d5f37b)
 }
 
-var fileDescriptor_cluster_service_b0771aae25843ee0 = []byte{
+var fileDescriptor_cluster_service_5118ef8ec5d5f37b = []byte{
 	// 4602 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xcc, 0x5c, 0xdd, 0x8f, 0x23, 0x57,
 	0x56, 0xdf, 0xea, 0x76, 0xbb, 0xdb, 0xc7, 0x1f, 0xed, 0xbe, 0xfd, 0xe5, 0x38, 0x33, 0xc9, 0x4c,

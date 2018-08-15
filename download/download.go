@@ -20,11 +20,29 @@ type CompressedFile struct {
 }
 
 type Downloader struct {
-	config *config.InternalConfig
+	config          *config.InternalConfig
+	downloaderSteps []func() error
 }
 
 func NewDownloader(config *config.InternalConfig) Downloader {
-	return Downloader{config: config}
+	downloader := Downloader{config: config}
+
+	downloader.downloaderSteps = []func() error{
+		downloader.copyK8STEW,
+		downloader.downloadEtcdBinaries,
+		downloader.downloadK8SBinaries,
+		downloader.downloadHelmBinary,
+		downloader.downloadContainerdBinaries,
+		downloader.downloadRuncBinary,
+		downloader.downloadCriCtlBinary,
+		downloader.downloadGobetweenBinary,
+	}
+
+	return downloader
+}
+
+func (downloader Downloader) Steps() int {
+	return len(downloader.downloaderSteps)
 }
 
 func (downloader Downloader) getURL(url, filename string) (string, error) {
@@ -39,15 +57,9 @@ func (downloader Downloader) getURL(url, filename string) (string, error) {
 	return utils.ApplyTemplate(url, data)
 }
 
-func (downloader Downloader) downloadFile(urlTemplate, remoteFilename, filename string) (bool, error) {
-	url, error := downloader.getURL(urlTemplate, remoteFilename)
-
-	if error != nil {
-		return false, error
-	}
-
+func (downloader Downloader) downloadFile(url, filename string) (bool, error) {
 	if utils.FileExists(filename) {
-		log.WithFields(log.Fields{"filename": filename}).Info("skipped")
+		log.WithFields(log.Fields{"url": filename}).Info("skipped downloading")
 
 		return false, nil
 	}
@@ -77,12 +89,11 @@ func (downloader Downloader) downloadFile(urlTemplate, remoteFilename, filename 
 
 func (downloader Downloader) downloadExecutable(urlTemplate, remoteFilename, filename string) error {
 	url, error := downloader.getURL(urlTemplate, remoteFilename)
-
 	if error != nil {
 		return error
 	}
 
-	installed, error := downloader.downloadFile(url, remoteFilename, filename)
+	installed, error := downloader.downloadFile(url, filename)
 	if error != nil {
 		return error
 	}
@@ -93,6 +104,8 @@ func (downloader Downloader) downloadExecutable(urlTemplate, remoteFilename, fil
 
 	if installed {
 		log.WithFields(log.Fields{"filename": filename}).Info("installed")
+	} else {
+		log.WithFields(log.Fields{"filename": filename}).Info("skipped installing")
 	}
 
 	return nil
@@ -170,26 +183,33 @@ func (downloader Downloader) downloadAndExtractTGZFiles(urlTemplate, baseName st
 		}
 	}
 
-	// All files exist, print skip message and bail out
-	if exist {
-		for _, compressedFile := range files {
-			log.WithFields(log.Fields{"filename": compressedFile.TargetFile}).Info("skipped")
-		}
-
-		return nil
-	}
-
 	// Build base name including the version number
 	baseName, error := downloader.getURL(baseName, "")
 	if error != nil {
 		return error
 	}
 
+	url, error := downloader.getURL(urlTemplate, baseName)
+	if error != nil {
+		return error
+	}
+
+	// All files exist, print skip message and bail out
+	if exist {
+		log.WithFields(log.Fields{"url": url}).Info("skipped downloading")
+
+		for _, compressedFile := range files {
+			log.WithFields(log.Fields{"filename": compressedFile.TargetFile}).Info("skipped installing")
+		}
+
+		return nil
+	}
+
 	// Create temporary download filename
 	temporaryFile := path.Join(temporaryDirectory, baseName+".tgz")
 
 	// Download file
-	_, error = downloader.downloadFile(urlTemplate, baseName, temporaryFile)
+	_, error = downloader.downloadFile(url, temporaryFile)
 	if error != nil {
 		return error
 	}
@@ -373,11 +393,11 @@ func (downloader Downloader) downloadGobetweenBinary() error {
 
 func (downloader Downloader) createLocalDirectories() error {
 	for name, directory := range downloader.config.Config.Assets.Directories {
-		localDirectory := downloader.config.GetFullLocalAssetDirectory(name)
-
 		if directory.Absolute {
-			localDirectory = path.Join("/", localDirectory)
+			continue
 		}
+
+		localDirectory := downloader.config.GetFullLocalAssetDirectory(name)
 
 		if error := utils.CreateDirectoryIfMissing(localDirectory); error != nil {
 			return error
@@ -392,36 +412,12 @@ func (downloader Downloader) DownloadBinaries() error {
 		return error
 	}
 
-	if error := downloader.copyK8STEW(); error != nil {
-		return error
-	}
+	for _, _downloadStep := range downloader.downloaderSteps {
+		if error := _downloadStep(); error != nil {
+			return error
+		}
 
-	if error := downloader.downloadEtcdBinaries(); error != nil {
-		return error
-	}
-
-	if error := downloader.downloadK8SBinaries(); error != nil {
-		return error
-	}
-
-	if error := downloader.downloadHelmBinary(); error != nil {
-		return error
-	}
-
-	if error := downloader.downloadContainerdBinaries(); error != nil {
-		return error
-	}
-
-	if error := downloader.downloadRuncBinary(); error != nil {
-		return error
-	}
-
-	if error := downloader.downloadCriCtlBinary(); error != nil {
-		return error
-	}
-
-	if error := downloader.downloadGobetweenBinary(); error != nil {
-		return error
+		utils.IncreaseProgressStep()
 	}
 
 	return nil

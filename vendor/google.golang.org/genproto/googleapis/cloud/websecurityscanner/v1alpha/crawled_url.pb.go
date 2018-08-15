@@ -26,13 +26,13 @@ type CrawledUrl struct {
 	// Output only.
 	// The http method of the request that was used to visit the URL, in
 	// uppercase.
-	HttpMethod string `protobuf:"bytes,1,opt,name=http_method,json=httpMethod" json:"http_method,omitempty"`
+	HttpMethod string `protobuf:"bytes,1,opt,name=http_method,json=httpMethod,proto3" json:"http_method,omitempty"`
 	// Output only.
 	// The URL that was crawled.
-	Url string `protobuf:"bytes,2,opt,name=url" json:"url,omitempty"`
+	Url string `protobuf:"bytes,2,opt,name=url,proto3" json:"url,omitempty"`
 	// Output only.
 	// The body of the request that was used to visit the URL.
-	Body                 string   `protobuf:"bytes,3,opt,name=body" json:"body,omitempty"`
+	Body                 string   `protobuf:"bytes,3,opt,name=body,proto3" json:"body,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -42,7 +42,7 @@ func (m *CrawledUrl) Reset()         { *m = CrawledUrl{} }
 func (m *CrawledUrl) String() string { return proto.CompactTextString(m) }
 func (*CrawledUrl) ProtoMessage()    {}
 func (*CrawledUrl) Descriptor() ([]byte, []int) {
-	return fileDescriptor_crawled_url_49d80ce587eb50ce, []int{0}
+	return fileDescriptor_crawled_url_b553fc5280c7b49d, []int{0}
 }
 func (m *CrawledUrl) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CrawledUrl.Unmarshal(m, b)
@@ -88,10 +88,10 @@ func init() {
 }
 
 func init() {
-	proto.RegisterFile("google/cloud/websecurityscanner/v1alpha/crawled_url.proto", fileDescriptor_crawled_url_49d80ce587eb50ce)
+	proto.RegisterFile("google/cloud/websecurityscanner/v1alpha/crawled_url.proto", fileDescriptor_crawled_url_b553fc5280c7b49d)
 }
 
-var fileDescriptor_crawled_url_49d80ce587eb50ce = []byte{
+var fileDescriptor_crawled_url_b553fc5280c7b49d = []byte{
 	// 235 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x90, 0x31, 0x4b, 0x04, 0x31,
 	0x10, 0x85, 0x59, 0x4f, 0x04, 0xc7, 0x42, 0x49, 0xb5, 0x88, 0xa0, 0xd8, 0x28, 0x08, 0x09, 0x62,

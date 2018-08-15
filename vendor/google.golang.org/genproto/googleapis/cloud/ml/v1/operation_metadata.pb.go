@@ -51,25 +51,25 @@ func (x OperationMetadata_OperationType) String() string {
 	return proto.EnumName(OperationMetadata_OperationType_name, int32(x))
 }
 func (OperationMetadata_OperationType) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_operation_metadata_7e72cfbfe1fa09fa, []int{0, 0}
+	return fileDescriptor_operation_metadata_67f21a738daf74c6, []int{0, 0}
 }
 
 // Represents the metadata of the long-running operation.
 type OperationMetadata struct {
 	// The time the operation was submitted.
-	CreateTime *timestamp.Timestamp `protobuf:"bytes,1,opt,name=create_time,json=createTime" json:"create_time,omitempty"`
+	CreateTime *timestamp.Timestamp `protobuf:"bytes,1,opt,name=create_time,json=createTime,proto3" json:"create_time,omitempty"`
 	// The time operation processing started.
-	StartTime *timestamp.Timestamp `protobuf:"bytes,2,opt,name=start_time,json=startTime" json:"start_time,omitempty"`
+	StartTime *timestamp.Timestamp `protobuf:"bytes,2,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
 	// The time operation processing completed.
-	EndTime *timestamp.Timestamp `protobuf:"bytes,3,opt,name=end_time,json=endTime" json:"end_time,omitempty"`
+	EndTime *timestamp.Timestamp `protobuf:"bytes,3,opt,name=end_time,json=endTime,proto3" json:"end_time,omitempty"`
 	// Indicates whether a request to cancel this operation has been made.
-	IsCancellationRequested bool `protobuf:"varint,4,opt,name=is_cancellation_requested,json=isCancellationRequested" json:"is_cancellation_requested,omitempty"`
+	IsCancellationRequested bool `protobuf:"varint,4,opt,name=is_cancellation_requested,json=isCancellationRequested,proto3" json:"is_cancellation_requested,omitempty"`
 	// The operation type.
-	OperationType OperationMetadata_OperationType `protobuf:"varint,5,opt,name=operation_type,json=operationType,enum=google.cloud.ml.v1.OperationMetadata_OperationType" json:"operation_type,omitempty"`
+	OperationType OperationMetadata_OperationType `protobuf:"varint,5,opt,name=operation_type,json=operationType,proto3,enum=google.cloud.ml.v1.OperationMetadata_OperationType" json:"operation_type,omitempty"`
 	// Contains the name of the model associated with the operation.
-	ModelName string `protobuf:"bytes,6,opt,name=model_name,json=modelName" json:"model_name,omitempty"`
+	ModelName string `protobuf:"bytes,6,opt,name=model_name,json=modelName,proto3" json:"model_name,omitempty"`
 	// Contains the version associated with the operation.
-	Version              *Version `protobuf:"bytes,7,opt,name=version" json:"version,omitempty"`
+	Version              *Version `protobuf:"bytes,7,opt,name=version,proto3" json:"version,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -79,7 +79,7 @@ func (m *OperationMetadata) Reset()         { *m = OperationMetadata{} }
 func (m *OperationMetadata) String() string { return proto.CompactTextString(m) }
 func (*OperationMetadata) ProtoMessage()    {}
 func (*OperationMetadata) Descriptor() ([]byte, []int) {
-	return fileDescriptor_operation_metadata_7e72cfbfe1fa09fa, []int{0}
+	return fileDescriptor_operation_metadata_67f21a738daf74c6, []int{0}
 }
 func (m *OperationMetadata) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_OperationMetadata.Unmarshal(m, b)
@@ -154,10 +154,10 @@ func init() {
 }
 
 func init() {
-	proto.RegisterFile("google/cloud/ml/v1/operation_metadata.proto", fileDescriptor_operation_metadata_7e72cfbfe1fa09fa)
+	proto.RegisterFile("google/cloud/ml/v1/operation_metadata.proto", fileDescriptor_operation_metadata_67f21a738daf74c6)
 }
 
-var fileDescriptor_operation_metadata_7e72cfbfe1fa09fa = []byte{
+var fileDescriptor_operation_metadata_67f21a738daf74c6 = []byte{
 	// 454 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x84, 0x92, 0x5f, 0x6b, 0xdb, 0x30,
 	0x14, 0xc5, 0xe7, 0xb6, 0x6b, 0x1a, 0x75, 0x0d, 0x99, 0x1e, 0xb6, 0xcc, 0xfb, 0x17, 0xfa, 0x30,

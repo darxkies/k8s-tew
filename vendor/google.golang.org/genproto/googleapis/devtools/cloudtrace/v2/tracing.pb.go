@@ -30,10 +30,10 @@ const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 type BatchWriteSpansRequest struct {
 	// Required. The name of the project where the spans belong. The format is
 	// `projects/[PROJECT_ID]`.
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// A list of new spans. The span names must not match existing
 	// spans, or the results are undefined.
-	Spans                []*Span  `protobuf:"bytes,2,rep,name=spans" json:"spans,omitempty"`
+	Spans                []*Span  `protobuf:"bytes,2,rep,name=spans,proto3" json:"spans,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -43,7 +43,7 @@ func (m *BatchWriteSpansRequest) Reset()         { *m = BatchWriteSpansRequest{}
 func (m *BatchWriteSpansRequest) String() string { return proto.CompactTextString(m) }
 func (*BatchWriteSpansRequest) ProtoMessage()    {}
 func (*BatchWriteSpansRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_tracing_2e37b806bc636240, []int{0}
+	return fileDescriptor_tracing_18786c49399bd83d, []int{0}
 }
 func (m *BatchWriteSpansRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_BatchWriteSpansRequest.Unmarshal(m, b)
@@ -126,8 +126,7 @@ func (c *traceServiceClient) CreateSpan(ctx context.Context, in *Span, opts ...g
 	return out, nil
 }
 
-// Server API for TraceService service
-
+// TraceServiceServer is the server API for TraceService service.
 type TraceServiceServer interface {
 	// Sends new spans to new or existing traces. You cannot update
 	// existing spans.
@@ -194,10 +193,10 @@ var _TraceService_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("google/devtools/cloudtrace/v2/tracing.proto", fileDescriptor_tracing_2e37b806bc636240)
+	proto.RegisterFile("google/devtools/cloudtrace/v2/tracing.proto", fileDescriptor_tracing_18786c49399bd83d)
 }
 
-var fileDescriptor_tracing_2e37b806bc636240 = []byte{
+var fileDescriptor_tracing_18786c49399bd83d = []byte{
 	// 404 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x52, 0xdd, 0x6a, 0xdb, 0x30,
 	0x14, 0x46, 0xde, 0x0f, 0x4c, 0x1b, 0x0c, 0x04, 0x0b, 0xc1, 0xdb, 0x58, 0xe6, 0x0d, 0x96, 0x64,

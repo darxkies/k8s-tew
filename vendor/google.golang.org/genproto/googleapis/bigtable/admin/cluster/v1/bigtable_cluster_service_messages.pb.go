@@ -24,7 +24,7 @@ type ListZonesRequest struct {
 	// The unique name of the project for which a list of supported zones is
 	// requested.
 	// Values are of the form projects/<project>
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -34,7 +34,7 @@ func (m *ListZonesRequest) Reset()         { *m = ListZonesRequest{} }
 func (m *ListZonesRequest) String() string { return proto.CompactTextString(m) }
 func (*ListZonesRequest) ProtoMessage()    {}
 func (*ListZonesRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bigtable_cluster_service_messages_0da601371e04efd1, []int{0}
+	return fileDescriptor_bigtable_cluster_service_messages_964162c5e08631c3, []int{0}
 }
 func (m *ListZonesRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListZonesRequest.Unmarshal(m, b)
@@ -64,7 +64,7 @@ func (m *ListZonesRequest) GetName() string {
 // Response message for BigtableClusterService.ListZones.
 type ListZonesResponse struct {
 	// The list of requested zones.
-	Zones                []*Zone  `protobuf:"bytes,1,rep,name=zones" json:"zones,omitempty"`
+	Zones                []*Zone  `protobuf:"bytes,1,rep,name=zones,proto3" json:"zones,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -74,7 +74,7 @@ func (m *ListZonesResponse) Reset()         { *m = ListZonesResponse{} }
 func (m *ListZonesResponse) String() string { return proto.CompactTextString(m) }
 func (*ListZonesResponse) ProtoMessage()    {}
 func (*ListZonesResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bigtable_cluster_service_messages_0da601371e04efd1, []int{1}
+	return fileDescriptor_bigtable_cluster_service_messages_964162c5e08631c3, []int{1}
 }
 func (m *ListZonesResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListZonesResponse.Unmarshal(m, b)
@@ -105,7 +105,7 @@ func (m *ListZonesResponse) GetZones() []*Zone {
 type GetClusterRequest struct {
 	// The unique name of the requested cluster.
 	// Values are of the form projects/<project>/zones/<zone>/clusters/<cluster>
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -115,7 +115,7 @@ func (m *GetClusterRequest) Reset()         { *m = GetClusterRequest{} }
 func (m *GetClusterRequest) String() string { return proto.CompactTextString(m) }
 func (*GetClusterRequest) ProtoMessage()    {}
 func (*GetClusterRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bigtable_cluster_service_messages_0da601371e04efd1, []int{2}
+	return fileDescriptor_bigtable_cluster_service_messages_964162c5e08631c3, []int{2}
 }
 func (m *GetClusterRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetClusterRequest.Unmarshal(m, b)
@@ -146,7 +146,7 @@ func (m *GetClusterRequest) GetName() string {
 type ListClustersRequest struct {
 	// The unique name of the project for which a list of clusters is requested.
 	// Values are of the form projects/<project>
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -156,7 +156,7 @@ func (m *ListClustersRequest) Reset()         { *m = ListClustersRequest{} }
 func (m *ListClustersRequest) String() string { return proto.CompactTextString(m) }
 func (*ListClustersRequest) ProtoMessage()    {}
 func (*ListClustersRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bigtable_cluster_service_messages_0da601371e04efd1, []int{3}
+	return fileDescriptor_bigtable_cluster_service_messages_964162c5e08631c3, []int{3}
 }
 func (m *ListClustersRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListClustersRequest.Unmarshal(m, b)
@@ -186,9 +186,9 @@ func (m *ListClustersRequest) GetName() string {
 // Response message for BigtableClusterService.ListClusters.
 type ListClustersResponse struct {
 	// The list of requested Clusters.
-	Clusters []*Cluster `protobuf:"bytes,1,rep,name=clusters" json:"clusters,omitempty"`
+	Clusters []*Cluster `protobuf:"bytes,1,rep,name=clusters,proto3" json:"clusters,omitempty"`
 	// The zones for which clusters could not be retrieved.
-	FailedZones          []*Zone  `protobuf:"bytes,2,rep,name=failed_zones,json=failedZones" json:"failed_zones,omitempty"`
+	FailedZones          []*Zone  `protobuf:"bytes,2,rep,name=failed_zones,json=failedZones,proto3" json:"failed_zones,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -198,7 +198,7 @@ func (m *ListClustersResponse) Reset()         { *m = ListClustersResponse{} }
 func (m *ListClustersResponse) String() string { return proto.CompactTextString(m) }
 func (*ListClustersResponse) ProtoMessage()    {}
 func (*ListClustersResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bigtable_cluster_service_messages_0da601371e04efd1, []int{4}
+	return fileDescriptor_bigtable_cluster_service_messages_964162c5e08631c3, []int{4}
 }
 func (m *ListClustersResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListClustersResponse.Unmarshal(m, b)
@@ -236,15 +236,15 @@ func (m *ListClustersResponse) GetFailedZones() []*Zone {
 type CreateClusterRequest struct {
 	// The unique name of the zone in which to create the cluster.
 	// Values are of the form projects/<project>/zones/<zone>
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// The id to be used when referring to the new cluster within its zone,
 	// e.g. just the "test-cluster" section of the full name
 	// "projects/<project>/zones/<zone>/clusters/test-cluster".
-	ClusterId string `protobuf:"bytes,2,opt,name=cluster_id,json=clusterId" json:"cluster_id,omitempty"`
+	ClusterId string `protobuf:"bytes,2,opt,name=cluster_id,json=clusterId,proto3" json:"cluster_id,omitempty"`
 	// The cluster to create.
 	// The "name", "delete_time", and "current_operation" fields must be left
 	// blank.
-	Cluster              *Cluster `protobuf:"bytes,3,opt,name=cluster" json:"cluster,omitempty"`
+	Cluster              *Cluster `protobuf:"bytes,3,opt,name=cluster,proto3" json:"cluster,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -254,7 +254,7 @@ func (m *CreateClusterRequest) Reset()         { *m = CreateClusterRequest{} }
 func (m *CreateClusterRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateClusterRequest) ProtoMessage()    {}
 func (*CreateClusterRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bigtable_cluster_service_messages_0da601371e04efd1, []int{5}
+	return fileDescriptor_bigtable_cluster_service_messages_964162c5e08631c3, []int{5}
 }
 func (m *CreateClusterRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CreateClusterRequest.Unmarshal(m, b)
@@ -299,11 +299,11 @@ func (m *CreateClusterRequest) GetCluster() *Cluster {
 // BigtableClusterService.CreateCluster.
 type CreateClusterMetadata struct {
 	// The request which prompted the creation of this operation.
-	OriginalRequest *CreateClusterRequest `protobuf:"bytes,1,opt,name=original_request,json=originalRequest" json:"original_request,omitempty"`
+	OriginalRequest *CreateClusterRequest `protobuf:"bytes,1,opt,name=original_request,json=originalRequest,proto3" json:"original_request,omitempty"`
 	// The time at which original_request was received.
-	RequestTime *timestamp.Timestamp `protobuf:"bytes,2,opt,name=request_time,json=requestTime" json:"request_time,omitempty"`
+	RequestTime *timestamp.Timestamp `protobuf:"bytes,2,opt,name=request_time,json=requestTime,proto3" json:"request_time,omitempty"`
 	// The time at which this operation failed or was completed successfully.
-	FinishTime           *timestamp.Timestamp `protobuf:"bytes,3,opt,name=finish_time,json=finishTime" json:"finish_time,omitempty"`
+	FinishTime           *timestamp.Timestamp `protobuf:"bytes,3,opt,name=finish_time,json=finishTime,proto3" json:"finish_time,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
 	XXX_unrecognized     []byte               `json:"-"`
 	XXX_sizecache        int32                `json:"-"`
@@ -313,7 +313,7 @@ func (m *CreateClusterMetadata) Reset()         { *m = CreateClusterMetadata{} }
 func (m *CreateClusterMetadata) String() string { return proto.CompactTextString(m) }
 func (*CreateClusterMetadata) ProtoMessage()    {}
 func (*CreateClusterMetadata) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bigtable_cluster_service_messages_0da601371e04efd1, []int{6}
+	return fileDescriptor_bigtable_cluster_service_messages_964162c5e08631c3, []int{6}
 }
 func (m *CreateClusterMetadata) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CreateClusterMetadata.Unmarshal(m, b)
@@ -358,15 +358,15 @@ func (m *CreateClusterMetadata) GetFinishTime() *timestamp.Timestamp {
 // BigtableClusterService.UpdateCluster.
 type UpdateClusterMetadata struct {
 	// The request which prompted the creation of this operation.
-	OriginalRequest *Cluster `protobuf:"bytes,1,opt,name=original_request,json=originalRequest" json:"original_request,omitempty"`
+	OriginalRequest *Cluster `protobuf:"bytes,1,opt,name=original_request,json=originalRequest,proto3" json:"original_request,omitempty"`
 	// The time at which original_request was received.
-	RequestTime *timestamp.Timestamp `protobuf:"bytes,2,opt,name=request_time,json=requestTime" json:"request_time,omitempty"`
+	RequestTime *timestamp.Timestamp `protobuf:"bytes,2,opt,name=request_time,json=requestTime,proto3" json:"request_time,omitempty"`
 	// The time at which this operation was cancelled. If set, this operation is
 	// in the process of undoing itself (which is guaranteed to succeed) and
 	// cannot be cancelled again.
-	CancelTime *timestamp.Timestamp `protobuf:"bytes,3,opt,name=cancel_time,json=cancelTime" json:"cancel_time,omitempty"`
+	CancelTime *timestamp.Timestamp `protobuf:"bytes,3,opt,name=cancel_time,json=cancelTime,proto3" json:"cancel_time,omitempty"`
 	// The time at which this operation failed or was completed successfully.
-	FinishTime           *timestamp.Timestamp `protobuf:"bytes,4,opt,name=finish_time,json=finishTime" json:"finish_time,omitempty"`
+	FinishTime           *timestamp.Timestamp `protobuf:"bytes,4,opt,name=finish_time,json=finishTime,proto3" json:"finish_time,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
 	XXX_unrecognized     []byte               `json:"-"`
 	XXX_sizecache        int32                `json:"-"`
@@ -376,7 +376,7 @@ func (m *UpdateClusterMetadata) Reset()         { *m = UpdateClusterMetadata{} }
 func (m *UpdateClusterMetadata) String() string { return proto.CompactTextString(m) }
 func (*UpdateClusterMetadata) ProtoMessage()    {}
 func (*UpdateClusterMetadata) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bigtable_cluster_service_messages_0da601371e04efd1, []int{7}
+	return fileDescriptor_bigtable_cluster_service_messages_964162c5e08631c3, []int{7}
 }
 func (m *UpdateClusterMetadata) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UpdateClusterMetadata.Unmarshal(m, b)
@@ -428,7 +428,7 @@ func (m *UpdateClusterMetadata) GetFinishTime() *timestamp.Timestamp {
 type DeleteClusterRequest struct {
 	// The unique name of the cluster to be deleted.
 	// Values are of the form projects/<project>/zones/<zone>/clusters/<cluster>
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -438,7 +438,7 @@ func (m *DeleteClusterRequest) Reset()         { *m = DeleteClusterRequest{} }
 func (m *DeleteClusterRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteClusterRequest) ProtoMessage()    {}
 func (*DeleteClusterRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bigtable_cluster_service_messages_0da601371e04efd1, []int{8}
+	return fileDescriptor_bigtable_cluster_service_messages_964162c5e08631c3, []int{8}
 }
 func (m *DeleteClusterRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeleteClusterRequest.Unmarshal(m, b)
@@ -469,7 +469,7 @@ func (m *DeleteClusterRequest) GetName() string {
 type UndeleteClusterRequest struct {
 	// The unique name of the cluster to be un-deleted.
 	// Values are of the form projects/<project>/zones/<zone>/clusters/<cluster>
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -479,7 +479,7 @@ func (m *UndeleteClusterRequest) Reset()         { *m = UndeleteClusterRequest{}
 func (m *UndeleteClusterRequest) String() string { return proto.CompactTextString(m) }
 func (*UndeleteClusterRequest) ProtoMessage()    {}
 func (*UndeleteClusterRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bigtable_cluster_service_messages_0da601371e04efd1, []int{9}
+	return fileDescriptor_bigtable_cluster_service_messages_964162c5e08631c3, []int{9}
 }
 func (m *UndeleteClusterRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UndeleteClusterRequest.Unmarshal(m, b)
@@ -510,9 +510,9 @@ func (m *UndeleteClusterRequest) GetName() string {
 // BigtableClusterService.UndeleteCluster.
 type UndeleteClusterMetadata struct {
 	// The time at which the original request was received.
-	RequestTime *timestamp.Timestamp `protobuf:"bytes,1,opt,name=request_time,json=requestTime" json:"request_time,omitempty"`
+	RequestTime *timestamp.Timestamp `protobuf:"bytes,1,opt,name=request_time,json=requestTime,proto3" json:"request_time,omitempty"`
 	// The time at which this operation failed or was completed successfully.
-	FinishTime           *timestamp.Timestamp `protobuf:"bytes,2,opt,name=finish_time,json=finishTime" json:"finish_time,omitempty"`
+	FinishTime           *timestamp.Timestamp `protobuf:"bytes,2,opt,name=finish_time,json=finishTime,proto3" json:"finish_time,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
 	XXX_unrecognized     []byte               `json:"-"`
 	XXX_sizecache        int32                `json:"-"`
@@ -522,7 +522,7 @@ func (m *UndeleteClusterMetadata) Reset()         { *m = UndeleteClusterMetadata
 func (m *UndeleteClusterMetadata) String() string { return proto.CompactTextString(m) }
 func (*UndeleteClusterMetadata) ProtoMessage()    {}
 func (*UndeleteClusterMetadata) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bigtable_cluster_service_messages_0da601371e04efd1, []int{10}
+	return fileDescriptor_bigtable_cluster_service_messages_964162c5e08631c3, []int{10}
 }
 func (m *UndeleteClusterMetadata) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UndeleteClusterMetadata.Unmarshal(m, b)
@@ -568,7 +568,7 @@ func (m *V2OperationMetadata) Reset()         { *m = V2OperationMetadata{} }
 func (m *V2OperationMetadata) String() string { return proto.CompactTextString(m) }
 func (*V2OperationMetadata) ProtoMessage()    {}
 func (*V2OperationMetadata) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bigtable_cluster_service_messages_0da601371e04efd1, []int{11}
+	return fileDescriptor_bigtable_cluster_service_messages_964162c5e08631c3, []int{11}
 }
 func (m *V2OperationMetadata) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_V2OperationMetadata.Unmarshal(m, b)
@@ -604,10 +604,10 @@ func init() {
 }
 
 func init() {
-	proto.RegisterFile("google/bigtable/admin/cluster/v1/bigtable_cluster_service_messages.proto", fileDescriptor_bigtable_cluster_service_messages_0da601371e04efd1)
+	proto.RegisterFile("google/bigtable/admin/cluster/v1/bigtable_cluster_service_messages.proto", fileDescriptor_bigtable_cluster_service_messages_964162c5e08631c3)
 }
 
-var fileDescriptor_bigtable_cluster_service_messages_0da601371e04efd1 = []byte{
+var fileDescriptor_bigtable_cluster_service_messages_964162c5e08631c3 = []byte{
 	// 541 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x55, 0x4d, 0x6f, 0xd3, 0x40,
 	0x10, 0xd5, 0x26, 0xe5, 0xa3, 0xe3, 0x4a, 0xb4, 0x6e, 0x02, 0x51, 0x24, 0x44, 0x64, 0x50, 0x69,

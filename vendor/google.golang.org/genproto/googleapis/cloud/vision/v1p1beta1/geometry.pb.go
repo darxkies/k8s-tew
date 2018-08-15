@@ -22,9 +22,9 @@ const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 // NOTE: the vertex coordinates are in the same scale as the original image.
 type Vertex struct {
 	// X coordinate.
-	X int32 `protobuf:"varint,1,opt,name=x" json:"x,omitempty"`
+	X int32 `protobuf:"varint,1,opt,name=x,proto3" json:"x,omitempty"`
 	// Y coordinate.
-	Y                    int32    `protobuf:"varint,2,opt,name=y" json:"y,omitempty"`
+	Y                    int32    `protobuf:"varint,2,opt,name=y,proto3" json:"y,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -34,7 +34,7 @@ func (m *Vertex) Reset()         { *m = Vertex{} }
 func (m *Vertex) String() string { return proto.CompactTextString(m) }
 func (*Vertex) ProtoMessage()    {}
 func (*Vertex) Descriptor() ([]byte, []int) {
-	return fileDescriptor_geometry_b76d8833593e6398, []int{0}
+	return fileDescriptor_geometry_9a7190aad6b30813, []int{0}
 }
 func (m *Vertex) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Vertex.Unmarshal(m, b)
@@ -71,7 +71,7 @@ func (m *Vertex) GetY() int32 {
 // A bounding polygon for the detected image annotation.
 type BoundingPoly struct {
 	// The bounding polygon vertices.
-	Vertices             []*Vertex `protobuf:"bytes,1,rep,name=vertices" json:"vertices,omitempty"`
+	Vertices             []*Vertex `protobuf:"bytes,1,rep,name=vertices,proto3" json:"vertices,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
 	XXX_unrecognized     []byte    `json:"-"`
 	XXX_sizecache        int32     `json:"-"`
@@ -81,7 +81,7 @@ func (m *BoundingPoly) Reset()         { *m = BoundingPoly{} }
 func (m *BoundingPoly) String() string { return proto.CompactTextString(m) }
 func (*BoundingPoly) ProtoMessage()    {}
 func (*BoundingPoly) Descriptor() ([]byte, []int) {
-	return fileDescriptor_geometry_b76d8833593e6398, []int{1}
+	return fileDescriptor_geometry_9a7190aad6b30813, []int{1}
 }
 func (m *BoundingPoly) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_BoundingPoly.Unmarshal(m, b)
@@ -113,11 +113,11 @@ func (m *BoundingPoly) GetVertices() []*Vertex {
 // The position coordinates are in the same scale as the original image.
 type Position struct {
 	// X coordinate.
-	X float32 `protobuf:"fixed32,1,opt,name=x" json:"x,omitempty"`
+	X float32 `protobuf:"fixed32,1,opt,name=x,proto3" json:"x,omitempty"`
 	// Y coordinate.
-	Y float32 `protobuf:"fixed32,2,opt,name=y" json:"y,omitempty"`
+	Y float32 `protobuf:"fixed32,2,opt,name=y,proto3" json:"y,omitempty"`
 	// Z coordinate (or depth).
-	Z                    float32  `protobuf:"fixed32,3,opt,name=z" json:"z,omitempty"`
+	Z                    float32  `protobuf:"fixed32,3,opt,name=z,proto3" json:"z,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -127,7 +127,7 @@ func (m *Position) Reset()         { *m = Position{} }
 func (m *Position) String() string { return proto.CompactTextString(m) }
 func (*Position) ProtoMessage()    {}
 func (*Position) Descriptor() ([]byte, []int) {
-	return fileDescriptor_geometry_b76d8833593e6398, []int{2}
+	return fileDescriptor_geometry_9a7190aad6b30813, []int{2}
 }
 func (m *Position) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Position.Unmarshal(m, b)
@@ -175,10 +175,10 @@ func init() {
 }
 
 func init() {
-	proto.RegisterFile("google/cloud/vision/v1p1beta1/geometry.proto", fileDescriptor_geometry_b76d8833593e6398)
+	proto.RegisterFile("google/cloud/vision/v1p1beta1/geometry.proto", fileDescriptor_geometry_9a7190aad6b30813)
 }
 
-var fileDescriptor_geometry_b76d8833593e6398 = []byte{
+var fileDescriptor_geometry_9a7190aad6b30813 = []byte{
 	// 243 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x7c, 0x90, 0xb1, 0x4b, 0xc3, 0x40,
 	0x14, 0x87, 0x79, 0x29, 0x96, 0x72, 0xd6, 0x25, 0x53, 0x16, 0xa1, 0x06, 0x85, 0x0e, 0x72, 0x47,

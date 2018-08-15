@@ -5,6 +5,7 @@ import (
 	"path"
 
 	"github.com/darxkies/k8s-tew/deployment"
+	"github.com/darxkies/k8s-tew/utils"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -24,6 +25,10 @@ var deployCmd = &cobra.Command{
 			os.Exit(-1)
 		}
 
+		utils.SetProgressSteps(deployment.Steps(_config) + 1)
+
+		utils.ShowProgress()
+
 		if error := deployment.Deploy(_config, identityFile); error != nil {
 			log.WithFields(log.Fields{"error": error}).Error("deploy failed")
 
@@ -35,6 +40,10 @@ var deployCmd = &cobra.Command{
 
 			os.Exit(-3)
 		}
+
+		utils.HideProgress()
+
+		log.Info("done")
 	},
 }
 

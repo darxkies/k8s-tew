@@ -23,7 +23,7 @@ type Backend struct {
 	// A list of API backend rules that apply to individual API methods.
 	//
 	// **NOTE:** All service configuration rules follow "last one wins" order.
-	Rules                []*BackendRule `protobuf:"bytes,1,rep,name=rules" json:"rules,omitempty"`
+	Rules                []*BackendRule `protobuf:"bytes,1,rep,name=rules,proto3" json:"rules,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
 	XXX_unrecognized     []byte         `json:"-"`
 	XXX_sizecache        int32          `json:"-"`
@@ -33,7 +33,7 @@ func (m *Backend) Reset()         { *m = Backend{} }
 func (m *Backend) String() string { return proto.CompactTextString(m) }
 func (*Backend) ProtoMessage()    {}
 func (*Backend) Descriptor() ([]byte, []int) {
-	return fileDescriptor_backend_98db65a00dbdbb78, []int{0}
+	return fileDescriptor_backend_bb737a5d3bcbecd6, []int{0}
 }
 func (m *Backend) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Backend.Unmarshal(m, b)
@@ -65,15 +65,15 @@ type BackendRule struct {
 	// Selects the methods to which this rule applies.
 	//
 	// Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
-	Selector string `protobuf:"bytes,1,opt,name=selector" json:"selector,omitempty"`
+	Selector string `protobuf:"bytes,1,opt,name=selector,proto3" json:"selector,omitempty"`
 	// The address of the API backend.
-	Address string `protobuf:"bytes,2,opt,name=address" json:"address,omitempty"`
+	Address string `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`
 	// The number of seconds to wait for a response from a request.  The default
 	// deadline for gRPC is infinite (no deadline) and HTTP requests is 5 seconds.
-	Deadline float64 `protobuf:"fixed64,3,opt,name=deadline" json:"deadline,omitempty"`
+	Deadline float64 `protobuf:"fixed64,3,opt,name=deadline,proto3" json:"deadline,omitempty"`
 	// Minimum deadline in seconds needed for this method. Calls having deadline
 	// value lower than this will be rejected.
-	MinDeadline          float64  `protobuf:"fixed64,4,opt,name=min_deadline,json=minDeadline" json:"min_deadline,omitempty"`
+	MinDeadline          float64  `protobuf:"fixed64,4,opt,name=min_deadline,json=minDeadline,proto3" json:"min_deadline,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -83,7 +83,7 @@ func (m *BackendRule) Reset()         { *m = BackendRule{} }
 func (m *BackendRule) String() string { return proto.CompactTextString(m) }
 func (*BackendRule) ProtoMessage()    {}
 func (*BackendRule) Descriptor() ([]byte, []int) {
-	return fileDescriptor_backend_98db65a00dbdbb78, []int{1}
+	return fileDescriptor_backend_bb737a5d3bcbecd6, []int{1}
 }
 func (m *BackendRule) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_BackendRule.Unmarshal(m, b)
@@ -136,9 +136,9 @@ func init() {
 	proto.RegisterType((*BackendRule)(nil), "google.api.BackendRule")
 }
 
-func init() { proto.RegisterFile("google/api/backend.proto", fileDescriptor_backend_98db65a00dbdbb78) }
+func init() { proto.RegisterFile("google/api/backend.proto", fileDescriptor_backend_bb737a5d3bcbecd6) }
 
-var fileDescriptor_backend_98db65a00dbdbb78 = []byte{
+var fileDescriptor_backend_bb737a5d3bcbecd6 = []byte{
 	// 246 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x54, 0x90, 0xb1, 0x4e, 0xc3, 0x30,
 	0x10, 0x86, 0xe5, 0xb6, 0x50, 0xb8, 0x54, 0x0c, 0x59, 0xb0, 0x98, 0x42, 0xa7, 0x2c, 0x38, 0x12,

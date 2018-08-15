@@ -58,7 +58,7 @@ func (x WorkflowMetadata_State) String() string {
 	return proto.EnumName(WorkflowMetadata_State_name, int32(x))
 }
 func (WorkflowMetadata_State) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_workflow_templates_fe5253a1eb957933, []int{5, 0}
+	return fileDescriptor_workflow_templates_592be9b1ef908c67, []int{5, 0}
 }
 
 // The workflow node state.
@@ -101,7 +101,7 @@ func (x WorkflowNode_NodeState) String() string {
 	return proto.EnumName(WorkflowNode_NodeState_name, int32(x))
 }
 func (WorkflowNode_NodeState) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_workflow_templates_fe5253a1eb957933, []int{8, 0}
+	return fileDescriptor_workflow_templates_592be9b1ef908c67, []int{8, 0}
 }
 
 // A Cloud Dataproc workflow template resource.
@@ -111,11 +111,11 @@ type WorkflowTemplate struct {
 	// The id must contain only letters (a-z, A-Z), numbers (0-9),
 	// underscores (_), and hyphens (-). Cannot begin or end with underscore
 	// or hyphen. Must consist of between 3 and 50 characters.
-	Id string `protobuf:"bytes,2,opt,name=id" json:"id,omitempty"`
+	Id string `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
 	// Output only. The "resource name" of the template, as described
 	// in https://cloud.google.com/apis/design/resource_names of the form
 	// `projects/{project_id}/regions/{region}/workflowTemplates/{template_id}`
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// Optional. Used to perform a consistent read-modify-write.
 	//
 	// This field should be left blank for a `CreateWorkflowTemplate` request. It
@@ -125,11 +125,11 @@ type WorkflowTemplate struct {
 	// the current template with the `version` field filled in with the
 	// current server version. The user updates other fields in the template,
 	// then returns it as part of the `UpdateWorkflowTemplate` request.
-	Version int32 `protobuf:"varint,3,opt,name=version" json:"version,omitempty"`
+	Version int32 `protobuf:"varint,3,opt,name=version,proto3" json:"version,omitempty"`
 	// Output only. The time template was created.
-	CreateTime *timestamp.Timestamp `protobuf:"bytes,4,opt,name=create_time,json=createTime" json:"create_time,omitempty"`
+	CreateTime *timestamp.Timestamp `protobuf:"bytes,4,opt,name=create_time,json=createTime,proto3" json:"create_time,omitempty"`
 	// Output only. The time template was last updated.
-	UpdateTime *timestamp.Timestamp `protobuf:"bytes,5,opt,name=update_time,json=updateTime" json:"update_time,omitempty"`
+	UpdateTime *timestamp.Timestamp `protobuf:"bytes,5,opt,name=update_time,json=updateTime,proto3" json:"update_time,omitempty"`
 	// Optional. The labels to associate with this template. These labels
 	// will be propagated to all jobs and clusters created by the workflow
 	// instance.
@@ -142,11 +142,11 @@ type WorkflowTemplate struct {
 	// [RFC 1035](https://www.ietf.org/rfc/rfc1035.txt).
 	//
 	// No more than 32 labels can be associated with a template.
-	Labels map[string]string `protobuf:"bytes,6,rep,name=labels" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Labels map[string]string `protobuf:"bytes,6,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	// Required. WorkflowTemplate scheduling information.
-	Placement *WorkflowTemplatePlacement `protobuf:"bytes,7,opt,name=placement" json:"placement,omitempty"`
+	Placement *WorkflowTemplatePlacement `protobuf:"bytes,7,opt,name=placement,proto3" json:"placement,omitempty"`
 	// Required. The Directed Acyclic Graph of Jobs to submit.
-	Jobs                 []*OrderedJob `protobuf:"bytes,8,rep,name=jobs" json:"jobs,omitempty"`
+	Jobs                 []*OrderedJob `protobuf:"bytes,8,rep,name=jobs,proto3" json:"jobs,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}      `json:"-"`
 	XXX_unrecognized     []byte        `json:"-"`
 	XXX_sizecache        int32         `json:"-"`
@@ -156,7 +156,7 @@ func (m *WorkflowTemplate) Reset()         { *m = WorkflowTemplate{} }
 func (m *WorkflowTemplate) String() string { return proto.CompactTextString(m) }
 func (*WorkflowTemplate) ProtoMessage()    {}
 func (*WorkflowTemplate) Descriptor() ([]byte, []int) {
-	return fileDescriptor_workflow_templates_fe5253a1eb957933, []int{0}
+	return fileDescriptor_workflow_templates_592be9b1ef908c67, []int{0}
 }
 func (m *WorkflowTemplate) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_WorkflowTemplate.Unmarshal(m, b)
@@ -252,7 +252,7 @@ func (m *WorkflowTemplatePlacement) Reset()         { *m = WorkflowTemplatePlace
 func (m *WorkflowTemplatePlacement) String() string { return proto.CompactTextString(m) }
 func (*WorkflowTemplatePlacement) ProtoMessage()    {}
 func (*WorkflowTemplatePlacement) Descriptor() ([]byte, []int) {
-	return fileDescriptor_workflow_templates_fe5253a1eb957933, []int{1}
+	return fileDescriptor_workflow_templates_592be9b1ef908c67, []int{1}
 }
 func (m *WorkflowTemplatePlacement) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_WorkflowTemplatePlacement.Unmarshal(m, b)
@@ -277,13 +277,15 @@ type isWorkflowTemplatePlacement_Placement interface {
 }
 
 type WorkflowTemplatePlacement_ManagedCluster struct {
-	ManagedCluster *ManagedCluster `protobuf:"bytes,1,opt,name=managed_cluster,json=managedCluster,oneof"`
-}
-type WorkflowTemplatePlacement_ClusterSelector struct {
-	ClusterSelector *ClusterSelector `protobuf:"bytes,2,opt,name=cluster_selector,json=clusterSelector,oneof"`
+	ManagedCluster *ManagedCluster `protobuf:"bytes,1,opt,name=managed_cluster,json=managedCluster,proto3,oneof"`
 }
 
-func (*WorkflowTemplatePlacement_ManagedCluster) isWorkflowTemplatePlacement_Placement()  {}
+type WorkflowTemplatePlacement_ClusterSelector struct {
+	ClusterSelector *ClusterSelector `protobuf:"bytes,2,opt,name=cluster_selector,json=clusterSelector,proto3,oneof"`
+}
+
+func (*WorkflowTemplatePlacement_ManagedCluster) isWorkflowTemplatePlacement_Placement() {}
+
 func (*WorkflowTemplatePlacement_ClusterSelector) isWorkflowTemplatePlacement_Placement() {}
 
 func (m *WorkflowTemplatePlacement) GetPlacement() isWorkflowTemplatePlacement_Placement {
@@ -389,9 +391,9 @@ type ManagedCluster struct {
 	// The name must contain only lower-case letters (a-z), numbers (0-9),
 	// and hyphens (-). Must begin with a letter. Cannot begin or end with
 	// hyphen. Must consist of between 2 and 35 characters.
-	ClusterName string `protobuf:"bytes,2,opt,name=cluster_name,json=clusterName" json:"cluster_name,omitempty"`
+	ClusterName string `protobuf:"bytes,2,opt,name=cluster_name,json=clusterName,proto3" json:"cluster_name,omitempty"`
 	// Required. The cluster configuration.
-	Config *ClusterConfig `protobuf:"bytes,3,opt,name=config" json:"config,omitempty"`
+	Config *ClusterConfig `protobuf:"bytes,3,opt,name=config,proto3" json:"config,omitempty"`
 	// Optional. The labels to associate with this cluster.
 	//
 	// Label keys must be between 1 and 63 characters long, and must conform to
@@ -402,7 +404,7 @@ type ManagedCluster struct {
 	// the following PCRE regular expression: [\p{Ll}\p{Lo}\p{N}_-]{0,63}
 	//
 	// No more than 32 labels can be associated with a given cluster.
-	Labels               map[string]string `protobuf:"bytes,4,rep,name=labels" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Labels               map[string]string `protobuf:"bytes,4,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
 	XXX_unrecognized     []byte            `json:"-"`
 	XXX_sizecache        int32             `json:"-"`
@@ -412,7 +414,7 @@ func (m *ManagedCluster) Reset()         { *m = ManagedCluster{} }
 func (m *ManagedCluster) String() string { return proto.CompactTextString(m) }
 func (*ManagedCluster) ProtoMessage()    {}
 func (*ManagedCluster) Descriptor() ([]byte, []int) {
-	return fileDescriptor_workflow_templates_fe5253a1eb957933, []int{2}
+	return fileDescriptor_workflow_templates_592be9b1ef908c67, []int{2}
 }
 func (m *ManagedCluster) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ManagedCluster.Unmarshal(m, b)
@@ -460,10 +462,10 @@ type ClusterSelector struct {
 	//
 	// If unspecified, the zone of the first cluster matching the selector
 	// is used.
-	Zone string `protobuf:"bytes,1,opt,name=zone" json:"zone,omitempty"`
+	Zone string `protobuf:"bytes,1,opt,name=zone,proto3" json:"zone,omitempty"`
 	// Required. The cluster labels. Cluster must have all labels
 	// to match.
-	ClusterLabels        map[string]string `protobuf:"bytes,2,rep,name=cluster_labels,json=clusterLabels" json:"cluster_labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	ClusterLabels        map[string]string `protobuf:"bytes,2,rep,name=cluster_labels,json=clusterLabels,proto3" json:"cluster_labels,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
 	XXX_unrecognized     []byte            `json:"-"`
 	XXX_sizecache        int32             `json:"-"`
@@ -473,7 +475,7 @@ func (m *ClusterSelector) Reset()         { *m = ClusterSelector{} }
 func (m *ClusterSelector) String() string { return proto.CompactTextString(m) }
 func (*ClusterSelector) ProtoMessage()    {}
 func (*ClusterSelector) Descriptor() ([]byte, []int) {
-	return fileDescriptor_workflow_templates_fe5253a1eb957933, []int{3}
+	return fileDescriptor_workflow_templates_592be9b1ef908c67, []int{3}
 }
 func (m *ClusterSelector) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ClusterSelector.Unmarshal(m, b)
@@ -520,7 +522,7 @@ type OrderedJob struct {
 	// The id must contain only letters (a-z, A-Z), numbers (0-9),
 	// underscores (_), and hyphens (-). Cannot begin or end with underscore
 	// or hyphen. Must consist of between 3 and 50 characters.
-	StepId string `protobuf:"bytes,1,opt,name=step_id,json=stepId" json:"step_id,omitempty"`
+	StepId string `protobuf:"bytes,1,opt,name=step_id,json=stepId,proto3" json:"step_id,omitempty"`
 	// Required. The job definition.
 	//
 	// Types that are valid to be assigned to JobType:
@@ -541,12 +543,12 @@ type OrderedJob struct {
 	// the following regular expression: [\p{Ll}\p{Lo}\p{N}_-]{0,63}
 	//
 	// No more than 32 labels can be associated with a given job.
-	Labels map[string]string `protobuf:"bytes,8,rep,name=labels" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Labels map[string]string `protobuf:"bytes,8,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	// Optional. Job scheduling configuration.
-	Scheduling *JobScheduling `protobuf:"bytes,9,opt,name=scheduling" json:"scheduling,omitempty"`
+	Scheduling *JobScheduling `protobuf:"bytes,9,opt,name=scheduling,proto3" json:"scheduling,omitempty"`
 	// Optional. The optional list of prerequisite job step_ids.
 	// If not specified, the job will start at the beginning of workflow.
-	PrerequisiteStepIds  []string `protobuf:"bytes,10,rep,name=prerequisite_step_ids,json=prerequisiteStepIds" json:"prerequisite_step_ids,omitempty"`
+	PrerequisiteStepIds  []string `protobuf:"bytes,10,rep,name=prerequisite_step_ids,json=prerequisiteStepIds,proto3" json:"prerequisite_step_ids,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -556,7 +558,7 @@ func (m *OrderedJob) Reset()         { *m = OrderedJob{} }
 func (m *OrderedJob) String() string { return proto.CompactTextString(m) }
 func (*OrderedJob) ProtoMessage()    {}
 func (*OrderedJob) Descriptor() ([]byte, []int) {
-	return fileDescriptor_workflow_templates_fe5253a1eb957933, []int{4}
+	return fileDescriptor_workflow_templates_592be9b1ef908c67, []int{4}
 }
 func (m *OrderedJob) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_OrderedJob.Unmarshal(m, b)
@@ -576,34 +578,51 @@ func (m *OrderedJob) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_OrderedJob proto.InternalMessageInfo
 
+func (m *OrderedJob) GetStepId() string {
+	if m != nil {
+		return m.StepId
+	}
+	return ""
+}
+
 type isOrderedJob_JobType interface {
 	isOrderedJob_JobType()
 }
 
 type OrderedJob_HadoopJob struct {
-	HadoopJob *HadoopJob `protobuf:"bytes,2,opt,name=hadoop_job,json=hadoopJob,oneof"`
-}
-type OrderedJob_SparkJob struct {
-	SparkJob *SparkJob `protobuf:"bytes,3,opt,name=spark_job,json=sparkJob,oneof"`
-}
-type OrderedJob_PysparkJob struct {
-	PysparkJob *PySparkJob `protobuf:"bytes,4,opt,name=pyspark_job,json=pysparkJob,oneof"`
-}
-type OrderedJob_HiveJob struct {
-	HiveJob *HiveJob `protobuf:"bytes,5,opt,name=hive_job,json=hiveJob,oneof"`
-}
-type OrderedJob_PigJob struct {
-	PigJob *PigJob `protobuf:"bytes,6,opt,name=pig_job,json=pigJob,oneof"`
-}
-type OrderedJob_SparkSqlJob struct {
-	SparkSqlJob *SparkSqlJob `protobuf:"bytes,7,opt,name=spark_sql_job,json=sparkSqlJob,oneof"`
+	HadoopJob *HadoopJob `protobuf:"bytes,2,opt,name=hadoop_job,json=hadoopJob,proto3,oneof"`
 }
 
-func (*OrderedJob_HadoopJob) isOrderedJob_JobType()   {}
-func (*OrderedJob_SparkJob) isOrderedJob_JobType()    {}
-func (*OrderedJob_PysparkJob) isOrderedJob_JobType()  {}
-func (*OrderedJob_HiveJob) isOrderedJob_JobType()     {}
-func (*OrderedJob_PigJob) isOrderedJob_JobType()      {}
+type OrderedJob_SparkJob struct {
+	SparkJob *SparkJob `protobuf:"bytes,3,opt,name=spark_job,json=sparkJob,proto3,oneof"`
+}
+
+type OrderedJob_PysparkJob struct {
+	PysparkJob *PySparkJob `protobuf:"bytes,4,opt,name=pyspark_job,json=pysparkJob,proto3,oneof"`
+}
+
+type OrderedJob_HiveJob struct {
+	HiveJob *HiveJob `protobuf:"bytes,5,opt,name=hive_job,json=hiveJob,proto3,oneof"`
+}
+
+type OrderedJob_PigJob struct {
+	PigJob *PigJob `protobuf:"bytes,6,opt,name=pig_job,json=pigJob,proto3,oneof"`
+}
+
+type OrderedJob_SparkSqlJob struct {
+	SparkSqlJob *SparkSqlJob `protobuf:"bytes,7,opt,name=spark_sql_job,json=sparkSqlJob,proto3,oneof"`
+}
+
+func (*OrderedJob_HadoopJob) isOrderedJob_JobType() {}
+
+func (*OrderedJob_SparkJob) isOrderedJob_JobType() {}
+
+func (*OrderedJob_PysparkJob) isOrderedJob_JobType() {}
+
+func (*OrderedJob_HiveJob) isOrderedJob_JobType() {}
+
+func (*OrderedJob_PigJob) isOrderedJob_JobType() {}
+
 func (*OrderedJob_SparkSqlJob) isOrderedJob_JobType() {}
 
 func (m *OrderedJob) GetJobType() isOrderedJob_JobType {
@@ -611,13 +630,6 @@ func (m *OrderedJob) GetJobType() isOrderedJob_JobType {
 		return m.JobType
 	}
 	return nil
-}
-
-func (m *OrderedJob) GetStepId() string {
-	if m != nil {
-		return m.StepId
-	}
-	return ""
 }
 
 func (m *OrderedJob) GetHadoopJob() *HadoopJob {
@@ -836,22 +848,22 @@ func _OrderedJob_OneofSizer(msg proto.Message) (n int) {
 // A Cloud Dataproc workflow template resource.
 type WorkflowMetadata struct {
 	// Output only. The "resource name" of the template.
-	Template string `protobuf:"bytes,1,opt,name=template" json:"template,omitempty"`
+	Template string `protobuf:"bytes,1,opt,name=template,proto3" json:"template,omitempty"`
 	// Output only. The version of template at the time of
 	// workflow instantiation.
-	Version int32 `protobuf:"varint,2,opt,name=version" json:"version,omitempty"`
+	Version int32 `protobuf:"varint,2,opt,name=version,proto3" json:"version,omitempty"`
 	// Output only. The create cluster operation metadata.
-	CreateCluster *ClusterOperation `protobuf:"bytes,3,opt,name=create_cluster,json=createCluster" json:"create_cluster,omitempty"`
+	CreateCluster *ClusterOperation `protobuf:"bytes,3,opt,name=create_cluster,json=createCluster,proto3" json:"create_cluster,omitempty"`
 	// Output only. The workflow graph.
-	Graph *WorkflowGraph `protobuf:"bytes,4,opt,name=graph" json:"graph,omitempty"`
+	Graph *WorkflowGraph `protobuf:"bytes,4,opt,name=graph,proto3" json:"graph,omitempty"`
 	// Output only. The delete cluster operation metadata.
-	DeleteCluster *ClusterOperation `protobuf:"bytes,5,opt,name=delete_cluster,json=deleteCluster" json:"delete_cluster,omitempty"`
+	DeleteCluster *ClusterOperation `protobuf:"bytes,5,opt,name=delete_cluster,json=deleteCluster,proto3" json:"delete_cluster,omitempty"`
 	// Output only. The workflow state.
-	State WorkflowMetadata_State `protobuf:"varint,6,opt,name=state,enum=google.cloud.dataproc.v1beta2.WorkflowMetadata_State" json:"state,omitempty"`
+	State WorkflowMetadata_State `protobuf:"varint,6,opt,name=state,proto3,enum=google.cloud.dataproc.v1beta2.WorkflowMetadata_State" json:"state,omitempty"`
 	// Output only. The name of the managed cluster.
-	ClusterName string `protobuf:"bytes,7,opt,name=cluster_name,json=clusterName" json:"cluster_name,omitempty"`
+	ClusterName string `protobuf:"bytes,7,opt,name=cluster_name,json=clusterName,proto3" json:"cluster_name,omitempty"`
 	// Map from parameter names to values that were used for those parameters.
-	Parameters           map[string]string `protobuf:"bytes,8,rep,name=parameters" json:"parameters,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Parameters           map[string]string `protobuf:"bytes,8,rep,name=parameters,proto3" json:"parameters,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
 	XXX_unrecognized     []byte            `json:"-"`
 	XXX_sizecache        int32             `json:"-"`
@@ -861,7 +873,7 @@ func (m *WorkflowMetadata) Reset()         { *m = WorkflowMetadata{} }
 func (m *WorkflowMetadata) String() string { return proto.CompactTextString(m) }
 func (*WorkflowMetadata) ProtoMessage()    {}
 func (*WorkflowMetadata) Descriptor() ([]byte, []int) {
-	return fileDescriptor_workflow_templates_fe5253a1eb957933, []int{5}
+	return fileDescriptor_workflow_templates_592be9b1ef908c67, []int{5}
 }
 func (m *WorkflowMetadata) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_WorkflowMetadata.Unmarshal(m, b)
@@ -940,11 +952,11 @@ func (m *WorkflowMetadata) GetParameters() map[string]string {
 // The cluster operation triggered by a workflow.
 type ClusterOperation struct {
 	// Output only. The id of the cluster operation.
-	OperationId string `protobuf:"bytes,1,opt,name=operation_id,json=operationId" json:"operation_id,omitempty"`
+	OperationId string `protobuf:"bytes,1,opt,name=operation_id,json=operationId,proto3" json:"operation_id,omitempty"`
 	// Output only. Error, if operation failed.
-	Error string `protobuf:"bytes,2,opt,name=error" json:"error,omitempty"`
+	Error string `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
 	// Output only. Indicates the operation is done.
-	Done                 bool     `protobuf:"varint,3,opt,name=done" json:"done,omitempty"`
+	Done                 bool     `protobuf:"varint,3,opt,name=done,proto3" json:"done,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -954,7 +966,7 @@ func (m *ClusterOperation) Reset()         { *m = ClusterOperation{} }
 func (m *ClusterOperation) String() string { return proto.CompactTextString(m) }
 func (*ClusterOperation) ProtoMessage()    {}
 func (*ClusterOperation) Descriptor() ([]byte, []int) {
-	return fileDescriptor_workflow_templates_fe5253a1eb957933, []int{6}
+	return fileDescriptor_workflow_templates_592be9b1ef908c67, []int{6}
 }
 func (m *ClusterOperation) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ClusterOperation.Unmarshal(m, b)
@@ -998,7 +1010,7 @@ func (m *ClusterOperation) GetDone() bool {
 // The workflow graph.
 type WorkflowGraph struct {
 	// Output only. The workflow nodes.
-	Nodes                []*WorkflowNode `protobuf:"bytes,1,rep,name=nodes" json:"nodes,omitempty"`
+	Nodes                []*WorkflowNode `protobuf:"bytes,1,rep,name=nodes,proto3" json:"nodes,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
 	XXX_unrecognized     []byte          `json:"-"`
 	XXX_sizecache        int32           `json:"-"`
@@ -1008,7 +1020,7 @@ func (m *WorkflowGraph) Reset()         { *m = WorkflowGraph{} }
 func (m *WorkflowGraph) String() string { return proto.CompactTextString(m) }
 func (*WorkflowGraph) ProtoMessage()    {}
 func (*WorkflowGraph) Descriptor() ([]byte, []int) {
-	return fileDescriptor_workflow_templates_fe5253a1eb957933, []int{7}
+	return fileDescriptor_workflow_templates_592be9b1ef908c67, []int{7}
 }
 func (m *WorkflowGraph) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_WorkflowGraph.Unmarshal(m, b)
@@ -1038,15 +1050,15 @@ func (m *WorkflowGraph) GetNodes() []*WorkflowNode {
 // The workflow node.
 type WorkflowNode struct {
 	// Output only. The name of the node.
-	StepId string `protobuf:"bytes,1,opt,name=step_id,json=stepId" json:"step_id,omitempty"`
+	StepId string `protobuf:"bytes,1,opt,name=step_id,json=stepId,proto3" json:"step_id,omitempty"`
 	// Output only. Node's prerequisite nodes.
-	PrerequisiteStepIds []string `protobuf:"bytes,2,rep,name=prerequisite_step_ids,json=prerequisiteStepIds" json:"prerequisite_step_ids,omitempty"`
+	PrerequisiteStepIds []string `protobuf:"bytes,2,rep,name=prerequisite_step_ids,json=prerequisiteStepIds,proto3" json:"prerequisite_step_ids,omitempty"`
 	// Output only. The job id; populated after the node enters RUNNING state.
-	JobId string `protobuf:"bytes,3,opt,name=job_id,json=jobId" json:"job_id,omitempty"`
+	JobId string `protobuf:"bytes,3,opt,name=job_id,json=jobId,proto3" json:"job_id,omitempty"`
 	// Output only. The node state.
-	State WorkflowNode_NodeState `protobuf:"varint,5,opt,name=state,enum=google.cloud.dataproc.v1beta2.WorkflowNode_NodeState" json:"state,omitempty"`
+	State WorkflowNode_NodeState `protobuf:"varint,5,opt,name=state,proto3,enum=google.cloud.dataproc.v1beta2.WorkflowNode_NodeState" json:"state,omitempty"`
 	// Output only. The error detail.
-	Error                string   `protobuf:"bytes,6,opt,name=error" json:"error,omitempty"`
+	Error                string   `protobuf:"bytes,6,opt,name=error,proto3" json:"error,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1056,7 +1068,7 @@ func (m *WorkflowNode) Reset()         { *m = WorkflowNode{} }
 func (m *WorkflowNode) String() string { return proto.CompactTextString(m) }
 func (*WorkflowNode) ProtoMessage()    {}
 func (*WorkflowNode) Descriptor() ([]byte, []int) {
-	return fileDescriptor_workflow_templates_fe5253a1eb957933, []int{8}
+	return fileDescriptor_workflow_templates_592be9b1ef908c67, []int{8}
 }
 func (m *WorkflowNode) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_WorkflowNode.Unmarshal(m, b)
@@ -1116,9 +1128,9 @@ type CreateWorkflowTemplateRequest struct {
 	// Required. The "resource name" of the region, as described
 	// in https://cloud.google.com/apis/design/resource_names of the form
 	// `projects/{project_id}/regions/{region}`
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// Required. The Dataproc workflow template to create.
-	Template             *WorkflowTemplate `protobuf:"bytes,2,opt,name=template" json:"template,omitempty"`
+	Template             *WorkflowTemplate `protobuf:"bytes,2,opt,name=template,proto3" json:"template,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
 	XXX_unrecognized     []byte            `json:"-"`
 	XXX_sizecache        int32             `json:"-"`
@@ -1128,7 +1140,7 @@ func (m *CreateWorkflowTemplateRequest) Reset()         { *m = CreateWorkflowTem
 func (m *CreateWorkflowTemplateRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateWorkflowTemplateRequest) ProtoMessage()    {}
 func (*CreateWorkflowTemplateRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_workflow_templates_fe5253a1eb957933, []int{9}
+	return fileDescriptor_workflow_templates_592be9b1ef908c67, []int{9}
 }
 func (m *CreateWorkflowTemplateRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CreateWorkflowTemplateRequest.Unmarshal(m, b)
@@ -1167,12 +1179,12 @@ type GetWorkflowTemplateRequest struct {
 	// Required. The "resource name" of the workflow template, as described
 	// in https://cloud.google.com/apis/design/resource_names of the form
 	// `projects/{project_id}/regions/{region}/workflowTemplates/{template_id}`
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// Optional. The version of workflow template to retrieve. Only previously
 	// instatiated versions can be retrieved.
 	//
 	// If unspecified, retrieves the current version.
-	Version              int32    `protobuf:"varint,2,opt,name=version" json:"version,omitempty"`
+	Version              int32    `protobuf:"varint,2,opt,name=version,proto3" json:"version,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1182,7 +1194,7 @@ func (m *GetWorkflowTemplateRequest) Reset()         { *m = GetWorkflowTemplateR
 func (m *GetWorkflowTemplateRequest) String() string { return proto.CompactTextString(m) }
 func (*GetWorkflowTemplateRequest) ProtoMessage()    {}
 func (*GetWorkflowTemplateRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_workflow_templates_fe5253a1eb957933, []int{10}
+	return fileDescriptor_workflow_templates_592be9b1ef908c67, []int{10}
 }
 func (m *GetWorkflowTemplateRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetWorkflowTemplateRequest.Unmarshal(m, b)
@@ -1221,14 +1233,14 @@ type InstantiateWorkflowTemplateRequest struct {
 	// Required. The "resource name" of the workflow template, as described
 	// in https://cloud.google.com/apis/design/resource_names of the form
 	// `projects/{project_id}/regions/{region}/workflowTemplates/{template_id}`
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// Optional. The version of workflow template to instantiate. If specified,
 	// the workflow will be instantiated only if the current version of
 	// the workflow template has the supplied version.
 	//
 	// This option cannot be used to instantiate a previous version of
 	// workflow template.
-	Version int32 `protobuf:"varint,2,opt,name=version" json:"version,omitempty"`
+	Version int32 `protobuf:"varint,2,opt,name=version,proto3" json:"version,omitempty"`
 	// Optional. A tag that prevents multiple concurrent workflow
 	// instances with the same tag from running. This mitigates risk of
 	// concurrent instances started due to retries.
@@ -1238,7 +1250,7 @@ type InstantiateWorkflowTemplateRequest struct {
 	//
 	// The tag must contain only letters (a-z, A-Z), numbers (0-9),
 	// underscores (_), and hyphens (-). The maximum length is 40 characters.
-	InstanceId           string   `protobuf:"bytes,3,opt,name=instance_id,json=instanceId" json:"instance_id,omitempty"`
+	InstanceId           string   `protobuf:"bytes,3,opt,name=instance_id,json=instanceId,proto3" json:"instance_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1248,7 +1260,7 @@ func (m *InstantiateWorkflowTemplateRequest) Reset()         { *m = InstantiateW
 func (m *InstantiateWorkflowTemplateRequest) String() string { return proto.CompactTextString(m) }
 func (*InstantiateWorkflowTemplateRequest) ProtoMessage()    {}
 func (*InstantiateWorkflowTemplateRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_workflow_templates_fe5253a1eb957933, []int{11}
+	return fileDescriptor_workflow_templates_592be9b1ef908c67, []int{11}
 }
 func (m *InstantiateWorkflowTemplateRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_InstantiateWorkflowTemplateRequest.Unmarshal(m, b)
@@ -1294,9 +1306,9 @@ type InstantiateInlineWorkflowTemplateRequest struct {
 	// Required. The "resource name" of the workflow template region, as described
 	// in https://cloud.google.com/apis/design/resource_names of the form
 	// `projects/{project_id}/regions/{region}`
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// Required. The workflow template to instantiate.
-	Template *WorkflowTemplate `protobuf:"bytes,2,opt,name=template" json:"template,omitempty"`
+	Template *WorkflowTemplate `protobuf:"bytes,2,opt,name=template,proto3" json:"template,omitempty"`
 	// Optional. A tag that prevents multiple concurrent workflow
 	// instances with the same tag from running. This mitigates risk of
 	// concurrent instances started due to retries.
@@ -1306,7 +1318,7 @@ type InstantiateInlineWorkflowTemplateRequest struct {
 	//
 	// The tag must contain only letters (a-z, A-Z), numbers (0-9),
 	// underscores (_), and hyphens (-). The maximum length is 40 characters.
-	InstanceId           string   `protobuf:"bytes,3,opt,name=instance_id,json=instanceId" json:"instance_id,omitempty"`
+	InstanceId           string   `protobuf:"bytes,3,opt,name=instance_id,json=instanceId,proto3" json:"instance_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1318,7 +1330,7 @@ func (m *InstantiateInlineWorkflowTemplateRequest) Reset() {
 func (m *InstantiateInlineWorkflowTemplateRequest) String() string { return proto.CompactTextString(m) }
 func (*InstantiateInlineWorkflowTemplateRequest) ProtoMessage()    {}
 func (*InstantiateInlineWorkflowTemplateRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_workflow_templates_fe5253a1eb957933, []int{12}
+	return fileDescriptor_workflow_templates_592be9b1ef908c67, []int{12}
 }
 func (m *InstantiateInlineWorkflowTemplateRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_InstantiateInlineWorkflowTemplateRequest.Unmarshal(m, b)
@@ -1364,7 +1376,7 @@ type UpdateWorkflowTemplateRequest struct {
 	// Required. The updated workflow template.
 	//
 	// The `template.version` field must match the current version.
-	Template             *WorkflowTemplate `protobuf:"bytes,1,opt,name=template" json:"template,omitempty"`
+	Template             *WorkflowTemplate `protobuf:"bytes,1,opt,name=template,proto3" json:"template,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
 	XXX_unrecognized     []byte            `json:"-"`
 	XXX_sizecache        int32             `json:"-"`
@@ -1374,7 +1386,7 @@ func (m *UpdateWorkflowTemplateRequest) Reset()         { *m = UpdateWorkflowTem
 func (m *UpdateWorkflowTemplateRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateWorkflowTemplateRequest) ProtoMessage()    {}
 func (*UpdateWorkflowTemplateRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_workflow_templates_fe5253a1eb957933, []int{13}
+	return fileDescriptor_workflow_templates_592be9b1ef908c67, []int{13}
 }
 func (m *UpdateWorkflowTemplateRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UpdateWorkflowTemplateRequest.Unmarshal(m, b)
@@ -1406,12 +1418,12 @@ type ListWorkflowTemplatesRequest struct {
 	// Required. The "resource name" of the region, as described
 	// in https://cloud.google.com/apis/design/resource_names of the form
 	// `projects/{project_id}/regions/{region}`
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// Optional. The maximum number of results to return in each response.
-	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize" json:"page_size,omitempty"`
+	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// Optional. The page token, returned by a previous call, to request the
 	// next page of results.
-	PageToken            string   `protobuf:"bytes,3,opt,name=page_token,json=pageToken" json:"page_token,omitempty"`
+	PageToken            string   `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1421,7 +1433,7 @@ func (m *ListWorkflowTemplatesRequest) Reset()         { *m = ListWorkflowTempla
 func (m *ListWorkflowTemplatesRequest) String() string { return proto.CompactTextString(m) }
 func (*ListWorkflowTemplatesRequest) ProtoMessage()    {}
 func (*ListWorkflowTemplatesRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_workflow_templates_fe5253a1eb957933, []int{14}
+	return fileDescriptor_workflow_templates_592be9b1ef908c67, []int{14}
 }
 func (m *ListWorkflowTemplatesRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListWorkflowTemplatesRequest.Unmarshal(m, b)
@@ -1465,11 +1477,11 @@ func (m *ListWorkflowTemplatesRequest) GetPageToken() string {
 // A response to a request to list workflow templates in a project.
 type ListWorkflowTemplatesResponse struct {
 	// Output only. WorkflowTemplates list.
-	Templates []*WorkflowTemplate `protobuf:"bytes,1,rep,name=templates" json:"templates,omitempty"`
+	Templates []*WorkflowTemplate `protobuf:"bytes,1,rep,name=templates,proto3" json:"templates,omitempty"`
 	// Output only. This token is included in the response if there are more results
 	// to fetch. To fetch additional results, provide this value as the
 	// page_token in a subsequent <code>ListWorkflowTemplatesRequest</code>.
-	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken" json:"next_page_token,omitempty"`
+	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1479,7 +1491,7 @@ func (m *ListWorkflowTemplatesResponse) Reset()         { *m = ListWorkflowTempl
 func (m *ListWorkflowTemplatesResponse) String() string { return proto.CompactTextString(m) }
 func (*ListWorkflowTemplatesResponse) ProtoMessage()    {}
 func (*ListWorkflowTemplatesResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_workflow_templates_fe5253a1eb957933, []int{15}
+	return fileDescriptor_workflow_templates_592be9b1ef908c67, []int{15}
 }
 func (m *ListWorkflowTemplatesResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListWorkflowTemplatesResponse.Unmarshal(m, b)
@@ -1520,11 +1532,11 @@ type DeleteWorkflowTemplateRequest struct {
 	// Required. The "resource name" of the workflow template, as described
 	// in https://cloud.google.com/apis/design/resource_names of the form
 	// `projects/{project_id}/regions/{region}/workflowTemplates/{template_id}`
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// Optional. The version of workflow template to delete. If specified,
 	// will only delete the template if the current server version matches
 	// specified version.
-	Version              int32    `protobuf:"varint,2,opt,name=version" json:"version,omitempty"`
+	Version              int32    `protobuf:"varint,2,opt,name=version,proto3" json:"version,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1534,7 +1546,7 @@ func (m *DeleteWorkflowTemplateRequest) Reset()         { *m = DeleteWorkflowTem
 func (m *DeleteWorkflowTemplateRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteWorkflowTemplateRequest) ProtoMessage()    {}
 func (*DeleteWorkflowTemplateRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_workflow_templates_fe5253a1eb957933, []int{16}
+	return fileDescriptor_workflow_templates_592be9b1ef908c67, []int{16}
 }
 func (m *DeleteWorkflowTemplateRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeleteWorkflowTemplateRequest.Unmarshal(m, b)
@@ -1736,8 +1748,7 @@ func (c *workflowTemplateServiceClient) DeleteWorkflowTemplate(ctx context.Conte
 	return out, nil
 }
 
-// Server API for WorkflowTemplateService service
-
+// WorkflowTemplateServiceServer is the server API for WorkflowTemplateService service.
 type WorkflowTemplateServiceServer interface {
 	// Creates new workflow template.
 	CreateWorkflowTemplate(context.Context, *CreateWorkflowTemplateRequest) (*WorkflowTemplate, error)
@@ -1965,10 +1976,10 @@ var _WorkflowTemplateService_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("google/cloud/dataproc/v1beta2/workflow_templates.proto", fileDescriptor_workflow_templates_fe5253a1eb957933)
+	proto.RegisterFile("google/cloud/dataproc/v1beta2/workflow_templates.proto", fileDescriptor_workflow_templates_592be9b1ef908c67)
 }
 
-var fileDescriptor_workflow_templates_fe5253a1eb957933 = []byte{
+var fileDescriptor_workflow_templates_592be9b1ef908c67 = []byte{
 	// 1794 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xc4, 0x59, 0xcf, 0x6f, 0xe3, 0x58,
 	0x1d, 0x1f, 0xbb, 0x4d, 0x9a, 0x7c, 0x33, 0x6d, 0xa3, 0xb7, 0x4c, 0x27, 0x64, 0xb6, 0xda, 0x8e,

@@ -34,7 +34,7 @@ type GetGroupRequest struct {
 	// this project.
 	//
 	// Example: <code>projects/my-project-123/groups/my-group</code>
-	GroupName            string   `protobuf:"bytes,1,opt,name=group_name,json=groupName" json:"group_name,omitempty"`
+	GroupName            string   `protobuf:"bytes,1,opt,name=group_name,json=groupName,proto3" json:"group_name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -44,7 +44,7 @@ func (m *GetGroupRequest) Reset()         { *m = GetGroupRequest{} }
 func (m *GetGroupRequest) String() string { return proto.CompactTextString(m) }
 func (*GetGroupRequest) ProtoMessage()    {}
 func (*GetGroupRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_error_group_service_683fcc432bc8c120, []int{0}
+	return fileDescriptor_error_group_service_bac55f35b4462f66, []int{0}
 }
 func (m *GetGroupRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetGroupRequest.Unmarshal(m, b)
@@ -74,7 +74,7 @@ func (m *GetGroupRequest) GetGroupName() string {
 // A request to replace the existing data for the given group.
 type UpdateGroupRequest struct {
 	// [Required] The group which replaces the resource on the server.
-	Group                *ErrorGroup `protobuf:"bytes,1,opt,name=group" json:"group,omitempty"`
+	Group                *ErrorGroup `protobuf:"bytes,1,opt,name=group,proto3" json:"group,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
 	XXX_unrecognized     []byte      `json:"-"`
 	XXX_sizecache        int32       `json:"-"`
@@ -84,7 +84,7 @@ func (m *UpdateGroupRequest) Reset()         { *m = UpdateGroupRequest{} }
 func (m *UpdateGroupRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateGroupRequest) ProtoMessage()    {}
 func (*UpdateGroupRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_error_group_service_683fcc432bc8c120, []int{1}
+	return fileDescriptor_error_group_service_bac55f35b4462f66, []int{1}
 }
 func (m *UpdateGroupRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UpdateGroupRequest.Unmarshal(m, b)
@@ -161,8 +161,7 @@ func (c *errorGroupServiceClient) UpdateGroup(ctx context.Context, in *UpdateGro
 	return out, nil
 }
 
-// Server API for ErrorGroupService service
-
+// ErrorGroupServiceServer is the server API for ErrorGroupService service.
 type ErrorGroupServiceServer interface {
 	// Get the specified group.
 	GetGroup(context.Context, *GetGroupRequest) (*ErrorGroup, error)
@@ -229,10 +228,10 @@ var _ErrorGroupService_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("google/devtools/clouderrorreporting/v1beta1/error_group_service.proto", fileDescriptor_error_group_service_683fcc432bc8c120)
+	proto.RegisterFile("google/devtools/clouderrorreporting/v1beta1/error_group_service.proto", fileDescriptor_error_group_service_bac55f35b4462f66)
 }
 
-var fileDescriptor_error_group_service_683fcc432bc8c120 = []byte{
+var fileDescriptor_error_group_service_bac55f35b4462f66 = []byte{
 	// 398 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x92, 0xcb, 0x4a, 0x23, 0x41,
 	0x14, 0x86, 0xe9, 0x0c, 0x33, 0x4c, 0x2a, 0x8b, 0x61, 0x6a, 0x31, 0x0c, 0xcd, 0x0c, 0x48, 0xdc,

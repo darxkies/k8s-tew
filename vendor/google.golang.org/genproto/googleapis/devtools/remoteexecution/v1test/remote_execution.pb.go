@@ -61,7 +61,7 @@ func (x ExecuteOperationMetadata_Stage) String() string {
 	return proto.EnumName(ExecuteOperationMetadata_Stage_name, int32(x))
 }
 func (ExecuteOperationMetadata_Stage) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_remote_execution_25e31fef95c58b43, []int{14, 0}
+	return fileDescriptor_remote_execution_2379da344af471dd, []int{14, 0}
 }
 
 // An `Action` captures all the information about an execution which is required
@@ -87,7 +87,7 @@ type Action struct {
 	// The digest of the [Command][google.devtools.remoteexecution.v1test.Command]
 	// to run, which MUST be present in the
 	// [ContentAddressableStorage][google.devtools.remoteexecution.v1test.ContentAddressableStorage].
-	CommandDigest *Digest `protobuf:"bytes,1,opt,name=command_digest,json=commandDigest" json:"command_digest,omitempty"`
+	CommandDigest *Digest `protobuf:"bytes,1,opt,name=command_digest,json=commandDigest,proto3" json:"command_digest,omitempty"`
 	// The digest of the root
 	// [Directory][google.devtools.remoteexecution.v1test.Directory] for the input
 	// files. The files in the directory tree are available in the correct
@@ -95,7 +95,7 @@ type Action struct {
 	// directory, as well as every subdirectory and content blob referred to, MUST
 	// be in the
 	// [ContentAddressableStorage][google.devtools.remoteexecution.v1test.ContentAddressableStorage].
-	InputRootDigest *Digest `protobuf:"bytes,2,opt,name=input_root_digest,json=inputRootDigest" json:"input_root_digest,omitempty"`
+	InputRootDigest *Digest `protobuf:"bytes,2,opt,name=input_root_digest,json=inputRootDigest,proto3" json:"input_root_digest,omitempty"`
 	// A list of the output files that the client expects to retrieve from the
 	// action. Only the listed files, as well as directories listed in
 	// `output_directories`, will be returned to the client as output.
@@ -110,7 +110,7 @@ type Action struct {
 	// In order to ensure consistent hashing of the same Action, the output paths
 	// MUST be sorted lexicographically by code point (or, equivalently, by UTF-8
 	// bytes).
-	OutputFiles []string `protobuf:"bytes,3,rep,name=output_files,json=outputFiles" json:"output_files,omitempty"`
+	OutputFiles []string `protobuf:"bytes,3,rep,name=output_files,json=outputFiles,proto3" json:"output_files,omitempty"`
 	// A list of the output directories that the client expects to retrieve from
 	// the action. Only the contents of the indicated directories (recursively
 	// including the contents of their subdirectories) will be
@@ -128,12 +128,12 @@ type Action struct {
 	// In order to ensure consistent hashing of the same Action, the output paths
 	// MUST be sorted lexicographically by code point (or, equivalently, by UTF-8
 	// bytes).
-	OutputDirectories []string `protobuf:"bytes,4,rep,name=output_directories,json=outputDirectories" json:"output_directories,omitempty"`
+	OutputDirectories []string `protobuf:"bytes,4,rep,name=output_directories,json=outputDirectories,proto3" json:"output_directories,omitempty"`
 	// The platform requirements for the execution environment. The server MAY
 	// choose to execute the action on any worker satisfying the requirements, so
 	// the client SHOULD ensure that running the action on any such worker will
 	// have the same result.
-	Platform *Platform `protobuf:"bytes,5,opt,name=platform" json:"platform,omitempty"`
+	Platform *Platform `protobuf:"bytes,5,opt,name=platform,proto3" json:"platform,omitempty"`
 	// A timeout after which the execution should be killed. If the timeout is
 	// absent, then the client is specifying that the execution should continue
 	// as long as the server will let it. The server SHOULD impose a timeout if
@@ -150,9 +150,9 @@ type Action struct {
 	// timeout is too short. By encoding it directly in the `Action`, a lower
 	// timeout will result in a cache miss and the execution timeout will fail
 	// immediately, rather than whenever the cache entry gets evicted.
-	Timeout *duration.Duration `protobuf:"bytes,6,opt,name=timeout" json:"timeout,omitempty"`
+	Timeout *duration.Duration `protobuf:"bytes,6,opt,name=timeout,proto3" json:"timeout,omitempty"`
 	// If true, then the `Action`'s result cannot be cached.
-	DoNotCache           bool     `protobuf:"varint,7,opt,name=do_not_cache,json=doNotCache" json:"do_not_cache,omitempty"`
+	DoNotCache           bool     `protobuf:"varint,7,opt,name=do_not_cache,json=doNotCache,proto3" json:"do_not_cache,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -162,7 +162,7 @@ func (m *Action) Reset()         { *m = Action{} }
 func (m *Action) String() string { return proto.CompactTextString(m) }
 func (*Action) ProtoMessage()    {}
 func (*Action) Descriptor() ([]byte, []int) {
-	return fileDescriptor_remote_execution_25e31fef95c58b43, []int{0}
+	return fileDescriptor_remote_execution_2379da344af471dd, []int{0}
 }
 func (m *Action) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Action.Unmarshal(m, b)
@@ -243,7 +243,7 @@ type Command struct {
 	// evaluated with respect to the input root, or an absolute path.
 	//
 	// The working directory will always be the input root.
-	Arguments []string `protobuf:"bytes,1,rep,name=arguments" json:"arguments,omitempty"`
+	Arguments []string `protobuf:"bytes,1,rep,name=arguments,proto3" json:"arguments,omitempty"`
 	// The environment variables to set when running the program. The worker may
 	// provide its own default environment variables; these defaults can be
 	// overridden using this field. Additional variables can also be specified.
@@ -251,7 +251,7 @@ type Command struct {
 	// In order to ensure that equivalent `Command`s always hash to the same
 	// value, the environment variables MUST be lexicographically sorted by name.
 	// Sorting of strings is done by code point, equivalently, by the UTF-8 bytes.
-	EnvironmentVariables []*Command_EnvironmentVariable `protobuf:"bytes,2,rep,name=environment_variables,json=environmentVariables" json:"environment_variables,omitempty"`
+	EnvironmentVariables []*Command_EnvironmentVariable `protobuf:"bytes,2,rep,name=environment_variables,json=environmentVariables,proto3" json:"environment_variables,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                       `json:"-"`
 	XXX_unrecognized     []byte                         `json:"-"`
 	XXX_sizecache        int32                          `json:"-"`
@@ -261,7 +261,7 @@ func (m *Command) Reset()         { *m = Command{} }
 func (m *Command) String() string { return proto.CompactTextString(m) }
 func (*Command) ProtoMessage()    {}
 func (*Command) Descriptor() ([]byte, []int) {
-	return fileDescriptor_remote_execution_25e31fef95c58b43, []int{1}
+	return fileDescriptor_remote_execution_2379da344af471dd, []int{1}
 }
 func (m *Command) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Command.Unmarshal(m, b)
@@ -299,9 +299,9 @@ func (m *Command) GetEnvironmentVariables() []*Command_EnvironmentVariable {
 // environment.
 type Command_EnvironmentVariable struct {
 	// The variable name.
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// The variable value.
-	Value                string   `protobuf:"bytes,2,opt,name=value" json:"value,omitempty"`
+	Value                string   `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -311,7 +311,7 @@ func (m *Command_EnvironmentVariable) Reset()         { *m = Command_Environment
 func (m *Command_EnvironmentVariable) String() string { return proto.CompactTextString(m) }
 func (*Command_EnvironmentVariable) ProtoMessage()    {}
 func (*Command_EnvironmentVariable) Descriptor() ([]byte, []int) {
-	return fileDescriptor_remote_execution_25e31fef95c58b43, []int{1, 0}
+	return fileDescriptor_remote_execution_2379da344af471dd, []int{1, 0}
 }
 func (m *Command_EnvironmentVariable) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Command_EnvironmentVariable.Unmarshal(m, b)
@@ -358,7 +358,7 @@ type Platform struct {
 	// equivalent `Platform`s always hash to the same value, the properties MUST
 	// be lexicographically sorted by name, and then by value. Sorting of strings
 	// is done by code point, equivalently, by the UTF-8 bytes.
-	Properties           []*Platform_Property `protobuf:"bytes,1,rep,name=properties" json:"properties,omitempty"`
+	Properties           []*Platform_Property `protobuf:"bytes,1,rep,name=properties,proto3" json:"properties,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
 	XXX_unrecognized     []byte               `json:"-"`
 	XXX_sizecache        int32                `json:"-"`
@@ -368,7 +368,7 @@ func (m *Platform) Reset()         { *m = Platform{} }
 func (m *Platform) String() string { return proto.CompactTextString(m) }
 func (*Platform) ProtoMessage()    {}
 func (*Platform) Descriptor() ([]byte, []int) {
-	return fileDescriptor_remote_execution_25e31fef95c58b43, []int{2}
+	return fileDescriptor_remote_execution_2379da344af471dd, []int{2}
 }
 func (m *Platform) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Platform.Unmarshal(m, b)
@@ -414,9 +414,9 @@ func (m *Platform) GetProperties() []*Platform_Property {
 // files available to the worker.
 type Platform_Property struct {
 	// The property name.
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// The property value.
-	Value                string   `protobuf:"bytes,2,opt,name=value" json:"value,omitempty"`
+	Value                string   `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -426,7 +426,7 @@ func (m *Platform_Property) Reset()         { *m = Platform_Property{} }
 func (m *Platform_Property) String() string { return proto.CompactTextString(m) }
 func (*Platform_Property) ProtoMessage()    {}
 func (*Platform_Property) Descriptor() ([]byte, []int) {
-	return fileDescriptor_remote_execution_25e31fef95c58b43, []int{2, 0}
+	return fileDescriptor_remote_execution_2379da344af471dd, []int{2, 0}
 }
 func (m *Platform_Property) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Platform_Property.Unmarshal(m, b)
@@ -522,9 +522,9 @@ func (m *Platform_Property) GetValue() string {
 // ```
 type Directory struct {
 	// The files in the directory.
-	Files []*FileNode `protobuf:"bytes,1,rep,name=files" json:"files,omitempty"`
+	Files []*FileNode `protobuf:"bytes,1,rep,name=files,proto3" json:"files,omitempty"`
 	// The subdirectories in the directory.
-	Directories          []*DirectoryNode `protobuf:"bytes,2,rep,name=directories" json:"directories,omitempty"`
+	Directories          []*DirectoryNode `protobuf:"bytes,2,rep,name=directories,proto3" json:"directories,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
 	XXX_unrecognized     []byte           `json:"-"`
 	XXX_sizecache        int32            `json:"-"`
@@ -534,7 +534,7 @@ func (m *Directory) Reset()         { *m = Directory{} }
 func (m *Directory) String() string { return proto.CompactTextString(m) }
 func (*Directory) ProtoMessage()    {}
 func (*Directory) Descriptor() ([]byte, []int) {
-	return fileDescriptor_remote_execution_25e31fef95c58b43, []int{3}
+	return fileDescriptor_remote_execution_2379da344af471dd, []int{3}
 }
 func (m *Directory) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Directory.Unmarshal(m, b)
@@ -571,11 +571,11 @@ func (m *Directory) GetDirectories() []*DirectoryNode {
 // A `FileNode` represents a single file and associated metadata.
 type FileNode struct {
 	// The name of the file.
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// The digest of the file's content.
-	Digest *Digest `protobuf:"bytes,2,opt,name=digest" json:"digest,omitempty"`
+	Digest *Digest `protobuf:"bytes,2,opt,name=digest,proto3" json:"digest,omitempty"`
 	// True if file is executable, false otherwise.
-	IsExecutable         bool     `protobuf:"varint,4,opt,name=is_executable,json=isExecutable" json:"is_executable,omitempty"`
+	IsExecutable         bool     `protobuf:"varint,4,opt,name=is_executable,json=isExecutable,proto3" json:"is_executable,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -585,7 +585,7 @@ func (m *FileNode) Reset()         { *m = FileNode{} }
 func (m *FileNode) String() string { return proto.CompactTextString(m) }
 func (*FileNode) ProtoMessage()    {}
 func (*FileNode) Descriptor() ([]byte, []int) {
-	return fileDescriptor_remote_execution_25e31fef95c58b43, []int{4}
+	return fileDescriptor_remote_execution_2379da344af471dd, []int{4}
 }
 func (m *FileNode) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_FileNode.Unmarshal(m, b)
@@ -631,12 +631,12 @@ func (m *FileNode) GetIsExecutable() bool {
 // a `Directory` and its associated metadata.
 type DirectoryNode struct {
 	// The name of the directory.
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// The digest of the
 	// [Directory][google.devtools.remoteexecution.v1test.Directory] object
 	// represented. See [Digest][google.devtools.remoteexecution.v1test.Digest]
 	// for information about how to take the digest of a proto message.
-	Digest               *Digest  `protobuf:"bytes,2,opt,name=digest" json:"digest,omitempty"`
+	Digest               *Digest  `protobuf:"bytes,2,opt,name=digest,proto3" json:"digest,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -646,7 +646,7 @@ func (m *DirectoryNode) Reset()         { *m = DirectoryNode{} }
 func (m *DirectoryNode) String() string { return proto.CompactTextString(m) }
 func (*DirectoryNode) ProtoMessage()    {}
 func (*DirectoryNode) Descriptor() ([]byte, []int) {
-	return fileDescriptor_remote_execution_25e31fef95c58b43, []int{5}
+	return fileDescriptor_remote_execution_2379da344af471dd, []int{5}
 }
 func (m *DirectoryNode) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DirectoryNode.Unmarshal(m, b)
@@ -714,9 +714,9 @@ func (m *DirectoryNode) GetDigest() *Digest {
 type Digest struct {
 	// The hash. In the case of SHA-256, it will always be a lowercase hex string
 	// exactly 64 characters long.
-	Hash string `protobuf:"bytes,1,opt,name=hash" json:"hash,omitempty"`
+	Hash string `protobuf:"bytes,1,opt,name=hash,proto3" json:"hash,omitempty"`
 	// The size of the blob, in bytes.
-	SizeBytes            int64    `protobuf:"varint,2,opt,name=size_bytes,json=sizeBytes" json:"size_bytes,omitempty"`
+	SizeBytes            int64    `protobuf:"varint,2,opt,name=size_bytes,json=sizeBytes,proto3" json:"size_bytes,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -726,7 +726,7 @@ func (m *Digest) Reset()         { *m = Digest{} }
 func (m *Digest) String() string { return proto.CompactTextString(m) }
 func (*Digest) ProtoMessage()    {}
 func (*Digest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_remote_execution_25e31fef95c58b43, []int{6}
+	return fileDescriptor_remote_execution_2379da344af471dd, []int{6}
 }
 func (m *Digest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Digest.Unmarshal(m, b)
@@ -771,7 +771,7 @@ type ActionResult struct {
 	// directory where a regular file is expected or vice versa, then that output
 	// will be omitted from the list. The server is free to arrange the output
 	// list as desired; clients MUST NOT assume that the output list is sorted.
-	OutputFiles []*OutputFile `protobuf:"bytes,2,rep,name=output_files,json=outputFiles" json:"output_files,omitempty"`
+	OutputFiles []*OutputFile `protobuf:"bytes,2,rep,name=output_files,json=outputFiles,proto3" json:"output_files,omitempty"`
 	// The output directories of the action. For each output directory requested
 	// in the `output_directories` field of the Action, if the corresponding
 	// directory existed after the action completed, a single entry will be
@@ -830,9 +830,9 @@ type ActionResult struct {
 	//   }
 	// }
 	// ```
-	OutputDirectories []*OutputDirectory `protobuf:"bytes,3,rep,name=output_directories,json=outputDirectories" json:"output_directories,omitempty"`
+	OutputDirectories []*OutputDirectory `protobuf:"bytes,3,rep,name=output_directories,json=outputDirectories,proto3" json:"output_directories,omitempty"`
 	// The exit code of the command.
-	ExitCode int32 `protobuf:"varint,4,opt,name=exit_code,json=exitCode" json:"exit_code,omitempty"`
+	ExitCode int32 `protobuf:"varint,4,opt,name=exit_code,json=exitCode,proto3" json:"exit_code,omitempty"`
 	// The standard output buffer of the action. The server will determine, based
 	// on the size of the buffer, whether to return it in raw form or to return
 	// a digest in `stdout_digest` that points to the buffer. If neither is set,
@@ -844,7 +844,7 @@ type ActionResult struct {
 	// can be retrieved from the
 	// [ContentAddressableStorage][google.devtools.remoteexecution.v1test.ContentAddressableStorage].
 	// See `stdout_raw` for when this will be set.
-	StdoutDigest *Digest `protobuf:"bytes,6,opt,name=stdout_digest,json=stdoutDigest" json:"stdout_digest,omitempty"`
+	StdoutDigest *Digest `protobuf:"bytes,6,opt,name=stdout_digest,json=stdoutDigest,proto3" json:"stdout_digest,omitempty"`
 	// The standard error buffer of the action. The server will determine, based
 	// on the size of the buffer, whether to return it in raw form or to return
 	// a digest in `stderr_digest` that points to the buffer. If neither is set,
@@ -856,7 +856,7 @@ type ActionResult struct {
 	// can be retrieved from the
 	// [ContentAddressableStorage][google.devtools.remoteexecution.v1test.ContentAddressableStorage].
 	// See `stderr_raw` for when this will be set.
-	StderrDigest         *Digest  `protobuf:"bytes,8,opt,name=stderr_digest,json=stderrDigest" json:"stderr_digest,omitempty"`
+	StderrDigest         *Digest  `protobuf:"bytes,8,opt,name=stderr_digest,json=stderrDigest,proto3" json:"stderr_digest,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -866,7 +866,7 @@ func (m *ActionResult) Reset()         { *m = ActionResult{} }
 func (m *ActionResult) String() string { return proto.CompactTextString(m) }
 func (*ActionResult) ProtoMessage()    {}
 func (*ActionResult) Descriptor() ([]byte, []int) {
-	return fileDescriptor_remote_execution_25e31fef95c58b43, []int{7}
+	return fileDescriptor_remote_execution_2379da344af471dd, []int{7}
 }
 func (m *ActionResult) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ActionResult.Unmarshal(m, b)
@@ -945,9 +945,9 @@ type OutputFile struct {
 	// The full path of the file relative to the input root, including the
 	// filename. The path separator is a forward slash `/`. Since this is a
 	// relative path, it MUST NOT begin with a leading forward slash.
-	Path string `protobuf:"bytes,1,opt,name=path" json:"path,omitempty"`
+	Path string `protobuf:"bytes,1,opt,name=path,proto3" json:"path,omitempty"`
 	// The digest of the file's content.
-	Digest *Digest `protobuf:"bytes,2,opt,name=digest" json:"digest,omitempty"`
+	Digest *Digest `protobuf:"bytes,2,opt,name=digest,proto3" json:"digest,omitempty"`
 	// The raw content of the file.
 	//
 	// This field may be used by the server to provide the content of a file
@@ -960,7 +960,7 @@ type OutputFile struct {
 	// and always be prepared to retrieve it via `digest`.
 	Content []byte `protobuf:"bytes,3,opt,name=content,proto3" json:"content,omitempty"`
 	// True if file is executable, false otherwise.
-	IsExecutable         bool     `protobuf:"varint,4,opt,name=is_executable,json=isExecutable" json:"is_executable,omitempty"`
+	IsExecutable         bool     `protobuf:"varint,4,opt,name=is_executable,json=isExecutable,proto3" json:"is_executable,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -970,7 +970,7 @@ func (m *OutputFile) Reset()         { *m = OutputFile{} }
 func (m *OutputFile) String() string { return proto.CompactTextString(m) }
 func (*OutputFile) ProtoMessage()    {}
 func (*OutputFile) Descriptor() ([]byte, []int) {
-	return fileDescriptor_remote_execution_25e31fef95c58b43, []int{8}
+	return fileDescriptor_remote_execution_2379da344af471dd, []int{8}
 }
 func (m *OutputFile) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_OutputFile.Unmarshal(m, b)
@@ -1023,12 +1023,12 @@ func (m *OutputFile) GetIsExecutable() bool {
 // single directory Merkle tree, compressed into one message.
 type Tree struct {
 	// The root directory in the tree.
-	Root *Directory `protobuf:"bytes,1,opt,name=root" json:"root,omitempty"`
+	Root *Directory `protobuf:"bytes,1,opt,name=root,proto3" json:"root,omitempty"`
 	// All the child directories: the directories referred to by the root and,
 	// recursively, all its children. In order to reconstruct the directory tree,
 	// the client must take the digests of each of the child directories and then
 	// build up a tree starting from the `root`.
-	Children             []*Directory `protobuf:"bytes,2,rep,name=children" json:"children,omitempty"`
+	Children             []*Directory `protobuf:"bytes,2,rep,name=children,proto3" json:"children,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
 	XXX_unrecognized     []byte       `json:"-"`
 	XXX_sizecache        int32        `json:"-"`
@@ -1038,7 +1038,7 @@ func (m *Tree) Reset()         { *m = Tree{} }
 func (m *Tree) String() string { return proto.CompactTextString(m) }
 func (*Tree) ProtoMessage()    {}
 func (*Tree) Descriptor() ([]byte, []int) {
-	return fileDescriptor_remote_execution_25e31fef95c58b43, []int{9}
+	return fileDescriptor_remote_execution_2379da344af471dd, []int{9}
 }
 func (m *Tree) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Tree.Unmarshal(m, b)
@@ -1079,13 +1079,13 @@ type OutputDirectory struct {
 	// separator is a forward slash `/`. Since this is a relative path, it MUST
 	// NOT begin with a leading forward slash. The empty string value is allowed,
 	// and it denotes the entire working directory.
-	Path string `protobuf:"bytes,1,opt,name=path" json:"path,omitempty"`
+	Path string `protobuf:"bytes,1,opt,name=path,proto3" json:"path,omitempty"`
 	// DEPRECATED: This field is deprecated and should no longer be used.
-	Digest *Digest `protobuf:"bytes,2,opt,name=digest" json:"digest,omitempty"`
+	Digest *Digest `protobuf:"bytes,2,opt,name=digest,proto3" json:"digest,omitempty"`
 	// The digest of the encoded
 	// [Tree][google.devtools.remoteexecution.v1test.Tree] proto containing the
 	// directory's contents.
-	TreeDigest           *Digest  `protobuf:"bytes,3,opt,name=tree_digest,json=treeDigest" json:"tree_digest,omitempty"`
+	TreeDigest           *Digest  `protobuf:"bytes,3,opt,name=tree_digest,json=treeDigest,proto3" json:"tree_digest,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1095,7 +1095,7 @@ func (m *OutputDirectory) Reset()         { *m = OutputDirectory{} }
 func (m *OutputDirectory) String() string { return proto.CompactTextString(m) }
 func (*OutputDirectory) ProtoMessage()    {}
 func (*OutputDirectory) Descriptor() ([]byte, []int) {
-	return fileDescriptor_remote_execution_25e31fef95c58b43, []int{10}
+	return fileDescriptor_remote_execution_2379da344af471dd, []int{10}
 }
 func (m *OutputDirectory) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_OutputDirectory.Unmarshal(m, b)
@@ -1144,19 +1144,19 @@ type ExecuteRequest struct {
 	// storage, caches, etc.). The server MAY require use of this field to select
 	// between them in an implementation-defined fashion, otherwise it can be
 	// omitted.
-	InstanceName string `protobuf:"bytes,1,opt,name=instance_name,json=instanceName" json:"instance_name,omitempty"`
+	InstanceName string `protobuf:"bytes,1,opt,name=instance_name,json=instanceName,proto3" json:"instance_name,omitempty"`
 	// The action to be performed.
-	Action *Action `protobuf:"bytes,2,opt,name=action" json:"action,omitempty"`
+	Action *Action `protobuf:"bytes,2,opt,name=action,proto3" json:"action,omitempty"`
 	// If true, the action will be executed anew even if its result was already
 	// present in the cache. If false, the result may be served from the
 	// [ActionCache][google.devtools.remoteexecution.v1test.ActionCache].
-	SkipCacheLookup bool `protobuf:"varint,3,opt,name=skip_cache_lookup,json=skipCacheLookup" json:"skip_cache_lookup,omitempty"`
+	SkipCacheLookup bool `protobuf:"varint,3,opt,name=skip_cache_lookup,json=skipCacheLookup,proto3" json:"skip_cache_lookup,omitempty"`
 	// DEPRECATED: This field should be ignored by clients and servers and will be
 	// removed.
-	TotalInputFileCount int32 `protobuf:"varint,4,opt,name=total_input_file_count,json=totalInputFileCount" json:"total_input_file_count,omitempty"`
+	TotalInputFileCount int32 `protobuf:"varint,4,opt,name=total_input_file_count,json=totalInputFileCount,proto3" json:"total_input_file_count,omitempty"`
 	// DEPRECATED: This field should be ignored by clients and servers and will be
 	// removed.
-	TotalInputFileBytes  int64    `protobuf:"varint,5,opt,name=total_input_file_bytes,json=totalInputFileBytes" json:"total_input_file_bytes,omitempty"`
+	TotalInputFileBytes  int64    `protobuf:"varint,5,opt,name=total_input_file_bytes,json=totalInputFileBytes,proto3" json:"total_input_file_bytes,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1166,7 +1166,7 @@ func (m *ExecuteRequest) Reset()         { *m = ExecuteRequest{} }
 func (m *ExecuteRequest) String() string { return proto.CompactTextString(m) }
 func (*ExecuteRequest) ProtoMessage()    {}
 func (*ExecuteRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_remote_execution_25e31fef95c58b43, []int{11}
+	return fileDescriptor_remote_execution_2379da344af471dd, []int{11}
 }
 func (m *ExecuteRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ExecuteRequest.Unmarshal(m, b)
@@ -1224,13 +1224,13 @@ func (m *ExecuteRequest) GetTotalInputFileBytes() int64 {
 // A `LogFile` is a log stored in the CAS.
 type LogFile struct {
 	// The digest of the log contents.
-	Digest *Digest `protobuf:"bytes,1,opt,name=digest" json:"digest,omitempty"`
+	Digest *Digest `protobuf:"bytes,1,opt,name=digest,proto3" json:"digest,omitempty"`
 	// This is a hint as to the purpose of the log, and is set to true if the log
 	// is human-readable text that can be usefully displayed to a user, and false
 	// otherwise. For instance, if a command-line client wishes to print the
 	// server logs to the terminal for a failed action, this allows it to avoid
 	// displaying a binary file.
-	HumanReadable        bool     `protobuf:"varint,2,opt,name=human_readable,json=humanReadable" json:"human_readable,omitempty"`
+	HumanReadable        bool     `protobuf:"varint,2,opt,name=human_readable,json=humanReadable,proto3" json:"human_readable,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1240,7 +1240,7 @@ func (m *LogFile) Reset()         { *m = LogFile{} }
 func (m *LogFile) String() string { return proto.CompactTextString(m) }
 func (*LogFile) ProtoMessage()    {}
 func (*LogFile) Descriptor() ([]byte, []int) {
-	return fileDescriptor_remote_execution_25e31fef95c58b43, []int{12}
+	return fileDescriptor_remote_execution_2379da344af471dd, []int{12}
 }
 func (m *LogFile) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_LogFile.Unmarshal(m, b)
@@ -1281,9 +1281,9 @@ func (m *LogFile) GetHumanReadable() bool {
 // [Operation][google.longrunning.Operation].
 type ExecuteResponse struct {
 	// The result of the action.
-	Result *ActionResult `protobuf:"bytes,1,opt,name=result" json:"result,omitempty"`
+	Result *ActionResult `protobuf:"bytes,1,opt,name=result,proto3" json:"result,omitempty"`
 	// True if the result was served from cache, false if it was executed.
-	CachedResult bool `protobuf:"varint,2,opt,name=cached_result,json=cachedResult" json:"cached_result,omitempty"`
+	CachedResult bool `protobuf:"varint,2,opt,name=cached_result,json=cachedResult,proto3" json:"cached_result,omitempty"`
 	// If the status has a code other than `OK`, it indicates that the action did
 	// not finish execution. For example, if the operation times out during
 	// execution, the status will have a `DEADLINE_EXCEEDED` code. Servers MUST
@@ -1294,7 +1294,7 @@ type ExecuteResponse struct {
 	// For an error status, the `result` field is optional; the server may
 	// populate the output-, stdout-, and stderr-related fields if it has any
 	// information available, such as the stdout and stderr of a timed-out action.
-	Status *status.Status `protobuf:"bytes,3,opt,name=status" json:"status,omitempty"`
+	Status *status.Status `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`
 	// An optional list of additional log outputs the server wishes to provide. A
 	// server can use this to return execution-specific logs however it wishes.
 	// This is intended primarily to make it easier for users to debug issues that
@@ -1302,7 +1302,7 @@ type ExecuteResponse struct {
 	// worker executing the action or by providing logs from the worker's setup
 	// phase. The keys SHOULD be human readable so that a client can display them
 	// to a user.
-	ServerLogs           map[string]*LogFile `protobuf:"bytes,4,rep,name=server_logs,json=serverLogs" json:"server_logs,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	ServerLogs           map[string]*LogFile `protobuf:"bytes,4,rep,name=server_logs,json=serverLogs,proto3" json:"server_logs,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	XXX_NoUnkeyedLiteral struct{}            `json:"-"`
 	XXX_unrecognized     []byte              `json:"-"`
 	XXX_sizecache        int32               `json:"-"`
@@ -1312,7 +1312,7 @@ func (m *ExecuteResponse) Reset()         { *m = ExecuteResponse{} }
 func (m *ExecuteResponse) String() string { return proto.CompactTextString(m) }
 func (*ExecuteResponse) ProtoMessage()    {}
 func (*ExecuteResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_remote_execution_25e31fef95c58b43, []int{13}
+	return fileDescriptor_remote_execution_2379da344af471dd, []int{13}
 }
 func (m *ExecuteResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ExecuteResponse.Unmarshal(m, b)
@@ -1366,18 +1366,18 @@ func (m *ExecuteResponse) GetServerLogs() map[string]*LogFile {
 // field][google.longrunning.Operation.response] of the
 // [Operation][google.longrunning.Operation].
 type ExecuteOperationMetadata struct {
-	Stage ExecuteOperationMetadata_Stage `protobuf:"varint,1,opt,name=stage,enum=google.devtools.remoteexecution.v1test.ExecuteOperationMetadata_Stage" json:"stage,omitempty"`
+	Stage ExecuteOperationMetadata_Stage `protobuf:"varint,1,opt,name=stage,proto3,enum=google.devtools.remoteexecution.v1test.ExecuteOperationMetadata_Stage" json:"stage,omitempty"`
 	// The digest of the [Action][google.devtools.remoteexecution.v1test.Action]
 	// being executed.
-	ActionDigest *Digest `protobuf:"bytes,2,opt,name=action_digest,json=actionDigest" json:"action_digest,omitempty"`
+	ActionDigest *Digest `protobuf:"bytes,2,opt,name=action_digest,json=actionDigest,proto3" json:"action_digest,omitempty"`
 	// If set, the client can use this name with
 	// [ByteStream.Read][google.bytestream.ByteStream.Read] to stream the
 	// standard output.
-	StdoutStreamName string `protobuf:"bytes,3,opt,name=stdout_stream_name,json=stdoutStreamName" json:"stdout_stream_name,omitempty"`
+	StdoutStreamName string `protobuf:"bytes,3,opt,name=stdout_stream_name,json=stdoutStreamName,proto3" json:"stdout_stream_name,omitempty"`
 	// If set, the client can use this name with
 	// [ByteStream.Read][google.bytestream.ByteStream.Read] to stream the
 	// standard error.
-	StderrStreamName     string   `protobuf:"bytes,4,opt,name=stderr_stream_name,json=stderrStreamName" json:"stderr_stream_name,omitempty"`
+	StderrStreamName     string   `protobuf:"bytes,4,opt,name=stderr_stream_name,json=stderrStreamName,proto3" json:"stderr_stream_name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1387,7 +1387,7 @@ func (m *ExecuteOperationMetadata) Reset()         { *m = ExecuteOperationMetada
 func (m *ExecuteOperationMetadata) String() string { return proto.CompactTextString(m) }
 func (*ExecuteOperationMetadata) ProtoMessage()    {}
 func (*ExecuteOperationMetadata) Descriptor() ([]byte, []int) {
-	return fileDescriptor_remote_execution_25e31fef95c58b43, []int{14}
+	return fileDescriptor_remote_execution_2379da344af471dd, []int{14}
 }
 func (m *ExecuteOperationMetadata) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ExecuteOperationMetadata.Unmarshal(m, b)
@@ -1443,10 +1443,10 @@ type GetActionResultRequest struct {
 	// storage, caches, etc.). The server MAY require use of this field to select
 	// between them in an implementation-defined fashion, otherwise it can be
 	// omitted.
-	InstanceName string `protobuf:"bytes,1,opt,name=instance_name,json=instanceName" json:"instance_name,omitempty"`
+	InstanceName string `protobuf:"bytes,1,opt,name=instance_name,json=instanceName,proto3" json:"instance_name,omitempty"`
 	// The digest of the [Action][google.devtools.remoteexecution.v1test.Action]
 	// whose result is requested.
-	ActionDigest         *Digest  `protobuf:"bytes,2,opt,name=action_digest,json=actionDigest" json:"action_digest,omitempty"`
+	ActionDigest         *Digest  `protobuf:"bytes,2,opt,name=action_digest,json=actionDigest,proto3" json:"action_digest,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1456,7 +1456,7 @@ func (m *GetActionResultRequest) Reset()         { *m = GetActionResultRequest{}
 func (m *GetActionResultRequest) String() string { return proto.CompactTextString(m) }
 func (*GetActionResultRequest) ProtoMessage()    {}
 func (*GetActionResultRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_remote_execution_25e31fef95c58b43, []int{15}
+	return fileDescriptor_remote_execution_2379da344af471dd, []int{15}
 }
 func (m *GetActionResultRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetActionResultRequest.Unmarshal(m, b)
@@ -1498,13 +1498,13 @@ type UpdateActionResultRequest struct {
 	// storage, caches, etc.). The server MAY require use of this field to select
 	// between them in an implementation-defined fashion, otherwise it can be
 	// omitted.
-	InstanceName string `protobuf:"bytes,1,opt,name=instance_name,json=instanceName" json:"instance_name,omitempty"`
+	InstanceName string `protobuf:"bytes,1,opt,name=instance_name,json=instanceName,proto3" json:"instance_name,omitempty"`
 	// The digest of the [Action][google.devtools.remoteexecution.v1test.Action]
 	// whose result is being uploaded.
-	ActionDigest *Digest `protobuf:"bytes,2,opt,name=action_digest,json=actionDigest" json:"action_digest,omitempty"`
+	ActionDigest *Digest `protobuf:"bytes,2,opt,name=action_digest,json=actionDigest,proto3" json:"action_digest,omitempty"`
 	// The [ActionResult][google.devtools.remoteexecution.v1test.ActionResult]
 	// to store in the cache.
-	ActionResult         *ActionResult `protobuf:"bytes,3,opt,name=action_result,json=actionResult" json:"action_result,omitempty"`
+	ActionResult         *ActionResult `protobuf:"bytes,3,opt,name=action_result,json=actionResult,proto3" json:"action_result,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}      `json:"-"`
 	XXX_unrecognized     []byte        `json:"-"`
 	XXX_sizecache        int32         `json:"-"`
@@ -1514,7 +1514,7 @@ func (m *UpdateActionResultRequest) Reset()         { *m = UpdateActionResultReq
 func (m *UpdateActionResultRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateActionResultRequest) ProtoMessage()    {}
 func (*UpdateActionResultRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_remote_execution_25e31fef95c58b43, []int{16}
+	return fileDescriptor_remote_execution_2379da344af471dd, []int{16}
 }
 func (m *UpdateActionResultRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UpdateActionResultRequest.Unmarshal(m, b)
@@ -1563,9 +1563,9 @@ type FindMissingBlobsRequest struct {
 	// storage, caches, etc.). The server MAY require use of this field to select
 	// between them in an implementation-defined fashion, otherwise it can be
 	// omitted.
-	InstanceName string `protobuf:"bytes,1,opt,name=instance_name,json=instanceName" json:"instance_name,omitempty"`
+	InstanceName string `protobuf:"bytes,1,opt,name=instance_name,json=instanceName,proto3" json:"instance_name,omitempty"`
 	// A list of the blobs to check.
-	BlobDigests          []*Digest `protobuf:"bytes,2,rep,name=blob_digests,json=blobDigests" json:"blob_digests,omitempty"`
+	BlobDigests          []*Digest `protobuf:"bytes,2,rep,name=blob_digests,json=blobDigests,proto3" json:"blob_digests,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
 	XXX_unrecognized     []byte    `json:"-"`
 	XXX_sizecache        int32     `json:"-"`
@@ -1575,7 +1575,7 @@ func (m *FindMissingBlobsRequest) Reset()         { *m = FindMissingBlobsRequest
 func (m *FindMissingBlobsRequest) String() string { return proto.CompactTextString(m) }
 func (*FindMissingBlobsRequest) ProtoMessage()    {}
 func (*FindMissingBlobsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_remote_execution_25e31fef95c58b43, []int{17}
+	return fileDescriptor_remote_execution_2379da344af471dd, []int{17}
 }
 func (m *FindMissingBlobsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_FindMissingBlobsRequest.Unmarshal(m, b)
@@ -1613,7 +1613,7 @@ func (m *FindMissingBlobsRequest) GetBlobDigests() []*Digest {
 // [ContentAddressableStorage.FindMissingBlobs][google.devtools.remoteexecution.v1test.ContentAddressableStorage.FindMissingBlobs].
 type FindMissingBlobsResponse struct {
 	// A list of the blobs requested *not* present in the storage.
-	MissingBlobDigests   []*Digest `protobuf:"bytes,2,rep,name=missing_blob_digests,json=missingBlobDigests" json:"missing_blob_digests,omitempty"`
+	MissingBlobDigests   []*Digest `protobuf:"bytes,2,rep,name=missing_blob_digests,json=missingBlobDigests,proto3" json:"missing_blob_digests,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
 	XXX_unrecognized     []byte    `json:"-"`
 	XXX_sizecache        int32     `json:"-"`
@@ -1623,7 +1623,7 @@ func (m *FindMissingBlobsResponse) Reset()         { *m = FindMissingBlobsRespon
 func (m *FindMissingBlobsResponse) String() string { return proto.CompactTextString(m) }
 func (*FindMissingBlobsResponse) ProtoMessage()    {}
 func (*FindMissingBlobsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_remote_execution_25e31fef95c58b43, []int{18}
+	return fileDescriptor_remote_execution_2379da344af471dd, []int{18}
 }
 func (m *FindMissingBlobsResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_FindMissingBlobsResponse.Unmarshal(m, b)
@@ -1654,7 +1654,7 @@ func (m *FindMissingBlobsResponse) GetMissingBlobDigests() []*Digest {
 // [ContentAddressableStorage.BatchUpdateBlobs][google.devtools.remoteexecution.v1test.ContentAddressableStorage.BatchUpdateBlobs].
 type UpdateBlobRequest struct {
 	// The digest of the blob. This MUST be the digest of `data`.
-	ContentDigest *Digest `protobuf:"bytes,1,opt,name=content_digest,json=contentDigest" json:"content_digest,omitempty"`
+	ContentDigest *Digest `protobuf:"bytes,1,opt,name=content_digest,json=contentDigest,proto3" json:"content_digest,omitempty"`
 	// The raw binary data.
 	Data                 []byte   `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -1666,7 +1666,7 @@ func (m *UpdateBlobRequest) Reset()         { *m = UpdateBlobRequest{} }
 func (m *UpdateBlobRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateBlobRequest) ProtoMessage()    {}
 func (*UpdateBlobRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_remote_execution_25e31fef95c58b43, []int{19}
+	return fileDescriptor_remote_execution_2379da344af471dd, []int{19}
 }
 func (m *UpdateBlobRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UpdateBlobRequest.Unmarshal(m, b)
@@ -1708,9 +1708,9 @@ type BatchUpdateBlobsRequest struct {
 	// storage, caches, etc.). The server MAY require use of this field to select
 	// between them in an implementation-defined fashion, otherwise it can be
 	// omitted.
-	InstanceName string `protobuf:"bytes,1,opt,name=instance_name,json=instanceName" json:"instance_name,omitempty"`
+	InstanceName string `protobuf:"bytes,1,opt,name=instance_name,json=instanceName,proto3" json:"instance_name,omitempty"`
 	// The individual upload requests.
-	Requests             []*UpdateBlobRequest `protobuf:"bytes,2,rep,name=requests" json:"requests,omitempty"`
+	Requests             []*UpdateBlobRequest `protobuf:"bytes,2,rep,name=requests,proto3" json:"requests,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
 	XXX_unrecognized     []byte               `json:"-"`
 	XXX_sizecache        int32                `json:"-"`
@@ -1720,7 +1720,7 @@ func (m *BatchUpdateBlobsRequest) Reset()         { *m = BatchUpdateBlobsRequest
 func (m *BatchUpdateBlobsRequest) String() string { return proto.CompactTextString(m) }
 func (*BatchUpdateBlobsRequest) ProtoMessage()    {}
 func (*BatchUpdateBlobsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_remote_execution_25e31fef95c58b43, []int{20}
+	return fileDescriptor_remote_execution_2379da344af471dd, []int{20}
 }
 func (m *BatchUpdateBlobsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_BatchUpdateBlobsRequest.Unmarshal(m, b)
@@ -1758,7 +1758,7 @@ func (m *BatchUpdateBlobsRequest) GetRequests() []*UpdateBlobRequest {
 // [ContentAddressableStorage.BatchUpdateBlobs][google.devtools.remoteexecution.v1test.ContentAddressableStorage.BatchUpdateBlobs].
 type BatchUpdateBlobsResponse struct {
 	// The responses to the requests.
-	Responses            []*BatchUpdateBlobsResponse_Response `protobuf:"bytes,1,rep,name=responses" json:"responses,omitempty"`
+	Responses            []*BatchUpdateBlobsResponse_Response `protobuf:"bytes,1,rep,name=responses,proto3" json:"responses,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                             `json:"-"`
 	XXX_unrecognized     []byte                               `json:"-"`
 	XXX_sizecache        int32                                `json:"-"`
@@ -1768,7 +1768,7 @@ func (m *BatchUpdateBlobsResponse) Reset()         { *m = BatchUpdateBlobsRespon
 func (m *BatchUpdateBlobsResponse) String() string { return proto.CompactTextString(m) }
 func (*BatchUpdateBlobsResponse) ProtoMessage()    {}
 func (*BatchUpdateBlobsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_remote_execution_25e31fef95c58b43, []int{21}
+	return fileDescriptor_remote_execution_2379da344af471dd, []int{21}
 }
 func (m *BatchUpdateBlobsResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_BatchUpdateBlobsResponse.Unmarshal(m, b)
@@ -1798,9 +1798,9 @@ func (m *BatchUpdateBlobsResponse) GetResponses() []*BatchUpdateBlobsResponse_Re
 // A response corresponding to a single blob that the client tried to upload.
 type BatchUpdateBlobsResponse_Response struct {
 	// The digest to which this response corresponds.
-	BlobDigest *Digest `protobuf:"bytes,1,opt,name=blob_digest,json=blobDigest" json:"blob_digest,omitempty"`
+	BlobDigest *Digest `protobuf:"bytes,1,opt,name=blob_digest,json=blobDigest,proto3" json:"blob_digest,omitempty"`
 	// The result of attempting to upload that blob.
-	Status               *status.Status `protobuf:"bytes,2,opt,name=status" json:"status,omitempty"`
+	Status               *status.Status `protobuf:"bytes,2,opt,name=status,proto3" json:"status,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
 	XXX_unrecognized     []byte         `json:"-"`
 	XXX_sizecache        int32          `json:"-"`
@@ -1810,7 +1810,7 @@ func (m *BatchUpdateBlobsResponse_Response) Reset()         { *m = BatchUpdateBl
 func (m *BatchUpdateBlobsResponse_Response) String() string { return proto.CompactTextString(m) }
 func (*BatchUpdateBlobsResponse_Response) ProtoMessage()    {}
 func (*BatchUpdateBlobsResponse_Response) Descriptor() ([]byte, []int) {
-	return fileDescriptor_remote_execution_25e31fef95c58b43, []int{21, 0}
+	return fileDescriptor_remote_execution_2379da344af471dd, []int{21, 0}
 }
 func (m *BatchUpdateBlobsResponse_Response) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_BatchUpdateBlobsResponse_Response.Unmarshal(m, b)
@@ -1852,21 +1852,21 @@ type GetTreeRequest struct {
 	// storage, caches, etc.). The server MAY require use of this field to select
 	// between them in an implementation-defined fashion, otherwise it can be
 	// omitted.
-	InstanceName string `protobuf:"bytes,1,opt,name=instance_name,json=instanceName" json:"instance_name,omitempty"`
+	InstanceName string `protobuf:"bytes,1,opt,name=instance_name,json=instanceName,proto3" json:"instance_name,omitempty"`
 	// The digest of the root, which must be an encoded
 	// [Directory][google.devtools.remoteexecution.v1test.Directory] message
 	// stored in the
 	// [ContentAddressableStorage][google.devtools.remoteexecution.v1test.ContentAddressableStorage].
-	RootDigest *Digest `protobuf:"bytes,2,opt,name=root_digest,json=rootDigest" json:"root_digest,omitempty"`
+	RootDigest *Digest `protobuf:"bytes,2,opt,name=root_digest,json=rootDigest,proto3" json:"root_digest,omitempty"`
 	// A maximum page size to request. If present, the server will request no more
 	// than this many items. Regardless of whether a page size is specified, the
 	// server may place its own limit on the number of items to be returned and
 	// require the client to retrieve more items using a subsequent request.
-	PageSize int32 `protobuf:"varint,3,opt,name=page_size,json=pageSize" json:"page_size,omitempty"`
+	PageSize int32 `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// A page token, which must be a value received in a previous
 	// [GetTreeResponse][google.devtools.remoteexecution.v1test.GetTreeResponse].
 	// If present, the server will use it to return the following page of results.
-	PageToken            string   `protobuf:"bytes,4,opt,name=page_token,json=pageToken" json:"page_token,omitempty"`
+	PageToken            string   `protobuf:"bytes,4,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1876,7 +1876,7 @@ func (m *GetTreeRequest) Reset()         { *m = GetTreeRequest{} }
 func (m *GetTreeRequest) String() string { return proto.CompactTextString(m) }
 func (*GetTreeRequest) ProtoMessage()    {}
 func (*GetTreeRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_remote_execution_25e31fef95c58b43, []int{22}
+	return fileDescriptor_remote_execution_2379da344af471dd, []int{22}
 }
 func (m *GetTreeRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetTreeRequest.Unmarshal(m, b)
@@ -1928,12 +1928,12 @@ func (m *GetTreeRequest) GetPageToken() string {
 // [ContentAddressableStorage.GetTree][google.devtools.remoteexecution.v1test.ContentAddressableStorage.GetTree].
 type GetTreeResponse struct {
 	// The directories descended from the requested root.
-	Directories []*Directory `protobuf:"bytes,1,rep,name=directories" json:"directories,omitempty"`
+	Directories []*Directory `protobuf:"bytes,1,rep,name=directories,proto3" json:"directories,omitempty"`
 	// If present, signifies that there are more results which the client can
 	// retrieve by passing this as the page_token in a subsequent
 	// [request][google.devtools.remoteexecution.v1test.GetTreeRequest].
 	// If empty, signifies that this is the last page of results.
-	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken" json:"next_page_token,omitempty"`
+	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1943,7 +1943,7 @@ func (m *GetTreeResponse) Reset()         { *m = GetTreeResponse{} }
 func (m *GetTreeResponse) String() string { return proto.CompactTextString(m) }
 func (*GetTreeResponse) ProtoMessage()    {}
 func (*GetTreeResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_remote_execution_25e31fef95c58b43, []int{23}
+	return fileDescriptor_remote_execution_2379da344af471dd, []int{23}
 }
 func (m *GetTreeResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetTreeResponse.Unmarshal(m, b)
@@ -1980,9 +1980,9 @@ func (m *GetTreeResponse) GetNextPageToken() string {
 // Details for the tool used to call the API.
 type ToolDetails struct {
 	// Name of the tool, e.g. bazel.
-	ToolName string `protobuf:"bytes,1,opt,name=tool_name,json=toolName" json:"tool_name,omitempty"`
+	ToolName string `protobuf:"bytes,1,opt,name=tool_name,json=toolName,proto3" json:"tool_name,omitempty"`
 	// Version of the tool used for the request, e.g. 5.0.3.
-	ToolVersion          string   `protobuf:"bytes,2,opt,name=tool_version,json=toolVersion" json:"tool_version,omitempty"`
+	ToolVersion          string   `protobuf:"bytes,2,opt,name=tool_version,json=toolVersion,proto3" json:"tool_version,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1992,7 +1992,7 @@ func (m *ToolDetails) Reset()         { *m = ToolDetails{} }
 func (m *ToolDetails) String() string { return proto.CompactTextString(m) }
 func (*ToolDetails) ProtoMessage()    {}
 func (*ToolDetails) Descriptor() ([]byte, []int) {
-	return fileDescriptor_remote_execution_25e31fef95c58b43, []int{24}
+	return fileDescriptor_remote_execution_2379da344af471dd, []int{24}
 }
 func (m *ToolDetails) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ToolDetails.Unmarshal(m, b)
@@ -2034,17 +2034,17 @@ func (m *ToolDetails) GetToolVersion() string {
 // contents: the base64 encoded binary RequestMetadata message.
 type RequestMetadata struct {
 	// The details for the tool invoking the requests.
-	ToolDetails *ToolDetails `protobuf:"bytes,1,opt,name=tool_details,json=toolDetails" json:"tool_details,omitempty"`
+	ToolDetails *ToolDetails `protobuf:"bytes,1,opt,name=tool_details,json=toolDetails,proto3" json:"tool_details,omitempty"`
 	// An identifier that ties multiple requests to the same action.
 	// For example, multiple requests to the CAS, Action Cache, and Execution
 	// API are used in order to compile foo.cc.
-	ActionId string `protobuf:"bytes,2,opt,name=action_id,json=actionId" json:"action_id,omitempty"`
+	ActionId string `protobuf:"bytes,2,opt,name=action_id,json=actionId,proto3" json:"action_id,omitempty"`
 	// An identifier that ties multiple actions together to a final result.
 	// For example, multiple actions are required to build and run foo_test.
-	ToolInvocationId string `protobuf:"bytes,3,opt,name=tool_invocation_id,json=toolInvocationId" json:"tool_invocation_id,omitempty"`
+	ToolInvocationId string `protobuf:"bytes,3,opt,name=tool_invocation_id,json=toolInvocationId,proto3" json:"tool_invocation_id,omitempty"`
 	// An identifier to tie multiple tool invocations together. For example,
 	// runs of foo_test, bar_test and baz_test on a post-submit of a given patch.
-	CorrelatedInvocationsId string   `protobuf:"bytes,4,opt,name=correlated_invocations_id,json=correlatedInvocationsId" json:"correlated_invocations_id,omitempty"`
+	CorrelatedInvocationsId string   `protobuf:"bytes,4,opt,name=correlated_invocations_id,json=correlatedInvocationsId,proto3" json:"correlated_invocations_id,omitempty"`
 	XXX_NoUnkeyedLiteral    struct{} `json:"-"`
 	XXX_unrecognized        []byte   `json:"-"`
 	XXX_sizecache           int32    `json:"-"`
@@ -2054,7 +2054,7 @@ func (m *RequestMetadata) Reset()         { *m = RequestMetadata{} }
 func (m *RequestMetadata) String() string { return proto.CompactTextString(m) }
 func (*RequestMetadata) ProtoMessage()    {}
 func (*RequestMetadata) Descriptor() ([]byte, []int) {
-	return fileDescriptor_remote_execution_25e31fef95c58b43, []int{25}
+	return fileDescriptor_remote_execution_2379da344af471dd, []int{25}
 }
 func (m *RequestMetadata) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_RequestMetadata.Unmarshal(m, b)
@@ -2231,8 +2231,7 @@ func (c *executionClient) Execute(ctx context.Context, in *ExecuteRequest, opts 
 	return out, nil
 }
 
-// Server API for Execution service
-
+// ExecutionServer is the server API for Execution service.
 type ExecutionServer interface {
 	// Execute an action remotely.
 	//
@@ -2384,8 +2383,7 @@ func (c *actionCacheClient) UpdateActionResult(ctx context.Context, in *UpdateAc
 	return out, nil
 }
 
-// Server API for ActionCache service
-
+// ActionCacheServer is the server API for ActionCache service.
 type ActionCacheServer interface {
 	// Retrieve a cached execution result.
 	//
@@ -2547,8 +2545,7 @@ func (c *contentAddressableStorageClient) GetTree(ctx context.Context, in *GetTr
 	return out, nil
 }
 
-// Server API for ContentAddressableStorage service
-
+// ContentAddressableStorageServer is the server API for ContentAddressableStorage service.
 type ContentAddressableStorageServer interface {
 	// Determine if blobs are present in the CAS.
 	//
@@ -2675,10 +2672,10 @@ var _ContentAddressableStorage_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("google/devtools/remoteexecution/v1test/remote_execution.proto", fileDescriptor_remote_execution_25e31fef95c58b43)
+	proto.RegisterFile("google/devtools/remoteexecution/v1test/remote_execution.proto", fileDescriptor_remote_execution_2379da344af471dd)
 }
 
-var fileDescriptor_remote_execution_25e31fef95c58b43 = []byte{
+var fileDescriptor_remote_execution_2379da344af471dd = []byte{
 	// 2025 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xcc, 0x59, 0xdd, 0x6f, 0x23, 0x57,
 	0x15, 0x67, 0xec, 0x24, 0xb6, 0x8f, 0x9d, 0x75, 0xf6, 0x76, 0xe9, 0x7a, 0xdd, 0x2e, 0x4a, 0xa7,

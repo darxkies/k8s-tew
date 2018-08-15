@@ -46,7 +46,7 @@ func (x BindingDelta_Action) String() string {
 	return proto.EnumName(BindingDelta_Action_name, int32(x))
 }
 func (BindingDelta_Action) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_policy_d61b385c3386eaea, []int{3, 0}
+	return fileDescriptor_policy_6ba2a3dcbcdd909c, []int{3, 0}
 }
 
 // Defines an Identity and Access Management (IAM) policy. It is used to
@@ -82,11 +82,11 @@ func (BindingDelta_Action) EnumDescriptor() ([]byte, []int) {
 // [IAM developer's guide](https://cloud.google.com/iam).
 type Policy struct {
 	// Version of the `Policy`. The default version is 0.
-	Version int32 `protobuf:"varint,1,opt,name=version" json:"version,omitempty"`
+	Version int32 `protobuf:"varint,1,opt,name=version,proto3" json:"version,omitempty"`
 	// Associates a list of `members` to a `role`.
 	// Multiple `bindings` must not be specified for the same `role`.
 	// `bindings` with no members will result in an error.
-	Bindings []*Binding `protobuf:"bytes,4,rep,name=bindings" json:"bindings,omitempty"`
+	Bindings []*Binding `protobuf:"bytes,4,rep,name=bindings,proto3" json:"bindings,omitempty"`
 	// `etag` is used for optimistic concurrency control as a way to help
 	// prevent simultaneous updates of a policy from overwriting each other.
 	// It is strongly suggested that systems make use of the `etag` in the
@@ -107,7 +107,7 @@ func (m *Policy) Reset()         { *m = Policy{} }
 func (m *Policy) String() string { return proto.CompactTextString(m) }
 func (*Policy) ProtoMessage()    {}
 func (*Policy) Descriptor() ([]byte, []int) {
-	return fileDescriptor_policy_d61b385c3386eaea, []int{0}
+	return fileDescriptor_policy_6ba2a3dcbcdd909c, []int{0}
 }
 func (m *Policy) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Policy.Unmarshal(m, b)
@@ -153,7 +153,7 @@ type Binding struct {
 	// Role that is assigned to `members`.
 	// For example, `roles/viewer`, `roles/editor`, or `roles/owner`.
 	// Required
-	Role string `protobuf:"bytes,1,opt,name=role" json:"role,omitempty"`
+	Role string `protobuf:"bytes,1,opt,name=role,proto3" json:"role,omitempty"`
 	// Specifies the identities requesting access for a Cloud Platform resource.
 	// `members` can have the following values:
 	//
@@ -177,7 +177,7 @@ type Binding struct {
 	//    users of that domain. For example, `google.com` or `example.com`.
 	//
 	//
-	Members              []string `protobuf:"bytes,2,rep,name=members" json:"members,omitempty"`
+	Members              []string `protobuf:"bytes,2,rep,name=members,proto3" json:"members,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -187,7 +187,7 @@ func (m *Binding) Reset()         { *m = Binding{} }
 func (m *Binding) String() string { return proto.CompactTextString(m) }
 func (*Binding) ProtoMessage()    {}
 func (*Binding) Descriptor() ([]byte, []int) {
-	return fileDescriptor_policy_d61b385c3386eaea, []int{1}
+	return fileDescriptor_policy_6ba2a3dcbcdd909c, []int{1}
 }
 func (m *Binding) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Binding.Unmarshal(m, b)
@@ -224,7 +224,7 @@ func (m *Binding) GetMembers() []string {
 // The difference delta between two policies.
 type PolicyDelta struct {
 	// The delta for Bindings between two policies.
-	BindingDeltas        []*BindingDelta `protobuf:"bytes,1,rep,name=binding_deltas,json=bindingDeltas" json:"binding_deltas,omitempty"`
+	BindingDeltas        []*BindingDelta `protobuf:"bytes,1,rep,name=binding_deltas,json=bindingDeltas,proto3" json:"binding_deltas,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
 	XXX_unrecognized     []byte          `json:"-"`
 	XXX_sizecache        int32           `json:"-"`
@@ -234,7 +234,7 @@ func (m *PolicyDelta) Reset()         { *m = PolicyDelta{} }
 func (m *PolicyDelta) String() string { return proto.CompactTextString(m) }
 func (*PolicyDelta) ProtoMessage()    {}
 func (*PolicyDelta) Descriptor() ([]byte, []int) {
-	return fileDescriptor_policy_d61b385c3386eaea, []int{2}
+	return fileDescriptor_policy_6ba2a3dcbcdd909c, []int{2}
 }
 func (m *PolicyDelta) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_PolicyDelta.Unmarshal(m, b)
@@ -266,15 +266,15 @@ func (m *PolicyDelta) GetBindingDeltas() []*BindingDelta {
 type BindingDelta struct {
 	// The action that was performed on a Binding.
 	// Required
-	Action BindingDelta_Action `protobuf:"varint,1,opt,name=action,enum=google.iam.v1.BindingDelta_Action" json:"action,omitempty"`
+	Action BindingDelta_Action `protobuf:"varint,1,opt,name=action,proto3,enum=google.iam.v1.BindingDelta_Action" json:"action,omitempty"`
 	// Role that is assigned to `members`.
 	// For example, `roles/viewer`, `roles/editor`, or `roles/owner`.
 	// Required
-	Role string `protobuf:"bytes,2,opt,name=role" json:"role,omitempty"`
+	Role string `protobuf:"bytes,2,opt,name=role,proto3" json:"role,omitempty"`
 	// A single identity requesting access for a Cloud Platform resource.
 	// Follows the same format of Binding.members.
 	// Required
-	Member               string   `protobuf:"bytes,3,opt,name=member" json:"member,omitempty"`
+	Member               string   `protobuf:"bytes,3,opt,name=member,proto3" json:"member,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -284,7 +284,7 @@ func (m *BindingDelta) Reset()         { *m = BindingDelta{} }
 func (m *BindingDelta) String() string { return proto.CompactTextString(m) }
 func (*BindingDelta) ProtoMessage()    {}
 func (*BindingDelta) Descriptor() ([]byte, []int) {
-	return fileDescriptor_policy_d61b385c3386eaea, []int{3}
+	return fileDescriptor_policy_6ba2a3dcbcdd909c, []int{3}
 }
 func (m *BindingDelta) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_BindingDelta.Unmarshal(m, b)
@@ -333,9 +333,9 @@ func init() {
 	proto.RegisterEnum("google.iam.v1.BindingDelta_Action", BindingDelta_Action_name, BindingDelta_Action_value)
 }
 
-func init() { proto.RegisterFile("google/iam/v1/policy.proto", fileDescriptor_policy_d61b385c3386eaea) }
+func init() { proto.RegisterFile("google/iam/v1/policy.proto", fileDescriptor_policy_6ba2a3dcbcdd909c) }
 
-var fileDescriptor_policy_d61b385c3386eaea = []byte{
+var fileDescriptor_policy_6ba2a3dcbcdd909c = []byte{
 	// 403 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x7c, 0x52, 0x4d, 0xab, 0x13, 0x31,
 	0x14, 0x35, 0xed, 0x73, 0x6a, 0xef, 0xfb, 0xa0, 0x46, 0x28, 0xc3, 0xd3, 0x45, 0x99, 0x55, 0x57,

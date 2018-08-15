@@ -71,7 +71,7 @@ func (x AnnotationType) String() string {
 	return proto.EnumName(AnnotationType_name, int32(x))
 }
 func (AnnotationType) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_annotations_255e1b4b7e9b96e2, []int{0}
+	return fileDescriptor_annotations_22f61783ae14922a, []int{0}
 }
 
 type VariantAnnotation_Type int32
@@ -123,7 +123,7 @@ func (x VariantAnnotation_Type) String() string {
 	return proto.EnumName(VariantAnnotation_Type_name, int32(x))
 }
 func (VariantAnnotation_Type) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_annotations_255e1b4b7e9b96e2, []int{2, 0}
+	return fileDescriptor_annotations_22f61783ae14922a, []int{2, 0}
 }
 
 type VariantAnnotation_Effect int32
@@ -186,7 +186,7 @@ func (x VariantAnnotation_Effect) String() string {
 	return proto.EnumName(VariantAnnotation_Effect_name, int32(x))
 }
 func (VariantAnnotation_Effect) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_annotations_255e1b4b7e9b96e2, []int{2, 1}
+	return fileDescriptor_annotations_22f61783ae14922a, []int{2, 1}
 }
 
 type VariantAnnotation_ClinicalSignificance int32
@@ -250,7 +250,7 @@ func (x VariantAnnotation_ClinicalSignificance) String() string {
 	return proto.EnumName(VariantAnnotation_ClinicalSignificance_name, int32(x))
 }
 func (VariantAnnotation_ClinicalSignificance) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_annotations_255e1b4b7e9b96e2, []int{2, 2}
+	return fileDescriptor_annotations_22f61783ae14922a, []int{2, 2}
 }
 
 // An annotation set is a logical grouping of annotations that share consistent
@@ -258,22 +258,22 @@ func (VariantAnnotation_ClinicalSignificance) EnumDescriptor() ([]byte, []int) {
 // genes from refseq', and 'all variant annotations from ClinVar'.
 type AnnotationSet struct {
 	// The server-generated annotation set ID, unique across all annotation sets.
-	Id string `protobuf:"bytes,1,opt,name=id" json:"id,omitempty"`
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	// The dataset to which this annotation set belongs.
-	DatasetId string `protobuf:"bytes,2,opt,name=dataset_id,json=datasetId" json:"dataset_id,omitempty"`
+	DatasetId string `protobuf:"bytes,2,opt,name=dataset_id,json=datasetId,proto3" json:"dataset_id,omitempty"`
 	// The ID of the reference set that defines the coordinate space for this
 	// set's annotations.
-	ReferenceSetId string `protobuf:"bytes,3,opt,name=reference_set_id,json=referenceSetId" json:"reference_set_id,omitempty"`
+	ReferenceSetId string `protobuf:"bytes,3,opt,name=reference_set_id,json=referenceSetId,proto3" json:"reference_set_id,omitempty"`
 	// The display name for this annotation set.
-	Name string `protobuf:"bytes,4,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
 	// The source URI describing the file from which this annotation set was
 	// generated, if any.
-	SourceUri string `protobuf:"bytes,5,opt,name=source_uri,json=sourceUri" json:"source_uri,omitempty"`
+	SourceUri string `protobuf:"bytes,5,opt,name=source_uri,json=sourceUri,proto3" json:"source_uri,omitempty"`
 	// The type of annotations contained within this set.
-	Type AnnotationType `protobuf:"varint,6,opt,name=type,enum=google.genomics.v1.AnnotationType" json:"type,omitempty"`
+	Type AnnotationType `protobuf:"varint,6,opt,name=type,proto3,enum=google.genomics.v1.AnnotationType" json:"type,omitempty"`
 	// A map of additional read alignment information. This must be of the form
 	// map<string, string[]> (string key mapping to a list of string values).
-	Info                 map[string]*_struct.ListValue `protobuf:"bytes,17,rep,name=info" json:"info,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Info                 map[string]*_struct.ListValue `protobuf:"bytes,17,rep,name=info,proto3" json:"info,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	XXX_NoUnkeyedLiteral struct{}                      `json:"-"`
 	XXX_unrecognized     []byte                        `json:"-"`
 	XXX_sizecache        int32                         `json:"-"`
@@ -283,7 +283,7 @@ func (m *AnnotationSet) Reset()         { *m = AnnotationSet{} }
 func (m *AnnotationSet) String() string { return proto.CompactTextString(m) }
 func (*AnnotationSet) ProtoMessage()    {}
 func (*AnnotationSet) Descriptor() ([]byte, []int) {
-	return fileDescriptor_annotations_255e1b4b7e9b96e2, []int{0}
+	return fileDescriptor_annotations_22f61783ae14922a, []int{0}
 }
 func (m *AnnotationSet) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_AnnotationSet.Unmarshal(m, b)
@@ -360,34 +360,34 @@ func (m *AnnotationSet) GetInfo() map[string]*_struct.ListValue {
 // `VARIANT`.
 type Annotation struct {
 	// The server-generated annotation ID, unique across all annotations.
-	Id string `protobuf:"bytes,1,opt,name=id" json:"id,omitempty"`
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	// The annotation set to which this annotation belongs.
-	AnnotationSetId string `protobuf:"bytes,2,opt,name=annotation_set_id,json=annotationSetId" json:"annotation_set_id,omitempty"`
+	AnnotationSetId string `protobuf:"bytes,2,opt,name=annotation_set_id,json=annotationSetId,proto3" json:"annotation_set_id,omitempty"`
 	// The display name of this annotation.
-	Name string `protobuf:"bytes,3,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
 	// The ID of the Google Genomics reference associated with this range.
-	ReferenceId string `protobuf:"bytes,4,opt,name=reference_id,json=referenceId" json:"reference_id,omitempty"`
+	ReferenceId string `protobuf:"bytes,4,opt,name=reference_id,json=referenceId,proto3" json:"reference_id,omitempty"`
 	// The display name corresponding to the reference specified by
 	// `referenceId`, for example `chr1`, `1`, or `chrX`.
-	ReferenceName string `protobuf:"bytes,5,opt,name=reference_name,json=referenceName" json:"reference_name,omitempty"`
+	ReferenceName string `protobuf:"bytes,5,opt,name=reference_name,json=referenceName,proto3" json:"reference_name,omitempty"`
 	// The start position of the range on the reference, 0-based inclusive.
-	Start int64 `protobuf:"varint,6,opt,name=start" json:"start,omitempty"`
+	Start int64 `protobuf:"varint,6,opt,name=start,proto3" json:"start,omitempty"`
 	// The end position of the range on the reference, 0-based exclusive.
-	End int64 `protobuf:"varint,7,opt,name=end" json:"end,omitempty"`
+	End int64 `protobuf:"varint,7,opt,name=end,proto3" json:"end,omitempty"`
 	// Whether this range refers to the reverse strand, as opposed to the forward
 	// strand. Note that regardless of this field, the start/end position of the
 	// range always refer to the forward strand.
-	ReverseStrand bool `protobuf:"varint,8,opt,name=reverse_strand,json=reverseStrand" json:"reverse_strand,omitempty"`
+	ReverseStrand bool `protobuf:"varint,8,opt,name=reverse_strand,json=reverseStrand,proto3" json:"reverse_strand,omitempty"`
 	// The data type for this annotation. Must match the containing annotation
 	// set's type.
-	Type AnnotationType `protobuf:"varint,9,opt,name=type,enum=google.genomics.v1.AnnotationType" json:"type,omitempty"`
+	Type AnnotationType `protobuf:"varint,9,opt,name=type,proto3,enum=google.genomics.v1.AnnotationType" json:"type,omitempty"`
 	// Types that are valid to be assigned to Value:
 	//	*Annotation_Variant
 	//	*Annotation_Transcript
 	Value isAnnotation_Value `protobuf_oneof:"value"`
 	// A map of additional read alignment information. This must be of the form
 	// map<string, string[]> (string key mapping to a list of string values).
-	Info                 map[string]*_struct.ListValue `protobuf:"bytes,12,rep,name=info" json:"info,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Info                 map[string]*_struct.ListValue `protobuf:"bytes,12,rep,name=info,proto3" json:"info,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	XXX_NoUnkeyedLiteral struct{}                      `json:"-"`
 	XXX_unrecognized     []byte                        `json:"-"`
 	XXX_sizecache        int32                         `json:"-"`
@@ -397,7 +397,7 @@ func (m *Annotation) Reset()         { *m = Annotation{} }
 func (m *Annotation) String() string { return proto.CompactTextString(m) }
 func (*Annotation) ProtoMessage()    {}
 func (*Annotation) Descriptor() ([]byte, []int) {
-	return fileDescriptor_annotations_255e1b4b7e9b96e2, []int{1}
+	return fileDescriptor_annotations_22f61783ae14922a, []int{1}
 }
 func (m *Annotation) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Annotation.Unmarshal(m, b)
@@ -416,27 +416,6 @@ func (m *Annotation) XXX_DiscardUnknown() {
 }
 
 var xxx_messageInfo_Annotation proto.InternalMessageInfo
-
-type isAnnotation_Value interface {
-	isAnnotation_Value()
-}
-
-type Annotation_Variant struct {
-	Variant *VariantAnnotation `protobuf:"bytes,10,opt,name=variant,oneof"`
-}
-type Annotation_Transcript struct {
-	Transcript *Transcript `protobuf:"bytes,11,opt,name=transcript,oneof"`
-}
-
-func (*Annotation_Variant) isAnnotation_Value()    {}
-func (*Annotation_Transcript) isAnnotation_Value() {}
-
-func (m *Annotation) GetValue() isAnnotation_Value {
-	if m != nil {
-		return m.Value
-	}
-	return nil
-}
 
 func (m *Annotation) GetId() string {
 	if m != nil {
@@ -499,6 +478,29 @@ func (m *Annotation) GetType() AnnotationType {
 		return m.Type
 	}
 	return AnnotationType_ANNOTATION_TYPE_UNSPECIFIED
+}
+
+type isAnnotation_Value interface {
+	isAnnotation_Value()
+}
+
+type Annotation_Variant struct {
+	Variant *VariantAnnotation `protobuf:"bytes,10,opt,name=variant,proto3,oneof"`
+}
+
+type Annotation_Transcript struct {
+	Transcript *Transcript `protobuf:"bytes,11,opt,name=transcript,proto3,oneof"`
+}
+
+func (*Annotation_Variant) isAnnotation_Value() {}
+
+func (*Annotation_Transcript) isAnnotation_Value() {}
+
+func (m *Annotation) GetValue() isAnnotation_Value {
+	if m != nil {
+		return m.Value
+	}
+	return nil
 }
 
 func (m *Annotation) GetVariant() *VariantAnnotation {
@@ -598,27 +600,27 @@ func _Annotation_OneofSizer(msg proto.Message) (n int) {
 
 type VariantAnnotation struct {
 	// Type has been adapted from ClinVar's list of variant types.
-	Type VariantAnnotation_Type `protobuf:"varint,1,opt,name=type,enum=google.genomics.v1.VariantAnnotation_Type" json:"type,omitempty"`
+	Type VariantAnnotation_Type `protobuf:"varint,1,opt,name=type,proto3,enum=google.genomics.v1.VariantAnnotation_Type" json:"type,omitempty"`
 	// Effect of the variant on the coding sequence.
-	Effect VariantAnnotation_Effect `protobuf:"varint,2,opt,name=effect,enum=google.genomics.v1.VariantAnnotation_Effect" json:"effect,omitempty"`
+	Effect VariantAnnotation_Effect `protobuf:"varint,2,opt,name=effect,proto3,enum=google.genomics.v1.VariantAnnotation_Effect" json:"effect,omitempty"`
 	// The alternate allele for this variant. If multiple alternate alleles
 	// exist at this location, create a separate variant for each one, as they
 	// may represent distinct conditions.
-	AlternateBases string `protobuf:"bytes,3,opt,name=alternate_bases,json=alternateBases" json:"alternate_bases,omitempty"`
+	AlternateBases string `protobuf:"bytes,3,opt,name=alternate_bases,json=alternateBases,proto3" json:"alternate_bases,omitempty"`
 	// Google annotation ID of the gene affected by this variant. This should
 	// be provided when the variant is created.
-	GeneId string `protobuf:"bytes,4,opt,name=gene_id,json=geneId" json:"gene_id,omitempty"`
+	GeneId string `protobuf:"bytes,4,opt,name=gene_id,json=geneId,proto3" json:"gene_id,omitempty"`
 	// Google annotation IDs of the transcripts affected by this variant. These
 	// should be provided when the variant is created.
-	TranscriptIds []string `protobuf:"bytes,5,rep,name=transcript_ids,json=transcriptIds" json:"transcript_ids,omitempty"`
+	TranscriptIds []string `protobuf:"bytes,5,rep,name=transcript_ids,json=transcriptIds,proto3" json:"transcript_ids,omitempty"`
 	// The set of conditions associated with this variant.
 	// A condition describes the way a variant influences human health.
-	Conditions []*VariantAnnotation_ClinicalCondition `protobuf:"bytes,6,rep,name=conditions" json:"conditions,omitempty"`
+	Conditions []*VariantAnnotation_ClinicalCondition `protobuf:"bytes,6,rep,name=conditions,proto3" json:"conditions,omitempty"`
 	// Describes the clinical significance of a variant.
 	// It is adapted from the ClinVar controlled vocabulary for clinical
 	// significance described at:
 	// http://www.ncbi.nlm.nih.gov/clinvar/docs/clinsig/
-	ClinicalSignificance VariantAnnotation_ClinicalSignificance `protobuf:"varint,7,opt,name=clinical_significance,json=clinicalSignificance,enum=google.genomics.v1.VariantAnnotation_ClinicalSignificance" json:"clinical_significance,omitempty"`
+	ClinicalSignificance VariantAnnotation_ClinicalSignificance `protobuf:"varint,7,opt,name=clinical_significance,json=clinicalSignificance,proto3,enum=google.genomics.v1.VariantAnnotation_ClinicalSignificance" json:"clinical_significance,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                               `json:"-"`
 	XXX_unrecognized     []byte                                 `json:"-"`
 	XXX_sizecache        int32                                  `json:"-"`
@@ -628,7 +630,7 @@ func (m *VariantAnnotation) Reset()         { *m = VariantAnnotation{} }
 func (m *VariantAnnotation) String() string { return proto.CompactTextString(m) }
 func (*VariantAnnotation) ProtoMessage()    {}
 func (*VariantAnnotation) Descriptor() ([]byte, []int) {
-	return fileDescriptor_annotations_255e1b4b7e9b96e2, []int{2}
+	return fileDescriptor_annotations_22f61783ae14922a, []int{2}
 }
 func (m *VariantAnnotation) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_VariantAnnotation.Unmarshal(m, b)
@@ -699,15 +701,15 @@ func (m *VariantAnnotation) GetClinicalSignificance() VariantAnnotation_Clinical
 
 type VariantAnnotation_ClinicalCondition struct {
 	// A set of names for the condition.
-	Names []string `protobuf:"bytes,1,rep,name=names" json:"names,omitempty"`
+	Names []string `protobuf:"bytes,1,rep,name=names,proto3" json:"names,omitempty"`
 	// The set of external IDs for this condition.
-	ExternalIds []*ExternalId `protobuf:"bytes,2,rep,name=external_ids,json=externalIds" json:"external_ids,omitempty"`
+	ExternalIds []*ExternalId `protobuf:"bytes,2,rep,name=external_ids,json=externalIds,proto3" json:"external_ids,omitempty"`
 	// The MedGen concept id associated with this gene.
 	// Search for these IDs at http://www.ncbi.nlm.nih.gov/medgen/
-	ConceptId string `protobuf:"bytes,3,opt,name=concept_id,json=conceptId" json:"concept_id,omitempty"`
+	ConceptId string `protobuf:"bytes,3,opt,name=concept_id,json=conceptId,proto3" json:"concept_id,omitempty"`
 	// The OMIM id for this condition.
 	// Search for these IDs at http://omim.org/
-	OmimId               string   `protobuf:"bytes,4,opt,name=omim_id,json=omimId" json:"omim_id,omitempty"`
+	OmimId               string   `protobuf:"bytes,4,opt,name=omim_id,json=omimId,proto3" json:"omim_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -717,7 +719,7 @@ func (m *VariantAnnotation_ClinicalCondition) Reset()         { *m = VariantAnno
 func (m *VariantAnnotation_ClinicalCondition) String() string { return proto.CompactTextString(m) }
 func (*VariantAnnotation_ClinicalCondition) ProtoMessage()    {}
 func (*VariantAnnotation_ClinicalCondition) Descriptor() ([]byte, []int) {
-	return fileDescriptor_annotations_255e1b4b7e9b96e2, []int{2, 0}
+	return fileDescriptor_annotations_22f61783ae14922a, []int{2, 0}
 }
 func (m *VariantAnnotation_ClinicalCondition) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_VariantAnnotation_ClinicalCondition.Unmarshal(m, b)
@@ -769,7 +771,7 @@ func (m *VariantAnnotation_ClinicalCondition) GetOmimId() string {
 // reference genome may be transcribed as RNA.
 type Transcript struct {
 	// The annotation ID of the gene from which this transcript is transcribed.
-	GeneId string `protobuf:"bytes,1,opt,name=gene_id,json=geneId" json:"gene_id,omitempty"`
+	GeneId string `protobuf:"bytes,1,opt,name=gene_id,json=geneId,proto3" json:"gene_id,omitempty"`
 	// The <a href="http://en.wikipedia.org/wiki/Exon">exons</a> that compose
 	// this transcript. This field should be unset for genomes where transcript
 	// splicing does not occur, for example prokaryotes.
@@ -784,7 +786,7 @@ type Transcript struct {
 	// to coding DNA sequence.
 	//
 	// Exons are ordered by start position and may not overlap.
-	Exons []*Transcript_Exon `protobuf:"bytes,2,rep,name=exons" json:"exons,omitempty"`
+	Exons []*Transcript_Exon `protobuf:"bytes,2,rep,name=exons,proto3" json:"exons,omitempty"`
 	// The range of the coding sequence for this transcript, if any. To determine
 	// the exact ranges of coding sequence, intersect this range with those of the
 	// [exons][google.genomics.v1.Transcript.exons], if any. If there are any
@@ -798,7 +800,7 @@ type Transcript struct {
 	// [exon.frame][google.genomics.v1.Transcript.Exon.frame] will not necessarily
 	// match the expected reference reading frame and coding exon reference bases
 	// cannot necessarily be concatenated to produce the original transcript mRNA.
-	CodingSequence       *Transcript_CodingSequence `protobuf:"bytes,3,opt,name=coding_sequence,json=codingSequence" json:"coding_sequence,omitempty"`
+	CodingSequence       *Transcript_CodingSequence `protobuf:"bytes,3,opt,name=coding_sequence,json=codingSequence,proto3" json:"coding_sequence,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                   `json:"-"`
 	XXX_unrecognized     []byte                     `json:"-"`
 	XXX_sizecache        int32                      `json:"-"`
@@ -808,7 +810,7 @@ func (m *Transcript) Reset()         { *m = Transcript{} }
 func (m *Transcript) String() string { return proto.CompactTextString(m) }
 func (*Transcript) ProtoMessage()    {}
 func (*Transcript) Descriptor() ([]byte, []int) {
-	return fileDescriptor_annotations_255e1b4b7e9b96e2, []int{3}
+	return fileDescriptor_annotations_22f61783ae14922a, []int{3}
 }
 func (m *Transcript) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Transcript.Unmarshal(m, b)
@@ -853,11 +855,11 @@ type Transcript_Exon struct {
 	// The start position of the exon on this annotation's reference sequence,
 	// 0-based inclusive. Note that this is relative to the reference start, and
 	// **not** the containing annotation start.
-	Start int64 `protobuf:"varint,1,opt,name=start" json:"start,omitempty"`
+	Start int64 `protobuf:"varint,1,opt,name=start,proto3" json:"start,omitempty"`
 	// The end position of the exon on this annotation's reference sequence,
 	// 0-based exclusive. Note that this is relative to the reference start, and
 	// *not* the containing annotation start.
-	End int64 `protobuf:"varint,2,opt,name=end" json:"end,omitempty"`
+	End int64 `protobuf:"varint,2,opt,name=end,proto3" json:"end,omitempty"`
 	// The frame of this exon. Contains a value of 0, 1, or 2, which indicates
 	// the offset of the first coding base of the exon within the reading frame
 	// of the coding DNA sequence, if any. This field is dependent on the
@@ -871,7 +873,7 @@ type Transcript_Exon struct {
 	// Unset if this exon does not intersect the coding sequence. Upon creation
 	// of a transcript, the frame must be populated for all or none of the
 	// coding exons.
-	Frame                *wrappers.Int32Value `protobuf:"bytes,3,opt,name=frame" json:"frame,omitempty"`
+	Frame                *wrappers.Int32Value `protobuf:"bytes,3,opt,name=frame,proto3" json:"frame,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
 	XXX_unrecognized     []byte               `json:"-"`
 	XXX_sizecache        int32                `json:"-"`
@@ -881,7 +883,7 @@ func (m *Transcript_Exon) Reset()         { *m = Transcript_Exon{} }
 func (m *Transcript_Exon) String() string { return proto.CompactTextString(m) }
 func (*Transcript_Exon) ProtoMessage()    {}
 func (*Transcript_Exon) Descriptor() ([]byte, []int) {
-	return fileDescriptor_annotations_255e1b4b7e9b96e2, []int{3, 0}
+	return fileDescriptor_annotations_22f61783ae14922a, []int{3, 0}
 }
 func (m *Transcript_Exon) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Transcript_Exon.Unmarshal(m, b)
@@ -926,11 +928,11 @@ type Transcript_CodingSequence struct {
 	// The start of the coding sequence on this annotation's reference sequence,
 	// 0-based inclusive. Note that this position is relative to the reference
 	// start, and *not* the containing annotation start.
-	Start int64 `protobuf:"varint,1,opt,name=start" json:"start,omitempty"`
+	Start int64 `protobuf:"varint,1,opt,name=start,proto3" json:"start,omitempty"`
 	// The end of the coding sequence on this annotation's reference sequence,
 	// 0-based exclusive. Note that this position is relative to the reference
 	// start, and *not* the containing annotation start.
-	End                  int64    `protobuf:"varint,2,opt,name=end" json:"end,omitempty"`
+	End                  int64    `protobuf:"varint,2,opt,name=end,proto3" json:"end,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -940,7 +942,7 @@ func (m *Transcript_CodingSequence) Reset()         { *m = Transcript_CodingSequ
 func (m *Transcript_CodingSequence) String() string { return proto.CompactTextString(m) }
 func (*Transcript_CodingSequence) ProtoMessage()    {}
 func (*Transcript_CodingSequence) Descriptor() ([]byte, []int) {
-	return fileDescriptor_annotations_255e1b4b7e9b96e2, []int{3, 1}
+	return fileDescriptor_annotations_22f61783ae14922a, []int{3, 1}
 }
 func (m *Transcript_CodingSequence) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Transcript_CodingSequence.Unmarshal(m, b)
@@ -976,9 +978,9 @@ func (m *Transcript_CodingSequence) GetEnd() int64 {
 
 type ExternalId struct {
 	// The name of the source of this data.
-	SourceName string `protobuf:"bytes,1,opt,name=source_name,json=sourceName" json:"source_name,omitempty"`
+	SourceName string `protobuf:"bytes,1,opt,name=source_name,json=sourceName,proto3" json:"source_name,omitempty"`
 	// The id used by the source of this data.
-	Id                   string   `protobuf:"bytes,2,opt,name=id" json:"id,omitempty"`
+	Id                   string   `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -988,7 +990,7 @@ func (m *ExternalId) Reset()         { *m = ExternalId{} }
 func (m *ExternalId) String() string { return proto.CompactTextString(m) }
 func (*ExternalId) ProtoMessage()    {}
 func (*ExternalId) Descriptor() ([]byte, []int) {
-	return fileDescriptor_annotations_255e1b4b7e9b96e2, []int{4}
+	return fileDescriptor_annotations_22f61783ae14922a, []int{4}
 }
 func (m *ExternalId) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ExternalId.Unmarshal(m, b)
@@ -1024,7 +1026,7 @@ func (m *ExternalId) GetId() string {
 
 type CreateAnnotationSetRequest struct {
 	// The annotation set to create.
-	AnnotationSet        *AnnotationSet `protobuf:"bytes,1,opt,name=annotation_set,json=annotationSet" json:"annotation_set,omitempty"`
+	AnnotationSet        *AnnotationSet `protobuf:"bytes,1,opt,name=annotation_set,json=annotationSet,proto3" json:"annotation_set,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
 	XXX_unrecognized     []byte         `json:"-"`
 	XXX_sizecache        int32          `json:"-"`
@@ -1034,7 +1036,7 @@ func (m *CreateAnnotationSetRequest) Reset()         { *m = CreateAnnotationSetR
 func (m *CreateAnnotationSetRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateAnnotationSetRequest) ProtoMessage()    {}
 func (*CreateAnnotationSetRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_annotations_255e1b4b7e9b96e2, []int{5}
+	return fileDescriptor_annotations_22f61783ae14922a, []int{5}
 }
 func (m *CreateAnnotationSetRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CreateAnnotationSetRequest.Unmarshal(m, b)
@@ -1063,7 +1065,7 @@ func (m *CreateAnnotationSetRequest) GetAnnotationSet() *AnnotationSet {
 
 type GetAnnotationSetRequest struct {
 	// The ID of the annotation set to be retrieved.
-	AnnotationSetId      string   `protobuf:"bytes,1,opt,name=annotation_set_id,json=annotationSetId" json:"annotation_set_id,omitempty"`
+	AnnotationSetId      string   `protobuf:"bytes,1,opt,name=annotation_set_id,json=annotationSetId,proto3" json:"annotation_set_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1073,7 +1075,7 @@ func (m *GetAnnotationSetRequest) Reset()         { *m = GetAnnotationSetRequest
 func (m *GetAnnotationSetRequest) String() string { return proto.CompactTextString(m) }
 func (*GetAnnotationSetRequest) ProtoMessage()    {}
 func (*GetAnnotationSetRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_annotations_255e1b4b7e9b96e2, []int{6}
+	return fileDescriptor_annotations_22f61783ae14922a, []int{6}
 }
 func (m *GetAnnotationSetRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetAnnotationSetRequest.Unmarshal(m, b)
@@ -1102,15 +1104,15 @@ func (m *GetAnnotationSetRequest) GetAnnotationSetId() string {
 
 type UpdateAnnotationSetRequest struct {
 	// The ID of the annotation set to be updated.
-	AnnotationSetId string `protobuf:"bytes,1,opt,name=annotation_set_id,json=annotationSetId" json:"annotation_set_id,omitempty"`
+	AnnotationSetId string `protobuf:"bytes,1,opt,name=annotation_set_id,json=annotationSetId,proto3" json:"annotation_set_id,omitempty"`
 	// The new annotation set.
-	AnnotationSet *AnnotationSet `protobuf:"bytes,2,opt,name=annotation_set,json=annotationSet" json:"annotation_set,omitempty"`
+	AnnotationSet *AnnotationSet `protobuf:"bytes,2,opt,name=annotation_set,json=annotationSet,proto3" json:"annotation_set,omitempty"`
 	// An optional mask specifying which fields to update. Mutable fields are
 	// [name][google.genomics.v1.AnnotationSet.name],
 	// [source_uri][google.genomics.v1.AnnotationSet.source_uri], and
 	// [info][google.genomics.v1.AnnotationSet.info]. If unspecified, all
 	// mutable fields will be updated.
-	UpdateMask           *field_mask.FieldMask `protobuf:"bytes,3,opt,name=update_mask,json=updateMask" json:"update_mask,omitempty"`
+	UpdateMask           *field_mask.FieldMask `protobuf:"bytes,3,opt,name=update_mask,json=updateMask,proto3" json:"update_mask,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}              `json:"-"`
 	XXX_unrecognized     []byte                `json:"-"`
 	XXX_sizecache        int32                 `json:"-"`
@@ -1120,7 +1122,7 @@ func (m *UpdateAnnotationSetRequest) Reset()         { *m = UpdateAnnotationSetR
 func (m *UpdateAnnotationSetRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateAnnotationSetRequest) ProtoMessage()    {}
 func (*UpdateAnnotationSetRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_annotations_255e1b4b7e9b96e2, []int{7}
+	return fileDescriptor_annotations_22f61783ae14922a, []int{7}
 }
 func (m *UpdateAnnotationSetRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UpdateAnnotationSetRequest.Unmarshal(m, b)
@@ -1163,7 +1165,7 @@ func (m *UpdateAnnotationSetRequest) GetUpdateMask() *field_mask.FieldMask {
 
 type DeleteAnnotationSetRequest struct {
 	// The ID of the annotation set to be deleted.
-	AnnotationSetId      string   `protobuf:"bytes,1,opt,name=annotation_set_id,json=annotationSetId" json:"annotation_set_id,omitempty"`
+	AnnotationSetId      string   `protobuf:"bytes,1,opt,name=annotation_set_id,json=annotationSetId,proto3" json:"annotation_set_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1173,7 +1175,7 @@ func (m *DeleteAnnotationSetRequest) Reset()         { *m = DeleteAnnotationSetR
 func (m *DeleteAnnotationSetRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteAnnotationSetRequest) ProtoMessage()    {}
 func (*DeleteAnnotationSetRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_annotations_255e1b4b7e9b96e2, []int{8}
+	return fileDescriptor_annotations_22f61783ae14922a, []int{8}
 }
 func (m *DeleteAnnotationSetRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeleteAnnotationSetRequest.Unmarshal(m, b)
@@ -1203,23 +1205,23 @@ func (m *DeleteAnnotationSetRequest) GetAnnotationSetId() string {
 type SearchAnnotationSetsRequest struct {
 	// Required. The dataset IDs to search within. Caller must have `READ` access
 	// to these datasets.
-	DatasetIds []string `protobuf:"bytes,1,rep,name=dataset_ids,json=datasetIds" json:"dataset_ids,omitempty"`
+	DatasetIds []string `protobuf:"bytes,1,rep,name=dataset_ids,json=datasetIds,proto3" json:"dataset_ids,omitempty"`
 	// If specified, only annotation sets associated with the given reference set
 	// are returned.
-	ReferenceSetId string `protobuf:"bytes,2,opt,name=reference_set_id,json=referenceSetId" json:"reference_set_id,omitempty"`
+	ReferenceSetId string `protobuf:"bytes,2,opt,name=reference_set_id,json=referenceSetId,proto3" json:"reference_set_id,omitempty"`
 	// Only return annotations sets for which a substring of the name matches this
 	// string (case insensitive).
-	Name string `protobuf:"bytes,3,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
 	// If specified, only annotation sets that have any of these types are
 	// returned.
-	Types []AnnotationType `protobuf:"varint,4,rep,packed,name=types,enum=google.genomics.v1.AnnotationType" json:"types,omitempty"`
+	Types []AnnotationType `protobuf:"varint,4,rep,packed,name=types,proto3,enum=google.genomics.v1.AnnotationType" json:"types,omitempty"`
 	// The continuation token, which is used to page through large result sets.
 	// To get the next page of results, set this parameter to the value of
 	// `nextPageToken` from the previous response.
-	PageToken string `protobuf:"bytes,5,opt,name=page_token,json=pageToken" json:"page_token,omitempty"`
+	PageToken string `protobuf:"bytes,5,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	// The maximum number of results to return in a single page. If unspecified,
 	// defaults to 128. The maximum value is 1024.
-	PageSize             int32    `protobuf:"varint,6,opt,name=page_size,json=pageSize" json:"page_size,omitempty"`
+	PageSize             int32    `protobuf:"varint,6,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1229,7 +1231,7 @@ func (m *SearchAnnotationSetsRequest) Reset()         { *m = SearchAnnotationSet
 func (m *SearchAnnotationSetsRequest) String() string { return proto.CompactTextString(m) }
 func (*SearchAnnotationSetsRequest) ProtoMessage()    {}
 func (*SearchAnnotationSetsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_annotations_255e1b4b7e9b96e2, []int{9}
+	return fileDescriptor_annotations_22f61783ae14922a, []int{9}
 }
 func (m *SearchAnnotationSetsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SearchAnnotationSetsRequest.Unmarshal(m, b)
@@ -1293,11 +1295,11 @@ func (m *SearchAnnotationSetsRequest) GetPageSize() int32 {
 
 type SearchAnnotationSetsResponse struct {
 	// The matching annotation sets.
-	AnnotationSets []*AnnotationSet `protobuf:"bytes,1,rep,name=annotation_sets,json=annotationSets" json:"annotation_sets,omitempty"`
+	AnnotationSets []*AnnotationSet `protobuf:"bytes,1,rep,name=annotation_sets,json=annotationSets,proto3" json:"annotation_sets,omitempty"`
 	// The continuation token, which is used to page through large result sets.
 	// Provide this value in a subsequent request to return the next page of
 	// results. This field will be empty if there aren't any additional results.
-	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken" json:"next_page_token,omitempty"`
+	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1307,7 +1309,7 @@ func (m *SearchAnnotationSetsResponse) Reset()         { *m = SearchAnnotationSe
 func (m *SearchAnnotationSetsResponse) String() string { return proto.CompactTextString(m) }
 func (*SearchAnnotationSetsResponse) ProtoMessage()    {}
 func (*SearchAnnotationSetsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_annotations_255e1b4b7e9b96e2, []int{10}
+	return fileDescriptor_annotations_22f61783ae14922a, []int{10}
 }
 func (m *SearchAnnotationSetsResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SearchAnnotationSetsResponse.Unmarshal(m, b)
@@ -1343,7 +1345,7 @@ func (m *SearchAnnotationSetsResponse) GetNextPageToken() string {
 
 type CreateAnnotationRequest struct {
 	// The annotation to be created.
-	Annotation           *Annotation `protobuf:"bytes,1,opt,name=annotation" json:"annotation,omitempty"`
+	Annotation           *Annotation `protobuf:"bytes,1,opt,name=annotation,proto3" json:"annotation,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
 	XXX_unrecognized     []byte      `json:"-"`
 	XXX_sizecache        int32       `json:"-"`
@@ -1353,7 +1355,7 @@ func (m *CreateAnnotationRequest) Reset()         { *m = CreateAnnotationRequest
 func (m *CreateAnnotationRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateAnnotationRequest) ProtoMessage()    {}
 func (*CreateAnnotationRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_annotations_255e1b4b7e9b96e2, []int{11}
+	return fileDescriptor_annotations_22f61783ae14922a, []int{11}
 }
 func (m *CreateAnnotationRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CreateAnnotationRequest.Unmarshal(m, b)
@@ -1383,7 +1385,7 @@ func (m *CreateAnnotationRequest) GetAnnotation() *Annotation {
 type BatchCreateAnnotationsRequest struct {
 	// The annotations to be created. At most 4096 can be specified in a single
 	// request.
-	Annotations []*Annotation `protobuf:"bytes,1,rep,name=annotations" json:"annotations,omitempty"`
+	Annotations []*Annotation `protobuf:"bytes,1,rep,name=annotations,proto3" json:"annotations,omitempty"`
 	// A unique request ID which enables the server to detect duplicated requests.
 	// If provided, duplicated requests will result in the same response; if not
 	// provided, duplicated requests may result in duplicated data. For a given
@@ -1391,7 +1393,7 @@ type BatchCreateAnnotationsRequest struct {
 	// different batches of annotations - behavior in this case is undefined.
 	// A common approach is to use a UUID. For batch jobs where worker crashes are
 	// a possibility, consider using some unique variant of a worker or run ID.
-	RequestId            string   `protobuf:"bytes,2,opt,name=request_id,json=requestId" json:"request_id,omitempty"`
+	RequestId            string   `protobuf:"bytes,2,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1401,7 +1403,7 @@ func (m *BatchCreateAnnotationsRequest) Reset()         { *m = BatchCreateAnnota
 func (m *BatchCreateAnnotationsRequest) String() string { return proto.CompactTextString(m) }
 func (*BatchCreateAnnotationsRequest) ProtoMessage()    {}
 func (*BatchCreateAnnotationsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_annotations_255e1b4b7e9b96e2, []int{12}
+	return fileDescriptor_annotations_22f61783ae14922a, []int{12}
 }
 func (m *BatchCreateAnnotationsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_BatchCreateAnnotationsRequest.Unmarshal(m, b)
@@ -1438,7 +1440,7 @@ func (m *BatchCreateAnnotationsRequest) GetRequestId() string {
 type BatchCreateAnnotationsResponse struct {
 	// The resulting per-annotation entries, ordered consistently with the
 	// original request.
-	Entries              []*BatchCreateAnnotationsResponse_Entry `protobuf:"bytes,1,rep,name=entries" json:"entries,omitempty"`
+	Entries              []*BatchCreateAnnotationsResponse_Entry `protobuf:"bytes,1,rep,name=entries,proto3" json:"entries,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                                `json:"-"`
 	XXX_unrecognized     []byte                                  `json:"-"`
 	XXX_sizecache        int32                                   `json:"-"`
@@ -1448,7 +1450,7 @@ func (m *BatchCreateAnnotationsResponse) Reset()         { *m = BatchCreateAnnot
 func (m *BatchCreateAnnotationsResponse) String() string { return proto.CompactTextString(m) }
 func (*BatchCreateAnnotationsResponse) ProtoMessage()    {}
 func (*BatchCreateAnnotationsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_annotations_255e1b4b7e9b96e2, []int{13}
+	return fileDescriptor_annotations_22f61783ae14922a, []int{13}
 }
 func (m *BatchCreateAnnotationsResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_BatchCreateAnnotationsResponse.Unmarshal(m, b)
@@ -1477,9 +1479,9 @@ func (m *BatchCreateAnnotationsResponse) GetEntries() []*BatchCreateAnnotationsR
 
 type BatchCreateAnnotationsResponse_Entry struct {
 	// The creation status.
-	Status *status.Status `protobuf:"bytes,1,opt,name=status" json:"status,omitempty"`
+	Status *status.Status `protobuf:"bytes,1,opt,name=status,proto3" json:"status,omitempty"`
 	// The created annotation, if creation was successful.
-	Annotation           *Annotation `protobuf:"bytes,2,opt,name=annotation" json:"annotation,omitempty"`
+	Annotation           *Annotation `protobuf:"bytes,2,opt,name=annotation,proto3" json:"annotation,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
 	XXX_unrecognized     []byte      `json:"-"`
 	XXX_sizecache        int32       `json:"-"`
@@ -1489,7 +1491,7 @@ func (m *BatchCreateAnnotationsResponse_Entry) Reset()         { *m = BatchCreat
 func (m *BatchCreateAnnotationsResponse_Entry) String() string { return proto.CompactTextString(m) }
 func (*BatchCreateAnnotationsResponse_Entry) ProtoMessage()    {}
 func (*BatchCreateAnnotationsResponse_Entry) Descriptor() ([]byte, []int) {
-	return fileDescriptor_annotations_255e1b4b7e9b96e2, []int{13, 0}
+	return fileDescriptor_annotations_22f61783ae14922a, []int{13, 0}
 }
 func (m *BatchCreateAnnotationsResponse_Entry) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_BatchCreateAnnotationsResponse_Entry.Unmarshal(m, b)
@@ -1525,7 +1527,7 @@ func (m *BatchCreateAnnotationsResponse_Entry) GetAnnotation() *Annotation {
 
 type GetAnnotationRequest struct {
 	// The ID of the annotation to be retrieved.
-	AnnotationId         string   `protobuf:"bytes,1,opt,name=annotation_id,json=annotationId" json:"annotation_id,omitempty"`
+	AnnotationId         string   `protobuf:"bytes,1,opt,name=annotation_id,json=annotationId,proto3" json:"annotation_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1535,7 +1537,7 @@ func (m *GetAnnotationRequest) Reset()         { *m = GetAnnotationRequest{} }
 func (m *GetAnnotationRequest) String() string { return proto.CompactTextString(m) }
 func (*GetAnnotationRequest) ProtoMessage()    {}
 func (*GetAnnotationRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_annotations_255e1b4b7e9b96e2, []int{14}
+	return fileDescriptor_annotations_22f61783ae14922a, []int{14}
 }
 func (m *GetAnnotationRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetAnnotationRequest.Unmarshal(m, b)
@@ -1564,16 +1566,16 @@ func (m *GetAnnotationRequest) GetAnnotationId() string {
 
 type UpdateAnnotationRequest struct {
 	// The ID of the annotation to be updated.
-	AnnotationId string `protobuf:"bytes,1,opt,name=annotation_id,json=annotationId" json:"annotation_id,omitempty"`
+	AnnotationId string `protobuf:"bytes,1,opt,name=annotation_id,json=annotationId,proto3" json:"annotation_id,omitempty"`
 	// The new annotation.
-	Annotation *Annotation `protobuf:"bytes,2,opt,name=annotation" json:"annotation,omitempty"`
+	Annotation *Annotation `protobuf:"bytes,2,opt,name=annotation,proto3" json:"annotation,omitempty"`
 	// An optional mask specifying which fields to update. Mutable fields are
 	// [name][google.genomics.v1.Annotation.name],
 	// [variant][google.genomics.v1.Annotation.variant],
 	// [transcript][google.genomics.v1.Annotation.transcript], and
 	// [info][google.genomics.v1.Annotation.info]. If unspecified, all mutable
 	// fields will be updated.
-	UpdateMask           *field_mask.FieldMask `protobuf:"bytes,3,opt,name=update_mask,json=updateMask" json:"update_mask,omitempty"`
+	UpdateMask           *field_mask.FieldMask `protobuf:"bytes,3,opt,name=update_mask,json=updateMask,proto3" json:"update_mask,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}              `json:"-"`
 	XXX_unrecognized     []byte                `json:"-"`
 	XXX_sizecache        int32                 `json:"-"`
@@ -1583,7 +1585,7 @@ func (m *UpdateAnnotationRequest) Reset()         { *m = UpdateAnnotationRequest
 func (m *UpdateAnnotationRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateAnnotationRequest) ProtoMessage()    {}
 func (*UpdateAnnotationRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_annotations_255e1b4b7e9b96e2, []int{15}
+	return fileDescriptor_annotations_22f61783ae14922a, []int{15}
 }
 func (m *UpdateAnnotationRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UpdateAnnotationRequest.Unmarshal(m, b)
@@ -1626,7 +1628,7 @@ func (m *UpdateAnnotationRequest) GetUpdateMask() *field_mask.FieldMask {
 
 type DeleteAnnotationRequest struct {
 	// The ID of the annotation to be deleted.
-	AnnotationId         string   `protobuf:"bytes,1,opt,name=annotation_id,json=annotationId" json:"annotation_id,omitempty"`
+	AnnotationId         string   `protobuf:"bytes,1,opt,name=annotation_id,json=annotationId,proto3" json:"annotation_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1636,7 +1638,7 @@ func (m *DeleteAnnotationRequest) Reset()         { *m = DeleteAnnotationRequest
 func (m *DeleteAnnotationRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteAnnotationRequest) ProtoMessage()    {}
 func (*DeleteAnnotationRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_annotations_255e1b4b7e9b96e2, []int{16}
+	return fileDescriptor_annotations_22f61783ae14922a, []int{16}
 }
 func (m *DeleteAnnotationRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeleteAnnotationRequest.Unmarshal(m, b)
@@ -1667,7 +1669,7 @@ type SearchAnnotationsRequest struct {
 	// Required. The annotation sets to search within. The caller must have
 	// `READ` access to these annotation sets.
 	// All queried annotation sets must have the same type.
-	AnnotationSetIds []string `protobuf:"bytes,1,rep,name=annotation_set_ids,json=annotationSetIds" json:"annotation_set_ids,omitempty"`
+	AnnotationSetIds []string `protobuf:"bytes,1,rep,name=annotation_set_ids,json=annotationSetIds,proto3" json:"annotation_set_ids,omitempty"`
 	// Required. `reference_id` or `reference_name` must be set.
 	//
 	// Types that are valid to be assigned to Reference:
@@ -1679,19 +1681,19 @@ type SearchAnnotationsRequest struct {
 	// [referenceId][google.genomics.v1.SearchAnnotationsRequest.reference_id] or
 	// [referenceName][google.genomics.v1.SearchAnnotationsRequest.reference_name]
 	// must be specified. Defaults to 0.
-	Start int64 `protobuf:"varint,4,opt,name=start" json:"start,omitempty"`
+	Start int64 `protobuf:"varint,4,opt,name=start,proto3" json:"start,omitempty"`
 	// The end position of the range on the reference, 0-based exclusive. If
 	// [referenceId][google.genomics.v1.SearchAnnotationsRequest.reference_id] or
 	// [referenceName][google.genomics.v1.SearchAnnotationsRequest.reference_name]
 	// must be specified, Defaults to the length of the reference.
-	End int64 `protobuf:"varint,5,opt,name=end" json:"end,omitempty"`
+	End int64 `protobuf:"varint,5,opt,name=end,proto3" json:"end,omitempty"`
 	// The continuation token, which is used to page through large result sets.
 	// To get the next page of results, set this parameter to the value of
 	// `nextPageToken` from the previous response.
-	PageToken string `protobuf:"bytes,6,opt,name=page_token,json=pageToken" json:"page_token,omitempty"`
+	PageToken string `protobuf:"bytes,6,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	// The maximum number of results to return in a single page. If unspecified,
 	// defaults to 256. The maximum value is 2048.
-	PageSize             int32    `protobuf:"varint,7,opt,name=page_size,json=pageSize" json:"page_size,omitempty"`
+	PageSize             int32    `protobuf:"varint,7,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1701,7 +1703,7 @@ func (m *SearchAnnotationsRequest) Reset()         { *m = SearchAnnotationsReque
 func (m *SearchAnnotationsRequest) String() string { return proto.CompactTextString(m) }
 func (*SearchAnnotationsRequest) ProtoMessage()    {}
 func (*SearchAnnotationsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_annotations_255e1b4b7e9b96e2, []int{17}
+	return fileDescriptor_annotations_22f61783ae14922a, []int{17}
 }
 func (m *SearchAnnotationsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SearchAnnotationsRequest.Unmarshal(m, b)
@@ -1721,30 +1723,32 @@ func (m *SearchAnnotationsRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_SearchAnnotationsRequest proto.InternalMessageInfo
 
+func (m *SearchAnnotationsRequest) GetAnnotationSetIds() []string {
+	if m != nil {
+		return m.AnnotationSetIds
+	}
+	return nil
+}
+
 type isSearchAnnotationsRequest_Reference interface {
 	isSearchAnnotationsRequest_Reference()
 }
 
 type SearchAnnotationsRequest_ReferenceId struct {
-	ReferenceId string `protobuf:"bytes,2,opt,name=reference_id,json=referenceId,oneof"`
-}
-type SearchAnnotationsRequest_ReferenceName struct {
-	ReferenceName string `protobuf:"bytes,3,opt,name=reference_name,json=referenceName,oneof"`
+	ReferenceId string `protobuf:"bytes,2,opt,name=reference_id,json=referenceId,proto3,oneof"`
 }
 
-func (*SearchAnnotationsRequest_ReferenceId) isSearchAnnotationsRequest_Reference()   {}
+type SearchAnnotationsRequest_ReferenceName struct {
+	ReferenceName string `protobuf:"bytes,3,opt,name=reference_name,json=referenceName,proto3,oneof"`
+}
+
+func (*SearchAnnotationsRequest_ReferenceId) isSearchAnnotationsRequest_Reference() {}
+
 func (*SearchAnnotationsRequest_ReferenceName) isSearchAnnotationsRequest_Reference() {}
 
 func (m *SearchAnnotationsRequest) GetReference() isSearchAnnotationsRequest_Reference {
 	if m != nil {
 		return m.Reference
-	}
-	return nil
-}
-
-func (m *SearchAnnotationsRequest) GetAnnotationSetIds() []string {
-	if m != nil {
-		return m.AnnotationSetIds
 	}
 	return nil
 }
@@ -1859,11 +1863,11 @@ func _SearchAnnotationsRequest_OneofSizer(msg proto.Message) (n int) {
 
 type SearchAnnotationsResponse struct {
 	// The matching annotations.
-	Annotations []*Annotation `protobuf:"bytes,1,rep,name=annotations" json:"annotations,omitempty"`
+	Annotations []*Annotation `protobuf:"bytes,1,rep,name=annotations,proto3" json:"annotations,omitempty"`
 	// The continuation token, which is used to page through large result sets.
 	// Provide this value in a subsequent request to return the next page of
 	// results. This field will be empty if there aren't any additional results.
-	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken" json:"next_page_token,omitempty"`
+	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1873,7 +1877,7 @@ func (m *SearchAnnotationsResponse) Reset()         { *m = SearchAnnotationsResp
 func (m *SearchAnnotationsResponse) String() string { return proto.CompactTextString(m) }
 func (*SearchAnnotationsResponse) ProtoMessage()    {}
 func (*SearchAnnotationsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_annotations_255e1b4b7e9b96e2, []int{18}
+	return fileDescriptor_annotations_22f61783ae14922a, []int{18}
 }
 func (m *SearchAnnotationsResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SearchAnnotationsResponse.Unmarshal(m, b)
@@ -2142,8 +2146,7 @@ func (c *annotationServiceV1Client) SearchAnnotations(ctx context.Context, in *S
 	return out, nil
 }
 
-// Server API for AnnotationServiceV1 service
-
+// AnnotationServiceV1Server is the server API for AnnotationServiceV1 service.
 type AnnotationServiceV1Server interface {
 	// Creates a new annotation set. Caller must have WRITE permission for the
 	// associated dataset.
@@ -2485,10 +2488,10 @@ var _AnnotationServiceV1_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("google/genomics/v1/annotations.proto", fileDescriptor_annotations_255e1b4b7e9b96e2)
+	proto.RegisterFile("google/genomics/v1/annotations.proto", fileDescriptor_annotations_22f61783ae14922a)
 }
 
-var fileDescriptor_annotations_255e1b4b7e9b96e2 = []byte{
+var fileDescriptor_annotations_22f61783ae14922a = []byte{
 	// 2188 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xbc, 0x59, 0xcd, 0x6f, 0xdb, 0xc8,
 	0x15, 0x0f, 0xf5, 0x69, 0x3f, 0xd9, 0x32, 0x3d, 0xf1, 0xda, 0x5a, 0x39, 0x1f, 0x0e, 0xf3, 0x65,

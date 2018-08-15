@@ -59,7 +59,7 @@ func (x SessionEntityType_EntityOverrideMode) String() string {
 	return proto.EnumName(SessionEntityType_EntityOverrideMode_name, int32(x))
 }
 func (SessionEntityType_EntityOverrideMode) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_session_entity_type_e661f7d8b34bd0b7, []int{0, 0}
+	return fileDescriptor_session_entity_type_0a5ede95d4809454, []int{0, 0}
 }
 
 // Represents a session entity type.
@@ -74,18 +74,16 @@ type SessionEntityType struct {
 	// `projects/<Project ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type
 	// Display Name>`, or
 	// `projects/<Project ID>/agent/environments/<Environment ID>/users/<User
-	// ID>/sessions
-	// /<Session ID>/entityTypes/<Entity Type Display Name>`.
-	// Note: Environments and users are under construction and will be available
-	// soon. If <Environment ID> is not specified, we assume default 'draft'
-	// environment. If <User ID> is not specified, we assume default '-' user.
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	// ID>/sessions/<Session ID>/entityTypes/<Entity Type Display Name>`.
+	// If `Environment ID` is not specified, we assume default 'draft'
+	// environment. If `User ID` is not specified, we assume default '-' user.
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// Required. Indicates whether the additional data should override or
 	// supplement the developer entity type definition.
-	EntityOverrideMode SessionEntityType_EntityOverrideMode `protobuf:"varint,2,opt,name=entity_override_mode,json=entityOverrideMode,enum=google.cloud.dialogflow.v2beta1.SessionEntityType_EntityOverrideMode" json:"entity_override_mode,omitempty"`
+	EntityOverrideMode SessionEntityType_EntityOverrideMode `protobuf:"varint,2,opt,name=entity_override_mode,json=entityOverrideMode,proto3,enum=google.cloud.dialogflow.v2beta1.SessionEntityType_EntityOverrideMode" json:"entity_override_mode,omitempty"`
 	// Required. The collection of entities associated with this session entity
 	// type.
-	Entities             []*EntityType_Entity `protobuf:"bytes,3,rep,name=entities" json:"entities,omitempty"`
+	Entities             []*EntityType_Entity `protobuf:"bytes,3,rep,name=entities,proto3" json:"entities,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
 	XXX_unrecognized     []byte               `json:"-"`
 	XXX_sizecache        int32                `json:"-"`
@@ -95,7 +93,7 @@ func (m *SessionEntityType) Reset()         { *m = SessionEntityType{} }
 func (m *SessionEntityType) String() string { return proto.CompactTextString(m) }
 func (*SessionEntityType) ProtoMessage()    {}
 func (*SessionEntityType) Descriptor() ([]byte, []int) {
-	return fileDescriptor_session_entity_type_e661f7d8b34bd0b7, []int{0}
+	return fileDescriptor_session_entity_type_0a5ede95d4809454, []int{0}
 }
 func (m *SessionEntityType) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SessionEntityType.Unmarshal(m, b)
@@ -142,15 +140,14 @@ type ListSessionEntityTypesRequest struct {
 	// Format: `projects/<Project ID>/agent/sessions/<Session ID>` or
 	// `projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/
 	// sessions/<Session ID>`.
-	// Note: Environments and users are under construction and will be available
-	// soon. If <Environment ID> is not specified, we assume default 'draft'
-	// environment. If <User ID> is not specified, we assume default '-' user.
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	// If `Environment ID` is not specified, we assume default 'draft'
+	// environment. If `User ID` is not specified, we assume default '-' user.
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// Optional. The maximum number of items to return in a single page. By
 	// default 100 and at most 1000.
-	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize" json:"page_size,omitempty"`
+	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// Optional. The next_page_token value returned from a previous list request.
-	PageToken            string   `protobuf:"bytes,3,opt,name=page_token,json=pageToken" json:"page_token,omitempty"`
+	PageToken            string   `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -160,7 +157,7 @@ func (m *ListSessionEntityTypesRequest) Reset()         { *m = ListSessionEntity
 func (m *ListSessionEntityTypesRequest) String() string { return proto.CompactTextString(m) }
 func (*ListSessionEntityTypesRequest) ProtoMessage()    {}
 func (*ListSessionEntityTypesRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_session_entity_type_e661f7d8b34bd0b7, []int{1}
+	return fileDescriptor_session_entity_type_0a5ede95d4809454, []int{1}
 }
 func (m *ListSessionEntityTypesRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListSessionEntityTypesRequest.Unmarshal(m, b)
@@ -205,10 +202,10 @@ func (m *ListSessionEntityTypesRequest) GetPageToken() string {
 type ListSessionEntityTypesResponse struct {
 	// The list of session entity types. There will be a maximum number of items
 	// returned based on the page_size field in the request.
-	SessionEntityTypes []*SessionEntityType `protobuf:"bytes,1,rep,name=session_entity_types,json=sessionEntityTypes" json:"session_entity_types,omitempty"`
+	SessionEntityTypes []*SessionEntityType `protobuf:"bytes,1,rep,name=session_entity_types,json=sessionEntityTypes,proto3" json:"session_entity_types,omitempty"`
 	// Token to retrieve the next page of results, or empty if there are no
 	// more results in the list.
-	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken" json:"next_page_token,omitempty"`
+	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -218,7 +215,7 @@ func (m *ListSessionEntityTypesResponse) Reset()         { *m = ListSessionEntit
 func (m *ListSessionEntityTypesResponse) String() string { return proto.CompactTextString(m) }
 func (*ListSessionEntityTypesResponse) ProtoMessage()    {}
 func (*ListSessionEntityTypesResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_session_entity_type_e661f7d8b34bd0b7, []int{2}
+	return fileDescriptor_session_entity_type_0a5ede95d4809454, []int{2}
 }
 func (m *ListSessionEntityTypesResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListSessionEntityTypesResponse.Unmarshal(m, b)
@@ -257,12 +254,10 @@ type GetSessionEntityTypeRequest struct {
 	// Required. The name of the session entity type. Format:
 	// `projects/<Project ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type
 	// Display Name>` or `projects/<Project ID>/agent/environments/<Environment
-	// ID>/users/<User ID>/sessions/<Session ID>/
-	// entityTypes/<Entity Type Display Name>`.
-	// Note: Environments and users re under construction and will be available
-	// soon. If <Environment ID> is not specified, we assume default 'draft'
-	// environment. If <User ID> is not specified, we assume default '-' user.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	// ID>/users/<User ID>/sessions/<Session ID>/entityTypes/<Entity Type Display
+	// Name>`. If `Environment ID` is not specified, we assume default 'draft'
+	// environment. If `User ID` is not specified, we assume default '-' user.
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -272,7 +267,7 @@ func (m *GetSessionEntityTypeRequest) Reset()         { *m = GetSessionEntityTyp
 func (m *GetSessionEntityTypeRequest) String() string { return proto.CompactTextString(m) }
 func (*GetSessionEntityTypeRequest) ProtoMessage()    {}
 func (*GetSessionEntityTypeRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_session_entity_type_e661f7d8b34bd0b7, []int{3}
+	return fileDescriptor_session_entity_type_0a5ede95d4809454, []int{3}
 }
 func (m *GetSessionEntityTypeRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetSessionEntityTypeRequest.Unmarshal(m, b)
@@ -304,13 +299,12 @@ type CreateSessionEntityTypeRequest struct {
 	// Required. The session to create a session entity type for.
 	// Format: `projects/<Project ID>/agent/sessions/<Session ID>` or
 	// `projects/<Project ID>/agent/environments/<Environment ID>/users/<User ID>/
-	// sessions/<Session ID>`.
-	// Note: Environments and users are under construction and will be available
-	// soon. If <Environment ID> is not specified, we assume default 'draft'
-	// environment. If <User ID> is not specified, we assume default '-' user.
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	// sessions/<Session ID>`. If `Environment ID` is not specified, we assume
+	// default 'draft' environment. If `User ID` is not specified, we assume
+	// default '-' user.
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// Required. The session entity type to create.
-	SessionEntityType    *SessionEntityType `protobuf:"bytes,2,opt,name=session_entity_type,json=sessionEntityType" json:"session_entity_type,omitempty"`
+	SessionEntityType    *SessionEntityType `protobuf:"bytes,2,opt,name=session_entity_type,json=sessionEntityType,proto3" json:"session_entity_type,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}           `json:"-"`
 	XXX_unrecognized     []byte             `json:"-"`
 	XXX_sizecache        int32              `json:"-"`
@@ -320,7 +314,7 @@ func (m *CreateSessionEntityTypeRequest) Reset()         { *m = CreateSessionEnt
 func (m *CreateSessionEntityTypeRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateSessionEntityTypeRequest) ProtoMessage()    {}
 func (*CreateSessionEntityTypeRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_session_entity_type_e661f7d8b34bd0b7, []int{4}
+	return fileDescriptor_session_entity_type_0a5ede95d4809454, []int{4}
 }
 func (m *CreateSessionEntityTypeRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CreateSessionEntityTypeRequest.Unmarshal(m, b)
@@ -360,13 +354,11 @@ type UpdateSessionEntityTypeRequest struct {
 	// `projects/<Project ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type
 	// Display Name>` or `projects/<Project ID>/agent/environments/<Environment
 	// ID>/users/<User ID>/sessions/<Session ID>/entityTypes/<Entity Type Display
-	// Name>`.
-	// Note: Environments and users are under construction and will be available
-	// soon. If <Environment ID> is not specified, we assume default 'draft'
-	// environment. If <User ID> is not specified, we assume default '-' user.
-	SessionEntityType *SessionEntityType `protobuf:"bytes,1,opt,name=session_entity_type,json=sessionEntityType" json:"session_entity_type,omitempty"`
+	// Name>`. If `Environment ID` is not specified, we assume default 'draft'
+	// environment. If `User ID` is not specified, we assume default '-' user.
+	SessionEntityType *SessionEntityType `protobuf:"bytes,1,opt,name=session_entity_type,json=sessionEntityType,proto3" json:"session_entity_type,omitempty"`
 	// Optional. The mask to control which fields get updated.
-	UpdateMask           *field_mask.FieldMask `protobuf:"bytes,2,opt,name=update_mask,json=updateMask" json:"update_mask,omitempty"`
+	UpdateMask           *field_mask.FieldMask `protobuf:"bytes,2,opt,name=update_mask,json=updateMask,proto3" json:"update_mask,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}              `json:"-"`
 	XXX_unrecognized     []byte                `json:"-"`
 	XXX_sizecache        int32                 `json:"-"`
@@ -376,7 +368,7 @@ func (m *UpdateSessionEntityTypeRequest) Reset()         { *m = UpdateSessionEnt
 func (m *UpdateSessionEntityTypeRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateSessionEntityTypeRequest) ProtoMessage()    {}
 func (*UpdateSessionEntityTypeRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_session_entity_type_e661f7d8b34bd0b7, []int{5}
+	return fileDescriptor_session_entity_type_0a5ede95d4809454, []int{5}
 }
 func (m *UpdateSessionEntityTypeRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UpdateSessionEntityTypeRequest.Unmarshal(m, b)
@@ -416,11 +408,9 @@ type DeleteSessionEntityTypeRequest struct {
 	// `projects/<Project ID>/agent/sessions/<Session ID>/entityTypes/<Entity Type
 	// Display Name>` or `projects/<Project ID>/agent/environments/<Environment
 	// ID>/users/<User ID>/sessions/<Session ID>/entityTypes/<Entity Type Display
-	// Name>`.
-	// Note: Environments and users are under construction and will be available
-	// soon. If <Environment ID> is not specified, we assume default 'draft'
-	// environment. If <User ID> is not specified, we assume default '-' user.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	// Name>`. If `Environment ID` is not specified, we assume default 'draft'
+	// environment. If `User ID` is not specified, we assume default '-' user.
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -430,7 +420,7 @@ func (m *DeleteSessionEntityTypeRequest) Reset()         { *m = DeleteSessionEnt
 func (m *DeleteSessionEntityTypeRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteSessionEntityTypeRequest) ProtoMessage()    {}
 func (*DeleteSessionEntityTypeRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_session_entity_type_e661f7d8b34bd0b7, []int{6}
+	return fileDescriptor_session_entity_type_0a5ede95d4809454, []int{6}
 }
 func (m *DeleteSessionEntityTypeRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeleteSessionEntityTypeRequest.Unmarshal(m, b)
@@ -545,8 +535,7 @@ func (c *sessionEntityTypesClient) DeleteSessionEntityType(ctx context.Context, 
 	return out, nil
 }
 
-// Server API for SessionEntityTypes service
-
+// SessionEntityTypesServer is the server API for SessionEntityTypes service.
 type SessionEntityTypesServer interface {
 	// Returns the list of all session entity types in the specified session.
 	ListSessionEntityTypes(context.Context, *ListSessionEntityTypesRequest) (*ListSessionEntityTypesResponse, error)
@@ -684,10 +673,10 @@ var _SessionEntityTypes_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("google/cloud/dialogflow/v2beta1/session_entity_type.proto", fileDescriptor_session_entity_type_e661f7d8b34bd0b7)
+	proto.RegisterFile("google/cloud/dialogflow/v2beta1/session_entity_type.proto", fileDescriptor_session_entity_type_0a5ede95d4809454)
 }
 
-var fileDescriptor_session_entity_type_e661f7d8b34bd0b7 = []byte{
+var fileDescriptor_session_entity_type_0a5ede95d4809454 = []byte{
 	// 870 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x56, 0xcf, 0x6f, 0xe3, 0x44,
 	0x14, 0x66, 0x5c, 0x58, 0xed, 0xce, 0xf2, 0xa3, 0x3b, 0x54, 0x69, 0x94, 0xd2, 0x34, 0x78, 0x11,

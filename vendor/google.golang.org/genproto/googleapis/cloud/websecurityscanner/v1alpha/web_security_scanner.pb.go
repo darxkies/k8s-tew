@@ -31,10 +31,10 @@ type CreateScanConfigRequest struct {
 	// Required.
 	// The parent resource name where the scan is created, which should be a
 	// project resource name in the format 'projects/{projectId}'.
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// Required.
 	// The ScanConfig to be created.
-	ScanConfig           *ScanConfig `protobuf:"bytes,2,opt,name=scan_config,json=scanConfig" json:"scan_config,omitempty"`
+	ScanConfig           *ScanConfig `protobuf:"bytes,2,opt,name=scan_config,json=scanConfig,proto3" json:"scan_config,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
 	XXX_unrecognized     []byte      `json:"-"`
 	XXX_sizecache        int32       `json:"-"`
@@ -44,7 +44,7 @@ func (m *CreateScanConfigRequest) Reset()         { *m = CreateScanConfigRequest
 func (m *CreateScanConfigRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateScanConfigRequest) ProtoMessage()    {}
 func (*CreateScanConfigRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_web_security_scanner_437308ef7a623e74, []int{0}
+	return fileDescriptor_web_security_scanner_f0a8594a85d56336, []int{0}
 }
 func (m *CreateScanConfigRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CreateScanConfigRequest.Unmarshal(m, b)
@@ -83,7 +83,7 @@ type DeleteScanConfigRequest struct {
 	// Required.
 	// The resource name of the ScanConfig to be deleted. The name follows the
 	// format of 'projects/{projectId}/scanConfigs/{scanConfigId}'.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -93,7 +93,7 @@ func (m *DeleteScanConfigRequest) Reset()         { *m = DeleteScanConfigRequest
 func (m *DeleteScanConfigRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteScanConfigRequest) ProtoMessage()    {}
 func (*DeleteScanConfigRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_web_security_scanner_437308ef7a623e74, []int{1}
+	return fileDescriptor_web_security_scanner_f0a8594a85d56336, []int{1}
 }
 func (m *DeleteScanConfigRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeleteScanConfigRequest.Unmarshal(m, b)
@@ -125,7 +125,7 @@ type GetScanConfigRequest struct {
 	// Required.
 	// The resource name of the ScanConfig to be returned. The name follows the
 	// format of 'projects/{projectId}/scanConfigs/{scanConfigId}'.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -135,7 +135,7 @@ func (m *GetScanConfigRequest) Reset()         { *m = GetScanConfigRequest{} }
 func (m *GetScanConfigRequest) String() string { return proto.CompactTextString(m) }
 func (*GetScanConfigRequest) ProtoMessage()    {}
 func (*GetScanConfigRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_web_security_scanner_437308ef7a623e74, []int{2}
+	return fileDescriptor_web_security_scanner_f0a8594a85d56336, []int{2}
 }
 func (m *GetScanConfigRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetScanConfigRequest.Unmarshal(m, b)
@@ -167,15 +167,15 @@ type ListScanConfigsRequest struct {
 	// Required.
 	// The parent resource name, which should be a project resource name in the
 	// format 'projects/{projectId}'.
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// A token identifying a page of results to be returned. This should be a
 	// `next_page_token` value returned from a previous List request.
 	// If unspecified, the first page of results is returned.
-	PageToken string `protobuf:"bytes,2,opt,name=page_token,json=pageToken" json:"page_token,omitempty"`
+	PageToken string `protobuf:"bytes,2,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	// The maximum number of ScanConfigs to return, can be limited by server.
 	// If not specified or not positive, the implementation will select a
 	// reasonable value.
-	PageSize             int32    `protobuf:"varint,3,opt,name=page_size,json=pageSize" json:"page_size,omitempty"`
+	PageSize             int32    `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -185,7 +185,7 @@ func (m *ListScanConfigsRequest) Reset()         { *m = ListScanConfigsRequest{}
 func (m *ListScanConfigsRequest) String() string { return proto.CompactTextString(m) }
 func (*ListScanConfigsRequest) ProtoMessage()    {}
 func (*ListScanConfigsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_web_security_scanner_437308ef7a623e74, []int{3}
+	return fileDescriptor_web_security_scanner_f0a8594a85d56336, []int{3}
 }
 func (m *ListScanConfigsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListScanConfigsRequest.Unmarshal(m, b)
@@ -232,12 +232,12 @@ type UpdateScanConfigRequest struct {
 	// The ScanConfig to be updated. The name field must be set to identify the
 	// resource to be updated. The values of fields not covered by the mask
 	// will be ignored.
-	ScanConfig *ScanConfig `protobuf:"bytes,2,opt,name=scan_config,json=scanConfig" json:"scan_config,omitempty"`
+	ScanConfig *ScanConfig `protobuf:"bytes,2,opt,name=scan_config,json=scanConfig,proto3" json:"scan_config,omitempty"`
 	// Required.
 	// The update mask applies to the resource. For the `FieldMask` definition,
 	// see
 	// https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
-	UpdateMask           *field_mask.FieldMask `protobuf:"bytes,3,opt,name=update_mask,json=updateMask" json:"update_mask,omitempty"`
+	UpdateMask           *field_mask.FieldMask `protobuf:"bytes,3,opt,name=update_mask,json=updateMask,proto3" json:"update_mask,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}              `json:"-"`
 	XXX_unrecognized     []byte                `json:"-"`
 	XXX_sizecache        int32                 `json:"-"`
@@ -247,7 +247,7 @@ func (m *UpdateScanConfigRequest) Reset()         { *m = UpdateScanConfigRequest
 func (m *UpdateScanConfigRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateScanConfigRequest) ProtoMessage()    {}
 func (*UpdateScanConfigRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_web_security_scanner_437308ef7a623e74, []int{4}
+	return fileDescriptor_web_security_scanner_f0a8594a85d56336, []int{4}
 }
 func (m *UpdateScanConfigRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UpdateScanConfigRequest.Unmarshal(m, b)
@@ -284,10 +284,10 @@ func (m *UpdateScanConfigRequest) GetUpdateMask() *field_mask.FieldMask {
 // Response for the `ListScanConfigs` method.
 type ListScanConfigsResponse struct {
 	// The list of ScanConfigs returned.
-	ScanConfigs []*ScanConfig `protobuf:"bytes,1,rep,name=scan_configs,json=scanConfigs" json:"scan_configs,omitempty"`
+	ScanConfigs []*ScanConfig `protobuf:"bytes,1,rep,name=scan_configs,json=scanConfigs,proto3" json:"scan_configs,omitempty"`
 	// Token to retrieve the next page of results, or empty if there are no
 	// more results in the list.
-	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken" json:"next_page_token,omitempty"`
+	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -297,7 +297,7 @@ func (m *ListScanConfigsResponse) Reset()         { *m = ListScanConfigsResponse
 func (m *ListScanConfigsResponse) String() string { return proto.CompactTextString(m) }
 func (*ListScanConfigsResponse) ProtoMessage()    {}
 func (*ListScanConfigsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_web_security_scanner_437308ef7a623e74, []int{5}
+	return fileDescriptor_web_security_scanner_f0a8594a85d56336, []int{5}
 }
 func (m *ListScanConfigsResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListScanConfigsResponse.Unmarshal(m, b)
@@ -336,7 +336,7 @@ type StartScanRunRequest struct {
 	// Required.
 	// The resource name of the ScanConfig to be used. The name follows the
 	// format of 'projects/{projectId}/scanConfigs/{scanConfigId}'.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -346,7 +346,7 @@ func (m *StartScanRunRequest) Reset()         { *m = StartScanRunRequest{} }
 func (m *StartScanRunRequest) String() string { return proto.CompactTextString(m) }
 func (*StartScanRunRequest) ProtoMessage()    {}
 func (*StartScanRunRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_web_security_scanner_437308ef7a623e74, []int{6}
+	return fileDescriptor_web_security_scanner_f0a8594a85d56336, []int{6}
 }
 func (m *StartScanRunRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_StartScanRunRequest.Unmarshal(m, b)
@@ -379,7 +379,7 @@ type GetScanRunRequest struct {
 	// The resource name of the ScanRun to be returned. The name follows the
 	// format of
 	// 'projects/{projectId}/scanConfigs/{scanConfigId}/scanRuns/{scanRunId}'.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -389,7 +389,7 @@ func (m *GetScanRunRequest) Reset()         { *m = GetScanRunRequest{} }
 func (m *GetScanRunRequest) String() string { return proto.CompactTextString(m) }
 func (*GetScanRunRequest) ProtoMessage()    {}
 func (*GetScanRunRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_web_security_scanner_437308ef7a623e74, []int{7}
+	return fileDescriptor_web_security_scanner_f0a8594a85d56336, []int{7}
 }
 func (m *GetScanRunRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetScanRunRequest.Unmarshal(m, b)
@@ -421,15 +421,15 @@ type ListScanRunsRequest struct {
 	// Required.
 	// The parent resource name, which should be a scan resource name in the
 	// format 'projects/{projectId}/scanConfigs/{scanConfigId}'.
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// A token identifying a page of results to be returned. This should be a
 	// `next_page_token` value returned from a previous List request.
 	// If unspecified, the first page of results is returned.
-	PageToken string `protobuf:"bytes,2,opt,name=page_token,json=pageToken" json:"page_token,omitempty"`
+	PageToken string `protobuf:"bytes,2,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	// The maximum number of ScanRuns to return, can be limited by server.
 	// If not specified or not positive, the implementation will select a
 	// reasonable value.
-	PageSize             int32    `protobuf:"varint,3,opt,name=page_size,json=pageSize" json:"page_size,omitempty"`
+	PageSize             int32    `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -439,7 +439,7 @@ func (m *ListScanRunsRequest) Reset()         { *m = ListScanRunsRequest{} }
 func (m *ListScanRunsRequest) String() string { return proto.CompactTextString(m) }
 func (*ListScanRunsRequest) ProtoMessage()    {}
 func (*ListScanRunsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_web_security_scanner_437308ef7a623e74, []int{8}
+	return fileDescriptor_web_security_scanner_f0a8594a85d56336, []int{8}
 }
 func (m *ListScanRunsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListScanRunsRequest.Unmarshal(m, b)
@@ -483,10 +483,10 @@ func (m *ListScanRunsRequest) GetPageSize() int32 {
 // Response for the `ListScanRuns` method.
 type ListScanRunsResponse struct {
 	// The list of ScanRuns returned.
-	ScanRuns []*ScanRun `protobuf:"bytes,1,rep,name=scan_runs,json=scanRuns" json:"scan_runs,omitempty"`
+	ScanRuns []*ScanRun `protobuf:"bytes,1,rep,name=scan_runs,json=scanRuns,proto3" json:"scan_runs,omitempty"`
 	// Token to retrieve the next page of results, or empty if there are no
 	// more results in the list.
-	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken" json:"next_page_token,omitempty"`
+	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -496,7 +496,7 @@ func (m *ListScanRunsResponse) Reset()         { *m = ListScanRunsResponse{} }
 func (m *ListScanRunsResponse) String() string { return proto.CompactTextString(m) }
 func (*ListScanRunsResponse) ProtoMessage()    {}
 func (*ListScanRunsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_web_security_scanner_437308ef7a623e74, []int{9}
+	return fileDescriptor_web_security_scanner_f0a8594a85d56336, []int{9}
 }
 func (m *ListScanRunsResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListScanRunsResponse.Unmarshal(m, b)
@@ -536,7 +536,7 @@ type StopScanRunRequest struct {
 	// The resource name of the ScanRun to be stopped. The name follows the
 	// format of
 	// 'projects/{projectId}/scanConfigs/{scanConfigId}/scanRuns/{scanRunId}'.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -546,7 +546,7 @@ func (m *StopScanRunRequest) Reset()         { *m = StopScanRunRequest{} }
 func (m *StopScanRunRequest) String() string { return proto.CompactTextString(m) }
 func (*StopScanRunRequest) ProtoMessage()    {}
 func (*StopScanRunRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_web_security_scanner_437308ef7a623e74, []int{10}
+	return fileDescriptor_web_security_scanner_f0a8594a85d56336, []int{10}
 }
 func (m *StopScanRunRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_StopScanRunRequest.Unmarshal(m, b)
@@ -579,15 +579,15 @@ type ListCrawledUrlsRequest struct {
 	// The parent resource name, which should be a scan run resource name in the
 	// format
 	// 'projects/{projectId}/scanConfigs/{scanConfigId}/scanRuns/{scanRunId}'.
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// A token identifying a page of results to be returned. This should be a
 	// `next_page_token` value returned from a previous List request.
 	// If unspecified, the first page of results is returned.
-	PageToken string `protobuf:"bytes,2,opt,name=page_token,json=pageToken" json:"page_token,omitempty"`
+	PageToken string `protobuf:"bytes,2,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	// The maximum number of CrawledUrls to return, can be limited by server.
 	// If not specified or not positive, the implementation will select a
 	// reasonable value.
-	PageSize             int32    `protobuf:"varint,3,opt,name=page_size,json=pageSize" json:"page_size,omitempty"`
+	PageSize             int32    `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -597,7 +597,7 @@ func (m *ListCrawledUrlsRequest) Reset()         { *m = ListCrawledUrlsRequest{}
 func (m *ListCrawledUrlsRequest) String() string { return proto.CompactTextString(m) }
 func (*ListCrawledUrlsRequest) ProtoMessage()    {}
 func (*ListCrawledUrlsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_web_security_scanner_437308ef7a623e74, []int{11}
+	return fileDescriptor_web_security_scanner_f0a8594a85d56336, []int{11}
 }
 func (m *ListCrawledUrlsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListCrawledUrlsRequest.Unmarshal(m, b)
@@ -641,10 +641,10 @@ func (m *ListCrawledUrlsRequest) GetPageSize() int32 {
 // Response for the `ListCrawledUrls` method.
 type ListCrawledUrlsResponse struct {
 	// The list of CrawledUrls returned.
-	CrawledUrls []*CrawledUrl `protobuf:"bytes,1,rep,name=crawled_urls,json=crawledUrls" json:"crawled_urls,omitempty"`
+	CrawledUrls []*CrawledUrl `protobuf:"bytes,1,rep,name=crawled_urls,json=crawledUrls,proto3" json:"crawled_urls,omitempty"`
 	// Token to retrieve the next page of results, or empty if there are no
 	// more results in the list.
-	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken" json:"next_page_token,omitempty"`
+	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -654,7 +654,7 @@ func (m *ListCrawledUrlsResponse) Reset()         { *m = ListCrawledUrlsResponse
 func (m *ListCrawledUrlsResponse) String() string { return proto.CompactTextString(m) }
 func (*ListCrawledUrlsResponse) ProtoMessage()    {}
 func (*ListCrawledUrlsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_web_security_scanner_437308ef7a623e74, []int{12}
+	return fileDescriptor_web_security_scanner_f0a8594a85d56336, []int{12}
 }
 func (m *ListCrawledUrlsResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListCrawledUrlsResponse.Unmarshal(m, b)
@@ -694,7 +694,7 @@ type GetFindingRequest struct {
 	// The resource name of the Finding to be returned. The name follows the
 	// format of
 	// 'projects/{projectId}/scanConfigs/{scanConfigId}/scanRuns/{scanRunId}/findings/{findingId}'.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -704,7 +704,7 @@ func (m *GetFindingRequest) Reset()         { *m = GetFindingRequest{} }
 func (m *GetFindingRequest) String() string { return proto.CompactTextString(m) }
 func (*GetFindingRequest) ProtoMessage()    {}
 func (*GetFindingRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_web_security_scanner_437308ef7a623e74, []int{13}
+	return fileDescriptor_web_security_scanner_f0a8594a85d56336, []int{13}
 }
 func (m *GetFindingRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetFindingRequest.Unmarshal(m, b)
@@ -737,20 +737,20 @@ type ListFindingsRequest struct {
 	// The parent resource name, which should be a scan run resource name in the
 	// format
 	// 'projects/{projectId}/scanConfigs/{scanConfigId}/scanRuns/{scanRunId}'.
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// The filter expression. The expression must be in the format: <field>
 	// <operator> <value>.
 	// Supported field: 'finding_type'.
 	// Supported operator: '='.
-	Filter string `protobuf:"bytes,2,opt,name=filter" json:"filter,omitempty"`
+	Filter string `protobuf:"bytes,2,opt,name=filter,proto3" json:"filter,omitempty"`
 	// A token identifying a page of results to be returned. This should be a
 	// `next_page_token` value returned from a previous List request.
 	// If unspecified, the first page of results is returned.
-	PageToken string `protobuf:"bytes,3,opt,name=page_token,json=pageToken" json:"page_token,omitempty"`
+	PageToken string `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	// The maximum number of Findings to return, can be limited by server.
 	// If not specified or not positive, the implementation will select a
 	// reasonable value.
-	PageSize             int32    `protobuf:"varint,4,opt,name=page_size,json=pageSize" json:"page_size,omitempty"`
+	PageSize             int32    `protobuf:"varint,4,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -760,7 +760,7 @@ func (m *ListFindingsRequest) Reset()         { *m = ListFindingsRequest{} }
 func (m *ListFindingsRequest) String() string { return proto.CompactTextString(m) }
 func (*ListFindingsRequest) ProtoMessage()    {}
 func (*ListFindingsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_web_security_scanner_437308ef7a623e74, []int{14}
+	return fileDescriptor_web_security_scanner_f0a8594a85d56336, []int{14}
 }
 func (m *ListFindingsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListFindingsRequest.Unmarshal(m, b)
@@ -811,10 +811,10 @@ func (m *ListFindingsRequest) GetPageSize() int32 {
 // Response for the `ListFindings` method.
 type ListFindingsResponse struct {
 	// The list of Findings returned.
-	Findings []*Finding `protobuf:"bytes,1,rep,name=findings" json:"findings,omitempty"`
+	Findings []*Finding `protobuf:"bytes,1,rep,name=findings,proto3" json:"findings,omitempty"`
 	// Token to retrieve the next page of results, or empty if there are no
 	// more results in the list.
-	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken" json:"next_page_token,omitempty"`
+	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -824,7 +824,7 @@ func (m *ListFindingsResponse) Reset()         { *m = ListFindingsResponse{} }
 func (m *ListFindingsResponse) String() string { return proto.CompactTextString(m) }
 func (*ListFindingsResponse) ProtoMessage()    {}
 func (*ListFindingsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_web_security_scanner_437308ef7a623e74, []int{15}
+	return fileDescriptor_web_security_scanner_f0a8594a85d56336, []int{15}
 }
 func (m *ListFindingsResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListFindingsResponse.Unmarshal(m, b)
@@ -864,7 +864,7 @@ type ListFindingTypeStatsRequest struct {
 	// The parent resource name, which should be a scan run resource name in the
 	// format
 	// 'projects/{projectId}/scanConfigs/{scanConfigId}/scanRuns/{scanRunId}'.
-	Parent               string   `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent               string   `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -874,7 +874,7 @@ func (m *ListFindingTypeStatsRequest) Reset()         { *m = ListFindingTypeStat
 func (m *ListFindingTypeStatsRequest) String() string { return proto.CompactTextString(m) }
 func (*ListFindingTypeStatsRequest) ProtoMessage()    {}
 func (*ListFindingTypeStatsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_web_security_scanner_437308ef7a623e74, []int{16}
+	return fileDescriptor_web_security_scanner_f0a8594a85d56336, []int{16}
 }
 func (m *ListFindingTypeStatsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListFindingTypeStatsRequest.Unmarshal(m, b)
@@ -904,7 +904,7 @@ func (m *ListFindingTypeStatsRequest) GetParent() string {
 // Response for the `ListFindingTypeStats` method.
 type ListFindingTypeStatsResponse struct {
 	// The list of FindingTypeStats returned.
-	FindingTypeStats     []*FindingTypeStats `protobuf:"bytes,1,rep,name=finding_type_stats,json=findingTypeStats" json:"finding_type_stats,omitempty"`
+	FindingTypeStats     []*FindingTypeStats `protobuf:"bytes,1,rep,name=finding_type_stats,json=findingTypeStats,proto3" json:"finding_type_stats,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}            `json:"-"`
 	XXX_unrecognized     []byte              `json:"-"`
 	XXX_sizecache        int32               `json:"-"`
@@ -914,7 +914,7 @@ func (m *ListFindingTypeStatsResponse) Reset()         { *m = ListFindingTypeSta
 func (m *ListFindingTypeStatsResponse) String() string { return proto.CompactTextString(m) }
 func (*ListFindingTypeStatsResponse) ProtoMessage()    {}
 func (*ListFindingTypeStatsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_web_security_scanner_437308ef7a623e74, []int{17}
+	return fileDescriptor_web_security_scanner_f0a8594a85d56336, []int{17}
 }
 func (m *ListFindingTypeStatsResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListFindingTypeStatsResponse.Unmarshal(m, b)
@@ -1128,8 +1128,7 @@ func (c *webSecurityScannerClient) ListFindingTypeStats(ctx context.Context, in 
 	return out, nil
 }
 
-// Server API for WebSecurityScanner service
-
+// WebSecurityScannerServer is the server API for WebSecurityScanner service.
 type WebSecurityScannerServer interface {
 	// Creates a new ScanConfig.
 	CreateScanConfig(context.Context, *CreateScanConfigRequest) (*ScanConfig, error)
@@ -1460,10 +1459,10 @@ var _WebSecurityScanner_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("google/cloud/websecurityscanner/v1alpha/web_security_scanner.proto", fileDescriptor_web_security_scanner_437308ef7a623e74)
+	proto.RegisterFile("google/cloud/websecurityscanner/v1alpha/web_security_scanner.proto", fileDescriptor_web_security_scanner_f0a8594a85d56336)
 }
 
-var fileDescriptor_web_security_scanner_437308ef7a623e74 = []byte{
+var fileDescriptor_web_security_scanner_f0a8594a85d56336 = []byte{
 	// 1115 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x58, 0xcf, 0x6f, 0x1b, 0x45,
 	0x14, 0xd6, 0xb4, 0x25, 0x4a, 0x9e, 0x53, 0x35, 0x4c, 0xa3, 0x38, 0xda, 0x14, 0xc9, 0xda, 0x03,

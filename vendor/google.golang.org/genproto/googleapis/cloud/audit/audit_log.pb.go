@@ -26,51 +26,51 @@ const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 type AuditLog struct {
 	// The name of the API service performing the operation. For example,
 	// `"datastore.googleapis.com"`.
-	ServiceName string `protobuf:"bytes,7,opt,name=service_name,json=serviceName" json:"service_name,omitempty"`
+	ServiceName string `protobuf:"bytes,7,opt,name=service_name,json=serviceName,proto3" json:"service_name,omitempty"`
 	// The name of the service method or operation.
 	// For API calls, this should be the name of the API method.
 	// For example,
 	//
 	//     "google.datastore.v1.Datastore.RunQuery"
 	//     "google.logging.v1.LoggingService.DeleteLog"
-	MethodName string `protobuf:"bytes,8,opt,name=method_name,json=methodName" json:"method_name,omitempty"`
+	MethodName string `protobuf:"bytes,8,opt,name=method_name,json=methodName,proto3" json:"method_name,omitempty"`
 	// The resource or collection that is the target of the operation.
 	// The name is a scheme-less URI, not including the API service name.
 	// For example:
 	//
 	//     "shelves/SHELF_ID/books"
 	//     "shelves/SHELF_ID/books/BOOK_ID"
-	ResourceName string `protobuf:"bytes,11,opt,name=resource_name,json=resourceName" json:"resource_name,omitempty"`
+	ResourceName string `protobuf:"bytes,11,opt,name=resource_name,json=resourceName,proto3" json:"resource_name,omitempty"`
 	// The number of items returned from a List or Query API method,
 	// if applicable.
-	NumResponseItems int64 `protobuf:"varint,12,opt,name=num_response_items,json=numResponseItems" json:"num_response_items,omitempty"`
+	NumResponseItems int64 `protobuf:"varint,12,opt,name=num_response_items,json=numResponseItems,proto3" json:"num_response_items,omitempty"`
 	// The status of the overall operation.
-	Status *status.Status `protobuf:"bytes,2,opt,name=status" json:"status,omitempty"`
+	Status *status.Status `protobuf:"bytes,2,opt,name=status,proto3" json:"status,omitempty"`
 	// Authentication information.
-	AuthenticationInfo *AuthenticationInfo `protobuf:"bytes,3,opt,name=authentication_info,json=authenticationInfo" json:"authentication_info,omitempty"`
+	AuthenticationInfo *AuthenticationInfo `protobuf:"bytes,3,opt,name=authentication_info,json=authenticationInfo,proto3" json:"authentication_info,omitempty"`
 	// Authorization information. If there are multiple
 	// resources or permissions involved, then there is
 	// one AuthorizationInfo element for each {resource, permission} tuple.
-	AuthorizationInfo []*AuthorizationInfo `protobuf:"bytes,9,rep,name=authorization_info,json=authorizationInfo" json:"authorization_info,omitempty"`
+	AuthorizationInfo []*AuthorizationInfo `protobuf:"bytes,9,rep,name=authorization_info,json=authorizationInfo,proto3" json:"authorization_info,omitempty"`
 	// Metadata about the operation.
-	RequestMetadata *RequestMetadata `protobuf:"bytes,4,opt,name=request_metadata,json=requestMetadata" json:"request_metadata,omitempty"`
+	RequestMetadata *RequestMetadata `protobuf:"bytes,4,opt,name=request_metadata,json=requestMetadata,proto3" json:"request_metadata,omitempty"`
 	// The operation request. This may not include all request parameters,
 	// such as those that are too large, privacy-sensitive, or duplicated
 	// elsewhere in the log record.
 	// It should never include user-generated data, such as file contents.
 	// When the JSON object represented here has a proto equivalent, the proto
 	// name will be indicated in the `@type` property.
-	Request *_struct.Struct `protobuf:"bytes,16,opt,name=request" json:"request,omitempty"`
+	Request *_struct.Struct `protobuf:"bytes,16,opt,name=request,proto3" json:"request,omitempty"`
 	// The operation response. This may not include all response elements,
 	// such as those that are too large, privacy-sensitive, or duplicated
 	// elsewhere in the log record.
 	// It should never include user-generated data, such as file contents.
 	// When the JSON object represented here has a proto equivalent, the proto
 	// name will be indicated in the `@type` property.
-	Response *_struct.Struct `protobuf:"bytes,17,opt,name=response" json:"response,omitempty"`
+	Response *_struct.Struct `protobuf:"bytes,17,opt,name=response,proto3" json:"response,omitempty"`
 	// Other service-specific data about the request, response, and other
 	// activities.
-	ServiceData          *any.Any `protobuf:"bytes,15,opt,name=service_data,json=serviceData" json:"service_data,omitempty"`
+	ServiceData          *any.Any `protobuf:"bytes,15,opt,name=service_data,json=serviceData,proto3" json:"service_data,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -80,7 +80,7 @@ func (m *AuditLog) Reset()         { *m = AuditLog{} }
 func (m *AuditLog) String() string { return proto.CompactTextString(m) }
 func (*AuditLog) ProtoMessage()    {}
 func (*AuditLog) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_log_c61207f947472f18, []int{0}
+	return fileDescriptor_audit_log_394f9970a41d2fd2, []int{0}
 }
 func (m *AuditLog) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_AuditLog.Unmarshal(m, b)
@@ -180,7 +180,7 @@ func (m *AuditLog) GetServiceData() *any.Any {
 // Authentication information for the operation.
 type AuthenticationInfo struct {
 	// The email address of the authenticated user making the request.
-	PrincipalEmail       string   `protobuf:"bytes,1,opt,name=principal_email,json=principalEmail" json:"principal_email,omitempty"`
+	PrincipalEmail       string   `protobuf:"bytes,1,opt,name=principal_email,json=principalEmail,proto3" json:"principal_email,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -190,7 +190,7 @@ func (m *AuthenticationInfo) Reset()         { *m = AuthenticationInfo{} }
 func (m *AuthenticationInfo) String() string { return proto.CompactTextString(m) }
 func (*AuthenticationInfo) ProtoMessage()    {}
 func (*AuthenticationInfo) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_log_c61207f947472f18, []int{1}
+	return fileDescriptor_audit_log_394f9970a41d2fd2, []int{1}
 }
 func (m *AuthenticationInfo) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_AuthenticationInfo.Unmarshal(m, b)
@@ -222,12 +222,12 @@ type AuthorizationInfo struct {
 	// The resource being accessed, as a REST-style string. For example:
 	//
 	//     bigquery.googlapis.com/projects/PROJECTID/datasets/DATASETID
-	Resource string `protobuf:"bytes,1,opt,name=resource" json:"resource,omitempty"`
+	Resource string `protobuf:"bytes,1,opt,name=resource,proto3" json:"resource,omitempty"`
 	// The required IAM permission.
-	Permission string `protobuf:"bytes,2,opt,name=permission" json:"permission,omitempty"`
+	Permission string `protobuf:"bytes,2,opt,name=permission,proto3" json:"permission,omitempty"`
 	// Whether or not authorization for `resource` and `permission`
 	// was granted.
-	Granted              bool     `protobuf:"varint,3,opt,name=granted" json:"granted,omitempty"`
+	Granted              bool     `protobuf:"varint,3,opt,name=granted,proto3" json:"granted,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -237,7 +237,7 @@ func (m *AuthorizationInfo) Reset()         { *m = AuthorizationInfo{} }
 func (m *AuthorizationInfo) String() string { return proto.CompactTextString(m) }
 func (*AuthorizationInfo) ProtoMessage()    {}
 func (*AuthorizationInfo) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_log_c61207f947472f18, []int{2}
+	return fileDescriptor_audit_log_394f9970a41d2fd2, []int{2}
 }
 func (m *AuthorizationInfo) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_AuthorizationInfo.Unmarshal(m, b)
@@ -281,7 +281,7 @@ func (m *AuthorizationInfo) GetGranted() bool {
 // Metadata about the request.
 type RequestMetadata struct {
 	// The IP address of the caller.
-	CallerIp string `protobuf:"bytes,1,opt,name=caller_ip,json=callerIp" json:"caller_ip,omitempty"`
+	CallerIp string `protobuf:"bytes,1,opt,name=caller_ip,json=callerIp,proto3" json:"caller_ip,omitempty"`
 	// The user agent of the caller.
 	// This information is not authenticated and should be treated accordingly.
 	// For example:
@@ -292,7 +292,7 @@ type RequestMetadata struct {
 	//     The request was made by the Google Cloud SDK CLI (gcloud).
 	// +   `AppEngine-Google; (+http://code.google.com/appengine; appid: s~my-project`:
 	//     The request was made from the `my-project` App Engine app.
-	CallerSuppliedUserAgent string   `protobuf:"bytes,2,opt,name=caller_supplied_user_agent,json=callerSuppliedUserAgent" json:"caller_supplied_user_agent,omitempty"`
+	CallerSuppliedUserAgent string   `protobuf:"bytes,2,opt,name=caller_supplied_user_agent,json=callerSuppliedUserAgent,proto3" json:"caller_supplied_user_agent,omitempty"`
 	XXX_NoUnkeyedLiteral    struct{} `json:"-"`
 	XXX_unrecognized        []byte   `json:"-"`
 	XXX_sizecache           int32    `json:"-"`
@@ -302,7 +302,7 @@ func (m *RequestMetadata) Reset()         { *m = RequestMetadata{} }
 func (m *RequestMetadata) String() string { return proto.CompactTextString(m) }
 func (*RequestMetadata) ProtoMessage()    {}
 func (*RequestMetadata) Descriptor() ([]byte, []int) {
-	return fileDescriptor_audit_log_c61207f947472f18, []int{3}
+	return fileDescriptor_audit_log_394f9970a41d2fd2, []int{3}
 }
 func (m *RequestMetadata) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_RequestMetadata.Unmarshal(m, b)
@@ -344,10 +344,10 @@ func init() {
 }
 
 func init() {
-	proto.RegisterFile("google/cloud/audit/audit_log.proto", fileDescriptor_audit_log_c61207f947472f18)
+	proto.RegisterFile("google/cloud/audit/audit_log.proto", fileDescriptor_audit_log_394f9970a41d2fd2)
 }
 
-var fileDescriptor_audit_log_c61207f947472f18 = []byte{
+var fileDescriptor_audit_log_394f9970a41d2fd2 = []byte{
 	// 576 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x7c, 0x94, 0x5f, 0x6f, 0xd3, 0x30,
 	0x14, 0xc5, 0x55, 0x36, 0x6d, 0xad, 0xbb, 0xd1, 0xd6, 0x20, 0x1a, 0xca, 0x04, 0xa5, 0x13, 0x50,

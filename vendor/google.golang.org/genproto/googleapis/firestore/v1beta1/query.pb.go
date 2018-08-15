@@ -47,7 +47,7 @@ func (x StructuredQuery_Direction) String() string {
 	return proto.EnumName(StructuredQuery_Direction_name, int32(x))
 }
 func (StructuredQuery_Direction) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_query_42c358c3831cf2d2, []int{0, 0}
+	return fileDescriptor_query_d85ba3a0f0a37b11, []int{0, 0}
 }
 
 // A composite filter operator.
@@ -73,7 +73,7 @@ func (x StructuredQuery_CompositeFilter_Operator) String() string {
 	return proto.EnumName(StructuredQuery_CompositeFilter_Operator_name, int32(x))
 }
 func (StructuredQuery_CompositeFilter_Operator) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_query_42c358c3831cf2d2, []int{0, 2, 0}
+	return fileDescriptor_query_d85ba3a0f0a37b11, []int{0, 2, 0}
 }
 
 // A field filter operator.
@@ -116,7 +116,7 @@ func (x StructuredQuery_FieldFilter_Operator) String() string {
 	return proto.EnumName(StructuredQuery_FieldFilter_Operator_name, int32(x))
 }
 func (StructuredQuery_FieldFilter_Operator) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_query_42c358c3831cf2d2, []int{0, 3, 0}
+	return fileDescriptor_query_d85ba3a0f0a37b11, []int{0, 3, 0}
 }
 
 // A unary operator.
@@ -146,17 +146,17 @@ func (x StructuredQuery_UnaryFilter_Operator) String() string {
 	return proto.EnumName(StructuredQuery_UnaryFilter_Operator_name, int32(x))
 }
 func (StructuredQuery_UnaryFilter_Operator) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_query_42c358c3831cf2d2, []int{0, 4, 0}
+	return fileDescriptor_query_d85ba3a0f0a37b11, []int{0, 4, 0}
 }
 
 // A Firestore query.
 type StructuredQuery struct {
 	// The projection to return.
-	Select *StructuredQuery_Projection `protobuf:"bytes,1,opt,name=select" json:"select,omitempty"`
+	Select *StructuredQuery_Projection `protobuf:"bytes,1,opt,name=select,proto3" json:"select,omitempty"`
 	// The collections to query.
-	From []*StructuredQuery_CollectionSelector `protobuf:"bytes,2,rep,name=from" json:"from,omitempty"`
+	From []*StructuredQuery_CollectionSelector `protobuf:"bytes,2,rep,name=from,proto3" json:"from,omitempty"`
 	// The filter to apply.
-	Where *StructuredQuery_Filter `protobuf:"bytes,3,opt,name=where" json:"where,omitempty"`
+	Where *StructuredQuery_Filter `protobuf:"bytes,3,opt,name=where,proto3" json:"where,omitempty"`
 	// The order to apply to the query results.
 	//
 	// Firestore guarantees a stable ordering through the following rules:
@@ -175,21 +175,21 @@ type StructuredQuery struct {
 	//    `SELECT * FROM Foo ORDER BY A DESC, __name__ DESC`
 	//  * `SELECT * FROM Foo WHERE A > 1` becomes
 	//    `SELECT * FROM Foo WHERE A > 1 ORDER BY A, __name__`
-	OrderBy []*StructuredQuery_Order `protobuf:"bytes,4,rep,name=order_by,json=orderBy" json:"order_by,omitempty"`
+	OrderBy []*StructuredQuery_Order `protobuf:"bytes,4,rep,name=order_by,json=orderBy,proto3" json:"order_by,omitempty"`
 	// A starting point for the query results.
-	StartAt *Cursor `protobuf:"bytes,7,opt,name=start_at,json=startAt" json:"start_at,omitempty"`
+	StartAt *Cursor `protobuf:"bytes,7,opt,name=start_at,json=startAt,proto3" json:"start_at,omitempty"`
 	// A end point for the query results.
-	EndAt *Cursor `protobuf:"bytes,8,opt,name=end_at,json=endAt" json:"end_at,omitempty"`
+	EndAt *Cursor `protobuf:"bytes,8,opt,name=end_at,json=endAt,proto3" json:"end_at,omitempty"`
 	// The number of results to skip.
 	//
 	// Applies before limit, but after all other constraints. Must be >= 0 if
 	// specified.
-	Offset int32 `protobuf:"varint,6,opt,name=offset" json:"offset,omitempty"`
+	Offset int32 `protobuf:"varint,6,opt,name=offset,proto3" json:"offset,omitempty"`
 	// The maximum number of results to return.
 	//
 	// Applies after all other constraints.
 	// Must be >= 0 if specified.
-	Limit                *wrappers.Int32Value `protobuf:"bytes,5,opt,name=limit" json:"limit,omitempty"`
+	Limit                *wrappers.Int32Value `protobuf:"bytes,5,opt,name=limit,proto3" json:"limit,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
 	XXX_unrecognized     []byte               `json:"-"`
 	XXX_sizecache        int32                `json:"-"`
@@ -199,7 +199,7 @@ func (m *StructuredQuery) Reset()         { *m = StructuredQuery{} }
 func (m *StructuredQuery) String() string { return proto.CompactTextString(m) }
 func (*StructuredQuery) ProtoMessage()    {}
 func (*StructuredQuery) Descriptor() ([]byte, []int) {
-	return fileDescriptor_query_42c358c3831cf2d2, []int{0}
+	return fileDescriptor_query_d85ba3a0f0a37b11, []int{0}
 }
 func (m *StructuredQuery) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_StructuredQuery.Unmarshal(m, b)
@@ -279,11 +279,11 @@ func (m *StructuredQuery) GetLimit() *wrappers.Int32Value {
 type StructuredQuery_CollectionSelector struct {
 	// The collection ID.
 	// When set, selects only collections with this ID.
-	CollectionId string `protobuf:"bytes,2,opt,name=collection_id,json=collectionId" json:"collection_id,omitempty"`
+	CollectionId string `protobuf:"bytes,2,opt,name=collection_id,json=collectionId,proto3" json:"collection_id,omitempty"`
 	// When false, selects only collections that are immediate children of
 	// the `parent` specified in the containing `RunQueryRequest`.
 	// When true, selects all descendant collections.
-	AllDescendants       bool     `protobuf:"varint,3,opt,name=all_descendants,json=allDescendants" json:"all_descendants,omitempty"`
+	AllDescendants       bool     `protobuf:"varint,3,opt,name=all_descendants,json=allDescendants,proto3" json:"all_descendants,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -293,7 +293,7 @@ func (m *StructuredQuery_CollectionSelector) Reset()         { *m = StructuredQu
 func (m *StructuredQuery_CollectionSelector) String() string { return proto.CompactTextString(m) }
 func (*StructuredQuery_CollectionSelector) ProtoMessage()    {}
 func (*StructuredQuery_CollectionSelector) Descriptor() ([]byte, []int) {
-	return fileDescriptor_query_42c358c3831cf2d2, []int{0, 0}
+	return fileDescriptor_query_d85ba3a0f0a37b11, []int{0, 0}
 }
 func (m *StructuredQuery_CollectionSelector) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_StructuredQuery_CollectionSelector.Unmarshal(m, b)
@@ -345,7 +345,7 @@ func (m *StructuredQuery_Filter) Reset()         { *m = StructuredQuery_Filter{}
 func (m *StructuredQuery_Filter) String() string { return proto.CompactTextString(m) }
 func (*StructuredQuery_Filter) ProtoMessage()    {}
 func (*StructuredQuery_Filter) Descriptor() ([]byte, []int) {
-	return fileDescriptor_query_42c358c3831cf2d2, []int{0, 1}
+	return fileDescriptor_query_d85ba3a0f0a37b11, []int{0, 1}
 }
 func (m *StructuredQuery_Filter) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_StructuredQuery_Filter.Unmarshal(m, b)
@@ -370,18 +370,22 @@ type isStructuredQuery_Filter_FilterType interface {
 }
 
 type StructuredQuery_Filter_CompositeFilter struct {
-	CompositeFilter *StructuredQuery_CompositeFilter `protobuf:"bytes,1,opt,name=composite_filter,json=compositeFilter,oneof"`
+	CompositeFilter *StructuredQuery_CompositeFilter `protobuf:"bytes,1,opt,name=composite_filter,json=compositeFilter,proto3,oneof"`
 }
+
 type StructuredQuery_Filter_FieldFilter struct {
-	FieldFilter *StructuredQuery_FieldFilter `protobuf:"bytes,2,opt,name=field_filter,json=fieldFilter,oneof"`
+	FieldFilter *StructuredQuery_FieldFilter `protobuf:"bytes,2,opt,name=field_filter,json=fieldFilter,proto3,oneof"`
 }
+
 type StructuredQuery_Filter_UnaryFilter struct {
-	UnaryFilter *StructuredQuery_UnaryFilter `protobuf:"bytes,3,opt,name=unary_filter,json=unaryFilter,oneof"`
+	UnaryFilter *StructuredQuery_UnaryFilter `protobuf:"bytes,3,opt,name=unary_filter,json=unaryFilter,proto3,oneof"`
 }
 
 func (*StructuredQuery_Filter_CompositeFilter) isStructuredQuery_Filter_FilterType() {}
-func (*StructuredQuery_Filter_FieldFilter) isStructuredQuery_Filter_FilterType()     {}
-func (*StructuredQuery_Filter_UnaryFilter) isStructuredQuery_Filter_FilterType()     {}
+
+func (*StructuredQuery_Filter_FieldFilter) isStructuredQuery_Filter_FilterType() {}
+
+func (*StructuredQuery_Filter_UnaryFilter) isStructuredQuery_Filter_FilterType() {}
 
 func (m *StructuredQuery_Filter) GetFilterType() isStructuredQuery_Filter_FilterType {
 	if m != nil {
@@ -507,10 +511,10 @@ func _StructuredQuery_Filter_OneofSizer(msg proto.Message) (n int) {
 // A filter that merges multiple other filters using the given operator.
 type StructuredQuery_CompositeFilter struct {
 	// The operator for combining multiple filters.
-	Op StructuredQuery_CompositeFilter_Operator `protobuf:"varint,1,opt,name=op,enum=google.firestore.v1beta1.StructuredQuery_CompositeFilter_Operator" json:"op,omitempty"`
+	Op StructuredQuery_CompositeFilter_Operator `protobuf:"varint,1,opt,name=op,proto3,enum=google.firestore.v1beta1.StructuredQuery_CompositeFilter_Operator" json:"op,omitempty"`
 	// The list of filters to combine.
 	// Must contain at least one filter.
-	Filters              []*StructuredQuery_Filter `protobuf:"bytes,2,rep,name=filters" json:"filters,omitempty"`
+	Filters              []*StructuredQuery_Filter `protobuf:"bytes,2,rep,name=filters,proto3" json:"filters,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                  `json:"-"`
 	XXX_unrecognized     []byte                    `json:"-"`
 	XXX_sizecache        int32                     `json:"-"`
@@ -520,7 +524,7 @@ func (m *StructuredQuery_CompositeFilter) Reset()         { *m = StructuredQuery
 func (m *StructuredQuery_CompositeFilter) String() string { return proto.CompactTextString(m) }
 func (*StructuredQuery_CompositeFilter) ProtoMessage()    {}
 func (*StructuredQuery_CompositeFilter) Descriptor() ([]byte, []int) {
-	return fileDescriptor_query_42c358c3831cf2d2, []int{0, 2}
+	return fileDescriptor_query_d85ba3a0f0a37b11, []int{0, 2}
 }
 func (m *StructuredQuery_CompositeFilter) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_StructuredQuery_CompositeFilter.Unmarshal(m, b)
@@ -557,11 +561,11 @@ func (m *StructuredQuery_CompositeFilter) GetFilters() []*StructuredQuery_Filter
 // A filter on a specific field.
 type StructuredQuery_FieldFilter struct {
 	// The field to filter by.
-	Field *StructuredQuery_FieldReference `protobuf:"bytes,1,opt,name=field" json:"field,omitempty"`
+	Field *StructuredQuery_FieldReference `protobuf:"bytes,1,opt,name=field,proto3" json:"field,omitempty"`
 	// The operator to filter by.
-	Op StructuredQuery_FieldFilter_Operator `protobuf:"varint,2,opt,name=op,enum=google.firestore.v1beta1.StructuredQuery_FieldFilter_Operator" json:"op,omitempty"`
+	Op StructuredQuery_FieldFilter_Operator `protobuf:"varint,2,opt,name=op,proto3,enum=google.firestore.v1beta1.StructuredQuery_FieldFilter_Operator" json:"op,omitempty"`
 	// The value to compare to.
-	Value                *Value   `protobuf:"bytes,3,opt,name=value" json:"value,omitempty"`
+	Value                *Value   `protobuf:"bytes,3,opt,name=value,proto3" json:"value,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -571,7 +575,7 @@ func (m *StructuredQuery_FieldFilter) Reset()         { *m = StructuredQuery_Fie
 func (m *StructuredQuery_FieldFilter) String() string { return proto.CompactTextString(m) }
 func (*StructuredQuery_FieldFilter) ProtoMessage()    {}
 func (*StructuredQuery_FieldFilter) Descriptor() ([]byte, []int) {
-	return fileDescriptor_query_42c358c3831cf2d2, []int{0, 3}
+	return fileDescriptor_query_d85ba3a0f0a37b11, []int{0, 3}
 }
 func (m *StructuredQuery_FieldFilter) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_StructuredQuery_FieldFilter.Unmarshal(m, b)
@@ -615,7 +619,7 @@ func (m *StructuredQuery_FieldFilter) GetValue() *Value {
 // A filter with a single operand.
 type StructuredQuery_UnaryFilter struct {
 	// The unary operator to apply.
-	Op StructuredQuery_UnaryFilter_Operator `protobuf:"varint,1,opt,name=op,enum=google.firestore.v1beta1.StructuredQuery_UnaryFilter_Operator" json:"op,omitempty"`
+	Op StructuredQuery_UnaryFilter_Operator `protobuf:"varint,1,opt,name=op,proto3,enum=google.firestore.v1beta1.StructuredQuery_UnaryFilter_Operator" json:"op,omitempty"`
 	// The argument to the filter.
 	//
 	// Types that are valid to be assigned to OperandType:
@@ -630,7 +634,7 @@ func (m *StructuredQuery_UnaryFilter) Reset()         { *m = StructuredQuery_Una
 func (m *StructuredQuery_UnaryFilter) String() string { return proto.CompactTextString(m) }
 func (*StructuredQuery_UnaryFilter) ProtoMessage()    {}
 func (*StructuredQuery_UnaryFilter) Descriptor() ([]byte, []int) {
-	return fileDescriptor_query_42c358c3831cf2d2, []int{0, 4}
+	return fileDescriptor_query_d85ba3a0f0a37b11, []int{0, 4}
 }
 func (m *StructuredQuery_UnaryFilter) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_StructuredQuery_UnaryFilter.Unmarshal(m, b)
@@ -650,12 +654,19 @@ func (m *StructuredQuery_UnaryFilter) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_StructuredQuery_UnaryFilter proto.InternalMessageInfo
 
+func (m *StructuredQuery_UnaryFilter) GetOp() StructuredQuery_UnaryFilter_Operator {
+	if m != nil {
+		return m.Op
+	}
+	return StructuredQuery_UnaryFilter_OPERATOR_UNSPECIFIED
+}
+
 type isStructuredQuery_UnaryFilter_OperandType interface {
 	isStructuredQuery_UnaryFilter_OperandType()
 }
 
 type StructuredQuery_UnaryFilter_Field struct {
-	Field *StructuredQuery_FieldReference `protobuf:"bytes,2,opt,name=field,oneof"`
+	Field *StructuredQuery_FieldReference `protobuf:"bytes,2,opt,name=field,proto3,oneof"`
 }
 
 func (*StructuredQuery_UnaryFilter_Field) isStructuredQuery_UnaryFilter_OperandType() {}
@@ -665,13 +676,6 @@ func (m *StructuredQuery_UnaryFilter) GetOperandType() isStructuredQuery_UnaryFi
 		return m.OperandType
 	}
 	return nil
-}
-
-func (m *StructuredQuery_UnaryFilter) GetOp() StructuredQuery_UnaryFilter_Operator {
-	if m != nil {
-		return m.Op
-	}
-	return StructuredQuery_UnaryFilter_OPERATOR_UNSPECIFIED
 }
 
 func (m *StructuredQuery_UnaryFilter) GetField() *StructuredQuery_FieldReference {
@@ -739,9 +743,9 @@ func _StructuredQuery_UnaryFilter_OneofSizer(msg proto.Message) (n int) {
 // An order on a field.
 type StructuredQuery_Order struct {
 	// The field to order by.
-	Field *StructuredQuery_FieldReference `protobuf:"bytes,1,opt,name=field" json:"field,omitempty"`
+	Field *StructuredQuery_FieldReference `protobuf:"bytes,1,opt,name=field,proto3" json:"field,omitempty"`
 	// The direction to order by. Defaults to `ASCENDING`.
-	Direction            StructuredQuery_Direction `protobuf:"varint,2,opt,name=direction,enum=google.firestore.v1beta1.StructuredQuery_Direction" json:"direction,omitempty"`
+	Direction            StructuredQuery_Direction `protobuf:"varint,2,opt,name=direction,proto3,enum=google.firestore.v1beta1.StructuredQuery_Direction" json:"direction,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                  `json:"-"`
 	XXX_unrecognized     []byte                    `json:"-"`
 	XXX_sizecache        int32                     `json:"-"`
@@ -751,7 +755,7 @@ func (m *StructuredQuery_Order) Reset()         { *m = StructuredQuery_Order{} }
 func (m *StructuredQuery_Order) String() string { return proto.CompactTextString(m) }
 func (*StructuredQuery_Order) ProtoMessage()    {}
 func (*StructuredQuery_Order) Descriptor() ([]byte, []int) {
-	return fileDescriptor_query_42c358c3831cf2d2, []int{0, 5}
+	return fileDescriptor_query_d85ba3a0f0a37b11, []int{0, 5}
 }
 func (m *StructuredQuery_Order) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_StructuredQuery_Order.Unmarshal(m, b)
@@ -787,7 +791,7 @@ func (m *StructuredQuery_Order) GetDirection() StructuredQuery_Direction {
 
 // A reference to a field, such as `max(messages.time) as max_time`.
 type StructuredQuery_FieldReference struct {
-	FieldPath            string   `protobuf:"bytes,2,opt,name=field_path,json=fieldPath" json:"field_path,omitempty"`
+	FieldPath            string   `protobuf:"bytes,2,opt,name=field_path,json=fieldPath,proto3" json:"field_path,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -797,7 +801,7 @@ func (m *StructuredQuery_FieldReference) Reset()         { *m = StructuredQuery_
 func (m *StructuredQuery_FieldReference) String() string { return proto.CompactTextString(m) }
 func (*StructuredQuery_FieldReference) ProtoMessage()    {}
 func (*StructuredQuery_FieldReference) Descriptor() ([]byte, []int) {
-	return fileDescriptor_query_42c358c3831cf2d2, []int{0, 6}
+	return fileDescriptor_query_d85ba3a0f0a37b11, []int{0, 6}
 }
 func (m *StructuredQuery_FieldReference) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_StructuredQuery_FieldReference.Unmarshal(m, b)
@@ -830,7 +834,7 @@ type StructuredQuery_Projection struct {
 	//
 	// If empty, all fields are returned. To only return the name
 	// of the document, use `['__name__']`.
-	Fields               []*StructuredQuery_FieldReference `protobuf:"bytes,2,rep,name=fields" json:"fields,omitempty"`
+	Fields               []*StructuredQuery_FieldReference `protobuf:"bytes,2,rep,name=fields,proto3" json:"fields,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                          `json:"-"`
 	XXX_unrecognized     []byte                            `json:"-"`
 	XXX_sizecache        int32                             `json:"-"`
@@ -840,7 +844,7 @@ func (m *StructuredQuery_Projection) Reset()         { *m = StructuredQuery_Proj
 func (m *StructuredQuery_Projection) String() string { return proto.CompactTextString(m) }
 func (*StructuredQuery_Projection) ProtoMessage()    {}
 func (*StructuredQuery_Projection) Descriptor() ([]byte, []int) {
-	return fileDescriptor_query_42c358c3831cf2d2, []int{0, 7}
+	return fileDescriptor_query_d85ba3a0f0a37b11, []int{0, 7}
 }
 func (m *StructuredQuery_Projection) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_StructuredQuery_Projection.Unmarshal(m, b)
@@ -873,10 +877,10 @@ type Cursor struct {
 	// the order by clause of a query.
 	//
 	// Can contain fewer values than specified in the order by clause.
-	Values []*Value `protobuf:"bytes,1,rep,name=values" json:"values,omitempty"`
+	Values []*Value `protobuf:"bytes,1,rep,name=values,proto3" json:"values,omitempty"`
 	// If the position is just before or just after the given values, relative
 	// to the sort order defined by the query.
-	Before               bool     `protobuf:"varint,2,opt,name=before" json:"before,omitempty"`
+	Before               bool     `protobuf:"varint,2,opt,name=before,proto3" json:"before,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -886,7 +890,7 @@ func (m *Cursor) Reset()         { *m = Cursor{} }
 func (m *Cursor) String() string { return proto.CompactTextString(m) }
 func (*Cursor) ProtoMessage()    {}
 func (*Cursor) Descriptor() ([]byte, []int) {
-	return fileDescriptor_query_42c358c3831cf2d2, []int{1}
+	return fileDescriptor_query_d85ba3a0f0a37b11, []int{1}
 }
 func (m *Cursor) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Cursor.Unmarshal(m, b)
@@ -938,10 +942,10 @@ func init() {
 }
 
 func init() {
-	proto.RegisterFile("google/firestore/v1beta1/query.proto", fileDescriptor_query_42c358c3831cf2d2)
+	proto.RegisterFile("google/firestore/v1beta1/query.proto", fileDescriptor_query_d85ba3a0f0a37b11)
 }
 
-var fileDescriptor_query_42c358c3831cf2d2 = []byte{
+var fileDescriptor_query_d85ba3a0f0a37b11 = []byte{
 	// 970 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x96, 0xdd, 0x6e, 0xe3, 0x44,
 	0x14, 0xc7, 0xd7, 0x4e, 0xf3, 0x75, 0xd2, 0x0f, 0x6b, 0x04, 0x2b, 0x13, 0x96, 0xa5, 0x0a, 0x48,

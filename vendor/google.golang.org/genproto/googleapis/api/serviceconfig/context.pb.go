@@ -39,7 +39,7 @@ type Context struct {
 	// A list of RPC context rules that apply to individual API methods.
 	//
 	// **NOTE:** All service configuration rules follow "last one wins" order.
-	Rules                []*ContextRule `protobuf:"bytes,1,rep,name=rules" json:"rules,omitempty"`
+	Rules                []*ContextRule `protobuf:"bytes,1,rep,name=rules,proto3" json:"rules,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
 	XXX_unrecognized     []byte         `json:"-"`
 	XXX_sizecache        int32          `json:"-"`
@@ -49,7 +49,7 @@ func (m *Context) Reset()         { *m = Context{} }
 func (m *Context) String() string { return proto.CompactTextString(m) }
 func (*Context) ProtoMessage()    {}
 func (*Context) Descriptor() ([]byte, []int) {
-	return fileDescriptor_context_aced50768e79506a, []int{0}
+	return fileDescriptor_context_7f48bb214df6c175, []int{0}
 }
 func (m *Context) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Context.Unmarshal(m, b)
@@ -82,11 +82,11 @@ type ContextRule struct {
 	// Selects the methods to which this rule applies.
 	//
 	// Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
-	Selector string `protobuf:"bytes,1,opt,name=selector" json:"selector,omitempty"`
+	Selector string `protobuf:"bytes,1,opt,name=selector,proto3" json:"selector,omitempty"`
 	// A list of full type names of requested contexts.
-	Requested []string `protobuf:"bytes,2,rep,name=requested" json:"requested,omitempty"`
+	Requested []string `protobuf:"bytes,2,rep,name=requested,proto3" json:"requested,omitempty"`
 	// A list of full type names of provided contexts.
-	Provided             []string `protobuf:"bytes,3,rep,name=provided" json:"provided,omitempty"`
+	Provided             []string `protobuf:"bytes,3,rep,name=provided,proto3" json:"provided,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -96,7 +96,7 @@ func (m *ContextRule) Reset()         { *m = ContextRule{} }
 func (m *ContextRule) String() string { return proto.CompactTextString(m) }
 func (*ContextRule) ProtoMessage()    {}
 func (*ContextRule) Descriptor() ([]byte, []int) {
-	return fileDescriptor_context_aced50768e79506a, []int{1}
+	return fileDescriptor_context_7f48bb214df6c175, []int{1}
 }
 func (m *ContextRule) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ContextRule.Unmarshal(m, b)
@@ -142,9 +142,9 @@ func init() {
 	proto.RegisterType((*ContextRule)(nil), "google.api.ContextRule")
 }
 
-func init() { proto.RegisterFile("google/api/context.proto", fileDescriptor_context_aced50768e79506a) }
+func init() { proto.RegisterFile("google/api/context.proto", fileDescriptor_context_7f48bb214df6c175) }
 
-var fileDescriptor_context_aced50768e79506a = []byte{
+var fileDescriptor_context_7f48bb214df6c175 = []byte{
 	// 231 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x54, 0x90, 0x4f, 0x4b, 0xc4, 0x30,
 	0x14, 0xc4, 0xe9, 0xd6, 0x7f, 0x7d, 0x2b, 0x1e, 0x7a, 0x31, 0x88, 0x87, 0xb2, 0xa7, 0x5e, 0x4c,

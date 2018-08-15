@@ -61,7 +61,7 @@ func (x Change_State) String() string {
 	return proto.EnumName(Change_State_name, int32(x))
 }
 func (Change_State) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_watch_f784578f17c1fdc6, []int{2, 0}
+	return fileDescriptor_watch_40ce6762a23e7042, []int{2, 0}
 }
 
 // The message used by the client to register interest in an entity.
@@ -90,7 +90,7 @@ type Request struct {
 	// contains a special character, it must be %-encoded.  We recommend that
 	// clients and servers use their runtime's URL library to produce and consume
 	// target values.
-	Target string `protobuf:"bytes,1,opt,name=target" json:"target,omitempty"`
+	Target string `protobuf:"bytes,1,opt,name=target,proto3" json:"target,omitempty"`
 	// The `resume_marker` specifies how much of the existing underlying state is
 	// delivered to the client when the watch request is received by the
 	// system. The client can set this marker in one of the following ways to get
@@ -130,7 +130,7 @@ func (m *Request) Reset()         { *m = Request{} }
 func (m *Request) String() string { return proto.CompactTextString(m) }
 func (*Request) ProtoMessage()    {}
 func (*Request) Descriptor() ([]byte, []int) {
-	return fileDescriptor_watch_f784578f17c1fdc6, []int{0}
+	return fileDescriptor_watch_40ce6762a23e7042, []int{0}
 }
 func (m *Request) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Request.Unmarshal(m, b)
@@ -167,7 +167,7 @@ func (m *Request) GetResumeMarker() []byte {
 // A batch of Change messages.
 type ChangeBatch struct {
 	// A list of Change messages.
-	Changes              []*Change `protobuf:"bytes,1,rep,name=changes" json:"changes,omitempty"`
+	Changes              []*Change `protobuf:"bytes,1,rep,name=changes,proto3" json:"changes,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
 	XXX_unrecognized     []byte    `json:"-"`
 	XXX_sizecache        int32     `json:"-"`
@@ -177,7 +177,7 @@ func (m *ChangeBatch) Reset()         { *m = ChangeBatch{} }
 func (m *ChangeBatch) String() string { return proto.CompactTextString(m) }
 func (*ChangeBatch) ProtoMessage()    {}
 func (*ChangeBatch) Descriptor() ([]byte, []int) {
-	return fileDescriptor_watch_f784578f17c1fdc6, []int{1}
+	return fileDescriptor_watch_40ce6762a23e7042, []int{1}
 }
 func (m *ChangeBatch) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ChangeBatch.Unmarshal(m, b)
@@ -209,13 +209,13 @@ type Change struct {
 	// Name of the element, interpreted relative to the entity's actual
 	// name. "" refers to the entity itself. The element name is a valid
 	// UTF-8 string.
-	Element string `protobuf:"bytes,1,opt,name=element" json:"element,omitempty"`
+	Element string `protobuf:"bytes,1,opt,name=element,proto3" json:"element,omitempty"`
 	// The state of the `element`.
-	State Change_State `protobuf:"varint,2,opt,name=state,enum=google.watcher.v1.Change_State" json:"state,omitempty"`
+	State Change_State `protobuf:"varint,2,opt,name=state,proto3,enum=google.watcher.v1.Change_State" json:"state,omitempty"`
 	// The actual change data. This field is present only when `state() == EXISTS`
 	// or `state() == ERROR`. Please see [google.protobuf.Any][google.protobuf.Any] about how to use
 	// the Any type.
-	Data *any.Any `protobuf:"bytes,6,opt,name=data" json:"data,omitempty"`
+	Data *any.Any `protobuf:"bytes,6,opt,name=data,proto3" json:"data,omitempty"`
 	// If present, provides a compact representation of all the messages that have
 	// been received by the caller for the given entity, e.g., it could be a
 	// sequence number or a multi-part timestamp/version vector. This marker can
@@ -224,7 +224,7 @@ type Change struct {
 	ResumeMarker []byte `protobuf:"bytes,4,opt,name=resume_marker,json=resumeMarker,proto3" json:"resume_marker,omitempty"`
 	// If true, this Change is followed by more Changes that are in the same group
 	// as this Change.
-	Continued            bool     `protobuf:"varint,5,opt,name=continued" json:"continued,omitempty"`
+	Continued            bool     `protobuf:"varint,5,opt,name=continued,proto3" json:"continued,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -234,7 +234,7 @@ func (m *Change) Reset()         { *m = Change{} }
 func (m *Change) String() string { return proto.CompactTextString(m) }
 func (*Change) ProtoMessage()    {}
 func (*Change) Descriptor() ([]byte, []int) {
-	return fileDescriptor_watch_f784578f17c1fdc6, []int{2}
+	return fileDescriptor_watch_40ce6762a23e7042, []int{2}
 }
 func (m *Change) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Change.Unmarshal(m, b)
@@ -352,8 +352,7 @@ func (x *watcherWatchClient) Recv() (*ChangeBatch, error) {
 	return m, nil
 }
 
-// Server API for Watcher service
-
+// WatcherServer is the server API for Watcher service.
 type WatcherServer interface {
 	// Start a streaming RPC to get watch information from the server.
 	Watch(*Request, Watcher_WatchServer) error
@@ -399,10 +398,10 @@ var _Watcher_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("google/watcher/v1/watch.proto", fileDescriptor_watch_f784578f17c1fdc6)
+	proto.RegisterFile("google/watcher/v1/watch.proto", fileDescriptor_watch_40ce6762a23e7042)
 }
 
-var fileDescriptor_watch_f784578f17c1fdc6 = []byte{
+var fileDescriptor_watch_40ce6762a23e7042 = []byte{
 	// 449 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x74, 0x52, 0xdd, 0x6e, 0xd3, 0x30,
 	0x14, 0xc6, 0xdd, 0x92, 0xd2, 0xd3, 0x31, 0x75, 0x16, 0x43, 0x69, 0x19, 0x10, 0x85, 0x9b, 0x5c,

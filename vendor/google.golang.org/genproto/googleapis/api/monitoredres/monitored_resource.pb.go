@@ -36,23 +36,23 @@ type MonitoredResourceDescriptor struct {
 	// {project_id} is a project ID that provides API-specific context for
 	// accessing the type.  APIs that do not use project information can use the
 	// resource name format `"monitoredResourceDescriptors/{type}"`.
-	Name string `protobuf:"bytes,5,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,5,opt,name=name,proto3" json:"name,omitempty"`
 	// Required. The monitored resource type. For example, the type
 	// `"cloudsql_database"` represents databases in Google Cloud SQL.
 	// The maximum length of this value is 256 characters.
-	Type string `protobuf:"bytes,1,opt,name=type" json:"type,omitempty"`
+	Type string `protobuf:"bytes,1,opt,name=type,proto3" json:"type,omitempty"`
 	// Optional. A concise name for the monitored resource type that might be
 	// displayed in user interfaces. It should be a Title Cased Noun Phrase,
 	// without any article or other determiners. For example,
 	// `"Google Cloud SQL Database"`.
-	DisplayName string `protobuf:"bytes,2,opt,name=display_name,json=displayName" json:"display_name,omitempty"`
+	DisplayName string `protobuf:"bytes,2,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
 	// Optional. A detailed description of the monitored resource type that might
 	// be used in documentation.
-	Description string `protobuf:"bytes,3,opt,name=description" json:"description,omitempty"`
+	Description string `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
 	// Required. A set of labels used to describe instances of this monitored
 	// resource type. For example, an individual Google Cloud SQL database is
 	// identified by values for the labels `"database_id"` and `"zone"`.
-	Labels               []*label.LabelDescriptor `protobuf:"bytes,4,rep,name=labels" json:"labels,omitempty"`
+	Labels               []*label.LabelDescriptor `protobuf:"bytes,4,rep,name=labels,proto3" json:"labels,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                 `json:"-"`
 	XXX_unrecognized     []byte                   `json:"-"`
 	XXX_sizecache        int32                    `json:"-"`
@@ -62,7 +62,7 @@ func (m *MonitoredResourceDescriptor) Reset()         { *m = MonitoredResourceDe
 func (m *MonitoredResourceDescriptor) String() string { return proto.CompactTextString(m) }
 func (*MonitoredResourceDescriptor) ProtoMessage()    {}
 func (*MonitoredResourceDescriptor) Descriptor() ([]byte, []int) {
-	return fileDescriptor_monitored_resource_cdc52d43c1ee23b3, []int{0}
+	return fileDescriptor_monitored_resource_35ee91132be0d9ce, []int{0}
 }
 func (m *MonitoredResourceDescriptor) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_MonitoredResourceDescriptor.Unmarshal(m, b)
@@ -134,11 +134,11 @@ type MonitoredResource struct {
 	// Required. The monitored resource type. This field must match
 	// the `type` field of a [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor] object. For
 	// example, the type of a Compute Engine VM instance is `gce_instance`.
-	Type string `protobuf:"bytes,1,opt,name=type" json:"type,omitempty"`
+	Type string `protobuf:"bytes,1,opt,name=type,proto3" json:"type,omitempty"`
 	// Required. Values for all of the labels listed in the associated monitored
 	// resource descriptor. For example, Compute Engine VM instances use the
 	// labels `"project_id"`, `"instance_id"`, and `"zone"`.
-	Labels               map[string]string `protobuf:"bytes,2,rep,name=labels" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Labels               map[string]string `protobuf:"bytes,2,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
 	XXX_unrecognized     []byte            `json:"-"`
 	XXX_sizecache        int32             `json:"-"`
@@ -148,7 +148,7 @@ func (m *MonitoredResource) Reset()         { *m = MonitoredResource{} }
 func (m *MonitoredResource) String() string { return proto.CompactTextString(m) }
 func (*MonitoredResource) ProtoMessage()    {}
 func (*MonitoredResource) Descriptor() ([]byte, []int) {
-	return fileDescriptor_monitored_resource_cdc52d43c1ee23b3, []int{1}
+	return fileDescriptor_monitored_resource_35ee91132be0d9ce, []int{1}
 }
 func (m *MonitoredResource) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_MonitoredResource.Unmarshal(m, b)
@@ -200,9 +200,9 @@ type MonitoredResourceMetadata struct {
 	//     { "name": "my-test-instance",
 	//       "security_group": ["a", "b", "c"],
 	//       "spot_instance": false }
-	SystemLabels *_struct.Struct `protobuf:"bytes,1,opt,name=system_labels,json=systemLabels" json:"system_labels,omitempty"`
+	SystemLabels *_struct.Struct `protobuf:"bytes,1,opt,name=system_labels,json=systemLabels,proto3" json:"system_labels,omitempty"`
 	// Output only. A map of user-defined metadata labels.
-	UserLabels           map[string]string `protobuf:"bytes,2,rep,name=user_labels,json=userLabels" json:"user_labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	UserLabels           map[string]string `protobuf:"bytes,2,rep,name=user_labels,json=userLabels,proto3" json:"user_labels,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
 	XXX_unrecognized     []byte            `json:"-"`
 	XXX_sizecache        int32             `json:"-"`
@@ -212,7 +212,7 @@ func (m *MonitoredResourceMetadata) Reset()         { *m = MonitoredResourceMeta
 func (m *MonitoredResourceMetadata) String() string { return proto.CompactTextString(m) }
 func (*MonitoredResourceMetadata) ProtoMessage()    {}
 func (*MonitoredResourceMetadata) Descriptor() ([]byte, []int) {
-	return fileDescriptor_monitored_resource_cdc52d43c1ee23b3, []int{2}
+	return fileDescriptor_monitored_resource_35ee91132be0d9ce, []int{2}
 }
 func (m *MonitoredResourceMetadata) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_MonitoredResourceMetadata.Unmarshal(m, b)
@@ -255,10 +255,10 @@ func init() {
 }
 
 func init() {
-	proto.RegisterFile("google/api/monitored_resource.proto", fileDescriptor_monitored_resource_cdc52d43c1ee23b3)
+	proto.RegisterFile("google/api/monitored_resource.proto", fileDescriptor_monitored_resource_35ee91132be0d9ce)
 }
 
-var fileDescriptor_monitored_resource_cdc52d43c1ee23b3 = []byte{
+var fileDescriptor_monitored_resource_35ee91132be0d9ce = []byte{
 	// 415 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x53, 0x4d, 0xab, 0xd3, 0x40,
 	0x14, 0x65, 0xd2, 0x0f, 0xf0, 0xa6, 0x7e, 0x0d, 0x52, 0x63, 0xea, 0xa2, 0xd6, 0x4d, 0xdd, 0x24,

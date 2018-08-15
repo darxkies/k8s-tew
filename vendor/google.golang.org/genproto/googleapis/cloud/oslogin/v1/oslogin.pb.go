@@ -31,14 +31,14 @@ const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 // Google Compute Engine.
 type LoginProfile struct {
 	// The primary email address that uniquely identifies the user.
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// The list of POSIX accounts associated with the user.
-	PosixAccounts []*common.PosixAccount `protobuf:"bytes,2,rep,name=posix_accounts,json=posixAccounts" json:"posix_accounts,omitempty"`
+	PosixAccounts []*common.PosixAccount `protobuf:"bytes,2,rep,name=posix_accounts,json=posixAccounts,proto3" json:"posix_accounts,omitempty"`
 	// A map from SSH public key fingerprint to the associated key object.
-	SshPublicKeys map[string]*common.SshPublicKey `protobuf:"bytes,3,rep,name=ssh_public_keys,json=sshPublicKeys" json:"ssh_public_keys,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	SshPublicKeys map[string]*common.SshPublicKey `protobuf:"bytes,3,rep,name=ssh_public_keys,json=sshPublicKeys,proto3" json:"ssh_public_keys,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	// Indicates if the user is suspended. A suspended user cannot log in but
 	// their profile information is retained.
-	Suspended            bool     `protobuf:"varint,4,opt,name=suspended" json:"suspended,omitempty"`
+	Suspended            bool     `protobuf:"varint,4,opt,name=suspended,proto3" json:"suspended,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -48,7 +48,7 @@ func (m *LoginProfile) Reset()         { *m = LoginProfile{} }
 func (m *LoginProfile) String() string { return proto.CompactTextString(m) }
 func (*LoginProfile) ProtoMessage()    {}
 func (*LoginProfile) Descriptor() ([]byte, []int) {
-	return fileDescriptor_oslogin_8e799c1b6cfe9921, []int{0}
+	return fileDescriptor_oslogin_45adadde0ac6d3e5, []int{0}
 }
 func (m *LoginProfile) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_LoginProfile.Unmarshal(m, b)
@@ -101,7 +101,7 @@ type DeletePosixAccountRequest struct {
 	// A reference to the POSIX account to update. POSIX accounts are identified
 	// by the project ID they are associated with. A reference to the POSIX
 	// account is in format `users/{user}/projects/{project}`.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -111,7 +111,7 @@ func (m *DeletePosixAccountRequest) Reset()         { *m = DeletePosixAccountReq
 func (m *DeletePosixAccountRequest) String() string { return proto.CompactTextString(m) }
 func (*DeletePosixAccountRequest) ProtoMessage()    {}
 func (*DeletePosixAccountRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_oslogin_8e799c1b6cfe9921, []int{1}
+	return fileDescriptor_oslogin_45adadde0ac6d3e5, []int{1}
 }
 func (m *DeletePosixAccountRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeletePosixAccountRequest.Unmarshal(m, b)
@@ -143,7 +143,7 @@ type DeleteSshPublicKeyRequest struct {
 	// The fingerprint of the public key to update. Public keys are identified by
 	// their SHA-256 fingerprint. The fingerprint of the public key is in format
 	// `users/{user}/sshPublicKeys/{fingerprint}`.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -153,7 +153,7 @@ func (m *DeleteSshPublicKeyRequest) Reset()         { *m = DeleteSshPublicKeyReq
 func (m *DeleteSshPublicKeyRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteSshPublicKeyRequest) ProtoMessage()    {}
 func (*DeleteSshPublicKeyRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_oslogin_8e799c1b6cfe9921, []int{2}
+	return fileDescriptor_oslogin_45adadde0ac6d3e5, []int{2}
 }
 func (m *DeleteSshPublicKeyRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeleteSshPublicKeyRequest.Unmarshal(m, b)
@@ -183,7 +183,7 @@ func (m *DeleteSshPublicKeyRequest) GetName() string {
 // A request message for retrieving the login profile information for a user.
 type GetLoginProfileRequest struct {
 	// The unique ID for the user in format `users/{user}`.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -193,7 +193,7 @@ func (m *GetLoginProfileRequest) Reset()         { *m = GetLoginProfileRequest{}
 func (m *GetLoginProfileRequest) String() string { return proto.CompactTextString(m) }
 func (*GetLoginProfileRequest) ProtoMessage()    {}
 func (*GetLoginProfileRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_oslogin_8e799c1b6cfe9921, []int{3}
+	return fileDescriptor_oslogin_45adadde0ac6d3e5, []int{3}
 }
 func (m *GetLoginProfileRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetLoginProfileRequest.Unmarshal(m, b)
@@ -225,7 +225,7 @@ type GetSshPublicKeyRequest struct {
 	// The fingerprint of the public key to retrieve. Public keys are identified
 	// by their SHA-256 fingerprint. The fingerprint of the public key is in
 	// format `users/{user}/sshPublicKeys/{fingerprint}`.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -235,7 +235,7 @@ func (m *GetSshPublicKeyRequest) Reset()         { *m = GetSshPublicKeyRequest{}
 func (m *GetSshPublicKeyRequest) String() string { return proto.CompactTextString(m) }
 func (*GetSshPublicKeyRequest) ProtoMessage()    {}
 func (*GetSshPublicKeyRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_oslogin_8e799c1b6cfe9921, []int{4}
+	return fileDescriptor_oslogin_45adadde0ac6d3e5, []int{4}
 }
 func (m *GetSshPublicKeyRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetSshPublicKeyRequest.Unmarshal(m, b)
@@ -265,11 +265,11 @@ func (m *GetSshPublicKeyRequest) GetName() string {
 // A request message for importing an SSH public key.
 type ImportSshPublicKeyRequest struct {
 	// The unique ID for the user in format `users/{user}`.
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// The SSH public key and expiration time.
-	SshPublicKey *common.SshPublicKey `protobuf:"bytes,2,opt,name=ssh_public_key,json=sshPublicKey" json:"ssh_public_key,omitempty"`
+	SshPublicKey *common.SshPublicKey `protobuf:"bytes,2,opt,name=ssh_public_key,json=sshPublicKey,proto3" json:"ssh_public_key,omitempty"`
 	// The project ID of the Google Cloud Platform project.
-	ProjectId            string   `protobuf:"bytes,3,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId            string   `protobuf:"bytes,3,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -279,7 +279,7 @@ func (m *ImportSshPublicKeyRequest) Reset()         { *m = ImportSshPublicKeyReq
 func (m *ImportSshPublicKeyRequest) String() string { return proto.CompactTextString(m) }
 func (*ImportSshPublicKeyRequest) ProtoMessage()    {}
 func (*ImportSshPublicKeyRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_oslogin_8e799c1b6cfe9921, []int{5}
+	return fileDescriptor_oslogin_45adadde0ac6d3e5, []int{5}
 }
 func (m *ImportSshPublicKeyRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ImportSshPublicKeyRequest.Unmarshal(m, b)
@@ -323,7 +323,7 @@ func (m *ImportSshPublicKeyRequest) GetProjectId() string {
 // A response message for importing an SSH public key.
 type ImportSshPublicKeyResponse struct {
 	// The login profile information for the user.
-	LoginProfile         *LoginProfile `protobuf:"bytes,1,opt,name=login_profile,json=loginProfile" json:"login_profile,omitempty"`
+	LoginProfile         *LoginProfile `protobuf:"bytes,1,opt,name=login_profile,json=loginProfile,proto3" json:"login_profile,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}      `json:"-"`
 	XXX_unrecognized     []byte        `json:"-"`
 	XXX_sizecache        int32         `json:"-"`
@@ -333,7 +333,7 @@ func (m *ImportSshPublicKeyResponse) Reset()         { *m = ImportSshPublicKeyRe
 func (m *ImportSshPublicKeyResponse) String() string { return proto.CompactTextString(m) }
 func (*ImportSshPublicKeyResponse) ProtoMessage()    {}
 func (*ImportSshPublicKeyResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_oslogin_8e799c1b6cfe9921, []int{6}
+	return fileDescriptor_oslogin_45adadde0ac6d3e5, []int{6}
 }
 func (m *ImportSshPublicKeyResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ImportSshPublicKeyResponse.Unmarshal(m, b)
@@ -365,11 +365,11 @@ type UpdateSshPublicKeyRequest struct {
 	// The fingerprint of the public key to update. Public keys are identified by
 	// their SHA-256 fingerprint. The fingerprint of the public key is in format
 	// `users/{user}/sshPublicKeys/{fingerprint}`.
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// The SSH public key and expiration time.
-	SshPublicKey *common.SshPublicKey `protobuf:"bytes,2,opt,name=ssh_public_key,json=sshPublicKey" json:"ssh_public_key,omitempty"`
+	SshPublicKey *common.SshPublicKey `protobuf:"bytes,2,opt,name=ssh_public_key,json=sshPublicKey,proto3" json:"ssh_public_key,omitempty"`
 	// Mask to control which fields get updated. Updates all if not present.
-	UpdateMask           *field_mask.FieldMask `protobuf:"bytes,3,opt,name=update_mask,json=updateMask" json:"update_mask,omitempty"`
+	UpdateMask           *field_mask.FieldMask `protobuf:"bytes,3,opt,name=update_mask,json=updateMask,proto3" json:"update_mask,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}              `json:"-"`
 	XXX_unrecognized     []byte                `json:"-"`
 	XXX_sizecache        int32                 `json:"-"`
@@ -379,7 +379,7 @@ func (m *UpdateSshPublicKeyRequest) Reset()         { *m = UpdateSshPublicKeyReq
 func (m *UpdateSshPublicKeyRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateSshPublicKeyRequest) ProtoMessage()    {}
 func (*UpdateSshPublicKeyRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_oslogin_8e799c1b6cfe9921, []int{7}
+	return fileDescriptor_oslogin_45adadde0ac6d3e5, []int{7}
 }
 func (m *UpdateSshPublicKeyRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UpdateSshPublicKeyRequest.Unmarshal(m, b)
@@ -524,8 +524,7 @@ func (c *osLoginServiceClient) UpdateSshPublicKey(ctx context.Context, in *Updat
 	return out, nil
 }
 
-// Server API for OsLoginService service
-
+// OsLoginServiceServer is the server API for OsLoginService service.
 type OsLoginServiceServer interface {
 	// Deletes a POSIX account.
 	DeletePosixAccount(context.Context, *DeletePosixAccountRequest) (*empty.Empty, error)
@@ -691,10 +690,10 @@ var _OsLoginService_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("google/cloud/oslogin/v1/oslogin.proto", fileDescriptor_oslogin_8e799c1b6cfe9921)
+	proto.RegisterFile("google/cloud/oslogin/v1/oslogin.proto", fileDescriptor_oslogin_45adadde0ac6d3e5)
 }
 
-var fileDescriptor_oslogin_8e799c1b6cfe9921 = []byte{
+var fileDescriptor_oslogin_45adadde0ac6d3e5 = []byte{
 	// 774 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x56, 0xcd, 0x6e, 0xd3, 0x40,
 	0x10, 0x96, 0x93, 0x52, 0xe8, 0x26, 0x6d, 0xd1, 0x1e, 0xda, 0xd4, 0x6d, 0xd5, 0x60, 0x51, 0x35,

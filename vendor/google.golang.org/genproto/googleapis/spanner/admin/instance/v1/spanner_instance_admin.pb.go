@@ -59,7 +59,7 @@ func (x Instance_State) String() string {
 	return proto.EnumName(Instance_State_name, int32(x))
 }
 func (Instance_State) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_instance_admin_5b5a46734047df3a, []int{1, 0}
+	return fileDescriptor_spanner_instance_admin_6383269d887c996f, []int{1, 0}
 }
 
 // A possible configuration for a Cloud Spanner instance. Configurations
@@ -68,9 +68,9 @@ type InstanceConfig struct {
 	// A unique identifier for the instance configuration.  Values
 	// are of the form
 	// `projects/<project>/instanceConfigs/[a-z][-a-z0-9]*`
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// The name of this instance configuration as it appears in UIs.
-	DisplayName          string   `protobuf:"bytes,2,opt,name=display_name,json=displayName" json:"display_name,omitempty"`
+	DisplayName          string   `protobuf:"bytes,2,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -80,7 +80,7 @@ func (m *InstanceConfig) Reset()         { *m = InstanceConfig{} }
 func (m *InstanceConfig) String() string { return proto.CompactTextString(m) }
 func (*InstanceConfig) ProtoMessage()    {}
 func (*InstanceConfig) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_instance_admin_5b5a46734047df3a, []int{0}
+	return fileDescriptor_spanner_instance_admin_6383269d887c996f, []int{0}
 }
 func (m *InstanceConfig) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_InstanceConfig.Unmarshal(m, b)
@@ -120,27 +120,27 @@ type Instance struct {
 	// after the instance is created. Values are of the form
 	// `projects/<project>/instances/[a-z][-a-z0-9]*[a-z0-9]`. The final
 	// segment of the name must be between 6 and 30 characters in length.
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// Required. The name of the instance's configuration. Values are of the form
 	// `projects/<project>/instanceConfigs/<configuration>`. See
 	// also [InstanceConfig][google.spanner.admin.instance.v1.InstanceConfig] and
 	// [ListInstanceConfigs][google.spanner.admin.instance.v1.InstanceAdmin.ListInstanceConfigs].
-	Config string `protobuf:"bytes,2,opt,name=config" json:"config,omitempty"`
+	Config string `protobuf:"bytes,2,opt,name=config,proto3" json:"config,omitempty"`
 	// Required. The descriptive name for this instance as it appears in UIs.
 	// Must be unique per project and between 4 and 30 characters in length.
-	DisplayName string `protobuf:"bytes,3,opt,name=display_name,json=displayName" json:"display_name,omitempty"`
+	DisplayName string `protobuf:"bytes,3,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
 	// Required. The number of nodes allocated to this instance. This may be zero
 	// in API responses for instances that are not yet in state `READY`.
 	//
 	// See [the documentation](https://cloud.google.com/spanner/docs/instances#node_count)
 	// for more information about nodes.
-	NodeCount int32 `protobuf:"varint,5,opt,name=node_count,json=nodeCount" json:"node_count,omitempty"`
+	NodeCount int32 `protobuf:"varint,5,opt,name=node_count,json=nodeCount,proto3" json:"node_count,omitempty"`
 	// Output only. The current instance state. For
 	// [CreateInstance][google.spanner.admin.instance.v1.InstanceAdmin.CreateInstance], the state must be
 	// either omitted or set to `CREATING`. For
 	// [UpdateInstance][google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstance], the state must be
 	// either omitted or set to `READY`.
-	State Instance_State `protobuf:"varint,6,opt,name=state,enum=google.spanner.admin.instance.v1.Instance_State" json:"state,omitempty"`
+	State Instance_State `protobuf:"varint,6,opt,name=state,proto3,enum=google.spanner.admin.instance.v1.Instance_State" json:"state,omitempty"`
 	// Cloud Labels are a flexible and lightweight mechanism for organizing cloud
 	// resources into groups that reflect a customer's organizational needs and
 	// deployment strategies. Cloud Labels can be used to filter collections of
@@ -162,7 +162,7 @@ type Instance struct {
 	// specific characters being disallowed.  For example, representing labels
 	// as the string:  name + "_" + value  would prove problematic if we were to
 	// allow "_" in a future release.
-	Labels               map[string]string `protobuf:"bytes,7,rep,name=labels" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Labels               map[string]string `protobuf:"bytes,7,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
 	XXX_unrecognized     []byte            `json:"-"`
 	XXX_sizecache        int32             `json:"-"`
@@ -172,7 +172,7 @@ func (m *Instance) Reset()         { *m = Instance{} }
 func (m *Instance) String() string { return proto.CompactTextString(m) }
 func (*Instance) ProtoMessage()    {}
 func (*Instance) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_instance_admin_5b5a46734047df3a, []int{1}
+	return fileDescriptor_spanner_instance_admin_6383269d887c996f, []int{1}
 }
 func (m *Instance) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Instance.Unmarshal(m, b)
@@ -239,14 +239,14 @@ type ListInstanceConfigsRequest struct {
 	// Required. The name of the project for which a list of supported instance
 	// configurations is requested. Values are of the form
 	// `projects/<project>`.
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// Number of instance configurations to be returned in the response. If 0 or
 	// less, defaults to the server's maximum allowed page size.
-	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize" json:"page_size,omitempty"`
+	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// If non-empty, `page_token` should contain a
 	// [next_page_token][google.spanner.admin.instance.v1.ListInstanceConfigsResponse.next_page_token]
 	// from a previous [ListInstanceConfigsResponse][google.spanner.admin.instance.v1.ListInstanceConfigsResponse].
-	PageToken            string   `protobuf:"bytes,3,opt,name=page_token,json=pageToken" json:"page_token,omitempty"`
+	PageToken            string   `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -256,7 +256,7 @@ func (m *ListInstanceConfigsRequest) Reset()         { *m = ListInstanceConfigsR
 func (m *ListInstanceConfigsRequest) String() string { return proto.CompactTextString(m) }
 func (*ListInstanceConfigsRequest) ProtoMessage()    {}
 func (*ListInstanceConfigsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_instance_admin_5b5a46734047df3a, []int{2}
+	return fileDescriptor_spanner_instance_admin_6383269d887c996f, []int{2}
 }
 func (m *ListInstanceConfigsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListInstanceConfigsRequest.Unmarshal(m, b)
@@ -300,11 +300,11 @@ func (m *ListInstanceConfigsRequest) GetPageToken() string {
 // The response for [ListInstanceConfigs][google.spanner.admin.instance.v1.InstanceAdmin.ListInstanceConfigs].
 type ListInstanceConfigsResponse struct {
 	// The list of requested instance configurations.
-	InstanceConfigs []*InstanceConfig `protobuf:"bytes,1,rep,name=instance_configs,json=instanceConfigs" json:"instance_configs,omitempty"`
+	InstanceConfigs []*InstanceConfig `protobuf:"bytes,1,rep,name=instance_configs,json=instanceConfigs,proto3" json:"instance_configs,omitempty"`
 	// `next_page_token` can be sent in a subsequent
 	// [ListInstanceConfigs][google.spanner.admin.instance.v1.InstanceAdmin.ListInstanceConfigs] call to
 	// fetch more of the matching instance configurations.
-	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken" json:"next_page_token,omitempty"`
+	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -314,7 +314,7 @@ func (m *ListInstanceConfigsResponse) Reset()         { *m = ListInstanceConfigs
 func (m *ListInstanceConfigsResponse) String() string { return proto.CompactTextString(m) }
 func (*ListInstanceConfigsResponse) ProtoMessage()    {}
 func (*ListInstanceConfigsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_instance_admin_5b5a46734047df3a, []int{3}
+	return fileDescriptor_spanner_instance_admin_6383269d887c996f, []int{3}
 }
 func (m *ListInstanceConfigsResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListInstanceConfigsResponse.Unmarshal(m, b)
@@ -353,7 +353,7 @@ func (m *ListInstanceConfigsResponse) GetNextPageToken() string {
 type GetInstanceConfigRequest struct {
 	// Required. The name of the requested instance configuration. Values are of
 	// the form `projects/<project>/instanceConfigs/<config>`.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -363,7 +363,7 @@ func (m *GetInstanceConfigRequest) Reset()         { *m = GetInstanceConfigReque
 func (m *GetInstanceConfigRequest) String() string { return proto.CompactTextString(m) }
 func (*GetInstanceConfigRequest) ProtoMessage()    {}
 func (*GetInstanceConfigRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_instance_admin_5b5a46734047df3a, []int{4}
+	return fileDescriptor_spanner_instance_admin_6383269d887c996f, []int{4}
 }
 func (m *GetInstanceConfigRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetInstanceConfigRequest.Unmarshal(m, b)
@@ -394,7 +394,7 @@ func (m *GetInstanceConfigRequest) GetName() string {
 type GetInstanceRequest struct {
 	// Required. The name of the requested instance. Values are of the form
 	// `projects/<project>/instances/<instance>`.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -404,7 +404,7 @@ func (m *GetInstanceRequest) Reset()         { *m = GetInstanceRequest{} }
 func (m *GetInstanceRequest) String() string { return proto.CompactTextString(m) }
 func (*GetInstanceRequest) ProtoMessage()    {}
 func (*GetInstanceRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_instance_admin_5b5a46734047df3a, []int{5}
+	return fileDescriptor_spanner_instance_admin_6383269d887c996f, []int{5}
 }
 func (m *GetInstanceRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetInstanceRequest.Unmarshal(m, b)
@@ -435,14 +435,14 @@ func (m *GetInstanceRequest) GetName() string {
 type CreateInstanceRequest struct {
 	// Required. The name of the project in which to create the instance. Values
 	// are of the form `projects/<project>`.
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// Required. The ID of the instance to create.  Valid identifiers are of the
 	// form `[a-z][-a-z0-9]*[a-z0-9]` and must be between 6 and 30 characters in
 	// length.
-	InstanceId string `protobuf:"bytes,2,opt,name=instance_id,json=instanceId" json:"instance_id,omitempty"`
+	InstanceId string `protobuf:"bytes,2,opt,name=instance_id,json=instanceId,proto3" json:"instance_id,omitempty"`
 	// Required. The instance to create.  The name may be omitted, but if
 	// specified must be `<parent>/instances/<instance_id>`.
-	Instance             *Instance `protobuf:"bytes,3,opt,name=instance" json:"instance,omitempty"`
+	Instance             *Instance `protobuf:"bytes,3,opt,name=instance,proto3" json:"instance,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
 	XXX_unrecognized     []byte    `json:"-"`
 	XXX_sizecache        int32     `json:"-"`
@@ -452,7 +452,7 @@ func (m *CreateInstanceRequest) Reset()         { *m = CreateInstanceRequest{} }
 func (m *CreateInstanceRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateInstanceRequest) ProtoMessage()    {}
 func (*CreateInstanceRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_instance_admin_5b5a46734047df3a, []int{6}
+	return fileDescriptor_spanner_instance_admin_6383269d887c996f, []int{6}
 }
 func (m *CreateInstanceRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CreateInstanceRequest.Unmarshal(m, b)
@@ -497,14 +497,14 @@ func (m *CreateInstanceRequest) GetInstance() *Instance {
 type ListInstancesRequest struct {
 	// Required. The name of the project for which a list of instances is
 	// requested. Values are of the form `projects/<project>`.
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// Number of instances to be returned in the response. If 0 or less, defaults
 	// to the server's maximum allowed page size.
-	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize" json:"page_size,omitempty"`
+	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// If non-empty, `page_token` should contain a
 	// [next_page_token][google.spanner.admin.instance.v1.ListInstancesResponse.next_page_token] from a
 	// previous [ListInstancesResponse][google.spanner.admin.instance.v1.ListInstancesResponse].
-	PageToken string `protobuf:"bytes,3,opt,name=page_token,json=pageToken" json:"page_token,omitempty"`
+	PageToken string `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	// An expression for filtering the results of the request. Filter rules are
 	// case insensitive. The fields eligible for filtering are:
 	//
@@ -524,7 +524,7 @@ type ListInstancesRequest struct {
 	//   * `name:howl labels.env:dev` --> The instance's name contains "howl" and
 	//                                  it has the label "env" with its value
 	//                                  containing "dev".
-	Filter               string   `protobuf:"bytes,4,opt,name=filter" json:"filter,omitempty"`
+	Filter               string   `protobuf:"bytes,4,opt,name=filter,proto3" json:"filter,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -534,7 +534,7 @@ func (m *ListInstancesRequest) Reset()         { *m = ListInstancesRequest{} }
 func (m *ListInstancesRequest) String() string { return proto.CompactTextString(m) }
 func (*ListInstancesRequest) ProtoMessage()    {}
 func (*ListInstancesRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_instance_admin_5b5a46734047df3a, []int{7}
+	return fileDescriptor_spanner_instance_admin_6383269d887c996f, []int{7}
 }
 func (m *ListInstancesRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListInstancesRequest.Unmarshal(m, b)
@@ -585,11 +585,11 @@ func (m *ListInstancesRequest) GetFilter() string {
 // The response for [ListInstances][google.spanner.admin.instance.v1.InstanceAdmin.ListInstances].
 type ListInstancesResponse struct {
 	// The list of requested instances.
-	Instances []*Instance `protobuf:"bytes,1,rep,name=instances" json:"instances,omitempty"`
+	Instances []*Instance `protobuf:"bytes,1,rep,name=instances,proto3" json:"instances,omitempty"`
 	// `next_page_token` can be sent in a subsequent
 	// [ListInstances][google.spanner.admin.instance.v1.InstanceAdmin.ListInstances] call to fetch more
 	// of the matching instances.
-	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken" json:"next_page_token,omitempty"`
+	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -599,7 +599,7 @@ func (m *ListInstancesResponse) Reset()         { *m = ListInstancesResponse{} }
 func (m *ListInstancesResponse) String() string { return proto.CompactTextString(m) }
 func (*ListInstancesResponse) ProtoMessage()    {}
 func (*ListInstancesResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_instance_admin_5b5a46734047df3a, []int{8}
+	return fileDescriptor_spanner_instance_admin_6383269d887c996f, []int{8}
 }
 func (m *ListInstancesResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListInstancesResponse.Unmarshal(m, b)
@@ -637,12 +637,12 @@ func (m *ListInstancesResponse) GetNextPageToken() string {
 type UpdateInstanceRequest struct {
 	// Required. The instance to update, which must always include the instance
 	// name.  Otherwise, only fields mentioned in [][google.spanner.admin.instance.v1.UpdateInstanceRequest.field_mask] need be included.
-	Instance *Instance `protobuf:"bytes,1,opt,name=instance" json:"instance,omitempty"`
+	Instance *Instance `protobuf:"bytes,1,opt,name=instance,proto3" json:"instance,omitempty"`
 	// Required. A mask specifying which fields in [][google.spanner.admin.instance.v1.UpdateInstanceRequest.instance] should be updated.
 	// The field mask must always be specified; this prevents any future fields in
 	// [][google.spanner.admin.instance.v1.Instance] from being erased accidentally by clients that do not know
 	// about them.
-	FieldMask            *field_mask.FieldMask `protobuf:"bytes,2,opt,name=field_mask,json=fieldMask" json:"field_mask,omitempty"`
+	FieldMask            *field_mask.FieldMask `protobuf:"bytes,2,opt,name=field_mask,json=fieldMask,proto3" json:"field_mask,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}              `json:"-"`
 	XXX_unrecognized     []byte                `json:"-"`
 	XXX_sizecache        int32                 `json:"-"`
@@ -652,7 +652,7 @@ func (m *UpdateInstanceRequest) Reset()         { *m = UpdateInstanceRequest{} }
 func (m *UpdateInstanceRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateInstanceRequest) ProtoMessage()    {}
 func (*UpdateInstanceRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_instance_admin_5b5a46734047df3a, []int{9}
+	return fileDescriptor_spanner_instance_admin_6383269d887c996f, []int{9}
 }
 func (m *UpdateInstanceRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UpdateInstanceRequest.Unmarshal(m, b)
@@ -690,7 +690,7 @@ func (m *UpdateInstanceRequest) GetFieldMask() *field_mask.FieldMask {
 type DeleteInstanceRequest struct {
 	// Required. The name of the instance to be deleted. Values are of the form
 	// `projects/<project>/instances/<instance>`
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -700,7 +700,7 @@ func (m *DeleteInstanceRequest) Reset()         { *m = DeleteInstanceRequest{} }
 func (m *DeleteInstanceRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteInstanceRequest) ProtoMessage()    {}
 func (*DeleteInstanceRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_instance_admin_5b5a46734047df3a, []int{10}
+	return fileDescriptor_spanner_instance_admin_6383269d887c996f, []int{10}
 }
 func (m *DeleteInstanceRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeleteInstanceRequest.Unmarshal(m, b)
@@ -731,17 +731,17 @@ func (m *DeleteInstanceRequest) GetName() string {
 // [CreateInstance][google.spanner.admin.instance.v1.InstanceAdmin.CreateInstance].
 type CreateInstanceMetadata struct {
 	// The instance being created.
-	Instance *Instance `protobuf:"bytes,1,opt,name=instance" json:"instance,omitempty"`
+	Instance *Instance `protobuf:"bytes,1,opt,name=instance,proto3" json:"instance,omitempty"`
 	// The time at which the
 	// [CreateInstance][google.spanner.admin.instance.v1.InstanceAdmin.CreateInstance] request was
 	// received.
-	StartTime *timestamp.Timestamp `protobuf:"bytes,2,opt,name=start_time,json=startTime" json:"start_time,omitempty"`
+	StartTime *timestamp.Timestamp `protobuf:"bytes,2,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
 	// The time at which this operation was cancelled. If set, this operation is
 	// in the process of undoing itself (which is guaranteed to succeed) and
 	// cannot be cancelled again.
-	CancelTime *timestamp.Timestamp `protobuf:"bytes,3,opt,name=cancel_time,json=cancelTime" json:"cancel_time,omitempty"`
+	CancelTime *timestamp.Timestamp `protobuf:"bytes,3,opt,name=cancel_time,json=cancelTime,proto3" json:"cancel_time,omitempty"`
 	// The time at which this operation failed or was completed successfully.
-	EndTime              *timestamp.Timestamp `protobuf:"bytes,4,opt,name=end_time,json=endTime" json:"end_time,omitempty"`
+	EndTime              *timestamp.Timestamp `protobuf:"bytes,4,opt,name=end_time,json=endTime,proto3" json:"end_time,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
 	XXX_unrecognized     []byte               `json:"-"`
 	XXX_sizecache        int32                `json:"-"`
@@ -751,7 +751,7 @@ func (m *CreateInstanceMetadata) Reset()         { *m = CreateInstanceMetadata{}
 func (m *CreateInstanceMetadata) String() string { return proto.CompactTextString(m) }
 func (*CreateInstanceMetadata) ProtoMessage()    {}
 func (*CreateInstanceMetadata) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_instance_admin_5b5a46734047df3a, []int{11}
+	return fileDescriptor_spanner_instance_admin_6383269d887c996f, []int{11}
 }
 func (m *CreateInstanceMetadata) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CreateInstanceMetadata.Unmarshal(m, b)
@@ -803,16 +803,16 @@ func (m *CreateInstanceMetadata) GetEndTime() *timestamp.Timestamp {
 // [UpdateInstance][google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstance].
 type UpdateInstanceMetadata struct {
 	// The desired end state of the update.
-	Instance *Instance `protobuf:"bytes,1,opt,name=instance" json:"instance,omitempty"`
+	Instance *Instance `protobuf:"bytes,1,opt,name=instance,proto3" json:"instance,omitempty"`
 	// The time at which [UpdateInstance][google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstance]
 	// request was received.
-	StartTime *timestamp.Timestamp `protobuf:"bytes,2,opt,name=start_time,json=startTime" json:"start_time,omitempty"`
+	StartTime *timestamp.Timestamp `protobuf:"bytes,2,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
 	// The time at which this operation was cancelled. If set, this operation is
 	// in the process of undoing itself (which is guaranteed to succeed) and
 	// cannot be cancelled again.
-	CancelTime *timestamp.Timestamp `protobuf:"bytes,3,opt,name=cancel_time,json=cancelTime" json:"cancel_time,omitempty"`
+	CancelTime *timestamp.Timestamp `protobuf:"bytes,3,opt,name=cancel_time,json=cancelTime,proto3" json:"cancel_time,omitempty"`
 	// The time at which this operation failed or was completed successfully.
-	EndTime              *timestamp.Timestamp `protobuf:"bytes,4,opt,name=end_time,json=endTime" json:"end_time,omitempty"`
+	EndTime              *timestamp.Timestamp `protobuf:"bytes,4,opt,name=end_time,json=endTime,proto3" json:"end_time,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
 	XXX_unrecognized     []byte               `json:"-"`
 	XXX_sizecache        int32                `json:"-"`
@@ -822,7 +822,7 @@ func (m *UpdateInstanceMetadata) Reset()         { *m = UpdateInstanceMetadata{}
 func (m *UpdateInstanceMetadata) String() string { return proto.CompactTextString(m) }
 func (*UpdateInstanceMetadata) ProtoMessage()    {}
 func (*UpdateInstanceMetadata) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_instance_admin_5b5a46734047df3a, []int{12}
+	return fileDescriptor_spanner_instance_admin_6383269d887c996f, []int{12}
 }
 func (m *UpdateInstanceMetadata) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UpdateInstanceMetadata.Unmarshal(m, b)
@@ -1115,8 +1115,7 @@ func (c *instanceAdminClient) TestIamPermissions(ctx context.Context, in *v1.Tes
 	return out, nil
 }
 
-// Server API for InstanceAdmin service
-
+// InstanceAdminServer is the server API for InstanceAdmin service.
 type InstanceAdminServer interface {
 	// Lists the supported instance configurations for a given project.
 	ListInstanceConfigs(context.Context, *ListInstanceConfigsRequest) (*ListInstanceConfigsResponse, error)
@@ -1469,10 +1468,10 @@ var _InstanceAdmin_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("google/spanner/admin/instance/v1/spanner_instance_admin.proto", fileDescriptor_spanner_instance_admin_5b5a46734047df3a)
+	proto.RegisterFile("google/spanner/admin/instance/v1/spanner_instance_admin.proto", fileDescriptor_spanner_instance_admin_6383269d887c996f)
 }
 
-var fileDescriptor_spanner_instance_admin_5b5a46734047df3a = []byte{
+var fileDescriptor_spanner_instance_admin_6383269d887c996f = []byte{
 	// 1210 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe4, 0x57, 0x4f, 0x6f, 0x1b, 0x45,
 	0x14, 0x67, 0x92, 0x3a, 0x8d, 0x9f, 0xd3, 0x34, 0x1d, 0x9a, 0xca, 0xb8, 0x94, 0xa6, 0x5b, 0x54,

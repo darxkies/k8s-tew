@@ -104,7 +104,7 @@ func (x RecognitionConfig_AudioEncoding) String() string {
 	return proto.EnumName(RecognitionConfig_AudioEncoding_name, int32(x))
 }
 func (RecognitionConfig_AudioEncoding) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_cloud_speech_c6e5e8f29032b35d, []int{4, 0}
+	return fileDescriptor_cloud_speech_0a49d136bdba2e2b, []int{4, 0}
 }
 
 // Indicates the type of speech event.
@@ -136,16 +136,16 @@ func (x StreamingRecognizeResponse_SpeechEventType) String() string {
 	return proto.EnumName(StreamingRecognizeResponse_SpeechEventType_name, int32(x))
 }
 func (StreamingRecognizeResponse_SpeechEventType) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_cloud_speech_c6e5e8f29032b35d, []int{10, 0}
+	return fileDescriptor_cloud_speech_0a49d136bdba2e2b, []int{10, 0}
 }
 
 // The top-level message sent by the client for the `Recognize` method.
 type RecognizeRequest struct {
 	// *Required* Provides information to the recognizer that specifies how to
 	// process the request.
-	Config *RecognitionConfig `protobuf:"bytes,1,opt,name=config" json:"config,omitempty"`
+	Config *RecognitionConfig `protobuf:"bytes,1,opt,name=config,proto3" json:"config,omitempty"`
 	// *Required* The audio data to be recognized.
-	Audio                *RecognitionAudio `protobuf:"bytes,2,opt,name=audio" json:"audio,omitempty"`
+	Audio                *RecognitionAudio `protobuf:"bytes,2,opt,name=audio,proto3" json:"audio,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
 	XXX_unrecognized     []byte            `json:"-"`
 	XXX_sizecache        int32             `json:"-"`
@@ -155,7 +155,7 @@ func (m *RecognizeRequest) Reset()         { *m = RecognizeRequest{} }
 func (m *RecognizeRequest) String() string { return proto.CompactTextString(m) }
 func (*RecognizeRequest) ProtoMessage()    {}
 func (*RecognizeRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cloud_speech_c6e5e8f29032b35d, []int{0}
+	return fileDescriptor_cloud_speech_0a49d136bdba2e2b, []int{0}
 }
 func (m *RecognizeRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_RecognizeRequest.Unmarshal(m, b)
@@ -194,9 +194,9 @@ func (m *RecognizeRequest) GetAudio() *RecognitionAudio {
 type LongRunningRecognizeRequest struct {
 	// *Required* Provides information to the recognizer that specifies how to
 	// process the request.
-	Config *RecognitionConfig `protobuf:"bytes,1,opt,name=config" json:"config,omitempty"`
+	Config *RecognitionConfig `protobuf:"bytes,1,opt,name=config,proto3" json:"config,omitempty"`
 	// *Required* The audio data to be recognized.
-	Audio                *RecognitionAudio `protobuf:"bytes,2,opt,name=audio" json:"audio,omitempty"`
+	Audio                *RecognitionAudio `protobuf:"bytes,2,opt,name=audio,proto3" json:"audio,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
 	XXX_unrecognized     []byte            `json:"-"`
 	XXX_sizecache        int32             `json:"-"`
@@ -206,7 +206,7 @@ func (m *LongRunningRecognizeRequest) Reset()         { *m = LongRunningRecogniz
 func (m *LongRunningRecognizeRequest) String() string { return proto.CompactTextString(m) }
 func (*LongRunningRecognizeRequest) ProtoMessage()    {}
 func (*LongRunningRecognizeRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cloud_speech_c6e5e8f29032b35d, []int{1}
+	return fileDescriptor_cloud_speech_0a49d136bdba2e2b, []int{1}
 }
 func (m *LongRunningRecognizeRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_LongRunningRecognizeRequest.Unmarshal(m, b)
@@ -261,7 +261,7 @@ func (m *StreamingRecognizeRequest) Reset()         { *m = StreamingRecognizeReq
 func (m *StreamingRecognizeRequest) String() string { return proto.CompactTextString(m) }
 func (*StreamingRecognizeRequest) ProtoMessage()    {}
 func (*StreamingRecognizeRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cloud_speech_c6e5e8f29032b35d, []int{2}
+	return fileDescriptor_cloud_speech_0a49d136bdba2e2b, []int{2}
 }
 func (m *StreamingRecognizeRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_StreamingRecognizeRequest.Unmarshal(m, b)
@@ -286,14 +286,16 @@ type isStreamingRecognizeRequest_StreamingRequest interface {
 }
 
 type StreamingRecognizeRequest_StreamingConfig struct {
-	StreamingConfig *StreamingRecognitionConfig `protobuf:"bytes,1,opt,name=streaming_config,json=streamingConfig,oneof"`
+	StreamingConfig *StreamingRecognitionConfig `protobuf:"bytes,1,opt,name=streaming_config,json=streamingConfig,proto3,oneof"`
 }
+
 type StreamingRecognizeRequest_AudioContent struct {
 	AudioContent []byte `protobuf:"bytes,2,opt,name=audio_content,json=audioContent,proto3,oneof"`
 }
 
 func (*StreamingRecognizeRequest_StreamingConfig) isStreamingRecognizeRequest_StreamingRequest() {}
-func (*StreamingRecognizeRequest_AudioContent) isStreamingRecognizeRequest_StreamingRequest()    {}
+
+func (*StreamingRecognizeRequest_AudioContent) isStreamingRecognizeRequest_StreamingRequest() {}
 
 func (m *StreamingRecognizeRequest) GetStreamingRequest() isStreamingRecognizeRequest_StreamingRequest {
 	if m != nil {
@@ -391,7 +393,7 @@ func _StreamingRecognizeRequest_OneofSizer(msg proto.Message) (n int) {
 type StreamingRecognitionConfig struct {
 	// *Required* Provides information to the recognizer that specifies how to
 	// process the request.
-	Config *RecognitionConfig `protobuf:"bytes,1,opt,name=config" json:"config,omitempty"`
+	Config *RecognitionConfig `protobuf:"bytes,1,opt,name=config,proto3" json:"config,omitempty"`
 	// *Optional* If `false` or omitted, the recognizer will perform continuous
 	// recognition (continuing to wait for and process audio even if the user
 	// pauses speaking) until the client closes the input stream (gRPC API) or
@@ -403,12 +405,12 @@ type StreamingRecognitionConfig struct {
 	// `END_OF_SINGLE_UTTERANCE` event and cease recognition. It will return no
 	// more than one `StreamingRecognitionResult` with the `is_final` flag set to
 	// `true`.
-	SingleUtterance bool `protobuf:"varint,2,opt,name=single_utterance,json=singleUtterance" json:"single_utterance,omitempty"`
+	SingleUtterance bool `protobuf:"varint,2,opt,name=single_utterance,json=singleUtterance,proto3" json:"single_utterance,omitempty"`
 	// *Optional* If `true`, interim results (tentative hypotheses) may be
 	// returned as they become available (these interim results are indicated with
 	// the `is_final=false` flag).
 	// If `false` or omitted, only `is_final=true` result(s) are returned.
-	InterimResults       bool     `protobuf:"varint,3,opt,name=interim_results,json=interimResults" json:"interim_results,omitempty"`
+	InterimResults       bool     `protobuf:"varint,3,opt,name=interim_results,json=interimResults,proto3" json:"interim_results,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -418,7 +420,7 @@ func (m *StreamingRecognitionConfig) Reset()         { *m = StreamingRecognition
 func (m *StreamingRecognitionConfig) String() string { return proto.CompactTextString(m) }
 func (*StreamingRecognitionConfig) ProtoMessage()    {}
 func (*StreamingRecognitionConfig) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cloud_speech_c6e5e8f29032b35d, []int{3}
+	return fileDescriptor_cloud_speech_0a49d136bdba2e2b, []int{3}
 }
 func (m *StreamingRecognitionConfig) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_StreamingRecognitionConfig.Unmarshal(m, b)
@@ -463,38 +465,38 @@ func (m *StreamingRecognitionConfig) GetInterimResults() bool {
 // request.
 type RecognitionConfig struct {
 	// *Required* Encoding of audio data sent in all `RecognitionAudio` messages.
-	Encoding RecognitionConfig_AudioEncoding `protobuf:"varint,1,opt,name=encoding,enum=google.cloud.speech.v1.RecognitionConfig_AudioEncoding" json:"encoding,omitempty"`
+	Encoding RecognitionConfig_AudioEncoding `protobuf:"varint,1,opt,name=encoding,proto3,enum=google.cloud.speech.v1.RecognitionConfig_AudioEncoding" json:"encoding,omitempty"`
 	// *Required* Sample rate in Hertz of the audio data sent in all
 	// `RecognitionAudio` messages. Valid values are: 8000-48000.
 	// 16000 is optimal. For best results, set the sampling rate of the audio
 	// source to 16000 Hz. If that's not possible, use the native sample rate of
 	// the audio source (instead of re-sampling).
-	SampleRateHertz int32 `protobuf:"varint,2,opt,name=sample_rate_hertz,json=sampleRateHertz" json:"sample_rate_hertz,omitempty"`
+	SampleRateHertz int32 `protobuf:"varint,2,opt,name=sample_rate_hertz,json=sampleRateHertz,proto3" json:"sample_rate_hertz,omitempty"`
 	// *Required* The language of the supplied audio as a
 	// [BCP-47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt) language tag.
 	// Example: "en-US".
 	// See [Language Support](https://cloud.google.com/speech/docs/languages)
 	// for a list of the currently supported language codes.
-	LanguageCode string `protobuf:"bytes,3,opt,name=language_code,json=languageCode" json:"language_code,omitempty"`
+	LanguageCode string `protobuf:"bytes,3,opt,name=language_code,json=languageCode,proto3" json:"language_code,omitempty"`
 	// *Optional* Maximum number of recognition hypotheses to be returned.
 	// Specifically, the maximum number of `SpeechRecognitionAlternative` messages
 	// within each `SpeechRecognitionResult`.
 	// The server may return fewer than `max_alternatives`.
 	// Valid values are `0`-`30`. A value of `0` or `1` will return a maximum of
 	// one. If omitted, will return a maximum of one.
-	MaxAlternatives int32 `protobuf:"varint,4,opt,name=max_alternatives,json=maxAlternatives" json:"max_alternatives,omitempty"`
+	MaxAlternatives int32 `protobuf:"varint,4,opt,name=max_alternatives,json=maxAlternatives,proto3" json:"max_alternatives,omitempty"`
 	// *Optional* If set to `true`, the server will attempt to filter out
 	// profanities, replacing all but the initial character in each filtered word
 	// with asterisks, e.g. "f***". If set to `false` or omitted, profanities
 	// won't be filtered out.
-	ProfanityFilter bool `protobuf:"varint,5,opt,name=profanity_filter,json=profanityFilter" json:"profanity_filter,omitempty"`
+	ProfanityFilter bool `protobuf:"varint,5,opt,name=profanity_filter,json=profanityFilter,proto3" json:"profanity_filter,omitempty"`
 	// *Optional* A means to provide context to assist the speech recognition.
-	SpeechContexts []*SpeechContext `protobuf:"bytes,6,rep,name=speech_contexts,json=speechContexts" json:"speech_contexts,omitempty"`
+	SpeechContexts []*SpeechContext `protobuf:"bytes,6,rep,name=speech_contexts,json=speechContexts,proto3" json:"speech_contexts,omitempty"`
 	// *Optional* If `true`, the top result includes a list of words and
 	// the start and end time offsets (timestamps) for those words. If
 	// `false`, no word-level time offset information is returned. The default is
 	// `false`.
-	EnableWordTimeOffsets bool     `protobuf:"varint,8,opt,name=enable_word_time_offsets,json=enableWordTimeOffsets" json:"enable_word_time_offsets,omitempty"`
+	EnableWordTimeOffsets bool     `protobuf:"varint,8,opt,name=enable_word_time_offsets,json=enableWordTimeOffsets,proto3" json:"enable_word_time_offsets,omitempty"`
 	XXX_NoUnkeyedLiteral  struct{} `json:"-"`
 	XXX_unrecognized      []byte   `json:"-"`
 	XXX_sizecache         int32    `json:"-"`
@@ -504,7 +506,7 @@ func (m *RecognitionConfig) Reset()         { *m = RecognitionConfig{} }
 func (m *RecognitionConfig) String() string { return proto.CompactTextString(m) }
 func (*RecognitionConfig) ProtoMessage()    {}
 func (*RecognitionConfig) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cloud_speech_c6e5e8f29032b35d, []int{4}
+	return fileDescriptor_cloud_speech_0a49d136bdba2e2b, []int{4}
 }
 func (m *RecognitionConfig) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_RecognitionConfig.Unmarshal(m, b)
@@ -582,7 +584,7 @@ type SpeechContext struct {
 	// specific commands are typically spoken by the user. This can also be used
 	// to add additional words to the vocabulary of the recognizer. See
 	// [usage limits](https://cloud.google.com/speech/limits#content).
-	Phrases              []string `protobuf:"bytes,1,rep,name=phrases" json:"phrases,omitempty"`
+	Phrases              []string `protobuf:"bytes,1,rep,name=phrases,proto3" json:"phrases,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -592,7 +594,7 @@ func (m *SpeechContext) Reset()         { *m = SpeechContext{} }
 func (m *SpeechContext) String() string { return proto.CompactTextString(m) }
 func (*SpeechContext) ProtoMessage()    {}
 func (*SpeechContext) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cloud_speech_c6e5e8f29032b35d, []int{5}
+	return fileDescriptor_cloud_speech_0a49d136bdba2e2b, []int{5}
 }
 func (m *SpeechContext) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SpeechContext.Unmarshal(m, b)
@@ -640,7 +642,7 @@ func (m *RecognitionAudio) Reset()         { *m = RecognitionAudio{} }
 func (m *RecognitionAudio) String() string { return proto.CompactTextString(m) }
 func (*RecognitionAudio) ProtoMessage()    {}
 func (*RecognitionAudio) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cloud_speech_c6e5e8f29032b35d, []int{6}
+	return fileDescriptor_cloud_speech_0a49d136bdba2e2b, []int{6}
 }
 func (m *RecognitionAudio) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_RecognitionAudio.Unmarshal(m, b)
@@ -667,12 +669,14 @@ type isRecognitionAudio_AudioSource interface {
 type RecognitionAudio_Content struct {
 	Content []byte `protobuf:"bytes,1,opt,name=content,proto3,oneof"`
 }
+
 type RecognitionAudio_Uri struct {
-	Uri string `protobuf:"bytes,2,opt,name=uri,oneof"`
+	Uri string `protobuf:"bytes,2,opt,name=uri,proto3,oneof"`
 }
 
 func (*RecognitionAudio_Content) isRecognitionAudio_AudioSource() {}
-func (*RecognitionAudio_Uri) isRecognitionAudio_AudioSource()     {}
+
+func (*RecognitionAudio_Uri) isRecognitionAudio_AudioSource() {}
 
 func (m *RecognitionAudio) GetAudioSource() isRecognitionAudio_AudioSource {
 	if m != nil {
@@ -767,7 +771,7 @@ func _RecognitionAudio_OneofSizer(msg proto.Message) (n int) {
 type RecognizeResponse struct {
 	// *Output-only* Sequential list of transcription results corresponding to
 	// sequential portions of audio.
-	Results              []*SpeechRecognitionResult `protobuf:"bytes,2,rep,name=results" json:"results,omitempty"`
+	Results              []*SpeechRecognitionResult `protobuf:"bytes,2,rep,name=results,proto3" json:"results,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                   `json:"-"`
 	XXX_unrecognized     []byte                     `json:"-"`
 	XXX_sizecache        int32                      `json:"-"`
@@ -777,7 +781,7 @@ func (m *RecognizeResponse) Reset()         { *m = RecognizeResponse{} }
 func (m *RecognizeResponse) String() string { return proto.CompactTextString(m) }
 func (*RecognizeResponse) ProtoMessage()    {}
 func (*RecognizeResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cloud_speech_c6e5e8f29032b35d, []int{7}
+	return fileDescriptor_cloud_speech_0a49d136bdba2e2b, []int{7}
 }
 func (m *RecognizeResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_RecognizeResponse.Unmarshal(m, b)
@@ -812,7 +816,7 @@ func (m *RecognizeResponse) GetResults() []*SpeechRecognitionResult {
 type LongRunningRecognizeResponse struct {
 	// *Output-only* Sequential list of transcription results corresponding to
 	// sequential portions of audio.
-	Results              []*SpeechRecognitionResult `protobuf:"bytes,2,rep,name=results" json:"results,omitempty"`
+	Results              []*SpeechRecognitionResult `protobuf:"bytes,2,rep,name=results,proto3" json:"results,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                   `json:"-"`
 	XXX_unrecognized     []byte                     `json:"-"`
 	XXX_sizecache        int32                      `json:"-"`
@@ -822,7 +826,7 @@ func (m *LongRunningRecognizeResponse) Reset()         { *m = LongRunningRecogni
 func (m *LongRunningRecognizeResponse) String() string { return proto.CompactTextString(m) }
 func (*LongRunningRecognizeResponse) ProtoMessage()    {}
 func (*LongRunningRecognizeResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cloud_speech_c6e5e8f29032b35d, []int{8}
+	return fileDescriptor_cloud_speech_0a49d136bdba2e2b, []int{8}
 }
 func (m *LongRunningRecognizeResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_LongRunningRecognizeResponse.Unmarshal(m, b)
@@ -855,11 +859,11 @@ func (m *LongRunningRecognizeResponse) GetResults() []*SpeechRecognitionResult {
 type LongRunningRecognizeMetadata struct {
 	// Approximate percentage of audio processed thus far. Guaranteed to be 100
 	// when the audio is fully processed and the results are available.
-	ProgressPercent int32 `protobuf:"varint,1,opt,name=progress_percent,json=progressPercent" json:"progress_percent,omitempty"`
+	ProgressPercent int32 `protobuf:"varint,1,opt,name=progress_percent,json=progressPercent,proto3" json:"progress_percent,omitempty"`
 	// Time when the request was received.
-	StartTime *timestamp.Timestamp `protobuf:"bytes,2,opt,name=start_time,json=startTime" json:"start_time,omitempty"`
+	StartTime *timestamp.Timestamp `protobuf:"bytes,2,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
 	// Time of the most recent processing update.
-	LastUpdateTime       *timestamp.Timestamp `protobuf:"bytes,3,opt,name=last_update_time,json=lastUpdateTime" json:"last_update_time,omitempty"`
+	LastUpdateTime       *timestamp.Timestamp `protobuf:"bytes,3,opt,name=last_update_time,json=lastUpdateTime,proto3" json:"last_update_time,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
 	XXX_unrecognized     []byte               `json:"-"`
 	XXX_sizecache        int32                `json:"-"`
@@ -869,7 +873,7 @@ func (m *LongRunningRecognizeMetadata) Reset()         { *m = LongRunningRecogni
 func (m *LongRunningRecognizeMetadata) String() string { return proto.CompactTextString(m) }
 func (*LongRunningRecognizeMetadata) ProtoMessage()    {}
 func (*LongRunningRecognizeMetadata) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cloud_speech_c6e5e8f29032b35d, []int{9}
+	return fileDescriptor_cloud_speech_0a49d136bdba2e2b, []int{9}
 }
 func (m *LongRunningRecognizeMetadata) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_LongRunningRecognizeMetadata.Unmarshal(m, b)
@@ -962,14 +966,14 @@ func (m *LongRunningRecognizeMetadata) GetLastUpdateTime() *timestamp.Timestamp 
 type StreamingRecognizeResponse struct {
 	// *Output-only* If set, returns a [google.rpc.Status][google.rpc.Status] message that
 	// specifies the error for the operation.
-	Error *status.Status `protobuf:"bytes,1,opt,name=error" json:"error,omitempty"`
+	Error *status.Status `protobuf:"bytes,1,opt,name=error,proto3" json:"error,omitempty"`
 	// *Output-only* This repeated list contains zero or more results that
 	// correspond to consecutive portions of the audio currently being processed.
 	// It contains zero or more `is_final=false` results followed by zero or one
 	// `is_final=true` result (the newly settled portion).
-	Results []*StreamingRecognitionResult `protobuf:"bytes,2,rep,name=results" json:"results,omitempty"`
+	Results []*StreamingRecognitionResult `protobuf:"bytes,2,rep,name=results,proto3" json:"results,omitempty"`
 	// *Output-only* Indicates the type of speech event.
-	SpeechEventType      StreamingRecognizeResponse_SpeechEventType `protobuf:"varint,4,opt,name=speech_event_type,json=speechEventType,enum=google.cloud.speech.v1.StreamingRecognizeResponse_SpeechEventType" json:"speech_event_type,omitempty"`
+	SpeechEventType      StreamingRecognizeResponse_SpeechEventType `protobuf:"varint,4,opt,name=speech_event_type,json=speechEventType,proto3,enum=google.cloud.speech.v1.StreamingRecognizeResponse_SpeechEventType" json:"speech_event_type,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                                   `json:"-"`
 	XXX_unrecognized     []byte                                     `json:"-"`
 	XXX_sizecache        int32                                      `json:"-"`
@@ -979,7 +983,7 @@ func (m *StreamingRecognizeResponse) Reset()         { *m = StreamingRecognizeRe
 func (m *StreamingRecognizeResponse) String() string { return proto.CompactTextString(m) }
 func (*StreamingRecognizeResponse) ProtoMessage()    {}
 func (*StreamingRecognizeResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cloud_speech_c6e5e8f29032b35d, []int{10}
+	return fileDescriptor_cloud_speech_0a49d136bdba2e2b, []int{10}
 }
 func (m *StreamingRecognizeResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_StreamingRecognizeResponse.Unmarshal(m, b)
@@ -1025,19 +1029,19 @@ func (m *StreamingRecognizeResponse) GetSpeechEventType() StreamingRecognizeResp
 type StreamingRecognitionResult struct {
 	// *Output-only* May contain one or more recognition hypotheses (up to the
 	// maximum specified in `max_alternatives`).
-	Alternatives []*SpeechRecognitionAlternative `protobuf:"bytes,1,rep,name=alternatives" json:"alternatives,omitempty"`
+	Alternatives []*SpeechRecognitionAlternative `protobuf:"bytes,1,rep,name=alternatives,proto3" json:"alternatives,omitempty"`
 	// *Output-only* If `false`, this `StreamingRecognitionResult` represents an
 	// interim result that may change. If `true`, this is the final time the
 	// speech service will return this particular `StreamingRecognitionResult`,
 	// the recognizer will not return any further hypotheses for this portion of
 	// the transcript and corresponding audio.
-	IsFinal bool `protobuf:"varint,2,opt,name=is_final,json=isFinal" json:"is_final,omitempty"`
+	IsFinal bool `protobuf:"varint,2,opt,name=is_final,json=isFinal,proto3" json:"is_final,omitempty"`
 	// *Output-only* An estimate of the likelihood that the recognizer will not
 	// change its guess about this interim result. Values range from 0.0
 	// (completely unstable) to 1.0 (completely stable).
 	// This field is only provided for interim results (`is_final=false`).
 	// The default of 0.0 is a sentinel value indicating `stability` was not set.
-	Stability            float32  `protobuf:"fixed32,3,opt,name=stability" json:"stability,omitempty"`
+	Stability            float32  `protobuf:"fixed32,3,opt,name=stability,proto3" json:"stability,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1047,7 +1051,7 @@ func (m *StreamingRecognitionResult) Reset()         { *m = StreamingRecognition
 func (m *StreamingRecognitionResult) String() string { return proto.CompactTextString(m) }
 func (*StreamingRecognitionResult) ProtoMessage()    {}
 func (*StreamingRecognitionResult) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cloud_speech_c6e5e8f29032b35d, []int{11}
+	return fileDescriptor_cloud_speech_0a49d136bdba2e2b, []int{11}
 }
 func (m *StreamingRecognitionResult) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_StreamingRecognitionResult.Unmarshal(m, b)
@@ -1094,7 +1098,7 @@ type SpeechRecognitionResult struct {
 	// maximum specified in `max_alternatives`).
 	// These alternatives are ordered in terms of accuracy, with the top (first)
 	// alternative being the most probable, as ranked by the recognizer.
-	Alternatives         []*SpeechRecognitionAlternative `protobuf:"bytes,1,rep,name=alternatives" json:"alternatives,omitempty"`
+	Alternatives         []*SpeechRecognitionAlternative `protobuf:"bytes,1,rep,name=alternatives,proto3" json:"alternatives,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                        `json:"-"`
 	XXX_unrecognized     []byte                          `json:"-"`
 	XXX_sizecache        int32                           `json:"-"`
@@ -1104,7 +1108,7 @@ func (m *SpeechRecognitionResult) Reset()         { *m = SpeechRecognitionResult
 func (m *SpeechRecognitionResult) String() string { return proto.CompactTextString(m) }
 func (*SpeechRecognitionResult) ProtoMessage()    {}
 func (*SpeechRecognitionResult) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cloud_speech_c6e5e8f29032b35d, []int{12}
+	return fileDescriptor_cloud_speech_0a49d136bdba2e2b, []int{12}
 }
 func (m *SpeechRecognitionResult) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SpeechRecognitionResult.Unmarshal(m, b)
@@ -1134,16 +1138,16 @@ func (m *SpeechRecognitionResult) GetAlternatives() []*SpeechRecognitionAlternat
 // Alternative hypotheses (a.k.a. n-best list).
 type SpeechRecognitionAlternative struct {
 	// *Output-only* Transcript text representing the words that the user spoke.
-	Transcript string `protobuf:"bytes,1,opt,name=transcript" json:"transcript,omitempty"`
+	Transcript string `protobuf:"bytes,1,opt,name=transcript,proto3" json:"transcript,omitempty"`
 	// *Output-only* The confidence estimate between 0.0 and 1.0. A higher number
 	// indicates an estimated greater likelihood that the recognized words are
 	// correct. This field is typically provided only for the top hypothesis, and
 	// only for `is_final=true` results. Clients should not rely on the
 	// `confidence` field as it is not guaranteed to be accurate or consistent.
 	// The default of 0.0 is a sentinel value indicating `confidence` was not set.
-	Confidence float32 `protobuf:"fixed32,2,opt,name=confidence" json:"confidence,omitempty"`
+	Confidence float32 `protobuf:"fixed32,2,opt,name=confidence,proto3" json:"confidence,omitempty"`
 	// *Output-only* A list of word-specific information for each recognized word.
-	Words                []*WordInfo `protobuf:"bytes,3,rep,name=words" json:"words,omitempty"`
+	Words                []*WordInfo `protobuf:"bytes,3,rep,name=words,proto3" json:"words,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
 	XXX_unrecognized     []byte      `json:"-"`
 	XXX_sizecache        int32       `json:"-"`
@@ -1153,7 +1157,7 @@ func (m *SpeechRecognitionAlternative) Reset()         { *m = SpeechRecognitionA
 func (m *SpeechRecognitionAlternative) String() string { return proto.CompactTextString(m) }
 func (*SpeechRecognitionAlternative) ProtoMessage()    {}
 func (*SpeechRecognitionAlternative) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cloud_speech_c6e5e8f29032b35d, []int{13}
+	return fileDescriptor_cloud_speech_0a49d136bdba2e2b, []int{13}
 }
 func (m *SpeechRecognitionAlternative) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SpeechRecognitionAlternative.Unmarshal(m, b)
@@ -1204,16 +1208,16 @@ type WordInfo struct {
 	// in the top hypothesis.
 	// This is an experimental feature and the accuracy of the time offset can
 	// vary.
-	StartTime *duration.Duration `protobuf:"bytes,1,opt,name=start_time,json=startTime" json:"start_time,omitempty"`
+	StartTime *duration.Duration `protobuf:"bytes,1,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
 	// *Output-only* Time offset relative to the beginning of the audio,
 	// and corresponding to the end of the spoken word.
 	// This field is only set if `enable_word_time_offsets=true` and only
 	// in the top hypothesis.
 	// This is an experimental feature and the accuracy of the time offset can
 	// vary.
-	EndTime *duration.Duration `protobuf:"bytes,2,opt,name=end_time,json=endTime" json:"end_time,omitempty"`
+	EndTime *duration.Duration `protobuf:"bytes,2,opt,name=end_time,json=endTime,proto3" json:"end_time,omitempty"`
 	// *Output-only* The word corresponding to this set of information.
-	Word                 string   `protobuf:"bytes,3,opt,name=word" json:"word,omitempty"`
+	Word                 string   `protobuf:"bytes,3,opt,name=word,proto3" json:"word,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1223,7 +1227,7 @@ func (m *WordInfo) Reset()         { *m = WordInfo{} }
 func (m *WordInfo) String() string { return proto.CompactTextString(m) }
 func (*WordInfo) ProtoMessage()    {}
 func (*WordInfo) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cloud_speech_c6e5e8f29032b35d, []int{14}
+	return fileDescriptor_cloud_speech_0a49d136bdba2e2b, []int{14}
 }
 func (m *WordInfo) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_WordInfo.Unmarshal(m, b)
@@ -1366,8 +1370,7 @@ func (x *speechStreamingRecognizeClient) Recv() (*StreamingRecognizeResponse, er
 	return m, nil
 }
 
-// Server API for Speech service
-
+// SpeechServer is the server API for Speech service.
 type SpeechServer interface {
 	// Performs synchronous speech recognition: receive results after all audio
 	// has been sent and processed.
@@ -1473,10 +1476,10 @@ var _Speech_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("google/cloud/speech/v1/cloud_speech.proto", fileDescriptor_cloud_speech_c6e5e8f29032b35d)
+	proto.RegisterFile("google/cloud/speech/v1/cloud_speech.proto", fileDescriptor_cloud_speech_0a49d136bdba2e2b)
 }
 
-var fileDescriptor_cloud_speech_c6e5e8f29032b35d = []byte{
+var fileDescriptor_cloud_speech_0a49d136bdba2e2b = []byte{
 	// 1318 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xcc, 0x57, 0x4d, 0x6f, 0x1b, 0x45,
 	0x18, 0xce, 0xc6, 0x71, 0x3e, 0xde, 0xe6, 0xc3, 0x19, 0x4a, 0xeb, 0xb8, 0xa1, 0x8d, 0xb6, 0x54,

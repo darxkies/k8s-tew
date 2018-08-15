@@ -44,13 +44,13 @@ func (x PhotoView) String() string {
 	return proto.EnumName(PhotoView_name, int32(x))
 }
 func (PhotoView) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_rpcmessages_d38e067cf9604ca9, []int{0}
+	return fileDescriptor_rpcmessages_f5aa79e45963eccc, []int{0}
 }
 
 // Request to create a photo.
 type CreatePhotoRequest struct {
 	// Required. Photo to create.
-	Photo                *Photo   `protobuf:"bytes,1,opt,name=photo" json:"photo,omitempty"`
+	Photo                *Photo   `protobuf:"bytes,1,opt,name=photo,proto3" json:"photo,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -60,7 +60,7 @@ func (m *CreatePhotoRequest) Reset()         { *m = CreatePhotoRequest{} }
 func (m *CreatePhotoRequest) String() string { return proto.CompactTextString(m) }
 func (*CreatePhotoRequest) ProtoMessage()    {}
 func (*CreatePhotoRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_rpcmessages_d38e067cf9604ca9, []int{0}
+	return fileDescriptor_rpcmessages_f5aa79e45963eccc, []int{0}
 }
 func (m *CreatePhotoRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CreatePhotoRequest.Unmarshal(m, b)
@@ -96,10 +96,10 @@ func (m *CreatePhotoRequest) GetPhoto() *Photo {
 // - 'view' controls if the download URL for the photo bytes will be returned.
 type GetPhotoRequest struct {
 	// Required. ID of the photo.
-	PhotoId string `protobuf:"bytes,1,opt,name=photo_id,json=photoId" json:"photo_id,omitempty"`
+	PhotoId string `protobuf:"bytes,1,opt,name=photo_id,json=photoId,proto3" json:"photo_id,omitempty"`
 	// Specifies if a download URL for the photo bytes should be returned in the
 	// Photo response.
-	View                 PhotoView `protobuf:"varint,2,opt,name=view,enum=google.streetview.publish.v1.PhotoView" json:"view,omitempty"`
+	View                 PhotoView `protobuf:"varint,2,opt,name=view,proto3,enum=google.streetview.publish.v1.PhotoView" json:"view,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
 	XXX_unrecognized     []byte    `json:"-"`
 	XXX_sizecache        int32     `json:"-"`
@@ -109,7 +109,7 @@ func (m *GetPhotoRequest) Reset()         { *m = GetPhotoRequest{} }
 func (m *GetPhotoRequest) String() string { return proto.CompactTextString(m) }
 func (*GetPhotoRequest) ProtoMessage()    {}
 func (*GetPhotoRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_rpcmessages_d38e067cf9604ca9, []int{1}
+	return fileDescriptor_rpcmessages_f5aa79e45963eccc, []int{1}
 }
 func (m *GetPhotoRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetPhotoRequest.Unmarshal(m, b)
@@ -151,10 +151,10 @@ func (m *GetPhotoRequest) GetView() PhotoView {
 // - 'view' controls if the download URL for the photo bytes will be returned.
 type BatchGetPhotosRequest struct {
 	// Required. IDs of the photos.
-	PhotoIds []string `protobuf:"bytes,1,rep,name=photo_ids,json=photoIds" json:"photo_ids,omitempty"`
+	PhotoIds []string `protobuf:"bytes,1,rep,name=photo_ids,json=photoIds,proto3" json:"photo_ids,omitempty"`
 	// Specifies if a download URL for the photo bytes should be returned in the
 	// Photo response.
-	View                 PhotoView `protobuf:"varint,2,opt,name=view,enum=google.streetview.publish.v1.PhotoView" json:"view,omitempty"`
+	View                 PhotoView `protobuf:"varint,2,opt,name=view,proto3,enum=google.streetview.publish.v1.PhotoView" json:"view,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
 	XXX_unrecognized     []byte    `json:"-"`
 	XXX_sizecache        int32     `json:"-"`
@@ -164,7 +164,7 @@ func (m *BatchGetPhotosRequest) Reset()         { *m = BatchGetPhotosRequest{} }
 func (m *BatchGetPhotosRequest) String() string { return proto.CompactTextString(m) }
 func (*BatchGetPhotosRequest) ProtoMessage()    {}
 func (*BatchGetPhotosRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_rpcmessages_d38e067cf9604ca9, []int{2}
+	return fileDescriptor_rpcmessages_f5aa79e45963eccc, []int{2}
 }
 func (m *BatchGetPhotosRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_BatchGetPhotosRequest.Unmarshal(m, b)
@@ -202,7 +202,7 @@ func (m *BatchGetPhotosRequest) GetView() PhotoView {
 type BatchGetPhotosResponse struct {
 	// List of results for each individual photo requested, in the same order as
 	// the request.
-	Results              []*PhotoResponse `protobuf:"bytes,1,rep,name=results" json:"results,omitempty"`
+	Results              []*PhotoResponse `protobuf:"bytes,1,rep,name=results,proto3" json:"results,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
 	XXX_unrecognized     []byte           `json:"-"`
 	XXX_sizecache        int32            `json:"-"`
@@ -212,7 +212,7 @@ func (m *BatchGetPhotosResponse) Reset()         { *m = BatchGetPhotosResponse{}
 func (m *BatchGetPhotosResponse) String() string { return proto.CompactTextString(m) }
 func (*BatchGetPhotosResponse) ProtoMessage()    {}
 func (*BatchGetPhotosResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_rpcmessages_d38e067cf9604ca9, []int{3}
+	return fileDescriptor_rpcmessages_f5aa79e45963eccc, []int{3}
 }
 func (m *BatchGetPhotosResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_BatchGetPhotosResponse.Unmarshal(m, b)
@@ -244,9 +244,9 @@ func (m *BatchGetPhotosResponse) GetResults() []*PhotoResponse {
 type PhotoResponse struct {
 	// The status for the operation to get or update a single photo in the batch
 	// request.
-	Status *status.Status `protobuf:"bytes,1,opt,name=status" json:"status,omitempty"`
+	Status *status.Status `protobuf:"bytes,1,opt,name=status,proto3" json:"status,omitempty"`
 	// The photo resource, if the request was successful.
-	Photo                *Photo   `protobuf:"bytes,2,opt,name=photo" json:"photo,omitempty"`
+	Photo                *Photo   `protobuf:"bytes,2,opt,name=photo,proto3" json:"photo,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -256,7 +256,7 @@ func (m *PhotoResponse) Reset()         { *m = PhotoResponse{} }
 func (m *PhotoResponse) String() string { return proto.CompactTextString(m) }
 func (*PhotoResponse) ProtoMessage()    {}
 func (*PhotoResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_rpcmessages_d38e067cf9604ca9, []int{4}
+	return fileDescriptor_rpcmessages_f5aa79e45963eccc, []int{4}
 }
 func (m *PhotoResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_PhotoResponse.Unmarshal(m, b)
@@ -303,18 +303,18 @@ func (m *PhotoResponse) GetPhoto() *Photo {
 type ListPhotosRequest struct {
 	// Specifies if a download URL for the photos bytes should be returned in the
 	// Photos response.
-	View PhotoView `protobuf:"varint,1,opt,name=view,enum=google.streetview.publish.v1.PhotoView" json:"view,omitempty"`
+	View PhotoView `protobuf:"varint,1,opt,name=view,proto3,enum=google.streetview.publish.v1.PhotoView" json:"view,omitempty"`
 	// The maximum number of photos to return.
 	// `page_size` must be non-negative. If `page_size` is zero or is not
 	// provided, the default page size of 100 will be used.
 	// The number of photos returned in the response may be less than `page_size`
 	// if the number of photos that belong to the user is less than `page_size`.
-	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize" json:"page_size,omitempty"`
+	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// The next_page_token value returned from a previous List request, if any.
-	PageToken string `protobuf:"bytes,3,opt,name=page_token,json=pageToken" json:"page_token,omitempty"`
+	PageToken string `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	// The filter expression.
 	// Example: `placeId=ChIJj61dQgK6j4AR4GeTYWZsKWw`
-	Filter               string   `protobuf:"bytes,4,opt,name=filter" json:"filter,omitempty"`
+	Filter               string   `protobuf:"bytes,4,opt,name=filter,proto3" json:"filter,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -324,7 +324,7 @@ func (m *ListPhotosRequest) Reset()         { *m = ListPhotosRequest{} }
 func (m *ListPhotosRequest) String() string { return proto.CompactTextString(m) }
 func (*ListPhotosRequest) ProtoMessage()    {}
 func (*ListPhotosRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_rpcmessages_d38e067cf9604ca9, []int{5}
+	return fileDescriptor_rpcmessages_f5aa79e45963eccc, []int{5}
 }
 func (m *ListPhotosRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListPhotosRequest.Unmarshal(m, b)
@@ -376,10 +376,10 @@ func (m *ListPhotosRequest) GetFilter() string {
 type ListPhotosResponse struct {
 	// List of photos. There will be a maximum number of items returned based on
 	// the page_size field in the request.
-	Photos []*Photo `protobuf:"bytes,1,rep,name=photos" json:"photos,omitempty"`
+	Photos []*Photo `protobuf:"bytes,1,rep,name=photos,proto3" json:"photos,omitempty"`
 	// Token to retrieve the next page of results, or empty if there are no
 	// more results in the list.
-	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken" json:"next_page_token,omitempty"`
+	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -389,7 +389,7 @@ func (m *ListPhotosResponse) Reset()         { *m = ListPhotosResponse{} }
 func (m *ListPhotosResponse) String() string { return proto.CompactTextString(m) }
 func (*ListPhotosResponse) ProtoMessage()    {}
 func (*ListPhotosResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_rpcmessages_d38e067cf9604ca9, []int{6}
+	return fileDescriptor_rpcmessages_f5aa79e45963eccc, []int{6}
 }
 func (m *ListPhotosResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListPhotosResponse.Unmarshal(m, b)
@@ -431,7 +431,7 @@ type UpdatePhotoRequest struct {
 	// update applies to all fields.
 	// **Note:** To update `pose.altitude`, `pose.latlngpair` has to be filled as
 	// well. Otherwise, the request will fail.
-	Photo *Photo `protobuf:"bytes,1,opt,name=photo" json:"photo,omitempty"`
+	Photo *Photo `protobuf:"bytes,1,opt,name=photo,proto3" json:"photo,omitempty"`
 	// Mask that identifies fields on the photo metadata to update.
 	// If not present, the old Photo metadata will be entirely replaced with the
 	// new Photo metadata in this request. The update fails if invalid fields are
@@ -454,7 +454,7 @@ type UpdatePhotoRequest struct {
 	// `UpdatePhotoRequest.photo.update_mask` contains `connections` and
 	// `UpdatePhotoRequest.photo.connections` is empty, all connections will be
 	// removed.
-	UpdateMask           *field_mask.FieldMask `protobuf:"bytes,2,opt,name=update_mask,json=updateMask" json:"update_mask,omitempty"`
+	UpdateMask           *field_mask.FieldMask `protobuf:"bytes,2,opt,name=update_mask,json=updateMask,proto3" json:"update_mask,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}              `json:"-"`
 	XXX_unrecognized     []byte                `json:"-"`
 	XXX_sizecache        int32                 `json:"-"`
@@ -464,7 +464,7 @@ func (m *UpdatePhotoRequest) Reset()         { *m = UpdatePhotoRequest{} }
 func (m *UpdatePhotoRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdatePhotoRequest) ProtoMessage()    {}
 func (*UpdatePhotoRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_rpcmessages_d38e067cf9604ca9, []int{7}
+	return fileDescriptor_rpcmessages_f5aa79e45963eccc, []int{7}
 }
 func (m *UpdatePhotoRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UpdatePhotoRequest.Unmarshal(m, b)
@@ -502,7 +502,7 @@ func (m *UpdatePhotoRequest) GetUpdateMask() *field_mask.FieldMask {
 // Updating the pixels of photos is not supported.
 type BatchUpdatePhotosRequest struct {
 	// Required. List of update photo requests.
-	UpdatePhotoRequests  []*UpdatePhotoRequest `protobuf:"bytes,1,rep,name=update_photo_requests,json=updatePhotoRequests" json:"update_photo_requests,omitempty"`
+	UpdatePhotoRequests  []*UpdatePhotoRequest `protobuf:"bytes,1,rep,name=update_photo_requests,json=updatePhotoRequests,proto3" json:"update_photo_requests,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}              `json:"-"`
 	XXX_unrecognized     []byte                `json:"-"`
 	XXX_sizecache        int32                 `json:"-"`
@@ -512,7 +512,7 @@ func (m *BatchUpdatePhotosRequest) Reset()         { *m = BatchUpdatePhotosReque
 func (m *BatchUpdatePhotosRequest) String() string { return proto.CompactTextString(m) }
 func (*BatchUpdatePhotosRequest) ProtoMessage()    {}
 func (*BatchUpdatePhotosRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_rpcmessages_d38e067cf9604ca9, []int{8}
+	return fileDescriptor_rpcmessages_f5aa79e45963eccc, []int{8}
 }
 func (m *BatchUpdatePhotosRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_BatchUpdatePhotosRequest.Unmarshal(m, b)
@@ -543,7 +543,7 @@ func (m *BatchUpdatePhotosRequest) GetUpdatePhotoRequests() []*UpdatePhotoReques
 type BatchUpdatePhotosResponse struct {
 	// List of results for each individual photo updated, in the same order as
 	// the request.
-	Results              []*PhotoResponse `protobuf:"bytes,1,rep,name=results" json:"results,omitempty"`
+	Results              []*PhotoResponse `protobuf:"bytes,1,rep,name=results,proto3" json:"results,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
 	XXX_unrecognized     []byte           `json:"-"`
 	XXX_sizecache        int32            `json:"-"`
@@ -553,7 +553,7 @@ func (m *BatchUpdatePhotosResponse) Reset()         { *m = BatchUpdatePhotosResp
 func (m *BatchUpdatePhotosResponse) String() string { return proto.CompactTextString(m) }
 func (*BatchUpdatePhotosResponse) ProtoMessage()    {}
 func (*BatchUpdatePhotosResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_rpcmessages_d38e067cf9604ca9, []int{9}
+	return fileDescriptor_rpcmessages_f5aa79e45963eccc, []int{9}
 }
 func (m *BatchUpdatePhotosResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_BatchUpdatePhotosResponse.Unmarshal(m, b)
@@ -583,7 +583,7 @@ func (m *BatchUpdatePhotosResponse) GetResults() []*PhotoResponse {
 // Request to delete a photo.
 type DeletePhotoRequest struct {
 	// Required. ID of the photo.
-	PhotoId              string   `protobuf:"bytes,1,opt,name=photo_id,json=photoId" json:"photo_id,omitempty"`
+	PhotoId              string   `protobuf:"bytes,1,opt,name=photo_id,json=photoId,proto3" json:"photo_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -593,7 +593,7 @@ func (m *DeletePhotoRequest) Reset()         { *m = DeletePhotoRequest{} }
 func (m *DeletePhotoRequest) String() string { return proto.CompactTextString(m) }
 func (*DeletePhotoRequest) ProtoMessage()    {}
 func (*DeletePhotoRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_rpcmessages_d38e067cf9604ca9, []int{10}
+	return fileDescriptor_rpcmessages_f5aa79e45963eccc, []int{10}
 }
 func (m *DeletePhotoRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeletePhotoRequest.Unmarshal(m, b)
@@ -623,7 +623,7 @@ func (m *DeletePhotoRequest) GetPhotoId() string {
 // Request to delete multiple photos.
 type BatchDeletePhotosRequest struct {
 	// Required. List of delete photo requests.
-	PhotoIds             []string `protobuf:"bytes,1,rep,name=photo_ids,json=photoIds" json:"photo_ids,omitempty"`
+	PhotoIds             []string `protobuf:"bytes,1,rep,name=photo_ids,json=photoIds,proto3" json:"photo_ids,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -633,7 +633,7 @@ func (m *BatchDeletePhotosRequest) Reset()         { *m = BatchDeletePhotosReque
 func (m *BatchDeletePhotosRequest) String() string { return proto.CompactTextString(m) }
 func (*BatchDeletePhotosRequest) ProtoMessage()    {}
 func (*BatchDeletePhotosRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_rpcmessages_d38e067cf9604ca9, []int{11}
+	return fileDescriptor_rpcmessages_f5aa79e45963eccc, []int{11}
 }
 func (m *BatchDeletePhotosRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_BatchDeletePhotosRequest.Unmarshal(m, b)
@@ -663,7 +663,7 @@ func (m *BatchDeletePhotosRequest) GetPhotoIds() []string {
 // Response to batch delete of one or more photos.
 type BatchDeletePhotosResponse struct {
 	// The status for the operation to delete a single photo in the batch request.
-	Status               []*status.Status `protobuf:"bytes,1,rep,name=status" json:"status,omitempty"`
+	Status               []*status.Status `protobuf:"bytes,1,rep,name=status,proto3" json:"status,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
 	XXX_unrecognized     []byte           `json:"-"`
 	XXX_sizecache        int32            `json:"-"`
@@ -673,7 +673,7 @@ func (m *BatchDeletePhotosResponse) Reset()         { *m = BatchDeletePhotosResp
 func (m *BatchDeletePhotosResponse) String() string { return proto.CompactTextString(m) }
 func (*BatchDeletePhotosResponse) ProtoMessage()    {}
 func (*BatchDeletePhotosResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_rpcmessages_d38e067cf9604ca9, []int{12}
+	return fileDescriptor_rpcmessages_f5aa79e45963eccc, []int{12}
 }
 func (m *BatchDeletePhotosResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_BatchDeletePhotosResponse.Unmarshal(m, b)
@@ -718,10 +718,10 @@ func init() {
 }
 
 func init() {
-	proto.RegisterFile("google/streetview/publish/v1/rpcmessages.proto", fileDescriptor_rpcmessages_d38e067cf9604ca9)
+	proto.RegisterFile("google/streetview/publish/v1/rpcmessages.proto", fileDescriptor_rpcmessages_f5aa79e45963eccc)
 }
 
-var fileDescriptor_rpcmessages_d38e067cf9604ca9 = []byte{
+var fileDescriptor_rpcmessages_f5aa79e45963eccc = []byte{
 	// 639 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x55, 0xcb, 0x6e, 0xd3, 0x40,
 	0x14, 0xc5, 0x7d, 0xa4, 0xcd, 0xad, 0x4a, 0xcb, 0x40, 0x8b, 0x1b, 0x8a, 0x14, 0x19, 0x09, 0xa2,

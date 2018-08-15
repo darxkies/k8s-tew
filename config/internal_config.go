@@ -76,6 +76,15 @@ func (config *InternalConfig) GetFullAssetFilename(baseDirectory, name string) s
 
 	return path.Join(baseDirectory, resultFilename)
 }
+func (config *InternalConfig) IsDeploymentDirectory(name string) bool {
+	for _, file := range config.Config.Assets.Files {
+		if file.Directory == name && file.Labels.HasLabels(Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}) {
+			return true
+		}
+	}
+
+	return false
+}
 
 func (config *InternalConfig) GetFullLocalAssetDirectory(name string) string {
 	return config.GetFullAssetDirectory(config.BaseDirectory, name)

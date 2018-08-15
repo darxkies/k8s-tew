@@ -28,13 +28,13 @@ const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 // The request message for [Locations.ListLocations][google.cloud.location.Locations.ListLocations].
 type ListLocationsRequest struct {
 	// The resource that owns the locations collection, if applicable.
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// The standard list filter.
-	Filter string `protobuf:"bytes,2,opt,name=filter" json:"filter,omitempty"`
+	Filter string `protobuf:"bytes,2,opt,name=filter,proto3" json:"filter,omitempty"`
 	// The standard list page size.
-	PageSize int32 `protobuf:"varint,3,opt,name=page_size,json=pageSize" json:"page_size,omitempty"`
+	PageSize int32 `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// The standard list page token.
-	PageToken            string   `protobuf:"bytes,4,opt,name=page_token,json=pageToken" json:"page_token,omitempty"`
+	PageToken            string   `protobuf:"bytes,4,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -44,7 +44,7 @@ func (m *ListLocationsRequest) Reset()         { *m = ListLocationsRequest{} }
 func (m *ListLocationsRequest) String() string { return proto.CompactTextString(m) }
 func (*ListLocationsRequest) ProtoMessage()    {}
 func (*ListLocationsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_locations_0b4e7e1f81e8a26c, []int{0}
+	return fileDescriptor_locations_7a7af132c8d24683, []int{0}
 }
 func (m *ListLocationsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListLocationsRequest.Unmarshal(m, b)
@@ -95,9 +95,9 @@ func (m *ListLocationsRequest) GetPageToken() string {
 // The response message for [Locations.ListLocations][google.cloud.location.Locations.ListLocations].
 type ListLocationsResponse struct {
 	// A list of locations that matches the specified filter in the request.
-	Locations []*Location `protobuf:"bytes,1,rep,name=locations" json:"locations,omitempty"`
+	Locations []*Location `protobuf:"bytes,1,rep,name=locations,proto3" json:"locations,omitempty"`
 	// The standard List next-page token.
-	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken" json:"next_page_token,omitempty"`
+	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -107,7 +107,7 @@ func (m *ListLocationsResponse) Reset()         { *m = ListLocationsResponse{} }
 func (m *ListLocationsResponse) String() string { return proto.CompactTextString(m) }
 func (*ListLocationsResponse) ProtoMessage()    {}
 func (*ListLocationsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_locations_0b4e7e1f81e8a26c, []int{1}
+	return fileDescriptor_locations_7a7af132c8d24683, []int{1}
 }
 func (m *ListLocationsResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListLocationsResponse.Unmarshal(m, b)
@@ -144,7 +144,7 @@ func (m *ListLocationsResponse) GetNextPageToken() string {
 // The request message for [Locations.GetLocation][google.cloud.location.Locations.GetLocation].
 type GetLocationRequest struct {
 	// Resource name for the location.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -154,7 +154,7 @@ func (m *GetLocationRequest) Reset()         { *m = GetLocationRequest{} }
 func (m *GetLocationRequest) String() string { return proto.CompactTextString(m) }
 func (*GetLocationRequest) ProtoMessage()    {}
 func (*GetLocationRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_locations_0b4e7e1f81e8a26c, []int{2}
+	return fileDescriptor_locations_7a7af132c8d24683, []int{2}
 }
 func (m *GetLocationRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetLocationRequest.Unmarshal(m, b)
@@ -185,19 +185,19 @@ func (m *GetLocationRequest) GetName() string {
 type Location struct {
 	// Resource name for the location, which may vary between implementations.
 	// For example: `"projects/example-project/locations/us-east1"`
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// The canonical id for this location. For example: `"us-east1"`.
-	LocationId string `protobuf:"bytes,4,opt,name=location_id,json=locationId" json:"location_id,omitempty"`
+	LocationId string `protobuf:"bytes,4,opt,name=location_id,json=locationId,proto3" json:"location_id,omitempty"`
 	// The friendly name for this location, typically a nearby city name.
 	// For example, "Tokyo".
-	DisplayName string `protobuf:"bytes,5,opt,name=display_name,json=displayName" json:"display_name,omitempty"`
+	DisplayName string `protobuf:"bytes,5,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
 	// Cross-service attributes for the location. For example
 	//
 	//     {"cloud.googleapis.com/region": "us-east1"}
-	Labels map[string]string `protobuf:"bytes,2,rep,name=labels" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Labels map[string]string `protobuf:"bytes,2,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	// Service-specific metadata. For example the available capacity at the given
 	// location.
-	Metadata             *any.Any `protobuf:"bytes,3,opt,name=metadata" json:"metadata,omitempty"`
+	Metadata             *any.Any `protobuf:"bytes,3,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -207,7 +207,7 @@ func (m *Location) Reset()         { *m = Location{} }
 func (m *Location) String() string { return proto.CompactTextString(m) }
 func (*Location) ProtoMessage()    {}
 func (*Location) Descriptor() ([]byte, []int) {
-	return fileDescriptor_locations_0b4e7e1f81e8a26c, []int{3}
+	return fileDescriptor_locations_7a7af132c8d24683, []int{3}
 }
 func (m *Location) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Location.Unmarshal(m, b)
@@ -314,8 +314,7 @@ func (c *locationsClient) GetLocation(ctx context.Context, in *GetLocationReques
 	return out, nil
 }
 
-// Server API for Locations service
-
+// LocationsServer is the server API for Locations service.
 type LocationsServer interface {
 	// Lists information about the supported locations for this service.
 	ListLocations(context.Context, *ListLocationsRequest) (*ListLocationsResponse, error)
@@ -381,10 +380,10 @@ var _Locations_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("google/cloud/location/locations.proto", fileDescriptor_locations_0b4e7e1f81e8a26c)
+	proto.RegisterFile("google/cloud/location/locations.proto", fileDescriptor_locations_7a7af132c8d24683)
 }
 
-var fileDescriptor_locations_0b4e7e1f81e8a26c = []byte{
+var fileDescriptor_locations_7a7af132c8d24683 = []byte{
 	// 527 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x54, 0xcd, 0x6e, 0xd3, 0x40,
 	0x10, 0xd6, 0x3a, 0x4d, 0x94, 0x8c, 0x29, 0xa0, 0x55, 0x8a, 0xdc, 0x00, 0x4a, 0x62, 0x04, 0xa4,

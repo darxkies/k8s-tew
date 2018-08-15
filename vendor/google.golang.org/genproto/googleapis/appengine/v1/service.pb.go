@@ -48,7 +48,7 @@ func (x TrafficSplit_ShardBy) String() string {
 	return proto.EnumName(TrafficSplit_ShardBy_name, int32(x))
 }
 func (TrafficSplit_ShardBy) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_service_a8237d316e866320, []int{1, 0}
+	return fileDescriptor_service_c3b4fd6114e9d0a5, []int{1, 0}
 }
 
 // A Service resource is a logical component of an application that can share
@@ -63,15 +63,15 @@ type Service struct {
 	// Example: `apps/myapp/services/default`.
 	//
 	// @OutputOnly
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// Relative name of the service within the application.
 	// Example: `default`.
 	//
 	// @OutputOnly
-	Id string `protobuf:"bytes,2,opt,name=id" json:"id,omitempty"`
+	Id string `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
 	// Mapping that defines fractional HTTP traffic diversion to
 	// different versions within the service.
-	Split                *TrafficSplit `protobuf:"bytes,3,opt,name=split" json:"split,omitempty"`
+	Split                *TrafficSplit `protobuf:"bytes,3,opt,name=split,proto3" json:"split,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}      `json:"-"`
 	XXX_unrecognized     []byte        `json:"-"`
 	XXX_sizecache        int32         `json:"-"`
@@ -81,7 +81,7 @@ func (m *Service) Reset()         { *m = Service{} }
 func (m *Service) String() string { return proto.CompactTextString(m) }
 func (*Service) ProtoMessage()    {}
 func (*Service) Descriptor() ([]byte, []int) {
-	return fileDescriptor_service_a8237d316e866320, []int{0}
+	return fileDescriptor_service_c3b4fd6114e9d0a5, []int{0}
 }
 func (m *Service) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Service.Unmarshal(m, b)
@@ -128,7 +128,7 @@ type TrafficSplit struct {
 	// Mechanism used to determine which version a request is sent to.
 	// The traffic selection algorithm will
 	// be stable for either type until allocations are changed.
-	ShardBy TrafficSplit_ShardBy `protobuf:"varint,1,opt,name=shard_by,json=shardBy,enum=google.appengine.v1.TrafficSplit_ShardBy" json:"shard_by,omitempty"`
+	ShardBy TrafficSplit_ShardBy `protobuf:"varint,1,opt,name=shard_by,json=shardBy,proto3,enum=google.appengine.v1.TrafficSplit_ShardBy" json:"shard_by,omitempty"`
 	// Mapping from version IDs within the service to fractional
 	// (0.000, 1] allocations of traffic for that version. Each version can
 	// be specified only once, but some versions in the service may not
@@ -137,7 +137,7 @@ type TrafficSplit struct {
 	// their traffic allocation is removed. Allocations must sum to 1.
 	// Up to two decimal place precision is supported for IP-based splits and
 	// up to three decimal places is supported for cookie-based splits.
-	Allocations          map[string]float64 `protobuf:"bytes,2,rep,name=allocations" json:"allocations,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"fixed64,2,opt,name=value"`
+	Allocations          map[string]float64 `protobuf:"bytes,2,rep,name=allocations,proto3" json:"allocations,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"fixed64,2,opt,name=value,proto3"`
 	XXX_NoUnkeyedLiteral struct{}           `json:"-"`
 	XXX_unrecognized     []byte             `json:"-"`
 	XXX_sizecache        int32              `json:"-"`
@@ -147,7 +147,7 @@ func (m *TrafficSplit) Reset()         { *m = TrafficSplit{} }
 func (m *TrafficSplit) String() string { return proto.CompactTextString(m) }
 func (*TrafficSplit) ProtoMessage()    {}
 func (*TrafficSplit) Descriptor() ([]byte, []int) {
-	return fileDescriptor_service_a8237d316e866320, []int{1}
+	return fileDescriptor_service_c3b4fd6114e9d0a5, []int{1}
 }
 func (m *TrafficSplit) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_TrafficSplit.Unmarshal(m, b)
@@ -189,10 +189,10 @@ func init() {
 }
 
 func init() {
-	proto.RegisterFile("google/appengine/v1/service.proto", fileDescriptor_service_a8237d316e866320)
+	proto.RegisterFile("google/appengine/v1/service.proto", fileDescriptor_service_c3b4fd6114e9d0a5)
 }
 
-var fileDescriptor_service_a8237d316e866320 = []byte{
+var fileDescriptor_service_c3b4fd6114e9d0a5 = []byte{
 	// 356 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x84, 0x92, 0x51, 0x8b, 0xda, 0x40,
 	0x10, 0xc7, 0x9b, 0xb5, 0x6a, 0x3b, 0x11, 0x1b, 0xb6, 0x85, 0x06, 0xe9, 0x83, 0xfa, 0x64, 0x5f,

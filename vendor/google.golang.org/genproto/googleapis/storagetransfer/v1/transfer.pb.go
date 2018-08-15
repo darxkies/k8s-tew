@@ -31,7 +31,7 @@ type GetGoogleServiceAccountRequest struct {
 	// The ID of the Google Cloud Platform Console project that the Google service
 	// account is associated with.
 	// Required.
-	ProjectId            string   `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId            string   `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -41,7 +41,7 @@ func (m *GetGoogleServiceAccountRequest) Reset()         { *m = GetGoogleService
 func (m *GetGoogleServiceAccountRequest) String() string { return proto.CompactTextString(m) }
 func (*GetGoogleServiceAccountRequest) ProtoMessage()    {}
 func (*GetGoogleServiceAccountRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_transfer_154adba6b3223554, []int{0}
+	return fileDescriptor_transfer_fe1aac113c6727f1, []int{0}
 }
 func (m *GetGoogleServiceAccountRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetGoogleServiceAccountRequest.Unmarshal(m, b)
@@ -72,7 +72,7 @@ func (m *GetGoogleServiceAccountRequest) GetProjectId() string {
 type CreateTransferJobRequest struct {
 	// The job to create.
 	// Required.
-	TransferJob          *TransferJob `protobuf:"bytes,1,opt,name=transfer_job,json=transferJob" json:"transfer_job,omitempty"`
+	TransferJob          *TransferJob `protobuf:"bytes,1,opt,name=transfer_job,json=transferJob,proto3" json:"transfer_job,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
 	XXX_unrecognized     []byte       `json:"-"`
 	XXX_sizecache        int32        `json:"-"`
@@ -82,7 +82,7 @@ func (m *CreateTransferJobRequest) Reset()         { *m = CreateTransferJobReque
 func (m *CreateTransferJobRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateTransferJobRequest) ProtoMessage()    {}
 func (*CreateTransferJobRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_transfer_154adba6b3223554, []int{1}
+	return fileDescriptor_transfer_fe1aac113c6727f1, []int{1}
 }
 func (m *CreateTransferJobRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CreateTransferJobRequest.Unmarshal(m, b)
@@ -113,23 +113,23 @@ func (m *CreateTransferJobRequest) GetTransferJob() *TransferJob {
 type UpdateTransferJobRequest struct {
 	// The name of job to update.
 	// Required.
-	JobName string `protobuf:"bytes,1,opt,name=job_name,json=jobName" json:"job_name,omitempty"`
+	JobName string `protobuf:"bytes,1,opt,name=job_name,json=jobName,proto3" json:"job_name,omitempty"`
 	// The ID of the Google Cloud Platform Console project that owns the job.
 	// Required.
-	ProjectId string `protobuf:"bytes,2,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,2,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// The job to update. `transferJob` is expected to specify only three fields:
 	// `description`, `transferSpec`, and `status`.  An UpdateTransferJobRequest
 	// that specifies other fields will be rejected with an error
 	// `INVALID_ARGUMENT`.
 	// Required.
-	TransferJob *TransferJob `protobuf:"bytes,3,opt,name=transfer_job,json=transferJob" json:"transfer_job,omitempty"`
+	TransferJob *TransferJob `protobuf:"bytes,3,opt,name=transfer_job,json=transferJob,proto3" json:"transfer_job,omitempty"`
 	// The field mask of the fields in `transferJob` that are to be updated in
 	// this request.  Fields in `transferJob` that can be updated are:
 	// `description`, `transferSpec`, and `status`.  To update the `transferSpec`
 	// of the job, a complete transfer specification has to be provided. An
 	// incomplete specification which misses any required fields will be rejected
 	// with the error `INVALID_ARGUMENT`.
-	UpdateTransferJobFieldMask *field_mask.FieldMask `protobuf:"bytes,4,opt,name=update_transfer_job_field_mask,json=updateTransferJobFieldMask" json:"update_transfer_job_field_mask,omitempty"`
+	UpdateTransferJobFieldMask *field_mask.FieldMask `protobuf:"bytes,4,opt,name=update_transfer_job_field_mask,json=updateTransferJobFieldMask,proto3" json:"update_transfer_job_field_mask,omitempty"`
 	XXX_NoUnkeyedLiteral       struct{}              `json:"-"`
 	XXX_unrecognized           []byte                `json:"-"`
 	XXX_sizecache              int32                 `json:"-"`
@@ -139,7 +139,7 @@ func (m *UpdateTransferJobRequest) Reset()         { *m = UpdateTransferJobReque
 func (m *UpdateTransferJobRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateTransferJobRequest) ProtoMessage()    {}
 func (*UpdateTransferJobRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_transfer_154adba6b3223554, []int{2}
+	return fileDescriptor_transfer_fe1aac113c6727f1, []int{2}
 }
 func (m *UpdateTransferJobRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UpdateTransferJobRequest.Unmarshal(m, b)
@@ -191,10 +191,10 @@ func (m *UpdateTransferJobRequest) GetUpdateTransferJobFieldMask() *field_mask.F
 type GetTransferJobRequest struct {
 	// The job to get.
 	// Required.
-	JobName string `protobuf:"bytes,1,opt,name=job_name,json=jobName" json:"job_name,omitempty"`
+	JobName string `protobuf:"bytes,1,opt,name=job_name,json=jobName,proto3" json:"job_name,omitempty"`
 	// The ID of the Google Cloud Platform Console project that owns the job.
 	// Required.
-	ProjectId            string   `protobuf:"bytes,2,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId            string   `protobuf:"bytes,2,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -204,7 +204,7 @@ func (m *GetTransferJobRequest) Reset()         { *m = GetTransferJobRequest{} }
 func (m *GetTransferJobRequest) String() string { return proto.CompactTextString(m) }
 func (*GetTransferJobRequest) ProtoMessage()    {}
 func (*GetTransferJobRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_transfer_154adba6b3223554, []int{3}
+	return fileDescriptor_transfer_fe1aac113c6727f1, []int{3}
 }
 func (m *GetTransferJobRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetTransferJobRequest.Unmarshal(m, b)
@@ -249,11 +249,11 @@ type ListTransferJobsRequest struct {
 	// must be specified with array notation. `project_id` is required. `job_names`
 	// and `job_statuses` are optional.  The valid values for `job_statuses` are
 	// case-insensitive: `ENABLED`, `DISABLED`, and `DELETED`.
-	Filter string `protobuf:"bytes,1,opt,name=filter" json:"filter,omitempty"`
+	Filter string `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
 	// The list page size. The max allowed value is 256.
-	PageSize int32 `protobuf:"varint,4,opt,name=page_size,json=pageSize" json:"page_size,omitempty"`
+	PageSize int32 `protobuf:"varint,4,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// The list page token.
-	PageToken            string   `protobuf:"bytes,5,opt,name=page_token,json=pageToken" json:"page_token,omitempty"`
+	PageToken            string   `protobuf:"bytes,5,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -263,7 +263,7 @@ func (m *ListTransferJobsRequest) Reset()         { *m = ListTransferJobsRequest
 func (m *ListTransferJobsRequest) String() string { return proto.CompactTextString(m) }
 func (*ListTransferJobsRequest) ProtoMessage()    {}
 func (*ListTransferJobsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_transfer_154adba6b3223554, []int{4}
+	return fileDescriptor_transfer_fe1aac113c6727f1, []int{4}
 }
 func (m *ListTransferJobsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListTransferJobsRequest.Unmarshal(m, b)
@@ -307,9 +307,9 @@ func (m *ListTransferJobsRequest) GetPageToken() string {
 // Response from ListTransferJobs.
 type ListTransferJobsResponse struct {
 	// A list of transfer jobs.
-	TransferJobs []*TransferJob `protobuf:"bytes,1,rep,name=transfer_jobs,json=transferJobs" json:"transfer_jobs,omitempty"`
+	TransferJobs []*TransferJob `protobuf:"bytes,1,rep,name=transfer_jobs,json=transferJobs,proto3" json:"transfer_jobs,omitempty"`
 	// The list next page token.
-	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken" json:"next_page_token,omitempty"`
+	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -319,7 +319,7 @@ func (m *ListTransferJobsResponse) Reset()         { *m = ListTransferJobsRespon
 func (m *ListTransferJobsResponse) String() string { return proto.CompactTextString(m) }
 func (*ListTransferJobsResponse) ProtoMessage()    {}
 func (*ListTransferJobsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_transfer_154adba6b3223554, []int{5}
+	return fileDescriptor_transfer_fe1aac113c6727f1, []int{5}
 }
 func (m *ListTransferJobsResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListTransferJobsResponse.Unmarshal(m, b)
@@ -357,7 +357,7 @@ func (m *ListTransferJobsResponse) GetNextPageToken() string {
 type PauseTransferOperationRequest struct {
 	// The name of the transfer operation.
 	// Required.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -367,7 +367,7 @@ func (m *PauseTransferOperationRequest) Reset()         { *m = PauseTransferOper
 func (m *PauseTransferOperationRequest) String() string { return proto.CompactTextString(m) }
 func (*PauseTransferOperationRequest) ProtoMessage()    {}
 func (*PauseTransferOperationRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_transfer_154adba6b3223554, []int{6}
+	return fileDescriptor_transfer_fe1aac113c6727f1, []int{6}
 }
 func (m *PauseTransferOperationRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_PauseTransferOperationRequest.Unmarshal(m, b)
@@ -398,7 +398,7 @@ func (m *PauseTransferOperationRequest) GetName() string {
 type ResumeTransferOperationRequest struct {
 	// The name of the transfer operation.
 	// Required.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -408,7 +408,7 @@ func (m *ResumeTransferOperationRequest) Reset()         { *m = ResumeTransferOp
 func (m *ResumeTransferOperationRequest) String() string { return proto.CompactTextString(m) }
 func (*ResumeTransferOperationRequest) ProtoMessage()    {}
 func (*ResumeTransferOperationRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_transfer_154adba6b3223554, []int{7}
+	return fileDescriptor_transfer_fe1aac113c6727f1, []int{7}
 }
 func (m *ResumeTransferOperationRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ResumeTransferOperationRequest.Unmarshal(m, b)
@@ -554,8 +554,7 @@ func (c *storageTransferServiceClient) ResumeTransferOperation(ctx context.Conte
 	return out, nil
 }
 
-// Server API for StorageTransferService service
-
+// StorageTransferServiceServer is the server API for StorageTransferService service.
 type StorageTransferServiceServer interface {
 	// Returns the Google service account that is used by Storage Transfer
 	// Service to access buckets in the project where transfers
@@ -750,10 +749,10 @@ var _StorageTransferService_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("google/storagetransfer/v1/transfer.proto", fileDescriptor_transfer_154adba6b3223554)
+	proto.RegisterFile("google/storagetransfer/v1/transfer.proto", fileDescriptor_transfer_fe1aac113c6727f1)
 }
 
-var fileDescriptor_transfer_154adba6b3223554 = []byte{
+var fileDescriptor_transfer_fe1aac113c6727f1 = []byte{
 	// 786 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x56, 0xdf, 0x4e, 0x13, 0x4f,
 	0x14, 0xce, 0xf0, 0xef, 0x07, 0x03, 0xfc, 0x84, 0x49, 0x2c, 0x4b, 0x91, 0xda, 0x2c, 0x49, 0xc5,

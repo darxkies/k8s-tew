@@ -21,17 +21,17 @@ const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 // Represents an amount of money with its currency type.
 type Money struct {
 	// The 3-letter currency code defined in ISO 4217.
-	CurrencyCode string `protobuf:"bytes,1,opt,name=currency_code,json=currencyCode" json:"currency_code,omitempty"`
+	CurrencyCode string `protobuf:"bytes,1,opt,name=currency_code,json=currencyCode,proto3" json:"currency_code,omitempty"`
 	// The whole units of the amount.
 	// For example if `currencyCode` is `"USD"`, then 1 unit is one US dollar.
-	Units int64 `protobuf:"varint,2,opt,name=units" json:"units,omitempty"`
+	Units int64 `protobuf:"varint,2,opt,name=units,proto3" json:"units,omitempty"`
 	// Number of nano (10^-9) units of the amount.
 	// The value must be between -999,999,999 and +999,999,999 inclusive.
 	// If `units` is positive, `nanos` must be positive or zero.
 	// If `units` is zero, `nanos` can be positive, zero, or negative.
 	// If `units` is negative, `nanos` must be negative or zero.
 	// For example $-1.75 is represented as `units`=-1 and `nanos`=-750,000,000.
-	Nanos                int32    `protobuf:"varint,3,opt,name=nanos" json:"nanos,omitempty"`
+	Nanos                int32    `protobuf:"varint,3,opt,name=nanos,proto3" json:"nanos,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -41,7 +41,7 @@ func (m *Money) Reset()         { *m = Money{} }
 func (m *Money) String() string { return proto.CompactTextString(m) }
 func (*Money) ProtoMessage()    {}
 func (*Money) Descriptor() ([]byte, []int) {
-	return fileDescriptor_money_18791ea938b3a377, []int{0}
+	return fileDescriptor_money_608c90f64d8c0d93, []int{0}
 }
 func (m *Money) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Money.Unmarshal(m, b)
@@ -86,9 +86,9 @@ func init() {
 	proto.RegisterType((*Money)(nil), "google.type.Money")
 }
 
-func init() { proto.RegisterFile("google/type/money.proto", fileDescriptor_money_18791ea938b3a377) }
+func init() { proto.RegisterFile("google/type/money.proto", fileDescriptor_money_608c90f64d8c0d93) }
 
-var fileDescriptor_money_18791ea938b3a377 = []byte{
+var fileDescriptor_money_608c90f64d8c0d93 = []byte{
 	// 190 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x4f, 0xcf, 0xcf, 0x4f,
 	0xcf, 0x49, 0xd5, 0x2f, 0xa9, 0x2c, 0x48, 0xd5, 0xcf, 0xcd, 0xcf, 0x4b, 0xad, 0xd4, 0x2b, 0x28,

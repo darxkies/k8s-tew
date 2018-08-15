@@ -215,10 +215,10 @@ type PredictRequest struct {
 	// Required. The resource name of a model or a version.
 	//
 	// Authorization: requires `Viewer` role on the parent project.
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	//
 	// Required. The prediction request body.
-	HttpBody             *httpbody.HttpBody `protobuf:"bytes,2,opt,name=http_body,json=httpBody" json:"http_body,omitempty"`
+	HttpBody             *httpbody.HttpBody `protobuf:"bytes,2,opt,name=http_body,json=httpBody,proto3" json:"http_body,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}           `json:"-"`
 	XXX_unrecognized     []byte             `json:"-"`
 	XXX_sizecache        int32              `json:"-"`
@@ -228,7 +228,7 @@ func (m *PredictRequest) Reset()         { *m = PredictRequest{} }
 func (m *PredictRequest) String() string { return proto.CompactTextString(m) }
 func (*PredictRequest) ProtoMessage()    {}
 func (*PredictRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_prediction_service_70f83d6188ceda1c, []int{0}
+	return fileDescriptor_prediction_service_92107018d3d8c7da, []int{0}
 }
 func (m *PredictRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_PredictRequest.Unmarshal(m, b)
@@ -301,8 +301,7 @@ func (c *onlinePredictionServiceClient) Predict(ctx context.Context, in *Predict
 	return out, nil
 }
 
-// Server API for OnlinePredictionService service
-
+// OnlinePredictionServiceServer is the server API for OnlinePredictionService service.
 type OnlinePredictionServiceServer interface {
 	// Performs prediction on the data in the request.
 	//
@@ -346,10 +345,10 @@ var _OnlinePredictionService_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("google/cloud/ml/v1/prediction_service.proto", fileDescriptor_prediction_service_70f83d6188ceda1c)
+	proto.RegisterFile("google/cloud/ml/v1/prediction_service.proto", fileDescriptor_prediction_service_92107018d3d8c7da)
 }
 
-var fileDescriptor_prediction_service_70f83d6188ceda1c = []byte{
+var fileDescriptor_prediction_service_92107018d3d8c7da = []byte{
 	// 308 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x6c, 0x51, 0x4f, 0x4b, 0xfb, 0x30,
 	0x18, 0xa6, 0xe3, 0xc7, 0x4f, 0x17, 0xc1, 0x43, 0x10, 0x9d, 0x45, 0x64, 0xd4, 0xcb, 0x9c, 0x90,

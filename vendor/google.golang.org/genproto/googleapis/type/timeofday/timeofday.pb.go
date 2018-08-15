@@ -24,14 +24,14 @@ const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 type TimeOfDay struct {
 	// Hours of day in 24 hour format. Should be from 0 to 23. An API may choose
 	// to allow the value "24:00:00" for scenarios like business closing time.
-	Hours int32 `protobuf:"varint,1,opt,name=hours" json:"hours,omitempty"`
+	Hours int32 `protobuf:"varint,1,opt,name=hours,proto3" json:"hours,omitempty"`
 	// Minutes of hour of day. Must be from 0 to 59.
-	Minutes int32 `protobuf:"varint,2,opt,name=minutes" json:"minutes,omitempty"`
+	Minutes int32 `protobuf:"varint,2,opt,name=minutes,proto3" json:"minutes,omitempty"`
 	// Seconds of minutes of the time. Must normally be from 0 to 59. An API may
 	// allow the value 60 if it allows leap-seconds.
-	Seconds int32 `protobuf:"varint,3,opt,name=seconds" json:"seconds,omitempty"`
+	Seconds int32 `protobuf:"varint,3,opt,name=seconds,proto3" json:"seconds,omitempty"`
 	// Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999.
-	Nanos                int32    `protobuf:"varint,4,opt,name=nanos" json:"nanos,omitempty"`
+	Nanos                int32    `protobuf:"varint,4,opt,name=nanos,proto3" json:"nanos,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -41,7 +41,7 @@ func (m *TimeOfDay) Reset()         { *m = TimeOfDay{} }
 func (m *TimeOfDay) String() string { return proto.CompactTextString(m) }
 func (*TimeOfDay) ProtoMessage()    {}
 func (*TimeOfDay) Descriptor() ([]byte, []int) {
-	return fileDescriptor_timeofday_58c0e62d134325fe, []int{0}
+	return fileDescriptor_timeofday_99fd81ba301b1e70, []int{0}
 }
 func (m *TimeOfDay) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_TimeOfDay.Unmarshal(m, b)
@@ -94,10 +94,10 @@ func init() {
 }
 
 func init() {
-	proto.RegisterFile("google/type/timeofday.proto", fileDescriptor_timeofday_58c0e62d134325fe)
+	proto.RegisterFile("google/type/timeofday.proto", fileDescriptor_timeofday_99fd81ba301b1e70)
 }
 
-var fileDescriptor_timeofday_58c0e62d134325fe = []byte{
+var fileDescriptor_timeofday_99fd81ba301b1e70 = []byte{
 	// 198 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x92, 0x4e, 0xcf, 0xcf, 0x4f,
 	0xcf, 0x49, 0xd5, 0x2f, 0xa9, 0x2c, 0x48, 0xd5, 0x2f, 0xc9, 0xcc, 0x4d, 0xcd, 0x4f, 0x4b, 0x49,

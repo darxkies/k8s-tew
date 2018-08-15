@@ -46,7 +46,7 @@ func (x PackageManager_Architecture) String() string {
 	return proto.EnumName(PackageManager_Architecture_name, int32(x))
 }
 func (PackageManager_Architecture) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_bill_of_materials_ffdc7b89323081b5, []int{0, 0}
+	return fileDescriptor_bill_of_materials_27661a0342dc8703, []int{0, 0}
 }
 
 // PackageManager provides metadata about available / installed packages.
@@ -60,7 +60,7 @@ func (m *PackageManager) Reset()         { *m = PackageManager{} }
 func (m *PackageManager) String() string { return proto.CompactTextString(m) }
 func (*PackageManager) ProtoMessage()    {}
 func (*PackageManager) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bill_of_materials_ffdc7b89323081b5, []int{0}
+	return fileDescriptor_bill_of_materials_27661a0342dc8703, []int{0}
 }
 func (m *PackageManager) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_PackageManager.Unmarshal(m, b)
@@ -85,19 +85,19 @@ var xxx_messageInfo_PackageManager proto.InternalMessageInfo
 type PackageManager_Distribution struct {
 	// The cpe_uri in [cpe format](https://cpe.mitre.org/specification/)
 	// denoting the package manager version distributing a package.
-	CpeUri string `protobuf:"bytes,1,opt,name=cpe_uri,json=cpeUri" json:"cpe_uri,omitempty"`
+	CpeUri string `protobuf:"bytes,1,opt,name=cpe_uri,json=cpeUri,proto3" json:"cpe_uri,omitempty"`
 	// The CPU architecture for which packages in this distribution
 	// channel were built
-	Architecture PackageManager_Architecture `protobuf:"varint,2,opt,name=architecture,enum=google.devtools.containeranalysis.v1alpha1.PackageManager_Architecture" json:"architecture,omitempty"`
+	Architecture PackageManager_Architecture `protobuf:"varint,2,opt,name=architecture,proto3,enum=google.devtools.containeranalysis.v1alpha1.PackageManager_Architecture" json:"architecture,omitempty"`
 	// The latest available version of this package in
 	// this distribution channel.
-	LatestVersion *VulnerabilityType_Version `protobuf:"bytes,3,opt,name=latest_version,json=latestVersion" json:"latest_version,omitempty"`
+	LatestVersion *VulnerabilityType_Version `protobuf:"bytes,3,opt,name=latest_version,json=latestVersion,proto3" json:"latest_version,omitempty"`
 	// A freeform string denoting the maintainer of this package.
-	Maintainer string `protobuf:"bytes,4,opt,name=maintainer" json:"maintainer,omitempty"`
+	Maintainer string `protobuf:"bytes,4,opt,name=maintainer,proto3" json:"maintainer,omitempty"`
 	// The distribution channel-specific homepage for this package.
-	Url string `protobuf:"bytes,6,opt,name=url" json:"url,omitempty"`
+	Url string `protobuf:"bytes,6,opt,name=url,proto3" json:"url,omitempty"`
 	// The distribution channel-specific description of this package.
-	Description          string   `protobuf:"bytes,7,opt,name=description" json:"description,omitempty"`
+	Description          string   `protobuf:"bytes,7,opt,name=description,proto3" json:"description,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -107,7 +107,7 @@ func (m *PackageManager_Distribution) Reset()         { *m = PackageManager_Dist
 func (m *PackageManager_Distribution) String() string { return proto.CompactTextString(m) }
 func (*PackageManager_Distribution) ProtoMessage()    {}
 func (*PackageManager_Distribution) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bill_of_materials_ffdc7b89323081b5, []int{0, 0}
+	return fileDescriptor_bill_of_materials_27661a0342dc8703, []int{0, 0}
 }
 func (m *PackageManager_Distribution) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_PackageManager_Distribution.Unmarshal(m, b)
@@ -175,11 +175,11 @@ func (m *PackageManager_Distribution) GetDescription() string {
 type PackageManager_Location struct {
 	// The cpe_uri in [cpe format](https://cpe.mitre.org/specification/)
 	// denoting the package manager version distributing a package.
-	CpeUri string `protobuf:"bytes,1,opt,name=cpe_uri,json=cpeUri" json:"cpe_uri,omitempty"`
+	CpeUri string `protobuf:"bytes,1,opt,name=cpe_uri,json=cpeUri,proto3" json:"cpe_uri,omitempty"`
 	// The version installed at this location.
-	Version *VulnerabilityType_Version `protobuf:"bytes,2,opt,name=version" json:"version,omitempty"`
+	Version *VulnerabilityType_Version `protobuf:"bytes,2,opt,name=version,proto3" json:"version,omitempty"`
 	// The path from which we gathered that this package/version is installed.
-	Path                 string   `protobuf:"bytes,3,opt,name=path" json:"path,omitempty"`
+	Path                 string   `protobuf:"bytes,3,opt,name=path,proto3" json:"path,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -189,7 +189,7 @@ func (m *PackageManager_Location) Reset()         { *m = PackageManager_Location
 func (m *PackageManager_Location) String() string { return proto.CompactTextString(m) }
 func (*PackageManager_Location) ProtoMessage()    {}
 func (*PackageManager_Location) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bill_of_materials_ffdc7b89323081b5, []int{0, 1}
+	return fileDescriptor_bill_of_materials_27661a0342dc8703, []int{0, 1}
 }
 func (m *PackageManager_Location) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_PackageManager_Location.Unmarshal(m, b)
@@ -235,9 +235,9 @@ func (m *PackageManager_Location) GetPath() string {
 // e.g. glibc (aka libc6) is distributed by many, at various versions.
 type PackageManager_Package struct {
 	// The name of the package.
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// The various channels by which a package is distributed.
-	Distribution         []*PackageManager_Distribution `protobuf:"bytes,10,rep,name=distribution" json:"distribution,omitempty"`
+	Distribution         []*PackageManager_Distribution `protobuf:"bytes,10,rep,name=distribution,proto3" json:"distribution,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                       `json:"-"`
 	XXX_unrecognized     []byte                         `json:"-"`
 	XXX_sizecache        int32                          `json:"-"`
@@ -247,7 +247,7 @@ func (m *PackageManager_Package) Reset()         { *m = PackageManager_Package{}
 func (m *PackageManager_Package) String() string { return proto.CompactTextString(m) }
 func (*PackageManager_Package) ProtoMessage()    {}
 func (*PackageManager_Package) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bill_of_materials_ffdc7b89323081b5, []int{0, 2}
+	return fileDescriptor_bill_of_materials_27661a0342dc8703, []int{0, 2}
 }
 func (m *PackageManager_Package) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_PackageManager_Package.Unmarshal(m, b)
@@ -285,10 +285,10 @@ func (m *PackageManager_Package) GetDistribution() []*PackageManager_Distributio
 // a system.
 type PackageManager_Installation struct {
 	// Output only. The name of the installed package.
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// All of the places within the filesystem versions of this package
 	// have been found.
-	Location             []*PackageManager_Location `protobuf:"bytes,2,rep,name=location" json:"location,omitempty"`
+	Location             []*PackageManager_Location `protobuf:"bytes,2,rep,name=location,proto3" json:"location,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                   `json:"-"`
 	XXX_unrecognized     []byte                     `json:"-"`
 	XXX_sizecache        int32                      `json:"-"`
@@ -298,7 +298,7 @@ func (m *PackageManager_Installation) Reset()         { *m = PackageManager_Inst
 func (m *PackageManager_Installation) String() string { return proto.CompactTextString(m) }
 func (*PackageManager_Installation) ProtoMessage()    {}
 func (*PackageManager_Installation) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bill_of_materials_ffdc7b89323081b5, []int{0, 3}
+	return fileDescriptor_bill_of_materials_27661a0342dc8703, []int{0, 3}
 }
 func (m *PackageManager_Installation) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_PackageManager_Installation.Unmarshal(m, b)
@@ -342,10 +342,10 @@ func init() {
 }
 
 func init() {
-	proto.RegisterFile("google/devtools/containeranalysis/v1alpha1/bill_of_materials.proto", fileDescriptor_bill_of_materials_ffdc7b89323081b5)
+	proto.RegisterFile("google/devtools/containeranalysis/v1alpha1/bill_of_materials.proto", fileDescriptor_bill_of_materials_27661a0342dc8703)
 }
 
-var fileDescriptor_bill_of_materials_ffdc7b89323081b5 = []byte{
+var fileDescriptor_bill_of_materials_27661a0342dc8703 = []byte{
 	// 522 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x93, 0xd1, 0x8a, 0xd3, 0x4e,
 	0x14, 0xc6, 0xff, 0x49, 0x97, 0x76, 0xf7, 0xb4, 0xff, 0x52, 0xe6, 0xc6, 0x10, 0x16, 0x29, 0x0b,

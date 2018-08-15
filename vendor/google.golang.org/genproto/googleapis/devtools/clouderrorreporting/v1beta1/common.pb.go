@@ -25,12 +25,12 @@ const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 type ErrorGroup struct {
 	// The group resource name.
 	// Example: <code>projects/my-project-123/groups/my-groupid</code>
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// Group IDs are unique for a given project. If the same kind of error
 	// occurs in different service contexts, it will receive the same group ID.
-	GroupId string `protobuf:"bytes,2,opt,name=group_id,json=groupId" json:"group_id,omitempty"`
+	GroupId string `protobuf:"bytes,2,opt,name=group_id,json=groupId,proto3" json:"group_id,omitempty"`
 	// Associated tracking issues.
-	TrackingIssues       []*TrackingIssue `protobuf:"bytes,3,rep,name=tracking_issues,json=trackingIssues" json:"tracking_issues,omitempty"`
+	TrackingIssues       []*TrackingIssue `protobuf:"bytes,3,rep,name=tracking_issues,json=trackingIssues,proto3" json:"tracking_issues,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
 	XXX_unrecognized     []byte           `json:"-"`
 	XXX_sizecache        int32            `json:"-"`
@@ -40,7 +40,7 @@ func (m *ErrorGroup) Reset()         { *m = ErrorGroup{} }
 func (m *ErrorGroup) String() string { return proto.CompactTextString(m) }
 func (*ErrorGroup) ProtoMessage()    {}
 func (*ErrorGroup) Descriptor() ([]byte, []int) {
-	return fileDescriptor_common_d976dc5e1833dfd5, []int{0}
+	return fileDescriptor_common_dcadb19d8ee67f84, []int{0}
 }
 func (m *ErrorGroup) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ErrorGroup.Unmarshal(m, b)
@@ -85,7 +85,7 @@ func (m *ErrorGroup) GetTrackingIssues() []*TrackingIssue {
 type TrackingIssue struct {
 	// A URL pointing to a related entry in an issue tracking system.
 	// Example: https://github.com/user/project/issues/4
-	Url                  string   `protobuf:"bytes,1,opt,name=url" json:"url,omitempty"`
+	Url                  string   `protobuf:"bytes,1,opt,name=url,proto3" json:"url,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -95,7 +95,7 @@ func (m *TrackingIssue) Reset()         { *m = TrackingIssue{} }
 func (m *TrackingIssue) String() string { return proto.CompactTextString(m) }
 func (*TrackingIssue) ProtoMessage()    {}
 func (*TrackingIssue) Descriptor() ([]byte, []int) {
-	return fileDescriptor_common_d976dc5e1833dfd5, []int{1}
+	return fileDescriptor_common_dcadb19d8ee67f84, []int{1}
 }
 func (m *TrackingIssue) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_TrackingIssue.Unmarshal(m, b)
@@ -127,13 +127,13 @@ type ErrorEvent struct {
 	// Time when the event occurred as provided in the error report.
 	// If the report did not contain a timestamp, the time the error was received
 	// by the Error Reporting system is used.
-	EventTime *timestamp.Timestamp `protobuf:"bytes,1,opt,name=event_time,json=eventTime" json:"event_time,omitempty"`
+	EventTime *timestamp.Timestamp `protobuf:"bytes,1,opt,name=event_time,json=eventTime,proto3" json:"event_time,omitempty"`
 	// The `ServiceContext` for which this error was reported.
-	ServiceContext *ServiceContext `protobuf:"bytes,2,opt,name=service_context,json=serviceContext" json:"service_context,omitempty"`
+	ServiceContext *ServiceContext `protobuf:"bytes,2,opt,name=service_context,json=serviceContext,proto3" json:"service_context,omitempty"`
 	// The stack trace that was reported or logged by the service.
-	Message string `protobuf:"bytes,3,opt,name=message" json:"message,omitempty"`
+	Message string `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`
 	// Data about the context in which the error occurred.
-	Context              *ErrorContext `protobuf:"bytes,5,opt,name=context" json:"context,omitempty"`
+	Context              *ErrorContext `protobuf:"bytes,5,opt,name=context,proto3" json:"context,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}      `json:"-"`
 	XXX_unrecognized     []byte        `json:"-"`
 	XXX_sizecache        int32         `json:"-"`
@@ -143,7 +143,7 @@ func (m *ErrorEvent) Reset()         { *m = ErrorEvent{} }
 func (m *ErrorEvent) String() string { return proto.CompactTextString(m) }
 func (*ErrorEvent) ProtoMessage()    {}
 func (*ErrorEvent) Descriptor() ([]byte, []int) {
-	return fileDescriptor_common_d976dc5e1833dfd5, []int{2}
+	return fileDescriptor_common_dcadb19d8ee67f84, []int{2}
 }
 func (m *ErrorEvent) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ErrorEvent.Unmarshal(m, b)
@@ -201,16 +201,16 @@ type ServiceContext struct {
 	//
 	// Contains the service name for error reports extracted from Google
 	// App Engine logs or `default` if the App Engine default service is used.
-	Service string `protobuf:"bytes,2,opt,name=service" json:"service,omitempty"`
+	Service string `protobuf:"bytes,2,opt,name=service,proto3" json:"service,omitempty"`
 	// Represents the source code version that the developer provided,
 	// which could represent a version label or a Git SHA-1 hash, for example.
-	Version string `protobuf:"bytes,3,opt,name=version" json:"version,omitempty"`
+	Version string `protobuf:"bytes,3,opt,name=version,proto3" json:"version,omitempty"`
 	// Type of the MonitoredResource. List of possible values:
 	// https://cloud.google.com/monitoring/api/resources
 	//
 	// Value is set automatically for incoming errors and must not be set when
 	// reporting errors.
-	ResourceType         string   `protobuf:"bytes,4,opt,name=resource_type,json=resourceType" json:"resource_type,omitempty"`
+	ResourceType         string   `protobuf:"bytes,4,opt,name=resource_type,json=resourceType,proto3" json:"resource_type,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -220,7 +220,7 @@ func (m *ServiceContext) Reset()         { *m = ServiceContext{} }
 func (m *ServiceContext) String() string { return proto.CompactTextString(m) }
 func (*ServiceContext) ProtoMessage()    {}
 func (*ServiceContext) Descriptor() ([]byte, []int) {
-	return fileDescriptor_common_d976dc5e1833dfd5, []int{3}
+	return fileDescriptor_common_dcadb19d8ee67f84, []int{3}
 }
 func (m *ServiceContext) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ServiceContext.Unmarshal(m, b)
@@ -268,7 +268,7 @@ func (m *ServiceContext) GetResourceType() string {
 type ErrorContext struct {
 	// The HTTP request which was processed when the error was
 	// triggered.
-	HttpRequest *HttpRequestContext `protobuf:"bytes,1,opt,name=http_request,json=httpRequest" json:"http_request,omitempty"`
+	HttpRequest *HttpRequestContext `protobuf:"bytes,1,opt,name=http_request,json=httpRequest,proto3" json:"http_request,omitempty"`
 	// The user who caused or was affected by the crash.
 	// This can be a user ID, an email address, or an arbitrary token that
 	// uniquely identifies the user.
@@ -277,14 +277,14 @@ type ErrorContext struct {
 	// Error Reporting system will use other data, such as remote IP address, to
 	// distinguish affected users. See `affected_users_count` in
 	// `ErrorGroupStats`.
-	User string `protobuf:"bytes,2,opt,name=user" json:"user,omitempty"`
+	User string `protobuf:"bytes,2,opt,name=user,proto3" json:"user,omitempty"`
 	// The location in the source code where the decision was made to
 	// report the error, usually the place where it was logged.
 	// For a logged exception this would be the source line where the
 	// exception is logged, usually close to the place where it was
 	// caught. This value is in contrast to `Exception.cause_location`,
 	// which describes the source line where the exception was thrown.
-	ReportLocation       *SourceLocation `protobuf:"bytes,3,opt,name=report_location,json=reportLocation" json:"report_location,omitempty"`
+	ReportLocation       *SourceLocation `protobuf:"bytes,3,opt,name=report_location,json=reportLocation,proto3" json:"report_location,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
 	XXX_unrecognized     []byte          `json:"-"`
 	XXX_sizecache        int32           `json:"-"`
@@ -294,7 +294,7 @@ func (m *ErrorContext) Reset()         { *m = ErrorContext{} }
 func (m *ErrorContext) String() string { return proto.CompactTextString(m) }
 func (*ErrorContext) ProtoMessage()    {}
 func (*ErrorContext) Descriptor() ([]byte, []int) {
-	return fileDescriptor_common_d976dc5e1833dfd5, []int{4}
+	return fileDescriptor_common_dcadb19d8ee67f84, []int{4}
 }
 func (m *ErrorContext) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ErrorContext.Unmarshal(m, b)
@@ -341,20 +341,20 @@ func (m *ErrorContext) GetReportLocation() *SourceLocation {
 // error report has been generated automatically from Google App Engine logs.
 type HttpRequestContext struct {
 	// The type of HTTP request, such as `GET`, `POST`, etc.
-	Method string `protobuf:"bytes,1,opt,name=method" json:"method,omitempty"`
+	Method string `protobuf:"bytes,1,opt,name=method,proto3" json:"method,omitempty"`
 	// The URL of the request.
-	Url string `protobuf:"bytes,2,opt,name=url" json:"url,omitempty"`
+	Url string `protobuf:"bytes,2,opt,name=url,proto3" json:"url,omitempty"`
 	// The user agent information that is provided with the request.
-	UserAgent string `protobuf:"bytes,3,opt,name=user_agent,json=userAgent" json:"user_agent,omitempty"`
+	UserAgent string `protobuf:"bytes,3,opt,name=user_agent,json=userAgent,proto3" json:"user_agent,omitempty"`
 	// The referrer information that is provided with the request.
-	Referrer string `protobuf:"bytes,4,opt,name=referrer" json:"referrer,omitempty"`
+	Referrer string `protobuf:"bytes,4,opt,name=referrer,proto3" json:"referrer,omitempty"`
 	// The HTTP response status code for the request.
-	ResponseStatusCode int32 `protobuf:"varint,5,opt,name=response_status_code,json=responseStatusCode" json:"response_status_code,omitempty"`
+	ResponseStatusCode int32 `protobuf:"varint,5,opt,name=response_status_code,json=responseStatusCode,proto3" json:"response_status_code,omitempty"`
 	// The IP address from which the request originated.
 	// This can be IPv4, IPv6, or a token which is derived from the
 	// IP address, depending on the data that has been provided
 	// in the error report.
-	RemoteIp             string   `protobuf:"bytes,6,opt,name=remote_ip,json=remoteIp" json:"remote_ip,omitempty"`
+	RemoteIp             string   `protobuf:"bytes,6,opt,name=remote_ip,json=remoteIp,proto3" json:"remote_ip,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -364,7 +364,7 @@ func (m *HttpRequestContext) Reset()         { *m = HttpRequestContext{} }
 func (m *HttpRequestContext) String() string { return proto.CompactTextString(m) }
 func (*HttpRequestContext) ProtoMessage()    {}
 func (*HttpRequestContext) Descriptor() ([]byte, []int) {
-	return fileDescriptor_common_d976dc5e1833dfd5, []int{5}
+	return fileDescriptor_common_dcadb19d8ee67f84, []int{5}
 }
 func (m *HttpRequestContext) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_HttpRequestContext.Unmarshal(m, b)
@@ -434,13 +434,13 @@ func (m *HttpRequestContext) GetRemoteIp() string {
 type SourceLocation struct {
 	// The source code filename, which can include a truncated relative
 	// path, or a full path from a production machine.
-	FilePath string `protobuf:"bytes,1,opt,name=file_path,json=filePath" json:"file_path,omitempty"`
+	FilePath string `protobuf:"bytes,1,opt,name=file_path,json=filePath,proto3" json:"file_path,omitempty"`
 	// 1-based. 0 indicates that the line number is unknown.
-	LineNumber int32 `protobuf:"varint,2,opt,name=line_number,json=lineNumber" json:"line_number,omitempty"`
+	LineNumber int32 `protobuf:"varint,2,opt,name=line_number,json=lineNumber,proto3" json:"line_number,omitempty"`
 	// Human-readable name of a function or method.
 	// The value can include optional context like the class or package name.
 	// For example, `my.package.MyClass.method` in case of Java.
-	FunctionName         string   `protobuf:"bytes,4,opt,name=function_name,json=functionName" json:"function_name,omitempty"`
+	FunctionName         string   `protobuf:"bytes,4,opt,name=function_name,json=functionName,proto3" json:"function_name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -450,7 +450,7 @@ func (m *SourceLocation) Reset()         { *m = SourceLocation{} }
 func (m *SourceLocation) String() string { return proto.CompactTextString(m) }
 func (*SourceLocation) ProtoMessage()    {}
 func (*SourceLocation) Descriptor() ([]byte, []int) {
-	return fileDescriptor_common_d976dc5e1833dfd5, []int{6}
+	return fileDescriptor_common_dcadb19d8ee67f84, []int{6}
 }
 func (m *SourceLocation) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SourceLocation.Unmarshal(m, b)
@@ -502,10 +502,10 @@ func init() {
 }
 
 func init() {
-	proto.RegisterFile("google/devtools/clouderrorreporting/v1beta1/common.proto", fileDescriptor_common_d976dc5e1833dfd5)
+	proto.RegisterFile("google/devtools/clouderrorreporting/v1beta1/common.proto", fileDescriptor_common_dcadb19d8ee67f84)
 }
 
-var fileDescriptor_common_d976dc5e1833dfd5 = []byte{
+var fileDescriptor_common_dcadb19d8ee67f84 = []byte{
 	// 705 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x54, 0xcd, 0x6e, 0x13, 0x31,
 	0x10, 0x56, 0x92, 0xfe, 0xc5, 0x69, 0x53, 0x64, 0x21, 0x14, 0x02, 0xa8, 0x25, 0xbd, 0x54, 0x42,

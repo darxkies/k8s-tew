@@ -31,13 +31,13 @@ const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 type ListConfigsRequest struct {
 	// The [project ID](https://support.google.com/cloud/answer/6158840?hl=en&ref_topic=6158848)
 	// for this request, in the format `projects/[PROJECT_ID]`.
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// Specifies the number of results to return per page. If there are fewer
 	// elements than the specified number, returns all elements.
-	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize" json:"page_size,omitempty"`
+	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// Specifies a page token to use. Set `pageToken` to a `nextPageToken`
 	// returned by a previous list request to get the next page of results.
-	PageToken            string   `protobuf:"bytes,3,opt,name=page_token,json=pageToken" json:"page_token,omitempty"`
+	PageToken            string   `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -47,7 +47,7 @@ func (m *ListConfigsRequest) Reset()         { *m = ListConfigsRequest{} }
 func (m *ListConfigsRequest) String() string { return proto.CompactTextString(m) }
 func (*ListConfigsRequest) ProtoMessage()    {}
 func (*ListConfigsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_runtimeconfig_71a64cbcfb9779de, []int{0}
+	return fileDescriptor_runtimeconfig_6039f7e1dafadd9a, []int{0}
 }
 func (m *ListConfigsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListConfigsRequest.Unmarshal(m, b)
@@ -93,13 +93,13 @@ func (m *ListConfigsRequest) GetPageToken() string {
 type ListConfigsResponse struct {
 	// A list of the configurations in the project. The order of returned
 	// objects is arbitrary; that is, it is not ordered in any particular way.
-	Configs []*RuntimeConfig `protobuf:"bytes,1,rep,name=configs" json:"configs,omitempty"`
+	Configs []*RuntimeConfig `protobuf:"bytes,1,rep,name=configs,proto3" json:"configs,omitempty"`
 	// This token allows you to get the next page of results for list requests.
 	// If the number of results is larger than `pageSize`, use the `nextPageToken`
 	// as a value for the query parameter `pageToken` in the next list request.
 	// Subsequent list requests will have their own `nextPageToken` to continue
 	// paging through the results
-	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken" json:"next_page_token,omitempty"`
+	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -109,7 +109,7 @@ func (m *ListConfigsResponse) Reset()         { *m = ListConfigsResponse{} }
 func (m *ListConfigsResponse) String() string { return proto.CompactTextString(m) }
 func (*ListConfigsResponse) ProtoMessage()    {}
 func (*ListConfigsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_runtimeconfig_71a64cbcfb9779de, []int{1}
+	return fileDescriptor_runtimeconfig_6039f7e1dafadd9a, []int{1}
 }
 func (m *ListConfigsResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListConfigsResponse.Unmarshal(m, b)
@@ -148,7 +148,7 @@ type GetConfigRequest struct {
 	// The name of the RuntimeConfig resource to retrieve, in the format:
 	//
 	// `projects/[PROJECT_ID]/configs/[CONFIG_NAME]`
-	Name                 string   `protobuf:"bytes,2,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -158,7 +158,7 @@ func (m *GetConfigRequest) Reset()         { *m = GetConfigRequest{} }
 func (m *GetConfigRequest) String() string { return proto.CompactTextString(m) }
 func (*GetConfigRequest) ProtoMessage()    {}
 func (*GetConfigRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_runtimeconfig_71a64cbcfb9779de, []int{2}
+	return fileDescriptor_runtimeconfig_6039f7e1dafadd9a, []int{2}
 }
 func (m *GetConfigRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetConfigRequest.Unmarshal(m, b)
@@ -189,9 +189,9 @@ func (m *GetConfigRequest) GetName() string {
 type CreateConfigRequest struct {
 	// The [project ID](https://support.google.com/cloud/answer/6158840?hl=en&ref_topic=6158848)
 	// for this request, in the format `projects/[PROJECT_ID]`.
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// The RuntimeConfig to create.
-	Config *RuntimeConfig `protobuf:"bytes,2,opt,name=config" json:"config,omitempty"`
+	Config *RuntimeConfig `protobuf:"bytes,2,opt,name=config,proto3" json:"config,omitempty"`
 	// An optional but recommended unique `request_id`. If the server
 	// receives two `create()` requests  with the same
 	// `request_id`, then the second request will be ignored and the
@@ -202,7 +202,7 @@ type CreateConfigRequest struct {
 	// `request_id` strings.
 	//
 	// `request_id` strings are limited to 64 characters.
-	RequestId            string   `protobuf:"bytes,3,opt,name=request_id,json=requestId" json:"request_id,omitempty"`
+	RequestId            string   `protobuf:"bytes,3,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -212,7 +212,7 @@ func (m *CreateConfigRequest) Reset()         { *m = CreateConfigRequest{} }
 func (m *CreateConfigRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateConfigRequest) ProtoMessage()    {}
 func (*CreateConfigRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_runtimeconfig_71a64cbcfb9779de, []int{3}
+	return fileDescriptor_runtimeconfig_6039f7e1dafadd9a, []int{3}
 }
 func (m *CreateConfigRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CreateConfigRequest.Unmarshal(m, b)
@@ -258,9 +258,9 @@ type UpdateConfigRequest struct {
 	// The name of the RuntimeConfig resource to update, in the format:
 	//
 	// `projects/[PROJECT_ID]/configs/[CONFIG_NAME]`
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// The config resource to update.
-	Config               *RuntimeConfig `protobuf:"bytes,2,opt,name=config" json:"config,omitempty"`
+	Config               *RuntimeConfig `protobuf:"bytes,2,opt,name=config,proto3" json:"config,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
 	XXX_unrecognized     []byte         `json:"-"`
 	XXX_sizecache        int32          `json:"-"`
@@ -270,7 +270,7 @@ func (m *UpdateConfigRequest) Reset()         { *m = UpdateConfigRequest{} }
 func (m *UpdateConfigRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateConfigRequest) ProtoMessage()    {}
 func (*UpdateConfigRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_runtimeconfig_71a64cbcfb9779de, []int{4}
+	return fileDescriptor_runtimeconfig_6039f7e1dafadd9a, []int{4}
 }
 func (m *UpdateConfigRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UpdateConfigRequest.Unmarshal(m, b)
@@ -309,7 +309,7 @@ type DeleteConfigRequest struct {
 	// The RuntimeConfig resource to delete, in the format:
 	//
 	// `projects/[PROJECT_ID]/configs/[CONFIG_NAME]`
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -319,7 +319,7 @@ func (m *DeleteConfigRequest) Reset()         { *m = DeleteConfigRequest{} }
 func (m *DeleteConfigRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteConfigRequest) ProtoMessage()    {}
 func (*DeleteConfigRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_runtimeconfig_71a64cbcfb9779de, []int{5}
+	return fileDescriptor_runtimeconfig_6039f7e1dafadd9a, []int{5}
 }
 func (m *DeleteConfigRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeleteConfigRequest.Unmarshal(m, b)
@@ -352,21 +352,21 @@ type ListVariablesRequest struct {
 	// The configuration must exist beforehand; the path must by in the format:
 	//
 	// `projects/[PROJECT_ID]/configs/[CONFIG_NAME]`
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// Filters variables by matching the specified filter. For example:
 	//
 	// `projects/example-project/config/[CONFIG_NAME]/variables/example-variable`.
-	Filter string `protobuf:"bytes,2,opt,name=filter" json:"filter,omitempty"`
+	Filter string `protobuf:"bytes,2,opt,name=filter,proto3" json:"filter,omitempty"`
 	// Specifies the number of results to return per page. If there are fewer
 	// elements than the specified number, returns all elements.
-	PageSize int32 `protobuf:"varint,3,opt,name=page_size,json=pageSize" json:"page_size,omitempty"`
+	PageSize int32 `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// Specifies a page token to use. Set `pageToken` to a `nextPageToken`
 	// returned by a previous list request to get the next page of results.
-	PageToken string `protobuf:"bytes,4,opt,name=page_token,json=pageToken" json:"page_token,omitempty"`
+	PageToken string `protobuf:"bytes,4,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	// The flag indicates whether the user wants to return values of variables.
 	// If true, then only those variables that user has IAM GetVariable permission
 	// will be returned along with their values.
-	ReturnValues         bool     `protobuf:"varint,5,opt,name=return_values,json=returnValues" json:"return_values,omitempty"`
+	ReturnValues         bool     `protobuf:"varint,5,opt,name=return_values,json=returnValues,proto3" json:"return_values,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -376,7 +376,7 @@ func (m *ListVariablesRequest) Reset()         { *m = ListVariablesRequest{} }
 func (m *ListVariablesRequest) String() string { return proto.CompactTextString(m) }
 func (*ListVariablesRequest) ProtoMessage()    {}
 func (*ListVariablesRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_runtimeconfig_71a64cbcfb9779de, []int{6}
+	return fileDescriptor_runtimeconfig_6039f7e1dafadd9a, []int{6}
 }
 func (m *ListVariablesRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListVariablesRequest.Unmarshal(m, b)
@@ -435,13 +435,13 @@ func (m *ListVariablesRequest) GetReturnValues() bool {
 type ListVariablesResponse struct {
 	// A list of variables and their values. The order of returned variable
 	// objects is arbitrary.
-	Variables []*Variable `protobuf:"bytes,1,rep,name=variables" json:"variables,omitempty"`
+	Variables []*Variable `protobuf:"bytes,1,rep,name=variables,proto3" json:"variables,omitempty"`
 	// This token allows you to get the next page of results for list requests.
 	// If the number of results is larger than `pageSize`, use the `nextPageToken`
 	// as a value for the query parameter `pageToken` in the next list request.
 	// Subsequent list requests will have their own `nextPageToken` to continue
 	// paging through the results
-	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken" json:"next_page_token,omitempty"`
+	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -451,7 +451,7 @@ func (m *ListVariablesResponse) Reset()         { *m = ListVariablesResponse{} }
 func (m *ListVariablesResponse) String() string { return proto.CompactTextString(m) }
 func (*ListVariablesResponse) ProtoMessage()    {}
 func (*ListVariablesResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_runtimeconfig_71a64cbcfb9779de, []int{7}
+	return fileDescriptor_runtimeconfig_6039f7e1dafadd9a, []int{7}
 }
 func (m *ListVariablesResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListVariablesResponse.Unmarshal(m, b)
@@ -490,14 +490,14 @@ type WatchVariableRequest struct {
 	// The name of the variable to watch, in the format:
 	//
 	// `projects/[PROJECT_ID]/configs/[CONFIG_NAME]`
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// If specified, checks the current timestamp of the variable and if the
 	// current timestamp is newer than `newerThan` timestamp, the method returns
 	// immediately.
 	//
 	// If not specified or the variable has an older timestamp, the watcher waits
 	// for a the value to change before returning.
-	NewerThan            *timestamp.Timestamp `protobuf:"bytes,4,opt,name=newer_than,json=newerThan" json:"newer_than,omitempty"`
+	NewerThan            *timestamp.Timestamp `protobuf:"bytes,4,opt,name=newer_than,json=newerThan,proto3" json:"newer_than,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
 	XXX_unrecognized     []byte               `json:"-"`
 	XXX_sizecache        int32                `json:"-"`
@@ -507,7 +507,7 @@ func (m *WatchVariableRequest) Reset()         { *m = WatchVariableRequest{} }
 func (m *WatchVariableRequest) String() string { return proto.CompactTextString(m) }
 func (*WatchVariableRequest) ProtoMessage()    {}
 func (*WatchVariableRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_runtimeconfig_71a64cbcfb9779de, []int{8}
+	return fileDescriptor_runtimeconfig_6039f7e1dafadd9a, []int{8}
 }
 func (m *WatchVariableRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_WatchVariableRequest.Unmarshal(m, b)
@@ -546,7 +546,7 @@ type GetVariableRequest struct {
 	// The name of the variable to return, in the format:
 	//
 	// `projects/[PROJECT_ID]/configs/[CONFIG_NAME]/variables/[VARIBLE_NAME]`
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -556,7 +556,7 @@ func (m *GetVariableRequest) Reset()         { *m = GetVariableRequest{} }
 func (m *GetVariableRequest) String() string { return proto.CompactTextString(m) }
 func (*GetVariableRequest) ProtoMessage()    {}
 func (*GetVariableRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_runtimeconfig_71a64cbcfb9779de, []int{9}
+	return fileDescriptor_runtimeconfig_6039f7e1dafadd9a, []int{9}
 }
 func (m *GetVariableRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetVariableRequest.Unmarshal(m, b)
@@ -589,9 +589,9 @@ type CreateVariableRequest struct {
 	// The configuration must exist beforehand; the path must by in the format:
 	//
 	// `projects/[PROJECT_ID]/configs/[CONFIG_NAME]`
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// The variable to create.
-	Variable *Variable `protobuf:"bytes,2,opt,name=variable" json:"variable,omitempty"`
+	Variable *Variable `protobuf:"bytes,2,opt,name=variable,proto3" json:"variable,omitempty"`
 	// An optional but recommended unique `request_id`. If the server
 	// receives two `create()` requests  with the same
 	// `request_id`, then the second request will be ignored and the
@@ -602,7 +602,7 @@ type CreateVariableRequest struct {
 	// `request_id` strings.
 	//
 	// `request_id` strings are limited to 64 characters.
-	RequestId            string   `protobuf:"bytes,3,opt,name=request_id,json=requestId" json:"request_id,omitempty"`
+	RequestId            string   `protobuf:"bytes,3,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -612,7 +612,7 @@ func (m *CreateVariableRequest) Reset()         { *m = CreateVariableRequest{} }
 func (m *CreateVariableRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateVariableRequest) ProtoMessage()    {}
 func (*CreateVariableRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_runtimeconfig_71a64cbcfb9779de, []int{10}
+	return fileDescriptor_runtimeconfig_6039f7e1dafadd9a, []int{10}
 }
 func (m *CreateVariableRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CreateVariableRequest.Unmarshal(m, b)
@@ -658,9 +658,9 @@ type UpdateVariableRequest struct {
 	// The name of the variable to update, in the format:
 	//
 	// `projects/[PROJECT_ID]/configs/[CONFIG_NAME]/variables/[VARIABLE_NAME]`
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// The variable to update.
-	Variable             *Variable `protobuf:"bytes,2,opt,name=variable" json:"variable,omitempty"`
+	Variable             *Variable `protobuf:"bytes,2,opt,name=variable,proto3" json:"variable,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
 	XXX_unrecognized     []byte    `json:"-"`
 	XXX_sizecache        int32     `json:"-"`
@@ -670,7 +670,7 @@ func (m *UpdateVariableRequest) Reset()         { *m = UpdateVariableRequest{} }
 func (m *UpdateVariableRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateVariableRequest) ProtoMessage()    {}
 func (*UpdateVariableRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_runtimeconfig_71a64cbcfb9779de, []int{11}
+	return fileDescriptor_runtimeconfig_6039f7e1dafadd9a, []int{11}
 }
 func (m *UpdateVariableRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UpdateVariableRequest.Unmarshal(m, b)
@@ -709,10 +709,10 @@ type DeleteVariableRequest struct {
 	// The name of the variable to delete, in the format:
 	//
 	// `projects/[PROJECT_ID]/configs/[CONFIG_NAME]/variables/[VARIABLE_NAME]`
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// Set to `true` to recursively delete multiple variables with the same
 	// prefix.
-	Recursive            bool     `protobuf:"varint,2,opt,name=recursive" json:"recursive,omitempty"`
+	Recursive            bool     `protobuf:"varint,2,opt,name=recursive,proto3" json:"recursive,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -722,7 +722,7 @@ func (m *DeleteVariableRequest) Reset()         { *m = DeleteVariableRequest{} }
 func (m *DeleteVariableRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteVariableRequest) ProtoMessage()    {}
 func (*DeleteVariableRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_runtimeconfig_71a64cbcfb9779de, []int{12}
+	return fileDescriptor_runtimeconfig_6039f7e1dafadd9a, []int{12}
 }
 func (m *DeleteVariableRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeleteVariableRequest.Unmarshal(m, b)
@@ -762,13 +762,13 @@ type ListWaitersRequest struct {
 	// The configuration must exist beforehand; the path must by in the format:
 	//
 	// `projects/[PROJECT_ID]/configs/[CONFIG_NAME]`
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// Specifies the number of results to return per page. If there are fewer
 	// elements than the specified number, returns all elements.
-	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize" json:"page_size,omitempty"`
+	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// Specifies a page token to use. Set `pageToken` to a `nextPageToken`
 	// returned by a previous list request to get the next page of results.
-	PageToken            string   `protobuf:"bytes,3,opt,name=page_token,json=pageToken" json:"page_token,omitempty"`
+	PageToken            string   `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -778,7 +778,7 @@ func (m *ListWaitersRequest) Reset()         { *m = ListWaitersRequest{} }
 func (m *ListWaitersRequest) String() string { return proto.CompactTextString(m) }
 func (*ListWaitersRequest) ProtoMessage()    {}
 func (*ListWaitersRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_runtimeconfig_71a64cbcfb9779de, []int{13}
+	return fileDescriptor_runtimeconfig_6039f7e1dafadd9a, []int{13}
 }
 func (m *ListWaitersRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListWaitersRequest.Unmarshal(m, b)
@@ -823,13 +823,13 @@ func (m *ListWaitersRequest) GetPageToken() string {
 // Order of returned waiter objects is arbitrary.
 type ListWaitersResponse struct {
 	// Found waiters in the project.
-	Waiters []*Waiter `protobuf:"bytes,1,rep,name=waiters" json:"waiters,omitempty"`
+	Waiters []*Waiter `protobuf:"bytes,1,rep,name=waiters,proto3" json:"waiters,omitempty"`
 	// This token allows you to get the next page of results for list requests.
 	// If the number of results is larger than `pageSize`, use the `nextPageToken`
 	// as a value for the query parameter `pageToken` in the next list request.
 	// Subsequent list requests will have their own `nextPageToken` to continue
 	// paging through the results
-	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken" json:"next_page_token,omitempty"`
+	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -839,7 +839,7 @@ func (m *ListWaitersResponse) Reset()         { *m = ListWaitersResponse{} }
 func (m *ListWaitersResponse) String() string { return proto.CompactTextString(m) }
 func (*ListWaitersResponse) ProtoMessage()    {}
 func (*ListWaitersResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_runtimeconfig_71a64cbcfb9779de, []int{14}
+	return fileDescriptor_runtimeconfig_6039f7e1dafadd9a, []int{14}
 }
 func (m *ListWaitersResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListWaitersResponse.Unmarshal(m, b)
@@ -879,7 +879,7 @@ type GetWaiterRequest struct {
 	// format:
 	//
 	// `projects/[PROJECT_ID]/configs/[CONFIG_NAME]/waiters/[WAITER_NAME]`
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -889,7 +889,7 @@ func (m *GetWaiterRequest) Reset()         { *m = GetWaiterRequest{} }
 func (m *GetWaiterRequest) String() string { return proto.CompactTextString(m) }
 func (*GetWaiterRequest) ProtoMessage()    {}
 func (*GetWaiterRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_runtimeconfig_71a64cbcfb9779de, []int{15}
+	return fileDescriptor_runtimeconfig_6039f7e1dafadd9a, []int{15}
 }
 func (m *GetWaiterRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetWaiterRequest.Unmarshal(m, b)
@@ -922,9 +922,9 @@ type CreateWaiterRequest struct {
 	// The configuration must exist beforehand; the path must by in the format:
 	//
 	// `projects/[PROJECT_ID]/configs/[CONFIG_NAME]`.
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// The Waiter resource to create.
-	Waiter *Waiter `protobuf:"bytes,2,opt,name=waiter" json:"waiter,omitempty"`
+	Waiter *Waiter `protobuf:"bytes,2,opt,name=waiter,proto3" json:"waiter,omitempty"`
 	// An optional but recommended unique `request_id`. If the server
 	// receives two `create()` requests  with the same
 	// `request_id`, then the second request will be ignored and the
@@ -935,7 +935,7 @@ type CreateWaiterRequest struct {
 	// `request_id` strings.
 	//
 	// `request_id` strings are limited to 64 characters.
-	RequestId            string   `protobuf:"bytes,3,opt,name=request_id,json=requestId" json:"request_id,omitempty"`
+	RequestId            string   `protobuf:"bytes,3,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -945,7 +945,7 @@ func (m *CreateWaiterRequest) Reset()         { *m = CreateWaiterRequest{} }
 func (m *CreateWaiterRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateWaiterRequest) ProtoMessage()    {}
 func (*CreateWaiterRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_runtimeconfig_71a64cbcfb9779de, []int{16}
+	return fileDescriptor_runtimeconfig_6039f7e1dafadd9a, []int{16}
 }
 func (m *CreateWaiterRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CreateWaiterRequest.Unmarshal(m, b)
@@ -991,7 +991,7 @@ type DeleteWaiterRequest struct {
 	// The Waiter resource to delete, in the format:
 	//
 	//  `projects/[PROJECT_ID]/configs/[CONFIG_NAME]/waiters/[WAITER_NAME]`
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1001,7 +1001,7 @@ func (m *DeleteWaiterRequest) Reset()         { *m = DeleteWaiterRequest{} }
 func (m *DeleteWaiterRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteWaiterRequest) ProtoMessage()    {}
 func (*DeleteWaiterRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_runtimeconfig_71a64cbcfb9779de, []int{17}
+	return fileDescriptor_runtimeconfig_6039f7e1dafadd9a, []int{17}
 }
 func (m *DeleteWaiterRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeleteWaiterRequest.Unmarshal(m, b)
@@ -1267,8 +1267,7 @@ func (c *runtimeConfigManagerClient) DeleteWaiter(ctx context.Context, in *Delet
 	return out, nil
 }
 
-// Server API for RuntimeConfigManager service
-
+// RuntimeConfigManagerServer is the server API for RuntimeConfigManager service.
 type RuntimeConfigManagerServer interface {
 	// Lists all the RuntimeConfig resources within project.
 	ListConfigs(context.Context, *ListConfigsRequest) (*ListConfigsResponse, error)
@@ -1677,10 +1676,10 @@ var _RuntimeConfigManager_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("google/cloud/runtimeconfig/v1beta1/runtimeconfig.proto", fileDescriptor_runtimeconfig_71a64cbcfb9779de)
+	proto.RegisterFile("google/cloud/runtimeconfig/v1beta1/runtimeconfig.proto", fileDescriptor_runtimeconfig_6039f7e1dafadd9a)
 }
 
-var fileDescriptor_runtimeconfig_71a64cbcfb9779de = []byte{
+var fileDescriptor_runtimeconfig_6039f7e1dafadd9a = []byte{
 	// 1158 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x98, 0x4b, 0x6f, 0xdd, 0x44,
 	0x14, 0xc7, 0x35, 0x49, 0x9b, 0xe6, 0x9e, 0x3c, 0x40, 0x93, 0x87, 0x22, 0xb7, 0x15, 0x91, 0x8b,

@@ -55,13 +55,13 @@ func (x VersionView) String() string {
 	return proto.EnumName(VersionView_name, int32(x))
 }
 func (VersionView) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_appengine_c3ce553d61eda779, []int{0}
+	return fileDescriptor_appengine_2fc15a0f1846cd0f, []int{0}
 }
 
 // Request message for `Applications.GetApplication`.
 type GetApplicationRequest struct {
 	// Name of the Application resource to get. Example: `apps/myapp`.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -71,7 +71,7 @@ func (m *GetApplicationRequest) Reset()         { *m = GetApplicationRequest{} }
 func (m *GetApplicationRequest) String() string { return proto.CompactTextString(m) }
 func (*GetApplicationRequest) ProtoMessage()    {}
 func (*GetApplicationRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_appengine_c3ce553d61eda779, []int{0}
+	return fileDescriptor_appengine_2fc15a0f1846cd0f, []int{0}
 }
 func (m *GetApplicationRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetApplicationRequest.Unmarshal(m, b)
@@ -101,7 +101,7 @@ func (m *GetApplicationRequest) GetName() string {
 // Request message for 'Applications.RepairApplication'.
 type RepairApplicationRequest struct {
 	// Name of the application to repair. Example: `apps/myapp`
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -111,7 +111,7 @@ func (m *RepairApplicationRequest) Reset()         { *m = RepairApplicationReque
 func (m *RepairApplicationRequest) String() string { return proto.CompactTextString(m) }
 func (*RepairApplicationRequest) ProtoMessage()    {}
 func (*RepairApplicationRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_appengine_c3ce553d61eda779, []int{1}
+	return fileDescriptor_appengine_2fc15a0f1846cd0f, []int{1}
 }
 func (m *RepairApplicationRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_RepairApplicationRequest.Unmarshal(m, b)
@@ -141,11 +141,11 @@ func (m *RepairApplicationRequest) GetName() string {
 // Request message for `Services.ListServices`.
 type ListServicesRequest struct {
 	// Name of the parent Application resource. Example: `apps/myapp`.
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// Maximum results to return per page.
-	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize" json:"page_size,omitempty"`
+	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// Continuation token for fetching the next page of results.
-	PageToken            string   `protobuf:"bytes,3,opt,name=page_token,json=pageToken" json:"page_token,omitempty"`
+	PageToken            string   `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -155,7 +155,7 @@ func (m *ListServicesRequest) Reset()         { *m = ListServicesRequest{} }
 func (m *ListServicesRequest) String() string { return proto.CompactTextString(m) }
 func (*ListServicesRequest) ProtoMessage()    {}
 func (*ListServicesRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_appengine_c3ce553d61eda779, []int{2}
+	return fileDescriptor_appengine_2fc15a0f1846cd0f, []int{2}
 }
 func (m *ListServicesRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListServicesRequest.Unmarshal(m, b)
@@ -199,9 +199,9 @@ func (m *ListServicesRequest) GetPageToken() string {
 // Response message for `Services.ListServices`.
 type ListServicesResponse struct {
 	// The services belonging to the requested application.
-	Services []*Service `protobuf:"bytes,1,rep,name=services" json:"services,omitempty"`
+	Services []*Service `protobuf:"bytes,1,rep,name=services,proto3" json:"services,omitempty"`
 	// Continuation token for fetching the next page of results.
-	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken" json:"next_page_token,omitempty"`
+	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -211,7 +211,7 @@ func (m *ListServicesResponse) Reset()         { *m = ListServicesResponse{} }
 func (m *ListServicesResponse) String() string { return proto.CompactTextString(m) }
 func (*ListServicesResponse) ProtoMessage()    {}
 func (*ListServicesResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_appengine_c3ce553d61eda779, []int{3}
+	return fileDescriptor_appengine_2fc15a0f1846cd0f, []int{3}
 }
 func (m *ListServicesResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListServicesResponse.Unmarshal(m, b)
@@ -248,7 +248,7 @@ func (m *ListServicesResponse) GetNextPageToken() string {
 // Request message for `Services.GetService`.
 type GetServiceRequest struct {
 	// Name of the resource requested. Example: `apps/myapp/services/default`.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -258,7 +258,7 @@ func (m *GetServiceRequest) Reset()         { *m = GetServiceRequest{} }
 func (m *GetServiceRequest) String() string { return proto.CompactTextString(m) }
 func (*GetServiceRequest) ProtoMessage()    {}
 func (*GetServiceRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_appengine_c3ce553d61eda779, []int{4}
+	return fileDescriptor_appengine_2fc15a0f1846cd0f, []int{4}
 }
 func (m *GetServiceRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetServiceRequest.Unmarshal(m, b)
@@ -288,12 +288,12 @@ func (m *GetServiceRequest) GetName() string {
 // Request message for `Services.UpdateService`.
 type UpdateServiceRequest struct {
 	// Name of the resource to update. Example: `apps/myapp/services/default`.
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// A Service resource containing the updated service. Only fields set in the
 	// field mask will be updated.
-	Service *Service `protobuf:"bytes,2,opt,name=service" json:"service,omitempty"`
+	Service *Service `protobuf:"bytes,2,opt,name=service,proto3" json:"service,omitempty"`
 	// Standard field mask for the set of fields to be updated.
-	UpdateMask *field_mask.FieldMask `protobuf:"bytes,3,opt,name=update_mask,json=updateMask" json:"update_mask,omitempty"`
+	UpdateMask *field_mask.FieldMask `protobuf:"bytes,3,opt,name=update_mask,json=updateMask,proto3" json:"update_mask,omitempty"`
 	// Set to `true` to gradually shift traffic from one version to another
 	// single version. By default, traffic is shifted immediately.
 	// For gradual traffic migration, the target version
@@ -306,7 +306,7 @@ type UpdateServiceRequest struct {
 	// field in the Service resource. Gradual traffic migration is not
 	// supported in the App Engine flexible environment. For examples, see
 	// [Migrating and Splitting Traffic](https://cloud.google.com/appengine/docs/admin-api/migrating-splitting-traffic).
-	MigrateTraffic       bool     `protobuf:"varint,4,opt,name=migrate_traffic,json=migrateTraffic" json:"migrate_traffic,omitempty"`
+	MigrateTraffic       bool     `protobuf:"varint,4,opt,name=migrate_traffic,json=migrateTraffic,proto3" json:"migrate_traffic,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -316,7 +316,7 @@ func (m *UpdateServiceRequest) Reset()         { *m = UpdateServiceRequest{} }
 func (m *UpdateServiceRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateServiceRequest) ProtoMessage()    {}
 func (*UpdateServiceRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_appengine_c3ce553d61eda779, []int{5}
+	return fileDescriptor_appengine_2fc15a0f1846cd0f, []int{5}
 }
 func (m *UpdateServiceRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UpdateServiceRequest.Unmarshal(m, b)
@@ -367,7 +367,7 @@ func (m *UpdateServiceRequest) GetMigrateTraffic() bool {
 // Request message for `Services.DeleteService`.
 type DeleteServiceRequest struct {
 	// Name of the resource requested. Example: `apps/myapp/services/default`.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -377,7 +377,7 @@ func (m *DeleteServiceRequest) Reset()         { *m = DeleteServiceRequest{} }
 func (m *DeleteServiceRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteServiceRequest) ProtoMessage()    {}
 func (*DeleteServiceRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_appengine_c3ce553d61eda779, []int{6}
+	return fileDescriptor_appengine_2fc15a0f1846cd0f, []int{6}
 }
 func (m *DeleteServiceRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeleteServiceRequest.Unmarshal(m, b)
@@ -408,13 +408,13 @@ func (m *DeleteServiceRequest) GetName() string {
 type ListVersionsRequest struct {
 	// Name of the parent Service resource. Example:
 	// `apps/myapp/services/default`.
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// Controls the set of fields returned in the `List` response.
-	View VersionView `protobuf:"varint,2,opt,name=view,enum=google.appengine.v1.VersionView" json:"view,omitempty"`
+	View VersionView `protobuf:"varint,2,opt,name=view,proto3,enum=google.appengine.v1.VersionView" json:"view,omitempty"`
 	// Maximum results to return per page.
-	PageSize int32 `protobuf:"varint,3,opt,name=page_size,json=pageSize" json:"page_size,omitempty"`
+	PageSize int32 `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// Continuation token for fetching the next page of results.
-	PageToken            string   `protobuf:"bytes,4,opt,name=page_token,json=pageToken" json:"page_token,omitempty"`
+	PageToken            string   `protobuf:"bytes,4,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -424,7 +424,7 @@ func (m *ListVersionsRequest) Reset()         { *m = ListVersionsRequest{} }
 func (m *ListVersionsRequest) String() string { return proto.CompactTextString(m) }
 func (*ListVersionsRequest) ProtoMessage()    {}
 func (*ListVersionsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_appengine_c3ce553d61eda779, []int{7}
+	return fileDescriptor_appengine_2fc15a0f1846cd0f, []int{7}
 }
 func (m *ListVersionsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListVersionsRequest.Unmarshal(m, b)
@@ -475,9 +475,9 @@ func (m *ListVersionsRequest) GetPageToken() string {
 // Response message for `Versions.ListVersions`.
 type ListVersionsResponse struct {
 	// The versions belonging to the requested service.
-	Versions []*Version `protobuf:"bytes,1,rep,name=versions" json:"versions,omitempty"`
+	Versions []*Version `protobuf:"bytes,1,rep,name=versions,proto3" json:"versions,omitempty"`
 	// Continuation token for fetching the next page of results.
-	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken" json:"next_page_token,omitempty"`
+	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -487,7 +487,7 @@ func (m *ListVersionsResponse) Reset()         { *m = ListVersionsResponse{} }
 func (m *ListVersionsResponse) String() string { return proto.CompactTextString(m) }
 func (*ListVersionsResponse) ProtoMessage()    {}
 func (*ListVersionsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_appengine_c3ce553d61eda779, []int{8}
+	return fileDescriptor_appengine_2fc15a0f1846cd0f, []int{8}
 }
 func (m *ListVersionsResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListVersionsResponse.Unmarshal(m, b)
@@ -525,9 +525,9 @@ func (m *ListVersionsResponse) GetNextPageToken() string {
 type GetVersionRequest struct {
 	// Name of the resource requested. Example:
 	// `apps/myapp/services/default/versions/v1`.
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// Controls the set of fields returned in the `Get` response.
-	View                 VersionView `protobuf:"varint,2,opt,name=view,enum=google.appengine.v1.VersionView" json:"view,omitempty"`
+	View                 VersionView `protobuf:"varint,2,opt,name=view,proto3,enum=google.appengine.v1.VersionView" json:"view,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
 	XXX_unrecognized     []byte      `json:"-"`
 	XXX_sizecache        int32       `json:"-"`
@@ -537,7 +537,7 @@ func (m *GetVersionRequest) Reset()         { *m = GetVersionRequest{} }
 func (m *GetVersionRequest) String() string { return proto.CompactTextString(m) }
 func (*GetVersionRequest) ProtoMessage()    {}
 func (*GetVersionRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_appengine_c3ce553d61eda779, []int{9}
+	return fileDescriptor_appengine_2fc15a0f1846cd0f, []int{9}
 }
 func (m *GetVersionRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetVersionRequest.Unmarshal(m, b)
@@ -575,9 +575,9 @@ func (m *GetVersionRequest) GetView() VersionView {
 type CreateVersionRequest struct {
 	// Name of the parent resource to create this version under. Example:
 	// `apps/myapp/services/default`.
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// Application deployment configuration.
-	Version              *Version `protobuf:"bytes,2,opt,name=version" json:"version,omitempty"`
+	Version              *Version `protobuf:"bytes,2,opt,name=version,proto3" json:"version,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -587,7 +587,7 @@ func (m *CreateVersionRequest) Reset()         { *m = CreateVersionRequest{} }
 func (m *CreateVersionRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateVersionRequest) ProtoMessage()    {}
 func (*CreateVersionRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_appengine_c3ce553d61eda779, []int{10}
+	return fileDescriptor_appengine_2fc15a0f1846cd0f, []int{10}
 }
 func (m *CreateVersionRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CreateVersionRequest.Unmarshal(m, b)
@@ -625,12 +625,12 @@ func (m *CreateVersionRequest) GetVersion() *Version {
 type UpdateVersionRequest struct {
 	// Name of the resource to update. Example:
 	// `apps/myapp/services/default/versions/1`.
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// A Version containing the updated resource. Only fields set in the field
 	// mask will be updated.
-	Version *Version `protobuf:"bytes,2,opt,name=version" json:"version,omitempty"`
+	Version *Version `protobuf:"bytes,2,opt,name=version,proto3" json:"version,omitempty"`
 	// Standard field mask for the set of fields to be updated.
-	UpdateMask           *field_mask.FieldMask `protobuf:"bytes,3,opt,name=update_mask,json=updateMask" json:"update_mask,omitempty"`
+	UpdateMask           *field_mask.FieldMask `protobuf:"bytes,3,opt,name=update_mask,json=updateMask,proto3" json:"update_mask,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}              `json:"-"`
 	XXX_unrecognized     []byte                `json:"-"`
 	XXX_sizecache        int32                 `json:"-"`
@@ -640,7 +640,7 @@ func (m *UpdateVersionRequest) Reset()         { *m = UpdateVersionRequest{} }
 func (m *UpdateVersionRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateVersionRequest) ProtoMessage()    {}
 func (*UpdateVersionRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_appengine_c3ce553d61eda779, []int{11}
+	return fileDescriptor_appengine_2fc15a0f1846cd0f, []int{11}
 }
 func (m *UpdateVersionRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UpdateVersionRequest.Unmarshal(m, b)
@@ -685,7 +685,7 @@ func (m *UpdateVersionRequest) GetUpdateMask() *field_mask.FieldMask {
 type DeleteVersionRequest struct {
 	// Name of the resource requested. Example:
 	// `apps/myapp/services/default/versions/v1`.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -695,7 +695,7 @@ func (m *DeleteVersionRequest) Reset()         { *m = DeleteVersionRequest{} }
 func (m *DeleteVersionRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteVersionRequest) ProtoMessage()    {}
 func (*DeleteVersionRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_appengine_c3ce553d61eda779, []int{12}
+	return fileDescriptor_appengine_2fc15a0f1846cd0f, []int{12}
 }
 func (m *DeleteVersionRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeleteVersionRequest.Unmarshal(m, b)
@@ -726,11 +726,11 @@ func (m *DeleteVersionRequest) GetName() string {
 type ListInstancesRequest struct {
 	// Name of the parent Version resource. Example:
 	// `apps/myapp/services/default/versions/v1`.
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// Maximum results to return per page.
-	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize" json:"page_size,omitempty"`
+	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// Continuation token for fetching the next page of results.
-	PageToken            string   `protobuf:"bytes,3,opt,name=page_token,json=pageToken" json:"page_token,omitempty"`
+	PageToken            string   `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -740,7 +740,7 @@ func (m *ListInstancesRequest) Reset()         { *m = ListInstancesRequest{} }
 func (m *ListInstancesRequest) String() string { return proto.CompactTextString(m) }
 func (*ListInstancesRequest) ProtoMessage()    {}
 func (*ListInstancesRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_appengine_c3ce553d61eda779, []int{13}
+	return fileDescriptor_appengine_2fc15a0f1846cd0f, []int{13}
 }
 func (m *ListInstancesRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListInstancesRequest.Unmarshal(m, b)
@@ -784,9 +784,9 @@ func (m *ListInstancesRequest) GetPageToken() string {
 // Response message for `Instances.ListInstances`.
 type ListInstancesResponse struct {
 	// The instances belonging to the requested version.
-	Instances []*Instance `protobuf:"bytes,1,rep,name=instances" json:"instances,omitempty"`
+	Instances []*Instance `protobuf:"bytes,1,rep,name=instances,proto3" json:"instances,omitempty"`
 	// Continuation token for fetching the next page of results.
-	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken" json:"next_page_token,omitempty"`
+	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -796,7 +796,7 @@ func (m *ListInstancesResponse) Reset()         { *m = ListInstancesResponse{} }
 func (m *ListInstancesResponse) String() string { return proto.CompactTextString(m) }
 func (*ListInstancesResponse) ProtoMessage()    {}
 func (*ListInstancesResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_appengine_c3ce553d61eda779, []int{14}
+	return fileDescriptor_appengine_2fc15a0f1846cd0f, []int{14}
 }
 func (m *ListInstancesResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListInstancesResponse.Unmarshal(m, b)
@@ -834,7 +834,7 @@ func (m *ListInstancesResponse) GetNextPageToken() string {
 type GetInstanceRequest struct {
 	// Name of the resource requested. Example:
 	// `apps/myapp/services/default/versions/v1/instances/instance-1`.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -844,7 +844,7 @@ func (m *GetInstanceRequest) Reset()         { *m = GetInstanceRequest{} }
 func (m *GetInstanceRequest) String() string { return proto.CompactTextString(m) }
 func (*GetInstanceRequest) ProtoMessage()    {}
 func (*GetInstanceRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_appengine_c3ce553d61eda779, []int{15}
+	return fileDescriptor_appengine_2fc15a0f1846cd0f, []int{15}
 }
 func (m *GetInstanceRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetInstanceRequest.Unmarshal(m, b)
@@ -875,7 +875,7 @@ func (m *GetInstanceRequest) GetName() string {
 type DeleteInstanceRequest struct {
 	// Name of the resource requested. Example:
 	// `apps/myapp/services/default/versions/v1/instances/instance-1`.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -885,7 +885,7 @@ func (m *DeleteInstanceRequest) Reset()         { *m = DeleteInstanceRequest{} }
 func (m *DeleteInstanceRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteInstanceRequest) ProtoMessage()    {}
 func (*DeleteInstanceRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_appengine_c3ce553d61eda779, []int{16}
+	return fileDescriptor_appengine_2fc15a0f1846cd0f, []int{16}
 }
 func (m *DeleteInstanceRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeleteInstanceRequest.Unmarshal(m, b)
@@ -916,7 +916,7 @@ func (m *DeleteInstanceRequest) GetName() string {
 type DebugInstanceRequest struct {
 	// Name of the resource requested. Example:
 	// `apps/myapp/services/default/versions/v1/instances/instance-1`.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -926,7 +926,7 @@ func (m *DebugInstanceRequest) Reset()         { *m = DebugInstanceRequest{} }
 func (m *DebugInstanceRequest) String() string { return proto.CompactTextString(m) }
 func (*DebugInstanceRequest) ProtoMessage()    {}
 func (*DebugInstanceRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_appengine_c3ce553d61eda779, []int{17}
+	return fileDescriptor_appengine_2fc15a0f1846cd0f, []int{17}
 }
 func (m *DebugInstanceRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DebugInstanceRequest.Unmarshal(m, b)
@@ -1048,8 +1048,7 @@ func (c *instancesClient) DebugInstance(ctx context.Context, in *DebugInstanceRe
 	return out, nil
 }
 
-// Server API for Instances service
-
+// InstancesServer is the server API for Instances service.
 type InstancesServer interface {
 	// Lists the instances of a version.
 	ListInstances(context.Context, *ListInstancesRequest) (*ListInstancesResponse, error)
@@ -1254,8 +1253,7 @@ func (c *versionsClient) DeleteVersion(ctx context.Context, in *DeleteVersionReq
 	return out, nil
 }
 
-// Server API for Versions service
-
+// VersionsServer is the server API for Versions service.
 type VersionsServer interface {
 	// Lists the versions of a service.
 	ListVersions(context.Context, *ListVersionsRequest) (*ListVersionsResponse, error)
@@ -1466,8 +1464,7 @@ func (c *servicesClient) DeleteService(ctx context.Context, in *DeleteServiceReq
 	return out, nil
 }
 
-// Server API for Services service
-
+// ServicesServer is the server API for Services service.
 type ServicesServer interface {
 	// Lists all the services in the application.
 	ListServices(context.Context, *ListServicesRequest) (*ListServicesResponse, error)
@@ -1619,8 +1616,7 @@ func (c *applicationsClient) RepairApplication(ctx context.Context, in *RepairAp
 	return out, nil
 }
 
-// Server API for Applications service
-
+// ApplicationsServer is the server API for Applications service.
 type ApplicationsServer interface {
 	// Gets information about an application.
 	GetApplication(context.Context, *GetApplicationRequest) (*Application, error)
@@ -1689,10 +1685,10 @@ var _Applications_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("google/appengine/v1/appengine.proto", fileDescriptor_appengine_c3ce553d61eda779)
+	proto.RegisterFile("google/appengine/v1/appengine.proto", fileDescriptor_appengine_2fc15a0f1846cd0f)
 }
 
-var fileDescriptor_appengine_c3ce553d61eda779 = []byte{
+var fileDescriptor_appengine_2fc15a0f1846cd0f = []byte{
 	// 1134 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x58, 0xdf, 0x6f, 0xdb, 0x54,
 	0x14, 0xc6, 0x6d, 0xba, 0x25, 0x27, 0x6b, 0xb6, 0xde, 0xb6, 0x10, 0xbc, 0x76, 0x0a, 0x1e, 0x2c,

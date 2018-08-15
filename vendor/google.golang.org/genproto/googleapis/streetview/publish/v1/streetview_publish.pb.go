@@ -200,8 +200,7 @@ func (c *streetViewPublishServiceClient) BatchDeletePhotos(ctx context.Context, 
 	return out, nil
 }
 
-// Server API for StreetViewPublishService service
-
+// StreetViewPublishServiceServer is the server API for StreetViewPublishService service.
 type StreetViewPublishServiceServer interface {
 	// Creates an upload session to start uploading photo data. The upload URL of
 	// the returned `UploadRef` is used to upload the data for the photo.
@@ -489,10 +488,10 @@ var _StreetViewPublishService_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("google/streetview/publish/v1/streetview_publish.proto", fileDescriptor_streetview_publish_c124bcab571c3e8a)
+	proto.RegisterFile("google/streetview/publish/v1/streetview_publish.proto", fileDescriptor_streetview_publish_6fe4a239917591dc)
 }
 
-var fileDescriptor_streetview_publish_c124bcab571c3e8a = []byte{
+var fileDescriptor_streetview_publish_6fe4a239917591dc = []byte{
 	// 533 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x94, 0x4f, 0x6f, 0xd3, 0x30,
 	0x18, 0xc6, 0x15, 0x24, 0x10, 0xb8, 0x08, 0x69, 0x86, 0x55, 0x53, 0x3a, 0x24, 0x08, 0x12, 0xa0,

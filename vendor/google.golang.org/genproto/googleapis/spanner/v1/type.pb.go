@@ -91,20 +91,20 @@ func (x TypeCode) String() string {
 	return proto.EnumName(TypeCode_name, int32(x))
 }
 func (TypeCode) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_type_21d6699da980b19e, []int{0}
+	return fileDescriptor_type_d02d3ac499dc3799, []int{0}
 }
 
 // `Type` indicates the type of a Cloud Spanner value, as might be stored in a
 // table cell or returned from an SQL query.
 type Type struct {
 	// Required. The [TypeCode][google.spanner.v1.TypeCode] for this type.
-	Code TypeCode `protobuf:"varint,1,opt,name=code,enum=google.spanner.v1.TypeCode" json:"code,omitempty"`
+	Code TypeCode `protobuf:"varint,1,opt,name=code,proto3,enum=google.spanner.v1.TypeCode" json:"code,omitempty"`
 	// If [code][google.spanner.v1.Type.code] == [ARRAY][google.spanner.v1.TypeCode.ARRAY], then `array_element_type`
 	// is the type of the array elements.
-	ArrayElementType *Type `protobuf:"bytes,2,opt,name=array_element_type,json=arrayElementType" json:"array_element_type,omitempty"`
+	ArrayElementType *Type `protobuf:"bytes,2,opt,name=array_element_type,json=arrayElementType,proto3" json:"array_element_type,omitempty"`
 	// If [code][google.spanner.v1.Type.code] == [STRUCT][google.spanner.v1.TypeCode.STRUCT], then `struct_type`
 	// provides type information for the struct's fields.
-	StructType           *StructType `protobuf:"bytes,3,opt,name=struct_type,json=structType" json:"struct_type,omitempty"`
+	StructType           *StructType `protobuf:"bytes,3,opt,name=struct_type,json=structType,proto3" json:"struct_type,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
 	XXX_unrecognized     []byte      `json:"-"`
 	XXX_sizecache        int32       `json:"-"`
@@ -114,7 +114,7 @@ func (m *Type) Reset()         { *m = Type{} }
 func (m *Type) String() string { return proto.CompactTextString(m) }
 func (*Type) ProtoMessage()    {}
 func (*Type) Descriptor() ([]byte, []int) {
-	return fileDescriptor_type_21d6699da980b19e, []int{0}
+	return fileDescriptor_type_d02d3ac499dc3799, []int{0}
 }
 func (m *Type) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Type.Unmarshal(m, b)
@@ -163,7 +163,7 @@ type StructType struct {
 	// fields in the [StructType][google.spanner.v1.StructType]. In turn, the order of fields
 	// matches the order of columns in a read request, or the order of
 	// fields in the `SELECT` clause of a query.
-	Fields               []*StructType_Field `protobuf:"bytes,1,rep,name=fields" json:"fields,omitempty"`
+	Fields               []*StructType_Field `protobuf:"bytes,1,rep,name=fields,proto3" json:"fields,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}            `json:"-"`
 	XXX_unrecognized     []byte              `json:"-"`
 	XXX_sizecache        int32               `json:"-"`
@@ -173,7 +173,7 @@ func (m *StructType) Reset()         { *m = StructType{} }
 func (m *StructType) String() string { return proto.CompactTextString(m) }
 func (*StructType) ProtoMessage()    {}
 func (*StructType) Descriptor() ([]byte, []int) {
-	return fileDescriptor_type_21d6699da980b19e, []int{1}
+	return fileDescriptor_type_d02d3ac499dc3799, []int{1}
 }
 func (m *StructType) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_StructType.Unmarshal(m, b)
@@ -209,9 +209,9 @@ type StructType_Field struct {
 	// columns might have an empty name (e.g., !"SELECT
 	// UPPER(ColName)"`). Note that a query result can contain
 	// multiple fields with the same name.
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// The type of the field.
-	Type                 *Type    `protobuf:"bytes,2,opt,name=type" json:"type,omitempty"`
+	Type                 *Type    `protobuf:"bytes,2,opt,name=type,proto3" json:"type,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -221,7 +221,7 @@ func (m *StructType_Field) Reset()         { *m = StructType_Field{} }
 func (m *StructType_Field) String() string { return proto.CompactTextString(m) }
 func (*StructType_Field) ProtoMessage()    {}
 func (*StructType_Field) Descriptor() ([]byte, []int) {
-	return fileDescriptor_type_21d6699da980b19e, []int{1, 0}
+	return fileDescriptor_type_d02d3ac499dc3799, []int{1, 0}
 }
 func (m *StructType_Field) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_StructType_Field.Unmarshal(m, b)
@@ -262,9 +262,9 @@ func init() {
 	proto.RegisterEnum("google.spanner.v1.TypeCode", TypeCode_name, TypeCode_value)
 }
 
-func init() { proto.RegisterFile("google/spanner/v1/type.proto", fileDescriptor_type_21d6699da980b19e) }
+func init() { proto.RegisterFile("google/spanner/v1/type.proto", fileDescriptor_type_d02d3ac499dc3799) }
 
-var fileDescriptor_type_21d6699da980b19e = []byte{
+var fileDescriptor_type_d02d3ac499dc3799 = []byte{
 	// 444 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x92, 0xd1, 0x8a, 0xd3, 0x40,
 	0x14, 0x86, 0x9d, 0x6d, 0xda, 0x6d, 0x4e, 0x51, 0xc6, 0x81, 0x65, 0xeb, 0xaa, 0x50, 0xd6, 0x9b,

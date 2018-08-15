@@ -49,7 +49,7 @@ func (x MqttState) String() string {
 	return proto.EnumName(MqttState_name, int32(x))
 }
 func (MqttState) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_resources_0e9f09e9c0e62f99, []int{0}
+	return fileDescriptor_resources_adeeda409206dfbb, []int{0}
 }
 
 // Indicates whether DeviceService (HTTP) is enabled or disabled for the
@@ -81,7 +81,7 @@ func (x HttpState) String() string {
 	return proto.EnumName(HttpState_name, int32(x))
 }
 func (HttpState) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_resources_0e9f09e9c0e62f99, []int{1}
+	return fileDescriptor_resources_adeeda409206dfbb, []int{1}
 }
 
 // The supported formats for the public key.
@@ -110,7 +110,7 @@ func (x PublicKeyCertificateFormat) String() string {
 	return proto.EnumName(PublicKeyCertificateFormat_name, int32(x))
 }
 func (PublicKeyCertificateFormat) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_resources_0e9f09e9c0e62f99, []int{2}
+	return fileDescriptor_resources_adeeda409206dfbb, []int{2}
 }
 
 // The supported formats for the public key.
@@ -160,74 +160,74 @@ func (x PublicKeyFormat) String() string {
 	return proto.EnumName(PublicKeyFormat_name, int32(x))
 }
 func (PublicKeyFormat) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_resources_0e9f09e9c0e62f99, []int{3}
+	return fileDescriptor_resources_adeeda409206dfbb, []int{3}
 }
 
 // The device resource.
 type Device struct {
 	// The user-defined device identifier. The device ID must be unique
 	// within a device registry.
-	Id string `protobuf:"bytes,1,opt,name=id" json:"id,omitempty"`
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	// The resource path name. For example,
 	// `projects/p1/locations/us-central1/registries/registry0/devices/dev0` or
 	// `projects/p1/locations/us-central1/registries/registry0/devices/{num_id}`.
 	// When `name` is populated as a response from the service, it always ends
 	// in the device numeric ID.
-	Name string `protobuf:"bytes,2,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	// [Output only] A server-defined unique numeric ID for the device. This is a
 	// more compact way to identify devices, and it is globally unique.
-	NumId uint64 `protobuf:"varint,3,opt,name=num_id,json=numId" json:"num_id,omitempty"`
+	NumId uint64 `protobuf:"varint,3,opt,name=num_id,json=numId,proto3" json:"num_id,omitempty"`
 	// The credentials used to authenticate this device. To allow credential
 	// rotation without interruption, multiple device credentials can be bound to
 	// this device. No more than 3 credentials can be bound to a single device at
 	// a time. When new credentials are added to a device, they are verified
 	// against the registry credentials. For details, see the description of the
 	// `DeviceRegistry.credentials` field.
-	Credentials []*DeviceCredential `protobuf:"bytes,12,rep,name=credentials" json:"credentials,omitempty"`
+	Credentials []*DeviceCredential `protobuf:"bytes,12,rep,name=credentials,proto3" json:"credentials,omitempty"`
 	// [Output only] The last time an MQTT `PINGREQ` was received. This field
 	// applies only to devices connecting through MQTT. MQTT clients usually only
 	// send `PINGREQ` messages if the connection is idle, and no other messages
 	// have been sent. Timestamps are periodically collected and written to
 	// storage; they may be stale by a few minutes.
-	LastHeartbeatTime *timestamp.Timestamp `protobuf:"bytes,7,opt,name=last_heartbeat_time,json=lastHeartbeatTime" json:"last_heartbeat_time,omitempty"`
+	LastHeartbeatTime *timestamp.Timestamp `protobuf:"bytes,7,opt,name=last_heartbeat_time,json=lastHeartbeatTime,proto3" json:"last_heartbeat_time,omitempty"`
 	// [Output only] The last time a telemetry event was received. Timestamps are
 	// periodically collected and written to storage; they may be stale by a few
 	// minutes.
-	LastEventTime *timestamp.Timestamp `protobuf:"bytes,8,opt,name=last_event_time,json=lastEventTime" json:"last_event_time,omitempty"`
+	LastEventTime *timestamp.Timestamp `protobuf:"bytes,8,opt,name=last_event_time,json=lastEventTime,proto3" json:"last_event_time,omitempty"`
 	// [Output only] The last time a state event was received. Timestamps are
 	// periodically collected and written to storage; they may be stale by a few
 	// minutes.
-	LastStateTime *timestamp.Timestamp `protobuf:"bytes,20,opt,name=last_state_time,json=lastStateTime" json:"last_state_time,omitempty"`
+	LastStateTime *timestamp.Timestamp `protobuf:"bytes,20,opt,name=last_state_time,json=lastStateTime,proto3" json:"last_state_time,omitempty"`
 	// [Output only] The last time a cloud-to-device config version acknowledgment
 	// was received from the device. This field is only for configurations
 	// sent through MQTT.
-	LastConfigAckTime *timestamp.Timestamp `protobuf:"bytes,14,opt,name=last_config_ack_time,json=lastConfigAckTime" json:"last_config_ack_time,omitempty"`
+	LastConfigAckTime *timestamp.Timestamp `protobuf:"bytes,14,opt,name=last_config_ack_time,json=lastConfigAckTime,proto3" json:"last_config_ack_time,omitempty"`
 	// [Output only] The last time a cloud-to-device config version was sent to
 	// the device.
-	LastConfigSendTime *timestamp.Timestamp `protobuf:"bytes,18,opt,name=last_config_send_time,json=lastConfigSendTime" json:"last_config_send_time,omitempty"`
+	LastConfigSendTime *timestamp.Timestamp `protobuf:"bytes,18,opt,name=last_config_send_time,json=lastConfigSendTime,proto3" json:"last_config_send_time,omitempty"`
 	// If a device is blocked, connections or requests from this device will fail.
 	// Can be used to temporarily prevent the device from connecting if, for
 	// example, the sensor is generating bad data and needs maintenance.
-	Blocked bool `protobuf:"varint,19,opt,name=blocked" json:"blocked,omitempty"`
+	Blocked bool `protobuf:"varint,19,opt,name=blocked,proto3" json:"blocked,omitempty"`
 	// [Output only] The time the most recent error occurred, such as a failure to
 	// publish to Cloud Pub/Sub. This field is the timestamp of
 	// 'last_error_status'.
-	LastErrorTime *timestamp.Timestamp `protobuf:"bytes,10,opt,name=last_error_time,json=lastErrorTime" json:"last_error_time,omitempty"`
+	LastErrorTime *timestamp.Timestamp `protobuf:"bytes,10,opt,name=last_error_time,json=lastErrorTime,proto3" json:"last_error_time,omitempty"`
 	// [Output only] The error message of the most recent error, such as a failure
 	// to publish to Cloud Pub/Sub. 'last_error_time' is the timestamp of this
 	// field. If no errors have occurred, this field has an empty message
 	// and the status code 0 == OK. Otherwise, this field is expected to have a
 	// status code other than OK.
-	LastErrorStatus *status.Status `protobuf:"bytes,11,opt,name=last_error_status,json=lastErrorStatus" json:"last_error_status,omitempty"`
+	LastErrorStatus *status.Status `protobuf:"bytes,11,opt,name=last_error_status,json=lastErrorStatus,proto3" json:"last_error_status,omitempty"`
 	// The most recent device configuration, which is eventually sent from
 	// Cloud IoT Core to the device. If not present on creation, the
 	// configuration will be initialized with an empty payload and version value
 	// of `1`. To update this field after creation, use the
 	// `DeviceManager.ModifyCloudToDeviceConfig` method.
-	Config *DeviceConfig `protobuf:"bytes,13,opt,name=config" json:"config,omitempty"`
+	Config *DeviceConfig `protobuf:"bytes,13,opt,name=config,proto3" json:"config,omitempty"`
 	// [Output only] The state most recently received from the device. If no state
 	// has been reported, this field is not present.
-	State *DeviceState `protobuf:"bytes,16,opt,name=state" json:"state,omitempty"`
+	State *DeviceState `protobuf:"bytes,16,opt,name=state,proto3" json:"state,omitempty"`
 	// The metadata key-value pairs assigned to the device. This metadata is not
 	// interpreted or indexed by Cloud IoT Core. It can be used to add contextual
 	// information for the device.
@@ -240,7 +240,7 @@ type Device struct {
 	//
 	// The total size of all keys and values must be less than 256 KB, and the
 	// maximum number of key-value pairs is 500.
-	Metadata             map[string]string `protobuf:"bytes,17,rep,name=metadata" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Metadata             map[string]string `protobuf:"bytes,17,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
 	XXX_unrecognized     []byte            `json:"-"`
 	XXX_sizecache        int32             `json:"-"`
@@ -250,7 +250,7 @@ func (m *Device) Reset()         { *m = Device{} }
 func (m *Device) String() string { return proto.CompactTextString(m) }
 func (*Device) ProtoMessage()    {}
 func (*Device) Descriptor() ([]byte, []int) {
-	return fileDescriptor_resources_0e9f09e9c0e62f99, []int{0}
+	return fileDescriptor_resources_adeeda409206dfbb, []int{0}
 }
 func (m *Device) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Device.Unmarshal(m, b)
@@ -378,10 +378,10 @@ func (m *Device) GetMetadata() map[string]string {
 // A container for a group of devices.
 type DeviceRegistry struct {
 	// The identifier of this device registry. For example, `myRegistry`.
-	Id string `protobuf:"bytes,1,opt,name=id" json:"id,omitempty"`
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	// The resource path name. For example,
 	// `projects/example-project/locations/us-central1/registries/my-registry`.
-	Name string `protobuf:"bytes,2,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	// The configuration for notification of telemetry events received from the
 	// device. All telemetry events that were successfully published by the
 	// device and acknowledged by Cloud IoT Core are guaranteed to be
@@ -391,18 +391,18 @@ type DeviceRegistry struct {
 	// for the device's registry, the connection closes automatically. If you try
 	// to do so using an HTTP connection, an error is returned. Up to 10
 	// configurations may be provided.
-	EventNotificationConfigs []*EventNotificationConfig `protobuf:"bytes,10,rep,name=event_notification_configs,json=eventNotificationConfigs" json:"event_notification_configs,omitempty"`
+	EventNotificationConfigs []*EventNotificationConfig `protobuf:"bytes,10,rep,name=event_notification_configs,json=eventNotificationConfigs,proto3" json:"event_notification_configs,omitempty"`
 	// The configuration for notification of new states received from the device.
 	// State updates are guaranteed to be stored in the state history, but
 	// notifications to Cloud Pub/Sub are not guaranteed. For example, if
 	// permissions are misconfigured or the specified topic doesn't exist, no
 	// notification will be published but the state will still be stored in Cloud
 	// IoT Core.
-	StateNotificationConfig *StateNotificationConfig `protobuf:"bytes,7,opt,name=state_notification_config,json=stateNotificationConfig" json:"state_notification_config,omitempty"`
+	StateNotificationConfig *StateNotificationConfig `protobuf:"bytes,7,opt,name=state_notification_config,json=stateNotificationConfig,proto3" json:"state_notification_config,omitempty"`
 	// The MQTT configuration for this device registry.
-	MqttConfig *MqttConfig `protobuf:"bytes,4,opt,name=mqtt_config,json=mqttConfig" json:"mqtt_config,omitempty"`
+	MqttConfig *MqttConfig `protobuf:"bytes,4,opt,name=mqtt_config,json=mqttConfig,proto3" json:"mqtt_config,omitempty"`
 	// The DeviceService (HTTP) configuration for this device registry.
-	HttpConfig *HttpConfig `protobuf:"bytes,9,opt,name=http_config,json=httpConfig" json:"http_config,omitempty"`
+	HttpConfig *HttpConfig `protobuf:"bytes,9,opt,name=http_config,json=httpConfig,proto3" json:"http_config,omitempty"`
 	// The credentials used to verify the device credentials. No more than 10
 	// credentials can be bound to a single registry at a time. The verification
 	// process occurs at the time of device creation or update. If this field is
@@ -414,7 +414,7 @@ type DeviceRegistry struct {
 	// modifications to this list of credentials: after a device has been
 	// successfully created in a registry, it should be able to connect even if
 	// its registry credentials are revoked, deleted, or modified.
-	Credentials          []*RegistryCredential `protobuf:"bytes,8,rep,name=credentials" json:"credentials,omitempty"`
+	Credentials          []*RegistryCredential `protobuf:"bytes,8,rep,name=credentials,proto3" json:"credentials,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}              `json:"-"`
 	XXX_unrecognized     []byte                `json:"-"`
 	XXX_sizecache        int32                 `json:"-"`
@@ -424,7 +424,7 @@ func (m *DeviceRegistry) Reset()         { *m = DeviceRegistry{} }
 func (m *DeviceRegistry) String() string { return proto.CompactTextString(m) }
 func (*DeviceRegistry) ProtoMessage()    {}
 func (*DeviceRegistry) Descriptor() ([]byte, []int) {
-	return fileDescriptor_resources_0e9f09e9c0e62f99, []int{1}
+	return fileDescriptor_resources_adeeda409206dfbb, []int{1}
 }
 func (m *DeviceRegistry) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeviceRegistry.Unmarshal(m, b)
@@ -497,7 +497,7 @@ func (m *DeviceRegistry) GetCredentials() []*RegistryCredential {
 type MqttConfig struct {
 	// If enabled, allows connections using the MQTT protocol. Otherwise, MQTT
 	// connections to this registry will fail.
-	MqttEnabledState     MqttState `protobuf:"varint,1,opt,name=mqtt_enabled_state,json=mqttEnabledState,enum=google.cloud.iot.v1.MqttState" json:"mqtt_enabled_state,omitempty"`
+	MqttEnabledState     MqttState `protobuf:"varint,1,opt,name=mqtt_enabled_state,json=mqttEnabledState,proto3,enum=google.cloud.iot.v1.MqttState" json:"mqtt_enabled_state,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
 	XXX_unrecognized     []byte    `json:"-"`
 	XXX_sizecache        int32     `json:"-"`
@@ -507,7 +507,7 @@ func (m *MqttConfig) Reset()         { *m = MqttConfig{} }
 func (m *MqttConfig) String() string { return proto.CompactTextString(m) }
 func (*MqttConfig) ProtoMessage()    {}
 func (*MqttConfig) Descriptor() ([]byte, []int) {
-	return fileDescriptor_resources_0e9f09e9c0e62f99, []int{2}
+	return fileDescriptor_resources_adeeda409206dfbb, []int{2}
 }
 func (m *MqttConfig) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_MqttConfig.Unmarshal(m, b)
@@ -538,7 +538,7 @@ func (m *MqttConfig) GetMqttEnabledState() MqttState {
 type HttpConfig struct {
 	// If enabled, allows devices to use DeviceService via the HTTP protocol.
 	// Otherwise, any requests to DeviceService will fail for this registry.
-	HttpEnabledState     HttpState `protobuf:"varint,1,opt,name=http_enabled_state,json=httpEnabledState,enum=google.cloud.iot.v1.HttpState" json:"http_enabled_state,omitempty"`
+	HttpEnabledState     HttpState `protobuf:"varint,1,opt,name=http_enabled_state,json=httpEnabledState,proto3,enum=google.cloud.iot.v1.HttpState" json:"http_enabled_state,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
 	XXX_unrecognized     []byte    `json:"-"`
 	XXX_sizecache        int32     `json:"-"`
@@ -548,7 +548,7 @@ func (m *HttpConfig) Reset()         { *m = HttpConfig{} }
 func (m *HttpConfig) String() string { return proto.CompactTextString(m) }
 func (*HttpConfig) ProtoMessage()    {}
 func (*HttpConfig) Descriptor() ([]byte, []int) {
-	return fileDescriptor_resources_0e9f09e9c0e62f99, []int{3}
+	return fileDescriptor_resources_adeeda409206dfbb, []int{3}
 }
 func (m *HttpConfig) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_HttpConfig.Unmarshal(m, b)
@@ -581,10 +581,10 @@ type EventNotificationConfig struct {
 	// be used. The string must not include the leading '/' character. If empty,
 	// all strings are matched. This field is used only for telemetry events;
 	// subfolders are not supported for state changes.
-	SubfolderMatches string `protobuf:"bytes,2,opt,name=subfolder_matches,json=subfolderMatches" json:"subfolder_matches,omitempty"`
+	SubfolderMatches string `protobuf:"bytes,2,opt,name=subfolder_matches,json=subfolderMatches,proto3" json:"subfolder_matches,omitempty"`
 	// A Cloud Pub/Sub topic name. For example,
 	// `projects/myProject/topics/deviceEvents`.
-	PubsubTopicName      string   `protobuf:"bytes,1,opt,name=pubsub_topic_name,json=pubsubTopicName" json:"pubsub_topic_name,omitempty"`
+	PubsubTopicName      string   `protobuf:"bytes,1,opt,name=pubsub_topic_name,json=pubsubTopicName,proto3" json:"pubsub_topic_name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -594,7 +594,7 @@ func (m *EventNotificationConfig) Reset()         { *m = EventNotificationConfig
 func (m *EventNotificationConfig) String() string { return proto.CompactTextString(m) }
 func (*EventNotificationConfig) ProtoMessage()    {}
 func (*EventNotificationConfig) Descriptor() ([]byte, []int) {
-	return fileDescriptor_resources_0e9f09e9c0e62f99, []int{4}
+	return fileDescriptor_resources_adeeda409206dfbb, []int{4}
 }
 func (m *EventNotificationConfig) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_EventNotificationConfig.Unmarshal(m, b)
@@ -632,7 +632,7 @@ func (m *EventNotificationConfig) GetPubsubTopicName() string {
 type StateNotificationConfig struct {
 	// A Cloud Pub/Sub topic name. For example,
 	// `projects/myProject/topics/deviceEvents`.
-	PubsubTopicName      string   `protobuf:"bytes,1,opt,name=pubsub_topic_name,json=pubsubTopicName" json:"pubsub_topic_name,omitempty"`
+	PubsubTopicName      string   `protobuf:"bytes,1,opt,name=pubsub_topic_name,json=pubsubTopicName,proto3" json:"pubsub_topic_name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -642,7 +642,7 @@ func (m *StateNotificationConfig) Reset()         { *m = StateNotificationConfig
 func (m *StateNotificationConfig) String() string { return proto.CompactTextString(m) }
 func (*StateNotificationConfig) ProtoMessage()    {}
 func (*StateNotificationConfig) Descriptor() ([]byte, []int) {
-	return fileDescriptor_resources_0e9f09e9c0e62f99, []int{5}
+	return fileDescriptor_resources_adeeda409206dfbb, []int{5}
 }
 func (m *StateNotificationConfig) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_StateNotificationConfig.Unmarshal(m, b)
@@ -685,7 +685,7 @@ func (m *RegistryCredential) Reset()         { *m = RegistryCredential{} }
 func (m *RegistryCredential) String() string { return proto.CompactTextString(m) }
 func (*RegistryCredential) ProtoMessage()    {}
 func (*RegistryCredential) Descriptor() ([]byte, []int) {
-	return fileDescriptor_resources_0e9f09e9c0e62f99, []int{6}
+	return fileDescriptor_resources_adeeda409206dfbb, []int{6}
 }
 func (m *RegistryCredential) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_RegistryCredential.Unmarshal(m, b)
@@ -710,7 +710,7 @@ type isRegistryCredential_Credential interface {
 }
 
 type RegistryCredential_PublicKeyCertificate struct {
-	PublicKeyCertificate *PublicKeyCertificate `protobuf:"bytes,1,opt,name=public_key_certificate,json=publicKeyCertificate,oneof"`
+	PublicKeyCertificate *PublicKeyCertificate `protobuf:"bytes,1,opt,name=public_key_certificate,json=publicKeyCertificate,proto3,oneof"`
 }
 
 func (*RegistryCredential_PublicKeyCertificate) isRegistryCredential_Credential() {}
@@ -787,17 +787,17 @@ func _RegistryCredential_OneofSizer(msg proto.Message) (n int) {
 // Details of an X.509 certificate. For informational purposes only.
 type X509CertificateDetails struct {
 	// The entity that signed the certificate.
-	Issuer string `protobuf:"bytes,1,opt,name=issuer" json:"issuer,omitempty"`
+	Issuer string `protobuf:"bytes,1,opt,name=issuer,proto3" json:"issuer,omitempty"`
 	// The entity the certificate and public key belong to.
-	Subject string `protobuf:"bytes,2,opt,name=subject" json:"subject,omitempty"`
+	Subject string `protobuf:"bytes,2,opt,name=subject,proto3" json:"subject,omitempty"`
 	// The time the certificate becomes valid.
-	StartTime *timestamp.Timestamp `protobuf:"bytes,3,opt,name=start_time,json=startTime" json:"start_time,omitempty"`
+	StartTime *timestamp.Timestamp `protobuf:"bytes,3,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
 	// The time the certificate becomes invalid.
-	ExpiryTime *timestamp.Timestamp `protobuf:"bytes,4,opt,name=expiry_time,json=expiryTime" json:"expiry_time,omitempty"`
+	ExpiryTime *timestamp.Timestamp `protobuf:"bytes,4,opt,name=expiry_time,json=expiryTime,proto3" json:"expiry_time,omitempty"`
 	// The algorithm used to sign the certificate.
-	SignatureAlgorithm string `protobuf:"bytes,5,opt,name=signature_algorithm,json=signatureAlgorithm" json:"signature_algorithm,omitempty"`
+	SignatureAlgorithm string `protobuf:"bytes,5,opt,name=signature_algorithm,json=signatureAlgorithm,proto3" json:"signature_algorithm,omitempty"`
 	// The type of public key in the certificate.
-	PublicKeyType        string   `protobuf:"bytes,6,opt,name=public_key_type,json=publicKeyType" json:"public_key_type,omitempty"`
+	PublicKeyType        string   `protobuf:"bytes,6,opt,name=public_key_type,json=publicKeyType,proto3" json:"public_key_type,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -807,7 +807,7 @@ func (m *X509CertificateDetails) Reset()         { *m = X509CertificateDetails{}
 func (m *X509CertificateDetails) String() string { return proto.CompactTextString(m) }
 func (*X509CertificateDetails) ProtoMessage()    {}
 func (*X509CertificateDetails) Descriptor() ([]byte, []int) {
-	return fileDescriptor_resources_0e9f09e9c0e62f99, []int{7}
+	return fileDescriptor_resources_adeeda409206dfbb, []int{7}
 }
 func (m *X509CertificateDetails) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_X509CertificateDetails.Unmarshal(m, b)
@@ -872,11 +872,11 @@ func (m *X509CertificateDetails) GetPublicKeyType() string {
 // A public key certificate format and data.
 type PublicKeyCertificate struct {
 	// The certificate format.
-	Format PublicKeyCertificateFormat `protobuf:"varint,1,opt,name=format,enum=google.cloud.iot.v1.PublicKeyCertificateFormat" json:"format,omitempty"`
+	Format PublicKeyCertificateFormat `protobuf:"varint,1,opt,name=format,proto3,enum=google.cloud.iot.v1.PublicKeyCertificateFormat" json:"format,omitempty"`
 	// The certificate data.
-	Certificate string `protobuf:"bytes,2,opt,name=certificate" json:"certificate,omitempty"`
+	Certificate string `protobuf:"bytes,2,opt,name=certificate,proto3" json:"certificate,omitempty"`
 	// [Output only] The certificate details. Used only for X.509 certificates.
-	X509Details          *X509CertificateDetails `protobuf:"bytes,3,opt,name=x509_details,json=x509Details" json:"x509_details,omitempty"`
+	X509Details          *X509CertificateDetails `protobuf:"bytes,3,opt,name=x509_details,json=x509Details,proto3" json:"x509_details,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                `json:"-"`
 	XXX_unrecognized     []byte                  `json:"-"`
 	XXX_sizecache        int32                   `json:"-"`
@@ -886,7 +886,7 @@ func (m *PublicKeyCertificate) Reset()         { *m = PublicKeyCertificate{} }
 func (m *PublicKeyCertificate) String() string { return proto.CompactTextString(m) }
 func (*PublicKeyCertificate) ProtoMessage()    {}
 func (*PublicKeyCertificate) Descriptor() ([]byte, []int) {
-	return fileDescriptor_resources_0e9f09e9c0e62f99, []int{8}
+	return fileDescriptor_resources_adeeda409206dfbb, []int{8}
 }
 func (m *PublicKeyCertificate) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_PublicKeyCertificate.Unmarshal(m, b)
@@ -937,7 +937,7 @@ type DeviceCredential struct {
 	// [Optional] The time at which this credential becomes invalid. This
 	// credential will be ignored for new client authentication requests after
 	// this timestamp; however, it will not be automatically deleted.
-	ExpirationTime       *timestamp.Timestamp `protobuf:"bytes,6,opt,name=expiration_time,json=expirationTime" json:"expiration_time,omitempty"`
+	ExpirationTime       *timestamp.Timestamp `protobuf:"bytes,6,opt,name=expiration_time,json=expirationTime,proto3" json:"expiration_time,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
 	XXX_unrecognized     []byte               `json:"-"`
 	XXX_sizecache        int32                `json:"-"`
@@ -947,7 +947,7 @@ func (m *DeviceCredential) Reset()         { *m = DeviceCredential{} }
 func (m *DeviceCredential) String() string { return proto.CompactTextString(m) }
 func (*DeviceCredential) ProtoMessage()    {}
 func (*DeviceCredential) Descriptor() ([]byte, []int) {
-	return fileDescriptor_resources_0e9f09e9c0e62f99, []int{9}
+	return fileDescriptor_resources_adeeda409206dfbb, []int{9}
 }
 func (m *DeviceCredential) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeviceCredential.Unmarshal(m, b)
@@ -972,7 +972,7 @@ type isDeviceCredential_Credential interface {
 }
 
 type DeviceCredential_PublicKey struct {
-	PublicKey *PublicKeyCredential `protobuf:"bytes,2,opt,name=public_key,json=publicKey,oneof"`
+	PublicKey *PublicKeyCredential `protobuf:"bytes,2,opt,name=public_key,json=publicKey,proto3,oneof"`
 }
 
 func (*DeviceCredential_PublicKey) isDeviceCredential_Credential() {}
@@ -1056,9 +1056,9 @@ func _DeviceCredential_OneofSizer(msg proto.Message) (n int) {
 // A public key format and data.
 type PublicKeyCredential struct {
 	// The format of the key.
-	Format PublicKeyFormat `protobuf:"varint,1,opt,name=format,enum=google.cloud.iot.v1.PublicKeyFormat" json:"format,omitempty"`
+	Format PublicKeyFormat `protobuf:"varint,1,opt,name=format,proto3,enum=google.cloud.iot.v1.PublicKeyFormat" json:"format,omitempty"`
 	// The key data.
-	Key                  string   `protobuf:"bytes,2,opt,name=key" json:"key,omitempty"`
+	Key                  string   `protobuf:"bytes,2,opt,name=key,proto3" json:"key,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1068,7 +1068,7 @@ func (m *PublicKeyCredential) Reset()         { *m = PublicKeyCredential{} }
 func (m *PublicKeyCredential) String() string { return proto.CompactTextString(m) }
 func (*PublicKeyCredential) ProtoMessage()    {}
 func (*PublicKeyCredential) Descriptor() ([]byte, []int) {
-	return fileDescriptor_resources_0e9f09e9c0e62f99, []int{10}
+	return fileDescriptor_resources_adeeda409206dfbb, []int{10}
 }
 func (m *PublicKeyCredential) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_PublicKeyCredential.Unmarshal(m, b)
@@ -1108,10 +1108,10 @@ type DeviceConfig struct {
 	// the server, and is always greater than 0 after device creation. The
 	// version must be 0 on the `CreateDevice` request if a `config` is
 	// specified; the response of `CreateDevice` will always have a value of 1.
-	Version int64 `protobuf:"varint,1,opt,name=version" json:"version,omitempty"`
+	Version int64 `protobuf:"varint,1,opt,name=version,proto3" json:"version,omitempty"`
 	// [Output only] The time at which this configuration version was updated in
 	// Cloud IoT Core. This timestamp is set by the server.
-	CloudUpdateTime *timestamp.Timestamp `protobuf:"bytes,2,opt,name=cloud_update_time,json=cloudUpdateTime" json:"cloud_update_time,omitempty"`
+	CloudUpdateTime *timestamp.Timestamp `protobuf:"bytes,2,opt,name=cloud_update_time,json=cloudUpdateTime,proto3" json:"cloud_update_time,omitempty"`
 	// [Output only] The time at which Cloud IoT Core received the
 	// acknowledgment from the device, indicating that the device has received
 	// this configuration version. If this field is not present, the device has
@@ -1121,7 +1121,7 @@ type DeviceConfig struct {
 	// connection, only the latest version is sent to the device. Some
 	// versions may never be sent to the device, and therefore are never
 	// acknowledged. This timestamp is set by Cloud IoT Core.
-	DeviceAckTime *timestamp.Timestamp `protobuf:"bytes,3,opt,name=device_ack_time,json=deviceAckTime" json:"device_ack_time,omitempty"`
+	DeviceAckTime *timestamp.Timestamp `protobuf:"bytes,3,opt,name=device_ack_time,json=deviceAckTime,proto3" json:"device_ack_time,omitempty"`
 	// The device configuration data.
 	BinaryData           []byte   `protobuf:"bytes,4,opt,name=binary_data,json=binaryData,proto3" json:"binary_data,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -1133,7 +1133,7 @@ func (m *DeviceConfig) Reset()         { *m = DeviceConfig{} }
 func (m *DeviceConfig) String() string { return proto.CompactTextString(m) }
 func (*DeviceConfig) ProtoMessage()    {}
 func (*DeviceConfig) Descriptor() ([]byte, []int) {
-	return fileDescriptor_resources_0e9f09e9c0e62f99, []int{11}
+	return fileDescriptor_resources_adeeda409206dfbb, []int{11}
 }
 func (m *DeviceConfig) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeviceConfig.Unmarshal(m, b)
@@ -1185,7 +1185,7 @@ func (m *DeviceConfig) GetBinaryData() []byte {
 type DeviceState struct {
 	// [Output only] The time at which this state version was updated in Cloud
 	// IoT Core.
-	UpdateTime *timestamp.Timestamp `protobuf:"bytes,1,opt,name=update_time,json=updateTime" json:"update_time,omitempty"`
+	UpdateTime *timestamp.Timestamp `protobuf:"bytes,1,opt,name=update_time,json=updateTime,proto3" json:"update_time,omitempty"`
 	// The device state data.
 	BinaryData           []byte   `protobuf:"bytes,2,opt,name=binary_data,json=binaryData,proto3" json:"binary_data,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -1197,7 +1197,7 @@ func (m *DeviceState) Reset()         { *m = DeviceState{} }
 func (m *DeviceState) String() string { return proto.CompactTextString(m) }
 func (*DeviceState) ProtoMessage()    {}
 func (*DeviceState) Descriptor() ([]byte, []int) {
-	return fileDescriptor_resources_0e9f09e9c0e62f99, []int{12}
+	return fileDescriptor_resources_adeeda409206dfbb, []int{12}
 }
 func (m *DeviceState) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeviceState.Unmarshal(m, b)
@@ -1253,10 +1253,10 @@ func init() {
 }
 
 func init() {
-	proto.RegisterFile("google/cloud/iot/v1/resources.proto", fileDescriptor_resources_0e9f09e9c0e62f99)
+	proto.RegisterFile("google/cloud/iot/v1/resources.proto", fileDescriptor_resources_adeeda409206dfbb)
 }
 
-var fileDescriptor_resources_0e9f09e9c0e62f99 = []byte{
+var fileDescriptor_resources_adeeda409206dfbb = []byte{
 	// 1348 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x57, 0xdd, 0x52, 0xdb, 0xc6,
 	0x17, 0x47, 0x06, 0x0c, 0x1c, 0x03, 0xb6, 0x17, 0x02, 0xfa, 0x7b, 0xfe, 0x6d, 0x1c, 0xf7, 0x8b,

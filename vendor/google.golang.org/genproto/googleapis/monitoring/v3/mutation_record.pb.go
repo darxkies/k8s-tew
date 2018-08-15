@@ -22,9 +22,9 @@ const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 // Describes a change made to a configuration.
 type MutationRecord struct {
 	// When the change occurred.
-	MutateTime *timestamp.Timestamp `protobuf:"bytes,1,opt,name=mutate_time,json=mutateTime" json:"mutate_time,omitempty"`
+	MutateTime *timestamp.Timestamp `protobuf:"bytes,1,opt,name=mutate_time,json=mutateTime,proto3" json:"mutate_time,omitempty"`
 	// The email address of the user making the change.
-	MutatedBy            string   `protobuf:"bytes,2,opt,name=mutated_by,json=mutatedBy" json:"mutated_by,omitempty"`
+	MutatedBy            string   `protobuf:"bytes,2,opt,name=mutated_by,json=mutatedBy,proto3" json:"mutated_by,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -34,7 +34,7 @@ func (m *MutationRecord) Reset()         { *m = MutationRecord{} }
 func (m *MutationRecord) String() string { return proto.CompactTextString(m) }
 func (*MutationRecord) ProtoMessage()    {}
 func (*MutationRecord) Descriptor() ([]byte, []int) {
-	return fileDescriptor_mutation_record_7a7b59a768928dc9, []int{0}
+	return fileDescriptor_mutation_record_9017e3771537eac7, []int{0}
 }
 func (m *MutationRecord) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_MutationRecord.Unmarshal(m, b)
@@ -73,10 +73,10 @@ func init() {
 }
 
 func init() {
-	proto.RegisterFile("google/monitoring/v3/mutation_record.proto", fileDescriptor_mutation_record_7a7b59a768928dc9)
+	proto.RegisterFile("google/monitoring/v3/mutation_record.proto", fileDescriptor_mutation_record_9017e3771537eac7)
 }
 
-var fileDescriptor_mutation_record_7a7b59a768928dc9 = []byte{
+var fileDescriptor_mutation_record_9017e3771537eac7 = []byte{
 	// 251 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xd2, 0x4a, 0xcf, 0xcf, 0x4f,
 	0xcf, 0x49, 0xd5, 0xcf, 0xcd, 0xcf, 0xcb, 0x2c, 0xc9, 0x2f, 0xca, 0xcc, 0x4b, 0xd7, 0x2f, 0x33,

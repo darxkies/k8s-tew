@@ -50,18 +50,18 @@ type Group struct {
 	// When creating a group, this field is ignored and a new name is created
 	// consisting of the project specified in the call to `CreateGroup`
 	// and a unique `{group_id}` that is generated automatically.
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// A user-assigned name for this group, used only for display purposes.
-	DisplayName string `protobuf:"bytes,2,opt,name=display_name,json=displayName" json:"display_name,omitempty"`
+	DisplayName string `protobuf:"bytes,2,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
 	// The name of the group's parent, if it has one.
 	// The format is `"projects/{project_id_or_number}/groups/{group_id}"`.
 	// For groups with no parent, `parentName` is the empty string, `""`.
-	ParentName string `protobuf:"bytes,3,opt,name=parent_name,json=parentName" json:"parent_name,omitempty"`
+	ParentName string `protobuf:"bytes,3,opt,name=parent_name,json=parentName,proto3" json:"parent_name,omitempty"`
 	// The filter used to determine which monitored resources belong to this group.
-	Filter string `protobuf:"bytes,5,opt,name=filter" json:"filter,omitempty"`
+	Filter string `protobuf:"bytes,5,opt,name=filter,proto3" json:"filter,omitempty"`
 	// If true, the members of this group are considered to be a cluster.
 	// The system can perform additional analysis on groups that are clusters.
-	IsCluster            bool     `protobuf:"varint,6,opt,name=is_cluster,json=isCluster" json:"is_cluster,omitempty"`
+	IsCluster            bool     `protobuf:"varint,6,opt,name=is_cluster,json=isCluster,proto3" json:"is_cluster,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -71,7 +71,7 @@ func (m *Group) Reset()         { *m = Group{} }
 func (m *Group) String() string { return proto.CompactTextString(m) }
 func (*Group) ProtoMessage()    {}
 func (*Group) Descriptor() ([]byte, []int) {
-	return fileDescriptor_group_1b3b789bd5fc032e, []int{0}
+	return fileDescriptor_group_ddaab360fd5d459d, []int{0}
 }
 func (m *Group) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Group.Unmarshal(m, b)
@@ -131,10 +131,10 @@ func init() {
 }
 
 func init() {
-	proto.RegisterFile("google/monitoring/v3/group.proto", fileDescriptor_group_1b3b789bd5fc032e)
+	proto.RegisterFile("google/monitoring/v3/group.proto", fileDescriptor_group_ddaab360fd5d459d)
 }
 
-var fileDescriptor_group_1b3b789bd5fc032e = []byte{
+var fileDescriptor_group_ddaab360fd5d459d = []byte{
 	// 261 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x6c, 0x90, 0xcf, 0x4a, 0x2b, 0x31,
 	0x14, 0x87, 0x49, 0xef, 0xed, 0x60, 0x4f, 0x5d, 0x0d, 0x22, 0x83, 0x20, 0x8e, 0xae, 0xba, 0xca,

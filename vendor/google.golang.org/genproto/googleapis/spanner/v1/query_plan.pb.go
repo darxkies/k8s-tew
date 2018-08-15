@@ -53,25 +53,25 @@ func (x PlanNode_Kind) String() string {
 	return proto.EnumName(PlanNode_Kind_name, int32(x))
 }
 func (PlanNode_Kind) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_query_plan_e7b865c0e2b6e862, []int{0, 0}
+	return fileDescriptor_query_plan_e20f6b3462ee8118, []int{0, 0}
 }
 
 // Node information for nodes appearing in a [QueryPlan.plan_nodes][google.spanner.v1.QueryPlan.plan_nodes].
 type PlanNode struct {
 	// The `PlanNode`'s index in [node list][google.spanner.v1.QueryPlan.plan_nodes].
-	Index int32 `protobuf:"varint,1,opt,name=index" json:"index,omitempty"`
+	Index int32 `protobuf:"varint,1,opt,name=index,proto3" json:"index,omitempty"`
 	// Used to determine the type of node. May be needed for visualizing
 	// different kinds of nodes differently. For example, If the node is a
 	// [SCALAR][google.spanner.v1.PlanNode.Kind.SCALAR] node, it will have a condensed representation
 	// which can be used to directly embed a description of the node in its
 	// parent.
-	Kind PlanNode_Kind `protobuf:"varint,2,opt,name=kind,enum=google.spanner.v1.PlanNode_Kind" json:"kind,omitempty"`
+	Kind PlanNode_Kind `protobuf:"varint,2,opt,name=kind,proto3,enum=google.spanner.v1.PlanNode_Kind" json:"kind,omitempty"`
 	// The display name for the node.
-	DisplayName string `protobuf:"bytes,3,opt,name=display_name,json=displayName" json:"display_name,omitempty"`
+	DisplayName string `protobuf:"bytes,3,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
 	// List of child node `index`es and their relationship to this parent.
-	ChildLinks []*PlanNode_ChildLink `protobuf:"bytes,4,rep,name=child_links,json=childLinks" json:"child_links,omitempty"`
+	ChildLinks []*PlanNode_ChildLink `protobuf:"bytes,4,rep,name=child_links,json=childLinks,proto3" json:"child_links,omitempty"`
 	// Condensed representation for [SCALAR][google.spanner.v1.PlanNode.Kind.SCALAR] nodes.
-	ShortRepresentation *PlanNode_ShortRepresentation `protobuf:"bytes,5,opt,name=short_representation,json=shortRepresentation" json:"short_representation,omitempty"`
+	ShortRepresentation *PlanNode_ShortRepresentation `protobuf:"bytes,5,opt,name=short_representation,json=shortRepresentation,proto3" json:"short_representation,omitempty"`
 	// Attributes relevant to the node contained in a group of key-value pairs.
 	// For example, a Parameter Reference node could have the following
 	// information in its metadata:
@@ -80,12 +80,12 @@ type PlanNode struct {
 	//       "parameter_reference": "param1",
 	//       "parameter_type": "array"
 	//     }
-	Metadata *_struct.Struct `protobuf:"bytes,6,opt,name=metadata" json:"metadata,omitempty"`
+	Metadata *_struct.Struct `protobuf:"bytes,6,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// The execution statistics associated with the node, contained in a group of
 	// key-value pairs. Only present if the plan was returned as a result of a
 	// profile query. For example, number of executions, number of rows/time per
 	// execution etc.
-	ExecutionStats       *_struct.Struct `protobuf:"bytes,7,opt,name=execution_stats,json=executionStats" json:"execution_stats,omitempty"`
+	ExecutionStats       *_struct.Struct `protobuf:"bytes,7,opt,name=execution_stats,json=executionStats,proto3" json:"execution_stats,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
 	XXX_unrecognized     []byte          `json:"-"`
 	XXX_sizecache        int32           `json:"-"`
@@ -95,7 +95,7 @@ func (m *PlanNode) Reset()         { *m = PlanNode{} }
 func (m *PlanNode) String() string { return proto.CompactTextString(m) }
 func (*PlanNode) ProtoMessage()    {}
 func (*PlanNode) Descriptor() ([]byte, []int) {
-	return fileDescriptor_query_plan_e7b865c0e2b6e862, []int{0}
+	return fileDescriptor_query_plan_e20f6b3462ee8118, []int{0}
 }
 func (m *PlanNode) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_PlanNode.Unmarshal(m, b)
@@ -168,12 +168,12 @@ func (m *PlanNode) GetExecutionStats() *_struct.Struct {
 // [PlanNode][google.spanner.v1.PlanNode].
 type PlanNode_ChildLink struct {
 	// The node to which the link points.
-	ChildIndex int32 `protobuf:"varint,1,opt,name=child_index,json=childIndex" json:"child_index,omitempty"`
+	ChildIndex int32 `protobuf:"varint,1,opt,name=child_index,json=childIndex,proto3" json:"child_index,omitempty"`
 	// The type of the link. For example, in Hash Joins this could be used to
 	// distinguish between the build child and the probe child, or in the case
 	// of the child being an output variable, to represent the tag associated
 	// with the output variable.
-	Type string `protobuf:"bytes,2,opt,name=type" json:"type,omitempty"`
+	Type string `protobuf:"bytes,2,opt,name=type,proto3" json:"type,omitempty"`
 	// Only present if the child node is [SCALAR][google.spanner.v1.PlanNode.Kind.SCALAR] and corresponds
 	// to an output variable of the parent node. The field carries the name of
 	// the output variable.
@@ -182,7 +182,7 @@ type PlanNode_ChildLink struct {
 	// created for each column that is read by the operator. The corresponding
 	// `variable` fields will be set to the variable names assigned to the
 	// columns.
-	Variable             string   `protobuf:"bytes,3,opt,name=variable" json:"variable,omitempty"`
+	Variable             string   `protobuf:"bytes,3,opt,name=variable,proto3" json:"variable,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -192,7 +192,7 @@ func (m *PlanNode_ChildLink) Reset()         { *m = PlanNode_ChildLink{} }
 func (m *PlanNode_ChildLink) String() string { return proto.CompactTextString(m) }
 func (*PlanNode_ChildLink) ProtoMessage()    {}
 func (*PlanNode_ChildLink) Descriptor() ([]byte, []int) {
-	return fileDescriptor_query_plan_e7b865c0e2b6e862, []int{0, 0}
+	return fileDescriptor_query_plan_e20f6b3462ee8118, []int{0, 0}
 }
 func (m *PlanNode_ChildLink) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_PlanNode_ChildLink.Unmarshal(m, b)
@@ -237,13 +237,13 @@ func (m *PlanNode_ChildLink) GetVariable() string {
 // `SCALAR` [PlanNode(s)][google.spanner.v1.PlanNode].
 type PlanNode_ShortRepresentation struct {
 	// A string representation of the expression subtree rooted at this node.
-	Description string `protobuf:"bytes,1,opt,name=description" json:"description,omitempty"`
+	Description string `protobuf:"bytes,1,opt,name=description,proto3" json:"description,omitempty"`
 	// A mapping of (subquery variable name) -> (subquery node id) for cases
 	// where the `description` string of this node references a `SCALAR`
 	// subquery contained in the expression subtree rooted at this node. The
 	// referenced `SCALAR` subquery may not necessarily be a direct child of
 	// this node.
-	Subqueries           map[string]int32 `protobuf:"bytes,2,rep,name=subqueries" json:"subqueries,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"varint,2,opt,name=value"`
+	Subqueries           map[string]int32 `protobuf:"bytes,2,rep,name=subqueries,proto3" json:"subqueries,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"varint,2,opt,name=value,proto3"`
 	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
 	XXX_unrecognized     []byte           `json:"-"`
 	XXX_sizecache        int32            `json:"-"`
@@ -253,7 +253,7 @@ func (m *PlanNode_ShortRepresentation) Reset()         { *m = PlanNode_ShortRepr
 func (m *PlanNode_ShortRepresentation) String() string { return proto.CompactTextString(m) }
 func (*PlanNode_ShortRepresentation) ProtoMessage()    {}
 func (*PlanNode_ShortRepresentation) Descriptor() ([]byte, []int) {
-	return fileDescriptor_query_plan_e7b865c0e2b6e862, []int{0, 1}
+	return fileDescriptor_query_plan_e20f6b3462ee8118, []int{0, 1}
 }
 func (m *PlanNode_ShortRepresentation) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_PlanNode_ShortRepresentation.Unmarshal(m, b)
@@ -292,7 +292,7 @@ type QueryPlan struct {
 	// The nodes in the query plan. Plan nodes are returned in pre-order starting
 	// with the plan root. Each [PlanNode][google.spanner.v1.PlanNode]'s `id` corresponds to its index in
 	// `plan_nodes`.
-	PlanNodes            []*PlanNode `protobuf:"bytes,1,rep,name=plan_nodes,json=planNodes" json:"plan_nodes,omitempty"`
+	PlanNodes            []*PlanNode `protobuf:"bytes,1,rep,name=plan_nodes,json=planNodes,proto3" json:"plan_nodes,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
 	XXX_unrecognized     []byte      `json:"-"`
 	XXX_sizecache        int32       `json:"-"`
@@ -302,7 +302,7 @@ func (m *QueryPlan) Reset()         { *m = QueryPlan{} }
 func (m *QueryPlan) String() string { return proto.CompactTextString(m) }
 func (*QueryPlan) ProtoMessage()    {}
 func (*QueryPlan) Descriptor() ([]byte, []int) {
-	return fileDescriptor_query_plan_e7b865c0e2b6e862, []int{1}
+	return fileDescriptor_query_plan_e20f6b3462ee8118, []int{1}
 }
 func (m *QueryPlan) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_QueryPlan.Unmarshal(m, b)
@@ -339,10 +339,10 @@ func init() {
 }
 
 func init() {
-	proto.RegisterFile("google/spanner/v1/query_plan.proto", fileDescriptor_query_plan_e7b865c0e2b6e862)
+	proto.RegisterFile("google/spanner/v1/query_plan.proto", fileDescriptor_query_plan_e20f6b3462ee8118)
 }
 
-var fileDescriptor_query_plan_e7b865c0e2b6e862 = []byte{
+var fileDescriptor_query_plan_e20f6b3462ee8118 = []byte{
 	// 604 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x54, 0xdd, 0x6e, 0xd3, 0x4c,
 	0x10, 0xfd, 0x9c, 0x26, 0xf9, 0x9a, 0x09, 0x4a, 0xc3, 0xb6, 0xa8, 0x56, 0x40, 0xc2, 0x44, 0x42,

@@ -31,7 +31,7 @@ const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 type GetSupportAccountRequest struct {
 	// The resource name of the support accounts. For example:
 	// `supportAccounts/accountA`.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -41,7 +41,7 @@ func (m *GetSupportAccountRequest) Reset()         { *m = GetSupportAccountReque
 func (m *GetSupportAccountRequest) String() string { return proto.CompactTextString(m) }
 func (*GetSupportAccountRequest) ProtoMessage()    {}
 func (*GetSupportAccountRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cloud_support_69743c0be48100ea, []int{0}
+	return fileDescriptor_cloud_support_33c72ff20b6be0b4, []int{0}
 }
 func (m *GetSupportAccountRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetSupportAccountRequest.Unmarshal(m, b)
@@ -74,12 +74,12 @@ type ListSupportAccountsRequest struct {
 	// account list by a cloud_resource. For example, to filter results by support
 	// accounts associated with an Organization, its value should be:
 	// "cloud_resource:organizations/<organization_id>"
-	Filter string `protobuf:"bytes,1,opt,name=filter" json:"filter,omitempty"`
+	Filter string `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
 	// Maximum number of accounts fetched with each request.
-	PageSize int64 `protobuf:"varint,2,opt,name=page_size,json=pageSize" json:"page_size,omitempty"`
+	PageSize int64 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// A token identifying the page of results to return. If unspecified, the
 	// first page is retrieved.
-	PageToken            string   `protobuf:"bytes,3,opt,name=page_token,json=pageToken" json:"page_token,omitempty"`
+	PageToken            string   `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -89,7 +89,7 @@ func (m *ListSupportAccountsRequest) Reset()         { *m = ListSupportAccountsR
 func (m *ListSupportAccountsRequest) String() string { return proto.CompactTextString(m) }
 func (*ListSupportAccountsRequest) ProtoMessage()    {}
 func (*ListSupportAccountsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cloud_support_69743c0be48100ea, []int{1}
+	return fileDescriptor_cloud_support_33c72ff20b6be0b4, []int{1}
 }
 func (m *ListSupportAccountsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListSupportAccountsRequest.Unmarshal(m, b)
@@ -133,11 +133,11 @@ func (m *ListSupportAccountsRequest) GetPageToken() string {
 // The response message for `ListSupportAccount`.
 type ListSupportAccountsResponse struct {
 	// A list of support accounts.
-	Accounts []*common.SupportAccount `protobuf:"bytes,1,rep,name=accounts" json:"accounts,omitempty"`
+	Accounts []*common.SupportAccount `protobuf:"bytes,1,rep,name=accounts,proto3" json:"accounts,omitempty"`
 	// A token to retrieve the next page of results. This should be passed on in
 	// `page_token` field of `ListSupportAccountRequest` for next request. If
 	// unspecified, there are no more results to retrieve.
-	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken" json:"next_page_token,omitempty"`
+	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -147,7 +147,7 @@ func (m *ListSupportAccountsResponse) Reset()         { *m = ListSupportAccounts
 func (m *ListSupportAccountsResponse) String() string { return proto.CompactTextString(m) }
 func (*ListSupportAccountsResponse) ProtoMessage()    {}
 func (*ListSupportAccountsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cloud_support_69743c0be48100ea, []int{2}
+	return fileDescriptor_cloud_support_33c72ff20b6be0b4, []int{2}
 }
 func (m *ListSupportAccountsResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListSupportAccountsResponse.Unmarshal(m, b)
@@ -185,7 +185,7 @@ func (m *ListSupportAccountsResponse) GetNextPageToken() string {
 type GetCaseRequest struct {
 	// Name of case resource requested.
 	// For example: "supportAccounts/accountA/cases/123"
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -195,7 +195,7 @@ func (m *GetCaseRequest) Reset()         { *m = GetCaseRequest{} }
 func (m *GetCaseRequest) String() string { return proto.CompactTextString(m) }
 func (*GetCaseRequest) ProtoMessage()    {}
 func (*GetCaseRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cloud_support_69743c0be48100ea, []int{3}
+	return fileDescriptor_cloud_support_33c72ff20b6be0b4, []int{3}
 }
 func (m *GetCaseRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetCaseRequest.Unmarshal(m, b)
@@ -226,15 +226,15 @@ func (m *GetCaseRequest) GetName() string {
 type ListCasesRequest struct {
 	// Name of the account resource for which cases are requested. For example:
 	// "supportAccounts/accountA"
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// The filter applied to the search results. Currently it only accepts "OPEN"
 	// or "CLOSED" strings, filtering out cases that are open or resolved.
-	Filter string `protobuf:"bytes,2,opt,name=filter" json:"filter,omitempty"`
+	Filter string `protobuf:"bytes,2,opt,name=filter,proto3" json:"filter,omitempty"`
 	// Maximum number of cases fetched with each request.
-	PageSize int64 `protobuf:"varint,3,opt,name=page_size,json=pageSize" json:"page_size,omitempty"`
+	PageSize int64 `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// A token identifying the page of results to return. If unspecified, the
 	// first page is retrieved.
-	PageToken            string   `protobuf:"bytes,4,opt,name=page_token,json=pageToken" json:"page_token,omitempty"`
+	PageToken            string   `protobuf:"bytes,4,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -244,7 +244,7 @@ func (m *ListCasesRequest) Reset()         { *m = ListCasesRequest{} }
 func (m *ListCasesRequest) String() string { return proto.CompactTextString(m) }
 func (*ListCasesRequest) ProtoMessage()    {}
 func (*ListCasesRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cloud_support_69743c0be48100ea, []int{4}
+	return fileDescriptor_cloud_support_33c72ff20b6be0b4, []int{4}
 }
 func (m *ListCasesRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListCasesRequest.Unmarshal(m, b)
@@ -295,11 +295,11 @@ func (m *ListCasesRequest) GetPageToken() string {
 // The response message for `ListCase` method.
 type ListCasesResponse struct {
 	// A list of cases.
-	Cases []*common.Case `protobuf:"bytes,1,rep,name=cases" json:"cases,omitempty"`
+	Cases []*common.Case `protobuf:"bytes,1,rep,name=cases,proto3" json:"cases,omitempty"`
 	// A token to retrieve the next page of results. This should be passed on in
 	// `page_token` field of `ListCaseRequest` for next request. If unspecified,
 	// there are no more results to retrieve.
-	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken" json:"next_page_token,omitempty"`
+	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -309,7 +309,7 @@ func (m *ListCasesResponse) Reset()         { *m = ListCasesResponse{} }
 func (m *ListCasesResponse) String() string { return proto.CompactTextString(m) }
 func (*ListCasesResponse) ProtoMessage()    {}
 func (*ListCasesResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cloud_support_69743c0be48100ea, []int{5}
+	return fileDescriptor_cloud_support_33c72ff20b6be0b4, []int{5}
 }
 func (m *ListCasesResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListCasesResponse.Unmarshal(m, b)
@@ -346,7 +346,7 @@ func (m *ListCasesResponse) GetNextPageToken() string {
 // The request message for `ListComments` method.
 type ListCommentsRequest struct {
 	// The resource name of case for which comments should be listed.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -356,7 +356,7 @@ func (m *ListCommentsRequest) Reset()         { *m = ListCommentsRequest{} }
 func (m *ListCommentsRequest) String() string { return proto.CompactTextString(m) }
 func (*ListCommentsRequest) ProtoMessage()    {}
 func (*ListCommentsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cloud_support_69743c0be48100ea, []int{6}
+	return fileDescriptor_cloud_support_33c72ff20b6be0b4, []int{6}
 }
 func (m *ListCommentsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListCommentsRequest.Unmarshal(m, b)
@@ -386,7 +386,7 @@ func (m *ListCommentsRequest) GetName() string {
 // The response message for `ListComments` method.
 type ListCommentsResponse struct {
 	// A list of comments.
-	Comments             []*common.Comment `protobuf:"bytes,1,rep,name=comments" json:"comments,omitempty"`
+	Comments             []*common.Comment `protobuf:"bytes,1,rep,name=comments,proto3" json:"comments,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
 	XXX_unrecognized     []byte            `json:"-"`
 	XXX_sizecache        int32             `json:"-"`
@@ -396,7 +396,7 @@ func (m *ListCommentsResponse) Reset()         { *m = ListCommentsResponse{} }
 func (m *ListCommentsResponse) String() string { return proto.CompactTextString(m) }
 func (*ListCommentsResponse) ProtoMessage()    {}
 func (*ListCommentsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cloud_support_69743c0be48100ea, []int{7}
+	return fileDescriptor_cloud_support_33c72ff20b6be0b4, []int{7}
 }
 func (m *ListCommentsResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListCommentsResponse.Unmarshal(m, b)
@@ -426,9 +426,9 @@ func (m *ListCommentsResponse) GetComments() []*common.Comment {
 // The request message for `CreateCase` method.
 type CreateCaseRequest struct {
 	// The resource name for `SupportAccount` under which this case is created.
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// The case resource to create.
-	Case                 *common.Case `protobuf:"bytes,2,opt,name=case" json:"case,omitempty"`
+	Case                 *common.Case `protobuf:"bytes,2,opt,name=case,proto3" json:"case,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
 	XXX_unrecognized     []byte       `json:"-"`
 	XXX_sizecache        int32        `json:"-"`
@@ -438,7 +438,7 @@ func (m *CreateCaseRequest) Reset()         { *m = CreateCaseRequest{} }
 func (m *CreateCaseRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateCaseRequest) ProtoMessage()    {}
 func (*CreateCaseRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cloud_support_69743c0be48100ea, []int{8}
+	return fileDescriptor_cloud_support_33c72ff20b6be0b4, []int{8}
 }
 func (m *CreateCaseRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CreateCaseRequest.Unmarshal(m, b)
@@ -475,10 +475,10 @@ func (m *CreateCaseRequest) GetCase() *common.Case {
 // The request message for `UpdateCase` method.
 type UpdateCaseRequest struct {
 	// The case resource to update.
-	Case *common.Case `protobuf:"bytes,1,opt,name=case" json:"case,omitempty"`
+	Case *common.Case `protobuf:"bytes,1,opt,name=case,proto3" json:"case,omitempty"`
 	// A field that represents attributes of a Case object that should be updated
 	// as part of this request.
-	UpdateMask           *field_mask.FieldMask `protobuf:"bytes,2,opt,name=update_mask,json=updateMask" json:"update_mask,omitempty"`
+	UpdateMask           *field_mask.FieldMask `protobuf:"bytes,2,opt,name=update_mask,json=updateMask,proto3" json:"update_mask,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}              `json:"-"`
 	XXX_unrecognized     []byte                `json:"-"`
 	XXX_sizecache        int32                 `json:"-"`
@@ -488,7 +488,7 @@ func (m *UpdateCaseRequest) Reset()         { *m = UpdateCaseRequest{} }
 func (m *UpdateCaseRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateCaseRequest) ProtoMessage()    {}
 func (*UpdateCaseRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cloud_support_69743c0be48100ea, []int{9}
+	return fileDescriptor_cloud_support_33c72ff20b6be0b4, []int{9}
 }
 func (m *UpdateCaseRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UpdateCaseRequest.Unmarshal(m, b)
@@ -525,9 +525,9 @@ func (m *UpdateCaseRequest) GetUpdateMask() *field_mask.FieldMask {
 // The request message for `CreateComment` method.
 type CreateCommentRequest struct {
 	// The resource name of case to which this comment should be added.
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// The `Comment` to be added to this case.
-	Comment              *common.Comment `protobuf:"bytes,2,opt,name=comment" json:"comment,omitempty"`
+	Comment              *common.Comment `protobuf:"bytes,2,opt,name=comment,proto3" json:"comment,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
 	XXX_unrecognized     []byte          `json:"-"`
 	XXX_sizecache        int32           `json:"-"`
@@ -537,7 +537,7 @@ func (m *CreateCommentRequest) Reset()         { *m = CreateCommentRequest{} }
 func (m *CreateCommentRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateCommentRequest) ProtoMessage()    {}
 func (*CreateCommentRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cloud_support_69743c0be48100ea, []int{10}
+	return fileDescriptor_cloud_support_33c72ff20b6be0b4, []int{10}
 }
 func (m *CreateCommentRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CreateCommentRequest.Unmarshal(m, b)
@@ -582,7 +582,7 @@ func (m *GetIssueTaxonomyRequest) Reset()         { *m = GetIssueTaxonomyRequest
 func (m *GetIssueTaxonomyRequest) String() string { return proto.CompactTextString(m) }
 func (*GetIssueTaxonomyRequest) ProtoMessage()    {}
 func (*GetIssueTaxonomyRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cloud_support_69743c0be48100ea, []int{11}
+	return fileDescriptor_cloud_support_33c72ff20b6be0b4, []int{11}
 }
 func (m *GetIssueTaxonomyRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetIssueTaxonomyRequest.Unmarshal(m, b)
@@ -747,8 +747,7 @@ func (c *cloudSupportClient) GetIssueTaxonomy(ctx context.Context, in *GetIssueT
 	return out, nil
 }
 
-// Server API for CloudSupport service
-
+// CloudSupportServer is the server API for CloudSupport service.
 type CloudSupportServer interface {
 	// Retrieves the support account details given an account identifier.
 	// The authenticated user calling this method must be the account owner.
@@ -991,10 +990,10 @@ var _CloudSupport_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("google/cloud/support/v1alpha1/cloud_support.proto", fileDescriptor_cloud_support_69743c0be48100ea)
+	proto.RegisterFile("google/cloud/support/v1alpha1/cloud_support.proto", fileDescriptor_cloud_support_33c72ff20b6be0b4)
 }
 
-var fileDescriptor_cloud_support_69743c0be48100ea = []byte{
+var fileDescriptor_cloud_support_33c72ff20b6be0b4 = []byte{
 	// 863 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x56, 0x41, 0x4f, 0x33, 0x45,
 	0x18, 0xce, 0xb4, 0xc8, 0x07, 0x2f, 0xdf, 0xa7, 0x5f, 0x47, 0x82, 0x65, 0x0b, 0x49, 0x3b, 0x21,

@@ -56,7 +56,7 @@ func (x Database_State) String() string {
 	return proto.EnumName(Database_State_name, int32(x))
 }
 func (Database_State) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_database_admin_02dee0ac7a4fa885, []int{0, 0}
+	return fileDescriptor_spanner_database_admin_7b69d4ce340cae98, []int{0, 0}
 }
 
 // A Cloud Spanner database.
@@ -66,9 +66,9 @@ type Database struct {
 	// where `<database>` is as specified in the `CREATE DATABASE`
 	// statement. This name can be passed to other API methods to
 	// identify the database.
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// Output only. The current database state.
-	State                Database_State `protobuf:"varint,2,opt,name=state,enum=google.spanner.admin.database.v1.Database_State" json:"state,omitempty"`
+	State                Database_State `protobuf:"varint,2,opt,name=state,proto3,enum=google.spanner.admin.database.v1.Database_State" json:"state,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
 	XXX_unrecognized     []byte         `json:"-"`
 	XXX_sizecache        int32          `json:"-"`
@@ -78,7 +78,7 @@ func (m *Database) Reset()         { *m = Database{} }
 func (m *Database) String() string { return proto.CompactTextString(m) }
 func (*Database) ProtoMessage()    {}
 func (*Database) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_database_admin_02dee0ac7a4fa885, []int{0}
+	return fileDescriptor_spanner_database_admin_7b69d4ce340cae98, []int{0}
 }
 func (m *Database) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Database.Unmarshal(m, b)
@@ -116,14 +116,14 @@ func (m *Database) GetState() Database_State {
 type ListDatabasesRequest struct {
 	// Required. The instance whose databases should be listed.
 	// Values are of the form `projects/<project>/instances/<instance>`.
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// Number of databases to be returned in the response. If 0 or less,
 	// defaults to the server's maximum allowed page size.
-	PageSize int32 `protobuf:"varint,3,opt,name=page_size,json=pageSize" json:"page_size,omitempty"`
+	PageSize int32 `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// If non-empty, `page_token` should contain a
 	// [next_page_token][google.spanner.admin.database.v1.ListDatabasesResponse.next_page_token] from a
 	// previous [ListDatabasesResponse][google.spanner.admin.database.v1.ListDatabasesResponse].
-	PageToken            string   `protobuf:"bytes,4,opt,name=page_token,json=pageToken" json:"page_token,omitempty"`
+	PageToken            string   `protobuf:"bytes,4,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -133,7 +133,7 @@ func (m *ListDatabasesRequest) Reset()         { *m = ListDatabasesRequest{} }
 func (m *ListDatabasesRequest) String() string { return proto.CompactTextString(m) }
 func (*ListDatabasesRequest) ProtoMessage()    {}
 func (*ListDatabasesRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_database_admin_02dee0ac7a4fa885, []int{1}
+	return fileDescriptor_spanner_database_admin_7b69d4ce340cae98, []int{1}
 }
 func (m *ListDatabasesRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListDatabasesRequest.Unmarshal(m, b)
@@ -177,11 +177,11 @@ func (m *ListDatabasesRequest) GetPageToken() string {
 // The response for [ListDatabases][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabases].
 type ListDatabasesResponse struct {
 	// Databases that matched the request.
-	Databases []*Database `protobuf:"bytes,1,rep,name=databases" json:"databases,omitempty"`
+	Databases []*Database `protobuf:"bytes,1,rep,name=databases,proto3" json:"databases,omitempty"`
 	// `next_page_token` can be sent in a subsequent
 	// [ListDatabases][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabases] call to fetch more
 	// of the matching databases.
-	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken" json:"next_page_token,omitempty"`
+	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -191,7 +191,7 @@ func (m *ListDatabasesResponse) Reset()         { *m = ListDatabasesResponse{} }
 func (m *ListDatabasesResponse) String() string { return proto.CompactTextString(m) }
 func (*ListDatabasesResponse) ProtoMessage()    {}
 func (*ListDatabasesResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_database_admin_02dee0ac7a4fa885, []int{2}
+	return fileDescriptor_spanner_database_admin_7b69d4ce340cae98, []int{2}
 }
 func (m *ListDatabasesResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListDatabasesResponse.Unmarshal(m, b)
@@ -229,18 +229,18 @@ func (m *ListDatabasesResponse) GetNextPageToken() string {
 type CreateDatabaseRequest struct {
 	// Required. The name of the instance that will serve the new database.
 	// Values are of the form `projects/<project>/instances/<instance>`.
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// Required. A `CREATE DATABASE` statement, which specifies the ID of the
 	// new database.  The database ID must conform to the regular expression
 	// `[a-z][a-z0-9_\-]*[a-z0-9]` and be between 2 and 30 characters in length.
 	// If the database ID is a reserved word or if it contains a hyphen, the
 	// database ID must be enclosed in backticks (`` ` ``).
-	CreateStatement string `protobuf:"bytes,2,opt,name=create_statement,json=createStatement" json:"create_statement,omitempty"`
+	CreateStatement string `protobuf:"bytes,2,opt,name=create_statement,json=createStatement,proto3" json:"create_statement,omitempty"`
 	// An optional list of DDL statements to run inside the newly created
 	// database. Statements can create tables, indexes, etc. These
 	// statements execute atomically with the creation of the database:
 	// if there is an error in any statement, the database is not created.
-	ExtraStatements      []string `protobuf:"bytes,3,rep,name=extra_statements,json=extraStatements" json:"extra_statements,omitempty"`
+	ExtraStatements      []string `protobuf:"bytes,3,rep,name=extra_statements,json=extraStatements,proto3" json:"extra_statements,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -250,7 +250,7 @@ func (m *CreateDatabaseRequest) Reset()         { *m = CreateDatabaseRequest{} }
 func (m *CreateDatabaseRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateDatabaseRequest) ProtoMessage()    {}
 func (*CreateDatabaseRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_database_admin_02dee0ac7a4fa885, []int{3}
+	return fileDescriptor_spanner_database_admin_7b69d4ce340cae98, []int{3}
 }
 func (m *CreateDatabaseRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CreateDatabaseRequest.Unmarshal(m, b)
@@ -295,7 +295,7 @@ func (m *CreateDatabaseRequest) GetExtraStatements() []string {
 // [CreateDatabase][google.spanner.admin.database.v1.DatabaseAdmin.CreateDatabase].
 type CreateDatabaseMetadata struct {
 	// The database being created.
-	Database             string   `protobuf:"bytes,1,opt,name=database" json:"database,omitempty"`
+	Database             string   `protobuf:"bytes,1,opt,name=database,proto3" json:"database,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -305,7 +305,7 @@ func (m *CreateDatabaseMetadata) Reset()         { *m = CreateDatabaseMetadata{}
 func (m *CreateDatabaseMetadata) String() string { return proto.CompactTextString(m) }
 func (*CreateDatabaseMetadata) ProtoMessage()    {}
 func (*CreateDatabaseMetadata) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_database_admin_02dee0ac7a4fa885, []int{4}
+	return fileDescriptor_spanner_database_admin_7b69d4ce340cae98, []int{4}
 }
 func (m *CreateDatabaseMetadata) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CreateDatabaseMetadata.Unmarshal(m, b)
@@ -336,7 +336,7 @@ func (m *CreateDatabaseMetadata) GetDatabase() string {
 type GetDatabaseRequest struct {
 	// Required. The name of the requested database. Values are of the form
 	// `projects/<project>/instances/<instance>/databases/<database>`.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -346,7 +346,7 @@ func (m *GetDatabaseRequest) Reset()         { *m = GetDatabaseRequest{} }
 func (m *GetDatabaseRequest) String() string { return proto.CompactTextString(m) }
 func (*GetDatabaseRequest) ProtoMessage()    {}
 func (*GetDatabaseRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_database_admin_02dee0ac7a4fa885, []int{5}
+	return fileDescriptor_spanner_database_admin_7b69d4ce340cae98, []int{5}
 }
 func (m *GetDatabaseRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetDatabaseRequest.Unmarshal(m, b)
@@ -391,9 +391,9 @@ func (m *GetDatabaseRequest) GetName() string {
 // details.
 type UpdateDatabaseDdlRequest struct {
 	// Required. The database to update.
-	Database string `protobuf:"bytes,1,opt,name=database" json:"database,omitempty"`
+	Database string `protobuf:"bytes,1,opt,name=database,proto3" json:"database,omitempty"`
 	// DDL statements to be applied to the database.
-	Statements []string `protobuf:"bytes,2,rep,name=statements" json:"statements,omitempty"`
+	Statements []string `protobuf:"bytes,2,rep,name=statements,proto3" json:"statements,omitempty"`
 	// If empty, the new update request is assigned an
 	// automatically-generated operation ID. Otherwise, `operation_id`
 	// is used to construct the name of the resulting
@@ -413,7 +413,7 @@ type UpdateDatabaseDdlRequest struct {
 	// underscore. If the named operation already exists,
 	// [UpdateDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabaseDdl] returns
 	// `ALREADY_EXISTS`.
-	OperationId          string   `protobuf:"bytes,3,opt,name=operation_id,json=operationId" json:"operation_id,omitempty"`
+	OperationId          string   `protobuf:"bytes,3,opt,name=operation_id,json=operationId,proto3" json:"operation_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -423,7 +423,7 @@ func (m *UpdateDatabaseDdlRequest) Reset()         { *m = UpdateDatabaseDdlReque
 func (m *UpdateDatabaseDdlRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateDatabaseDdlRequest) ProtoMessage()    {}
 func (*UpdateDatabaseDdlRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_database_admin_02dee0ac7a4fa885, []int{6}
+	return fileDescriptor_spanner_database_admin_7b69d4ce340cae98, []int{6}
 }
 func (m *UpdateDatabaseDdlRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UpdateDatabaseDdlRequest.Unmarshal(m, b)
@@ -468,14 +468,14 @@ func (m *UpdateDatabaseDdlRequest) GetOperationId() string {
 // [UpdateDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabaseDdl].
 type UpdateDatabaseDdlMetadata struct {
 	// The database being modified.
-	Database string `protobuf:"bytes,1,opt,name=database" json:"database,omitempty"`
+	Database string `protobuf:"bytes,1,opt,name=database,proto3" json:"database,omitempty"`
 	// For an update this list contains all the statements. For an
 	// individual statement, this list contains only that statement.
-	Statements []string `protobuf:"bytes,2,rep,name=statements" json:"statements,omitempty"`
+	Statements []string `protobuf:"bytes,2,rep,name=statements,proto3" json:"statements,omitempty"`
 	// Reports the commit timestamps of all statements that have
 	// succeeded so far, where `commit_timestamps[i]` is the commit
 	// timestamp for the statement `statements[i]`.
-	CommitTimestamps     []*timestamp.Timestamp `protobuf:"bytes,3,rep,name=commit_timestamps,json=commitTimestamps" json:"commit_timestamps,omitempty"`
+	CommitTimestamps     []*timestamp.Timestamp `protobuf:"bytes,3,rep,name=commit_timestamps,json=commitTimestamps,proto3" json:"commit_timestamps,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}               `json:"-"`
 	XXX_unrecognized     []byte                 `json:"-"`
 	XXX_sizecache        int32                  `json:"-"`
@@ -485,7 +485,7 @@ func (m *UpdateDatabaseDdlMetadata) Reset()         { *m = UpdateDatabaseDdlMeta
 func (m *UpdateDatabaseDdlMetadata) String() string { return proto.CompactTextString(m) }
 func (*UpdateDatabaseDdlMetadata) ProtoMessage()    {}
 func (*UpdateDatabaseDdlMetadata) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_database_admin_02dee0ac7a4fa885, []int{7}
+	return fileDescriptor_spanner_database_admin_7b69d4ce340cae98, []int{7}
 }
 func (m *UpdateDatabaseDdlMetadata) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UpdateDatabaseDdlMetadata.Unmarshal(m, b)
@@ -529,7 +529,7 @@ func (m *UpdateDatabaseDdlMetadata) GetCommitTimestamps() []*timestamp.Timestamp
 // The request for [DropDatabase][google.spanner.admin.database.v1.DatabaseAdmin.DropDatabase].
 type DropDatabaseRequest struct {
 	// Required. The database to be dropped.
-	Database             string   `protobuf:"bytes,1,opt,name=database" json:"database,omitempty"`
+	Database             string   `protobuf:"bytes,1,opt,name=database,proto3" json:"database,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -539,7 +539,7 @@ func (m *DropDatabaseRequest) Reset()         { *m = DropDatabaseRequest{} }
 func (m *DropDatabaseRequest) String() string { return proto.CompactTextString(m) }
 func (*DropDatabaseRequest) ProtoMessage()    {}
 func (*DropDatabaseRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_database_admin_02dee0ac7a4fa885, []int{8}
+	return fileDescriptor_spanner_database_admin_7b69d4ce340cae98, []int{8}
 }
 func (m *DropDatabaseRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DropDatabaseRequest.Unmarshal(m, b)
@@ -569,7 +569,7 @@ func (m *DropDatabaseRequest) GetDatabase() string {
 // The request for [GetDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDdl].
 type GetDatabaseDdlRequest struct {
 	// Required. The database whose schema we wish to get.
-	Database             string   `protobuf:"bytes,1,opt,name=database" json:"database,omitempty"`
+	Database             string   `protobuf:"bytes,1,opt,name=database,proto3" json:"database,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -579,7 +579,7 @@ func (m *GetDatabaseDdlRequest) Reset()         { *m = GetDatabaseDdlRequest{} }
 func (m *GetDatabaseDdlRequest) String() string { return proto.CompactTextString(m) }
 func (*GetDatabaseDdlRequest) ProtoMessage()    {}
 func (*GetDatabaseDdlRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_database_admin_02dee0ac7a4fa885, []int{9}
+	return fileDescriptor_spanner_database_admin_7b69d4ce340cae98, []int{9}
 }
 func (m *GetDatabaseDdlRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetDatabaseDdlRequest.Unmarshal(m, b)
@@ -610,7 +610,7 @@ func (m *GetDatabaseDdlRequest) GetDatabase() string {
 type GetDatabaseDdlResponse struct {
 	// A list of formatted DDL statements defining the schema of the database
 	// specified in the request.
-	Statements           []string `protobuf:"bytes,1,rep,name=statements" json:"statements,omitempty"`
+	Statements           []string `protobuf:"bytes,1,rep,name=statements,proto3" json:"statements,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -620,7 +620,7 @@ func (m *GetDatabaseDdlResponse) Reset()         { *m = GetDatabaseDdlResponse{}
 func (m *GetDatabaseDdlResponse) String() string { return proto.CompactTextString(m) }
 func (*GetDatabaseDdlResponse) ProtoMessage()    {}
 func (*GetDatabaseDdlResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_database_admin_02dee0ac7a4fa885, []int{10}
+	return fileDescriptor_spanner_database_admin_7b69d4ce340cae98, []int{10}
 }
 func (m *GetDatabaseDdlResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetDatabaseDdlResponse.Unmarshal(m, b)
@@ -811,8 +811,7 @@ func (c *databaseAdminClient) TestIamPermissions(ctx context.Context, in *v1.Tes
 	return out, nil
 }
 
-// Server API for DatabaseAdmin service
-
+// DatabaseAdminServer is the server API for DatabaseAdmin service.
 type DatabaseAdminServer interface {
 	// Lists Cloud Spanner databases.
 	ListDatabases(context.Context, *ListDatabasesRequest) (*ListDatabasesResponse, error)
@@ -1074,10 +1073,10 @@ var _DatabaseAdmin_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("google/spanner/admin/database/v1/spanner_database_admin.proto", fileDescriptor_spanner_database_admin_02dee0ac7a4fa885)
+	proto.RegisterFile("google/spanner/admin/database/v1/spanner_database_admin.proto", fileDescriptor_spanner_database_admin_7b69d4ce340cae98)
 }
 
-var fileDescriptor_spanner_database_admin_02dee0ac7a4fa885 = []byte{
+var fileDescriptor_spanner_database_admin_7b69d4ce340cae98 = []byte{
 	// 1033 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xbc, 0x96, 0xcf, 0x6f, 0x1b, 0x45,
 	0x14, 0xc7, 0x19, 0xa7, 0xa9, 0x92, 0x17, 0x27, 0x75, 0x06, 0x1c, 0xb9, 0x5b, 0x5a, 0xcc, 0x82,

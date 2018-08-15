@@ -22,9 +22,9 @@ const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 // NOTE: the vertex coordinates are in the same scale as the original image.
 type Vertex struct {
 	// X coordinate.
-	X int32 `protobuf:"varint,1,opt,name=x" json:"x,omitempty"`
+	X int32 `protobuf:"varint,1,opt,name=x,proto3" json:"x,omitempty"`
 	// Y coordinate.
-	Y                    int32    `protobuf:"varint,2,opt,name=y" json:"y,omitempty"`
+	Y                    int32    `protobuf:"varint,2,opt,name=y,proto3" json:"y,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -34,7 +34,7 @@ func (m *Vertex) Reset()         { *m = Vertex{} }
 func (m *Vertex) String() string { return proto.CompactTextString(m) }
 func (*Vertex) ProtoMessage()    {}
 func (*Vertex) Descriptor() ([]byte, []int) {
-	return fileDescriptor_geometry_707b9500411428fe, []int{0}
+	return fileDescriptor_geometry_0665111372b2901b, []int{0}
 }
 func (m *Vertex) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Vertex.Unmarshal(m, b)
@@ -73,9 +73,9 @@ func (m *Vertex) GetY() int32 {
 // and range from 0 to 1.
 type NormalizedVertex struct {
 	// X coordinate.
-	X float32 `protobuf:"fixed32,1,opt,name=x" json:"x,omitempty"`
+	X float32 `protobuf:"fixed32,1,opt,name=x,proto3" json:"x,omitempty"`
 	// Y coordinate.
-	Y                    float32  `protobuf:"fixed32,2,opt,name=y" json:"y,omitempty"`
+	Y                    float32  `protobuf:"fixed32,2,opt,name=y,proto3" json:"y,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -85,7 +85,7 @@ func (m *NormalizedVertex) Reset()         { *m = NormalizedVertex{} }
 func (m *NormalizedVertex) String() string { return proto.CompactTextString(m) }
 func (*NormalizedVertex) ProtoMessage()    {}
 func (*NormalizedVertex) Descriptor() ([]byte, []int) {
-	return fileDescriptor_geometry_707b9500411428fe, []int{1}
+	return fileDescriptor_geometry_0665111372b2901b, []int{1}
 }
 func (m *NormalizedVertex) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_NormalizedVertex.Unmarshal(m, b)
@@ -122,9 +122,9 @@ func (m *NormalizedVertex) GetY() float32 {
 // A bounding polygon for the detected image annotation.
 type BoundingPoly struct {
 	// The bounding polygon vertices.
-	Vertices []*Vertex `protobuf:"bytes,1,rep,name=vertices" json:"vertices,omitempty"`
+	Vertices []*Vertex `protobuf:"bytes,1,rep,name=vertices,proto3" json:"vertices,omitempty"`
 	// The bounding polygon normalized vertices.
-	NormalizedVertices   []*NormalizedVertex `protobuf:"bytes,2,rep,name=normalized_vertices,json=normalizedVertices" json:"normalized_vertices,omitempty"`
+	NormalizedVertices   []*NormalizedVertex `protobuf:"bytes,2,rep,name=normalized_vertices,json=normalizedVertices,proto3" json:"normalized_vertices,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}            `json:"-"`
 	XXX_unrecognized     []byte              `json:"-"`
 	XXX_sizecache        int32               `json:"-"`
@@ -134,7 +134,7 @@ func (m *BoundingPoly) Reset()         { *m = BoundingPoly{} }
 func (m *BoundingPoly) String() string { return proto.CompactTextString(m) }
 func (*BoundingPoly) ProtoMessage()    {}
 func (*BoundingPoly) Descriptor() ([]byte, []int) {
-	return fileDescriptor_geometry_707b9500411428fe, []int{2}
+	return fileDescriptor_geometry_0665111372b2901b, []int{2}
 }
 func (m *BoundingPoly) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_BoundingPoly.Unmarshal(m, b)
@@ -173,11 +173,11 @@ func (m *BoundingPoly) GetNormalizedVertices() []*NormalizedVertex {
 // The position coordinates are in the same scale as the original image.
 type Position struct {
 	// X coordinate.
-	X float32 `protobuf:"fixed32,1,opt,name=x" json:"x,omitempty"`
+	X float32 `protobuf:"fixed32,1,opt,name=x,proto3" json:"x,omitempty"`
 	// Y coordinate.
-	Y float32 `protobuf:"fixed32,2,opt,name=y" json:"y,omitempty"`
+	Y float32 `protobuf:"fixed32,2,opt,name=y,proto3" json:"y,omitempty"`
 	// Z coordinate (or depth).
-	Z                    float32  `protobuf:"fixed32,3,opt,name=z" json:"z,omitempty"`
+	Z                    float32  `protobuf:"fixed32,3,opt,name=z,proto3" json:"z,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -187,7 +187,7 @@ func (m *Position) Reset()         { *m = Position{} }
 func (m *Position) String() string { return proto.CompactTextString(m) }
 func (*Position) ProtoMessage()    {}
 func (*Position) Descriptor() ([]byte, []int) {
-	return fileDescriptor_geometry_707b9500411428fe, []int{3}
+	return fileDescriptor_geometry_0665111372b2901b, []int{3}
 }
 func (m *Position) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Position.Unmarshal(m, b)
@@ -236,10 +236,10 @@ func init() {
 }
 
 func init() {
-	proto.RegisterFile("google/cloud/vision/v1p2beta1/geometry.proto", fileDescriptor_geometry_707b9500411428fe)
+	proto.RegisterFile("google/cloud/vision/v1p2beta1/geometry.proto", fileDescriptor_geometry_0665111372b2901b)
 }
 
-var fileDescriptor_geometry_707b9500411428fe = []byte{
+var fileDescriptor_geometry_0665111372b2901b = []byte{
 	// 283 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x84, 0x91, 0xc1, 0x4b, 0xc3, 0x30,
 	0x14, 0xc6, 0x49, 0x87, 0x63, 0xc4, 0x09, 0x52, 0x2f, 0xbd, 0x08, 0xb3, 0x28, 0xec, 0x20, 0x09,

@@ -51,7 +51,7 @@ func (x AliasContext_Kind) String() string {
 	return proto.EnumName(AliasContext_Kind_name, int32(x))
 }
 func (AliasContext_Kind) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_source_context_893b293b953ef2a1, []int{1, 0}
+	return fileDescriptor_source_context_78f437f8b7f72e1b, []int{1, 0}
 }
 
 // A SourceContext is a reference to a tree of files. A SourceContext together
@@ -65,7 +65,7 @@ type SourceContext struct {
 	//	*SourceContext_Git
 	Context isSourceContext_Context `protobuf_oneof:"context"`
 	// Labels with user defined metadata.
-	Labels               map[string]string `protobuf:"bytes,4,rep,name=labels" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Labels               map[string]string `protobuf:"bytes,4,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
 	XXX_unrecognized     []byte            `json:"-"`
 	XXX_sizecache        int32             `json:"-"`
@@ -75,7 +75,7 @@ func (m *SourceContext) Reset()         { *m = SourceContext{} }
 func (m *SourceContext) String() string { return proto.CompactTextString(m) }
 func (*SourceContext) ProtoMessage()    {}
 func (*SourceContext) Descriptor() ([]byte, []int) {
-	return fileDescriptor_source_context_893b293b953ef2a1, []int{0}
+	return fileDescriptor_source_context_78f437f8b7f72e1b, []int{0}
 }
 func (m *SourceContext) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SourceContext.Unmarshal(m, b)
@@ -100,18 +100,22 @@ type isSourceContext_Context interface {
 }
 
 type SourceContext_CloudRepo struct {
-	CloudRepo *CloudRepoSourceContext `protobuf:"bytes,1,opt,name=cloud_repo,json=cloudRepo,oneof"`
+	CloudRepo *CloudRepoSourceContext `protobuf:"bytes,1,opt,name=cloud_repo,json=cloudRepo,proto3,oneof"`
 }
+
 type SourceContext_Gerrit struct {
-	Gerrit *GerritSourceContext `protobuf:"bytes,2,opt,name=gerrit,oneof"`
+	Gerrit *GerritSourceContext `protobuf:"bytes,2,opt,name=gerrit,proto3,oneof"`
 }
+
 type SourceContext_Git struct {
-	Git *GitSourceContext `protobuf:"bytes,3,opt,name=git,oneof"`
+	Git *GitSourceContext `protobuf:"bytes,3,opt,name=git,proto3,oneof"`
 }
 
 func (*SourceContext_CloudRepo) isSourceContext_Context() {}
-func (*SourceContext_Gerrit) isSourceContext_Context()    {}
-func (*SourceContext_Git) isSourceContext_Context()       {}
+
+func (*SourceContext_Gerrit) isSourceContext_Context() {}
+
+func (*SourceContext_Git) isSourceContext_Context() {}
 
 func (m *SourceContext) GetContext() isSourceContext_Context {
 	if m != nil {
@@ -244,9 +248,9 @@ func _SourceContext_OneofSizer(msg proto.Message) (n int) {
 // An alias to a repo revision.
 type AliasContext struct {
 	// The alias kind.
-	Kind AliasContext_Kind `protobuf:"varint,1,opt,name=kind,enum=google.devtools.containeranalysis.v1alpha1.AliasContext_Kind" json:"kind,omitempty"`
+	Kind AliasContext_Kind `protobuf:"varint,1,opt,name=kind,proto3,enum=google.devtools.containeranalysis.v1alpha1.AliasContext_Kind" json:"kind,omitempty"`
 	// The alias name.
-	Name                 string   `protobuf:"bytes,2,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -256,7 +260,7 @@ func (m *AliasContext) Reset()         { *m = AliasContext{} }
 func (m *AliasContext) String() string { return proto.CompactTextString(m) }
 func (*AliasContext) ProtoMessage()    {}
 func (*AliasContext) Descriptor() ([]byte, []int) {
-	return fileDescriptor_source_context_893b293b953ef2a1, []int{1}
+	return fileDescriptor_source_context_78f437f8b7f72e1b, []int{1}
 }
 func (m *AliasContext) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_AliasContext.Unmarshal(m, b)
@@ -294,7 +298,7 @@ func (m *AliasContext) GetName() string {
 // Source Repo.
 type CloudRepoSourceContext struct {
 	// The ID of the repo.
-	RepoId *RepoId `protobuf:"bytes,1,opt,name=repo_id,json=repoId" json:"repo_id,omitempty"`
+	RepoId *RepoId `protobuf:"bytes,1,opt,name=repo_id,json=repoId,proto3" json:"repo_id,omitempty"`
 	// A revision in a Cloud Repo can be identified by either its revision ID or
 	// its alias.
 	//
@@ -311,7 +315,7 @@ func (m *CloudRepoSourceContext) Reset()         { *m = CloudRepoSourceContext{}
 func (m *CloudRepoSourceContext) String() string { return proto.CompactTextString(m) }
 func (*CloudRepoSourceContext) ProtoMessage()    {}
 func (*CloudRepoSourceContext) Descriptor() ([]byte, []int) {
-	return fileDescriptor_source_context_893b293b953ef2a1, []int{2}
+	return fileDescriptor_source_context_78f437f8b7f72e1b, []int{2}
 }
 func (m *CloudRepoSourceContext) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CloudRepoSourceContext.Unmarshal(m, b)
@@ -331,30 +335,32 @@ func (m *CloudRepoSourceContext) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_CloudRepoSourceContext proto.InternalMessageInfo
 
+func (m *CloudRepoSourceContext) GetRepoId() *RepoId {
+	if m != nil {
+		return m.RepoId
+	}
+	return nil
+}
+
 type isCloudRepoSourceContext_Revision interface {
 	isCloudRepoSourceContext_Revision()
 }
 
 type CloudRepoSourceContext_RevisionId struct {
-	RevisionId string `protobuf:"bytes,2,opt,name=revision_id,json=revisionId,oneof"`
-}
-type CloudRepoSourceContext_AliasContext struct {
-	AliasContext *AliasContext `protobuf:"bytes,3,opt,name=alias_context,json=aliasContext,oneof"`
+	RevisionId string `protobuf:"bytes,2,opt,name=revision_id,json=revisionId,proto3,oneof"`
 }
 
-func (*CloudRepoSourceContext_RevisionId) isCloudRepoSourceContext_Revision()   {}
+type CloudRepoSourceContext_AliasContext struct {
+	AliasContext *AliasContext `protobuf:"bytes,3,opt,name=alias_context,json=aliasContext,proto3,oneof"`
+}
+
+func (*CloudRepoSourceContext_RevisionId) isCloudRepoSourceContext_Revision() {}
+
 func (*CloudRepoSourceContext_AliasContext) isCloudRepoSourceContext_Revision() {}
 
 func (m *CloudRepoSourceContext) GetRevision() isCloudRepoSourceContext_Revision {
 	if m != nil {
 		return m.Revision
-	}
-	return nil
-}
-
-func (m *CloudRepoSourceContext) GetRepoId() *RepoId {
-	if m != nil {
-		return m.RepoId
 	}
 	return nil
 }
@@ -446,11 +452,11 @@ func _CloudRepoSourceContext_OneofSizer(msg proto.Message) (n int) {
 // A SourceContext referring to a Gerrit project.
 type GerritSourceContext struct {
 	// The URI of a running Gerrit instance.
-	HostUri string `protobuf:"bytes,1,opt,name=host_uri,json=hostUri" json:"host_uri,omitempty"`
+	HostUri string `protobuf:"bytes,1,opt,name=host_uri,json=hostUri,proto3" json:"host_uri,omitempty"`
 	// The full project name within the host. Projects may be nested, so
 	// "project/subproject" is a valid project name. The "repo name" is
 	// the hostURI/project.
-	GerritProject string `protobuf:"bytes,2,opt,name=gerrit_project,json=gerritProject" json:"gerrit_project,omitempty"`
+	GerritProject string `protobuf:"bytes,2,opt,name=gerrit_project,json=gerritProject,proto3" json:"gerrit_project,omitempty"`
 	// A revision in a Gerrit project can be identified by either its revision ID
 	// or its alias.
 	//
@@ -467,7 +473,7 @@ func (m *GerritSourceContext) Reset()         { *m = GerritSourceContext{} }
 func (m *GerritSourceContext) String() string { return proto.CompactTextString(m) }
 func (*GerritSourceContext) ProtoMessage()    {}
 func (*GerritSourceContext) Descriptor() ([]byte, []int) {
-	return fileDescriptor_source_context_893b293b953ef2a1, []int{3}
+	return fileDescriptor_source_context_78f437f8b7f72e1b, []int{3}
 }
 func (m *GerritSourceContext) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GerritSourceContext.Unmarshal(m, b)
@@ -487,27 +493,6 @@ func (m *GerritSourceContext) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_GerritSourceContext proto.InternalMessageInfo
 
-type isGerritSourceContext_Revision interface {
-	isGerritSourceContext_Revision()
-}
-
-type GerritSourceContext_RevisionId struct {
-	RevisionId string `protobuf:"bytes,3,opt,name=revision_id,json=revisionId,oneof"`
-}
-type GerritSourceContext_AliasContext struct {
-	AliasContext *AliasContext `protobuf:"bytes,4,opt,name=alias_context,json=aliasContext,oneof"`
-}
-
-func (*GerritSourceContext_RevisionId) isGerritSourceContext_Revision()   {}
-func (*GerritSourceContext_AliasContext) isGerritSourceContext_Revision() {}
-
-func (m *GerritSourceContext) GetRevision() isGerritSourceContext_Revision {
-	if m != nil {
-		return m.Revision
-	}
-	return nil
-}
-
 func (m *GerritSourceContext) GetHostUri() string {
 	if m != nil {
 		return m.HostUri
@@ -520,6 +505,29 @@ func (m *GerritSourceContext) GetGerritProject() string {
 		return m.GerritProject
 	}
 	return ""
+}
+
+type isGerritSourceContext_Revision interface {
+	isGerritSourceContext_Revision()
+}
+
+type GerritSourceContext_RevisionId struct {
+	RevisionId string `protobuf:"bytes,3,opt,name=revision_id,json=revisionId,proto3,oneof"`
+}
+
+type GerritSourceContext_AliasContext struct {
+	AliasContext *AliasContext `protobuf:"bytes,4,opt,name=alias_context,json=aliasContext,proto3,oneof"`
+}
+
+func (*GerritSourceContext_RevisionId) isGerritSourceContext_Revision() {}
+
+func (*GerritSourceContext_AliasContext) isGerritSourceContext_Revision() {}
+
+func (m *GerritSourceContext) GetRevision() isGerritSourceContext_Revision {
+	if m != nil {
+		return m.Revision
+	}
+	return nil
 }
 
 func (m *GerritSourceContext) GetRevisionId() string {
@@ -610,10 +618,10 @@ func _GerritSourceContext_OneofSizer(msg proto.Message) (n int) {
 // repository (e.g., GitHub).
 type GitSourceContext struct {
 	// Git repository URL.
-	Url string `protobuf:"bytes,1,opt,name=url" json:"url,omitempty"`
+	Url string `protobuf:"bytes,1,opt,name=url,proto3" json:"url,omitempty"`
 	// Required.
 	// Git commit hash.
-	RevisionId           string   `protobuf:"bytes,2,opt,name=revision_id,json=revisionId" json:"revision_id,omitempty"`
+	RevisionId           string   `protobuf:"bytes,2,opt,name=revision_id,json=revisionId,proto3" json:"revision_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -623,7 +631,7 @@ func (m *GitSourceContext) Reset()         { *m = GitSourceContext{} }
 func (m *GitSourceContext) String() string { return proto.CompactTextString(m) }
 func (*GitSourceContext) ProtoMessage()    {}
 func (*GitSourceContext) Descriptor() ([]byte, []int) {
-	return fileDescriptor_source_context_893b293b953ef2a1, []int{4}
+	return fileDescriptor_source_context_78f437f8b7f72e1b, []int{4}
 }
 func (m *GitSourceContext) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GitSourceContext.Unmarshal(m, b)
@@ -675,7 +683,7 @@ func (m *RepoId) Reset()         { *m = RepoId{} }
 func (m *RepoId) String() string { return proto.CompactTextString(m) }
 func (*RepoId) ProtoMessage()    {}
 func (*RepoId) Descriptor() ([]byte, []int) {
-	return fileDescriptor_source_context_893b293b953ef2a1, []int{5}
+	return fileDescriptor_source_context_78f437f8b7f72e1b, []int{5}
 }
 func (m *RepoId) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_RepoId.Unmarshal(m, b)
@@ -700,14 +708,16 @@ type isRepoId_Id interface {
 }
 
 type RepoId_ProjectRepoId struct {
-	ProjectRepoId *ProjectRepoId `protobuf:"bytes,1,opt,name=project_repo_id,json=projectRepoId,oneof"`
+	ProjectRepoId *ProjectRepoId `protobuf:"bytes,1,opt,name=project_repo_id,json=projectRepoId,proto3,oneof"`
 }
+
 type RepoId_Uid struct {
-	Uid string `protobuf:"bytes,2,opt,name=uid,oneof"`
+	Uid string `protobuf:"bytes,2,opt,name=uid,proto3,oneof"`
 }
 
 func (*RepoId_ProjectRepoId) isRepoId_Id() {}
-func (*RepoId_Uid) isRepoId_Id()           {}
+
+func (*RepoId_Uid) isRepoId_Id() {}
 
 func (m *RepoId) GetId() isRepoId_Id {
 	if m != nil {
@@ -804,9 +814,9 @@ func _RepoId_OneofSizer(msg proto.Message) (n int) {
 // winged-cargo-31) and a repo name within that project.
 type ProjectRepoId struct {
 	// The ID of the project.
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// The name of the repo. Leave empty for the default repo.
-	RepoName             string   `protobuf:"bytes,2,opt,name=repo_name,json=repoName" json:"repo_name,omitempty"`
+	RepoName             string   `protobuf:"bytes,2,opt,name=repo_name,json=repoName,proto3" json:"repo_name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -816,7 +826,7 @@ func (m *ProjectRepoId) Reset()         { *m = ProjectRepoId{} }
 func (m *ProjectRepoId) String() string { return proto.CompactTextString(m) }
 func (*ProjectRepoId) ProtoMessage()    {}
 func (*ProjectRepoId) Descriptor() ([]byte, []int) {
-	return fileDescriptor_source_context_893b293b953ef2a1, []int{6}
+	return fileDescriptor_source_context_78f437f8b7f72e1b, []int{6}
 }
 func (m *ProjectRepoId) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ProjectRepoId.Unmarshal(m, b)
@@ -863,10 +873,10 @@ func init() {
 }
 
 func init() {
-	proto.RegisterFile("google/devtools/containeranalysis/v1alpha1/source_context.proto", fileDescriptor_source_context_893b293b953ef2a1)
+	proto.RegisterFile("google/devtools/containeranalysis/v1alpha1/source_context.proto", fileDescriptor_source_context_78f437f8b7f72e1b)
 }
 
-var fileDescriptor_source_context_893b293b953ef2a1 = []byte{
+var fileDescriptor_source_context_78f437f8b7f72e1b = []byte{
 	// 675 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x95, 0x5d, 0x4e, 0xdb, 0x4a,
 	0x14, 0xc7, 0xe3, 0x38, 0x24, 0xf8, 0x84, 0x70, 0xa3, 0xb9, 0xe8, 0x2a, 0x97, 0x7b, 0xab, 0x52,

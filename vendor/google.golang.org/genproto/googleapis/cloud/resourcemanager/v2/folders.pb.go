@@ -55,7 +55,7 @@ func (x Folder_LifecycleState) String() string {
 	return proto.EnumName(Folder_LifecycleState_name, int32(x))
 }
 func (Folder_LifecycleState) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_folders_6f2b72803211c511, []int{0, 0}
+	return fileDescriptor_folders_6c4bd17feec38232, []int{0, 0}
 }
 
 // The type of operation that failed.
@@ -85,7 +85,7 @@ func (x FolderOperation_OperationType) String() string {
 	return proto.EnumName(FolderOperation_OperationType_name, int32(x))
 }
 func (FolderOperation_OperationType) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_folders_6f2b72803211c511, []int{11, 0}
+	return fileDescriptor_folders_6c4bd17feec38232, []int{11, 0}
 }
 
 // A Folder in an Organization's resource hierarchy, used to
@@ -93,10 +93,10 @@ func (FolderOperation_OperationType) EnumDescriptor() ([]byte, []int) {
 type Folder struct {
 	// Output only. The resource name of the Folder.
 	// Its format is `folders/{folder_id}`, for example: "folders/1234".
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// The Folder’s parent's resource name.
 	// Updates to the folder's parent must be performed via [MoveFolders].
-	Parent string `protobuf:"bytes,2,opt,name=parent" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,2,opt,name=parent,proto3" json:"parent,omitempty"`
 	// The folder’s display name.
 	// A folder’s display name must be unique amongst its siblings, e.g.
 	// no two folders with the same parent can share the same display name.
@@ -104,15 +104,15 @@ type Folder struct {
 	// letters, digits, spaces, hyphens and underscores and can be no longer
 	// than 30 characters. This is captured by the regular expression:
 	// [\p{L}\p{N}]({\p{L}\p{N}_- ]{0,28}[\p{L}\p{N}])?.
-	DisplayName string `protobuf:"bytes,3,opt,name=display_name,json=displayName" json:"display_name,omitempty"`
+	DisplayName string `protobuf:"bytes,3,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
 	// Output only.  The lifecycle state of the folder.
 	// Updates to the lifecycle_state must be performed via
 	// [DeleteFolder] and [UndeleteFolder].
-	LifecycleState Folder_LifecycleState `protobuf:"varint,4,opt,name=lifecycle_state,json=lifecycleState,enum=google.cloud.resourcemanager.v2.Folder_LifecycleState" json:"lifecycle_state,omitempty"`
+	LifecycleState Folder_LifecycleState `protobuf:"varint,4,opt,name=lifecycle_state,json=lifecycleState,proto3,enum=google.cloud.resourcemanager.v2.Folder_LifecycleState" json:"lifecycle_state,omitempty"`
 	// Output only. Timestamp when the Folder was created. Assigned by the server.
-	CreateTime *timestamp.Timestamp `protobuf:"bytes,5,opt,name=create_time,json=createTime" json:"create_time,omitempty"`
+	CreateTime *timestamp.Timestamp `protobuf:"bytes,5,opt,name=create_time,json=createTime,proto3" json:"create_time,omitempty"`
 	// Output only. Timestamp when the Folder was last modified.
-	UpdateTime           *timestamp.Timestamp `protobuf:"bytes,6,opt,name=update_time,json=updateTime" json:"update_time,omitempty"`
+	UpdateTime           *timestamp.Timestamp `protobuf:"bytes,6,opt,name=update_time,json=updateTime,proto3" json:"update_time,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
 	XXX_unrecognized     []byte               `json:"-"`
 	XXX_sizecache        int32                `json:"-"`
@@ -122,7 +122,7 @@ func (m *Folder) Reset()         { *m = Folder{} }
 func (m *Folder) String() string { return proto.CompactTextString(m) }
 func (*Folder) ProtoMessage()    {}
 func (*Folder) Descriptor() ([]byte, []int) {
-	return fileDescriptor_folders_6f2b72803211c511, []int{0}
+	return fileDescriptor_folders_6c4bd17feec38232, []int{0}
 }
 func (m *Folder) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Folder.Unmarshal(m, b)
@@ -191,17 +191,17 @@ type ListFoldersRequest struct {
 	// Must be of the form `folders/{folder_id}` or `organizations/{org_id}`.
 	// Access to this method is controlled by checking the
 	// `resourcemanager.folders.list` permission on the `parent`.
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// The maximum number of Folders to return in the response.
 	// This field is optional.
-	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize" json:"page_size,omitempty"`
+	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// A pagination token returned from a previous call to `ListFolders`
 	// that indicates where this listing should continue from.
 	// This field is optional.
-	PageToken string `protobuf:"bytes,3,opt,name=page_token,json=pageToken" json:"page_token,omitempty"`
+	PageToken string `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	// Controls whether Folders in the [DELETE_REQUESTED} state should
 	// be returned.
-	ShowDeleted          bool     `protobuf:"varint,4,opt,name=show_deleted,json=showDeleted" json:"show_deleted,omitempty"`
+	ShowDeleted          bool     `protobuf:"varint,4,opt,name=show_deleted,json=showDeleted,proto3" json:"show_deleted,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -211,7 +211,7 @@ func (m *ListFoldersRequest) Reset()         { *m = ListFoldersRequest{} }
 func (m *ListFoldersRequest) String() string { return proto.CompactTextString(m) }
 func (*ListFoldersRequest) ProtoMessage()    {}
 func (*ListFoldersRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_folders_6f2b72803211c511, []int{1}
+	return fileDescriptor_folders_6c4bd17feec38232, []int{1}
 }
 func (m *ListFoldersRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListFoldersRequest.Unmarshal(m, b)
@@ -263,11 +263,11 @@ func (m *ListFoldersRequest) GetShowDeleted() bool {
 type ListFoldersResponse struct {
 	// A possibly paginated list of Folders that are direct descendants of
 	// the specified parent resource.
-	Folders []*Folder `protobuf:"bytes,1,rep,name=folders" json:"folders,omitempty"`
+	Folders []*Folder `protobuf:"bytes,1,rep,name=folders,proto3" json:"folders,omitempty"`
 	// A pagination token returned from a previous call to `ListFolders`
 	// that indicates from where listing should continue.
 	// This field is optional.
-	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken" json:"next_page_token,omitempty"`
+	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -277,7 +277,7 @@ func (m *ListFoldersResponse) Reset()         { *m = ListFoldersResponse{} }
 func (m *ListFoldersResponse) String() string { return proto.CompactTextString(m) }
 func (*ListFoldersResponse) ProtoMessage()    {}
 func (*ListFoldersResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_folders_6f2b72803211c511, []int{2}
+	return fileDescriptor_folders_6c4bd17feec38232, []int{2}
 }
 func (m *ListFoldersResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListFoldersResponse.Unmarshal(m, b)
@@ -315,11 +315,11 @@ func (m *ListFoldersResponse) GetNextPageToken() string {
 type SearchFoldersRequest struct {
 	// The maximum number of folders to return in the response.
 	// This field is optional.
-	PageSize int32 `protobuf:"varint,1,opt,name=page_size,json=pageSize" json:"page_size,omitempty"`
+	PageSize int32 `protobuf:"varint,1,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// A pagination token returned from a previous call to `SearchFolders`
 	// that indicates from where search should continue.
 	// This field is optional.
-	PageToken string `protobuf:"bytes,2,opt,name=page_token,json=pageToken" json:"page_token,omitempty"`
+	PageToken string `protobuf:"bytes,2,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	// Search criteria used to select the Folders to return.
 	// If no search criteria is specified then all accessible folders will be
 	// returned.
@@ -336,7 +336,7 @@ type SearchFoldersRequest struct {
 	// |parent=folders/123|Folders whose parent is "folders/123".|
 	// |parent=folders/123 AND lifecycleState=ACTIVE|Active folders whose
 	// parent is "folders/123".|
-	Query                string   `protobuf:"bytes,3,opt,name=query" json:"query,omitempty"`
+	Query                string   `protobuf:"bytes,3,opt,name=query,proto3" json:"query,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -346,7 +346,7 @@ func (m *SearchFoldersRequest) Reset()         { *m = SearchFoldersRequest{} }
 func (m *SearchFoldersRequest) String() string { return proto.CompactTextString(m) }
 func (*SearchFoldersRequest) ProtoMessage()    {}
 func (*SearchFoldersRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_folders_6f2b72803211c511, []int{3}
+	return fileDescriptor_folders_6c4bd17feec38232, []int{3}
 }
 func (m *SearchFoldersRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SearchFoldersRequest.Unmarshal(m, b)
@@ -391,11 +391,11 @@ func (m *SearchFoldersRequest) GetQuery() string {
 type SearchFoldersResponse struct {
 	// A possibly paginated folder search results.
 	// the specified parent resource.
-	Folders []*Folder `protobuf:"bytes,1,rep,name=folders" json:"folders,omitempty"`
+	Folders []*Folder `protobuf:"bytes,1,rep,name=folders,proto3" json:"folders,omitempty"`
 	// A pagination token returned from a previous call to `SearchFolders`
 	// that indicates from where searching should continue.
 	// This field is optional.
-	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken" json:"next_page_token,omitempty"`
+	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -405,7 +405,7 @@ func (m *SearchFoldersResponse) Reset()         { *m = SearchFoldersResponse{} }
 func (m *SearchFoldersResponse) String() string { return proto.CompactTextString(m) }
 func (*SearchFoldersResponse) ProtoMessage()    {}
 func (*SearchFoldersResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_folders_6f2b72803211c511, []int{4}
+	return fileDescriptor_folders_6c4bd17feec38232, []int{4}
 }
 func (m *SearchFoldersResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SearchFoldersResponse.Unmarshal(m, b)
@@ -443,7 +443,7 @@ func (m *SearchFoldersResponse) GetNextPageToken() string {
 type GetFolderRequest struct {
 	// The resource name of the Folder to retrieve.
 	// Must be of the form `folders/{folder_id}`.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -453,7 +453,7 @@ func (m *GetFolderRequest) Reset()         { *m = GetFolderRequest{} }
 func (m *GetFolderRequest) String() string { return proto.CompactTextString(m) }
 func (*GetFolderRequest) ProtoMessage()    {}
 func (*GetFolderRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_folders_6f2b72803211c511, []int{5}
+	return fileDescriptor_folders_6c4bd17feec38232, []int{5}
 }
 func (m *GetFolderRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetFolderRequest.Unmarshal(m, b)
@@ -484,10 +484,10 @@ func (m *GetFolderRequest) GetName() string {
 type CreateFolderRequest struct {
 	// The resource name of the new Folder's parent.
 	// Must be of the form `folders/{folder_id}` or `organizations/{org_id}`.
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// The Folder being created, only the display name will be consulted.
 	// All other fields will be ignored.
-	Folder               *Folder  `protobuf:"bytes,2,opt,name=folder" json:"folder,omitempty"`
+	Folder               *Folder  `protobuf:"bytes,2,opt,name=folder,proto3" json:"folder,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -497,7 +497,7 @@ func (m *CreateFolderRequest) Reset()         { *m = CreateFolderRequest{} }
 func (m *CreateFolderRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateFolderRequest) ProtoMessage()    {}
 func (*CreateFolderRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_folders_6f2b72803211c511, []int{6}
+	return fileDescriptor_folders_6c4bd17feec38232, []int{6}
 }
 func (m *CreateFolderRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CreateFolderRequest.Unmarshal(m, b)
@@ -535,11 +535,11 @@ func (m *CreateFolderRequest) GetFolder() *Folder {
 type MoveFolderRequest struct {
 	// The resource name of the Folder to move.
 	// Must be of the form folders/{folder_id}
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// The resource name of the Folder or Organization to reparent
 	// the folder under.
 	// Must be of the form `folders/{folder_id}` or `organizations/{org_id}`.
-	DestinationParent    string   `protobuf:"bytes,2,opt,name=destination_parent,json=destinationParent" json:"destination_parent,omitempty"`
+	DestinationParent    string   `protobuf:"bytes,2,opt,name=destination_parent,json=destinationParent,proto3" json:"destination_parent,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -549,7 +549,7 @@ func (m *MoveFolderRequest) Reset()         { *m = MoveFolderRequest{} }
 func (m *MoveFolderRequest) String() string { return proto.CompactTextString(m) }
 func (*MoveFolderRequest) ProtoMessage()    {}
 func (*MoveFolderRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_folders_6f2b72803211c511, []int{7}
+	return fileDescriptor_folders_6c4bd17feec38232, []int{7}
 }
 func (m *MoveFolderRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_MoveFolderRequest.Unmarshal(m, b)
@@ -588,10 +588,10 @@ type UpdateFolderRequest struct {
 	// The new definition of the Folder. It must include a
 	// a `name` and `display_name` field. The other fields
 	// will be ignored.
-	Folder *Folder `protobuf:"bytes,1,opt,name=folder" json:"folder,omitempty"`
+	Folder *Folder `protobuf:"bytes,1,opt,name=folder,proto3" json:"folder,omitempty"`
 	// Fields to be updated.
 	// Only the `display_name` can be updated.
-	UpdateMask           *field_mask.FieldMask `protobuf:"bytes,2,opt,name=update_mask,json=updateMask" json:"update_mask,omitempty"`
+	UpdateMask           *field_mask.FieldMask `protobuf:"bytes,2,opt,name=update_mask,json=updateMask,proto3" json:"update_mask,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}              `json:"-"`
 	XXX_unrecognized     []byte                `json:"-"`
 	XXX_sizecache        int32                 `json:"-"`
@@ -601,7 +601,7 @@ func (m *UpdateFolderRequest) Reset()         { *m = UpdateFolderRequest{} }
 func (m *UpdateFolderRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateFolderRequest) ProtoMessage()    {}
 func (*UpdateFolderRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_folders_6f2b72803211c511, []int{8}
+	return fileDescriptor_folders_6c4bd17feec38232, []int{8}
 }
 func (m *UpdateFolderRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UpdateFolderRequest.Unmarshal(m, b)
@@ -639,10 +639,10 @@ func (m *UpdateFolderRequest) GetUpdateMask() *field_mask.FieldMask {
 type DeleteFolderRequest struct {
 	// the resource name of the Folder to be deleted.
 	// Must be of the form `folders/{folder_id}`.
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// Instructs DeleteFolderAction to delete a folder even when the folder is not
 	// empty.
-	RecursiveDelete      bool     `protobuf:"varint,2,opt,name=recursive_delete,json=recursiveDelete" json:"recursive_delete,omitempty"`
+	RecursiveDelete      bool     `protobuf:"varint,2,opt,name=recursive_delete,json=recursiveDelete,proto3" json:"recursive_delete,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -652,7 +652,7 @@ func (m *DeleteFolderRequest) Reset()         { *m = DeleteFolderRequest{} }
 func (m *DeleteFolderRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteFolderRequest) ProtoMessage()    {}
 func (*DeleteFolderRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_folders_6f2b72803211c511, []int{9}
+	return fileDescriptor_folders_6c4bd17feec38232, []int{9}
 }
 func (m *DeleteFolderRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeleteFolderRequest.Unmarshal(m, b)
@@ -690,7 +690,7 @@ func (m *DeleteFolderRequest) GetRecursiveDelete() bool {
 type UndeleteFolderRequest struct {
 	// The resource name of the Folder to undelete.
 	// Must be of the form `folders/{folder_id}`.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -700,7 +700,7 @@ func (m *UndeleteFolderRequest) Reset()         { *m = UndeleteFolderRequest{} }
 func (m *UndeleteFolderRequest) String() string { return proto.CompactTextString(m) }
 func (*UndeleteFolderRequest) ProtoMessage()    {}
 func (*UndeleteFolderRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_folders_6f2b72803211c511, []int{10}
+	return fileDescriptor_folders_6c4bd17feec38232, []int{10}
 }
 func (m *UndeleteFolderRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UndeleteFolderRequest.Unmarshal(m, b)
@@ -730,15 +730,15 @@ func (m *UndeleteFolderRequest) GetName() string {
 // Metadata describing a long running folder operation
 type FolderOperation struct {
 	// The display name of the folder.
-	DisplayName string `protobuf:"bytes,1,opt,name=display_name,json=displayName" json:"display_name,omitempty"`
+	DisplayName string `protobuf:"bytes,1,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
 	// The type of this operation.
-	OperationType FolderOperation_OperationType `protobuf:"varint,2,opt,name=operation_type,json=operationType,enum=google.cloud.resourcemanager.v2.FolderOperation_OperationType" json:"operation_type,omitempty"`
+	OperationType FolderOperation_OperationType `protobuf:"varint,2,opt,name=operation_type,json=operationType,proto3,enum=google.cloud.resourcemanager.v2.FolderOperation_OperationType" json:"operation_type,omitempty"`
 	// The resource name of the folder's parent.
 	// Only applicable when the operation_type is MOVE.
-	SourceParent string `protobuf:"bytes,3,opt,name=source_parent,json=sourceParent" json:"source_parent,omitempty"`
+	SourceParent string `protobuf:"bytes,3,opt,name=source_parent,json=sourceParent,proto3" json:"source_parent,omitempty"`
 	// The resource name of the folder or organization we are either creating
 	// the folder under or moving the folder to.
-	DestinationParent    string   `protobuf:"bytes,4,opt,name=destination_parent,json=destinationParent" json:"destination_parent,omitempty"`
+	DestinationParent    string   `protobuf:"bytes,4,opt,name=destination_parent,json=destinationParent,proto3" json:"destination_parent,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -748,7 +748,7 @@ func (m *FolderOperation) Reset()         { *m = FolderOperation{} }
 func (m *FolderOperation) String() string { return proto.CompactTextString(m) }
 func (*FolderOperation) ProtoMessage()    {}
 func (*FolderOperation) Descriptor() ([]byte, []int) {
-	return fileDescriptor_folders_6f2b72803211c511, []int{11}
+	return fileDescriptor_folders_6c4bd17feec38232, []int{11}
 }
 func (m *FolderOperation) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_FolderOperation.Unmarshal(m, b)
@@ -1049,8 +1049,7 @@ func (c *foldersClient) TestIamPermissions(ctx context.Context, in *v1.TestIamPe
 	return out, nil
 }
 
-// Server API for Folders service
-
+// FoldersServer is the server API for Folders service.
 type FoldersServer interface {
 	// Lists the Folders that are direct descendants of supplied parent resource.
 	// List provides a strongly consistent view of the Folders underneath
@@ -1425,10 +1424,10 @@ var _Folders_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("google/cloud/resourcemanager/v2/folders.proto", fileDescriptor_folders_6f2b72803211c511)
+	proto.RegisterFile("google/cloud/resourcemanager/v2/folders.proto", fileDescriptor_folders_6c4bd17feec38232)
 }
 
-var fileDescriptor_folders_6f2b72803211c511 = []byte{
+var fileDescriptor_folders_6c4bd17feec38232 = []byte{
 	// 1235 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xbc, 0x57, 0x5d, 0x6f, 0xdb, 0xd4,
 	0x1b, 0xff, 0x9f, 0xac, 0xcb, 0xba, 0x27, 0x2f, 0xcd, 0x4e, 0xdb, 0xfd, 0x4b, 0xba, 0xbe, 0x70,

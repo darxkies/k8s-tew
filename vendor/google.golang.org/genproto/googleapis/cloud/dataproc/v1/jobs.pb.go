@@ -80,7 +80,7 @@ func (x LoggingConfig_Level) String() string {
 	return proto.EnumName(LoggingConfig_Level_name, int32(x))
 }
 func (LoggingConfig_Level) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_jobs_a8158969d454e928, []int{0, 0}
+	return fileDescriptor_jobs_db8ea7aa6248c82a, []int{0, 0}
 }
 
 // The job state.
@@ -143,7 +143,7 @@ func (x JobStatus_State) String() string {
 	return proto.EnumName(JobStatus_State_name, int32(x))
 }
 func (JobStatus_State) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_jobs_a8158969d454e928, []int{9, 0}
+	return fileDescriptor_jobs_db8ea7aa6248c82a, []int{9, 0}
 }
 
 type JobStatus_Substate int32
@@ -185,7 +185,7 @@ func (x JobStatus_Substate) String() string {
 	return proto.EnumName(JobStatus_Substate_name, int32(x))
 }
 func (JobStatus_Substate) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_jobs_a8158969d454e928, []int{9, 1}
+	return fileDescriptor_jobs_db8ea7aa6248c82a, []int{9, 1}
 }
 
 // The application state, corresponding to
@@ -240,7 +240,7 @@ func (x YarnApplication_State) String() string {
 	return proto.EnumName(YarnApplication_State_name, int32(x))
 }
 func (YarnApplication_State) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_jobs_a8158969d454e928, []int{11, 0}
+	return fileDescriptor_jobs_db8ea7aa6248c82a, []int{11, 0}
 }
 
 // A matcher that specifies categories of job states.
@@ -271,7 +271,7 @@ func (x ListJobsRequest_JobStateMatcher) String() string {
 	return proto.EnumName(ListJobsRequest_JobStateMatcher_name, int32(x))
 }
 func (ListJobsRequest_JobStateMatcher) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_jobs_a8158969d454e928, []int{16, 0}
+	return fileDescriptor_jobs_db8ea7aa6248c82a, []int{16, 0}
 }
 
 // The runtime logging config of the job.
@@ -280,7 +280,7 @@ type LoggingConfig struct {
 	// "root" package name to configure rootLogger.
 	// Examples:
 	//   'com.google = FATAL', 'root = INFO', 'org.apache = DEBUG'
-	DriverLogLevels      map[string]LoggingConfig_Level `protobuf:"bytes,2,rep,name=driver_log_levels,json=driverLogLevels" json:"driver_log_levels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"varint,2,opt,name=value,enum=google.cloud.dataproc.v1.LoggingConfig_Level"`
+	DriverLogLevels      map[string]LoggingConfig_Level `protobuf:"bytes,2,rep,name=driver_log_levels,json=driverLogLevels,proto3" json:"driver_log_levels,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"varint,2,opt,name=value,proto3,enum=google.cloud.dataproc.v1.LoggingConfig_Level"`
 	XXX_NoUnkeyedLiteral struct{}                       `json:"-"`
 	XXX_unrecognized     []byte                         `json:"-"`
 	XXX_sizecache        int32                          `json:"-"`
@@ -290,7 +290,7 @@ func (m *LoggingConfig) Reset()         { *m = LoggingConfig{} }
 func (m *LoggingConfig) String() string { return proto.CompactTextString(m) }
 func (*LoggingConfig) ProtoMessage()    {}
 func (*LoggingConfig) Descriptor() ([]byte, []int) {
-	return fileDescriptor_jobs_a8158969d454e928, []int{0}
+	return fileDescriptor_jobs_db8ea7aa6248c82a, []int{0}
 }
 func (m *LoggingConfig) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_LoggingConfig.Unmarshal(m, b)
@@ -334,25 +334,25 @@ type HadoopJob struct {
 	// include arguments, such as `-libjars` or `-Dfoo=bar`, that can be set as job
 	// properties, since a collision may occur that causes an incorrect job
 	// submission.
-	Args []string `protobuf:"bytes,3,rep,name=args" json:"args,omitempty"`
+	Args []string `protobuf:"bytes,3,rep,name=args,proto3" json:"args,omitempty"`
 	// Optional. Jar file URIs to add to the CLASSPATHs of the
 	// Hadoop driver and tasks.
-	JarFileUris []string `protobuf:"bytes,4,rep,name=jar_file_uris,json=jarFileUris" json:"jar_file_uris,omitempty"`
+	JarFileUris []string `protobuf:"bytes,4,rep,name=jar_file_uris,json=jarFileUris,proto3" json:"jar_file_uris,omitempty"`
 	// Optional. HCFS (Hadoop Compatible Filesystem) URIs of files to be copied
 	// to the working directory of Hadoop drivers and distributed tasks. Useful
 	// for naively parallel tasks.
-	FileUris []string `protobuf:"bytes,5,rep,name=file_uris,json=fileUris" json:"file_uris,omitempty"`
+	FileUris []string `protobuf:"bytes,5,rep,name=file_uris,json=fileUris,proto3" json:"file_uris,omitempty"`
 	// Optional. HCFS URIs of archives to be extracted in the working directory of
 	// Hadoop drivers and tasks. Supported file types:
 	// .jar, .tar, .tar.gz, .tgz, or .zip.
-	ArchiveUris []string `protobuf:"bytes,6,rep,name=archive_uris,json=archiveUris" json:"archive_uris,omitempty"`
+	ArchiveUris []string `protobuf:"bytes,6,rep,name=archive_uris,json=archiveUris,proto3" json:"archive_uris,omitempty"`
 	// Optional. A mapping of property names to values, used to configure Hadoop.
 	// Properties that conflict with values set by the Cloud Dataproc API may be
 	// overwritten. Can include properties set in /etc/hadoop/conf/*-site and
 	// classes in user code.
-	Properties map[string]string `protobuf:"bytes,7,rep,name=properties" json:"properties,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Properties map[string]string `protobuf:"bytes,7,rep,name=properties,proto3" json:"properties,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	// Optional. The runtime log config for job execution.
-	LoggingConfig        *LoggingConfig `protobuf:"bytes,8,opt,name=logging_config,json=loggingConfig" json:"logging_config,omitempty"`
+	LoggingConfig        *LoggingConfig `protobuf:"bytes,8,opt,name=logging_config,json=loggingConfig,proto3" json:"logging_config,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
 	XXX_unrecognized     []byte         `json:"-"`
 	XXX_sizecache        int32          `json:"-"`
@@ -362,7 +362,7 @@ func (m *HadoopJob) Reset()         { *m = HadoopJob{} }
 func (m *HadoopJob) String() string { return proto.CompactTextString(m) }
 func (*HadoopJob) ProtoMessage()    {}
 func (*HadoopJob) Descriptor() ([]byte, []int) {
-	return fileDescriptor_jobs_a8158969d454e928, []int{1}
+	return fileDescriptor_jobs_db8ea7aa6248c82a, []int{1}
 }
 func (m *HadoopJob) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_HadoopJob.Unmarshal(m, b)
@@ -387,14 +387,16 @@ type isHadoopJob_Driver interface {
 }
 
 type HadoopJob_MainJarFileUri struct {
-	MainJarFileUri string `protobuf:"bytes,1,opt,name=main_jar_file_uri,json=mainJarFileUri,oneof"`
+	MainJarFileUri string `protobuf:"bytes,1,opt,name=main_jar_file_uri,json=mainJarFileUri,proto3,oneof"`
 }
+
 type HadoopJob_MainClass struct {
-	MainClass string `protobuf:"bytes,2,opt,name=main_class,json=mainClass,oneof"`
+	MainClass string `protobuf:"bytes,2,opt,name=main_class,json=mainClass,proto3,oneof"`
 }
 
 func (*HadoopJob_MainJarFileUri) isHadoopJob_Driver() {}
-func (*HadoopJob_MainClass) isHadoopJob_Driver()      {}
+
+func (*HadoopJob_MainClass) isHadoopJob_Driver() {}
 
 func (m *HadoopJob) GetDriver() isHadoopJob_Driver {
 	if m != nil {
@@ -540,24 +542,24 @@ type SparkJob struct {
 	// Optional. The arguments to pass to the driver. Do not include arguments,
 	// such as `--conf`, that can be set as job properties, since a collision may
 	// occur that causes an incorrect job submission.
-	Args []string `protobuf:"bytes,3,rep,name=args" json:"args,omitempty"`
+	Args []string `protobuf:"bytes,3,rep,name=args,proto3" json:"args,omitempty"`
 	// Optional. HCFS URIs of jar files to add to the CLASSPATHs of the
 	// Spark driver and tasks.
-	JarFileUris []string `protobuf:"bytes,4,rep,name=jar_file_uris,json=jarFileUris" json:"jar_file_uris,omitempty"`
+	JarFileUris []string `protobuf:"bytes,4,rep,name=jar_file_uris,json=jarFileUris,proto3" json:"jar_file_uris,omitempty"`
 	// Optional. HCFS URIs of files to be copied to the working directory of
 	// Spark drivers and distributed tasks. Useful for naively parallel tasks.
-	FileUris []string `protobuf:"bytes,5,rep,name=file_uris,json=fileUris" json:"file_uris,omitempty"`
+	FileUris []string `protobuf:"bytes,5,rep,name=file_uris,json=fileUris,proto3" json:"file_uris,omitempty"`
 	// Optional. HCFS URIs of archives to be extracted in the working directory
 	// of Spark drivers and tasks. Supported file types:
 	// .jar, .tar, .tar.gz, .tgz, and .zip.
-	ArchiveUris []string `protobuf:"bytes,6,rep,name=archive_uris,json=archiveUris" json:"archive_uris,omitempty"`
+	ArchiveUris []string `protobuf:"bytes,6,rep,name=archive_uris,json=archiveUris,proto3" json:"archive_uris,omitempty"`
 	// Optional. A mapping of property names to values, used to configure Spark.
 	// Properties that conflict with values set by the Cloud Dataproc API may be
 	// overwritten. Can include properties set in
 	// /etc/spark/conf/spark-defaults.conf and classes in user code.
-	Properties map[string]string `protobuf:"bytes,7,rep,name=properties" json:"properties,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Properties map[string]string `protobuf:"bytes,7,rep,name=properties,proto3" json:"properties,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	// Optional. The runtime log config for job execution.
-	LoggingConfig        *LoggingConfig `protobuf:"bytes,8,opt,name=logging_config,json=loggingConfig" json:"logging_config,omitempty"`
+	LoggingConfig        *LoggingConfig `protobuf:"bytes,8,opt,name=logging_config,json=loggingConfig,proto3" json:"logging_config,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
 	XXX_unrecognized     []byte         `json:"-"`
 	XXX_sizecache        int32          `json:"-"`
@@ -567,7 +569,7 @@ func (m *SparkJob) Reset()         { *m = SparkJob{} }
 func (m *SparkJob) String() string { return proto.CompactTextString(m) }
 func (*SparkJob) ProtoMessage()    {}
 func (*SparkJob) Descriptor() ([]byte, []int) {
-	return fileDescriptor_jobs_a8158969d454e928, []int{2}
+	return fileDescriptor_jobs_db8ea7aa6248c82a, []int{2}
 }
 func (m *SparkJob) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SparkJob.Unmarshal(m, b)
@@ -592,14 +594,16 @@ type isSparkJob_Driver interface {
 }
 
 type SparkJob_MainJarFileUri struct {
-	MainJarFileUri string `protobuf:"bytes,1,opt,name=main_jar_file_uri,json=mainJarFileUri,oneof"`
+	MainJarFileUri string `protobuf:"bytes,1,opt,name=main_jar_file_uri,json=mainJarFileUri,proto3,oneof"`
 }
+
 type SparkJob_MainClass struct {
-	MainClass string `protobuf:"bytes,2,opt,name=main_class,json=mainClass,oneof"`
+	MainClass string `protobuf:"bytes,2,opt,name=main_class,json=mainClass,proto3,oneof"`
 }
 
 func (*SparkJob_MainJarFileUri) isSparkJob_Driver() {}
-func (*SparkJob_MainClass) isSparkJob_Driver()      {}
+
+func (*SparkJob_MainClass) isSparkJob_Driver() {}
 
 func (m *SparkJob) GetDriver() isSparkJob_Driver {
 	if m != nil {
@@ -736,30 +740,30 @@ func _SparkJob_OneofSizer(msg proto.Message) (n int) {
 type PySparkJob struct {
 	// Required. The HCFS URI of the main Python file to use as the driver. Must
 	// be a .py file.
-	MainPythonFileUri string `protobuf:"bytes,1,opt,name=main_python_file_uri,json=mainPythonFileUri" json:"main_python_file_uri,omitempty"`
+	MainPythonFileUri string `protobuf:"bytes,1,opt,name=main_python_file_uri,json=mainPythonFileUri,proto3" json:"main_python_file_uri,omitempty"`
 	// Optional. The arguments to pass to the driver.  Do not include arguments,
 	// such as `--conf`, that can be set as job properties, since a collision may
 	// occur that causes an incorrect job submission.
-	Args []string `protobuf:"bytes,2,rep,name=args" json:"args,omitempty"`
+	Args []string `protobuf:"bytes,2,rep,name=args,proto3" json:"args,omitempty"`
 	// Optional. HCFS file URIs of Python files to pass to the PySpark
 	// framework. Supported file types: .py, .egg, and .zip.
-	PythonFileUris []string `protobuf:"bytes,3,rep,name=python_file_uris,json=pythonFileUris" json:"python_file_uris,omitempty"`
+	PythonFileUris []string `protobuf:"bytes,3,rep,name=python_file_uris,json=pythonFileUris,proto3" json:"python_file_uris,omitempty"`
 	// Optional. HCFS URIs of jar files to add to the CLASSPATHs of the
 	// Python driver and tasks.
-	JarFileUris []string `protobuf:"bytes,4,rep,name=jar_file_uris,json=jarFileUris" json:"jar_file_uris,omitempty"`
+	JarFileUris []string `protobuf:"bytes,4,rep,name=jar_file_uris,json=jarFileUris,proto3" json:"jar_file_uris,omitempty"`
 	// Optional. HCFS URIs of files to be copied to the working directory of
 	// Python drivers and distributed tasks. Useful for naively parallel tasks.
-	FileUris []string `protobuf:"bytes,5,rep,name=file_uris,json=fileUris" json:"file_uris,omitempty"`
+	FileUris []string `protobuf:"bytes,5,rep,name=file_uris,json=fileUris,proto3" json:"file_uris,omitempty"`
 	// Optional. HCFS URIs of archives to be extracted in the working directory of
 	// .jar, .tar, .tar.gz, .tgz, and .zip.
-	ArchiveUris []string `protobuf:"bytes,6,rep,name=archive_uris,json=archiveUris" json:"archive_uris,omitempty"`
+	ArchiveUris []string `protobuf:"bytes,6,rep,name=archive_uris,json=archiveUris,proto3" json:"archive_uris,omitempty"`
 	// Optional. A mapping of property names to values, used to configure PySpark.
 	// Properties that conflict with values set by the Cloud Dataproc API may be
 	// overwritten. Can include properties set in
 	// /etc/spark/conf/spark-defaults.conf and classes in user code.
-	Properties map[string]string `protobuf:"bytes,7,rep,name=properties" json:"properties,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Properties map[string]string `protobuf:"bytes,7,rep,name=properties,proto3" json:"properties,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	// Optional. The runtime log config for job execution.
-	LoggingConfig        *LoggingConfig `protobuf:"bytes,8,opt,name=logging_config,json=loggingConfig" json:"logging_config,omitempty"`
+	LoggingConfig        *LoggingConfig `protobuf:"bytes,8,opt,name=logging_config,json=loggingConfig,proto3" json:"logging_config,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
 	XXX_unrecognized     []byte         `json:"-"`
 	XXX_sizecache        int32          `json:"-"`
@@ -769,7 +773,7 @@ func (m *PySparkJob) Reset()         { *m = PySparkJob{} }
 func (m *PySparkJob) String() string { return proto.CompactTextString(m) }
 func (*PySparkJob) ProtoMessage()    {}
 func (*PySparkJob) Descriptor() ([]byte, []int) {
-	return fileDescriptor_jobs_a8158969d454e928, []int{3}
+	return fileDescriptor_jobs_db8ea7aa6248c82a, []int{3}
 }
 func (m *PySparkJob) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_PySparkJob.Unmarshal(m, b)
@@ -861,7 +865,7 @@ type QueryList struct {
 	//         ]
 	//       }
 	//     }
-	Queries              []string `protobuf:"bytes,1,rep,name=queries" json:"queries,omitempty"`
+	Queries              []string `protobuf:"bytes,1,rep,name=queries,proto3" json:"queries,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -871,7 +875,7 @@ func (m *QueryList) Reset()         { *m = QueryList{} }
 func (m *QueryList) String() string { return proto.CompactTextString(m) }
 func (*QueryList) ProtoMessage()    {}
 func (*QueryList) Descriptor() ([]byte, []int) {
-	return fileDescriptor_jobs_a8158969d454e928, []int{4}
+	return fileDescriptor_jobs_db8ea7aa6248c82a, []int{4}
 }
 func (m *QueryList) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_QueryList.Unmarshal(m, b)
@@ -911,19 +915,19 @@ type HiveJob struct {
 	// Optional. Whether to continue executing queries if a query fails.
 	// The default value is `false`. Setting to `true` can be useful when executing
 	// independent parallel queries.
-	ContinueOnFailure bool `protobuf:"varint,3,opt,name=continue_on_failure,json=continueOnFailure" json:"continue_on_failure,omitempty"`
+	ContinueOnFailure bool `protobuf:"varint,3,opt,name=continue_on_failure,json=continueOnFailure,proto3" json:"continue_on_failure,omitempty"`
 	// Optional. Mapping of query variable names to values (equivalent to the
 	// Hive command: `SET name="value";`).
-	ScriptVariables map[string]string `protobuf:"bytes,4,rep,name=script_variables,json=scriptVariables" json:"script_variables,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	ScriptVariables map[string]string `protobuf:"bytes,4,rep,name=script_variables,json=scriptVariables,proto3" json:"script_variables,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	// Optional. A mapping of property names and values, used to configure Hive.
 	// Properties that conflict with values set by the Cloud Dataproc API may be
 	// overwritten. Can include properties set in /etc/hadoop/conf/*-site.xml,
 	// /etc/hive/conf/hive-site.xml, and classes in user code.
-	Properties map[string]string `protobuf:"bytes,5,rep,name=properties" json:"properties,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Properties map[string]string `protobuf:"bytes,5,rep,name=properties,proto3" json:"properties,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	// Optional. HCFS URIs of jar files to add to the CLASSPATH of the
 	// Hive server and Hadoop MapReduce (MR) tasks. Can contain Hive SerDes
 	// and UDFs.
-	JarFileUris          []string `protobuf:"bytes,6,rep,name=jar_file_uris,json=jarFileUris" json:"jar_file_uris,omitempty"`
+	JarFileUris          []string `protobuf:"bytes,6,rep,name=jar_file_uris,json=jarFileUris,proto3" json:"jar_file_uris,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -933,7 +937,7 @@ func (m *HiveJob) Reset()         { *m = HiveJob{} }
 func (m *HiveJob) String() string { return proto.CompactTextString(m) }
 func (*HiveJob) ProtoMessage()    {}
 func (*HiveJob) Descriptor() ([]byte, []int) {
-	return fileDescriptor_jobs_a8158969d454e928, []int{5}
+	return fileDescriptor_jobs_db8ea7aa6248c82a, []int{5}
 }
 func (m *HiveJob) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_HiveJob.Unmarshal(m, b)
@@ -958,14 +962,16 @@ type isHiveJob_Queries interface {
 }
 
 type HiveJob_QueryFileUri struct {
-	QueryFileUri string `protobuf:"bytes,1,opt,name=query_file_uri,json=queryFileUri,oneof"`
+	QueryFileUri string `protobuf:"bytes,1,opt,name=query_file_uri,json=queryFileUri,proto3,oneof"`
 }
+
 type HiveJob_QueryList struct {
-	QueryList *QueryList `protobuf:"bytes,2,opt,name=query_list,json=queryList,oneof"`
+	QueryList *QueryList `protobuf:"bytes,2,opt,name=query_list,json=queryList,proto3,oneof"`
 }
 
 func (*HiveJob_QueryFileUri) isHiveJob_Queries() {}
-func (*HiveJob_QueryList) isHiveJob_Queries()    {}
+
+func (*HiveJob_QueryList) isHiveJob_Queries() {}
 
 func (m *HiveJob) GetQueries() isHiveJob_Queries {
 	if m != nil {
@@ -1098,15 +1104,15 @@ type SparkSqlJob struct {
 	Queries isSparkSqlJob_Queries `protobuf_oneof:"queries"`
 	// Optional. Mapping of query variable names to values (equivalent to the
 	// Spark SQL command: SET `name="value";`).
-	ScriptVariables map[string]string `protobuf:"bytes,3,rep,name=script_variables,json=scriptVariables" json:"script_variables,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	ScriptVariables map[string]string `protobuf:"bytes,3,rep,name=script_variables,json=scriptVariables,proto3" json:"script_variables,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	// Optional. A mapping of property names to values, used to configure
 	// Spark SQL's SparkConf. Properties that conflict with values set by the
 	// Cloud Dataproc API may be overwritten.
-	Properties map[string]string `protobuf:"bytes,4,rep,name=properties" json:"properties,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Properties map[string]string `protobuf:"bytes,4,rep,name=properties,proto3" json:"properties,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	// Optional. HCFS URIs of jar files to be added to the Spark CLASSPATH.
-	JarFileUris []string `protobuf:"bytes,56,rep,name=jar_file_uris,json=jarFileUris" json:"jar_file_uris,omitempty"`
+	JarFileUris []string `protobuf:"bytes,56,rep,name=jar_file_uris,json=jarFileUris,proto3" json:"jar_file_uris,omitempty"`
 	// Optional. The runtime log config for job execution.
-	LoggingConfig        *LoggingConfig `protobuf:"bytes,6,opt,name=logging_config,json=loggingConfig" json:"logging_config,omitempty"`
+	LoggingConfig        *LoggingConfig `protobuf:"bytes,6,opt,name=logging_config,json=loggingConfig,proto3" json:"logging_config,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
 	XXX_unrecognized     []byte         `json:"-"`
 	XXX_sizecache        int32          `json:"-"`
@@ -1116,7 +1122,7 @@ func (m *SparkSqlJob) Reset()         { *m = SparkSqlJob{} }
 func (m *SparkSqlJob) String() string { return proto.CompactTextString(m) }
 func (*SparkSqlJob) ProtoMessage()    {}
 func (*SparkSqlJob) Descriptor() ([]byte, []int) {
-	return fileDescriptor_jobs_a8158969d454e928, []int{6}
+	return fileDescriptor_jobs_db8ea7aa6248c82a, []int{6}
 }
 func (m *SparkSqlJob) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SparkSqlJob.Unmarshal(m, b)
@@ -1141,14 +1147,16 @@ type isSparkSqlJob_Queries interface {
 }
 
 type SparkSqlJob_QueryFileUri struct {
-	QueryFileUri string `protobuf:"bytes,1,opt,name=query_file_uri,json=queryFileUri,oneof"`
+	QueryFileUri string `protobuf:"bytes,1,opt,name=query_file_uri,json=queryFileUri,proto3,oneof"`
 }
+
 type SparkSqlJob_QueryList struct {
-	QueryList *QueryList `protobuf:"bytes,2,opt,name=query_list,json=queryList,oneof"`
+	QueryList *QueryList `protobuf:"bytes,2,opt,name=query_list,json=queryList,proto3,oneof"`
 }
 
 func (*SparkSqlJob_QueryFileUri) isSparkSqlJob_Queries() {}
-func (*SparkSqlJob_QueryList) isSparkSqlJob_Queries()    {}
+
+func (*SparkSqlJob_QueryList) isSparkSqlJob_Queries() {}
 
 func (m *SparkSqlJob) GetQueries() isSparkSqlJob_Queries {
 	if m != nil {
@@ -1282,20 +1290,20 @@ type PigJob struct {
 	// Optional. Whether to continue executing queries if a query fails.
 	// The default value is `false`. Setting to `true` can be useful when executing
 	// independent parallel queries.
-	ContinueOnFailure bool `protobuf:"varint,3,opt,name=continue_on_failure,json=continueOnFailure" json:"continue_on_failure,omitempty"`
+	ContinueOnFailure bool `protobuf:"varint,3,opt,name=continue_on_failure,json=continueOnFailure,proto3" json:"continue_on_failure,omitempty"`
 	// Optional. Mapping of query variable names to values (equivalent to the Pig
 	// command: `name=[value]`).
-	ScriptVariables map[string]string `protobuf:"bytes,4,rep,name=script_variables,json=scriptVariables" json:"script_variables,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	ScriptVariables map[string]string `protobuf:"bytes,4,rep,name=script_variables,json=scriptVariables,proto3" json:"script_variables,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	// Optional. A mapping of property names to values, used to configure Pig.
 	// Properties that conflict with values set by the Cloud Dataproc API may be
 	// overwritten. Can include properties set in /etc/hadoop/conf/*-site.xml,
 	// /etc/pig/conf/pig.properties, and classes in user code.
-	Properties map[string]string `protobuf:"bytes,5,rep,name=properties" json:"properties,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Properties map[string]string `protobuf:"bytes,5,rep,name=properties,proto3" json:"properties,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	// Optional. HCFS URIs of jar files to add to the CLASSPATH of
 	// the Pig Client and Hadoop MapReduce (MR) tasks. Can contain Pig UDFs.
-	JarFileUris []string `protobuf:"bytes,6,rep,name=jar_file_uris,json=jarFileUris" json:"jar_file_uris,omitempty"`
+	JarFileUris []string `protobuf:"bytes,6,rep,name=jar_file_uris,json=jarFileUris,proto3" json:"jar_file_uris,omitempty"`
 	// Optional. The runtime log config for job execution.
-	LoggingConfig        *LoggingConfig `protobuf:"bytes,7,opt,name=logging_config,json=loggingConfig" json:"logging_config,omitempty"`
+	LoggingConfig        *LoggingConfig `protobuf:"bytes,7,opt,name=logging_config,json=loggingConfig,proto3" json:"logging_config,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
 	XXX_unrecognized     []byte         `json:"-"`
 	XXX_sizecache        int32          `json:"-"`
@@ -1305,7 +1313,7 @@ func (m *PigJob) Reset()         { *m = PigJob{} }
 func (m *PigJob) String() string { return proto.CompactTextString(m) }
 func (*PigJob) ProtoMessage()    {}
 func (*PigJob) Descriptor() ([]byte, []int) {
-	return fileDescriptor_jobs_a8158969d454e928, []int{7}
+	return fileDescriptor_jobs_db8ea7aa6248c82a, []int{7}
 }
 func (m *PigJob) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_PigJob.Unmarshal(m, b)
@@ -1330,14 +1338,16 @@ type isPigJob_Queries interface {
 }
 
 type PigJob_QueryFileUri struct {
-	QueryFileUri string `protobuf:"bytes,1,opt,name=query_file_uri,json=queryFileUri,oneof"`
+	QueryFileUri string `protobuf:"bytes,1,opt,name=query_file_uri,json=queryFileUri,proto3,oneof"`
 }
+
 type PigJob_QueryList struct {
-	QueryList *QueryList `protobuf:"bytes,2,opt,name=query_list,json=queryList,oneof"`
+	QueryList *QueryList `protobuf:"bytes,2,opt,name=query_list,json=queryList,proto3,oneof"`
 }
 
 func (*PigJob_QueryFileUri) isPigJob_Queries() {}
-func (*PigJob_QueryList) isPigJob_Queries()    {}
+
+func (*PigJob_QueryList) isPigJob_Queries() {}
 
 func (m *PigJob) GetQueries() isPigJob_Queries {
 	if m != nil {
@@ -1468,10 +1478,10 @@ func _PigJob_OneofSizer(msg proto.Message) (n int) {
 // Cloud Dataproc job config.
 type JobPlacement struct {
 	// Required. The name of the cluster where the job will be submitted.
-	ClusterName string `protobuf:"bytes,1,opt,name=cluster_name,json=clusterName" json:"cluster_name,omitempty"`
+	ClusterName string `protobuf:"bytes,1,opt,name=cluster_name,json=clusterName,proto3" json:"cluster_name,omitempty"`
 	// Output-only. A cluster UUID generated by the Cloud Dataproc service when
 	// the job is submitted.
-	ClusterUuid          string   `protobuf:"bytes,2,opt,name=cluster_uuid,json=clusterUuid" json:"cluster_uuid,omitempty"`
+	ClusterUuid          string   `protobuf:"bytes,2,opt,name=cluster_uuid,json=clusterUuid,proto3" json:"cluster_uuid,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1481,7 +1491,7 @@ func (m *JobPlacement) Reset()         { *m = JobPlacement{} }
 func (m *JobPlacement) String() string { return proto.CompactTextString(m) }
 func (*JobPlacement) ProtoMessage()    {}
 func (*JobPlacement) Descriptor() ([]byte, []int) {
-	return fileDescriptor_jobs_a8158969d454e928, []int{8}
+	return fileDescriptor_jobs_db8ea7aa6248c82a, []int{8}
 }
 func (m *JobPlacement) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_JobPlacement.Unmarshal(m, b)
@@ -1518,15 +1528,15 @@ func (m *JobPlacement) GetClusterUuid() string {
 // Cloud Dataproc job status.
 type JobStatus struct {
 	// Output-only. A state message specifying the overall job state.
-	State JobStatus_State `protobuf:"varint,1,opt,name=state,enum=google.cloud.dataproc.v1.JobStatus_State" json:"state,omitempty"`
+	State JobStatus_State `protobuf:"varint,1,opt,name=state,proto3,enum=google.cloud.dataproc.v1.JobStatus_State" json:"state,omitempty"`
 	// Output-only. Optional job state details, such as an error
 	// description if the state is <code>ERROR</code>.
-	Details string `protobuf:"bytes,2,opt,name=details" json:"details,omitempty"`
+	Details string `protobuf:"bytes,2,opt,name=details,proto3" json:"details,omitempty"`
 	// Output-only. The time when this state was entered.
-	StateStartTime *timestamp.Timestamp `protobuf:"bytes,6,opt,name=state_start_time,json=stateStartTime" json:"state_start_time,omitempty"`
+	StateStartTime *timestamp.Timestamp `protobuf:"bytes,6,opt,name=state_start_time,json=stateStartTime,proto3" json:"state_start_time,omitempty"`
 	// Output-only. Additional state information, which includes
 	// status reported by the agent.
-	Substate             JobStatus_Substate `protobuf:"varint,7,opt,name=substate,enum=google.cloud.dataproc.v1.JobStatus_Substate" json:"substate,omitempty"`
+	Substate             JobStatus_Substate `protobuf:"varint,7,opt,name=substate,proto3,enum=google.cloud.dataproc.v1.JobStatus_Substate" json:"substate,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}           `json:"-"`
 	XXX_unrecognized     []byte             `json:"-"`
 	XXX_sizecache        int32              `json:"-"`
@@ -1536,7 +1546,7 @@ func (m *JobStatus) Reset()         { *m = JobStatus{} }
 func (m *JobStatus) String() string { return proto.CompactTextString(m) }
 func (*JobStatus) ProtoMessage()    {}
 func (*JobStatus) Descriptor() ([]byte, []int) {
-	return fileDescriptor_jobs_a8158969d454e928, []int{9}
+	return fileDescriptor_jobs_db8ea7aa6248c82a, []int{9}
 }
 func (m *JobStatus) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_JobStatus.Unmarshal(m, b)
@@ -1588,13 +1598,13 @@ func (m *JobStatus) GetSubstate() JobStatus_Substate {
 type JobReference struct {
 	// Required. The ID of the Google Cloud Platform project that the job
 	// belongs to.
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// Optional. The job ID, which must be unique within the project. The job ID
 	// is generated by the server upon job submission or provided by the user as a
 	// means to perform retries without creating duplicate jobs. The ID must
 	// contain only letters (a-z, A-Z), numbers (0-9), underscores (_), or
 	// hyphens (-). The maximum length is 100 characters.
-	JobId                string   `protobuf:"bytes,2,opt,name=job_id,json=jobId" json:"job_id,omitempty"`
+	JobId                string   `protobuf:"bytes,2,opt,name=job_id,json=jobId,proto3" json:"job_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1604,7 +1614,7 @@ func (m *JobReference) Reset()         { *m = JobReference{} }
 func (m *JobReference) String() string { return proto.CompactTextString(m) }
 func (*JobReference) ProtoMessage()    {}
 func (*JobReference) Descriptor() ([]byte, []int) {
-	return fileDescriptor_jobs_a8158969d454e928, []int{10}
+	return fileDescriptor_jobs_db8ea7aa6248c82a, []int{10}
 }
 func (m *JobReference) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_JobReference.Unmarshal(m, b)
@@ -1645,16 +1655,16 @@ func (m *JobReference) GetJobId() string {
 // be changed before final release.
 type YarnApplication struct {
 	// Required. The application name.
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// Required. The application state.
-	State YarnApplication_State `protobuf:"varint,2,opt,name=state,enum=google.cloud.dataproc.v1.YarnApplication_State" json:"state,omitempty"`
+	State YarnApplication_State `protobuf:"varint,2,opt,name=state,proto3,enum=google.cloud.dataproc.v1.YarnApplication_State" json:"state,omitempty"`
 	// Required. The numerical progress of the application, from 1 to 100.
-	Progress float32 `protobuf:"fixed32,3,opt,name=progress" json:"progress,omitempty"`
+	Progress float32 `protobuf:"fixed32,3,opt,name=progress,proto3" json:"progress,omitempty"`
 	// Optional. The HTTP URL of the ApplicationMaster, HistoryServer, or
 	// TimelineServer that provides application-specific information. The URL uses
 	// the internal hostname, and requires a proxy server for resolution and,
 	// possibly, access.
-	TrackingUrl          string   `protobuf:"bytes,4,opt,name=tracking_url,json=trackingUrl" json:"tracking_url,omitempty"`
+	TrackingUrl          string   `protobuf:"bytes,4,opt,name=tracking_url,json=trackingUrl,proto3" json:"tracking_url,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1664,7 +1674,7 @@ func (m *YarnApplication) Reset()         { *m = YarnApplication{} }
 func (m *YarnApplication) String() string { return proto.CompactTextString(m) }
 func (*YarnApplication) ProtoMessage()    {}
 func (*YarnApplication) Descriptor() ([]byte, []int) {
-	return fileDescriptor_jobs_a8158969d454e928, []int{11}
+	return fileDescriptor_jobs_db8ea7aa6248c82a, []int{11}
 }
 func (m *YarnApplication) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_YarnApplication.Unmarshal(m, b)
@@ -1718,10 +1728,10 @@ type Job struct {
 	// obtain the equivalent REST path of the job resource. If this property
 	// is not specified when a job is created, the server generates a
 	// <code>job_id</code>.
-	Reference *JobReference `protobuf:"bytes,1,opt,name=reference" json:"reference,omitempty"`
+	Reference *JobReference `protobuf:"bytes,1,opt,name=reference,proto3" json:"reference,omitempty"`
 	// Required. Job information, including how, when, and where to
 	// run the job.
-	Placement *JobPlacement `protobuf:"bytes,2,opt,name=placement" json:"placement,omitempty"`
+	Placement *JobPlacement `protobuf:"bytes,2,opt,name=placement,proto3" json:"placement,omitempty"`
 	// Required. The application/framework-specific portion of the job.
 	//
 	// Types that are valid to be assigned to TypeJob:
@@ -1735,30 +1745,30 @@ type Job struct {
 	// Output-only. The job status. Additional application-specific
 	// status information may be contained in the <code>type_job</code>
 	// and <code>yarn_applications</code> fields.
-	Status *JobStatus `protobuf:"bytes,8,opt,name=status" json:"status,omitempty"`
+	Status *JobStatus `protobuf:"bytes,8,opt,name=status,proto3" json:"status,omitempty"`
 	// Output-only. The previous job status.
-	StatusHistory []*JobStatus `protobuf:"bytes,13,rep,name=status_history,json=statusHistory" json:"status_history,omitempty"`
+	StatusHistory []*JobStatus `protobuf:"bytes,13,rep,name=status_history,json=statusHistory,proto3" json:"status_history,omitempty"`
 	// Output-only. The collection of YARN applications spun up by this job.
 	//
 	// **Beta** Feature: This report is available for testing purposes only. It may
 	// be changed before final release.
-	YarnApplications []*YarnApplication `protobuf:"bytes,9,rep,name=yarn_applications,json=yarnApplications" json:"yarn_applications,omitempty"`
+	YarnApplications []*YarnApplication `protobuf:"bytes,9,rep,name=yarn_applications,json=yarnApplications,proto3" json:"yarn_applications,omitempty"`
 	// Output-only. A URI pointing to the location of the stdout of the job's
 	// driver program.
-	DriverOutputResourceUri string `protobuf:"bytes,17,opt,name=driver_output_resource_uri,json=driverOutputResourceUri" json:"driver_output_resource_uri,omitempty"`
+	DriverOutputResourceUri string `protobuf:"bytes,17,opt,name=driver_output_resource_uri,json=driverOutputResourceUri,proto3" json:"driver_output_resource_uri,omitempty"`
 	// Output-only. If present, the location of miscellaneous control files
 	// which may be used as part of job setup and handling. If not present,
 	// control files may be placed in the same location as `driver_output_uri`.
-	DriverControlFilesUri string `protobuf:"bytes,15,opt,name=driver_control_files_uri,json=driverControlFilesUri" json:"driver_control_files_uri,omitempty"`
+	DriverControlFilesUri string `protobuf:"bytes,15,opt,name=driver_control_files_uri,json=driverControlFilesUri,proto3" json:"driver_control_files_uri,omitempty"`
 	// Optional. The labels to associate with this job.
 	// Label **keys** must contain 1 to 63 characters, and must conform to
 	// [RFC 1035](https://www.ietf.org/rfc/rfc1035.txt).
 	// Label **values** may be empty, but, if present, must contain 1 to 63
 	// characters, and must conform to [RFC 1035](https://www.ietf.org/rfc/rfc1035.txt).
 	// No more than 32 labels can be associated with a job.
-	Labels map[string]string `protobuf:"bytes,18,rep,name=labels" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Labels map[string]string `protobuf:"bytes,18,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	// Optional. Job scheduling configuration.
-	Scheduling           *JobScheduling `protobuf:"bytes,20,opt,name=scheduling" json:"scheduling,omitempty"`
+	Scheduling           *JobScheduling `protobuf:"bytes,20,opt,name=scheduling,proto3" json:"scheduling,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}       `json:"-"`
 	XXX_unrecognized     []byte         `json:"-"`
 	XXX_sizecache        int32          `json:"-"`
@@ -1768,7 +1778,7 @@ func (m *Job) Reset()         { *m = Job{} }
 func (m *Job) String() string { return proto.CompactTextString(m) }
 func (*Job) ProtoMessage()    {}
 func (*Job) Descriptor() ([]byte, []int) {
-	return fileDescriptor_jobs_a8158969d454e928, []int{12}
+	return fileDescriptor_jobs_db8ea7aa6248c82a, []int{12}
 }
 func (m *Job) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Job.Unmarshal(m, b)
@@ -1788,43 +1798,6 @@ func (m *Job) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_Job proto.InternalMessageInfo
 
-type isJob_TypeJob interface {
-	isJob_TypeJob()
-}
-
-type Job_HadoopJob struct {
-	HadoopJob *HadoopJob `protobuf:"bytes,3,opt,name=hadoop_job,json=hadoopJob,oneof"`
-}
-type Job_SparkJob struct {
-	SparkJob *SparkJob `protobuf:"bytes,4,opt,name=spark_job,json=sparkJob,oneof"`
-}
-type Job_PysparkJob struct {
-	PysparkJob *PySparkJob `protobuf:"bytes,5,opt,name=pyspark_job,json=pysparkJob,oneof"`
-}
-type Job_HiveJob struct {
-	HiveJob *HiveJob `protobuf:"bytes,6,opt,name=hive_job,json=hiveJob,oneof"`
-}
-type Job_PigJob struct {
-	PigJob *PigJob `protobuf:"bytes,7,opt,name=pig_job,json=pigJob,oneof"`
-}
-type Job_SparkSqlJob struct {
-	SparkSqlJob *SparkSqlJob `protobuf:"bytes,12,opt,name=spark_sql_job,json=sparkSqlJob,oneof"`
-}
-
-func (*Job_HadoopJob) isJob_TypeJob()   {}
-func (*Job_SparkJob) isJob_TypeJob()    {}
-func (*Job_PysparkJob) isJob_TypeJob()  {}
-func (*Job_HiveJob) isJob_TypeJob()     {}
-func (*Job_PigJob) isJob_TypeJob()      {}
-func (*Job_SparkSqlJob) isJob_TypeJob() {}
-
-func (m *Job) GetTypeJob() isJob_TypeJob {
-	if m != nil {
-		return m.TypeJob
-	}
-	return nil
-}
-
 func (m *Job) GetReference() *JobReference {
 	if m != nil {
 		return m.Reference
@@ -1835,6 +1808,53 @@ func (m *Job) GetReference() *JobReference {
 func (m *Job) GetPlacement() *JobPlacement {
 	if m != nil {
 		return m.Placement
+	}
+	return nil
+}
+
+type isJob_TypeJob interface {
+	isJob_TypeJob()
+}
+
+type Job_HadoopJob struct {
+	HadoopJob *HadoopJob `protobuf:"bytes,3,opt,name=hadoop_job,json=hadoopJob,proto3,oneof"`
+}
+
+type Job_SparkJob struct {
+	SparkJob *SparkJob `protobuf:"bytes,4,opt,name=spark_job,json=sparkJob,proto3,oneof"`
+}
+
+type Job_PysparkJob struct {
+	PysparkJob *PySparkJob `protobuf:"bytes,5,opt,name=pyspark_job,json=pysparkJob,proto3,oneof"`
+}
+
+type Job_HiveJob struct {
+	HiveJob *HiveJob `protobuf:"bytes,6,opt,name=hive_job,json=hiveJob,proto3,oneof"`
+}
+
+type Job_PigJob struct {
+	PigJob *PigJob `protobuf:"bytes,7,opt,name=pig_job,json=pigJob,proto3,oneof"`
+}
+
+type Job_SparkSqlJob struct {
+	SparkSqlJob *SparkSqlJob `protobuf:"bytes,12,opt,name=spark_sql_job,json=sparkSqlJob,proto3,oneof"`
+}
+
+func (*Job_HadoopJob) isJob_TypeJob() {}
+
+func (*Job_SparkJob) isJob_TypeJob() {}
+
+func (*Job_PysparkJob) isJob_TypeJob() {}
+
+func (*Job_HiveJob) isJob_TypeJob() {}
+
+func (*Job_PigJob) isJob_TypeJob() {}
+
+func (*Job_SparkSqlJob) isJob_TypeJob() {}
+
+func (m *Job) GetTypeJob() isJob_TypeJob {
+	if m != nil {
+		return m.TypeJob
 	}
 	return nil
 }
@@ -2093,7 +2113,7 @@ type JobScheduling struct {
 	// 4 times within 10 minute window.
 	//
 	// Maximum value is 10.
-	MaxFailuresPerHour   int32    `protobuf:"varint,1,opt,name=max_failures_per_hour,json=maxFailuresPerHour" json:"max_failures_per_hour,omitempty"`
+	MaxFailuresPerHour   int32    `protobuf:"varint,1,opt,name=max_failures_per_hour,json=maxFailuresPerHour,proto3" json:"max_failures_per_hour,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -2103,7 +2123,7 @@ func (m *JobScheduling) Reset()         { *m = JobScheduling{} }
 func (m *JobScheduling) String() string { return proto.CompactTextString(m) }
 func (*JobScheduling) ProtoMessage()    {}
 func (*JobScheduling) Descriptor() ([]byte, []int) {
-	return fileDescriptor_jobs_a8158969d454e928, []int{13}
+	return fileDescriptor_jobs_db8ea7aa6248c82a, []int{13}
 }
 func (m *JobScheduling) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_JobScheduling.Unmarshal(m, b)
@@ -2134,11 +2154,11 @@ func (m *JobScheduling) GetMaxFailuresPerHour() int32 {
 type SubmitJobRequest struct {
 	// Required. The ID of the Google Cloud Platform project that the job
 	// belongs to.
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// Required. The Cloud Dataproc region in which to handle the request.
-	Region string `protobuf:"bytes,3,opt,name=region" json:"region,omitempty"`
+	Region string `protobuf:"bytes,3,opt,name=region,proto3" json:"region,omitempty"`
 	// Required. The job resource.
-	Job                  *Job     `protobuf:"bytes,2,opt,name=job" json:"job,omitempty"`
+	Job                  *Job     `protobuf:"bytes,2,opt,name=job,proto3" json:"job,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -2148,7 +2168,7 @@ func (m *SubmitJobRequest) Reset()         { *m = SubmitJobRequest{} }
 func (m *SubmitJobRequest) String() string { return proto.CompactTextString(m) }
 func (*SubmitJobRequest) ProtoMessage()    {}
 func (*SubmitJobRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_jobs_a8158969d454e928, []int{14}
+	return fileDescriptor_jobs_db8ea7aa6248c82a, []int{14}
 }
 func (m *SubmitJobRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SubmitJobRequest.Unmarshal(m, b)
@@ -2193,11 +2213,11 @@ func (m *SubmitJobRequest) GetJob() *Job {
 type GetJobRequest struct {
 	// Required. The ID of the Google Cloud Platform project that the job
 	// belongs to.
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// Required. The Cloud Dataproc region in which to handle the request.
-	Region string `protobuf:"bytes,3,opt,name=region" json:"region,omitempty"`
+	Region string `protobuf:"bytes,3,opt,name=region,proto3" json:"region,omitempty"`
 	// Required. The job ID.
-	JobId                string   `protobuf:"bytes,2,opt,name=job_id,json=jobId" json:"job_id,omitempty"`
+	JobId                string   `protobuf:"bytes,2,opt,name=job_id,json=jobId,proto3" json:"job_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -2207,7 +2227,7 @@ func (m *GetJobRequest) Reset()         { *m = GetJobRequest{} }
 func (m *GetJobRequest) String() string { return proto.CompactTextString(m) }
 func (*GetJobRequest) ProtoMessage()    {}
 func (*GetJobRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_jobs_a8158969d454e928, []int{15}
+	return fileDescriptor_jobs_db8ea7aa6248c82a, []int{15}
 }
 func (m *GetJobRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetJobRequest.Unmarshal(m, b)
@@ -2252,22 +2272,22 @@ func (m *GetJobRequest) GetJobId() string {
 type ListJobsRequest struct {
 	// Required. The ID of the Google Cloud Platform project that the job
 	// belongs to.
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// Required. The Cloud Dataproc region in which to handle the request.
-	Region string `protobuf:"bytes,6,opt,name=region" json:"region,omitempty"`
+	Region string `protobuf:"bytes,6,opt,name=region,proto3" json:"region,omitempty"`
 	// Optional. The number of results to return in each response.
-	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize" json:"page_size,omitempty"`
+	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// Optional. The page token, returned by a previous call, to request the
 	// next page of results.
-	PageToken string `protobuf:"bytes,3,opt,name=page_token,json=pageToken" json:"page_token,omitempty"`
+	PageToken string `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	// Optional. If set, the returned jobs list includes only jobs that were
 	// submitted to the named cluster.
-	ClusterName string `protobuf:"bytes,4,opt,name=cluster_name,json=clusterName" json:"cluster_name,omitempty"`
+	ClusterName string `protobuf:"bytes,4,opt,name=cluster_name,json=clusterName,proto3" json:"cluster_name,omitempty"`
 	// Optional. Specifies enumerated categories of jobs to list.
 	// (default = match ALL jobs).
 	//
 	// If `filter` is provided, `jobStateMatcher` will be ignored.
-	JobStateMatcher ListJobsRequest_JobStateMatcher `protobuf:"varint,5,opt,name=job_state_matcher,json=jobStateMatcher,enum=google.cloud.dataproc.v1.ListJobsRequest_JobStateMatcher" json:"job_state_matcher,omitempty"`
+	JobStateMatcher ListJobsRequest_JobStateMatcher `protobuf:"varint,5,opt,name=job_state_matcher,json=jobStateMatcher,proto3,enum=google.cloud.dataproc.v1.ListJobsRequest_JobStateMatcher" json:"job_state_matcher,omitempty"`
 	// Optional. A filter constraining the jobs to list. Filters are
 	// case-sensitive and have the following syntax:
 	//
@@ -2282,7 +2302,7 @@ type ListJobsRequest struct {
 	// Example filter:
 	//
 	// status.state = ACTIVE AND labels.env = staging AND labels.starred = *
-	Filter               string   `protobuf:"bytes,7,opt,name=filter" json:"filter,omitempty"`
+	Filter               string   `protobuf:"bytes,7,opt,name=filter,proto3" json:"filter,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -2292,7 +2312,7 @@ func (m *ListJobsRequest) Reset()         { *m = ListJobsRequest{} }
 func (m *ListJobsRequest) String() string { return proto.CompactTextString(m) }
 func (*ListJobsRequest) ProtoMessage()    {}
 func (*ListJobsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_jobs_a8158969d454e928, []int{16}
+	return fileDescriptor_jobs_db8ea7aa6248c82a, []int{16}
 }
 func (m *ListJobsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListJobsRequest.Unmarshal(m, b)
@@ -2365,20 +2385,20 @@ func (m *ListJobsRequest) GetFilter() string {
 type UpdateJobRequest struct {
 	// Required. The ID of the Google Cloud Platform project that the job
 	// belongs to.
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// Required. The Cloud Dataproc region in which to handle the request.
-	Region string `protobuf:"bytes,2,opt,name=region" json:"region,omitempty"`
+	Region string `protobuf:"bytes,2,opt,name=region,proto3" json:"region,omitempty"`
 	// Required. The job ID.
-	JobId string `protobuf:"bytes,3,opt,name=job_id,json=jobId" json:"job_id,omitempty"`
+	JobId string `protobuf:"bytes,3,opt,name=job_id,json=jobId,proto3" json:"job_id,omitempty"`
 	// Required. The changes to the job.
-	Job *Job `protobuf:"bytes,4,opt,name=job" json:"job,omitempty"`
+	Job *Job `protobuf:"bytes,4,opt,name=job,proto3" json:"job,omitempty"`
 	// Required. Specifies the path, relative to <code>Job</code>, of
 	// the field to update. For example, to update the labels of a Job the
 	// <code>update_mask</code> parameter would be specified as
 	// <code>labels</code>, and the `PATCH` request body would specify the new
 	// value. <strong>Note:</strong> Currently, <code>labels</code> is the only
 	// field that can be updated.
-	UpdateMask           *field_mask.FieldMask `protobuf:"bytes,5,opt,name=update_mask,json=updateMask" json:"update_mask,omitempty"`
+	UpdateMask           *field_mask.FieldMask `protobuf:"bytes,5,opt,name=update_mask,json=updateMask,proto3" json:"update_mask,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}              `json:"-"`
 	XXX_unrecognized     []byte                `json:"-"`
 	XXX_sizecache        int32                 `json:"-"`
@@ -2388,7 +2408,7 @@ func (m *UpdateJobRequest) Reset()         { *m = UpdateJobRequest{} }
 func (m *UpdateJobRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateJobRequest) ProtoMessage()    {}
 func (*UpdateJobRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_jobs_a8158969d454e928, []int{17}
+	return fileDescriptor_jobs_db8ea7aa6248c82a, []int{17}
 }
 func (m *UpdateJobRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UpdateJobRequest.Unmarshal(m, b)
@@ -2446,11 +2466,11 @@ func (m *UpdateJobRequest) GetUpdateMask() *field_mask.FieldMask {
 // A list of jobs in a project.
 type ListJobsResponse struct {
 	// Output-only. Jobs list.
-	Jobs []*Job `protobuf:"bytes,1,rep,name=jobs" json:"jobs,omitempty"`
+	Jobs []*Job `protobuf:"bytes,1,rep,name=jobs,proto3" json:"jobs,omitempty"`
 	// Optional. This token is included in the response if there are more results
 	// to fetch. To fetch additional results, provide this value as the
 	// `page_token` in a subsequent <code>ListJobsRequest</code>.
-	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken" json:"next_page_token,omitempty"`
+	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -2460,7 +2480,7 @@ func (m *ListJobsResponse) Reset()         { *m = ListJobsResponse{} }
 func (m *ListJobsResponse) String() string { return proto.CompactTextString(m) }
 func (*ListJobsResponse) ProtoMessage()    {}
 func (*ListJobsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_jobs_a8158969d454e928, []int{18}
+	return fileDescriptor_jobs_db8ea7aa6248c82a, []int{18}
 }
 func (m *ListJobsResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListJobsResponse.Unmarshal(m, b)
@@ -2498,11 +2518,11 @@ func (m *ListJobsResponse) GetNextPageToken() string {
 type CancelJobRequest struct {
 	// Required. The ID of the Google Cloud Platform project that the job
 	// belongs to.
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// Required. The Cloud Dataproc region in which to handle the request.
-	Region string `protobuf:"bytes,3,opt,name=region" json:"region,omitempty"`
+	Region string `protobuf:"bytes,3,opt,name=region,proto3" json:"region,omitempty"`
 	// Required. The job ID.
-	JobId                string   `protobuf:"bytes,2,opt,name=job_id,json=jobId" json:"job_id,omitempty"`
+	JobId                string   `protobuf:"bytes,2,opt,name=job_id,json=jobId,proto3" json:"job_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -2512,7 +2532,7 @@ func (m *CancelJobRequest) Reset()         { *m = CancelJobRequest{} }
 func (m *CancelJobRequest) String() string { return proto.CompactTextString(m) }
 func (*CancelJobRequest) ProtoMessage()    {}
 func (*CancelJobRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_jobs_a8158969d454e928, []int{19}
+	return fileDescriptor_jobs_db8ea7aa6248c82a, []int{19}
 }
 func (m *CancelJobRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CancelJobRequest.Unmarshal(m, b)
@@ -2557,11 +2577,11 @@ func (m *CancelJobRequest) GetJobId() string {
 type DeleteJobRequest struct {
 	// Required. The ID of the Google Cloud Platform project that the job
 	// belongs to.
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// Required. The Cloud Dataproc region in which to handle the request.
-	Region string `protobuf:"bytes,3,opt,name=region" json:"region,omitempty"`
+	Region string `protobuf:"bytes,3,opt,name=region,proto3" json:"region,omitempty"`
 	// Required. The job ID.
-	JobId                string   `protobuf:"bytes,2,opt,name=job_id,json=jobId" json:"job_id,omitempty"`
+	JobId                string   `protobuf:"bytes,2,opt,name=job_id,json=jobId,proto3" json:"job_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -2571,7 +2591,7 @@ func (m *DeleteJobRequest) Reset()         { *m = DeleteJobRequest{} }
 func (m *DeleteJobRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteJobRequest) ProtoMessage()    {}
 func (*DeleteJobRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_jobs_a8158969d454e928, []int{20}
+	return fileDescriptor_jobs_db8ea7aa6248c82a, []int{20}
 }
 func (m *DeleteJobRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeleteJobRequest.Unmarshal(m, b)
@@ -2744,8 +2764,7 @@ func (c *jobControllerClient) DeleteJob(ctx context.Context, in *DeleteJobReques
 	return out, nil
 }
 
-// Server API for JobController service
-
+// JobControllerServer is the server API for JobController service.
 type JobControllerServer interface {
 	// Submits a job to a cluster.
 	SubmitJob(context.Context, *SubmitJobRequest) (*Job, error)
@@ -2911,10 +2930,10 @@ var _JobController_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("google/cloud/dataproc/v1/jobs.proto", fileDescriptor_jobs_a8158969d454e928)
+	proto.RegisterFile("google/cloud/dataproc/v1/jobs.proto", fileDescriptor_jobs_db8ea7aa6248c82a)
 }
 
-var fileDescriptor_jobs_a8158969d454e928 = []byte{
+var fileDescriptor_jobs_db8ea7aa6248c82a = []byte{
 	// 2290 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xdc, 0x59, 0xcf, 0x73, 0x1b, 0x49,
 	0xf5, 0xb7, 0x7e, 0x6b, 0x9e, 0x6c, 0x79, 0xdc, 0x9b, 0xec, 0x57, 0xa5, 0xdd, 0xad, 0xf5, 0x4e,

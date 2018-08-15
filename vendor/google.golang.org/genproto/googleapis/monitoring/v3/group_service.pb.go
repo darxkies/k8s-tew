@@ -30,7 +30,7 @@ const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 type ListGroupsRequest struct {
 	// The project whose groups are to be listed. The format is
 	// `"projects/{project_id_or_number}"`.
-	Name string `protobuf:"bytes,7,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,7,opt,name=name,proto3" json:"name,omitempty"`
 	// An optional filter consisting of a single group name.  The filters limit the
 	// groups returned based on their parent-child relationship with the specified
 	// group. If no filter is specified, all groups are returned.
@@ -41,11 +41,11 @@ type ListGroupsRequest struct {
 	//	*ListGroupsRequest_DescendantsOfGroup
 	Filter isListGroupsRequest_Filter `protobuf_oneof:"filter"`
 	// A positive number that is the maximum number of results to return.
-	PageSize int32 `protobuf:"varint,5,opt,name=page_size,json=pageSize" json:"page_size,omitempty"`
+	PageSize int32 `protobuf:"varint,5,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// If this field is not empty then it must contain the `nextPageToken` value
 	// returned by a previous call to this method.  Using this field causes the
 	// method to return additional results from the previous method call.
-	PageToken            string   `protobuf:"bytes,6,opt,name=page_token,json=pageToken" json:"page_token,omitempty"`
+	PageToken            string   `protobuf:"bytes,6,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -55,7 +55,7 @@ func (m *ListGroupsRequest) Reset()         { *m = ListGroupsRequest{} }
 func (m *ListGroupsRequest) String() string { return proto.CompactTextString(m) }
 func (*ListGroupsRequest) ProtoMessage()    {}
 func (*ListGroupsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_group_service_9b35a79e21b496f3, []int{0}
+	return fileDescriptor_group_service_460c0e48a72aa329, []int{0}
 }
 func (m *ListGroupsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListGroupsRequest.Unmarshal(m, b)
@@ -75,22 +75,33 @@ func (m *ListGroupsRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_ListGroupsRequest proto.InternalMessageInfo
 
+func (m *ListGroupsRequest) GetName() string {
+	if m != nil {
+		return m.Name
+	}
+	return ""
+}
+
 type isListGroupsRequest_Filter interface {
 	isListGroupsRequest_Filter()
 }
 
 type ListGroupsRequest_ChildrenOfGroup struct {
-	ChildrenOfGroup string `protobuf:"bytes,2,opt,name=children_of_group,json=childrenOfGroup,oneof"`
-}
-type ListGroupsRequest_AncestorsOfGroup struct {
-	AncestorsOfGroup string `protobuf:"bytes,3,opt,name=ancestors_of_group,json=ancestorsOfGroup,oneof"`
-}
-type ListGroupsRequest_DescendantsOfGroup struct {
-	DescendantsOfGroup string `protobuf:"bytes,4,opt,name=descendants_of_group,json=descendantsOfGroup,oneof"`
+	ChildrenOfGroup string `protobuf:"bytes,2,opt,name=children_of_group,json=childrenOfGroup,proto3,oneof"`
 }
 
-func (*ListGroupsRequest_ChildrenOfGroup) isListGroupsRequest_Filter()    {}
-func (*ListGroupsRequest_AncestorsOfGroup) isListGroupsRequest_Filter()   {}
+type ListGroupsRequest_AncestorsOfGroup struct {
+	AncestorsOfGroup string `protobuf:"bytes,3,opt,name=ancestors_of_group,json=ancestorsOfGroup,proto3,oneof"`
+}
+
+type ListGroupsRequest_DescendantsOfGroup struct {
+	DescendantsOfGroup string `protobuf:"bytes,4,opt,name=descendants_of_group,json=descendantsOfGroup,proto3,oneof"`
+}
+
+func (*ListGroupsRequest_ChildrenOfGroup) isListGroupsRequest_Filter() {}
+
+func (*ListGroupsRequest_AncestorsOfGroup) isListGroupsRequest_Filter() {}
+
 func (*ListGroupsRequest_DescendantsOfGroup) isListGroupsRequest_Filter() {}
 
 func (m *ListGroupsRequest) GetFilter() isListGroupsRequest_Filter {
@@ -98,13 +109,6 @@ func (m *ListGroupsRequest) GetFilter() isListGroupsRequest_Filter {
 		return m.Filter
 	}
 	return nil
-}
-
-func (m *ListGroupsRequest) GetName() string {
-	if m != nil {
-		return m.Name
-	}
-	return ""
 }
 
 func (m *ListGroupsRequest) GetChildrenOfGroup() string {
@@ -226,11 +230,11 @@ func _ListGroupsRequest_OneofSizer(msg proto.Message) (n int) {
 // The `ListGroups` response.
 type ListGroupsResponse struct {
 	// The groups that match the specified filters.
-	Group []*Group `protobuf:"bytes,1,rep,name=group" json:"group,omitempty"`
+	Group []*Group `protobuf:"bytes,1,rep,name=group,proto3" json:"group,omitempty"`
 	// If there are more results than have been returned, then this field is set
 	// to a non-empty value.  To see the additional results,
 	// use that value as `pageToken` in the next call to this method.
-	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken" json:"next_page_token,omitempty"`
+	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -240,7 +244,7 @@ func (m *ListGroupsResponse) Reset()         { *m = ListGroupsResponse{} }
 func (m *ListGroupsResponse) String() string { return proto.CompactTextString(m) }
 func (*ListGroupsResponse) ProtoMessage()    {}
 func (*ListGroupsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_group_service_9b35a79e21b496f3, []int{1}
+	return fileDescriptor_group_service_460c0e48a72aa329, []int{1}
 }
 func (m *ListGroupsResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListGroupsResponse.Unmarshal(m, b)
@@ -278,7 +282,7 @@ func (m *ListGroupsResponse) GetNextPageToken() string {
 type GetGroupRequest struct {
 	// The group to retrieve. The format is
 	// `"projects/{project_id_or_number}/groups/{group_id}"`.
-	Name                 string   `protobuf:"bytes,3,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -288,7 +292,7 @@ func (m *GetGroupRequest) Reset()         { *m = GetGroupRequest{} }
 func (m *GetGroupRequest) String() string { return proto.CompactTextString(m) }
 func (*GetGroupRequest) ProtoMessage()    {}
 func (*GetGroupRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_group_service_9b35a79e21b496f3, []int{2}
+	return fileDescriptor_group_service_460c0e48a72aa329, []int{2}
 }
 func (m *GetGroupRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetGroupRequest.Unmarshal(m, b)
@@ -319,12 +323,12 @@ func (m *GetGroupRequest) GetName() string {
 type CreateGroupRequest struct {
 	// The project in which to create the group. The format is
 	// `"projects/{project_id_or_number}"`.
-	Name string `protobuf:"bytes,4,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
 	// A group definition. It is an error to define the `name` field because
 	// the system assigns the name.
-	Group *Group `protobuf:"bytes,2,opt,name=group" json:"group,omitempty"`
+	Group *Group `protobuf:"bytes,2,opt,name=group,proto3" json:"group,omitempty"`
 	// If true, validate this request but do not create the group.
-	ValidateOnly         bool     `protobuf:"varint,3,opt,name=validate_only,json=validateOnly" json:"validate_only,omitempty"`
+	ValidateOnly         bool     `protobuf:"varint,3,opt,name=validate_only,json=validateOnly,proto3" json:"validate_only,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -334,7 +338,7 @@ func (m *CreateGroupRequest) Reset()         { *m = CreateGroupRequest{} }
 func (m *CreateGroupRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateGroupRequest) ProtoMessage()    {}
 func (*CreateGroupRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_group_service_9b35a79e21b496f3, []int{3}
+	return fileDescriptor_group_service_460c0e48a72aa329, []int{3}
 }
 func (m *CreateGroupRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CreateGroupRequest.Unmarshal(m, b)
@@ -379,9 +383,9 @@ func (m *CreateGroupRequest) GetValidateOnly() bool {
 type UpdateGroupRequest struct {
 	// The new definition of the group.  All fields of the existing group,
 	// excepting `name`, are replaced with the corresponding fields of this group.
-	Group *Group `protobuf:"bytes,2,opt,name=group" json:"group,omitempty"`
+	Group *Group `protobuf:"bytes,2,opt,name=group,proto3" json:"group,omitempty"`
 	// If true, validate this request but do not update the existing group.
-	ValidateOnly         bool     `protobuf:"varint,3,opt,name=validate_only,json=validateOnly" json:"validate_only,omitempty"`
+	ValidateOnly         bool     `protobuf:"varint,3,opt,name=validate_only,json=validateOnly,proto3" json:"validate_only,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -391,7 +395,7 @@ func (m *UpdateGroupRequest) Reset()         { *m = UpdateGroupRequest{} }
 func (m *UpdateGroupRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateGroupRequest) ProtoMessage()    {}
 func (*UpdateGroupRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_group_service_9b35a79e21b496f3, []int{4}
+	return fileDescriptor_group_service_460c0e48a72aa329, []int{4}
 }
 func (m *UpdateGroupRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UpdateGroupRequest.Unmarshal(m, b)
@@ -429,7 +433,7 @@ func (m *UpdateGroupRequest) GetValidateOnly() bool {
 type DeleteGroupRequest struct {
 	// The group to delete. The format is
 	// `"projects/{project_id_or_number}/groups/{group_id}"`.
-	Name                 string   `protobuf:"bytes,3,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -439,7 +443,7 @@ func (m *DeleteGroupRequest) Reset()         { *m = DeleteGroupRequest{} }
 func (m *DeleteGroupRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteGroupRequest) ProtoMessage()    {}
 func (*DeleteGroupRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_group_service_9b35a79e21b496f3, []int{5}
+	return fileDescriptor_group_service_460c0e48a72aa329, []int{5}
 }
 func (m *DeleteGroupRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeleteGroupRequest.Unmarshal(m, b)
@@ -470,13 +474,13 @@ func (m *DeleteGroupRequest) GetName() string {
 type ListGroupMembersRequest struct {
 	// The group whose members are listed. The format is
 	// `"projects/{project_id_or_number}/groups/{group_id}"`.
-	Name string `protobuf:"bytes,7,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,7,opt,name=name,proto3" json:"name,omitempty"`
 	// A positive number that is the maximum number of results to return.
-	PageSize int32 `protobuf:"varint,3,opt,name=page_size,json=pageSize" json:"page_size,omitempty"`
+	PageSize int32 `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// If this field is not empty then it must contain the `nextPageToken` value
 	// returned by a previous call to this method.  Using this field causes the
 	// method to return additional results from the previous method call.
-	PageToken string `protobuf:"bytes,4,opt,name=page_token,json=pageToken" json:"page_token,omitempty"`
+	PageToken string `protobuf:"bytes,4,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	// An optional [list filter](/monitoring/api/learn_more#filtering) describing
 	// the members to be returned.  The filter may reference the type, labels, and
 	// metadata of monitored resources that comprise the group.
@@ -484,12 +488,12 @@ type ListGroupMembersRequest struct {
 	// instances, use this filter:
 	//
 	//     resource.type = "gce_instance"
-	Filter string `protobuf:"bytes,5,opt,name=filter" json:"filter,omitempty"`
+	Filter string `protobuf:"bytes,5,opt,name=filter,proto3" json:"filter,omitempty"`
 	// An optional time interval for which results should be returned. Only
 	// members that were part of the group during the specified interval are
 	// included in the response.  If no interval is provided then the group
 	// membership over the last minute is returned.
-	Interval             *TimeInterval `protobuf:"bytes,6,opt,name=interval" json:"interval,omitempty"`
+	Interval             *TimeInterval `protobuf:"bytes,6,opt,name=interval,proto3" json:"interval,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}      `json:"-"`
 	XXX_unrecognized     []byte        `json:"-"`
 	XXX_sizecache        int32         `json:"-"`
@@ -499,7 +503,7 @@ func (m *ListGroupMembersRequest) Reset()         { *m = ListGroupMembersRequest
 func (m *ListGroupMembersRequest) String() string { return proto.CompactTextString(m) }
 func (*ListGroupMembersRequest) ProtoMessage()    {}
 func (*ListGroupMembersRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_group_service_9b35a79e21b496f3, []int{6}
+	return fileDescriptor_group_service_460c0e48a72aa329, []int{6}
 }
 func (m *ListGroupMembersRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListGroupMembersRequest.Unmarshal(m, b)
@@ -557,13 +561,13 @@ func (m *ListGroupMembersRequest) GetInterval() *TimeInterval {
 // The `ListGroupMembers` response.
 type ListGroupMembersResponse struct {
 	// A set of monitored resources in the group.
-	Members []*monitoredres.MonitoredResource `protobuf:"bytes,1,rep,name=members" json:"members,omitempty"`
+	Members []*monitoredres.MonitoredResource `protobuf:"bytes,1,rep,name=members,proto3" json:"members,omitempty"`
 	// If there are more results than have been returned, then this field is
 	// set to a non-empty value.  To see the additional results, use that value as
 	// `pageToken` in the next call to this method.
-	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken" json:"next_page_token,omitempty"`
+	NextPageToken string `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	// The total number of elements matching this request.
-	TotalSize            int32    `protobuf:"varint,3,opt,name=total_size,json=totalSize" json:"total_size,omitempty"`
+	TotalSize            int32    `protobuf:"varint,3,opt,name=total_size,json=totalSize,proto3" json:"total_size,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -573,7 +577,7 @@ func (m *ListGroupMembersResponse) Reset()         { *m = ListGroupMembersRespon
 func (m *ListGroupMembersResponse) String() string { return proto.CompactTextString(m) }
 func (*ListGroupMembersResponse) ProtoMessage()    {}
 func (*ListGroupMembersResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_group_service_9b35a79e21b496f3, []int{7}
+	return fileDescriptor_group_service_460c0e48a72aa329, []int{7}
 }
 func (m *ListGroupMembersResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListGroupMembersResponse.Unmarshal(m, b)
@@ -714,8 +718,7 @@ func (c *groupServiceClient) ListGroupMembers(ctx context.Context, in *ListGroup
 	return out, nil
 }
 
-// Server API for GroupService service
-
+// GroupServiceServer is the server API for GroupService service.
 type GroupServiceServer interface {
 	// Lists the existing groups.
 	ListGroups(context.Context, *ListGroupsRequest) (*ListGroupsResponse, error)
@@ -878,10 +881,10 @@ var _GroupService_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("google/monitoring/v3/group_service.proto", fileDescriptor_group_service_9b35a79e21b496f3)
+	proto.RegisterFile("google/monitoring/v3/group_service.proto", fileDescriptor_group_service_460c0e48a72aa329)
 }
 
-var fileDescriptor_group_service_9b35a79e21b496f3 = []byte{
+var fileDescriptor_group_service_460c0e48a72aa329 = []byte{
 	// 826 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x55, 0x4d, 0x6f, 0xd3, 0x4c,
 	0x10, 0x7e, 0xdd, 0xa4, 0x69, 0xb2, 0x69, 0xd5, 0x76, 0x55, 0xf5, 0x8d, 0xdc, 0x0f, 0x05, 0xf7,

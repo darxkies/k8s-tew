@@ -30,7 +30,7 @@ type RegisterDebuggeeRequest struct {
 	// Debuggee information to register.
 	// The fields `project`, `uniquifier`, `description` and `agent_version`
 	// of the debuggee must be set.
-	Debuggee             *Debuggee `protobuf:"bytes,1,opt,name=debuggee" json:"debuggee,omitempty"`
+	Debuggee             *Debuggee `protobuf:"bytes,1,opt,name=debuggee,proto3" json:"debuggee,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
 	XXX_unrecognized     []byte    `json:"-"`
 	XXX_sizecache        int32     `json:"-"`
@@ -40,7 +40,7 @@ func (m *RegisterDebuggeeRequest) Reset()         { *m = RegisterDebuggeeRequest
 func (m *RegisterDebuggeeRequest) String() string { return proto.CompactTextString(m) }
 func (*RegisterDebuggeeRequest) ProtoMessage()    {}
 func (*RegisterDebuggeeRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_controller_4ef9c42d467cd330, []int{0}
+	return fileDescriptor_controller_ba9f5f8b4f070828, []int{0}
 }
 func (m *RegisterDebuggeeRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_RegisterDebuggeeRequest.Unmarshal(m, b)
@@ -74,7 +74,7 @@ type RegisterDebuggeeResponse struct {
 	// If the field `is_disabled` is set to `true`, the agent should disable
 	// itself by removing all breakpoints and detaching from the application.
 	// It should however continue to poll `RegisterDebuggee` until reenabled.
-	Debuggee             *Debuggee `protobuf:"bytes,1,opt,name=debuggee" json:"debuggee,omitempty"`
+	Debuggee             *Debuggee `protobuf:"bytes,1,opt,name=debuggee,proto3" json:"debuggee,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
 	XXX_unrecognized     []byte    `json:"-"`
 	XXX_sizecache        int32     `json:"-"`
@@ -84,7 +84,7 @@ func (m *RegisterDebuggeeResponse) Reset()         { *m = RegisterDebuggeeRespon
 func (m *RegisterDebuggeeResponse) String() string { return proto.CompactTextString(m) }
 func (*RegisterDebuggeeResponse) ProtoMessage()    {}
 func (*RegisterDebuggeeResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_controller_4ef9c42d467cd330, []int{1}
+	return fileDescriptor_controller_ba9f5f8b4f070828, []int{1}
 }
 func (m *RegisterDebuggeeResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_RegisterDebuggeeResponse.Unmarshal(m, b)
@@ -114,19 +114,19 @@ func (m *RegisterDebuggeeResponse) GetDebuggee() *Debuggee {
 // Request to list active breakpoints.
 type ListActiveBreakpointsRequest struct {
 	// Identifies the debuggee.
-	DebuggeeId string `protobuf:"bytes,1,opt,name=debuggee_id,json=debuggeeId" json:"debuggee_id,omitempty"`
+	DebuggeeId string `protobuf:"bytes,1,opt,name=debuggee_id,json=debuggeeId,proto3" json:"debuggee_id,omitempty"`
 	// A token that, if specified, blocks the method call until the list
 	// of active breakpoints has changed, or a server-selected timeout has
 	// expired. The value should be set from the `next_wait_token` field in
 	// the last response. The initial value should be set to `"init"`.
-	WaitToken string `protobuf:"bytes,2,opt,name=wait_token,json=waitToken" json:"wait_token,omitempty"`
+	WaitToken string `protobuf:"bytes,2,opt,name=wait_token,json=waitToken,proto3" json:"wait_token,omitempty"`
 	// If set to `true` (recommended), returns `google.rpc.Code.OK` status and
 	// sets the `wait_expired` response field to `true` when the server-selected
 	// timeout has expired.
 	//
 	// If set to `false` (deprecated), returns `google.rpc.Code.ABORTED` status
 	// when the server-selected timeout has expired.
-	SuccessOnTimeout     bool     `protobuf:"varint,3,opt,name=success_on_timeout,json=successOnTimeout" json:"success_on_timeout,omitempty"`
+	SuccessOnTimeout     bool     `protobuf:"varint,3,opt,name=success_on_timeout,json=successOnTimeout,proto3" json:"success_on_timeout,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -136,7 +136,7 @@ func (m *ListActiveBreakpointsRequest) Reset()         { *m = ListActiveBreakpoi
 func (m *ListActiveBreakpointsRequest) String() string { return proto.CompactTextString(m) }
 func (*ListActiveBreakpointsRequest) ProtoMessage()    {}
 func (*ListActiveBreakpointsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_controller_4ef9c42d467cd330, []int{2}
+	return fileDescriptor_controller_ba9f5f8b4f070828, []int{2}
 }
 func (m *ListActiveBreakpointsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListActiveBreakpointsRequest.Unmarshal(m, b)
@@ -181,14 +181,14 @@ func (m *ListActiveBreakpointsRequest) GetSuccessOnTimeout() bool {
 type ListActiveBreakpointsResponse struct {
 	// List of all active breakpoints.
 	// The fields `id` and `location` are guaranteed to be set on each breakpoint.
-	Breakpoints []*Breakpoint `protobuf:"bytes,1,rep,name=breakpoints" json:"breakpoints,omitempty"`
+	Breakpoints []*Breakpoint `protobuf:"bytes,1,rep,name=breakpoints,proto3" json:"breakpoints,omitempty"`
 	// A token that can be used in the next method call to block until
 	// the list of breakpoints changes.
-	NextWaitToken string `protobuf:"bytes,2,opt,name=next_wait_token,json=nextWaitToken" json:"next_wait_token,omitempty"`
+	NextWaitToken string `protobuf:"bytes,2,opt,name=next_wait_token,json=nextWaitToken,proto3" json:"next_wait_token,omitempty"`
 	// If set to `true`, indicates that there is no change to the
 	// list of active breakpoints and the server-selected timeout has expired.
 	// The `breakpoints` field would be empty and should be ignored.
-	WaitExpired          bool     `protobuf:"varint,3,opt,name=wait_expired,json=waitExpired" json:"wait_expired,omitempty"`
+	WaitExpired          bool     `protobuf:"varint,3,opt,name=wait_expired,json=waitExpired,proto3" json:"wait_expired,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -198,7 +198,7 @@ func (m *ListActiveBreakpointsResponse) Reset()         { *m = ListActiveBreakpo
 func (m *ListActiveBreakpointsResponse) String() string { return proto.CompactTextString(m) }
 func (*ListActiveBreakpointsResponse) ProtoMessage()    {}
 func (*ListActiveBreakpointsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_controller_4ef9c42d467cd330, []int{3}
+	return fileDescriptor_controller_ba9f5f8b4f070828, []int{3}
 }
 func (m *ListActiveBreakpointsResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListActiveBreakpointsResponse.Unmarshal(m, b)
@@ -242,11 +242,11 @@ func (m *ListActiveBreakpointsResponse) GetWaitExpired() bool {
 // Request to update an active breakpoint.
 type UpdateActiveBreakpointRequest struct {
 	// Identifies the debuggee being debugged.
-	DebuggeeId string `protobuf:"bytes,1,opt,name=debuggee_id,json=debuggeeId" json:"debuggee_id,omitempty"`
+	DebuggeeId string `protobuf:"bytes,1,opt,name=debuggee_id,json=debuggeeId,proto3" json:"debuggee_id,omitempty"`
 	// Updated breakpoint information.
 	// The field `id` must be set.
 	// The agent must echo all Breakpoint specification fields in the update.
-	Breakpoint           *Breakpoint `protobuf:"bytes,2,opt,name=breakpoint" json:"breakpoint,omitempty"`
+	Breakpoint           *Breakpoint `protobuf:"bytes,2,opt,name=breakpoint,proto3" json:"breakpoint,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
 	XXX_unrecognized     []byte      `json:"-"`
 	XXX_sizecache        int32       `json:"-"`
@@ -256,7 +256,7 @@ func (m *UpdateActiveBreakpointRequest) Reset()         { *m = UpdateActiveBreak
 func (m *UpdateActiveBreakpointRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateActiveBreakpointRequest) ProtoMessage()    {}
 func (*UpdateActiveBreakpointRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_controller_4ef9c42d467cd330, []int{4}
+	return fileDescriptor_controller_ba9f5f8b4f070828, []int{4}
 }
 func (m *UpdateActiveBreakpointRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UpdateActiveBreakpointRequest.Unmarshal(m, b)
@@ -302,7 +302,7 @@ func (m *UpdateActiveBreakpointResponse) Reset()         { *m = UpdateActiveBrea
 func (m *UpdateActiveBreakpointResponse) String() string { return proto.CompactTextString(m) }
 func (*UpdateActiveBreakpointResponse) ProtoMessage()    {}
 func (*UpdateActiveBreakpointResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_controller_4ef9c42d467cd330, []int{5}
+	return fileDescriptor_controller_ba9f5f8b4f070828, []int{5}
 }
 func (m *UpdateActiveBreakpointResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_UpdateActiveBreakpointResponse.Unmarshal(m, b)
@@ -414,8 +414,7 @@ func (c *controller2Client) UpdateActiveBreakpoint(ctx context.Context, in *Upda
 	return out, nil
 }
 
-// Server API for Controller2 service
-
+// Controller2Server is the server API for Controller2 service.
 type Controller2Server interface {
 	// Registers the debuggee with the controller service.
 	//
@@ -533,10 +532,10 @@ var _Controller2_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("google/devtools/clouddebugger/v2/controller.proto", fileDescriptor_controller_4ef9c42d467cd330)
+	proto.RegisterFile("google/devtools/clouddebugger/v2/controller.proto", fileDescriptor_controller_ba9f5f8b4f070828)
 }
 
-var fileDescriptor_controller_4ef9c42d467cd330 = []byte{
+var fileDescriptor_controller_ba9f5f8b4f070828 = []byte{
 	// 602 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x54, 0xdd, 0x6a, 0xd4, 0x40,
 	0x14, 0x66, 0x5a, 0x94, 0x76, 0xa2, 0xb4, 0x0c, 0xa8, 0x21, 0xb6, 0xba, 0x0d, 0x52, 0x96, 0x75,

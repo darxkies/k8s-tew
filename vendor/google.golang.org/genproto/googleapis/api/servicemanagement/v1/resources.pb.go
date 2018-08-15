@@ -68,7 +68,7 @@ func (x OperationMetadata_Status) String() string {
 	return proto.EnumName(OperationMetadata_Status_name, int32(x))
 }
 func (OperationMetadata_Status) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_resources_02b8d5c4dbcb736e, []int{1, 0}
+	return fileDescriptor_resources_3e116fd147dc632b, []int{1, 0}
 }
 
 // The kind of diagnostic information possible.
@@ -94,7 +94,7 @@ func (x Diagnostic_Kind) String() string {
 	return proto.EnumName(Diagnostic_Kind_name, int32(x))
 }
 func (Diagnostic_Kind) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_resources_02b8d5c4dbcb736e, []int{2, 0}
+	return fileDescriptor_resources_3e116fd147dc632b, []int{2, 0}
 }
 
 type ConfigFile_FileType int32
@@ -145,7 +145,7 @@ func (x ConfigFile_FileType) String() string {
 	return proto.EnumName(ConfigFile_FileType_name, int32(x))
 }
 func (ConfigFile_FileType) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_resources_02b8d5c4dbcb736e, []int{4, 0}
+	return fileDescriptor_resources_3e116fd147dc632b, []int{4, 0}
 }
 
 // Status of a Rollout.
@@ -193,7 +193,7 @@ func (x Rollout_RolloutStatus) String() string {
 	return proto.EnumName(Rollout_RolloutStatus_name, int32(x))
 }
 func (Rollout_RolloutStatus) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_resources_02b8d5c4dbcb736e, []int{7, 0}
+	return fileDescriptor_resources_3e116fd147dc632b, []int{7, 0}
 }
 
 // The full representation of a Service that is managed by
@@ -201,9 +201,9 @@ func (Rollout_RolloutStatus) EnumDescriptor() ([]byte, []int) {
 type ManagedService struct {
 	// The name of the service. See the [overview](/service-management/overview)
 	// for naming requirements.
-	ServiceName string `protobuf:"bytes,2,opt,name=service_name,json=serviceName" json:"service_name,omitempty"`
+	ServiceName string `protobuf:"bytes,2,opt,name=service_name,json=serviceName,proto3" json:"service_name,omitempty"`
 	// ID of the project that produces and owns this service.
-	ProducerProjectId    string   `protobuf:"bytes,3,opt,name=producer_project_id,json=producerProjectId" json:"producer_project_id,omitempty"`
+	ProducerProjectId    string   `protobuf:"bytes,3,opt,name=producer_project_id,json=producerProjectId,proto3" json:"producer_project_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -213,7 +213,7 @@ func (m *ManagedService) Reset()         { *m = ManagedService{} }
 func (m *ManagedService) String() string { return proto.CompactTextString(m) }
 func (*ManagedService) ProtoMessage()    {}
 func (*ManagedService) Descriptor() ([]byte, []int) {
-	return fileDescriptor_resources_02b8d5c4dbcb736e, []int{0}
+	return fileDescriptor_resources_3e116fd147dc632b, []int{0}
 }
 func (m *ManagedService) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ManagedService.Unmarshal(m, b)
@@ -251,13 +251,13 @@ func (m *ManagedService) GetProducerProjectId() string {
 type OperationMetadata struct {
 	// The full name of the resources that this operation is directly
 	// associated with.
-	ResourceNames []string `protobuf:"bytes,1,rep,name=resource_names,json=resourceNames" json:"resource_names,omitempty"`
+	ResourceNames []string `protobuf:"bytes,1,rep,name=resource_names,json=resourceNames,proto3" json:"resource_names,omitempty"`
 	// Detailed status information for each step. The order is undetermined.
-	Steps []*OperationMetadata_Step `protobuf:"bytes,2,rep,name=steps" json:"steps,omitempty"`
+	Steps []*OperationMetadata_Step `protobuf:"bytes,2,rep,name=steps,proto3" json:"steps,omitempty"`
 	// Percentage of completion of this operation, ranging from 0 to 100.
-	ProgressPercentage int32 `protobuf:"varint,3,opt,name=progress_percentage,json=progressPercentage" json:"progress_percentage,omitempty"`
+	ProgressPercentage int32 `protobuf:"varint,3,opt,name=progress_percentage,json=progressPercentage,proto3" json:"progress_percentage,omitempty"`
 	// The start time of the operation.
-	StartTime            *timestamp.Timestamp `protobuf:"bytes,4,opt,name=start_time,json=startTime" json:"start_time,omitempty"`
+	StartTime            *timestamp.Timestamp `protobuf:"bytes,4,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
 	XXX_unrecognized     []byte               `json:"-"`
 	XXX_sizecache        int32                `json:"-"`
@@ -267,7 +267,7 @@ func (m *OperationMetadata) Reset()         { *m = OperationMetadata{} }
 func (m *OperationMetadata) String() string { return proto.CompactTextString(m) }
 func (*OperationMetadata) ProtoMessage()    {}
 func (*OperationMetadata) Descriptor() ([]byte, []int) {
-	return fileDescriptor_resources_02b8d5c4dbcb736e, []int{1}
+	return fileDescriptor_resources_3e116fd147dc632b, []int{1}
 }
 func (m *OperationMetadata) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_OperationMetadata.Unmarshal(m, b)
@@ -318,9 +318,9 @@ func (m *OperationMetadata) GetStartTime() *timestamp.Timestamp {
 // Represents the status of one operation step.
 type OperationMetadata_Step struct {
 	// The short description of the step.
-	Description string `protobuf:"bytes,2,opt,name=description" json:"description,omitempty"`
+	Description string `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
 	// The status code.
-	Status               OperationMetadata_Status `protobuf:"varint,4,opt,name=status,enum=google.api.servicemanagement.v1.OperationMetadata_Status" json:"status,omitempty"`
+	Status               OperationMetadata_Status `protobuf:"varint,4,opt,name=status,proto3,enum=google.api.servicemanagement.v1.OperationMetadata_Status" json:"status,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                 `json:"-"`
 	XXX_unrecognized     []byte                   `json:"-"`
 	XXX_sizecache        int32                    `json:"-"`
@@ -330,7 +330,7 @@ func (m *OperationMetadata_Step) Reset()         { *m = OperationMetadata_Step{}
 func (m *OperationMetadata_Step) String() string { return proto.CompactTextString(m) }
 func (*OperationMetadata_Step) ProtoMessage()    {}
 func (*OperationMetadata_Step) Descriptor() ([]byte, []int) {
-	return fileDescriptor_resources_02b8d5c4dbcb736e, []int{1, 0}
+	return fileDescriptor_resources_3e116fd147dc632b, []int{1, 0}
 }
 func (m *OperationMetadata_Step) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_OperationMetadata_Step.Unmarshal(m, b)
@@ -367,11 +367,11 @@ func (m *OperationMetadata_Step) GetStatus() OperationMetadata_Status {
 // Represents a diagnostic message (error or warning)
 type Diagnostic struct {
 	// File name and line number of the error or warning.
-	Location string `protobuf:"bytes,1,opt,name=location" json:"location,omitempty"`
+	Location string `protobuf:"bytes,1,opt,name=location,proto3" json:"location,omitempty"`
 	// The kind of diagnostic information provided.
-	Kind Diagnostic_Kind `protobuf:"varint,2,opt,name=kind,enum=google.api.servicemanagement.v1.Diagnostic_Kind" json:"kind,omitempty"`
+	Kind Diagnostic_Kind `protobuf:"varint,2,opt,name=kind,proto3,enum=google.api.servicemanagement.v1.Diagnostic_Kind" json:"kind,omitempty"`
 	// Message describing the error or warning.
-	Message              string   `protobuf:"bytes,3,opt,name=message" json:"message,omitempty"`
+	Message              string   `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -381,7 +381,7 @@ func (m *Diagnostic) Reset()         { *m = Diagnostic{} }
 func (m *Diagnostic) String() string { return proto.CompactTextString(m) }
 func (*Diagnostic) ProtoMessage()    {}
 func (*Diagnostic) Descriptor() ([]byte, []int) {
-	return fileDescriptor_resources_02b8d5c4dbcb736e, []int{2}
+	return fileDescriptor_resources_3e116fd147dc632b, []int{2}
 }
 func (m *Diagnostic) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Diagnostic.Unmarshal(m, b)
@@ -428,10 +428,10 @@ type ConfigSource struct {
 	// A unique ID for a specific instance of this message, typically assigned
 	// by the client for tracking purpose. If empty, the server may choose to
 	// generate one instead.
-	Id string `protobuf:"bytes,5,opt,name=id" json:"id,omitempty"`
+	Id string `protobuf:"bytes,5,opt,name=id,proto3" json:"id,omitempty"`
 	// Set of source configuration files that are used to generate a service
 	// configuration (`google.api.Service`).
-	Files                []*ConfigFile `protobuf:"bytes,2,rep,name=files" json:"files,omitempty"`
+	Files                []*ConfigFile `protobuf:"bytes,2,rep,name=files,proto3" json:"files,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}      `json:"-"`
 	XXX_unrecognized     []byte        `json:"-"`
 	XXX_sizecache        int32         `json:"-"`
@@ -441,7 +441,7 @@ func (m *ConfigSource) Reset()         { *m = ConfigSource{} }
 func (m *ConfigSource) String() string { return proto.CompactTextString(m) }
 func (*ConfigSource) ProtoMessage()    {}
 func (*ConfigSource) Descriptor() ([]byte, []int) {
-	return fileDescriptor_resources_02b8d5c4dbcb736e, []int{3}
+	return fileDescriptor_resources_3e116fd147dc632b, []int{3}
 }
 func (m *ConfigSource) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ConfigSource.Unmarshal(m, b)
@@ -478,11 +478,11 @@ func (m *ConfigSource) GetFiles() []*ConfigFile {
 // Generic specification of a source configuration file
 type ConfigFile struct {
 	// The file name of the configuration file (full or relative path).
-	FilePath string `protobuf:"bytes,1,opt,name=file_path,json=filePath" json:"file_path,omitempty"`
+	FilePath string `protobuf:"bytes,1,opt,name=file_path,json=filePath,proto3" json:"file_path,omitempty"`
 	// The bytes that constitute the file.
 	FileContents []byte `protobuf:"bytes,3,opt,name=file_contents,json=fileContents,proto3" json:"file_contents,omitempty"`
 	// The type of configuration file this represents.
-	FileType             ConfigFile_FileType `protobuf:"varint,4,opt,name=file_type,json=fileType,enum=google.api.servicemanagement.v1.ConfigFile_FileType" json:"file_type,omitempty"`
+	FileType             ConfigFile_FileType `protobuf:"varint,4,opt,name=file_type,json=fileType,proto3,enum=google.api.servicemanagement.v1.ConfigFile_FileType" json:"file_type,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}            `json:"-"`
 	XXX_unrecognized     []byte              `json:"-"`
 	XXX_sizecache        int32               `json:"-"`
@@ -492,7 +492,7 @@ func (m *ConfigFile) Reset()         { *m = ConfigFile{} }
 func (m *ConfigFile) String() string { return proto.CompactTextString(m) }
 func (*ConfigFile) ProtoMessage()    {}
 func (*ConfigFile) Descriptor() ([]byte, []int) {
-	return fileDescriptor_resources_02b8d5c4dbcb736e, []int{4}
+	return fileDescriptor_resources_3e116fd147dc632b, []int{4}
 }
 func (m *ConfigFile) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ConfigFile.Unmarshal(m, b)
@@ -537,7 +537,7 @@ func (m *ConfigFile) GetFileType() ConfigFile_FileType {
 type ConfigRef struct {
 	// Resource name of a service config. It must have the following
 	// format: "services/{service name}/configs/{config id}".
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -547,7 +547,7 @@ func (m *ConfigRef) Reset()         { *m = ConfigRef{} }
 func (m *ConfigRef) String() string { return proto.CompactTextString(m) }
 func (*ConfigRef) ProtoMessage()    {}
 func (*ConfigRef) Descriptor() ([]byte, []int) {
-	return fileDescriptor_resources_02b8d5c4dbcb736e, []int{5}
+	return fileDescriptor_resources_3e116fd147dc632b, []int{5}
 }
 func (m *ConfigRef) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ConfigRef.Unmarshal(m, b)
@@ -584,7 +584,7 @@ type ChangeReport struct {
 	// of each change.
 	// A ConfigChange identifier is a dot separated path to the configuration.
 	// Example: visibility.rules[selector='LibraryService.CreateBook'].restriction
-	ConfigChanges        []*configchange.ConfigChange `protobuf:"bytes,1,rep,name=config_changes,json=configChanges" json:"config_changes,omitempty"`
+	ConfigChanges        []*configchange.ConfigChange `protobuf:"bytes,1,rep,name=config_changes,json=configChanges,proto3" json:"config_changes,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                     `json:"-"`
 	XXX_unrecognized     []byte                       `json:"-"`
 	XXX_sizecache        int32                        `json:"-"`
@@ -594,7 +594,7 @@ func (m *ChangeReport) Reset()         { *m = ChangeReport{} }
 func (m *ChangeReport) String() string { return proto.CompactTextString(m) }
 func (*ChangeReport) ProtoMessage()    {}
 func (*ChangeReport) Descriptor() ([]byte, []int) {
-	return fileDescriptor_resources_02b8d5c4dbcb736e, []int{6}
+	return fileDescriptor_resources_3e116fd147dc632b, []int{6}
 }
 func (m *ChangeReport) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ChangeReport.Unmarshal(m, b)
@@ -633,15 +633,15 @@ type Rollout struct {
 	// date in ISO 8601 format.  "revision number" is a monotonically increasing
 	// positive number that is reset every day for each service.
 	// An example of the generated rollout_id is '2016-02-16r1'
-	RolloutId string `protobuf:"bytes,1,opt,name=rollout_id,json=rolloutId" json:"rollout_id,omitempty"`
+	RolloutId string `protobuf:"bytes,1,opt,name=rollout_id,json=rolloutId,proto3" json:"rollout_id,omitempty"`
 	// Creation time of the rollout. Readonly.
-	CreateTime *timestamp.Timestamp `protobuf:"bytes,2,opt,name=create_time,json=createTime" json:"create_time,omitempty"`
+	CreateTime *timestamp.Timestamp `protobuf:"bytes,2,opt,name=create_time,json=createTime,proto3" json:"create_time,omitempty"`
 	// The user who created the Rollout. Readonly.
-	CreatedBy string `protobuf:"bytes,3,opt,name=created_by,json=createdBy" json:"created_by,omitempty"`
+	CreatedBy string `protobuf:"bytes,3,opt,name=created_by,json=createdBy,proto3" json:"created_by,omitempty"`
 	// The status of this rollout. Readonly. In case of a failed rollout,
 	// the system will automatically rollback to the current Rollout
 	// version. Readonly.
-	Status Rollout_RolloutStatus `protobuf:"varint,4,opt,name=status,enum=google.api.servicemanagement.v1.Rollout_RolloutStatus" json:"status,omitempty"`
+	Status Rollout_RolloutStatus `protobuf:"varint,4,opt,name=status,proto3,enum=google.api.servicemanagement.v1.Rollout_RolloutStatus" json:"status,omitempty"`
 	// Strategy that defines which versions of service configurations should be
 	// pushed
 	// and how they should be used at runtime.
@@ -651,7 +651,7 @@ type Rollout struct {
 	//	*Rollout_DeleteServiceStrategy_
 	Strategy isRollout_Strategy `protobuf_oneof:"strategy"`
 	// The name of the service associated with this Rollout.
-	ServiceName          string   `protobuf:"bytes,8,opt,name=service_name,json=serviceName" json:"service_name,omitempty"`
+	ServiceName          string   `protobuf:"bytes,8,opt,name=service_name,json=serviceName,proto3" json:"service_name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -661,7 +661,7 @@ func (m *Rollout) Reset()         { *m = Rollout{} }
 func (m *Rollout) String() string { return proto.CompactTextString(m) }
 func (*Rollout) ProtoMessage()    {}
 func (*Rollout) Descriptor() ([]byte, []int) {
-	return fileDescriptor_resources_02b8d5c4dbcb736e, []int{7}
+	return fileDescriptor_resources_3e116fd147dc632b, []int{7}
 }
 func (m *Rollout) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Rollout.Unmarshal(m, b)
@@ -680,27 +680,6 @@ func (m *Rollout) XXX_DiscardUnknown() {
 }
 
 var xxx_messageInfo_Rollout proto.InternalMessageInfo
-
-type isRollout_Strategy interface {
-	isRollout_Strategy()
-}
-
-type Rollout_TrafficPercentStrategy_ struct {
-	TrafficPercentStrategy *Rollout_TrafficPercentStrategy `protobuf:"bytes,5,opt,name=traffic_percent_strategy,json=trafficPercentStrategy,oneof"`
-}
-type Rollout_DeleteServiceStrategy_ struct {
-	DeleteServiceStrategy *Rollout_DeleteServiceStrategy `protobuf:"bytes,200,opt,name=delete_service_strategy,json=deleteServiceStrategy,oneof"`
-}
-
-func (*Rollout_TrafficPercentStrategy_) isRollout_Strategy() {}
-func (*Rollout_DeleteServiceStrategy_) isRollout_Strategy()  {}
-
-func (m *Rollout) GetStrategy() isRollout_Strategy {
-	if m != nil {
-		return m.Strategy
-	}
-	return nil
-}
 
 func (m *Rollout) GetRolloutId() string {
 	if m != nil {
@@ -728,6 +707,29 @@ func (m *Rollout) GetStatus() Rollout_RolloutStatus {
 		return m.Status
 	}
 	return Rollout_ROLLOUT_STATUS_UNSPECIFIED
+}
+
+type isRollout_Strategy interface {
+	isRollout_Strategy()
+}
+
+type Rollout_TrafficPercentStrategy_ struct {
+	TrafficPercentStrategy *Rollout_TrafficPercentStrategy `protobuf:"bytes,5,opt,name=traffic_percent_strategy,json=trafficPercentStrategy,proto3,oneof"`
+}
+
+type Rollout_DeleteServiceStrategy_ struct {
+	DeleteServiceStrategy *Rollout_DeleteServiceStrategy `protobuf:"bytes,200,opt,name=delete_service_strategy,json=deleteServiceStrategy,proto3,oneof"`
+}
+
+func (*Rollout_TrafficPercentStrategy_) isRollout_Strategy() {}
+
+func (*Rollout_DeleteServiceStrategy_) isRollout_Strategy() {}
+
+func (m *Rollout) GetStrategy() isRollout_Strategy {
+	if m != nil {
+		return m.Strategy
+	}
+	return nil
 }
 
 func (m *Rollout) GetTrafficPercentStrategy() *Rollout_TrafficPercentStrategy {
@@ -859,7 +861,7 @@ type Rollout_TrafficPercentStrategy struct {
 	// Maps service configuration IDs to their corresponding traffic percentage.
 	// Key is the service configuration ID, Value is the traffic percentage
 	// which must be greater than 0.0 and the sum must equal to 100.0.
-	Percentages          map[string]float64 `protobuf:"bytes,1,rep,name=percentages" json:"percentages,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"fixed64,2,opt,name=value"`
+	Percentages          map[string]float64 `protobuf:"bytes,1,rep,name=percentages,proto3" json:"percentages,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"fixed64,2,opt,name=value,proto3"`
 	XXX_NoUnkeyedLiteral struct{}           `json:"-"`
 	XXX_unrecognized     []byte             `json:"-"`
 	XXX_sizecache        int32              `json:"-"`
@@ -869,7 +871,7 @@ func (m *Rollout_TrafficPercentStrategy) Reset()         { *m = Rollout_TrafficP
 func (m *Rollout_TrafficPercentStrategy) String() string { return proto.CompactTextString(m) }
 func (*Rollout_TrafficPercentStrategy) ProtoMessage()    {}
 func (*Rollout_TrafficPercentStrategy) Descriptor() ([]byte, []int) {
-	return fileDescriptor_resources_02b8d5c4dbcb736e, []int{7, 0}
+	return fileDescriptor_resources_3e116fd147dc632b, []int{7, 0}
 }
 func (m *Rollout_TrafficPercentStrategy) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Rollout_TrafficPercentStrategy.Unmarshal(m, b)
@@ -908,7 +910,7 @@ func (m *Rollout_DeleteServiceStrategy) Reset()         { *m = Rollout_DeleteSer
 func (m *Rollout_DeleteServiceStrategy) String() string { return proto.CompactTextString(m) }
 func (*Rollout_DeleteServiceStrategy) ProtoMessage()    {}
 func (*Rollout_DeleteServiceStrategy) Descriptor() ([]byte, []int) {
-	return fileDescriptor_resources_02b8d5c4dbcb736e, []int{7, 1}
+	return fileDescriptor_resources_3e116fd147dc632b, []int{7, 1}
 }
 func (m *Rollout_DeleteServiceStrategy) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Rollout_DeleteServiceStrategy.Unmarshal(m, b)
@@ -948,10 +950,10 @@ func init() {
 }
 
 func init() {
-	proto.RegisterFile("google/api/servicemanagement/v1/resources.proto", fileDescriptor_resources_02b8d5c4dbcb736e)
+	proto.RegisterFile("google/api/servicemanagement/v1/resources.proto", fileDescriptor_resources_3e116fd147dc632b)
 }
 
-var fileDescriptor_resources_02b8d5c4dbcb736e = []byte{
+var fileDescriptor_resources_3e116fd147dc632b = []byte{
 	// 1234 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x56, 0xef, 0x8e, 0xdb, 0x44,
 	0x10, 0xaf, 0xf3, 0xef, 0x2e, 0x93, 0xbb, 0xe0, 0x6e, 0x69, 0x2f, 0x0d, 0xfd, 0x73, 0x4d, 0x85,

@@ -20,6 +20,10 @@ var debug *bool
 var baseDirectory string
 var _config *config.InternalConfig
 
+func init() {
+	utils.SetupLogger()
+}
+
 // RootCmd represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{
 	Use:   "k8s-tew",

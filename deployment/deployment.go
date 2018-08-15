@@ -231,6 +231,21 @@ func (deployment *Deployment) UploadFile(from, to string) error {
 	return scp.CopyPath(from, to, session)
 }
 
+func Steps(_config *config.InternalConfig) int {
+	result := 0
+
+	// Create Directories
+	result += len(_config.Config.Nodes)
+
+	// Upload Files
+	result += len(_config.Config.Nodes)
+
+	// Run Commands
+	result += len(_config.Config.Nodes) * len(_config.Config.Commands)
+
+	return result
+}
+
 // Deploy all files to the nodes over SSH
 func Deploy(_config *config.InternalConfig, identityFile string) error {
 	sortedNodeKeys := _config.GetSortedNodeKeys()
@@ -246,9 +261,13 @@ func Deploy(_config *config.InternalConfig, identityFile string) error {
 			return error
 		}
 
+		utils.IncreaseProgressStep()
+
 		if error := deployment.UploadFiles(); error != nil {
 			return error
 		}
+
+		utils.IncreaseProgressStep()
 	}
 
 	return nil
@@ -258,6 +277,8 @@ func Deploy(_config *config.InternalConfig, identityFile string) error {
 func Setup(_config *config.InternalConfig, commandRetries uint) error {
 	for _, command := range _config.Config.Commands {
 		if !command.Labels.HasLabels([]string{utils.NODE_BOOTSTRAPPER}) {
+			utils.IncreaseProgressStep()
+
 			continue
 		}
 
@@ -283,6 +304,8 @@ func Setup(_config *config.InternalConfig, commandRetries uint) error {
 
 			return error
 		}
+
+		utils.IncreaseProgressStep()
 	}
 
 	return nil

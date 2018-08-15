@@ -95,7 +95,7 @@ func (x TrainingInput_ScaleTier) String() string {
 	return proto.EnumName(TrainingInput_ScaleTier_name, int32(x))
 }
 func (TrainingInput_ScaleTier) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_job_service_fd7c04231fa00b5c, []int{0, 0}
+	return fileDescriptor_job_service_43f5d77a25caf017, []int{0, 0}
 }
 
 // The available types of optimization goals.
@@ -125,7 +125,7 @@ func (x HyperparameterSpec_GoalType) String() string {
 	return proto.EnumName(HyperparameterSpec_GoalType_name, int32(x))
 }
 func (HyperparameterSpec_GoalType) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_job_service_fd7c04231fa00b5c, []int{1, 0}
+	return fileDescriptor_job_service_43f5d77a25caf017, []int{1, 0}
 }
 
 // The type of the parameter.
@@ -167,7 +167,7 @@ func (x ParameterSpec_ParameterType) String() string {
 	return proto.EnumName(ParameterSpec_ParameterType_name, int32(x))
 }
 func (ParameterSpec_ParameterType) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_job_service_fd7c04231fa00b5c, []int{2, 0}
+	return fileDescriptor_job_service_43f5d77a25caf017, []int{2, 0}
 }
 
 // The type of scaling that should be applied to this parameter.
@@ -205,7 +205,7 @@ func (x ParameterSpec_ScaleType) String() string {
 	return proto.EnumName(ParameterSpec_ScaleType_name, int32(x))
 }
 func (ParameterSpec_ScaleType) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_job_service_fd7c04231fa00b5c, []int{2, 1}
+	return fileDescriptor_job_service_43f5d77a25caf017, []int{2, 1}
 }
 
 // The format used to separate data instances in the source files.
@@ -240,7 +240,7 @@ func (x PredictionInput_DataFormat) String() string {
 	return proto.EnumName(PredictionInput_DataFormat_name, int32(x))
 }
 func (PredictionInput_DataFormat) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_job_service_fd7c04231fa00b5c, []int{5, 0}
+	return fileDescriptor_job_service_43f5d77a25caf017, []int{5, 0}
 }
 
 // Describes the job state.
@@ -293,14 +293,14 @@ func (x Job_State) String() string {
 	return proto.EnumName(Job_State_name, int32(x))
 }
 func (Job_State) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_job_service_fd7c04231fa00b5c, []int{7, 0}
+	return fileDescriptor_job_service_43f5d77a25caf017, []int{7, 0}
 }
 
 // Represents input parameters for a training job.
 type TrainingInput struct {
 	// Required. Specifies the machine types, the number of replicas for workers
 	// and parameter servers.
-	ScaleTier TrainingInput_ScaleTier `protobuf:"varint,1,opt,name=scale_tier,json=scaleTier,enum=google.cloud.ml.v1.TrainingInput_ScaleTier" json:"scale_tier,omitempty"`
+	ScaleTier TrainingInput_ScaleTier `protobuf:"varint,1,opt,name=scale_tier,json=scaleTier,proto3,enum=google.cloud.ml.v1.TrainingInput_ScaleTier" json:"scale_tier,omitempty"`
 	// Optional. Specifies the type of virtual machine to use for your training
 	// job's master worker.
 	//
@@ -350,7 +350,7 @@ type TrainingInput struct {
 	// </dl>
 	//
 	// You must set this value when `scaleTier` is set to `CUSTOM`.
-	MasterType string `protobuf:"bytes,2,opt,name=master_type,json=masterType" json:"master_type,omitempty"`
+	MasterType string `protobuf:"bytes,2,opt,name=master_type,json=masterType,proto3" json:"master_type,omitempty"`
 	// Optional. Specifies the type of virtual machine to use for your training
 	// job's worker nodes.
 	//
@@ -359,7 +359,7 @@ type TrainingInput struct {
 	//
 	// This value must be present when `scaleTier` is set to `CUSTOM` and
 	// `workerCount` is greater than zero.
-	WorkerType string `protobuf:"bytes,3,opt,name=worker_type,json=workerType" json:"worker_type,omitempty"`
+	WorkerType string `protobuf:"bytes,3,opt,name=worker_type,json=workerType,proto3" json:"worker_type,omitempty"`
 	// Optional. Specifies the type of virtual machine to use for your training
 	// job's parameter server.
 	//
@@ -368,39 +368,39 @@ type TrainingInput struct {
 	//
 	// This value must be present when `scaleTier` is set to `CUSTOM` and
 	// `parameter_server_count` is greater than zero.
-	ParameterServerType string `protobuf:"bytes,4,opt,name=parameter_server_type,json=parameterServerType" json:"parameter_server_type,omitempty"`
+	ParameterServerType string `protobuf:"bytes,4,opt,name=parameter_server_type,json=parameterServerType,proto3" json:"parameter_server_type,omitempty"`
 	// Optional. The number of worker replicas to use for the training job. Each
 	// replica in the cluster will be of the type specified in `worker_type`.
 	//
 	// This value can only be used when `scale_tier` is set to `CUSTOM`. If you
 	// set this value, you must also set `worker_type`.
-	WorkerCount int64 `protobuf:"varint,5,opt,name=worker_count,json=workerCount" json:"worker_count,omitempty"`
+	WorkerCount int64 `protobuf:"varint,5,opt,name=worker_count,json=workerCount,proto3" json:"worker_count,omitempty"`
 	// Optional. The number of parameter server replicas to use for the training
 	// job. Each replica in the cluster will be of the type specified in
 	// `parameter_server_type`.
 	//
 	// This value can only be used when `scale_tier` is set to `CUSTOM`.If you
 	// set this value, you must also set `parameter_server_type`.
-	ParameterServerCount int64 `protobuf:"varint,6,opt,name=parameter_server_count,json=parameterServerCount" json:"parameter_server_count,omitempty"`
+	ParameterServerCount int64 `protobuf:"varint,6,opt,name=parameter_server_count,json=parameterServerCount,proto3" json:"parameter_server_count,omitempty"`
 	// Required. The Google Cloud Storage location of the packages with
 	// the training program and any additional dependencies.
-	PackageUris []string `protobuf:"bytes,7,rep,name=package_uris,json=packageUris" json:"package_uris,omitempty"`
+	PackageUris []string `protobuf:"bytes,7,rep,name=package_uris,json=packageUris,proto3" json:"package_uris,omitempty"`
 	// Required. The Python module name to run after installing the packages.
-	PythonModule string `protobuf:"bytes,8,opt,name=python_module,json=pythonModule" json:"python_module,omitempty"`
+	PythonModule string `protobuf:"bytes,8,opt,name=python_module,json=pythonModule,proto3" json:"python_module,omitempty"`
 	// Optional. Command line arguments to pass to the program.
-	Args []string `protobuf:"bytes,10,rep,name=args" json:"args,omitempty"`
+	Args []string `protobuf:"bytes,10,rep,name=args,proto3" json:"args,omitempty"`
 	// Optional. The set of Hyperparameters to tune.
-	Hyperparameters *HyperparameterSpec `protobuf:"bytes,12,opt,name=hyperparameters" json:"hyperparameters,omitempty"`
+	Hyperparameters *HyperparameterSpec `protobuf:"bytes,12,opt,name=hyperparameters,proto3" json:"hyperparameters,omitempty"`
 	// Required. The Google Compute Engine region to run the training job in.
-	Region string `protobuf:"bytes,14,opt,name=region" json:"region,omitempty"`
+	Region string `protobuf:"bytes,14,opt,name=region,proto3" json:"region,omitempty"`
 	// Optional. A Google Cloud Storage path in which to store training outputs
 	// and other data needed for training. This path is passed to your TensorFlow
 	// program as the 'job_dir' command-line argument. The benefit of specifying
 	// this field is that Cloud ML validates the path for use in training.
-	JobDir string `protobuf:"bytes,16,opt,name=job_dir,json=jobDir" json:"job_dir,omitempty"`
+	JobDir string `protobuf:"bytes,16,opt,name=job_dir,json=jobDir,proto3" json:"job_dir,omitempty"`
 	// Optional. The Google Cloud ML runtime version to use for training.  If not
 	// set, Google Cloud ML will choose the latest stable version.
-	RuntimeVersion       string   `protobuf:"bytes,15,opt,name=runtime_version,json=runtimeVersion" json:"runtime_version,omitempty"`
+	RuntimeVersion       string   `protobuf:"bytes,15,opt,name=runtime_version,json=runtimeVersion,proto3" json:"runtime_version,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -410,7 +410,7 @@ func (m *TrainingInput) Reset()         { *m = TrainingInput{} }
 func (m *TrainingInput) String() string { return proto.CompactTextString(m) }
 func (*TrainingInput) ProtoMessage()    {}
 func (*TrainingInput) Descriptor() ([]byte, []int) {
-	return fileDescriptor_job_service_fd7c04231fa00b5c, []int{0}
+	return fileDescriptor_job_service_43f5d77a25caf017, []int{0}
 }
 func (m *TrainingInput) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_TrainingInput.Unmarshal(m, b)
@@ -527,14 +527,14 @@ type HyperparameterSpec struct {
 	// `MAXIMIZE` and `MINIMIZE`.
 	//
 	// Defaults to `MAXIMIZE`.
-	Goal HyperparameterSpec_GoalType `protobuf:"varint,1,opt,name=goal,enum=google.cloud.ml.v1.HyperparameterSpec_GoalType" json:"goal,omitempty"`
+	Goal HyperparameterSpec_GoalType `protobuf:"varint,1,opt,name=goal,proto3,enum=google.cloud.ml.v1.HyperparameterSpec_GoalType" json:"goal,omitempty"`
 	// Required. The set of parameters to tune.
-	Params []*ParameterSpec `protobuf:"bytes,2,rep,name=params" json:"params,omitempty"`
+	Params []*ParameterSpec `protobuf:"bytes,2,rep,name=params,proto3" json:"params,omitempty"`
 	// Optional. How many training trials should be attempted to optimize
 	// the specified hyperparameters.
 	//
 	// Defaults to one.
-	MaxTrials int32 `protobuf:"varint,3,opt,name=max_trials,json=maxTrials" json:"max_trials,omitempty"`
+	MaxTrials int32 `protobuf:"varint,3,opt,name=max_trials,json=maxTrials,proto3" json:"max_trials,omitempty"`
 	// Optional. The number of training trials to run concurrently.
 	// You can reduce the time it takes to perform hyperparameter tuning by adding
 	// trials in parallel. However, each trail only benefits from the information
@@ -545,13 +545,13 @@ type HyperparameterSpec struct {
 	// Each trial will use the same scale tier and machine types.
 	//
 	// Defaults to one.
-	MaxParallelTrials int32 `protobuf:"varint,4,opt,name=max_parallel_trials,json=maxParallelTrials" json:"max_parallel_trials,omitempty"`
+	MaxParallelTrials int32 `protobuf:"varint,4,opt,name=max_parallel_trials,json=maxParallelTrials,proto3" json:"max_parallel_trials,omitempty"`
 	// Optional. The Tensorflow summary tag name to use for optimizing trials. For
 	// current versions of Tensorflow, this tag name should exactly match what is
 	// shown in Tensorboard, including all scopes.  For versions of Tensorflow
 	// prior to 0.12, this should be only the tag passed to tf.Summary.
 	// By default, "training/hptuning/metric" will be used.
-	HyperparameterMetricTag string   `protobuf:"bytes,5,opt,name=hyperparameter_metric_tag,json=hyperparameterMetricTag" json:"hyperparameter_metric_tag,omitempty"`
+	HyperparameterMetricTag string   `protobuf:"bytes,5,opt,name=hyperparameter_metric_tag,json=hyperparameterMetricTag,proto3" json:"hyperparameter_metric_tag,omitempty"`
 	XXX_NoUnkeyedLiteral    struct{} `json:"-"`
 	XXX_unrecognized        []byte   `json:"-"`
 	XXX_sizecache           int32    `json:"-"`
@@ -561,7 +561,7 @@ func (m *HyperparameterSpec) Reset()         { *m = HyperparameterSpec{} }
 func (m *HyperparameterSpec) String() string { return proto.CompactTextString(m) }
 func (*HyperparameterSpec) ProtoMessage()    {}
 func (*HyperparameterSpec) Descriptor() ([]byte, []int) {
-	return fileDescriptor_job_service_fd7c04231fa00b5c, []int{1}
+	return fileDescriptor_job_service_43f5d77a25caf017, []int{1}
 }
 func (m *HyperparameterSpec) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_HyperparameterSpec.Unmarshal(m, b)
@@ -620,30 +620,30 @@ func (m *HyperparameterSpec) GetHyperparameterMetricTag() string {
 type ParameterSpec struct {
 	// Required. The parameter name must be unique amongst all ParameterConfigs in
 	// a HyperparameterSpec message. E.g., "learning_rate".
-	ParameterName string `protobuf:"bytes,1,opt,name=parameter_name,json=parameterName" json:"parameter_name,omitempty"`
+	ParameterName string `protobuf:"bytes,1,opt,name=parameter_name,json=parameterName,proto3" json:"parameter_name,omitempty"`
 	// Required. The type of the parameter.
-	Type ParameterSpec_ParameterType `protobuf:"varint,4,opt,name=type,enum=google.cloud.ml.v1.ParameterSpec_ParameterType" json:"type,omitempty"`
+	Type ParameterSpec_ParameterType `protobuf:"varint,4,opt,name=type,proto3,enum=google.cloud.ml.v1.ParameterSpec_ParameterType" json:"type,omitempty"`
 	// Required if type is `DOUBLE` or `INTEGER`. This field
 	// should be unset if type is `CATEGORICAL`. This value should be integers if
 	// type is INTEGER.
-	MinValue float64 `protobuf:"fixed64,2,opt,name=min_value,json=minValue" json:"min_value,omitempty"`
+	MinValue float64 `protobuf:"fixed64,2,opt,name=min_value,json=minValue,proto3" json:"min_value,omitempty"`
 	// Required if typeis `DOUBLE` or `INTEGER`. This field
 	// should be unset if type is `CATEGORICAL`. This value should be integers if
 	// type is `INTEGER`.
-	MaxValue float64 `protobuf:"fixed64,3,opt,name=max_value,json=maxValue" json:"max_value,omitempty"`
+	MaxValue float64 `protobuf:"fixed64,3,opt,name=max_value,json=maxValue,proto3" json:"max_value,omitempty"`
 	// Required if type is `CATEGORICAL`. The list of possible categories.
-	CategoricalValues []string `protobuf:"bytes,5,rep,name=categorical_values,json=categoricalValues" json:"categorical_values,omitempty"`
+	CategoricalValues []string `protobuf:"bytes,5,rep,name=categorical_values,json=categoricalValues,proto3" json:"categorical_values,omitempty"`
 	// Required if type is `DISCRETE`.
 	// A list of feasible points.
 	// The list should be in strictly increasing order. For instance, this
 	// parameter might have possible settings of 1.5, 2.5, and 4.0. This list
 	// should not contain more than 1,000 values.
-	DiscreteValues []float64 `protobuf:"fixed64,6,rep,packed,name=discrete_values,json=discreteValues" json:"discrete_values,omitempty"`
+	DiscreteValues []float64 `protobuf:"fixed64,6,rep,packed,name=discrete_values,json=discreteValues,proto3" json:"discrete_values,omitempty"`
 	// Optional. How the parameter should be scaled to the hypercube.
 	// Leave unset for categorical parameters.
 	// Some kind of scaling is strongly recommended for real or integral
 	// parameters (e.g., `UNIT_LINEAR_SCALE`).
-	ScaleType            ParameterSpec_ScaleType `protobuf:"varint,7,opt,name=scale_type,json=scaleType,enum=google.cloud.ml.v1.ParameterSpec_ScaleType" json:"scale_type,omitempty"`
+	ScaleType            ParameterSpec_ScaleType `protobuf:"varint,7,opt,name=scale_type,json=scaleType,proto3,enum=google.cloud.ml.v1.ParameterSpec_ScaleType" json:"scale_type,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                `json:"-"`
 	XXX_unrecognized     []byte                  `json:"-"`
 	XXX_sizecache        int32                   `json:"-"`
@@ -653,7 +653,7 @@ func (m *ParameterSpec) Reset()         { *m = ParameterSpec{} }
 func (m *ParameterSpec) String() string { return proto.CompactTextString(m) }
 func (*ParameterSpec) ProtoMessage()    {}
 func (*ParameterSpec) Descriptor() ([]byte, []int) {
-	return fileDescriptor_job_service_fd7c04231fa00b5c, []int{2}
+	return fileDescriptor_job_service_43f5d77a25caf017, []int{2}
 }
 func (m *ParameterSpec) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ParameterSpec.Unmarshal(m, b)
@@ -728,13 +728,13 @@ func (m *ParameterSpec) GetScaleType() ParameterSpec_ScaleType {
 // of HyperparameterOutput objects, one for each successful trial.
 type HyperparameterOutput struct {
 	// The trial id for these results.
-	TrialId string `protobuf:"bytes,1,opt,name=trial_id,json=trialId" json:"trial_id,omitempty"`
+	TrialId string `protobuf:"bytes,1,opt,name=trial_id,json=trialId,proto3" json:"trial_id,omitempty"`
 	// The hyperparameters given to this trial.
-	Hyperparameters map[string]string `protobuf:"bytes,2,rep,name=hyperparameters" json:"hyperparameters,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Hyperparameters map[string]string `protobuf:"bytes,2,rep,name=hyperparameters,proto3" json:"hyperparameters,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	// The final objective metric seen for this trial.
-	FinalMetric *HyperparameterOutput_HyperparameterMetric `protobuf:"bytes,3,opt,name=final_metric,json=finalMetric" json:"final_metric,omitempty"`
+	FinalMetric *HyperparameterOutput_HyperparameterMetric `protobuf:"bytes,3,opt,name=final_metric,json=finalMetric,proto3" json:"final_metric,omitempty"`
 	// All recorded object metrics for this trial.
-	AllMetrics           []*HyperparameterOutput_HyperparameterMetric `protobuf:"bytes,4,rep,name=all_metrics,json=allMetrics" json:"all_metrics,omitempty"`
+	AllMetrics           []*HyperparameterOutput_HyperparameterMetric `protobuf:"bytes,4,rep,name=all_metrics,json=allMetrics,proto3" json:"all_metrics,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                                     `json:"-"`
 	XXX_unrecognized     []byte                                       `json:"-"`
 	XXX_sizecache        int32                                        `json:"-"`
@@ -744,7 +744,7 @@ func (m *HyperparameterOutput) Reset()         { *m = HyperparameterOutput{} }
 func (m *HyperparameterOutput) String() string { return proto.CompactTextString(m) }
 func (*HyperparameterOutput) ProtoMessage()    {}
 func (*HyperparameterOutput) Descriptor() ([]byte, []int) {
-	return fileDescriptor_job_service_fd7c04231fa00b5c, []int{3}
+	return fileDescriptor_job_service_43f5d77a25caf017, []int{3}
 }
 func (m *HyperparameterOutput) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_HyperparameterOutput.Unmarshal(m, b)
@@ -795,9 +795,9 @@ func (m *HyperparameterOutput) GetAllMetrics() []*HyperparameterOutput_Hyperpara
 // An observed value of a metric.
 type HyperparameterOutput_HyperparameterMetric struct {
 	// The global training step for this metric.
-	TrainingStep int64 `protobuf:"varint,1,opt,name=training_step,json=trainingStep" json:"training_step,omitempty"`
+	TrainingStep int64 `protobuf:"varint,1,opt,name=training_step,json=trainingStep,proto3" json:"training_step,omitempty"`
 	// The objective value at this training step.
-	ObjectiveValue       float64  `protobuf:"fixed64,2,opt,name=objective_value,json=objectiveValue" json:"objective_value,omitempty"`
+	ObjectiveValue       float64  `protobuf:"fixed64,2,opt,name=objective_value,json=objectiveValue,proto3" json:"objective_value,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -809,7 +809,7 @@ func (m *HyperparameterOutput_HyperparameterMetric) Reset() {
 func (m *HyperparameterOutput_HyperparameterMetric) String() string { return proto.CompactTextString(m) }
 func (*HyperparameterOutput_HyperparameterMetric) ProtoMessage()    {}
 func (*HyperparameterOutput_HyperparameterMetric) Descriptor() ([]byte, []int) {
-	return fileDescriptor_job_service_fd7c04231fa00b5c, []int{3, 0}
+	return fileDescriptor_job_service_43f5d77a25caf017, []int{3, 0}
 }
 func (m *HyperparameterOutput_HyperparameterMetric) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_HyperparameterOutput_HyperparameterMetric.Unmarshal(m, b)
@@ -847,14 +847,14 @@ func (m *HyperparameterOutput_HyperparameterMetric) GetObjectiveValue() float64 
 type TrainingOutput struct {
 	// The number of hyperparameter tuning trials that completed successfully.
 	// Only set for hyperparameter tuning jobs.
-	CompletedTrialCount int64 `protobuf:"varint,1,opt,name=completed_trial_count,json=completedTrialCount" json:"completed_trial_count,omitempty"`
+	CompletedTrialCount int64 `protobuf:"varint,1,opt,name=completed_trial_count,json=completedTrialCount,proto3" json:"completed_trial_count,omitempty"`
 	// Results for individual Hyperparameter trials.
 	// Only set for hyperparameter tuning jobs.
-	Trials []*HyperparameterOutput `protobuf:"bytes,2,rep,name=trials" json:"trials,omitempty"`
+	Trials []*HyperparameterOutput `protobuf:"bytes,2,rep,name=trials,proto3" json:"trials,omitempty"`
 	// The amount of ML units consumed by the job.
-	ConsumedMlUnits float64 `protobuf:"fixed64,3,opt,name=consumed_ml_units,json=consumedMlUnits" json:"consumed_ml_units,omitempty"`
+	ConsumedMlUnits float64 `protobuf:"fixed64,3,opt,name=consumed_ml_units,json=consumedMlUnits,proto3" json:"consumed_ml_units,omitempty"`
 	// Whether this job is a hyperparameter tuning job.
-	IsHyperparameterTuningJob bool     `protobuf:"varint,4,opt,name=is_hyperparameter_tuning_job,json=isHyperparameterTuningJob" json:"is_hyperparameter_tuning_job,omitempty"`
+	IsHyperparameterTuningJob bool     `protobuf:"varint,4,opt,name=is_hyperparameter_tuning_job,json=isHyperparameterTuningJob,proto3" json:"is_hyperparameter_tuning_job,omitempty"`
 	XXX_NoUnkeyedLiteral      struct{} `json:"-"`
 	XXX_unrecognized          []byte   `json:"-"`
 	XXX_sizecache             int32    `json:"-"`
@@ -864,7 +864,7 @@ func (m *TrainingOutput) Reset()         { *m = TrainingOutput{} }
 func (m *TrainingOutput) String() string { return proto.CompactTextString(m) }
 func (*TrainingOutput) ProtoMessage()    {}
 func (*TrainingOutput) Descriptor() ([]byte, []int) {
-	return fileDescriptor_job_service_fd7c04231fa00b5c, []int{4}
+	return fileDescriptor_job_service_43f5d77a25caf017, []int{4}
 }
 func (m *TrainingOutput) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_TrainingOutput.Unmarshal(m, b)
@@ -922,23 +922,23 @@ type PredictionInput struct {
 	//	*PredictionInput_Uri
 	ModelVersion isPredictionInput_ModelVersion `protobuf_oneof:"model_version"`
 	// Required. The format of the input data files.
-	DataFormat PredictionInput_DataFormat `protobuf:"varint,3,opt,name=data_format,json=dataFormat,enum=google.cloud.ml.v1.PredictionInput_DataFormat" json:"data_format,omitempty"`
+	DataFormat PredictionInput_DataFormat `protobuf:"varint,3,opt,name=data_format,json=dataFormat,proto3,enum=google.cloud.ml.v1.PredictionInput_DataFormat" json:"data_format,omitempty"`
 	// Required. The Google Cloud Storage location of the input data files.
 	// May contain wildcards.
-	InputPaths []string `protobuf:"bytes,4,rep,name=input_paths,json=inputPaths" json:"input_paths,omitempty"`
+	InputPaths []string `protobuf:"bytes,4,rep,name=input_paths,json=inputPaths,proto3" json:"input_paths,omitempty"`
 	// Required. The output Google Cloud Storage location.
-	OutputPath string `protobuf:"bytes,5,opt,name=output_path,json=outputPath" json:"output_path,omitempty"`
+	OutputPath string `protobuf:"bytes,5,opt,name=output_path,json=outputPath,proto3" json:"output_path,omitempty"`
 	// Optional. The maximum number of workers to be used for parallel processing.
 	// Defaults to 10 if not specified.
-	MaxWorkerCount int64 `protobuf:"varint,6,opt,name=max_worker_count,json=maxWorkerCount" json:"max_worker_count,omitempty"`
+	MaxWorkerCount int64 `protobuf:"varint,6,opt,name=max_worker_count,json=maxWorkerCount,proto3" json:"max_worker_count,omitempty"`
 	// Required. The Google Compute Engine region to run the prediction job in.
-	Region string `protobuf:"bytes,7,opt,name=region" json:"region,omitempty"`
+	Region string `protobuf:"bytes,7,opt,name=region,proto3" json:"region,omitempty"`
 	// Optional. The Google Cloud ML runtime version to use for this batch
 	// prediction. If not set, Google Cloud ML will pick the runtime version used
 	// during the CreateVersion request for this model version, or choose the
 	// latest stable version when model version information is not available
 	// such as when the model is specified by uri.
-	RuntimeVersion       string   `protobuf:"bytes,8,opt,name=runtime_version,json=runtimeVersion" json:"runtime_version,omitempty"`
+	RuntimeVersion       string   `protobuf:"bytes,8,opt,name=runtime_version,json=runtimeVersion,proto3" json:"runtime_version,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -948,7 +948,7 @@ func (m *PredictionInput) Reset()         { *m = PredictionInput{} }
 func (m *PredictionInput) String() string { return proto.CompactTextString(m) }
 func (*PredictionInput) ProtoMessage()    {}
 func (*PredictionInput) Descriptor() ([]byte, []int) {
-	return fileDescriptor_job_service_fd7c04231fa00b5c, []int{5}
+	return fileDescriptor_job_service_43f5d77a25caf017, []int{5}
 }
 func (m *PredictionInput) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_PredictionInput.Unmarshal(m, b)
@@ -973,18 +973,22 @@ type isPredictionInput_ModelVersion interface {
 }
 
 type PredictionInput_ModelName struct {
-	ModelName string `protobuf:"bytes,1,opt,name=model_name,json=modelName,oneof"`
-}
-type PredictionInput_VersionName struct {
-	VersionName string `protobuf:"bytes,2,opt,name=version_name,json=versionName,oneof"`
-}
-type PredictionInput_Uri struct {
-	Uri string `protobuf:"bytes,9,opt,name=uri,oneof"`
+	ModelName string `protobuf:"bytes,1,opt,name=model_name,json=modelName,proto3,oneof"`
 }
 
-func (*PredictionInput_ModelName) isPredictionInput_ModelVersion()   {}
+type PredictionInput_VersionName struct {
+	VersionName string `protobuf:"bytes,2,opt,name=version_name,json=versionName,proto3,oneof"`
+}
+
+type PredictionInput_Uri struct {
+	Uri string `protobuf:"bytes,9,opt,name=uri,proto3,oneof"`
+}
+
+func (*PredictionInput_ModelName) isPredictionInput_ModelVersion() {}
+
 func (*PredictionInput_VersionName) isPredictionInput_ModelVersion() {}
-func (*PredictionInput_Uri) isPredictionInput_ModelVersion()         {}
+
+func (*PredictionInput_Uri) isPredictionInput_ModelVersion() {}
 
 func (m *PredictionInput) GetModelVersion() isPredictionInput_ModelVersion {
 	if m != nil {
@@ -1140,13 +1144,13 @@ func _PredictionInput_OneofSizer(msg proto.Message) (n int) {
 // Represents results of a prediction job.
 type PredictionOutput struct {
 	// The output Google Cloud Storage location provided at the job creation time.
-	OutputPath string `protobuf:"bytes,1,opt,name=output_path,json=outputPath" json:"output_path,omitempty"`
+	OutputPath string `protobuf:"bytes,1,opt,name=output_path,json=outputPath,proto3" json:"output_path,omitempty"`
 	// The number of generated predictions.
-	PredictionCount int64 `protobuf:"varint,2,opt,name=prediction_count,json=predictionCount" json:"prediction_count,omitempty"`
+	PredictionCount int64 `protobuf:"varint,2,opt,name=prediction_count,json=predictionCount,proto3" json:"prediction_count,omitempty"`
 	// The number of data instances which resulted in errors.
-	ErrorCount int64 `protobuf:"varint,3,opt,name=error_count,json=errorCount" json:"error_count,omitempty"`
+	ErrorCount int64 `protobuf:"varint,3,opt,name=error_count,json=errorCount,proto3" json:"error_count,omitempty"`
 	// Node hours used by the batch prediction job.
-	NodeHours            float64  `protobuf:"fixed64,4,opt,name=node_hours,json=nodeHours" json:"node_hours,omitempty"`
+	NodeHours            float64  `protobuf:"fixed64,4,opt,name=node_hours,json=nodeHours,proto3" json:"node_hours,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1156,7 +1160,7 @@ func (m *PredictionOutput) Reset()         { *m = PredictionOutput{} }
 func (m *PredictionOutput) String() string { return proto.CompactTextString(m) }
 func (*PredictionOutput) ProtoMessage()    {}
 func (*PredictionOutput) Descriptor() ([]byte, []int) {
-	return fileDescriptor_job_service_fd7c04231fa00b5c, []int{6}
+	return fileDescriptor_job_service_43f5d77a25caf017, []int{6}
 }
 func (m *PredictionOutput) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_PredictionOutput.Unmarshal(m, b)
@@ -1207,7 +1211,7 @@ func (m *PredictionOutput) GetNodeHours() float64 {
 // Represents a training or prediction job.
 type Job struct {
 	// Required. The user-specified id of the job.
-	JobId string `protobuf:"bytes,1,opt,name=job_id,json=jobId" json:"job_id,omitempty"`
+	JobId string `protobuf:"bytes,1,opt,name=job_id,json=jobId,proto3" json:"job_id,omitempty"`
 	// Required. Parameters to create a job.
 	//
 	// Types that are valid to be assigned to Input:
@@ -1215,15 +1219,15 @@ type Job struct {
 	//	*Job_PredictionInput
 	Input isJob_Input `protobuf_oneof:"input"`
 	// Output only. When the job was created.
-	CreateTime *timestamp.Timestamp `protobuf:"bytes,4,opt,name=create_time,json=createTime" json:"create_time,omitempty"`
+	CreateTime *timestamp.Timestamp `protobuf:"bytes,4,opt,name=create_time,json=createTime,proto3" json:"create_time,omitempty"`
 	// Output only. When the job processing was started.
-	StartTime *timestamp.Timestamp `protobuf:"bytes,5,opt,name=start_time,json=startTime" json:"start_time,omitempty"`
+	StartTime *timestamp.Timestamp `protobuf:"bytes,5,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
 	// Output only. When the job processing was completed.
-	EndTime *timestamp.Timestamp `protobuf:"bytes,6,opt,name=end_time,json=endTime" json:"end_time,omitempty"`
+	EndTime *timestamp.Timestamp `protobuf:"bytes,6,opt,name=end_time,json=endTime,proto3" json:"end_time,omitempty"`
 	// Output only. The detailed state of a job.
-	State Job_State `protobuf:"varint,7,opt,name=state,enum=google.cloud.ml.v1.Job_State" json:"state,omitempty"`
+	State Job_State `protobuf:"varint,7,opt,name=state,proto3,enum=google.cloud.ml.v1.Job_State" json:"state,omitempty"`
 	// Output only. The details of a failure or a cancellation.
-	ErrorMessage string `protobuf:"bytes,8,opt,name=error_message,json=errorMessage" json:"error_message,omitempty"`
+	ErrorMessage string `protobuf:"bytes,8,opt,name=error_message,json=errorMessage,proto3" json:"error_message,omitempty"`
 	// Output only. The current result of the job.
 	//
 	// Types that are valid to be assigned to Output:
@@ -1239,7 +1243,7 @@ func (m *Job) Reset()         { *m = Job{} }
 func (m *Job) String() string { return proto.CompactTextString(m) }
 func (*Job) ProtoMessage()    {}
 func (*Job) Descriptor() ([]byte, []int) {
-	return fileDescriptor_job_service_fd7c04231fa00b5c, []int{7}
+	return fileDescriptor_job_service_43f5d77a25caf017, []int{7}
 }
 func (m *Job) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Job.Unmarshal(m, b)
@@ -1259,49 +1263,34 @@ func (m *Job) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_Job proto.InternalMessageInfo
 
+func (m *Job) GetJobId() string {
+	if m != nil {
+		return m.JobId
+	}
+	return ""
+}
+
 type isJob_Input interface {
 	isJob_Input()
 }
-type isJob_Output interface {
-	isJob_Output()
-}
 
 type Job_TrainingInput struct {
-	TrainingInput *TrainingInput `protobuf:"bytes,2,opt,name=training_input,json=trainingInput,oneof"`
-}
-type Job_PredictionInput struct {
-	PredictionInput *PredictionInput `protobuf:"bytes,3,opt,name=prediction_input,json=predictionInput,oneof"`
-}
-type Job_TrainingOutput struct {
-	TrainingOutput *TrainingOutput `protobuf:"bytes,9,opt,name=training_output,json=trainingOutput,oneof"`
-}
-type Job_PredictionOutput struct {
-	PredictionOutput *PredictionOutput `protobuf:"bytes,10,opt,name=prediction_output,json=predictionOutput,oneof"`
+	TrainingInput *TrainingInput `protobuf:"bytes,2,opt,name=training_input,json=trainingInput,proto3,oneof"`
 }
 
-func (*Job_TrainingInput) isJob_Input()     {}
-func (*Job_PredictionInput) isJob_Input()   {}
-func (*Job_TrainingOutput) isJob_Output()   {}
-func (*Job_PredictionOutput) isJob_Output() {}
+type Job_PredictionInput struct {
+	PredictionInput *PredictionInput `protobuf:"bytes,3,opt,name=prediction_input,json=predictionInput,proto3,oneof"`
+}
+
+func (*Job_TrainingInput) isJob_Input() {}
+
+func (*Job_PredictionInput) isJob_Input() {}
 
 func (m *Job) GetInput() isJob_Input {
 	if m != nil {
 		return m.Input
 	}
 	return nil
-}
-func (m *Job) GetOutput() isJob_Output {
-	if m != nil {
-		return m.Output
-	}
-	return nil
-}
-
-func (m *Job) GetJobId() string {
-	if m != nil {
-		return m.JobId
-	}
-	return ""
 }
 
 func (m *Job) GetTrainingInput() *TrainingInput {
@@ -1351,6 +1340,29 @@ func (m *Job) GetErrorMessage() string {
 		return m.ErrorMessage
 	}
 	return ""
+}
+
+type isJob_Output interface {
+	isJob_Output()
+}
+
+type Job_TrainingOutput struct {
+	TrainingOutput *TrainingOutput `protobuf:"bytes,9,opt,name=training_output,json=trainingOutput,proto3,oneof"`
+}
+
+type Job_PredictionOutput struct {
+	PredictionOutput *PredictionOutput `protobuf:"bytes,10,opt,name=prediction_output,json=predictionOutput,proto3,oneof"`
+}
+
+func (*Job_TrainingOutput) isJob_Output() {}
+
+func (*Job_PredictionOutput) isJob_Output() {}
+
+func (m *Job) GetOutput() isJob_Output {
+	if m != nil {
+		return m.Output
+	}
+	return nil
 }
 
 func (m *Job) GetTrainingOutput() *TrainingOutput {
@@ -1496,9 +1508,9 @@ type CreateJobRequest struct {
 	// Required. The project name.
 	//
 	// Authorization: requires `Editor` role on the specified project.
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// Required. The job to create.
-	Job                  *Job     `protobuf:"bytes,2,opt,name=job" json:"job,omitempty"`
+	Job                  *Job     `protobuf:"bytes,2,opt,name=job,proto3" json:"job,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1508,7 +1520,7 @@ func (m *CreateJobRequest) Reset()         { *m = CreateJobRequest{} }
 func (m *CreateJobRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateJobRequest) ProtoMessage()    {}
 func (*CreateJobRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_job_service_fd7c04231fa00b5c, []int{8}
+	return fileDescriptor_job_service_43f5d77a25caf017, []int{8}
 }
 func (m *CreateJobRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CreateJobRequest.Unmarshal(m, b)
@@ -1547,20 +1559,20 @@ type ListJobsRequest struct {
 	// Required. The name of the project for which to list jobs.
 	//
 	// Authorization: requires `Viewer` role on the specified project.
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// Optional. Specifies the subset of jobs to retrieve.
-	Filter string `protobuf:"bytes,2,opt,name=filter" json:"filter,omitempty"`
+	Filter string `protobuf:"bytes,2,opt,name=filter,proto3" json:"filter,omitempty"`
 	// Optional. A page token to request the next page of results.
 	//
 	// You get the token from the `next_page_token` field of the response from
 	// the previous call.
-	PageToken string `protobuf:"bytes,4,opt,name=page_token,json=pageToken" json:"page_token,omitempty"`
+	PageToken string `protobuf:"bytes,4,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	// Optional. The number of jobs to retrieve per "page" of results. If there
 	// are more remaining results than this number, the response message will
 	// contain a valid value in the `next_page_token` field.
 	//
 	// The default value is 20, and the maximum page size is 100.
-	PageSize             int32    `protobuf:"varint,5,opt,name=page_size,json=pageSize" json:"page_size,omitempty"`
+	PageSize             int32    `protobuf:"varint,5,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1570,7 +1582,7 @@ func (m *ListJobsRequest) Reset()         { *m = ListJobsRequest{} }
 func (m *ListJobsRequest) String() string { return proto.CompactTextString(m) }
 func (*ListJobsRequest) ProtoMessage()    {}
 func (*ListJobsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_job_service_fd7c04231fa00b5c, []int{9}
+	return fileDescriptor_job_service_43f5d77a25caf017, []int{9}
 }
 func (m *ListJobsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListJobsRequest.Unmarshal(m, b)
@@ -1621,10 +1633,10 @@ func (m *ListJobsRequest) GetPageSize() int32 {
 // Response message for the ListJobs method.
 type ListJobsResponse struct {
 	// The list of jobs.
-	Jobs []*Job `protobuf:"bytes,1,rep,name=jobs" json:"jobs,omitempty"`
+	Jobs []*Job `protobuf:"bytes,1,rep,name=jobs,proto3" json:"jobs,omitempty"`
 	// Optional. Pass this token as the `page_token` field of the request for a
 	// subsequent call.
-	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken" json:"next_page_token,omitempty"`
+	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1634,7 +1646,7 @@ func (m *ListJobsResponse) Reset()         { *m = ListJobsResponse{} }
 func (m *ListJobsResponse) String() string { return proto.CompactTextString(m) }
 func (*ListJobsResponse) ProtoMessage()    {}
 func (*ListJobsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_job_service_fd7c04231fa00b5c, []int{10}
+	return fileDescriptor_job_service_43f5d77a25caf017, []int{10}
 }
 func (m *ListJobsResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListJobsResponse.Unmarshal(m, b)
@@ -1673,7 +1685,7 @@ type GetJobRequest struct {
 	// Required. The name of the job to get the description of.
 	//
 	// Authorization: requires `Viewer` role on the parent project.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1683,7 +1695,7 @@ func (m *GetJobRequest) Reset()         { *m = GetJobRequest{} }
 func (m *GetJobRequest) String() string { return proto.CompactTextString(m) }
 func (*GetJobRequest) ProtoMessage()    {}
 func (*GetJobRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_job_service_fd7c04231fa00b5c, []int{11}
+	return fileDescriptor_job_service_43f5d77a25caf017, []int{11}
 }
 func (m *GetJobRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetJobRequest.Unmarshal(m, b)
@@ -1715,7 +1727,7 @@ type CancelJobRequest struct {
 	// Required. The name of the job to cancel.
 	//
 	// Authorization: requires `Editor` role on the parent project.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1725,7 +1737,7 @@ func (m *CancelJobRequest) Reset()         { *m = CancelJobRequest{} }
 func (m *CancelJobRequest) String() string { return proto.CompactTextString(m) }
 func (*CancelJobRequest) ProtoMessage()    {}
 func (*CancelJobRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_job_service_fd7c04231fa00b5c, []int{12}
+	return fileDescriptor_job_service_43f5d77a25caf017, []int{12}
 }
 func (m *CancelJobRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CancelJobRequest.Unmarshal(m, b)
@@ -1842,8 +1854,7 @@ func (c *jobServiceClient) CancelJob(ctx context.Context, in *CancelJobRequest, 
 	return out, nil
 }
 
-// Server API for JobService service
-
+// JobServiceServer is the server API for JobService service.
 type JobServiceServer interface {
 	// Creates a training or a batch prediction job.
 	CreateJob(context.Context, *CreateJobRequest) (*Job, error)
@@ -1957,10 +1968,10 @@ var _JobService_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("google/cloud/ml/v1/job_service.proto", fileDescriptor_job_service_fd7c04231fa00b5c)
+	proto.RegisterFile("google/cloud/ml/v1/job_service.proto", fileDescriptor_job_service_43f5d77a25caf017)
 }
 
-var fileDescriptor_job_service_fd7c04231fa00b5c = []byte{
+var fileDescriptor_job_service_43f5d77a25caf017 = []byte{
 	// 2070 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x58, 0xdb, 0x6e, 0x1b, 0xc9,
 	0x11, 0x15, 0xaf, 0x22, 0x8b, 0x12, 0x39, 0x6e, 0x5b, 0x36, 0x4d, 0xdb, 0x6b, 0x79, 0xe4, 0x38,

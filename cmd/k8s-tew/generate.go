@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/darxkies/k8s-tew/download"
 	"github.com/darxkies/k8s-tew/generate"
+	"github.com/darxkies/k8s-tew/utils"
 
 	"os"
 
@@ -22,9 +23,18 @@ var generateCmd = &cobra.Command{
 			os.Exit(-1)
 		}
 
+		downloader := download.NewDownloader(_config)
+		generator := generate.NewGenerator(_config)
+
+		utils.SetProgressSteps(2 + downloader.Steps() + generator.Steps() + 1)
+
+		utils.ShowProgress()
+
 		_config.Generate()
 
 		log.Info("generated config entries")
+
+		utils.IncreaseProgressStep()
 
 		if error := _config.Save(); error != nil {
 			log.WithFields(log.Fields{"error": error}).Error("generate failed")
@@ -32,7 +42,7 @@ var generateCmd = &cobra.Command{
 			os.Exit(-1)
 		}
 
-		downloader := download.NewDownloader(_config)
+		utils.IncreaseProgressStep()
 
 		// Download binaries
 		if error := downloader.DownloadBinaries(); error != nil {
@@ -41,14 +51,16 @@ var generateCmd = &cobra.Command{
 			os.Exit(-1)
 		}
 
-		generator := generate.NewGenerator(_config)
-
 		// Download binaries
 		if error := generator.GenerateFiles(); error != nil {
 			log.WithFields(log.Fields{"error": error}).Error("generate failed")
 
 			os.Exit(-1)
 		}
+
+		utils.HideProgress()
+
+		log.Info("done")
 	},
 }
 

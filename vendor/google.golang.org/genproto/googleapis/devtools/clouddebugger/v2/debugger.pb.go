@@ -28,13 +28,13 @@ const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 // Request to set a breakpoint
 type SetBreakpointRequest struct {
 	// ID of the debuggee where the breakpoint is to be set.
-	DebuggeeId string `protobuf:"bytes,1,opt,name=debuggee_id,json=debuggeeId" json:"debuggee_id,omitempty"`
+	DebuggeeId string `protobuf:"bytes,1,opt,name=debuggee_id,json=debuggeeId,proto3" json:"debuggee_id,omitempty"`
 	// Breakpoint specification to set.
 	// The field `location` of the breakpoint must be set.
-	Breakpoint *Breakpoint `protobuf:"bytes,2,opt,name=breakpoint" json:"breakpoint,omitempty"`
+	Breakpoint *Breakpoint `protobuf:"bytes,2,opt,name=breakpoint,proto3" json:"breakpoint,omitempty"`
 	// The client version making the call.
 	// Schema: `domain/type/version` (e.g., `google.com/intellij/v1`).
-	ClientVersion        string   `protobuf:"bytes,4,opt,name=client_version,json=clientVersion" json:"client_version,omitempty"`
+	ClientVersion        string   `protobuf:"bytes,4,opt,name=client_version,json=clientVersion,proto3" json:"client_version,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -44,7 +44,7 @@ func (m *SetBreakpointRequest) Reset()         { *m = SetBreakpointRequest{} }
 func (m *SetBreakpointRequest) String() string { return proto.CompactTextString(m) }
 func (*SetBreakpointRequest) ProtoMessage()    {}
 func (*SetBreakpointRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_debugger_5fe68327049f0eec, []int{0}
+	return fileDescriptor_debugger_04096ebac35efe72, []int{0}
 }
 func (m *SetBreakpointRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SetBreakpointRequest.Unmarshal(m, b)
@@ -89,7 +89,7 @@ func (m *SetBreakpointRequest) GetClientVersion() string {
 type SetBreakpointResponse struct {
 	// Breakpoint resource.
 	// The field `id` is guaranteed to be set (in addition to the echoed fileds).
-	Breakpoint           *Breakpoint `protobuf:"bytes,1,opt,name=breakpoint" json:"breakpoint,omitempty"`
+	Breakpoint           *Breakpoint `protobuf:"bytes,1,opt,name=breakpoint,proto3" json:"breakpoint,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
 	XXX_unrecognized     []byte      `json:"-"`
 	XXX_sizecache        int32       `json:"-"`
@@ -99,7 +99,7 @@ func (m *SetBreakpointResponse) Reset()         { *m = SetBreakpointResponse{} }
 func (m *SetBreakpointResponse) String() string { return proto.CompactTextString(m) }
 func (*SetBreakpointResponse) ProtoMessage()    {}
 func (*SetBreakpointResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_debugger_5fe68327049f0eec, []int{1}
+	return fileDescriptor_debugger_04096ebac35efe72, []int{1}
 }
 func (m *SetBreakpointResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SetBreakpointResponse.Unmarshal(m, b)
@@ -129,12 +129,12 @@ func (m *SetBreakpointResponse) GetBreakpoint() *Breakpoint {
 // Request to get breakpoint information.
 type GetBreakpointRequest struct {
 	// ID of the debuggee whose breakpoint to get.
-	DebuggeeId string `protobuf:"bytes,1,opt,name=debuggee_id,json=debuggeeId" json:"debuggee_id,omitempty"`
+	DebuggeeId string `protobuf:"bytes,1,opt,name=debuggee_id,json=debuggeeId,proto3" json:"debuggee_id,omitempty"`
 	// ID of the breakpoint to get.
-	BreakpointId string `protobuf:"bytes,2,opt,name=breakpoint_id,json=breakpointId" json:"breakpoint_id,omitempty"`
+	BreakpointId string `protobuf:"bytes,2,opt,name=breakpoint_id,json=breakpointId,proto3" json:"breakpoint_id,omitempty"`
 	// The client version making the call.
 	// Schema: `domain/type/version` (e.g., `google.com/intellij/v1`).
-	ClientVersion        string   `protobuf:"bytes,4,opt,name=client_version,json=clientVersion" json:"client_version,omitempty"`
+	ClientVersion        string   `protobuf:"bytes,4,opt,name=client_version,json=clientVersion,proto3" json:"client_version,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -144,7 +144,7 @@ func (m *GetBreakpointRequest) Reset()         { *m = GetBreakpointRequest{} }
 func (m *GetBreakpointRequest) String() string { return proto.CompactTextString(m) }
 func (*GetBreakpointRequest) ProtoMessage()    {}
 func (*GetBreakpointRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_debugger_5fe68327049f0eec, []int{2}
+	return fileDescriptor_debugger_04096ebac35efe72, []int{2}
 }
 func (m *GetBreakpointRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetBreakpointRequest.Unmarshal(m, b)
@@ -189,7 +189,7 @@ func (m *GetBreakpointRequest) GetClientVersion() string {
 type GetBreakpointResponse struct {
 	// Complete breakpoint state.
 	// The fields `id` and `location` are guaranteed to be set.
-	Breakpoint           *Breakpoint `protobuf:"bytes,1,opt,name=breakpoint" json:"breakpoint,omitempty"`
+	Breakpoint           *Breakpoint `protobuf:"bytes,1,opt,name=breakpoint,proto3" json:"breakpoint,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
 	XXX_unrecognized     []byte      `json:"-"`
 	XXX_sizecache        int32       `json:"-"`
@@ -199,7 +199,7 @@ func (m *GetBreakpointResponse) Reset()         { *m = GetBreakpointResponse{} }
 func (m *GetBreakpointResponse) String() string { return proto.CompactTextString(m) }
 func (*GetBreakpointResponse) ProtoMessage()    {}
 func (*GetBreakpointResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_debugger_5fe68327049f0eec, []int{3}
+	return fileDescriptor_debugger_04096ebac35efe72, []int{3}
 }
 func (m *GetBreakpointResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetBreakpointResponse.Unmarshal(m, b)
@@ -229,12 +229,12 @@ func (m *GetBreakpointResponse) GetBreakpoint() *Breakpoint {
 // Request to delete a breakpoint.
 type DeleteBreakpointRequest struct {
 	// ID of the debuggee whose breakpoint to delete.
-	DebuggeeId string `protobuf:"bytes,1,opt,name=debuggee_id,json=debuggeeId" json:"debuggee_id,omitempty"`
+	DebuggeeId string `protobuf:"bytes,1,opt,name=debuggee_id,json=debuggeeId,proto3" json:"debuggee_id,omitempty"`
 	// ID of the breakpoint to delete.
-	BreakpointId string `protobuf:"bytes,2,opt,name=breakpoint_id,json=breakpointId" json:"breakpoint_id,omitempty"`
+	BreakpointId string `protobuf:"bytes,2,opt,name=breakpoint_id,json=breakpointId,proto3" json:"breakpoint_id,omitempty"`
 	// The client version making the call.
 	// Schema: `domain/type/version` (e.g., `google.com/intellij/v1`).
-	ClientVersion        string   `protobuf:"bytes,3,opt,name=client_version,json=clientVersion" json:"client_version,omitempty"`
+	ClientVersion        string   `protobuf:"bytes,3,opt,name=client_version,json=clientVersion,proto3" json:"client_version,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -244,7 +244,7 @@ func (m *DeleteBreakpointRequest) Reset()         { *m = DeleteBreakpointRequest
 func (m *DeleteBreakpointRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteBreakpointRequest) ProtoMessage()    {}
 func (*DeleteBreakpointRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_debugger_5fe68327049f0eec, []int{4}
+	return fileDescriptor_debugger_04096ebac35efe72, []int{4}
 }
 func (m *DeleteBreakpointRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeleteBreakpointRequest.Unmarshal(m, b)
@@ -288,27 +288,27 @@ func (m *DeleteBreakpointRequest) GetClientVersion() string {
 // Request to list breakpoints.
 type ListBreakpointsRequest struct {
 	// ID of the debuggee whose breakpoints to list.
-	DebuggeeId string `protobuf:"bytes,1,opt,name=debuggee_id,json=debuggeeId" json:"debuggee_id,omitempty"`
+	DebuggeeId string `protobuf:"bytes,1,opt,name=debuggee_id,json=debuggeeId,proto3" json:"debuggee_id,omitempty"`
 	// When set to `true`, the response includes the list of breakpoints set by
 	// any user. Otherwise, it includes only breakpoints set by the caller.
-	IncludeAllUsers bool `protobuf:"varint,2,opt,name=include_all_users,json=includeAllUsers" json:"include_all_users,omitempty"`
+	IncludeAllUsers bool `protobuf:"varint,2,opt,name=include_all_users,json=includeAllUsers,proto3" json:"include_all_users,omitempty"`
 	// When set to `true`, the response includes active and inactive
 	// breakpoints. Otherwise, it includes only active breakpoints.
-	IncludeInactive bool `protobuf:"varint,3,opt,name=include_inactive,json=includeInactive" json:"include_inactive,omitempty"`
+	IncludeInactive bool `protobuf:"varint,3,opt,name=include_inactive,json=includeInactive,proto3" json:"include_inactive,omitempty"`
 	// When set, the response includes only breakpoints with the specified action.
-	Action *ListBreakpointsRequest_BreakpointActionValue `protobuf:"bytes,4,opt,name=action" json:"action,omitempty"`
+	Action *ListBreakpointsRequest_BreakpointActionValue `protobuf:"bytes,4,opt,name=action,proto3" json:"action,omitempty"`
 	// This field is deprecated. The following fields are always stripped out of
 	// the result: `stack_frames`, `evaluated_expressions` and `variable_table`.
-	StripResults bool `protobuf:"varint,5,opt,name=strip_results,json=stripResults" json:"strip_results,omitempty"`
+	StripResults bool `protobuf:"varint,5,opt,name=strip_results,json=stripResults,proto3" json:"strip_results,omitempty"`
 	// A wait token that, if specified, blocks the call until the breakpoints
 	// list has changed, or a server selected timeout has expired.  The value
 	// should be set from the last response. The error code
 	// `google.rpc.Code.ABORTED` (RPC) is returned on wait timeout, which
 	// should be called again with the same `wait_token`.
-	WaitToken string `protobuf:"bytes,6,opt,name=wait_token,json=waitToken" json:"wait_token,omitempty"`
+	WaitToken string `protobuf:"bytes,6,opt,name=wait_token,json=waitToken,proto3" json:"wait_token,omitempty"`
 	// The client version making the call.
 	// Schema: `domain/type/version` (e.g., `google.com/intellij/v1`).
-	ClientVersion        string   `protobuf:"bytes,8,opt,name=client_version,json=clientVersion" json:"client_version,omitempty"`
+	ClientVersion        string   `protobuf:"bytes,8,opt,name=client_version,json=clientVersion,proto3" json:"client_version,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -318,7 +318,7 @@ func (m *ListBreakpointsRequest) Reset()         { *m = ListBreakpointsRequest{}
 func (m *ListBreakpointsRequest) String() string { return proto.CompactTextString(m) }
 func (*ListBreakpointsRequest) ProtoMessage()    {}
 func (*ListBreakpointsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_debugger_5fe68327049f0eec, []int{5}
+	return fileDescriptor_debugger_04096ebac35efe72, []int{5}
 }
 func (m *ListBreakpointsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListBreakpointsRequest.Unmarshal(m, b)
@@ -391,7 +391,7 @@ func (m *ListBreakpointsRequest) GetClientVersion() string {
 // field of breakpoints.
 type ListBreakpointsRequest_BreakpointActionValue struct {
 	// Only breakpoints with the specified action will pass the filter.
-	Value                Breakpoint_Action `protobuf:"varint,1,opt,name=value,enum=google.devtools.clouddebugger.v2.Breakpoint_Action" json:"value,omitempty"`
+	Value                Breakpoint_Action `protobuf:"varint,1,opt,name=value,proto3,enum=google.devtools.clouddebugger.v2.Breakpoint_Action" json:"value,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
 	XXX_unrecognized     []byte            `json:"-"`
 	XXX_sizecache        int32             `json:"-"`
@@ -405,7 +405,7 @@ func (m *ListBreakpointsRequest_BreakpointActionValue) String() string {
 }
 func (*ListBreakpointsRequest_BreakpointActionValue) ProtoMessage() {}
 func (*ListBreakpointsRequest_BreakpointActionValue) Descriptor() ([]byte, []int) {
-	return fileDescriptor_debugger_5fe68327049f0eec, []int{5, 0}
+	return fileDescriptor_debugger_04096ebac35efe72, []int{5, 0}
 }
 func (m *ListBreakpointsRequest_BreakpointActionValue) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListBreakpointsRequest_BreakpointActionValue.Unmarshal(m, b)
@@ -438,10 +438,10 @@ type ListBreakpointsResponse struct {
 	// The fields `id` and `location` are guaranteed to be set on each breakpoint.
 	// The fields: `stack_frames`, `evaluated_expressions` and `variable_table`
 	// are cleared on each breakpoint regardless of its status.
-	Breakpoints []*Breakpoint `protobuf:"bytes,1,rep,name=breakpoints" json:"breakpoints,omitempty"`
+	Breakpoints []*Breakpoint `protobuf:"bytes,1,rep,name=breakpoints,proto3" json:"breakpoints,omitempty"`
 	// A wait token that can be used in the next call to `list` (REST) or
 	// `ListBreakpoints` (RPC) to block until the list of breakpoints has changes.
-	NextWaitToken        string   `protobuf:"bytes,2,opt,name=next_wait_token,json=nextWaitToken" json:"next_wait_token,omitempty"`
+	NextWaitToken        string   `protobuf:"bytes,2,opt,name=next_wait_token,json=nextWaitToken,proto3" json:"next_wait_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -451,7 +451,7 @@ func (m *ListBreakpointsResponse) Reset()         { *m = ListBreakpointsResponse
 func (m *ListBreakpointsResponse) String() string { return proto.CompactTextString(m) }
 func (*ListBreakpointsResponse) ProtoMessage()    {}
 func (*ListBreakpointsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_debugger_5fe68327049f0eec, []int{6}
+	return fileDescriptor_debugger_04096ebac35efe72, []int{6}
 }
 func (m *ListBreakpointsResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListBreakpointsResponse.Unmarshal(m, b)
@@ -488,13 +488,13 @@ func (m *ListBreakpointsResponse) GetNextWaitToken() string {
 // Request to list debuggees.
 type ListDebuggeesRequest struct {
 	// Project number of a Google Cloud project whose debuggees to list.
-	Project string `protobuf:"bytes,2,opt,name=project" json:"project,omitempty"`
+	Project string `protobuf:"bytes,2,opt,name=project,proto3" json:"project,omitempty"`
 	// When set to `true`, the result includes all debuggees. Otherwise, the
 	// result includes only debuggees that are active.
-	IncludeInactive bool `protobuf:"varint,3,opt,name=include_inactive,json=includeInactive" json:"include_inactive,omitempty"`
+	IncludeInactive bool `protobuf:"varint,3,opt,name=include_inactive,json=includeInactive,proto3" json:"include_inactive,omitempty"`
 	// The client version making the call.
 	// Schema: `domain/type/version` (e.g., `google.com/intellij/v1`).
-	ClientVersion        string   `protobuf:"bytes,4,opt,name=client_version,json=clientVersion" json:"client_version,omitempty"`
+	ClientVersion        string   `protobuf:"bytes,4,opt,name=client_version,json=clientVersion,proto3" json:"client_version,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -504,7 +504,7 @@ func (m *ListDebuggeesRequest) Reset()         { *m = ListDebuggeesRequest{} }
 func (m *ListDebuggeesRequest) String() string { return proto.CompactTextString(m) }
 func (*ListDebuggeesRequest) ProtoMessage()    {}
 func (*ListDebuggeesRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_debugger_5fe68327049f0eec, []int{7}
+	return fileDescriptor_debugger_04096ebac35efe72, []int{7}
 }
 func (m *ListDebuggeesRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListDebuggeesRequest.Unmarshal(m, b)
@@ -551,7 +551,7 @@ type ListDebuggeesResponse struct {
 	// The fields `debuggee.id` and `description` are guaranteed to be set.
 	// The `description` field is a human readable field provided by agents and
 	// can be displayed to users.
-	Debuggees            []*Debuggee `protobuf:"bytes,1,rep,name=debuggees" json:"debuggees,omitempty"`
+	Debuggees            []*Debuggee `protobuf:"bytes,1,rep,name=debuggees,proto3" json:"debuggees,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
 	XXX_unrecognized     []byte      `json:"-"`
 	XXX_sizecache        int32       `json:"-"`
@@ -561,7 +561,7 @@ func (m *ListDebuggeesResponse) Reset()         { *m = ListDebuggeesResponse{} }
 func (m *ListDebuggeesResponse) String() string { return proto.CompactTextString(m) }
 func (*ListDebuggeesResponse) ProtoMessage()    {}
 func (*ListDebuggeesResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_debugger_5fe68327049f0eec, []int{8}
+	return fileDescriptor_debugger_04096ebac35efe72, []int{8}
 }
 func (m *ListDebuggeesResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListDebuggeesResponse.Unmarshal(m, b)
@@ -678,8 +678,7 @@ func (c *debugger2Client) ListDebuggees(ctx context.Context, in *ListDebuggeesRe
 	return out, nil
 }
 
-// Server API for Debugger2 service
-
+// Debugger2Server is the server API for Debugger2 service.
 type Debugger2Server interface {
 	// Sets the breakpoint to the debuggee.
 	SetBreakpoint(context.Context, *SetBreakpointRequest) (*SetBreakpointResponse, error)
@@ -817,10 +816,10 @@ var _Debugger2_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("google/devtools/clouddebugger/v2/debugger.proto", fileDescriptor_debugger_5fe68327049f0eec)
+	proto.RegisterFile("google/devtools/clouddebugger/v2/debugger.proto", fileDescriptor_debugger_04096ebac35efe72)
 }
 
-var fileDescriptor_debugger_5fe68327049f0eec = []byte{
+var fileDescriptor_debugger_04096ebac35efe72 = []byte{
 	// 797 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xbc, 0x56, 0xdd, 0x6a, 0xdb, 0x48,
 	0x14, 0x66, 0x9c, 0xcd, 0x8f, 0x8f, 0xe3, 0x24, 0x3b, 0xe4, 0x47, 0x78, 0xff, 0x8c, 0xf6, 0x87,

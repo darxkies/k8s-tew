@@ -12,11 +12,58 @@ import (
 )
 
 type Generator struct {
-	config *config.InternalConfig
+	config         *config.InternalConfig
+	ca             *pki.CertificateAndPrivateKey
+	generatorSteps []func() error
 }
 
 func NewGenerator(config *config.InternalConfig) *Generator {
-	return &Generator{config: config}
+	generator := &Generator{config: config}
+
+	generator.generatorSteps = []func() error{
+		// Generate profile file
+		generator.generateProfileFile,
+		// Generate systemd file
+		generator.generateServiceFile,
+		// Generate load balancer configuration
+		generator.generateGobetweenConfig,
+		// Generate calico setup
+		generator.generateCalicoSetup,
+		// Generate scheduler config
+		generator.generateKubeSchedulerConfig,
+		// Generate kubelet config
+		generator.generateKubeletConfig,
+		// Generate kubelet configuration
+		generator.generateK8SKubeletConfigFile,
+		// Generate dashboard admin user configuration
+		generator.generateK8SAdminUserConfigFile,
+		// Generate helm user configuration
+		generator.generateK8SHelmUserConfigFile,
+		// Generate containerd config
+		generator.generateContainerdConfig,
+		// Generate kubernetes security file
+		generator.generateEncryptionFile,
+		// Generate kubeconfig files
+		generator.generateCertificates,
+		// Generate kubeconfig files
+		generator.generateKubeConfigs,
+		// Generate ceph files
+		generator.generateCephFiles,
+		// Generate Let's Encrypt Cluster Issuer
+		generator.generateLetsEncryptClusterIssuer,
+		// Generate CoreDNS setup file
+		generator.generateCoreDNSSetup,
+		// Generate ElasticSearch Operator setup file
+		generator.generateElasticSearchOperatorSetup,
+		// Generate ElasticSearch/Fluent-Bit/Kibana setup file
+		generator.generateEFKSetup,
+	}
+
+	return generator
+}
+
+func (generator *Generator) Steps() int {
+	return len(generator.generatorSteps)
 }
 
 func (generator *Generator) generateProfileFile() error {
@@ -174,19 +221,21 @@ func (generator *Generator) generateKubeletConfig() error {
 	return nil
 }
 
-func (generator *Generator) generateCertificates() (*pki.CertificateAndPrivateKey, error) {
+func (generator *Generator) generateCertificates() error {
+	var error error
+
 	fullCAFilename := generator.config.GetFullLocalAssetFilename(utils.CA_PEM)
 	fullCAKeyFilename := generator.config.GetFullLocalAssetFilename(utils.CA_KEY_PEM)
 
 	// Generate CA if not done already
 	if error := pki.GenerateCA(generator.config.Config.RSASize, generator.config.Config.CAValidityPeriod, "Kubernetes", "Kubernetes", fullCAFilename, fullCAKeyFilename); error != nil {
-		return nil, error
+		return error
 	}
 
 	// Load ca certificate and private key
-	ca, error := pki.LoadCertificateAndPrivateKey(fullCAFilename, fullCAKeyFilename)
+	generator.ca, error = pki.LoadCertificateAndPrivateKey(fullCAFilename, fullCAKeyFilename)
 	if error != nil {
-		return nil, error
+		return error
 	}
 
 	// Collect dns names and ip addresses
@@ -203,59 +252,59 @@ func (generator *Generator) generateCertificates() (*pki.CertificateAndPrivateKe
 	}
 
 	// Generate flanneld certificate
-	if error := pki.GenerateClient(ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, "flanneld", "flanneld", []string{}, []string{}, generator.config.GetFullLocalAssetFilename(utils.FLANNELD_PEM), generator.config.GetFullLocalAssetFilename(utils.FLANNELD_KEY_PEM), false); error != nil {
-		return nil, error
+	if error := pki.GenerateClient(generator.ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, "flanneld", "flanneld", []string{}, []string{}, generator.config.GetFullLocalAssetFilename(utils.FLANNELD_PEM), generator.config.GetFullLocalAssetFilename(utils.FLANNELD_KEY_PEM), false); error != nil {
+		return error
 	}
 
 	// Generate virtual-ip certificate
-	if error := pki.GenerateClient(ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, "virtual-ip", "virtual-ip", []string{}, []string{}, generator.config.GetFullLocalAssetFilename(utils.VIRTUAL_IP_PEM), generator.config.GetFullLocalAssetFilename(utils.VIRTUAL_IP_KEY_PEM), false); error != nil {
-		return nil, error
+	if error := pki.GenerateClient(generator.ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, "virtual-ip", "virtual-ip", []string{}, []string{}, generator.config.GetFullLocalAssetFilename(utils.VIRTUAL_IP_PEM), generator.config.GetFullLocalAssetFilename(utils.VIRTUAL_IP_KEY_PEM), false); error != nil {
+		return error
 	}
 
 	// Generate admin certificate
-	if error := pki.GenerateClient(ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, utils.CN_ADMIN, "system:masters", []string{}, []string{}, generator.config.GetFullLocalAssetFilename(utils.ADMIN_PEM), generator.config.GetFullLocalAssetFilename(utils.ADMIN_KEY_PEM), false); error != nil {
-		return nil, error
+	if error := pki.GenerateClient(generator.ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, utils.CN_ADMIN, "system:masters", []string{}, []string{}, generator.config.GetFullLocalAssetFilename(utils.ADMIN_PEM), generator.config.GetFullLocalAssetFilename(utils.ADMIN_KEY_PEM), false); error != nil {
+		return error
 	}
 
 	// Generate kuberentes certificate
-	if error := pki.GenerateClient(ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, "kubernetes", "Kubernetes", kubernetesDNSNames, kubernetesIPAddresses, generator.config.GetFullLocalAssetFilename(utils.KUBERNETES_PEM), generator.config.GetFullLocalAssetFilename(utils.KUBERNETES_KEY_PEM), true); error != nil {
-		return nil, error
+	if error := pki.GenerateClient(generator.ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, "kubernetes", "Kubernetes", kubernetesDNSNames, kubernetesIPAddresses, generator.config.GetFullLocalAssetFilename(utils.KUBERNETES_PEM), generator.config.GetFullLocalAssetFilename(utils.KUBERNETES_KEY_PEM), true); error != nil {
+		return error
 	}
 
 	// Generate aggregator certificate
-	if error := pki.GenerateClient(ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, utils.CN_AGGREGATOR, "Kubernetes", kubernetesDNSNames, kubernetesIPAddresses, generator.config.GetFullLocalAssetFilename(utils.AGGREGATOR_PEM), generator.config.GetFullLocalAssetFilename(utils.AGGREGATOR_KEY_PEM), true); error != nil {
-		return nil, error
+	if error := pki.GenerateClient(generator.ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, utils.CN_AGGREGATOR, "Kubernetes", kubernetesDNSNames, kubernetesIPAddresses, generator.config.GetFullLocalAssetFilename(utils.AGGREGATOR_PEM), generator.config.GetFullLocalAssetFilename(utils.AGGREGATOR_KEY_PEM), true); error != nil {
+		return error
 	}
 
 	// Generate service accounts certificate
-	if error := pki.GenerateClient(ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, "service-accounts", "Kubernetes", kubernetesDNSNames, kubernetesIPAddresses, generator.config.GetFullLocalAssetFilename(utils.SERVICE_ACCOUNT_PEM), generator.config.GetFullLocalAssetFilename(utils.SERVICE_ACCOUNT_KEY_PEM), false); error != nil {
-		return nil, error
+	if error := pki.GenerateClient(generator.ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, "service-accounts", "Kubernetes", kubernetesDNSNames, kubernetesIPAddresses, generator.config.GetFullLocalAssetFilename(utils.SERVICE_ACCOUNT_PEM), generator.config.GetFullLocalAssetFilename(utils.SERVICE_ACCOUNT_KEY_PEM), false); error != nil {
+		return error
 	}
 
 	// Generate controller manager certificate
-	if error := pki.GenerateClient(ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, utils.CN_SYSTEM_KUBE_CONTROLLER_MANAGER, "system:node-controller-manager", []string{}, []string{}, generator.config.GetFullLocalAssetFilename(utils.CONTROLLER_MANAGER_PEM), generator.config.GetFullLocalAssetFilename(utils.CONTROLLER_MANAGER_KEY_PEM), false); error != nil {
-		return nil, error
+	if error := pki.GenerateClient(generator.ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, utils.CN_SYSTEM_KUBE_CONTROLLER_MANAGER, "system:node-controller-manager", []string{}, []string{}, generator.config.GetFullLocalAssetFilename(utils.CONTROLLER_MANAGER_PEM), generator.config.GetFullLocalAssetFilename(utils.CONTROLLER_MANAGER_KEY_PEM), false); error != nil {
+		return error
 	}
 
 	// Generate scheduler certificate
-	if error := pki.GenerateClient(ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, utils.CN_SYSTEM_KUBE_SCHEDULER, "system:kube-scheduler", []string{}, []string{}, generator.config.GetFullLocalAssetFilename(utils.SCHEDULER_PEM), generator.config.GetFullLocalAssetFilename(utils.SCHEDULER_KEY_PEM), false); error != nil {
-		return nil, error
+	if error := pki.GenerateClient(generator.ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, utils.CN_SYSTEM_KUBE_SCHEDULER, "system:kube-scheduler", []string{}, []string{}, generator.config.GetFullLocalAssetFilename(utils.SCHEDULER_PEM), generator.config.GetFullLocalAssetFilename(utils.SCHEDULER_KEY_PEM), false); error != nil {
+		return error
 	}
 
 	// Generate proxy certificate
-	if error := pki.GenerateClient(ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, utils.CN_SYSTEM_KUBE_PROXY, "system:node-proxier", []string{}, []string{}, generator.config.GetFullLocalAssetFilename(utils.PROXY_PEM), generator.config.GetFullLocalAssetFilename(utils.PROXY_KEY_PEM), false); error != nil {
-		return nil, error
+	if error := pki.GenerateClient(generator.ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, utils.CN_SYSTEM_KUBE_PROXY, "system:node-proxier", []string{}, []string{}, generator.config.GetFullLocalAssetFilename(utils.PROXY_PEM), generator.config.GetFullLocalAssetFilename(utils.PROXY_KEY_PEM), false); error != nil {
+		return error
 	}
 
 	for nodeName, node := range generator.config.Config.Nodes {
 		generator.config.SetNode(nodeName, node)
 
-		if error := pki.GenerateClient(ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, fmt.Sprintf(utils.CN_SYSTEM_NODE_PREFIX, nodeName), "system:nodes", []string{nodeName}, []string{node.IP}, generator.config.GetFullLocalAssetFilename(utils.KUBELET_PEM), generator.config.GetFullLocalAssetFilename(utils.KUBELET_KEY_PEM), false); error != nil {
-			return nil, error
+		if error := pki.GenerateClient(generator.ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, fmt.Sprintf(utils.CN_SYSTEM_NODE_PREFIX, nodeName), "system:nodes", []string{nodeName}, []string{node.IP}, generator.config.GetFullLocalAssetFilename(utils.KUBELET_PEM), generator.config.GetFullLocalAssetFilename(utils.KUBELET_KEY_PEM), false); error != nil {
+			return error
 		}
 	}
 
-	return ca, nil
+	return nil
 }
 
 func (generator *Generator) generateConfigKubeConfig(kubeConfigFilename, caFilename, user, apiServers, certificateFilename, keyFilename string, force bool) error {
@@ -304,7 +353,7 @@ func (generator *Generator) generateConfigKubeConfig(kubeConfigFilename, caFilen
 	return nil
 }
 
-func (generator *Generator) generateKubeConfigs(ca *pki.CertificateAndPrivateKey) error {
+func (generator *Generator) generateKubeConfigs() error {
 	apiServer, error := generator.config.GetAPIServerIP()
 	if error != nil {
 		return error
@@ -312,26 +361,26 @@ func (generator *Generator) generateKubeConfigs(ca *pki.CertificateAndPrivateKey
 
 	apiServer = fmt.Sprintf("%s:%d", apiServer, generator.config.Config.LoadBalancerPort)
 
-	if error := generator.generateConfigKubeConfig(generator.config.GetFullLocalAssetFilename(utils.ADMIN_KUBECONFIG), ca.CertificateFilename, "admin", apiServer, generator.config.GetFullLocalAssetFilename(utils.ADMIN_PEM), generator.config.GetFullLocalAssetFilename(utils.ADMIN_KEY_PEM), true); error != nil {
+	if error := generator.generateConfigKubeConfig(generator.config.GetFullLocalAssetFilename(utils.ADMIN_KUBECONFIG), generator.ca.CertificateFilename, "admin", apiServer, generator.config.GetFullLocalAssetFilename(utils.ADMIN_PEM), generator.config.GetFullLocalAssetFilename(utils.ADMIN_KEY_PEM), true); error != nil {
 		return error
 	}
 
-	if error := generator.generateConfigKubeConfig(generator.config.GetFullLocalAssetFilename(utils.CONTROLLER_MANAGER_KUBECONFIG), ca.CertificateFilename, "system:kube-controller-manager", apiServer, generator.config.GetFullLocalAssetFilename(utils.CONTROLLER_MANAGER_PEM), generator.config.GetFullLocalAssetFilename(utils.CONTROLLER_MANAGER_KEY_PEM), true); error != nil {
+	if error := generator.generateConfigKubeConfig(generator.config.GetFullLocalAssetFilename(utils.CONTROLLER_MANAGER_KUBECONFIG), generator.ca.CertificateFilename, "system:kube-controller-manager", apiServer, generator.config.GetFullLocalAssetFilename(utils.CONTROLLER_MANAGER_PEM), generator.config.GetFullLocalAssetFilename(utils.CONTROLLER_MANAGER_KEY_PEM), true); error != nil {
 		return error
 	}
 
-	if error := generator.generateConfigKubeConfig(generator.config.GetFullLocalAssetFilename(utils.SCHEDULER_KUBECONFIG), ca.CertificateFilename, "system:kube-scheduler", apiServer, generator.config.GetFullLocalAssetFilename(utils.SCHEDULER_PEM), generator.config.GetFullLocalAssetFilename(utils.SCHEDULER_KEY_PEM), true); error != nil {
+	if error := generator.generateConfigKubeConfig(generator.config.GetFullLocalAssetFilename(utils.SCHEDULER_KUBECONFIG), generator.ca.CertificateFilename, "system:kube-scheduler", apiServer, generator.config.GetFullLocalAssetFilename(utils.SCHEDULER_PEM), generator.config.GetFullLocalAssetFilename(utils.SCHEDULER_KEY_PEM), true); error != nil {
 		return error
 	}
 
-	if error := generator.generateConfigKubeConfig(generator.config.GetFullLocalAssetFilename(utils.PROXY_KUBECONFIG), ca.CertificateFilename, "system:kube-proxy", apiServer, generator.config.GetFullLocalAssetFilename(utils.PROXY_PEM), generator.config.GetFullLocalAssetFilename(utils.PROXY_KEY_PEM), true); error != nil {
+	if error := generator.generateConfigKubeConfig(generator.config.GetFullLocalAssetFilename(utils.PROXY_KUBECONFIG), generator.ca.CertificateFilename, "system:kube-proxy", apiServer, generator.config.GetFullLocalAssetFilename(utils.PROXY_PEM), generator.config.GetFullLocalAssetFilename(utils.PROXY_KEY_PEM), true); error != nil {
 		return error
 	}
 
 	for nodeName, node := range generator.config.Config.Nodes {
 		generator.config.SetNode(nodeName, node)
 
-		if error := generator.generateConfigKubeConfig(generator.config.GetFullLocalAssetFilename(utils.KUBELET_KUBECONFIG), ca.CertificateFilename, fmt.Sprintf("system:node:%s", nodeName), apiServer, generator.config.GetFullLocalAssetFilename(utils.KUBELET_PEM), generator.config.GetFullLocalAssetFilename(utils.KUBELET_KEY_PEM), true); error != nil {
+		if error := generator.generateConfigKubeConfig(generator.config.GetFullLocalAssetFilename(utils.KUBELET_KUBECONFIG), generator.ca.CertificateFilename, fmt.Sprintf("system:node:%s", nodeName), apiServer, generator.config.GetFullLocalAssetFilename(utils.KUBELET_PEM), generator.config.GetFullLocalAssetFilename(utils.KUBELET_KEY_PEM), true); error != nil {
 			return error
 		}
 	}
@@ -504,95 +553,12 @@ func (generator *Generator) generateEFKSetup() error {
 }
 
 func (generator *Generator) GenerateFiles() error {
-	// Generate profile file
-	if error := generator.generateProfileFile(); error != nil {
-		return error
-	}
+	for _, step := range generator.generatorSteps {
+		if error := step(); error != nil {
+			return error
+		}
 
-	// Generate systemd file
-	if error := generator.generateServiceFile(); error != nil {
-		return error
-	}
-
-	// Generate load balancer configuration
-	if error := generator.generateGobetweenConfig(); error != nil {
-		return error
-	}
-
-	// Generate calico setup
-	if error := generator.generateCalicoSetup(); error != nil {
-		return error
-	}
-
-	// Generate scheduler config
-	if error := generator.generateKubeSchedulerConfig(); error != nil {
-		return error
-	}
-
-	// Generate kubelet config
-	if error := generator.generateKubeletConfig(); error != nil {
-		return error
-	}
-
-	// Generate kubelet configuration
-	if error := generator.generateK8SKubeletConfigFile(); error != nil {
-		return error
-	}
-
-	// Generate dashboard admin user configuration
-	if error := generator.generateK8SAdminUserConfigFile(); error != nil {
-		return error
-	}
-
-	// Generate helm user configuration
-	if error := generator.generateK8SHelmUserConfigFile(); error != nil {
-		return error
-	}
-
-	// Generate containerd config
-	if error := generator.generateContainerdConfig(); error != nil {
-		return error
-	}
-
-	// Generate kubernetes security file
-	if error := generator.generateEncryptionFile(); error != nil {
-		return error
-	}
-
-	// Generate kubeconfig files
-	ca, error := generator.generateCertificates()
-	if error != nil {
-		return error
-	}
-
-	// Generate kubeconfig files
-	if error := generator.generateKubeConfigs(ca); error != nil {
-		return error
-	}
-
-	// Generate ceph files
-	if error := generator.generateCephFiles(); error != nil {
-		return error
-	}
-
-	// Generate Let's Encrypt Cluster Issuer
-	if error := generator.generateLetsEncryptClusterIssuer(); error != nil {
-		return error
-	}
-
-	// Generate CoreDNS setup file
-	if error := generator.generateCoreDNSSetup(); error != nil {
-		return error
-	}
-
-	// Generate ElasticSearch Operator setup file
-	if error := generator.generateElasticSearchOperatorSetup(); error != nil {
-		return error
-	}
-
-	// Generate ElasticSearch/Fluent-Bit/Kibana setup file
-	if error := generator.generateEFKSetup(); error != nil {
-		return error
+		utils.IncreaseProgressStep()
 	}
 
 	return nil

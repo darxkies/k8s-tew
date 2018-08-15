@@ -48,7 +48,7 @@ func (x IndexField_Mode) String() string {
 	return proto.EnumName(IndexField_Mode_name, int32(x))
 }
 func (IndexField_Mode) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_index_21a0967fd785e85c, []int{0, 0}
+	return fileDescriptor_index_8502697994912cbb, []int{0, 0}
 }
 
 // The state of an index. During index creation, an index will be in the
@@ -94,7 +94,7 @@ func (x Index_State) String() string {
 	return proto.EnumName(Index_State_name, int32(x))
 }
 func (Index_State) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_index_21a0967fd785e85c, []int{1, 0}
+	return fileDescriptor_index_8502697994912cbb, []int{1, 0}
 }
 
 // A field of an index.
@@ -103,9 +103,9 @@ type IndexField struct {
 	// by [google.firestore.v1beta1.Document.fields][fields].
 	// Special field path `__name__` may be used by itself or at the end of a
 	// path. `__type__` may be used only at the end of path.
-	FieldPath string `protobuf:"bytes,1,opt,name=field_path,json=fieldPath" json:"field_path,omitempty"`
+	FieldPath string `protobuf:"bytes,1,opt,name=field_path,json=fieldPath,proto3" json:"field_path,omitempty"`
 	// The field's mode.
-	Mode                 IndexField_Mode `protobuf:"varint,2,opt,name=mode,enum=google.firestore.admin.v1beta1.IndexField_Mode" json:"mode,omitempty"`
+	Mode                 IndexField_Mode `protobuf:"varint,2,opt,name=mode,proto3,enum=google.firestore.admin.v1beta1.IndexField_Mode" json:"mode,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
 	XXX_unrecognized     []byte          `json:"-"`
 	XXX_sizecache        int32           `json:"-"`
@@ -115,7 +115,7 @@ func (m *IndexField) Reset()         { *m = IndexField{} }
 func (m *IndexField) String() string { return proto.CompactTextString(m) }
 func (*IndexField) ProtoMessage()    {}
 func (*IndexField) Descriptor() ([]byte, []int) {
-	return fileDescriptor_index_21a0967fd785e85c, []int{0}
+	return fileDescriptor_index_8502697994912cbb, []int{0}
 }
 func (m *IndexField) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_IndexField.Unmarshal(m, b)
@@ -153,14 +153,14 @@ func (m *IndexField) GetMode() IndexField_Mode {
 type Index struct {
 	// The resource name of the index.
 	// Output only.
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// The collection ID to which this index applies. Required.
-	CollectionId string `protobuf:"bytes,2,opt,name=collection_id,json=collectionId" json:"collection_id,omitempty"`
+	CollectionId string `protobuf:"bytes,2,opt,name=collection_id,json=collectionId,proto3" json:"collection_id,omitempty"`
 	// The fields to index.
-	Fields []*IndexField `protobuf:"bytes,3,rep,name=fields" json:"fields,omitempty"`
+	Fields []*IndexField `protobuf:"bytes,3,rep,name=fields,proto3" json:"fields,omitempty"`
 	// The state of the index.
 	// Output only.
-	State                Index_State `protobuf:"varint,6,opt,name=state,enum=google.firestore.admin.v1beta1.Index_State" json:"state,omitempty"`
+	State                Index_State `protobuf:"varint,6,opt,name=state,proto3,enum=google.firestore.admin.v1beta1.Index_State" json:"state,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
 	XXX_unrecognized     []byte      `json:"-"`
 	XXX_sizecache        int32       `json:"-"`
@@ -170,7 +170,7 @@ func (m *Index) Reset()         { *m = Index{} }
 func (m *Index) String() string { return proto.CompactTextString(m) }
 func (*Index) ProtoMessage()    {}
 func (*Index) Descriptor() ([]byte, []int) {
-	return fileDescriptor_index_21a0967fd785e85c, []int{1}
+	return fileDescriptor_index_8502697994912cbb, []int{1}
 }
 func (m *Index) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Index.Unmarshal(m, b)
@@ -226,10 +226,10 @@ func init() {
 }
 
 func init() {
-	proto.RegisterFile("google/firestore/admin/v1beta1/index.proto", fileDescriptor_index_21a0967fd785e85c)
+	proto.RegisterFile("google/firestore/admin/v1beta1/index.proto", fileDescriptor_index_8502697994912cbb)
 }
 
-var fileDescriptor_index_21a0967fd785e85c = []byte{
+var fileDescriptor_index_8502697994912cbb = []byte{
 	// 422 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x52, 0x4f, 0x8b, 0x13, 0x31,
 	0x1c, 0x75, 0xa6, 0x9d, 0xe2, 0xfc, 0xdc, 0x5d, 0xc6, 0xa0, 0x50, 0x44, 0xa5, 0x8c, 0x1e, 0xca,

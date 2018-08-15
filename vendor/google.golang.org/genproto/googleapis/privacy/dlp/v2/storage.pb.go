@@ -25,7 +25,7 @@ const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 type Likelihood int32
 
 const (
-	// Default value; information with all likelihoods is included.
+	// Default value; same as POSSIBLE.
 	Likelihood_LIKELIHOOD_UNSPECIFIED Likelihood = 0
 	// Few matching elements.
 	Likelihood_VERY_UNLIKELY Likelihood = 1
@@ -58,7 +58,7 @@ func (x Likelihood) String() string {
 	return proto.EnumName(Likelihood_name, int32(x))
 }
 func (Likelihood) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_storage_87ef6cb42f05a092, []int{0}
+	return fileDescriptor_storage_b718b41311eb5c58, []int{0}
 }
 
 // Definitions of file type groups to scan.
@@ -93,7 +93,7 @@ func (x FileType) String() string {
 	return proto.EnumName(FileType_name, int32(x))
 }
 func (FileType) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_storage_87ef6cb42f05a092, []int{1}
+	return fileDescriptor_storage_b718b41311eb5c58, []int{1}
 }
 
 // How to sample bytes if not all bytes are scanned. Meaningful only when used
@@ -125,7 +125,7 @@ func (x CloudStorageOptions_SampleMethod) String() string {
 	return proto.EnumName(CloudStorageOptions_SampleMethod_name, int32(x))
 }
 func (CloudStorageOptions_SampleMethod) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_storage_87ef6cb42f05a092, []int{6, 0}
+	return fileDescriptor_storage_b718b41311eb5c58, []int{6, 0}
 }
 
 // How to sample rows if not all rows are scanned. Meaningful only when used
@@ -156,13 +156,16 @@ func (x BigQueryOptions_SampleMethod) String() string {
 	return proto.EnumName(BigQueryOptions_SampleMethod_name, int32(x))
 }
 func (BigQueryOptions_SampleMethod) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_storage_87ef6cb42f05a092, []int{8, 0}
+	return fileDescriptor_storage_b718b41311eb5c58, []int{8, 0}
 }
 
 // Type of information detected by the API.
 type InfoType struct {
-	// Name of the information type.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	// Name of the information type. Either a name of your choosing when
+	// creating a CustomInfoType, or one of the names listed
+	// at https://cloud.google.com/dlp/docs/infotypes-reference when specifying
+	// a built-in type.
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -172,7 +175,7 @@ func (m *InfoType) Reset()         { *m = InfoType{} }
 func (m *InfoType) String() string { return proto.CompactTextString(m) }
 func (*InfoType) ProtoMessage()    {}
 func (*InfoType) Descriptor() ([]byte, []int) {
-	return fileDescriptor_storage_87ef6cb42f05a092, []int{0}
+	return fileDescriptor_storage_b718b41311eb5c58, []int{0}
 }
 func (m *InfoType) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_InfoType.Unmarshal(m, b)
@@ -202,22 +205,22 @@ func (m *InfoType) GetName() string {
 // Custom information type provided by the user. Used to find domain-specific
 // sensitive information configurable to the data in question.
 type CustomInfoType struct {
-	// Info type configuration. All custom info types must have configurations
-	// that do not conflict with built-in info types or other custom info types.
-	InfoType *InfoType `protobuf:"bytes,1,opt,name=info_type,json=infoType" json:"info_type,omitempty"`
-	// Likelihood to return for this custom info type. This base value can be
+	// All CustomInfoTypes must have a name
+	// that does not conflict with built-in InfoTypes or other CustomInfoTypes.
+	InfoType *InfoType `protobuf:"bytes,1,opt,name=info_type,json=infoType,proto3" json:"info_type,omitempty"`
+	// Likelihood to return for this CustomInfoType. This base value can be
 	// altered by a detection rule if the finding meets the criteria specified by
 	// the rule. Defaults to `VERY_LIKELY` if not specified.
-	Likelihood Likelihood `protobuf:"varint,6,opt,name=likelihood,enum=google.privacy.dlp.v2.Likelihood" json:"likelihood,omitempty"`
+	Likelihood Likelihood `protobuf:"varint,6,opt,name=likelihood,proto3,enum=google.privacy.dlp.v2.Likelihood" json:"likelihood,omitempty"`
 	// Types that are valid to be assigned to Type:
 	//	*CustomInfoType_Dictionary_
 	//	*CustomInfoType_Regex_
 	//	*CustomInfoType_SurrogateType_
 	Type isCustomInfoType_Type `protobuf_oneof:"type"`
-	// Set of detection rules to apply to all findings of this custom info type.
+	// Set of detection rules to apply to all findings of this CustomInfoType.
 	// Rules are applied in order that they are specified. Not supported for the
-	// `surrogate_type` custom info type.
-	DetectionRules       []*CustomInfoType_DetectionRule `protobuf:"bytes,7,rep,name=detection_rules,json=detectionRules" json:"detection_rules,omitempty"`
+	// `surrogate_type` CustomInfoType.
+	DetectionRules       []*CustomInfoType_DetectionRule `protobuf:"bytes,7,rep,name=detection_rules,json=detectionRules,proto3" json:"detection_rules,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                        `json:"-"`
 	XXX_unrecognized     []byte                          `json:"-"`
 	XXX_sizecache        int32                           `json:"-"`
@@ -227,7 +230,7 @@ func (m *CustomInfoType) Reset()         { *m = CustomInfoType{} }
 func (m *CustomInfoType) String() string { return proto.CompactTextString(m) }
 func (*CustomInfoType) ProtoMessage()    {}
 func (*CustomInfoType) Descriptor() ([]byte, []int) {
-	return fileDescriptor_storage_87ef6cb42f05a092, []int{1}
+	return fileDescriptor_storage_b718b41311eb5c58, []int{1}
 }
 func (m *CustomInfoType) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CustomInfoType.Unmarshal(m, b)
@@ -247,31 +250,6 @@ func (m *CustomInfoType) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_CustomInfoType proto.InternalMessageInfo
 
-type isCustomInfoType_Type interface {
-	isCustomInfoType_Type()
-}
-
-type CustomInfoType_Dictionary_ struct {
-	Dictionary *CustomInfoType_Dictionary `protobuf:"bytes,2,opt,name=dictionary,oneof"`
-}
-type CustomInfoType_Regex_ struct {
-	Regex *CustomInfoType_Regex `protobuf:"bytes,3,opt,name=regex,oneof"`
-}
-type CustomInfoType_SurrogateType_ struct {
-	SurrogateType *CustomInfoType_SurrogateType `protobuf:"bytes,4,opt,name=surrogate_type,json=surrogateType,oneof"`
-}
-
-func (*CustomInfoType_Dictionary_) isCustomInfoType_Type()    {}
-func (*CustomInfoType_Regex_) isCustomInfoType_Type()         {}
-func (*CustomInfoType_SurrogateType_) isCustomInfoType_Type() {}
-
-func (m *CustomInfoType) GetType() isCustomInfoType_Type {
-	if m != nil {
-		return m.Type
-	}
-	return nil
-}
-
 func (m *CustomInfoType) GetInfoType() *InfoType {
 	if m != nil {
 		return m.InfoType
@@ -284,6 +262,35 @@ func (m *CustomInfoType) GetLikelihood() Likelihood {
 		return m.Likelihood
 	}
 	return Likelihood_LIKELIHOOD_UNSPECIFIED
+}
+
+type isCustomInfoType_Type interface {
+	isCustomInfoType_Type()
+}
+
+type CustomInfoType_Dictionary_ struct {
+	Dictionary *CustomInfoType_Dictionary `protobuf:"bytes,2,opt,name=dictionary,proto3,oneof"`
+}
+
+type CustomInfoType_Regex_ struct {
+	Regex *CustomInfoType_Regex `protobuf:"bytes,3,opt,name=regex,proto3,oneof"`
+}
+
+type CustomInfoType_SurrogateType_ struct {
+	SurrogateType *CustomInfoType_SurrogateType `protobuf:"bytes,4,opt,name=surrogate_type,json=surrogateType,proto3,oneof"`
+}
+
+func (*CustomInfoType_Dictionary_) isCustomInfoType_Type() {}
+
+func (*CustomInfoType_Regex_) isCustomInfoType_Type() {}
+
+func (*CustomInfoType_SurrogateType_) isCustomInfoType_Type() {}
+
+func (m *CustomInfoType) GetType() isCustomInfoType_Type {
+	if m != nil {
+		return m.Type
+	}
+	return nil
 }
 
 func (m *CustomInfoType) GetDictionary() *CustomInfoType_Dictionary {
@@ -440,7 +447,7 @@ func (m *CustomInfoType_Dictionary) Reset()         { *m = CustomInfoType_Dictio
 func (m *CustomInfoType_Dictionary) String() string { return proto.CompactTextString(m) }
 func (*CustomInfoType_Dictionary) ProtoMessage()    {}
 func (*CustomInfoType_Dictionary) Descriptor() ([]byte, []int) {
-	return fileDescriptor_storage_87ef6cb42f05a092, []int{1, 0}
+	return fileDescriptor_storage_b718b41311eb5c58, []int{1, 0}
 }
 func (m *CustomInfoType_Dictionary) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CustomInfoType_Dictionary.Unmarshal(m, b)
@@ -465,13 +472,15 @@ type isCustomInfoType_Dictionary_Source interface {
 }
 
 type CustomInfoType_Dictionary_WordList_ struct {
-	WordList *CustomInfoType_Dictionary_WordList `protobuf:"bytes,1,opt,name=word_list,json=wordList,oneof"`
-}
-type CustomInfoType_Dictionary_CloudStoragePath struct {
-	CloudStoragePath *CloudStoragePath `protobuf:"bytes,3,opt,name=cloud_storage_path,json=cloudStoragePath,oneof"`
+	WordList *CustomInfoType_Dictionary_WordList `protobuf:"bytes,1,opt,name=word_list,json=wordList,proto3,oneof"`
 }
 
-func (*CustomInfoType_Dictionary_WordList_) isCustomInfoType_Dictionary_Source()        {}
+type CustomInfoType_Dictionary_CloudStoragePath struct {
+	CloudStoragePath *CloudStoragePath `protobuf:"bytes,3,opt,name=cloud_storage_path,json=cloudStoragePath,proto3,oneof"`
+}
+
+func (*CustomInfoType_Dictionary_WordList_) isCustomInfoType_Dictionary_Source() {}
+
 func (*CustomInfoType_Dictionary_CloudStoragePath) isCustomInfoType_Dictionary_Source() {}
 
 func (m *CustomInfoType_Dictionary) GetSource() isCustomInfoType_Dictionary_Source {
@@ -574,7 +583,7 @@ type CustomInfoType_Dictionary_WordList struct {
 	// Words or phrases defining the dictionary. The dictionary must contain
 	// at least one phrase and every phrase must contain at least 2 characters
 	// that are letters or digits. [required]
-	Words                []string `protobuf:"bytes,1,rep,name=words" json:"words,omitempty"`
+	Words                []string `protobuf:"bytes,1,rep,name=words,proto3" json:"words,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -584,7 +593,7 @@ func (m *CustomInfoType_Dictionary_WordList) Reset()         { *m = CustomInfoTy
 func (m *CustomInfoType_Dictionary_WordList) String() string { return proto.CompactTextString(m) }
 func (*CustomInfoType_Dictionary_WordList) ProtoMessage()    {}
 func (*CustomInfoType_Dictionary_WordList) Descriptor() ([]byte, []int) {
-	return fileDescriptor_storage_87ef6cb42f05a092, []int{1, 0, 0}
+	return fileDescriptor_storage_b718b41311eb5c58, []int{1, 0, 0}
 }
 func (m *CustomInfoType_Dictionary_WordList) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CustomInfoType_Dictionary_WordList.Unmarshal(m, b)
@@ -614,7 +623,7 @@ func (m *CustomInfoType_Dictionary_WordList) GetWords() []string {
 // Message defining a custom regular expression.
 type CustomInfoType_Regex struct {
 	// Pattern defining the regular expression.
-	Pattern              string   `protobuf:"bytes,1,opt,name=pattern" json:"pattern,omitempty"`
+	Pattern              string   `protobuf:"bytes,1,opt,name=pattern,proto3" json:"pattern,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -624,7 +633,7 @@ func (m *CustomInfoType_Regex) Reset()         { *m = CustomInfoType_Regex{} }
 func (m *CustomInfoType_Regex) String() string { return proto.CompactTextString(m) }
 func (*CustomInfoType_Regex) ProtoMessage()    {}
 func (*CustomInfoType_Regex) Descriptor() ([]byte, []int) {
-	return fileDescriptor_storage_87ef6cb42f05a092, []int{1, 1}
+	return fileDescriptor_storage_b718b41311eb5c58, []int{1, 1}
 }
 func (m *CustomInfoType_Regex) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CustomInfoType_Regex.Unmarshal(m, b)
@@ -657,7 +666,7 @@ func (m *CustomInfoType_Regex) GetPattern() string {
 // These types of transformations are
 // those that perform pseudonymization, thereby producing a "surrogate" as
 // output. This should be used in conjunction with a field on the
-// transformation such as `surrogate_info_type`. This custom info type does
+// transformation such as `surrogate_info_type`. This CustomInfoType does
 // not support the use of `detection_rules`.
 type CustomInfoType_SurrogateType struct {
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -669,7 +678,7 @@ func (m *CustomInfoType_SurrogateType) Reset()         { *m = CustomInfoType_Sur
 func (m *CustomInfoType_SurrogateType) String() string { return proto.CompactTextString(m) }
 func (*CustomInfoType_SurrogateType) ProtoMessage()    {}
 func (*CustomInfoType_SurrogateType) Descriptor() ([]byte, []int) {
-	return fileDescriptor_storage_87ef6cb42f05a092, []int{1, 2}
+	return fileDescriptor_storage_b718b41311eb5c58, []int{1, 2}
 }
 func (m *CustomInfoType_SurrogateType) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CustomInfoType_SurrogateType.Unmarshal(m, b)
@@ -689,7 +698,7 @@ func (m *CustomInfoType_SurrogateType) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_CustomInfoType_SurrogateType proto.InternalMessageInfo
 
-// Rule for modifying a custom info type to alter behavior under certain
+// Rule for modifying a CustomInfoType to alter behavior under certain
 // circumstances, depending on the specific details of the rule. Not supported
 // for the `surrogate_type` custom info type.
 type CustomInfoType_DetectionRule struct {
@@ -705,7 +714,7 @@ func (m *CustomInfoType_DetectionRule) Reset()         { *m = CustomInfoType_Det
 func (m *CustomInfoType_DetectionRule) String() string { return proto.CompactTextString(m) }
 func (*CustomInfoType_DetectionRule) ProtoMessage()    {}
 func (*CustomInfoType_DetectionRule) Descriptor() ([]byte, []int) {
-	return fileDescriptor_storage_87ef6cb42f05a092, []int{1, 3}
+	return fileDescriptor_storage_b718b41311eb5c58, []int{1, 3}
 }
 func (m *CustomInfoType_DetectionRule) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CustomInfoType_DetectionRule.Unmarshal(m, b)
@@ -730,7 +739,7 @@ type isCustomInfoType_DetectionRule_Type interface {
 }
 
 type CustomInfoType_DetectionRule_HotwordRule_ struct {
-	HotwordRule *CustomInfoType_DetectionRule_HotwordRule `protobuf:"bytes,1,opt,name=hotword_rule,json=hotwordRule,oneof"`
+	HotwordRule *CustomInfoType_DetectionRule_HotwordRule `protobuf:"bytes,1,opt,name=hotword_rule,json=hotwordRule,proto3,oneof"`
 }
 
 func (*CustomInfoType_DetectionRule_HotwordRule_) isCustomInfoType_DetectionRule_Type() {}
@@ -808,9 +817,9 @@ func _CustomInfoType_DetectionRule_OneofSizer(msg proto.Message) (n int) {
 // rule.
 type CustomInfoType_DetectionRule_Proximity struct {
 	// Number of characters before the finding to consider.
-	WindowBefore int32 `protobuf:"varint,1,opt,name=window_before,json=windowBefore" json:"window_before,omitempty"`
+	WindowBefore int32 `protobuf:"varint,1,opt,name=window_before,json=windowBefore,proto3" json:"window_before,omitempty"`
 	// Number of characters after the finding to consider.
-	WindowAfter          int32    `protobuf:"varint,2,opt,name=window_after,json=windowAfter" json:"window_after,omitempty"`
+	WindowAfter          int32    `protobuf:"varint,2,opt,name=window_after,json=windowAfter,proto3" json:"window_after,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -822,7 +831,7 @@ func (m *CustomInfoType_DetectionRule_Proximity) Reset() {
 func (m *CustomInfoType_DetectionRule_Proximity) String() string { return proto.CompactTextString(m) }
 func (*CustomInfoType_DetectionRule_Proximity) ProtoMessage()    {}
 func (*CustomInfoType_DetectionRule_Proximity) Descriptor() ([]byte, []int) {
-	return fileDescriptor_storage_87ef6cb42f05a092, []int{1, 3, 0}
+	return fileDescriptor_storage_b718b41311eb5c58, []int{1, 3, 0}
 }
 func (m *CustomInfoType_DetectionRule_Proximity) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CustomInfoType_DetectionRule_Proximity.Unmarshal(m, b)
@@ -876,7 +885,7 @@ func (m *CustomInfoType_DetectionRule_LikelihoodAdjustment) String() string {
 }
 func (*CustomInfoType_DetectionRule_LikelihoodAdjustment) ProtoMessage() {}
 func (*CustomInfoType_DetectionRule_LikelihoodAdjustment) Descriptor() ([]byte, []int) {
-	return fileDescriptor_storage_87ef6cb42f05a092, []int{1, 3, 1}
+	return fileDescriptor_storage_b718b41311eb5c58, []int{1, 3, 1}
 }
 func (m *CustomInfoType_DetectionRule_LikelihoodAdjustment) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CustomInfoType_DetectionRule_LikelihoodAdjustment.Unmarshal(m, b)
@@ -901,14 +910,16 @@ type isCustomInfoType_DetectionRule_LikelihoodAdjustment_Adjustment interface {
 }
 
 type CustomInfoType_DetectionRule_LikelihoodAdjustment_FixedLikelihood struct {
-	FixedLikelihood Likelihood `protobuf:"varint,1,opt,name=fixed_likelihood,json=fixedLikelihood,enum=google.privacy.dlp.v2.Likelihood,oneof"`
+	FixedLikelihood Likelihood `protobuf:"varint,1,opt,name=fixed_likelihood,json=fixedLikelihood,proto3,enum=google.privacy.dlp.v2.Likelihood,oneof"`
 }
+
 type CustomInfoType_DetectionRule_LikelihoodAdjustment_RelativeLikelihood struct {
-	RelativeLikelihood int32 `protobuf:"varint,2,opt,name=relative_likelihood,json=relativeLikelihood,oneof"`
+	RelativeLikelihood int32 `protobuf:"varint,2,opt,name=relative_likelihood,json=relativeLikelihood,proto3,oneof"`
 }
 
 func (*CustomInfoType_DetectionRule_LikelihoodAdjustment_FixedLikelihood) isCustomInfoType_DetectionRule_LikelihoodAdjustment_Adjustment() {
 }
+
 func (*CustomInfoType_DetectionRule_LikelihoodAdjustment_RelativeLikelihood) isCustomInfoType_DetectionRule_LikelihoodAdjustment_Adjustment() {
 }
 
@@ -997,11 +1008,11 @@ func _CustomInfoType_DetectionRule_LikelihoodAdjustment_OneofSizer(msg proto.Mes
 	return n
 }
 
-// Detection rule that adjusts the likelihood of findings within a certain
+// The rule that adjusts the likelihood of findings within a certain
 // proximity of hotwords.
 type CustomInfoType_DetectionRule_HotwordRule struct {
-	// Regex pattern defining what qualifies as a hotword.
-	HotwordRegex *CustomInfoType_Regex `protobuf:"bytes,1,opt,name=hotword_regex,json=hotwordRegex" json:"hotword_regex,omitempty"`
+	// Regular expression pattern defining what qualifies as a hotword.
+	HotwordRegex *CustomInfoType_Regex `protobuf:"bytes,1,opt,name=hotword_regex,json=hotwordRegex,proto3" json:"hotword_regex,omitempty"`
 	// Proximity of the finding within which the entire hotword must reside.
 	// The total length of the window cannot exceed 1000 characters. Note that
 	// the finding itself will be included in the window, so that hotwords may
@@ -1010,9 +1021,9 @@ type CustomInfoType_DetectionRule_HotwordRule struct {
 	// adjusted upwards if the area code is known to be the local area code of
 	// a company office using the hotword regex "\(xxx\)", where "xxx"
 	// is the area code in question.
-	Proximity *CustomInfoType_DetectionRule_Proximity `protobuf:"bytes,2,opt,name=proximity" json:"proximity,omitempty"`
+	Proximity *CustomInfoType_DetectionRule_Proximity `protobuf:"bytes,2,opt,name=proximity,proto3" json:"proximity,omitempty"`
 	// Likelihood adjustment to apply to all matching findings.
-	LikelihoodAdjustment *CustomInfoType_DetectionRule_LikelihoodAdjustment `protobuf:"bytes,3,opt,name=likelihood_adjustment,json=likelihoodAdjustment" json:"likelihood_adjustment,omitempty"`
+	LikelihoodAdjustment *CustomInfoType_DetectionRule_LikelihoodAdjustment `protobuf:"bytes,3,opt,name=likelihood_adjustment,json=likelihoodAdjustment,proto3" json:"likelihood_adjustment,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                                           `json:"-"`
 	XXX_unrecognized     []byte                                             `json:"-"`
 	XXX_sizecache        int32                                              `json:"-"`
@@ -1024,7 +1035,7 @@ func (m *CustomInfoType_DetectionRule_HotwordRule) Reset() {
 func (m *CustomInfoType_DetectionRule_HotwordRule) String() string { return proto.CompactTextString(m) }
 func (*CustomInfoType_DetectionRule_HotwordRule) ProtoMessage()    {}
 func (*CustomInfoType_DetectionRule_HotwordRule) Descriptor() ([]byte, []int) {
-	return fileDescriptor_storage_87ef6cb42f05a092, []int{1, 3, 2}
+	return fileDescriptor_storage_b718b41311eb5c58, []int{1, 3, 2}
 }
 func (m *CustomInfoType_DetectionRule_HotwordRule) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CustomInfoType_DetectionRule_HotwordRule.Unmarshal(m, b)
@@ -1068,7 +1079,7 @@ func (m *CustomInfoType_DetectionRule_HotwordRule) GetLikelihoodAdjustment() *Cu
 // General identifier of a data field in a storage service.
 type FieldId struct {
 	// Name describing the field.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1078,7 +1089,7 @@ func (m *FieldId) Reset()         { *m = FieldId{} }
 func (m *FieldId) String() string { return proto.CompactTextString(m) }
 func (*FieldId) ProtoMessage()    {}
 func (*FieldId) Descriptor() ([]byte, []int) {
-	return fileDescriptor_storage_87ef6cb42f05a092, []int{2}
+	return fileDescriptor_storage_b718b41311eb5c58, []int{2}
 }
 func (m *FieldId) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_FieldId.Unmarshal(m, b)
@@ -1113,9 +1124,9 @@ func (m *FieldId) GetName() string {
 // project ID and namespace ID.
 type PartitionId struct {
 	// The ID of the project to which the entities belong.
-	ProjectId string `protobuf:"bytes,2,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,2,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// If not empty, the ID of the namespace to which the entities belong.
-	NamespaceId          string   `protobuf:"bytes,4,opt,name=namespace_id,json=namespaceId" json:"namespace_id,omitempty"`
+	NamespaceId          string   `protobuf:"bytes,4,opt,name=namespace_id,json=namespaceId,proto3" json:"namespace_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1125,7 +1136,7 @@ func (m *PartitionId) Reset()         { *m = PartitionId{} }
 func (m *PartitionId) String() string { return proto.CompactTextString(m) }
 func (*PartitionId) ProtoMessage()    {}
 func (*PartitionId) Descriptor() ([]byte, []int) {
-	return fileDescriptor_storage_87ef6cb42f05a092, []int{3}
+	return fileDescriptor_storage_b718b41311eb5c58, []int{3}
 }
 func (m *PartitionId) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_PartitionId.Unmarshal(m, b)
@@ -1162,7 +1173,7 @@ func (m *PartitionId) GetNamespaceId() string {
 // A representation of a Datastore kind.
 type KindExpression struct {
 	// The name of the kind.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1172,7 +1183,7 @@ func (m *KindExpression) Reset()         { *m = KindExpression{} }
 func (m *KindExpression) String() string { return proto.CompactTextString(m) }
 func (*KindExpression) ProtoMessage()    {}
 func (*KindExpression) Descriptor() ([]byte, []int) {
-	return fileDescriptor_storage_87ef6cb42f05a092, []int{4}
+	return fileDescriptor_storage_b718b41311eb5c58, []int{4}
 }
 func (m *KindExpression) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_KindExpression.Unmarshal(m, b)
@@ -1203,9 +1214,9 @@ func (m *KindExpression) GetName() string {
 type DatastoreOptions struct {
 	// A partition ID identifies a grouping of entities. The grouping is always
 	// by project and namespace, however the namespace ID may be empty.
-	PartitionId *PartitionId `protobuf:"bytes,1,opt,name=partition_id,json=partitionId" json:"partition_id,omitempty"`
+	PartitionId *PartitionId `protobuf:"bytes,1,opt,name=partition_id,json=partitionId,proto3" json:"partition_id,omitempty"`
 	// The kind to process.
-	Kind                 *KindExpression `protobuf:"bytes,2,opt,name=kind" json:"kind,omitempty"`
+	Kind                 *KindExpression `protobuf:"bytes,2,opt,name=kind,proto3" json:"kind,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
 	XXX_unrecognized     []byte          `json:"-"`
 	XXX_sizecache        int32           `json:"-"`
@@ -1215,7 +1226,7 @@ func (m *DatastoreOptions) Reset()         { *m = DatastoreOptions{} }
 func (m *DatastoreOptions) String() string { return proto.CompactTextString(m) }
 func (*DatastoreOptions) ProtoMessage()    {}
 func (*DatastoreOptions) Descriptor() ([]byte, []int) {
-	return fileDescriptor_storage_87ef6cb42f05a092, []int{5}
+	return fileDescriptor_storage_b718b41311eb5c58, []int{5}
 }
 func (m *DatastoreOptions) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DatastoreOptions.Unmarshal(m, b)
@@ -1252,19 +1263,19 @@ func (m *DatastoreOptions) GetKind() *KindExpression {
 // Options defining a file or a set of files (path ending with *) within
 // a Google Cloud Storage bucket.
 type CloudStorageOptions struct {
-	FileSet *CloudStorageOptions_FileSet `protobuf:"bytes,1,opt,name=file_set,json=fileSet" json:"file_set,omitempty"`
+	FileSet *CloudStorageOptions_FileSet `protobuf:"bytes,1,opt,name=file_set,json=fileSet,proto3" json:"file_set,omitempty"`
 	// Max number of bytes to scan from a file. If a scanned file's size is bigger
 	// than this value then the rest of the bytes are omitted.
-	BytesLimitPerFile int64 `protobuf:"varint,4,opt,name=bytes_limit_per_file,json=bytesLimitPerFile" json:"bytes_limit_per_file,omitempty"`
+	BytesLimitPerFile int64 `protobuf:"varint,4,opt,name=bytes_limit_per_file,json=bytesLimitPerFile,proto3" json:"bytes_limit_per_file,omitempty"`
 	// List of file type groups to include in the scan.
 	// If empty, all files are scanned and available data format processors
 	// are applied.
-	FileTypes    []FileType                       `protobuf:"varint,5,rep,packed,name=file_types,json=fileTypes,enum=google.privacy.dlp.v2.FileType" json:"file_types,omitempty"`
-	SampleMethod CloudStorageOptions_SampleMethod `protobuf:"varint,6,opt,name=sample_method,json=sampleMethod,enum=google.privacy.dlp.v2.CloudStorageOptions_SampleMethod" json:"sample_method,omitempty"`
+	FileTypes    []FileType                       `protobuf:"varint,5,rep,packed,name=file_types,json=fileTypes,proto3,enum=google.privacy.dlp.v2.FileType" json:"file_types,omitempty"`
+	SampleMethod CloudStorageOptions_SampleMethod `protobuf:"varint,6,opt,name=sample_method,json=sampleMethod,proto3,enum=google.privacy.dlp.v2.CloudStorageOptions_SampleMethod" json:"sample_method,omitempty"`
 	// Limits the number of files to scan to this percentage of the input FileSet.
 	// Number of files scanned is rounded down. Must be between 0 and 100,
 	// inclusively. Both 0 and 100 means no limit. Defaults to 0.
-	FilesLimitPercent    int32    `protobuf:"varint,7,opt,name=files_limit_percent,json=filesLimitPercent" json:"files_limit_percent,omitempty"`
+	FilesLimitPercent    int32    `protobuf:"varint,7,opt,name=files_limit_percent,json=filesLimitPercent,proto3" json:"files_limit_percent,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1274,7 +1285,7 @@ func (m *CloudStorageOptions) Reset()         { *m = CloudStorageOptions{} }
 func (m *CloudStorageOptions) String() string { return proto.CompactTextString(m) }
 func (*CloudStorageOptions) ProtoMessage()    {}
 func (*CloudStorageOptions) Descriptor() ([]byte, []int) {
-	return fileDescriptor_storage_87ef6cb42f05a092, []int{6}
+	return fileDescriptor_storage_b718b41311eb5c58, []int{6}
 }
 func (m *CloudStorageOptions) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CloudStorageOptions.Unmarshal(m, b)
@@ -1333,7 +1344,7 @@ func (m *CloudStorageOptions) GetFilesLimitPercent() int32 {
 type CloudStorageOptions_FileSet struct {
 	// The url, in the format `gs://<bucket>/<path>`. Trailing wildcard in the
 	// path is allowed.
-	Url                  string   `protobuf:"bytes,1,opt,name=url" json:"url,omitempty"`
+	Url                  string   `protobuf:"bytes,1,opt,name=url,proto3" json:"url,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1343,7 +1354,7 @@ func (m *CloudStorageOptions_FileSet) Reset()         { *m = CloudStorageOptions
 func (m *CloudStorageOptions_FileSet) String() string { return proto.CompactTextString(m) }
 func (*CloudStorageOptions_FileSet) ProtoMessage()    {}
 func (*CloudStorageOptions_FileSet) Descriptor() ([]byte, []int) {
-	return fileDescriptor_storage_87ef6cb42f05a092, []int{6, 0}
+	return fileDescriptor_storage_b718b41311eb5c58, []int{6, 0}
 }
 func (m *CloudStorageOptions_FileSet) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CloudStorageOptions_FileSet.Unmarshal(m, b)
@@ -1374,7 +1385,7 @@ func (m *CloudStorageOptions_FileSet) GetUrl() string {
 type CloudStoragePath struct {
 	// A url representing a file or path (no wildcards) in Cloud Storage.
 	// Example: gs://[BUCKET_NAME]/dictionary.txt
-	Path                 string   `protobuf:"bytes,1,opt,name=path" json:"path,omitempty"`
+	Path                 string   `protobuf:"bytes,1,opt,name=path,proto3" json:"path,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1384,7 +1395,7 @@ func (m *CloudStoragePath) Reset()         { *m = CloudStoragePath{} }
 func (m *CloudStoragePath) String() string { return proto.CompactTextString(m) }
 func (*CloudStoragePath) ProtoMessage()    {}
 func (*CloudStoragePath) Descriptor() ([]byte, []int) {
-	return fileDescriptor_storage_87ef6cb42f05a092, []int{7}
+	return fileDescriptor_storage_b718b41311eb5c58, []int{7}
 }
 func (m *CloudStoragePath) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CloudStoragePath.Unmarshal(m, b)
@@ -1414,15 +1425,15 @@ func (m *CloudStoragePath) GetPath() string {
 // Options defining BigQuery table and row identifiers.
 type BigQueryOptions struct {
 	// Complete BigQuery table reference.
-	TableReference *BigQueryTable `protobuf:"bytes,1,opt,name=table_reference,json=tableReference" json:"table_reference,omitempty"`
+	TableReference *BigQueryTable `protobuf:"bytes,1,opt,name=table_reference,json=tableReference,proto3" json:"table_reference,omitempty"`
 	// References to fields uniquely identifying rows within the table.
 	// Nested fields in the format, like `person.birthdate.year`, are allowed.
-	IdentifyingFields []*FieldId `protobuf:"bytes,2,rep,name=identifying_fields,json=identifyingFields" json:"identifying_fields,omitempty"`
+	IdentifyingFields []*FieldId `protobuf:"bytes,2,rep,name=identifying_fields,json=identifyingFields,proto3" json:"identifying_fields,omitempty"`
 	// Max number of rows to scan. If the table has more rows than this value, the
 	// rest of the rows are omitted. If not set, or if set to 0, all rows will be
 	// scanned. Cannot be used in conjunction with TimespanConfig.
-	RowsLimit            int64                        `protobuf:"varint,3,opt,name=rows_limit,json=rowsLimit" json:"rows_limit,omitempty"`
-	SampleMethod         BigQueryOptions_SampleMethod `protobuf:"varint,4,opt,name=sample_method,json=sampleMethod,enum=google.privacy.dlp.v2.BigQueryOptions_SampleMethod" json:"sample_method,omitempty"`
+	RowsLimit            int64                        `protobuf:"varint,3,opt,name=rows_limit,json=rowsLimit,proto3" json:"rows_limit,omitempty"`
+	SampleMethod         BigQueryOptions_SampleMethod `protobuf:"varint,4,opt,name=sample_method,json=sampleMethod,proto3,enum=google.privacy.dlp.v2.BigQueryOptions_SampleMethod" json:"sample_method,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                     `json:"-"`
 	XXX_unrecognized     []byte                       `json:"-"`
 	XXX_sizecache        int32                        `json:"-"`
@@ -1432,7 +1443,7 @@ func (m *BigQueryOptions) Reset()         { *m = BigQueryOptions{} }
 func (m *BigQueryOptions) String() string { return proto.CompactTextString(m) }
 func (*BigQueryOptions) ProtoMessage()    {}
 func (*BigQueryOptions) Descriptor() ([]byte, []int) {
-	return fileDescriptor_storage_87ef6cb42f05a092, []int{8}
+	return fileDescriptor_storage_b718b41311eb5c58, []int{8}
 }
 func (m *BigQueryOptions) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_BigQueryOptions.Unmarshal(m, b)
@@ -1487,7 +1498,7 @@ type StorageConfig struct {
 	//	*StorageConfig_CloudStorageOptions
 	//	*StorageConfig_BigQueryOptions
 	Type                 isStorageConfig_Type          `protobuf_oneof:"type"`
-	TimespanConfig       *StorageConfig_TimespanConfig `protobuf:"bytes,6,opt,name=timespan_config,json=timespanConfig" json:"timespan_config,omitempty"`
+	TimespanConfig       *StorageConfig_TimespanConfig `protobuf:"bytes,6,opt,name=timespan_config,json=timespanConfig,proto3" json:"timespan_config,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                      `json:"-"`
 	XXX_unrecognized     []byte                        `json:"-"`
 	XXX_sizecache        int32                         `json:"-"`
@@ -1497,7 +1508,7 @@ func (m *StorageConfig) Reset()         { *m = StorageConfig{} }
 func (m *StorageConfig) String() string { return proto.CompactTextString(m) }
 func (*StorageConfig) ProtoMessage()    {}
 func (*StorageConfig) Descriptor() ([]byte, []int) {
-	return fileDescriptor_storage_87ef6cb42f05a092, []int{9}
+	return fileDescriptor_storage_b718b41311eb5c58, []int{9}
 }
 func (m *StorageConfig) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_StorageConfig.Unmarshal(m, b)
@@ -1522,18 +1533,22 @@ type isStorageConfig_Type interface {
 }
 
 type StorageConfig_DatastoreOptions struct {
-	DatastoreOptions *DatastoreOptions `protobuf:"bytes,2,opt,name=datastore_options,json=datastoreOptions,oneof"`
-}
-type StorageConfig_CloudStorageOptions struct {
-	CloudStorageOptions *CloudStorageOptions `protobuf:"bytes,3,opt,name=cloud_storage_options,json=cloudStorageOptions,oneof"`
-}
-type StorageConfig_BigQueryOptions struct {
-	BigQueryOptions *BigQueryOptions `protobuf:"bytes,4,opt,name=big_query_options,json=bigQueryOptions,oneof"`
+	DatastoreOptions *DatastoreOptions `protobuf:"bytes,2,opt,name=datastore_options,json=datastoreOptions,proto3,oneof"`
 }
 
-func (*StorageConfig_DatastoreOptions) isStorageConfig_Type()    {}
+type StorageConfig_CloudStorageOptions struct {
+	CloudStorageOptions *CloudStorageOptions `protobuf:"bytes,3,opt,name=cloud_storage_options,json=cloudStorageOptions,proto3,oneof"`
+}
+
+type StorageConfig_BigQueryOptions struct {
+	BigQueryOptions *BigQueryOptions `protobuf:"bytes,4,opt,name=big_query_options,json=bigQueryOptions,proto3,oneof"`
+}
+
+func (*StorageConfig_DatastoreOptions) isStorageConfig_Type() {}
+
 func (*StorageConfig_CloudStorageOptions) isStorageConfig_Type() {}
-func (*StorageConfig_BigQueryOptions) isStorageConfig_Type()     {}
+
+func (*StorageConfig_BigQueryOptions) isStorageConfig_Type() {}
 
 func (m *StorageConfig) GetType() isStorageConfig_Type {
 	if m != nil {
@@ -1667,10 +1682,10 @@ func _StorageConfig_OneofSizer(msg proto.Message) (n int) {
 // Currently only supported when inspecting Google Cloud Storage and BigQuery.
 type StorageConfig_TimespanConfig struct {
 	// Exclude files older than this value.
-	StartTime *timestamp.Timestamp `protobuf:"bytes,1,opt,name=start_time,json=startTime" json:"start_time,omitempty"`
+	StartTime *timestamp.Timestamp `protobuf:"bytes,1,opt,name=start_time,json=startTime,proto3" json:"start_time,omitempty"`
 	// Exclude files newer than this value.
 	// If set to zero, no upper time limit is applied.
-	EndTime *timestamp.Timestamp `protobuf:"bytes,2,opt,name=end_time,json=endTime" json:"end_time,omitempty"`
+	EndTime *timestamp.Timestamp `protobuf:"bytes,2,opt,name=end_time,json=endTime,proto3" json:"end_time,omitempty"`
 	// Specification of the field containing the timestamp of scanned items.
 	// Required for data sources like Datastore or BigQuery.
 	// The valid data types of the timestamp field are:
@@ -1678,12 +1693,12 @@ type StorageConfig_TimespanConfig struct {
 	// for Datastore - timestamp.
 	// Datastore entity will be scanned if the timestamp property does not exist
 	// or its value is empty or invalid.
-	TimestampField *FieldId `protobuf:"bytes,3,opt,name=timestamp_field,json=timestampField" json:"timestamp_field,omitempty"`
+	TimestampField *FieldId `protobuf:"bytes,3,opt,name=timestamp_field,json=timestampField,proto3" json:"timestamp_field,omitempty"`
 	// When the job is started by a JobTrigger we will automatically figure out
 	// a valid start_time to avoid scanning files that have not been modified
 	// since the last time the JobTrigger executed. This will be based on the
 	// time of the execution of the last run of the JobTrigger.
-	EnableAutoPopulationOfTimespanConfig bool     `protobuf:"varint,4,opt,name=enable_auto_population_of_timespan_config,json=enableAutoPopulationOfTimespanConfig" json:"enable_auto_population_of_timespan_config,omitempty"`
+	EnableAutoPopulationOfTimespanConfig bool     `protobuf:"varint,4,opt,name=enable_auto_population_of_timespan_config,json=enableAutoPopulationOfTimespanConfig,proto3" json:"enable_auto_population_of_timespan_config,omitempty"`
 	XXX_NoUnkeyedLiteral                 struct{} `json:"-"`
 	XXX_unrecognized                     []byte   `json:"-"`
 	XXX_sizecache                        int32    `json:"-"`
@@ -1693,7 +1708,7 @@ func (m *StorageConfig_TimespanConfig) Reset()         { *m = StorageConfig_Time
 func (m *StorageConfig_TimespanConfig) String() string { return proto.CompactTextString(m) }
 func (*StorageConfig_TimespanConfig) ProtoMessage()    {}
 func (*StorageConfig_TimespanConfig) Descriptor() ([]byte, []int) {
-	return fileDescriptor_storage_87ef6cb42f05a092, []int{9, 0}
+	return fileDescriptor_storage_b718b41311eb5c58, []int{9, 0}
 }
 func (m *StorageConfig_TimespanConfig) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_StorageConfig_TimespanConfig.Unmarshal(m, b)
@@ -1744,10 +1759,10 @@ func (m *StorageConfig_TimespanConfig) GetEnableAutoPopulationOfTimespanConfig()
 // Row key for identifying a record in BigQuery table.
 type BigQueryKey struct {
 	// Complete BigQuery table reference.
-	TableReference *BigQueryTable `protobuf:"bytes,1,opt,name=table_reference,json=tableReference" json:"table_reference,omitempty"`
+	TableReference *BigQueryTable `protobuf:"bytes,1,opt,name=table_reference,json=tableReference,proto3" json:"table_reference,omitempty"`
 	// Absolute number of the row from the beginning of the table at the time
 	// of scanning.
-	RowNumber            int64    `protobuf:"varint,2,opt,name=row_number,json=rowNumber" json:"row_number,omitempty"`
+	RowNumber            int64    `protobuf:"varint,2,opt,name=row_number,json=rowNumber,proto3" json:"row_number,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1757,7 +1772,7 @@ func (m *BigQueryKey) Reset()         { *m = BigQueryKey{} }
 func (m *BigQueryKey) String() string { return proto.CompactTextString(m) }
 func (*BigQueryKey) ProtoMessage()    {}
 func (*BigQueryKey) Descriptor() ([]byte, []int) {
-	return fileDescriptor_storage_87ef6cb42f05a092, []int{10}
+	return fileDescriptor_storage_b718b41311eb5c58, []int{10}
 }
 func (m *BigQueryKey) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_BigQueryKey.Unmarshal(m, b)
@@ -1794,7 +1809,7 @@ func (m *BigQueryKey) GetRowNumber() int64 {
 // Record key for a finding in Cloud Datastore.
 type DatastoreKey struct {
 	// Datastore entity key.
-	EntityKey            *Key     `protobuf:"bytes,1,opt,name=entity_key,json=entityKey" json:"entity_key,omitempty"`
+	EntityKey            *Key     `protobuf:"bytes,1,opt,name=entity_key,json=entityKey,proto3" json:"entity_key,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1804,7 +1819,7 @@ func (m *DatastoreKey) Reset()         { *m = DatastoreKey{} }
 func (m *DatastoreKey) String() string { return proto.CompactTextString(m) }
 func (*DatastoreKey) ProtoMessage()    {}
 func (*DatastoreKey) Descriptor() ([]byte, []int) {
-	return fileDescriptor_storage_87ef6cb42f05a092, []int{11}
+	return fileDescriptor_storage_b718b41311eb5c58, []int{11}
 }
 func (m *DatastoreKey) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DatastoreKey.Unmarshal(m, b)
@@ -1839,7 +1854,7 @@ type Key struct {
 	// Entities are partitioned into subsets, currently identified by a project
 	// ID and namespace ID.
 	// Queries are scoped to a single partition.
-	PartitionId *PartitionId `protobuf:"bytes,1,opt,name=partition_id,json=partitionId" json:"partition_id,omitempty"`
+	PartitionId *PartitionId `protobuf:"bytes,1,opt,name=partition_id,json=partitionId,proto3" json:"partition_id,omitempty"`
 	// The entity path.
 	// An entity path consists of one or more elements composed of a kind and a
 	// string or numerical identifier, which identify entities. The first
@@ -1849,7 +1864,7 @@ type Key struct {
 	// the path are called the element's _ancestors_.
 	//
 	// A path can never be empty, and a path can have at most 100 elements.
-	Path                 []*Key_PathElement `protobuf:"bytes,2,rep,name=path" json:"path,omitempty"`
+	Path                 []*Key_PathElement `protobuf:"bytes,2,rep,name=path,proto3" json:"path,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}           `json:"-"`
 	XXX_unrecognized     []byte             `json:"-"`
 	XXX_sizecache        int32              `json:"-"`
@@ -1859,7 +1874,7 @@ func (m *Key) Reset()         { *m = Key{} }
 func (m *Key) String() string { return proto.CompactTextString(m) }
 func (*Key) ProtoMessage()    {}
 func (*Key) Descriptor() ([]byte, []int) {
-	return fileDescriptor_storage_87ef6cb42f05a092, []int{12}
+	return fileDescriptor_storage_b718b41311eb5c58, []int{12}
 }
 func (m *Key) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Key.Unmarshal(m, b)
@@ -1902,7 +1917,7 @@ type Key_PathElement struct {
 	// A kind matching regex `__.*__` is reserved/read-only.
 	// A kind must not contain more than 1500 bytes when UTF-8 encoded.
 	// Cannot be `""`.
-	Kind string `protobuf:"bytes,1,opt,name=kind" json:"kind,omitempty"`
+	Kind string `protobuf:"bytes,1,opt,name=kind,proto3" json:"kind,omitempty"`
 	// The type of ID.
 	//
 	// Types that are valid to be assigned to IdType:
@@ -1918,7 +1933,7 @@ func (m *Key_PathElement) Reset()         { *m = Key_PathElement{} }
 func (m *Key_PathElement) String() string { return proto.CompactTextString(m) }
 func (*Key_PathElement) ProtoMessage()    {}
 func (*Key_PathElement) Descriptor() ([]byte, []int) {
-	return fileDescriptor_storage_87ef6cb42f05a092, []int{12, 0}
+	return fileDescriptor_storage_b718b41311eb5c58, []int{12, 0}
 }
 func (m *Key_PathElement) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Key_PathElement.Unmarshal(m, b)
@@ -1938,18 +1953,27 @@ func (m *Key_PathElement) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_Key_PathElement proto.InternalMessageInfo
 
+func (m *Key_PathElement) GetKind() string {
+	if m != nil {
+		return m.Kind
+	}
+	return ""
+}
+
 type isKey_PathElement_IdType interface {
 	isKey_PathElement_IdType()
 }
 
 type Key_PathElement_Id struct {
-	Id int64 `protobuf:"varint,2,opt,name=id,oneof"`
-}
-type Key_PathElement_Name struct {
-	Name string `protobuf:"bytes,3,opt,name=name,oneof"`
+	Id int64 `protobuf:"varint,2,opt,name=id,proto3,oneof"`
 }
 
-func (*Key_PathElement_Id) isKey_PathElement_IdType()   {}
+type Key_PathElement_Name struct {
+	Name string `protobuf:"bytes,3,opt,name=name,proto3,oneof"`
+}
+
+func (*Key_PathElement_Id) isKey_PathElement_IdType() {}
+
 func (*Key_PathElement_Name) isKey_PathElement_IdType() {}
 
 func (m *Key_PathElement) GetIdType() isKey_PathElement_IdType {
@@ -1957,13 +1981,6 @@ func (m *Key_PathElement) GetIdType() isKey_PathElement_IdType {
 		return m.IdType
 	}
 	return nil
-}
-
-func (m *Key_PathElement) GetKind() string {
-	if m != nil {
-		return m.Kind
-	}
-	return ""
 }
 
 func (m *Key_PathElement) GetId() int64 {
@@ -2060,7 +2077,7 @@ func (m *RecordKey) Reset()         { *m = RecordKey{} }
 func (m *RecordKey) String() string { return proto.CompactTextString(m) }
 func (*RecordKey) ProtoMessage()    {}
 func (*RecordKey) Descriptor() ([]byte, []int) {
-	return fileDescriptor_storage_87ef6cb42f05a092, []int{13}
+	return fileDescriptor_storage_b718b41311eb5c58, []int{13}
 }
 func (m *RecordKey) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_RecordKey.Unmarshal(m, b)
@@ -2085,14 +2102,16 @@ type isRecordKey_Type interface {
 }
 
 type RecordKey_DatastoreKey struct {
-	DatastoreKey *DatastoreKey `protobuf:"bytes,2,opt,name=datastore_key,json=datastoreKey,oneof"`
+	DatastoreKey *DatastoreKey `protobuf:"bytes,2,opt,name=datastore_key,json=datastoreKey,proto3,oneof"`
 }
+
 type RecordKey_BigQueryKey struct {
-	BigQueryKey *BigQueryKey `protobuf:"bytes,3,opt,name=big_query_key,json=bigQueryKey,oneof"`
+	BigQueryKey *BigQueryKey `protobuf:"bytes,3,opt,name=big_query_key,json=bigQueryKey,proto3,oneof"`
 }
 
 func (*RecordKey_DatastoreKey) isRecordKey_Type() {}
-func (*RecordKey_BigQueryKey) isRecordKey_Type()  {}
+
+func (*RecordKey_BigQueryKey) isRecordKey_Type() {}
 
 func (m *RecordKey) GetType() isRecordKey_Type {
 	if m != nil {
@@ -2197,11 +2216,11 @@ func _RecordKey_OneofSizer(msg proto.Message) (n int) {
 type BigQueryTable struct {
 	// The Google Cloud Platform project ID of the project containing the table.
 	// If omitted, project ID is inferred from the API call.
-	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,1,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// Dataset ID of the table.
-	DatasetId string `protobuf:"bytes,2,opt,name=dataset_id,json=datasetId" json:"dataset_id,omitempty"`
+	DatasetId string `protobuf:"bytes,2,opt,name=dataset_id,json=datasetId,proto3" json:"dataset_id,omitempty"`
 	// Name of the table.
-	TableId              string   `protobuf:"bytes,3,opt,name=table_id,json=tableId" json:"table_id,omitempty"`
+	TableId              string   `protobuf:"bytes,3,opt,name=table_id,json=tableId,proto3" json:"table_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -2211,7 +2230,7 @@ func (m *BigQueryTable) Reset()         { *m = BigQueryTable{} }
 func (m *BigQueryTable) String() string { return proto.CompactTextString(m) }
 func (*BigQueryTable) ProtoMessage()    {}
 func (*BigQueryTable) Descriptor() ([]byte, []int) {
-	return fileDescriptor_storage_87ef6cb42f05a092, []int{14}
+	return fileDescriptor_storage_b718b41311eb5c58, []int{14}
 }
 func (m *BigQueryTable) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_BigQueryTable.Unmarshal(m, b)
@@ -2259,7 +2278,7 @@ func (m *BigQueryTable) GetTableId() string {
 // into account that multiple rows correspond to the same entity.
 type EntityId struct {
 	// Composite key indicating which field contains the entity identifier.
-	Field                *FieldId `protobuf:"bytes,1,opt,name=field" json:"field,omitempty"`
+	Field                *FieldId `protobuf:"bytes,1,opt,name=field,proto3" json:"field,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -2269,7 +2288,7 @@ func (m *EntityId) Reset()         { *m = EntityId{} }
 func (m *EntityId) String() string { return proto.CompactTextString(m) }
 func (*EntityId) ProtoMessage()    {}
 func (*EntityId) Descriptor() ([]byte, []int) {
-	return fileDescriptor_storage_87ef6cb42f05a092, []int{15}
+	return fileDescriptor_storage_b718b41311eb5c58, []int{15}
 }
 func (m *EntityId) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_EntityId.Unmarshal(m, b)
@@ -2331,10 +2350,10 @@ func init() {
 }
 
 func init() {
-	proto.RegisterFile("google/privacy/dlp/v2/storage.proto", fileDescriptor_storage_87ef6cb42f05a092)
+	proto.RegisterFile("google/privacy/dlp/v2/storage.proto", fileDescriptor_storage_b718b41311eb5c58)
 }
 
-var fileDescriptor_storage_87ef6cb42f05a092 = []byte{
+var fileDescriptor_storage_b718b41311eb5c58 = []byte{
 	// 1753 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x58, 0xfd, 0x92, 0x1a, 0x4b,
 	0x15, 0x67, 0x60, 0x59, 0xe0, 0xf0, 0xb1, 0x6c, 0xef, 0xc6, 0x22, 0x68, 0xee, 0xdd, 0x90, 0x18,

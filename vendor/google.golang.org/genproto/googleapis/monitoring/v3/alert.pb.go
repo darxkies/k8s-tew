@@ -58,7 +58,7 @@ func (x AlertPolicy_ConditionCombinerType) String() string {
 	return proto.EnumName(AlertPolicy_ConditionCombinerType_name, int32(x))
 }
 func (AlertPolicy_ConditionCombinerType) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_alert_17949719c044e638, []int{0, 0}
+	return fileDescriptor_alert_3dd18d9aa69795e4, []int{0, 0}
 }
 
 // A description of the conditions under which some aspect of your system is
@@ -76,18 +76,18 @@ type AlertPolicy struct {
 	// [alertPolicies.create][google.monitoring.v3.AlertPolicyService.CreateAlertPolicy]
 	// method, do not include the `name` field in the alerting policy passed as
 	// part of the request.
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// A short name or phrase used to identify the policy in dashboards,
 	// notifications, and incidents. To avoid confusion, don't use the same
 	// display name for multiple policies in the same project. The name is
 	// limited to 512 Unicode characters.
-	DisplayName string `protobuf:"bytes,2,opt,name=display_name,json=displayName" json:"display_name,omitempty"`
+	DisplayName string `protobuf:"bytes,2,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
 	// Documentation that is included with notifications and incidents related to
 	// this policy. Best practice is for the documentation to include information
 	// to help responders understand, mitigate, escalate, and correct the
 	// underlying problems detected by the alerting policy. Notification channels
 	// that have limited capacity might not show this documentation.
-	Documentation *AlertPolicy_Documentation `protobuf:"bytes,13,opt,name=documentation" json:"documentation,omitempty"`
+	Documentation *AlertPolicy_Documentation `protobuf:"bytes,13,opt,name=documentation,proto3" json:"documentation,omitempty"`
 	// User-supplied key/value data to be used for organizing and
 	// identifying the `AlertPolicy` objects.
 	//
@@ -95,21 +95,21 @@ type AlertPolicy struct {
 	// 63 Unicode characters or 128 bytes, whichever is smaller. Labels and
 	// values can contain only lowercase letters, numerals, underscores, and
 	// dashes. Keys must begin with a letter.
-	UserLabels map[string]string `protobuf:"bytes,16,rep,name=user_labels,json=userLabels" json:"user_labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	UserLabels map[string]string `protobuf:"bytes,16,rep,name=user_labels,json=userLabels,proto3" json:"user_labels,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	// A list of conditions for the policy. The conditions are combined by AND or
 	// OR according to the `combiner` field. If the combined conditions evaluate
 	// to true, then an incident is created. A policy can have from one to six
 	// conditions.
-	Conditions []*AlertPolicy_Condition `protobuf:"bytes,12,rep,name=conditions" json:"conditions,omitempty"`
+	Conditions []*AlertPolicy_Condition `protobuf:"bytes,12,rep,name=conditions,proto3" json:"conditions,omitempty"`
 	// How to combine the results of multiple conditions
 	// to determine if an incident should be opened.
-	Combiner AlertPolicy_ConditionCombinerType `protobuf:"varint,6,opt,name=combiner,enum=google.monitoring.v3.AlertPolicy_ConditionCombinerType" json:"combiner,omitempty"`
+	Combiner AlertPolicy_ConditionCombinerType `protobuf:"varint,6,opt,name=combiner,proto3,enum=google.monitoring.v3.AlertPolicy_ConditionCombinerType" json:"combiner,omitempty"`
 	// Whether or not the policy is enabled. On write, the default interpretation
 	// if unset is that the policy is enabled. On read, clients should not make
 	// any assumption about the state if it has not been populated. The
 	// field should always be populated on List and Get operations, unless
 	// a field projection has been specified that strips it out.
-	Enabled *wrappers.BoolValue `protobuf:"bytes,17,opt,name=enabled" json:"enabled,omitempty"`
+	Enabled *wrappers.BoolValue `protobuf:"bytes,17,opt,name=enabled,proto3" json:"enabled,omitempty"`
 	// Identifies the notification channels to which notifications should be sent
 	// when incidents are opened or closed or when new violations occur on
 	// an already opened incident. Each element of this array corresponds to
@@ -120,13 +120,13 @@ type AlertPolicy struct {
 	// method. The syntax of the entries in this field is:
 	//
 	//     projects/[PROJECT_ID]/notificationChannels/[CHANNEL_ID]
-	NotificationChannels []string `protobuf:"bytes,14,rep,name=notification_channels,json=notificationChannels" json:"notification_channels,omitempty"`
+	NotificationChannels []string `protobuf:"bytes,14,rep,name=notification_channels,json=notificationChannels,proto3" json:"notification_channels,omitempty"`
 	// A read-only record of the creation of the alerting policy. If provided
 	// in a call to create or update, this field will be ignored.
-	CreationRecord *MutationRecord `protobuf:"bytes,10,opt,name=creation_record,json=creationRecord" json:"creation_record,omitempty"`
+	CreationRecord *MutationRecord `protobuf:"bytes,10,opt,name=creation_record,json=creationRecord,proto3" json:"creation_record,omitempty"`
 	// A read-only record of the most recent change to the alerting policy. If
 	// provided in a call to create or update, this field will be ignored.
-	MutationRecord       *MutationRecord `protobuf:"bytes,11,opt,name=mutation_record,json=mutationRecord" json:"mutation_record,omitempty"`
+	MutationRecord       *MutationRecord `protobuf:"bytes,11,opt,name=mutation_record,json=mutationRecord,proto3" json:"mutation_record,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
 	XXX_unrecognized     []byte          `json:"-"`
 	XXX_sizecache        int32           `json:"-"`
@@ -136,7 +136,7 @@ func (m *AlertPolicy) Reset()         { *m = AlertPolicy{} }
 func (m *AlertPolicy) String() string { return proto.CompactTextString(m) }
 func (*AlertPolicy) ProtoMessage()    {}
 func (*AlertPolicy) Descriptor() ([]byte, []int) {
-	return fileDescriptor_alert_17949719c044e638, []int{0}
+	return fileDescriptor_alert_3dd18d9aa69795e4, []int{0}
 }
 func (m *AlertPolicy) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_AlertPolicy.Unmarshal(m, b)
@@ -233,11 +233,11 @@ type AlertPolicy_Documentation struct {
 	// The content may not exceed 8,192 Unicode characters and may not exceed
 	// more than 10,240 bytes when encoded in UTF-8 format, whichever is
 	// smaller.
-	Content string `protobuf:"bytes,1,opt,name=content" json:"content,omitempty"`
+	Content string `protobuf:"bytes,1,opt,name=content,proto3" json:"content,omitempty"`
 	// The format of the `content` field. Presently, only the value
 	// `"text/markdown"` is supported. See
 	// [Markdown](https://en.wikipedia.org/wiki/Markdown) for more information.
-	MimeType             string   `protobuf:"bytes,2,opt,name=mime_type,json=mimeType" json:"mime_type,omitempty"`
+	MimeType             string   `protobuf:"bytes,2,opt,name=mime_type,json=mimeType,proto3" json:"mime_type,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -247,7 +247,7 @@ func (m *AlertPolicy_Documentation) Reset()         { *m = AlertPolicy_Documenta
 func (m *AlertPolicy_Documentation) String() string { return proto.CompactTextString(m) }
 func (*AlertPolicy_Documentation) ProtoMessage()    {}
 func (*AlertPolicy_Documentation) Descriptor() ([]byte, []int) {
-	return fileDescriptor_alert_17949719c044e638, []int{0, 0}
+	return fileDescriptor_alert_3dd18d9aa69795e4, []int{0, 0}
 }
 func (m *AlertPolicy_Documentation) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_AlertPolicy_Documentation.Unmarshal(m, b)
@@ -310,11 +310,11 @@ type AlertPolicy_Condition struct {
 	// changes, such as those to condition thresholds, durations, or trigger
 	// values.  Otherwise, treat the change as a new condition and let the
 	// existing condition be deleted.
-	Name string `protobuf:"bytes,12,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,12,opt,name=name,proto3" json:"name,omitempty"`
 	// A short name or phrase used to identify the condition in dashboards,
 	// notifications, and incidents. To avoid confusion, don't use the same
 	// display name for multiple conditions in the same policy.
-	DisplayName string `protobuf:"bytes,6,opt,name=display_name,json=displayName" json:"display_name,omitempty"`
+	DisplayName string `protobuf:"bytes,6,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
 	// Only one of the following condition types will be specified.
 	//
 	// Types that are valid to be assigned to Condition:
@@ -330,7 +330,7 @@ func (m *AlertPolicy_Condition) Reset()         { *m = AlertPolicy_Condition{} }
 func (m *AlertPolicy_Condition) String() string { return proto.CompactTextString(m) }
 func (*AlertPolicy_Condition) ProtoMessage()    {}
 func (*AlertPolicy_Condition) Descriptor() ([]byte, []int) {
-	return fileDescriptor_alert_17949719c044e638, []int{0, 1}
+	return fileDescriptor_alert_3dd18d9aa69795e4, []int{0, 1}
 }
 func (m *AlertPolicy_Condition) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_AlertPolicy_Condition.Unmarshal(m, b)
@@ -350,27 +350,6 @@ func (m *AlertPolicy_Condition) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_AlertPolicy_Condition proto.InternalMessageInfo
 
-type isAlertPolicy_Condition_Condition interface {
-	isAlertPolicy_Condition_Condition()
-}
-
-type AlertPolicy_Condition_ConditionThreshold struct {
-	ConditionThreshold *AlertPolicy_Condition_MetricThreshold `protobuf:"bytes,1,opt,name=condition_threshold,json=conditionThreshold,oneof"`
-}
-type AlertPolicy_Condition_ConditionAbsent struct {
-	ConditionAbsent *AlertPolicy_Condition_MetricAbsence `protobuf:"bytes,2,opt,name=condition_absent,json=conditionAbsent,oneof"`
-}
-
-func (*AlertPolicy_Condition_ConditionThreshold) isAlertPolicy_Condition_Condition() {}
-func (*AlertPolicy_Condition_ConditionAbsent) isAlertPolicy_Condition_Condition()    {}
-
-func (m *AlertPolicy_Condition) GetCondition() isAlertPolicy_Condition_Condition {
-	if m != nil {
-		return m.Condition
-	}
-	return nil
-}
-
 func (m *AlertPolicy_Condition) GetName() string {
 	if m != nil {
 		return m.Name
@@ -383,6 +362,29 @@ func (m *AlertPolicy_Condition) GetDisplayName() string {
 		return m.DisplayName
 	}
 	return ""
+}
+
+type isAlertPolicy_Condition_Condition interface {
+	isAlertPolicy_Condition_Condition()
+}
+
+type AlertPolicy_Condition_ConditionThreshold struct {
+	ConditionThreshold *AlertPolicy_Condition_MetricThreshold `protobuf:"bytes,1,opt,name=condition_threshold,json=conditionThreshold,proto3,oneof"`
+}
+
+type AlertPolicy_Condition_ConditionAbsent struct {
+	ConditionAbsent *AlertPolicy_Condition_MetricAbsence `protobuf:"bytes,2,opt,name=condition_absent,json=conditionAbsent,proto3,oneof"`
+}
+
+func (*AlertPolicy_Condition_ConditionThreshold) isAlertPolicy_Condition_Condition() {}
+
+func (*AlertPolicy_Condition_ConditionAbsent) isAlertPolicy_Condition_Condition() {}
+
+func (m *AlertPolicy_Condition) GetCondition() isAlertPolicy_Condition_Condition {
+	if m != nil {
+		return m.Condition
+	}
+	return nil
 }
 
 func (m *AlertPolicy_Condition) GetConditionThreshold() *AlertPolicy_Condition_MetricThreshold {
@@ -491,7 +493,7 @@ func (m *AlertPolicy_Condition_Trigger) Reset()         { *m = AlertPolicy_Condi
 func (m *AlertPolicy_Condition_Trigger) String() string { return proto.CompactTextString(m) }
 func (*AlertPolicy_Condition_Trigger) ProtoMessage()    {}
 func (*AlertPolicy_Condition_Trigger) Descriptor() ([]byte, []int) {
-	return fileDescriptor_alert_17949719c044e638, []int{0, 1, 0}
+	return fileDescriptor_alert_3dd18d9aa69795e4, []int{0, 1, 0}
 }
 func (m *AlertPolicy_Condition_Trigger) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_AlertPolicy_Condition_Trigger.Unmarshal(m, b)
@@ -516,13 +518,15 @@ type isAlertPolicy_Condition_Trigger_Type interface {
 }
 
 type AlertPolicy_Condition_Trigger_Count struct {
-	Count int32 `protobuf:"varint,1,opt,name=count,oneof"`
-}
-type AlertPolicy_Condition_Trigger_Percent struct {
-	Percent float64 `protobuf:"fixed64,2,opt,name=percent,oneof"`
+	Count int32 `protobuf:"varint,1,opt,name=count,proto3,oneof"`
 }
 
-func (*AlertPolicy_Condition_Trigger_Count) isAlertPolicy_Condition_Trigger_Type()   {}
+type AlertPolicy_Condition_Trigger_Percent struct {
+	Percent float64 `protobuf:"fixed64,2,opt,name=percent,proto3,oneof"`
+}
+
+func (*AlertPolicy_Condition_Trigger_Count) isAlertPolicy_Condition_Trigger_Type() {}
+
 func (*AlertPolicy_Condition_Trigger_Percent) isAlertPolicy_Condition_Trigger_Type() {}
 
 func (m *AlertPolicy_Condition_Trigger) GetType() isAlertPolicy_Condition_Trigger_Type {
@@ -623,7 +627,7 @@ type AlertPolicy_Condition_MetricThreshold struct {
 	// processed) and must specify the metric type and optionally may contain
 	// restrictions on resource type, resource labels, and metric labels.
 	// This field may not exceed 2048 Unicode characters in length.
-	Filter string `protobuf:"bytes,2,opt,name=filter" json:"filter,omitempty"`
+	Filter string `protobuf:"bytes,2,opt,name=filter,proto3" json:"filter,omitempty"`
 	// Specifies the alignment of data points in individual time series as
 	// well as how to combine the retrieved time series together (such as
 	// when aggregating multiple streams on each resource to a single
@@ -634,7 +638,7 @@ type AlertPolicy_Condition_MetricThreshold struct {
 	// This field is similar to the one in the
 	// [`MetricService.ListTimeSeries` request](/monitoring/api/ref_v3/rest/v3/projects.timeSeries/list).
 	// It is advisable to use the `ListTimeSeries` method when debugging this field.
-	Aggregations []*Aggregation `protobuf:"bytes,8,rep,name=aggregations" json:"aggregations,omitempty"`
+	Aggregations []*Aggregation `protobuf:"bytes,8,rep,name=aggregations,proto3" json:"aggregations,omitempty"`
 	// A [filter](/monitoring/api/v3/filters) that identifies a time
 	// series that should be used as the denominator of a ratio that will be
 	// compared with the threshold. If a `denominator_filter` is specified,
@@ -648,7 +652,7 @@ type AlertPolicy_Condition_MetricThreshold struct {
 	// processed) and must specify the metric type and optionally may contain
 	// restrictions on resource type, resource labels, and metric labels.
 	// This field may not exceed 2048 Unicode characters in length.
-	DenominatorFilter string `protobuf:"bytes,9,opt,name=denominator_filter,json=denominatorFilter" json:"denominator_filter,omitempty"`
+	DenominatorFilter string `protobuf:"bytes,9,opt,name=denominator_filter,json=denominatorFilter,proto3" json:"denominator_filter,omitempty"`
 	// Specifies the alignment of data points in individual time series
 	// selected by `denominatorFilter` as
 	// well as how to combine the retrieved time series together (such as
@@ -665,35 +669,34 @@ type AlertPolicy_Condition_MetricThreshold struct {
 	// request](/monitoring/api/ref_v3/rest/v3/projects.timeSeries/list). It
 	// is advisable to use the `ListTimeSeries` method when debugging this
 	// field.
-	DenominatorAggregations []*Aggregation `protobuf:"bytes,10,rep,name=denominator_aggregations,json=denominatorAggregations" json:"denominator_aggregations,omitempty"`
+	DenominatorAggregations []*Aggregation `protobuf:"bytes,10,rep,name=denominator_aggregations,json=denominatorAggregations,proto3" json:"denominator_aggregations,omitempty"`
 	// The comparison to apply between the time series (indicated by `filter`
 	// and `aggregation`) and the threshold (indicated by `threshold_value`).
 	// The comparison is applied on each time series, with the time series
 	// on the left-hand side and the threshold on the right-hand side.
 	//
 	// Only `COMPARISON_LT` and `COMPARISON_GT` are supported currently.
-	Comparison ComparisonType `protobuf:"varint,4,opt,name=comparison,enum=google.monitoring.v3.ComparisonType" json:"comparison,omitempty"`
+	Comparison ComparisonType `protobuf:"varint,4,opt,name=comparison,proto3,enum=google.monitoring.v3.ComparisonType" json:"comparison,omitempty"`
 	// A value against which to compare the time series.
-	ThresholdValue float64 `protobuf:"fixed64,5,opt,name=threshold_value,json=thresholdValue" json:"threshold_value,omitempty"`
+	ThresholdValue float64 `protobuf:"fixed64,5,opt,name=threshold_value,json=thresholdValue,proto3" json:"threshold_value,omitempty"`
 	// The amount of time that a time series must violate the
 	// threshold to be considered failing. Currently, only values
-	// that are a multiple of a minute--e.g.  60, 120, or 300
+	// that are a multiple of a minute--e.g., 0, 60, 120, or 300
 	// seconds--are supported. If an invalid value is given, an
-	// error will be returned. The `Duration.nanos` field is
-	// ignored. When choosing a duration, it is useful to keep in mind the
-	// frequency of the underlying time series data (which may also be
-	// affected by any alignments specified in the `aggregation` field);
-	// a good duration is long enough so that a single outlier does not
-	// generate spurious alerts, but short enough that unhealthy states
-	// are detected and alerted on quickly.
-	Duration *duration.Duration `protobuf:"bytes,6,opt,name=duration" json:"duration,omitempty"`
+	// error will be returned. When choosing a duration, it is useful to
+	// keep in mind the frequency of the underlying time series data
+	// (which may also be affected by any alignments specified in the
+	// `aggregations` field); a good duration is long enough so that a single
+	// outlier does not generate spurious alerts, but short enough that
+	// unhealthy states are detected and alerted on quickly.
+	Duration *duration.Duration `protobuf:"bytes,6,opt,name=duration,proto3" json:"duration,omitempty"`
 	// The number/percent of time series for which the comparison must hold
 	// in order for the condition to trigger. If unspecified, then the
 	// condition will trigger if the comparison is true for any of the
 	// time series that have been identified by `filter` and `aggregations`,
 	// or by the ratio, if `denominator_filter` and `denominator_aggregations`
 	// are specified.
-	Trigger              *AlertPolicy_Condition_Trigger `protobuf:"bytes,7,opt,name=trigger" json:"trigger,omitempty"`
+	Trigger              *AlertPolicy_Condition_Trigger `protobuf:"bytes,7,opt,name=trigger,proto3" json:"trigger,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                       `json:"-"`
 	XXX_unrecognized     []byte                         `json:"-"`
 	XXX_sizecache        int32                          `json:"-"`
@@ -703,7 +706,7 @@ func (m *AlertPolicy_Condition_MetricThreshold) Reset()         { *m = AlertPoli
 func (m *AlertPolicy_Condition_MetricThreshold) String() string { return proto.CompactTextString(m) }
 func (*AlertPolicy_Condition_MetricThreshold) ProtoMessage()    {}
 func (*AlertPolicy_Condition_MetricThreshold) Descriptor() ([]byte, []int) {
-	return fileDescriptor_alert_17949719c044e638, []int{0, 1, 1}
+	return fileDescriptor_alert_3dd18d9aa69795e4, []int{0, 1, 1}
 }
 func (m *AlertPolicy_Condition_MetricThreshold) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_AlertPolicy_Condition_MetricThreshold.Unmarshal(m, b)
@@ -795,7 +798,7 @@ type AlertPolicy_Condition_MetricAbsence struct {
 	// processed) and must specify the metric type and optionally may contain
 	// restrictions on resource type, resource labels, and metric labels.
 	// This field may not exceed 2048 Unicode characters in length.
-	Filter string `protobuf:"bytes,1,opt,name=filter" json:"filter,omitempty"`
+	Filter string `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
 	// Specifies the alignment of data points in individual time series as
 	// well as how to combine the retrieved time series together (such as
 	// when aggregating multiple streams on each resource to a single
@@ -806,19 +809,19 @@ type AlertPolicy_Condition_MetricAbsence struct {
 	// This field is similar to the
 	// one in the [`MetricService.ListTimeSeries` request](/monitoring/api/ref_v3/rest/v3/projects.timeSeries/list).
 	// It is advisable to use the `ListTimeSeries` method when debugging this field.
-	Aggregations []*Aggregation `protobuf:"bytes,5,rep,name=aggregations" json:"aggregations,omitempty"`
+	Aggregations []*Aggregation `protobuf:"bytes,5,rep,name=aggregations,proto3" json:"aggregations,omitempty"`
 	// The amount of time that a time series must fail to report new
 	// data to be considered failing. Currently, only values that
 	// are a multiple of a minute--e.g.  60, 120, or 300
 	// seconds--are supported. If an invalid value is given, an
 	// error will be returned. The `Duration.nanos` field is
 	// ignored.
-	Duration *duration.Duration `protobuf:"bytes,2,opt,name=duration" json:"duration,omitempty"`
+	Duration *duration.Duration `protobuf:"bytes,2,opt,name=duration,proto3" json:"duration,omitempty"`
 	// The number/percent of time series for which the comparison must hold
 	// in order for the condition to trigger. If unspecified, then the
 	// condition will trigger if the comparison is true for any of the
 	// time series that have been identified by `filter` and `aggregations`.
-	Trigger              *AlertPolicy_Condition_Trigger `protobuf:"bytes,3,opt,name=trigger" json:"trigger,omitempty"`
+	Trigger              *AlertPolicy_Condition_Trigger `protobuf:"bytes,3,opt,name=trigger,proto3" json:"trigger,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                       `json:"-"`
 	XXX_unrecognized     []byte                         `json:"-"`
 	XXX_sizecache        int32                          `json:"-"`
@@ -828,7 +831,7 @@ func (m *AlertPolicy_Condition_MetricAbsence) Reset()         { *m = AlertPolicy
 func (m *AlertPolicy_Condition_MetricAbsence) String() string { return proto.CompactTextString(m) }
 func (*AlertPolicy_Condition_MetricAbsence) ProtoMessage()    {}
 func (*AlertPolicy_Condition_MetricAbsence) Descriptor() ([]byte, []int) {
-	return fileDescriptor_alert_17949719c044e638, []int{0, 1, 2}
+	return fileDescriptor_alert_3dd18d9aa69795e4, []int{0, 1, 2}
 }
 func (m *AlertPolicy_Condition_MetricAbsence) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_AlertPolicy_Condition_MetricAbsence.Unmarshal(m, b)
@@ -888,10 +891,10 @@ func init() {
 }
 
 func init() {
-	proto.RegisterFile("google/monitoring/v3/alert.proto", fileDescriptor_alert_17949719c044e638)
+	proto.RegisterFile("google/monitoring/v3/alert.proto", fileDescriptor_alert_3dd18d9aa69795e4)
 }
 
-var fileDescriptor_alert_17949719c044e638 = []byte{
+var fileDescriptor_alert_3dd18d9aa69795e4 = []byte{
 	// 941 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x56, 0xeb, 0x6e, 0xe3, 0x44,
 	0x14, 0xae, 0x93, 0xe6, 0x76, 0xd2, 0x36, 0xd9, 0xd9, 0xee, 0xae, 0x31, 0x68, 0x95, 0xae, 0x90,

@@ -31,9 +31,9 @@ type ReportErrorEventRequest struct {
 	// as `projects/` plus the
 	// [Google Cloud Platform project ID](https://support.google.com/cloud/answer/6158840).
 	// Example: `projects/my-project-123`.
-	ProjectName string `protobuf:"bytes,1,opt,name=project_name,json=projectName" json:"project_name,omitempty"`
+	ProjectName string `protobuf:"bytes,1,opt,name=project_name,json=projectName,proto3" json:"project_name,omitempty"`
 	// [Required] The error event to be reported.
-	Event                *ReportedErrorEvent `protobuf:"bytes,2,opt,name=event" json:"event,omitempty"`
+	Event                *ReportedErrorEvent `protobuf:"bytes,2,opt,name=event,proto3" json:"event,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}            `json:"-"`
 	XXX_unrecognized     []byte              `json:"-"`
 	XXX_sizecache        int32               `json:"-"`
@@ -43,7 +43,7 @@ func (m *ReportErrorEventRequest) Reset()         { *m = ReportErrorEventRequest
 func (m *ReportErrorEventRequest) String() string { return proto.CompactTextString(m) }
 func (*ReportErrorEventRequest) ProtoMessage()    {}
 func (*ReportErrorEventRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_report_errors_service_f8fd8d044e7a888f, []int{0}
+	return fileDescriptor_report_errors_service_7b4a77afec65ac92, []int{0}
 }
 func (m *ReportErrorEventRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ReportErrorEventRequest.Unmarshal(m, b)
@@ -89,7 +89,7 @@ func (m *ReportErrorEventResponse) Reset()         { *m = ReportErrorEventRespon
 func (m *ReportErrorEventResponse) String() string { return proto.CompactTextString(m) }
 func (*ReportErrorEventResponse) ProtoMessage()    {}
 func (*ReportErrorEventResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_report_errors_service_f8fd8d044e7a888f, []int{1}
+	return fileDescriptor_report_errors_service_7b4a77afec65ac92, []int{1}
 }
 func (m *ReportErrorEventResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ReportErrorEventResponse.Unmarshal(m, b)
@@ -114,16 +114,16 @@ type ReportedErrorEvent struct {
 	// [Optional] Time when the event occurred.
 	// If not provided, the time when the event was received by the
 	// Error Reporting system will be used.
-	EventTime *timestamp.Timestamp `protobuf:"bytes,1,opt,name=event_time,json=eventTime" json:"event_time,omitempty"`
+	EventTime *timestamp.Timestamp `protobuf:"bytes,1,opt,name=event_time,json=eventTime,proto3" json:"event_time,omitempty"`
 	// [Required] The service context in which this error has occurred.
-	ServiceContext *ServiceContext `protobuf:"bytes,2,opt,name=service_context,json=serviceContext" json:"service_context,omitempty"`
+	ServiceContext *ServiceContext `protobuf:"bytes,2,opt,name=service_context,json=serviceContext,proto3" json:"service_context,omitempty"`
 	// [Required] A message describing the error. The message can contain an
 	// exception stack in one of the supported programming languages and formats.
 	// In that case, the message is parsed and detailed exception information
 	// is returned when retrieving the error event again.
-	Message string `protobuf:"bytes,3,opt,name=message" json:"message,omitempty"`
+	Message string `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`
 	// [Optional] A description of the context in which the error occurred.
-	Context              *ErrorContext `protobuf:"bytes,4,opt,name=context" json:"context,omitempty"`
+	Context              *ErrorContext `protobuf:"bytes,4,opt,name=context,proto3" json:"context,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}      `json:"-"`
 	XXX_unrecognized     []byte        `json:"-"`
 	XXX_sizecache        int32         `json:"-"`
@@ -133,7 +133,7 @@ func (m *ReportedErrorEvent) Reset()         { *m = ReportedErrorEvent{} }
 func (m *ReportedErrorEvent) String() string { return proto.CompactTextString(m) }
 func (*ReportedErrorEvent) ProtoMessage()    {}
 func (*ReportedErrorEvent) Descriptor() ([]byte, []int) {
-	return fileDescriptor_report_errors_service_f8fd8d044e7a888f, []int{2}
+	return fileDescriptor_report_errors_service_7b4a77afec65ac92, []int{2}
 }
 func (m *ReportedErrorEvent) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ReportedErrorEvent.Unmarshal(m, b)
@@ -227,8 +227,7 @@ func (c *reportErrorsServiceClient) ReportErrorEvent(ctx context.Context, in *Re
 	return out, nil
 }
 
-// Server API for ReportErrorsService service
-
+// ReportErrorsServiceServer is the server API for ReportErrorsService service.
 type ReportErrorsServiceServer interface {
 	// Report an individual error event.
 	//
@@ -277,10 +276,10 @@ var _ReportErrorsService_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("google/devtools/clouderrorreporting/v1beta1/report_errors_service.proto", fileDescriptor_report_errors_service_f8fd8d044e7a888f)
+	proto.RegisterFile("google/devtools/clouderrorreporting/v1beta1/report_errors_service.proto", fileDescriptor_report_errors_service_7b4a77afec65ac92)
 }
 
-var fileDescriptor_report_errors_service_f8fd8d044e7a888f = []byte{
+var fileDescriptor_report_errors_service_7b4a77afec65ac92 = []byte{
 	// 490 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x93, 0xcd, 0x8a, 0x13, 0x41,
 	0x10, 0xc7, 0x99, 0xf8, 0xb1, 0x6c, 0x47, 0x54, 0xda, 0x83, 0xc3, 0x20, 0xb8, 0xc6, 0xcb, 0xa2,

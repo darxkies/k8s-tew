@@ -52,7 +52,7 @@ func (x PublishLifecycleEventRequest_ServiceLevel) String() string {
 	return proto.EnumName(PublishLifecycleEventRequest_ServiceLevel_name, int32(x))
 }
 func (PublishLifecycleEventRequest_ServiceLevel) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_publish_build_event_392a703d66bd0f43, []int{0, 0}
+	return fileDescriptor_publish_build_event_3702c05a2ef5b2cf, []int{0, 0}
 }
 
 // Publishes 'lifecycle events' that update the high-level state of a build:
@@ -63,23 +63,23 @@ func (PublishLifecycleEventRequest_ServiceLevel) EnumDescriptor() ([]byte, []int
 // - BuildFinished: When a build is finished.
 type PublishLifecycleEventRequest struct {
 	// The interactivity of this build.
-	ServiceLevel PublishLifecycleEventRequest_ServiceLevel `protobuf:"varint,1,opt,name=service_level,json=serviceLevel,enum=google.devtools.build.v1.PublishLifecycleEventRequest_ServiceLevel" json:"service_level,omitempty"`
+	ServiceLevel PublishLifecycleEventRequest_ServiceLevel `protobuf:"varint,1,opt,name=service_level,json=serviceLevel,proto3,enum=google.devtools.build.v1.PublishLifecycleEventRequest_ServiceLevel" json:"service_level,omitempty"`
 	// The lifecycle build event. If this is a build tool event, the RPC will fail
 	// with INVALID_REQUEST.
-	BuildEvent *OrderedBuildEvent `protobuf:"bytes,2,opt,name=build_event,json=buildEvent" json:"build_event,omitempty"`
+	BuildEvent *OrderedBuildEvent `protobuf:"bytes,2,opt,name=build_event,json=buildEvent,proto3" json:"build_event,omitempty"`
 	// If the next event for this build or invocation (depending on the event
 	// type) hasn't been published after this duration from when {build_event}
 	// is written to BES, consider this stream expired. If this field is not set,
 	// BES backend will use its own default value.
-	StreamTimeout *duration.Duration `protobuf:"bytes,3,opt,name=stream_timeout,json=streamTimeout" json:"stream_timeout,omitempty"`
+	StreamTimeout *duration.Duration `protobuf:"bytes,3,opt,name=stream_timeout,json=streamTimeout,proto3" json:"stream_timeout,omitempty"`
 	// Additional information about a build request. These are define by the event
 	// publishers, and the Build Event Service does not validate or interpret
 	// them. They are used while notifying internal systems of new builds and
 	// invocations if the OrderedBuildEvent.event type is
 	// BuildEnqueued/InvocationAttemptStarted.
-	NotificationKeywords []string `protobuf:"bytes,4,rep,name=notification_keywords,json=notificationKeywords" json:"notification_keywords,omitempty"`
+	NotificationKeywords []string `protobuf:"bytes,4,rep,name=notification_keywords,json=notificationKeywords,proto3" json:"notification_keywords,omitempty"`
 	// This field identifies which project (if any) the build is associated with.
-	ProjectId            string   `protobuf:"bytes,6,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId            string   `protobuf:"bytes,6,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -89,7 +89,7 @@ func (m *PublishLifecycleEventRequest) Reset()         { *m = PublishLifecycleEv
 func (m *PublishLifecycleEventRequest) String() string { return proto.CompactTextString(m) }
 func (*PublishLifecycleEventRequest) ProtoMessage()    {}
 func (*PublishLifecycleEventRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_publish_build_event_392a703d66bd0f43, []int{0}
+	return fileDescriptor_publish_build_event_3702c05a2ef5b2cf, []int{0}
 }
 func (m *PublishLifecycleEventRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_PublishLifecycleEventRequest.Unmarshal(m, b)
@@ -148,9 +148,9 @@ func (m *PublishLifecycleEventRequest) GetProjectId() string {
 // RPC errors, hence not recorded by this proto.
 type PublishBuildToolEventStreamResponse struct {
 	// The stream that contains this event.
-	StreamId *StreamId `protobuf:"bytes,1,opt,name=stream_id,json=streamId" json:"stream_id,omitempty"`
+	StreamId *StreamId `protobuf:"bytes,1,opt,name=stream_id,json=streamId,proto3" json:"stream_id,omitempty"`
 	// The sequence number of this event that has been committed.
-	SequenceNumber       int64    `protobuf:"varint,2,opt,name=sequence_number,json=sequenceNumber" json:"sequence_number,omitempty"`
+	SequenceNumber       int64    `protobuf:"varint,2,opt,name=sequence_number,json=sequenceNumber,proto3" json:"sequence_number,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -160,7 +160,7 @@ func (m *PublishBuildToolEventStreamResponse) Reset()         { *m = PublishBuil
 func (m *PublishBuildToolEventStreamResponse) String() string { return proto.CompactTextString(m) }
 func (*PublishBuildToolEventStreamResponse) ProtoMessage()    {}
 func (*PublishBuildToolEventStreamResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_publish_build_event_392a703d66bd0f43, []int{1}
+	return fileDescriptor_publish_build_event_3702c05a2ef5b2cf, []int{1}
 }
 func (m *PublishBuildToolEventStreamResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_PublishBuildToolEventStreamResponse.Unmarshal(m, b)
@@ -198,13 +198,13 @@ func (m *PublishBuildToolEventStreamResponse) GetSequenceNumber() int64 {
 // its position in that stream.
 type OrderedBuildEvent struct {
 	// Which build event stream this event belongs to.
-	StreamId *StreamId `protobuf:"bytes,1,opt,name=stream_id,json=streamId" json:"stream_id,omitempty"`
+	StreamId *StreamId `protobuf:"bytes,1,opt,name=stream_id,json=streamId,proto3" json:"stream_id,omitempty"`
 	// The position of this event in the stream. The sequence numbers for a build
 	// event stream should be a sequence of consecutive natural numbers starting
 	// from one. (1, 2, 3, ...)
-	SequenceNumber int64 `protobuf:"varint,2,opt,name=sequence_number,json=sequenceNumber" json:"sequence_number,omitempty"`
+	SequenceNumber int64 `protobuf:"varint,2,opt,name=sequence_number,json=sequenceNumber,proto3" json:"sequence_number,omitempty"`
 	// The actual event.
-	Event                *BuildEvent `protobuf:"bytes,3,opt,name=event" json:"event,omitempty"`
+	Event                *BuildEvent `protobuf:"bytes,3,opt,name=event,proto3" json:"event,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
 	XXX_unrecognized     []byte      `json:"-"`
 	XXX_sizecache        int32       `json:"-"`
@@ -214,7 +214,7 @@ func (m *OrderedBuildEvent) Reset()         { *m = OrderedBuildEvent{} }
 func (m *OrderedBuildEvent) String() string { return proto.CompactTextString(m) }
 func (*OrderedBuildEvent) ProtoMessage()    {}
 func (*OrderedBuildEvent) Descriptor() ([]byte, []int) {
-	return fileDescriptor_publish_build_event_392a703d66bd0f43, []int{2}
+	return fileDescriptor_publish_build_event_3702c05a2ef5b2cf, []int{2}
 }
 func (m *OrderedBuildEvent) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_OrderedBuildEvent.Unmarshal(m, b)
@@ -257,21 +257,21 @@ func (m *OrderedBuildEvent) GetEvent() *BuildEvent {
 
 type PublishBuildToolEventStreamRequest struct {
 	// Which build event stream this event belongs to.
-	StreamId *StreamId `protobuf:"bytes,1,opt,name=stream_id,json=streamId" json:"stream_id,omitempty"` // Deprecated: Do not use.
+	StreamId *StreamId `protobuf:"bytes,1,opt,name=stream_id,json=streamId,proto3" json:"stream_id,omitempty"` // Deprecated: Do not use.
 	// The position of this event in the stream. The sequence numbers for a build
 	// event stream should be a sequence of consecutive natural numbers starting
 	// from one. (1, 2, 3, ...)
-	SequenceNumber int64 `protobuf:"varint,2,opt,name=sequence_number,json=sequenceNumber" json:"sequence_number,omitempty"` // Deprecated: Do not use.
+	SequenceNumber int64 `protobuf:"varint,2,opt,name=sequence_number,json=sequenceNumber,proto3" json:"sequence_number,omitempty"` // Deprecated: Do not use.
 	// The actual event.
-	Event *BuildEvent `protobuf:"bytes,3,opt,name=event" json:"event,omitempty"` // Deprecated: Do not use.
+	Event *BuildEvent `protobuf:"bytes,3,opt,name=event,proto3" json:"event,omitempty"` // Deprecated: Do not use.
 	// The build event with position info.
 	// New publishing clients should use this field rather than the 3 above.
-	OrderedBuildEvent *OrderedBuildEvent `protobuf:"bytes,4,opt,name=ordered_build_event,json=orderedBuildEvent" json:"ordered_build_event,omitempty"`
+	OrderedBuildEvent *OrderedBuildEvent `protobuf:"bytes,4,opt,name=ordered_build_event,json=orderedBuildEvent,proto3" json:"ordered_build_event,omitempty"`
 	// The keywords to be attached to the notification which notifies the start
 	// of a new build event stream. BES only reads this field when sequence_number
 	// or ordered_build_event.sequence_number is 1 in this message. If this field
 	// is empty, BES will not publish notification messages for this stream.
-	NotificationKeywords []string `protobuf:"bytes,5,rep,name=notification_keywords,json=notificationKeywords" json:"notification_keywords,omitempty"`
+	NotificationKeywords []string `protobuf:"bytes,5,rep,name=notification_keywords,json=notificationKeywords,proto3" json:"notification_keywords,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -281,7 +281,7 @@ func (m *PublishBuildToolEventStreamRequest) Reset()         { *m = PublishBuild
 func (m *PublishBuildToolEventStreamRequest) String() string { return proto.CompactTextString(m) }
 func (*PublishBuildToolEventStreamRequest) ProtoMessage()    {}
 func (*PublishBuildToolEventStreamRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_publish_build_event_392a703d66bd0f43, []int{3}
+	return fileDescriptor_publish_build_event_3702c05a2ef5b2cf, []int{3}
 }
 func (m *PublishBuildToolEventStreamRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_PublishBuildToolEventStreamRequest.Unmarshal(m, b)
@@ -423,8 +423,7 @@ func (x *publishBuildEventPublishBuildToolEventStreamClient) Recv() (*PublishBui
 	return m, nil
 }
 
-// Server API for PublishBuildEvent service
-
+// PublishBuildEventServer is the server API for PublishBuildEvent service.
 type PublishBuildEventServer interface {
 	// Publish a build event stating the new state of a build (typically from the
 	// build queue). If the event is a BuildEnqueued event, also register the new
@@ -511,10 +510,10 @@ var _PublishBuildEvent_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("google/devtools/build/v1/publish_build_event.proto", fileDescriptor_publish_build_event_392a703d66bd0f43)
+	proto.RegisterFile("google/devtools/build/v1/publish_build_event.proto", fileDescriptor_publish_build_event_3702c05a2ef5b2cf)
 }
 
-var fileDescriptor_publish_build_event_392a703d66bd0f43 = []byte{
+var fileDescriptor_publish_build_event_3702c05a2ef5b2cf = []byte{
 	// 668 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xbc, 0x55, 0xcd, 0x6e, 0xd3, 0x4c,
 	0x14, 0xfd, 0x26, 0x69, 0xab, 0x2f, 0x93, 0x36, 0xa5, 0x03, 0x05, 0x93, 0xb6, 0x28, 0x32, 0x08,

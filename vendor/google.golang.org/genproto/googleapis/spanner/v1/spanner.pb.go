@@ -57,15 +57,15 @@ func (x ExecuteSqlRequest_QueryMode) String() string {
 	return proto.EnumName(ExecuteSqlRequest_QueryMode_name, int32(x))
 }
 func (ExecuteSqlRequest_QueryMode) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_2868e2a3b5f0aa05, []int{6, 0}
+	return fileDescriptor_spanner_d2fc31bf582f58c8, []int{6, 0}
 }
 
 // The request for [CreateSession][google.spanner.v1.Spanner.CreateSession].
 type CreateSessionRequest struct {
 	// Required. The database in which the new session is created.
-	Database string `protobuf:"bytes,1,opt,name=database" json:"database,omitempty"`
+	Database string `protobuf:"bytes,1,opt,name=database,proto3" json:"database,omitempty"`
 	// The session to create.
-	Session              *Session `protobuf:"bytes,2,opt,name=session" json:"session,omitempty"`
+	Session              *Session `protobuf:"bytes,2,opt,name=session,proto3" json:"session,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -75,7 +75,7 @@ func (m *CreateSessionRequest) Reset()         { *m = CreateSessionRequest{} }
 func (m *CreateSessionRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateSessionRequest) ProtoMessage()    {}
 func (*CreateSessionRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_2868e2a3b5f0aa05, []int{0}
+	return fileDescriptor_spanner_d2fc31bf582f58c8, []int{0}
 }
 func (m *CreateSessionRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CreateSessionRequest.Unmarshal(m, b)
@@ -113,7 +113,7 @@ func (m *CreateSessionRequest) GetSession() *Session {
 type Session struct {
 	// The name of the session. This is always system-assigned; values provided
 	// when creating a session are ignored.
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// The labels for the session.
 	//
 	//  * Label keys must be between 1 and 63 characters long and must conform to
@@ -123,12 +123,12 @@ type Session struct {
 	//  * No more than 64 labels can be associated with a given session.
 	//
 	// See https://goo.gl/xmQnxf for more information on and examples of labels.
-	Labels map[string]string `protobuf:"bytes,2,rep,name=labels" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Labels map[string]string `protobuf:"bytes,2,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	// Output only. The timestamp when the session is created.
-	CreateTime *timestamp.Timestamp `protobuf:"bytes,3,opt,name=create_time,json=createTime" json:"create_time,omitempty"`
+	CreateTime *timestamp.Timestamp `protobuf:"bytes,3,opt,name=create_time,json=createTime,proto3" json:"create_time,omitempty"`
 	// Output only. The approximate timestamp when the session is last used. It is
 	// typically earlier than the actual last use time.
-	ApproximateLastUseTime *timestamp.Timestamp `protobuf:"bytes,4,opt,name=approximate_last_use_time,json=approximateLastUseTime" json:"approximate_last_use_time,omitempty"`
+	ApproximateLastUseTime *timestamp.Timestamp `protobuf:"bytes,4,opt,name=approximate_last_use_time,json=approximateLastUseTime,proto3" json:"approximate_last_use_time,omitempty"`
 	XXX_NoUnkeyedLiteral   struct{}             `json:"-"`
 	XXX_unrecognized       []byte               `json:"-"`
 	XXX_sizecache          int32                `json:"-"`
@@ -138,7 +138,7 @@ func (m *Session) Reset()         { *m = Session{} }
 func (m *Session) String() string { return proto.CompactTextString(m) }
 func (*Session) ProtoMessage()    {}
 func (*Session) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_2868e2a3b5f0aa05, []int{1}
+	return fileDescriptor_spanner_d2fc31bf582f58c8, []int{1}
 }
 func (m *Session) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Session.Unmarshal(m, b)
@@ -189,7 +189,7 @@ func (m *Session) GetApproximateLastUseTime() *timestamp.Timestamp {
 // The request for [GetSession][google.spanner.v1.Spanner.GetSession].
 type GetSessionRequest struct {
 	// Required. The name of the session to retrieve.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -199,7 +199,7 @@ func (m *GetSessionRequest) Reset()         { *m = GetSessionRequest{} }
 func (m *GetSessionRequest) String() string { return proto.CompactTextString(m) }
 func (*GetSessionRequest) ProtoMessage()    {}
 func (*GetSessionRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_2868e2a3b5f0aa05, []int{2}
+	return fileDescriptor_spanner_d2fc31bf582f58c8, []int{2}
 }
 func (m *GetSessionRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetSessionRequest.Unmarshal(m, b)
@@ -229,14 +229,14 @@ func (m *GetSessionRequest) GetName() string {
 // The request for [ListSessions][google.spanner.v1.Spanner.ListSessions].
 type ListSessionsRequest struct {
 	// Required. The database in which to list sessions.
-	Database string `protobuf:"bytes,1,opt,name=database" json:"database,omitempty"`
+	Database string `protobuf:"bytes,1,opt,name=database,proto3" json:"database,omitempty"`
 	// Number of sessions to be returned in the response. If 0 or less, defaults
 	// to the server's maximum allowed page size.
-	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize" json:"page_size,omitempty"`
+	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// If non-empty, `page_token` should contain a
 	// [next_page_token][google.spanner.v1.ListSessionsResponse.next_page_token] from a previous
 	// [ListSessionsResponse][google.spanner.v1.ListSessionsResponse].
-	PageToken string `protobuf:"bytes,3,opt,name=page_token,json=pageToken" json:"page_token,omitempty"`
+	PageToken string `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	// An expression for filtering the results of the request. Filter rules are
 	// case insensitive. The fields eligible for filtering are:
 	//
@@ -247,7 +247,7 @@ type ListSessionsRequest struct {
 	//   * `labels.env:*` --> The session has the label "env".
 	//   * `labels.env:dev` --> The session has the label "env" and the value of
 	//                        the label contains the string "dev".
-	Filter               string   `protobuf:"bytes,4,opt,name=filter" json:"filter,omitempty"`
+	Filter               string   `protobuf:"bytes,4,opt,name=filter,proto3" json:"filter,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -257,7 +257,7 @@ func (m *ListSessionsRequest) Reset()         { *m = ListSessionsRequest{} }
 func (m *ListSessionsRequest) String() string { return proto.CompactTextString(m) }
 func (*ListSessionsRequest) ProtoMessage()    {}
 func (*ListSessionsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_2868e2a3b5f0aa05, []int{3}
+	return fileDescriptor_spanner_d2fc31bf582f58c8, []int{3}
 }
 func (m *ListSessionsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListSessionsRequest.Unmarshal(m, b)
@@ -308,11 +308,11 @@ func (m *ListSessionsRequest) GetFilter() string {
 // The response for [ListSessions][google.spanner.v1.Spanner.ListSessions].
 type ListSessionsResponse struct {
 	// The list of requested sessions.
-	Sessions []*Session `protobuf:"bytes,1,rep,name=sessions" json:"sessions,omitempty"`
+	Sessions []*Session `protobuf:"bytes,1,rep,name=sessions,proto3" json:"sessions,omitempty"`
 	// `next_page_token` can be sent in a subsequent
 	// [ListSessions][google.spanner.v1.Spanner.ListSessions] call to fetch more of the matching
 	// sessions.
-	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken" json:"next_page_token,omitempty"`
+	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -322,7 +322,7 @@ func (m *ListSessionsResponse) Reset()         { *m = ListSessionsResponse{} }
 func (m *ListSessionsResponse) String() string { return proto.CompactTextString(m) }
 func (*ListSessionsResponse) ProtoMessage()    {}
 func (*ListSessionsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_2868e2a3b5f0aa05, []int{4}
+	return fileDescriptor_spanner_d2fc31bf582f58c8, []int{4}
 }
 func (m *ListSessionsResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListSessionsResponse.Unmarshal(m, b)
@@ -359,7 +359,7 @@ func (m *ListSessionsResponse) GetNextPageToken() string {
 // The request for [DeleteSession][google.spanner.v1.Spanner.DeleteSession].
 type DeleteSessionRequest struct {
 	// Required. The name of the session to delete.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -369,7 +369,7 @@ func (m *DeleteSessionRequest) Reset()         { *m = DeleteSessionRequest{} }
 func (m *DeleteSessionRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteSessionRequest) ProtoMessage()    {}
 func (*DeleteSessionRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_2868e2a3b5f0aa05, []int{5}
+	return fileDescriptor_spanner_d2fc31bf582f58c8, []int{5}
 }
 func (m *DeleteSessionRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeleteSessionRequest.Unmarshal(m, b)
@@ -400,12 +400,12 @@ func (m *DeleteSessionRequest) GetName() string {
 // [ExecuteStreamingSql][google.spanner.v1.Spanner.ExecuteStreamingSql].
 type ExecuteSqlRequest struct {
 	// Required. The session in which the SQL query should be performed.
-	Session string `protobuf:"bytes,1,opt,name=session" json:"session,omitempty"`
+	Session string `protobuf:"bytes,1,opt,name=session,proto3" json:"session,omitempty"`
 	// The transaction to use. If none is provided, the default is a
 	// temporary read-only transaction with strong concurrency.
-	Transaction *TransactionSelector `protobuf:"bytes,2,opt,name=transaction" json:"transaction,omitempty"`
+	Transaction *TransactionSelector `protobuf:"bytes,2,opt,name=transaction,proto3" json:"transaction,omitempty"`
 	// Required. The SQL query string.
-	Sql string `protobuf:"bytes,3,opt,name=sql" json:"sql,omitempty"`
+	Sql string `protobuf:"bytes,3,opt,name=sql,proto3" json:"sql,omitempty"`
 	// The SQL query string can contain parameter placeholders. A parameter
 	// placeholder consists of `'@'` followed by the parameter
 	// name. Parameter names consist of any combination of letters,
@@ -420,7 +420,7 @@ type ExecuteSqlRequest struct {
 	// Parameter values are specified using `params`, which is a JSON
 	// object whose keys are parameter names, and whose values are the
 	// corresponding parameter values.
-	Params *_struct.Struct `protobuf:"bytes,4,opt,name=params" json:"params,omitempty"`
+	Params *_struct.Struct `protobuf:"bytes,4,opt,name=params,proto3" json:"params,omitempty"`
 	// It is not always possible for Cloud Spanner to infer the right SQL type
 	// from a JSON value.  For example, values of type `BYTES` and values
 	// of type `STRING` both appear in [params][google.spanner.v1.ExecuteSqlRequest.params] as JSON strings.
@@ -429,7 +429,7 @@ type ExecuteSqlRequest struct {
 	// SQL type for some or all of the SQL query parameters. See the
 	// definition of [Type][google.spanner.v1.Type] for more information
 	// about SQL types.
-	ParamTypes map[string]*Type `protobuf:"bytes,5,rep,name=param_types,json=paramTypes" json:"param_types,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	ParamTypes map[string]*Type `protobuf:"bytes,5,rep,name=param_types,json=paramTypes,proto3" json:"param_types,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	// If this request is resuming a previously interrupted SQL query
 	// execution, `resume_token` should be copied from the last
 	// [PartialResultSet][google.spanner.v1.PartialResultSet] yielded before the interruption. Doing this
@@ -440,7 +440,7 @@ type ExecuteSqlRequest struct {
 	// Used to control the amount of debugging information returned in
 	// [ResultSetStats][google.spanner.v1.ResultSetStats]. If [partition_token][google.spanner.v1.ExecuteSqlRequest.partition_token] is set, [query_mode][google.spanner.v1.ExecuteSqlRequest.query_mode] can only
 	// be set to [QueryMode.NORMAL][google.spanner.v1.ExecuteSqlRequest.QueryMode.NORMAL].
-	QueryMode ExecuteSqlRequest_QueryMode `protobuf:"varint,7,opt,name=query_mode,json=queryMode,enum=google.spanner.v1.ExecuteSqlRequest_QueryMode" json:"query_mode,omitempty"`
+	QueryMode ExecuteSqlRequest_QueryMode `protobuf:"varint,7,opt,name=query_mode,json=queryMode,proto3,enum=google.spanner.v1.ExecuteSqlRequest_QueryMode" json:"query_mode,omitempty"`
 	// If present, results will be restricted to the specified partition
 	// previously created using PartitionQuery().  There must be an exact
 	// match for the values of fields common to this message and the
@@ -455,7 +455,7 @@ func (m *ExecuteSqlRequest) Reset()         { *m = ExecuteSqlRequest{} }
 func (m *ExecuteSqlRequest) String() string { return proto.CompactTextString(m) }
 func (*ExecuteSqlRequest) ProtoMessage()    {}
 func (*ExecuteSqlRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_2868e2a3b5f0aa05, []int{6}
+	return fileDescriptor_spanner_d2fc31bf582f58c8, []int{6}
 }
 func (m *ExecuteSqlRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ExecuteSqlRequest.Unmarshal(m, b)
@@ -540,7 +540,7 @@ type PartitionOptions struct {
 	// The desired data size for each partition generated.  The default for this
 	// option is currently 1 GiB.  This is only a hint. The actual size of each
 	// partition may be smaller or larger than this size request.
-	PartitionSizeBytes int64 `protobuf:"varint,1,opt,name=partition_size_bytes,json=partitionSizeBytes" json:"partition_size_bytes,omitempty"`
+	PartitionSizeBytes int64 `protobuf:"varint,1,opt,name=partition_size_bytes,json=partitionSizeBytes,proto3" json:"partition_size_bytes,omitempty"`
 	// **Note:** This hint is currently ignored by PartitionQuery and
 	// PartitionRead requests.
 	//
@@ -549,7 +549,7 @@ type PartitionOptions struct {
 	// is currently 10,000. The maximum value is currently 200,000.  This is only
 	// a hint.  The actual number of partitions returned may be smaller or larger
 	// than this maximum count request.
-	MaxPartitions        int64    `protobuf:"varint,2,opt,name=max_partitions,json=maxPartitions" json:"max_partitions,omitempty"`
+	MaxPartitions        int64    `protobuf:"varint,2,opt,name=max_partitions,json=maxPartitions,proto3" json:"max_partitions,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -559,7 +559,7 @@ func (m *PartitionOptions) Reset()         { *m = PartitionOptions{} }
 func (m *PartitionOptions) String() string { return proto.CompactTextString(m) }
 func (*PartitionOptions) ProtoMessage()    {}
 func (*PartitionOptions) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_2868e2a3b5f0aa05, []int{7}
+	return fileDescriptor_spanner_d2fc31bf582f58c8, []int{7}
 }
 func (m *PartitionOptions) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_PartitionOptions.Unmarshal(m, b)
@@ -596,17 +596,17 @@ func (m *PartitionOptions) GetMaxPartitions() int64 {
 // The request for [PartitionQuery][google.spanner.v1.Spanner.PartitionQuery]
 type PartitionQueryRequest struct {
 	// Required. The session used to create the partitions.
-	Session string `protobuf:"bytes,1,opt,name=session" json:"session,omitempty"`
+	Session string `protobuf:"bytes,1,opt,name=session,proto3" json:"session,omitempty"`
 	// Read only snapshot transactions are supported, read/write and single use
 	// transactions are not.
-	Transaction *TransactionSelector `protobuf:"bytes,2,opt,name=transaction" json:"transaction,omitempty"`
+	Transaction *TransactionSelector `protobuf:"bytes,2,opt,name=transaction,proto3" json:"transaction,omitempty"`
 	// The query request to generate partitions for. The request will fail if
 	// the query is not root partitionable. The query plan of a root
 	// partitionable query has a single distributed union operator. A distributed
 	// union operator conceptually divides one or more tables into multiple
 	// splits, remotely evaluates a subquery independently on each split, and
 	// then unions all results.
-	Sql string `protobuf:"bytes,3,opt,name=sql" json:"sql,omitempty"`
+	Sql string `protobuf:"bytes,3,opt,name=sql,proto3" json:"sql,omitempty"`
 	// The SQL query string can contain parameter placeholders. A parameter
 	// placeholder consists of `'@'` followed by the parameter
 	// name. Parameter names consist of any combination of letters,
@@ -621,7 +621,7 @@ type PartitionQueryRequest struct {
 	// Parameter values are specified using `params`, which is a JSON
 	// object whose keys are parameter names, and whose values are the
 	// corresponding parameter values.
-	Params *_struct.Struct `protobuf:"bytes,4,opt,name=params" json:"params,omitempty"`
+	Params *_struct.Struct `protobuf:"bytes,4,opt,name=params,proto3" json:"params,omitempty"`
 	// It is not always possible for Cloud Spanner to infer the right SQL type
 	// from a JSON value.  For example, values of type `BYTES` and values
 	// of type `STRING` both appear in [params][google.spanner.v1.PartitionQueryRequest.params] as JSON strings.
@@ -630,9 +630,9 @@ type PartitionQueryRequest struct {
 	// SQL type for some or all of the SQL query parameters. See the
 	// definition of [Type][google.spanner.v1.Type] for more information
 	// about SQL types.
-	ParamTypes map[string]*Type `protobuf:"bytes,5,rep,name=param_types,json=paramTypes" json:"param_types,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	ParamTypes map[string]*Type `protobuf:"bytes,5,rep,name=param_types,json=paramTypes,proto3" json:"param_types,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 	// Additional options that affect how many partitions are created.
-	PartitionOptions     *PartitionOptions `protobuf:"bytes,6,opt,name=partition_options,json=partitionOptions" json:"partition_options,omitempty"`
+	PartitionOptions     *PartitionOptions `protobuf:"bytes,6,opt,name=partition_options,json=partitionOptions,proto3" json:"partition_options,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
 	XXX_unrecognized     []byte            `json:"-"`
 	XXX_sizecache        int32             `json:"-"`
@@ -642,7 +642,7 @@ func (m *PartitionQueryRequest) Reset()         { *m = PartitionQueryRequest{} }
 func (m *PartitionQueryRequest) String() string { return proto.CompactTextString(m) }
 func (*PartitionQueryRequest) ProtoMessage()    {}
 func (*PartitionQueryRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_2868e2a3b5f0aa05, []int{8}
+	return fileDescriptor_spanner_d2fc31bf582f58c8, []int{8}
 }
 func (m *PartitionQueryRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_PartitionQueryRequest.Unmarshal(m, b)
@@ -707,19 +707,19 @@ func (m *PartitionQueryRequest) GetPartitionOptions() *PartitionOptions {
 // The request for [PartitionRead][google.spanner.v1.Spanner.PartitionRead]
 type PartitionReadRequest struct {
 	// Required. The session used to create the partitions.
-	Session string `protobuf:"bytes,1,opt,name=session" json:"session,omitempty"`
+	Session string `protobuf:"bytes,1,opt,name=session,proto3" json:"session,omitempty"`
 	// Read only snapshot transactions are supported, read/write and single use
 	// transactions are not.
-	Transaction *TransactionSelector `protobuf:"bytes,2,opt,name=transaction" json:"transaction,omitempty"`
+	Transaction *TransactionSelector `protobuf:"bytes,2,opt,name=transaction,proto3" json:"transaction,omitempty"`
 	// Required. The name of the table in the database to be read.
-	Table string `protobuf:"bytes,3,opt,name=table" json:"table,omitempty"`
+	Table string `protobuf:"bytes,3,opt,name=table,proto3" json:"table,omitempty"`
 	// If non-empty, the name of an index on [table][google.spanner.v1.PartitionReadRequest.table]. This index is
 	// used instead of the table primary key when interpreting [key_set][google.spanner.v1.PartitionReadRequest.key_set]
 	// and sorting result rows. See [key_set][google.spanner.v1.PartitionReadRequest.key_set] for further information.
-	Index string `protobuf:"bytes,4,opt,name=index" json:"index,omitempty"`
+	Index string `protobuf:"bytes,4,opt,name=index,proto3" json:"index,omitempty"`
 	// The columns of [table][google.spanner.v1.PartitionReadRequest.table] to be returned for each row matching
 	// this request.
-	Columns []string `protobuf:"bytes,5,rep,name=columns" json:"columns,omitempty"`
+	Columns []string `protobuf:"bytes,5,rep,name=columns,proto3" json:"columns,omitempty"`
 	// Required. `key_set` identifies the rows to be yielded. `key_set` names the
 	// primary keys of the rows in [table][google.spanner.v1.PartitionReadRequest.table] to be yielded, unless [index][google.spanner.v1.PartitionReadRequest.index]
 	// is present. If [index][google.spanner.v1.PartitionReadRequest.index] is present, then [key_set][google.spanner.v1.PartitionReadRequest.key_set] instead names
@@ -727,9 +727,9 @@ type PartitionReadRequest struct {
 	//
 	// It is not an error for the `key_set` to name rows that do not
 	// exist in the database. Read yields nothing for nonexistent rows.
-	KeySet *KeySet `protobuf:"bytes,6,opt,name=key_set,json=keySet" json:"key_set,omitempty"`
+	KeySet *KeySet `protobuf:"bytes,6,opt,name=key_set,json=keySet,proto3" json:"key_set,omitempty"`
 	// Additional options that affect how many partitions are created.
-	PartitionOptions     *PartitionOptions `protobuf:"bytes,9,opt,name=partition_options,json=partitionOptions" json:"partition_options,omitempty"`
+	PartitionOptions     *PartitionOptions `protobuf:"bytes,9,opt,name=partition_options,json=partitionOptions,proto3" json:"partition_options,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
 	XXX_unrecognized     []byte            `json:"-"`
 	XXX_sizecache        int32             `json:"-"`
@@ -739,7 +739,7 @@ func (m *PartitionReadRequest) Reset()         { *m = PartitionReadRequest{} }
 func (m *PartitionReadRequest) String() string { return proto.CompactTextString(m) }
 func (*PartitionReadRequest) ProtoMessage()    {}
 func (*PartitionReadRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_2868e2a3b5f0aa05, []int{9}
+	return fileDescriptor_spanner_d2fc31bf582f58c8, []int{9}
 }
 func (m *PartitionReadRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_PartitionReadRequest.Unmarshal(m, b)
@@ -824,7 +824,7 @@ func (m *Partition) Reset()         { *m = Partition{} }
 func (m *Partition) String() string { return proto.CompactTextString(m) }
 func (*Partition) ProtoMessage()    {}
 func (*Partition) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_2868e2a3b5f0aa05, []int{10}
+	return fileDescriptor_spanner_d2fc31bf582f58c8, []int{10}
 }
 func (m *Partition) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Partition.Unmarshal(m, b)
@@ -855,9 +855,9 @@ func (m *Partition) GetPartitionToken() []byte {
 // or [PartitionRead][google.spanner.v1.Spanner.PartitionRead]
 type PartitionResponse struct {
 	// Partitions created by this request.
-	Partitions []*Partition `protobuf:"bytes,1,rep,name=partitions" json:"partitions,omitempty"`
+	Partitions []*Partition `protobuf:"bytes,1,rep,name=partitions,proto3" json:"partitions,omitempty"`
 	// Transaction created by this request.
-	Transaction          *Transaction `protobuf:"bytes,2,opt,name=transaction" json:"transaction,omitempty"`
+	Transaction          *Transaction `protobuf:"bytes,2,opt,name=transaction,proto3" json:"transaction,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
 	XXX_unrecognized     []byte       `json:"-"`
 	XXX_sizecache        int32        `json:"-"`
@@ -867,7 +867,7 @@ func (m *PartitionResponse) Reset()         { *m = PartitionResponse{} }
 func (m *PartitionResponse) String() string { return proto.CompactTextString(m) }
 func (*PartitionResponse) ProtoMessage()    {}
 func (*PartitionResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_2868e2a3b5f0aa05, []int{11}
+	return fileDescriptor_spanner_d2fc31bf582f58c8, []int{11}
 }
 func (m *PartitionResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_PartitionResponse.Unmarshal(m, b)
@@ -905,19 +905,19 @@ func (m *PartitionResponse) GetTransaction() *Transaction {
 // [StreamingRead][google.spanner.v1.Spanner.StreamingRead].
 type ReadRequest struct {
 	// Required. The session in which the read should be performed.
-	Session string `protobuf:"bytes,1,opt,name=session" json:"session,omitempty"`
+	Session string `protobuf:"bytes,1,opt,name=session,proto3" json:"session,omitempty"`
 	// The transaction to use. If none is provided, the default is a
 	// temporary read-only transaction with strong concurrency.
-	Transaction *TransactionSelector `protobuf:"bytes,2,opt,name=transaction" json:"transaction,omitempty"`
+	Transaction *TransactionSelector `protobuf:"bytes,2,opt,name=transaction,proto3" json:"transaction,omitempty"`
 	// Required. The name of the table in the database to be read.
-	Table string `protobuf:"bytes,3,opt,name=table" json:"table,omitempty"`
+	Table string `protobuf:"bytes,3,opt,name=table,proto3" json:"table,omitempty"`
 	// If non-empty, the name of an index on [table][google.spanner.v1.ReadRequest.table]. This index is
 	// used instead of the table primary key when interpreting [key_set][google.spanner.v1.ReadRequest.key_set]
 	// and sorting result rows. See [key_set][google.spanner.v1.ReadRequest.key_set] for further information.
-	Index string `protobuf:"bytes,4,opt,name=index" json:"index,omitempty"`
+	Index string `protobuf:"bytes,4,opt,name=index,proto3" json:"index,omitempty"`
 	// The columns of [table][google.spanner.v1.ReadRequest.table] to be returned for each row matching
 	// this request.
-	Columns []string `protobuf:"bytes,5,rep,name=columns" json:"columns,omitempty"`
+	Columns []string `protobuf:"bytes,5,rep,name=columns,proto3" json:"columns,omitempty"`
 	// Required. `key_set` identifies the rows to be yielded. `key_set` names the
 	// primary keys of the rows in [table][google.spanner.v1.ReadRequest.table] to be yielded, unless [index][google.spanner.v1.ReadRequest.index]
 	// is present. If [index][google.spanner.v1.ReadRequest.index] is present, then [key_set][google.spanner.v1.ReadRequest.key_set] instead names
@@ -930,11 +930,11 @@ type ReadRequest struct {
 	//
 	// It is not an error for the `key_set` to name rows that do not
 	// exist in the database. Read yields nothing for nonexistent rows.
-	KeySet *KeySet `protobuf:"bytes,6,opt,name=key_set,json=keySet" json:"key_set,omitempty"`
+	KeySet *KeySet `protobuf:"bytes,6,opt,name=key_set,json=keySet,proto3" json:"key_set,omitempty"`
 	// If greater than zero, only the first `limit` rows are yielded. If `limit`
 	// is zero, the default is no limit. A limit cannot be specified if
 	// `partition_token` is set.
-	Limit int64 `protobuf:"varint,8,opt,name=limit" json:"limit,omitempty"`
+	Limit int64 `protobuf:"varint,8,opt,name=limit,proto3" json:"limit,omitempty"`
 	// If this request is resuming a previously interrupted read,
 	// `resume_token` should be copied from the last
 	// [PartialResultSet][google.spanner.v1.PartialResultSet] yielded before the interruption. Doing this
@@ -956,7 +956,7 @@ func (m *ReadRequest) Reset()         { *m = ReadRequest{} }
 func (m *ReadRequest) String() string { return proto.CompactTextString(m) }
 func (*ReadRequest) ProtoMessage()    {}
 func (*ReadRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_2868e2a3b5f0aa05, []int{12}
+	return fileDescriptor_spanner_d2fc31bf582f58c8, []int{12}
 }
 func (m *ReadRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ReadRequest.Unmarshal(m, b)
@@ -1042,9 +1042,9 @@ func (m *ReadRequest) GetPartitionToken() []byte {
 // The request for [BeginTransaction][google.spanner.v1.Spanner.BeginTransaction].
 type BeginTransactionRequest struct {
 	// Required. The session in which the transaction runs.
-	Session string `protobuf:"bytes,1,opt,name=session" json:"session,omitempty"`
+	Session string `protobuf:"bytes,1,opt,name=session,proto3" json:"session,omitempty"`
 	// Required. Options for the new transaction.
-	Options              *TransactionOptions `protobuf:"bytes,2,opt,name=options" json:"options,omitempty"`
+	Options              *TransactionOptions `protobuf:"bytes,2,opt,name=options,proto3" json:"options,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}            `json:"-"`
 	XXX_unrecognized     []byte              `json:"-"`
 	XXX_sizecache        int32               `json:"-"`
@@ -1054,7 +1054,7 @@ func (m *BeginTransactionRequest) Reset()         { *m = BeginTransactionRequest
 func (m *BeginTransactionRequest) String() string { return proto.CompactTextString(m) }
 func (*BeginTransactionRequest) ProtoMessage()    {}
 func (*BeginTransactionRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_2868e2a3b5f0aa05, []int{13}
+	return fileDescriptor_spanner_d2fc31bf582f58c8, []int{13}
 }
 func (m *BeginTransactionRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_BeginTransactionRequest.Unmarshal(m, b)
@@ -1091,7 +1091,7 @@ func (m *BeginTransactionRequest) GetOptions() *TransactionOptions {
 // The request for [Commit][google.spanner.v1.Spanner.Commit].
 type CommitRequest struct {
 	// Required. The session in which the transaction to be committed is running.
-	Session string `protobuf:"bytes,1,opt,name=session" json:"session,omitempty"`
+	Session string `protobuf:"bytes,1,opt,name=session,proto3" json:"session,omitempty"`
 	// Required. The transaction in which to commit.
 	//
 	// Types that are valid to be assigned to Transaction:
@@ -1101,7 +1101,7 @@ type CommitRequest struct {
 	// The mutations to be executed when this transaction commits. All
 	// mutations are applied atomically, in the order they appear in
 	// this list.
-	Mutations            []*Mutation `protobuf:"bytes,4,rep,name=mutations" json:"mutations,omitempty"`
+	Mutations            []*Mutation `protobuf:"bytes,4,rep,name=mutations,proto3" json:"mutations,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
 	XXX_unrecognized     []byte      `json:"-"`
 	XXX_sizecache        int32       `json:"-"`
@@ -1111,7 +1111,7 @@ func (m *CommitRequest) Reset()         { *m = CommitRequest{} }
 func (m *CommitRequest) String() string { return proto.CompactTextString(m) }
 func (*CommitRequest) ProtoMessage()    {}
 func (*CommitRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_2868e2a3b5f0aa05, []int{14}
+	return fileDescriptor_spanner_d2fc31bf582f58c8, []int{14}
 }
 func (m *CommitRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CommitRequest.Unmarshal(m, b)
@@ -1131,6 +1131,13 @@ func (m *CommitRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_CommitRequest proto.InternalMessageInfo
 
+func (m *CommitRequest) GetSession() string {
+	if m != nil {
+		return m.Session
+	}
+	return ""
+}
+
 type isCommitRequest_Transaction interface {
 	isCommitRequest_Transaction()
 }
@@ -1138,11 +1145,13 @@ type isCommitRequest_Transaction interface {
 type CommitRequest_TransactionId struct {
 	TransactionId []byte `protobuf:"bytes,2,opt,name=transaction_id,json=transactionId,proto3,oneof"`
 }
+
 type CommitRequest_SingleUseTransaction struct {
-	SingleUseTransaction *TransactionOptions `protobuf:"bytes,3,opt,name=single_use_transaction,json=singleUseTransaction,oneof"`
+	SingleUseTransaction *TransactionOptions `protobuf:"bytes,3,opt,name=single_use_transaction,json=singleUseTransaction,proto3,oneof"`
 }
 
-func (*CommitRequest_TransactionId) isCommitRequest_Transaction()        {}
+func (*CommitRequest_TransactionId) isCommitRequest_Transaction() {}
+
 func (*CommitRequest_SingleUseTransaction) isCommitRequest_Transaction() {}
 
 func (m *CommitRequest) GetTransaction() isCommitRequest_Transaction {
@@ -1150,13 +1159,6 @@ func (m *CommitRequest) GetTransaction() isCommitRequest_Transaction {
 		return m.Transaction
 	}
 	return nil
-}
-
-func (m *CommitRequest) GetSession() string {
-	if m != nil {
-		return m.Session
-	}
-	return ""
 }
 
 func (m *CommitRequest) GetTransactionId() []byte {
@@ -1253,7 +1255,7 @@ func _CommitRequest_OneofSizer(msg proto.Message) (n int) {
 // The response for [Commit][google.spanner.v1.Spanner.Commit].
 type CommitResponse struct {
 	// The Cloud Spanner timestamp at which the transaction committed.
-	CommitTimestamp      *timestamp.Timestamp `protobuf:"bytes,1,opt,name=commit_timestamp,json=commitTimestamp" json:"commit_timestamp,omitempty"`
+	CommitTimestamp      *timestamp.Timestamp `protobuf:"bytes,1,opt,name=commit_timestamp,json=commitTimestamp,proto3" json:"commit_timestamp,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
 	XXX_unrecognized     []byte               `json:"-"`
 	XXX_sizecache        int32                `json:"-"`
@@ -1263,7 +1265,7 @@ func (m *CommitResponse) Reset()         { *m = CommitResponse{} }
 func (m *CommitResponse) String() string { return proto.CompactTextString(m) }
 func (*CommitResponse) ProtoMessage()    {}
 func (*CommitResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_2868e2a3b5f0aa05, []int{15}
+	return fileDescriptor_spanner_d2fc31bf582f58c8, []int{15}
 }
 func (m *CommitResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CommitResponse.Unmarshal(m, b)
@@ -1293,7 +1295,7 @@ func (m *CommitResponse) GetCommitTimestamp() *timestamp.Timestamp {
 // The request for [Rollback][google.spanner.v1.Spanner.Rollback].
 type RollbackRequest struct {
 	// Required. The session in which the transaction to roll back is running.
-	Session string `protobuf:"bytes,1,opt,name=session" json:"session,omitempty"`
+	Session string `protobuf:"bytes,1,opt,name=session,proto3" json:"session,omitempty"`
 	// Required. The transaction to roll back.
 	TransactionId        []byte   `protobuf:"bytes,2,opt,name=transaction_id,json=transactionId,proto3" json:"transaction_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -1305,7 +1307,7 @@ func (m *RollbackRequest) Reset()         { *m = RollbackRequest{} }
 func (m *RollbackRequest) String() string { return proto.CompactTextString(m) }
 func (*RollbackRequest) ProtoMessage()    {}
 func (*RollbackRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_spanner_2868e2a3b5f0aa05, []int{16}
+	return fileDescriptor_spanner_d2fc31bf582f58c8, []int{16}
 }
 func (m *RollbackRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_RollbackRequest.Unmarshal(m, b)
@@ -1655,8 +1657,7 @@ func (c *spannerClient) PartitionRead(ctx context.Context, in *PartitionReadRequ
 	return out, nil
 }
 
-// Server API for Spanner service
-
+// SpannerServer is the server API for Spanner service.
 type SpannerServer interface {
 	// Creates a new session. A session can be used to perform
 	// transactions that read and/or modify data in a Cloud Spanner database.
@@ -2076,10 +2077,10 @@ var _Spanner_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("google/spanner/v1/spanner.proto", fileDescriptor_spanner_2868e2a3b5f0aa05)
+	proto.RegisterFile("google/spanner/v1/spanner.proto", fileDescriptor_spanner_d2fc31bf582f58c8)
 }
 
-var fileDescriptor_spanner_2868e2a3b5f0aa05 = []byte{
+var fileDescriptor_spanner_d2fc31bf582f58c8 = []byte{
 	// 1657 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe4, 0x58, 0xdd, 0x6f, 0x53, 0xc9,
 	0x15, 0xe7, 0xda, 0x89, 0x13, 0x1f, 0xc7, 0x89, 0x33, 0x98, 0x60, 0x0c, 0x85, 0x70, 0xf9, 0x48,

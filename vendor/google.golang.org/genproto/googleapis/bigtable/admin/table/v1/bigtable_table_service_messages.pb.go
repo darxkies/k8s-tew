@@ -20,13 +20,13 @@ const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 
 type CreateTableRequest struct {
 	// The unique name of the cluster in which to create the new table.
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// The name by which the new table should be referred to within the cluster,
 	// e.g. "foobar" rather than "<cluster_name>/tables/foobar".
-	TableId string `protobuf:"bytes,2,opt,name=table_id,json=tableId" json:"table_id,omitempty"`
+	TableId string `protobuf:"bytes,2,opt,name=table_id,json=tableId,proto3" json:"table_id,omitempty"`
 	// The Table to create. The `name` field of the Table and all of its
 	// ColumnFamilies must be left blank, and will be populated in the response.
-	Table *Table `protobuf:"bytes,3,opt,name=table" json:"table,omitempty"`
+	Table *Table `protobuf:"bytes,3,opt,name=table,proto3" json:"table,omitempty"`
 	// The optional list of row keys that will be used to initially split the
 	// table into several tablets (Tablets are similar to HBase regions).
 	// Given two split keys, "s1" and "s2", three tablets will be created,
@@ -42,7 +42,7 @@ type CreateTableRequest struct {
 	//    - Tablet 3 [customer_1, customer_2) => {"customer_1"}.
 	//    - Tablet 4 [customer_2, other)      => {"customer_2"}.
 	//    - Tablet 5 [other, )                => {"other", "zz"}.
-	InitialSplitKeys     []string `protobuf:"bytes,4,rep,name=initial_split_keys,json=initialSplitKeys" json:"initial_split_keys,omitempty"`
+	InitialSplitKeys     []string `protobuf:"bytes,4,rep,name=initial_split_keys,json=initialSplitKeys,proto3" json:"initial_split_keys,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -52,7 +52,7 @@ func (m *CreateTableRequest) Reset()         { *m = CreateTableRequest{} }
 func (m *CreateTableRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateTableRequest) ProtoMessage()    {}
 func (*CreateTableRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bigtable_table_service_messages_8de662681746d77d, []int{0}
+	return fileDescriptor_bigtable_table_service_messages_db488db316a00db0, []int{0}
 }
 func (m *CreateTableRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CreateTableRequest.Unmarshal(m, b)
@@ -102,7 +102,7 @@ func (m *CreateTableRequest) GetInitialSplitKeys() []string {
 
 type ListTablesRequest struct {
 	// The unique name of the cluster for which tables should be listed.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -112,7 +112,7 @@ func (m *ListTablesRequest) Reset()         { *m = ListTablesRequest{} }
 func (m *ListTablesRequest) String() string { return proto.CompactTextString(m) }
 func (*ListTablesRequest) ProtoMessage()    {}
 func (*ListTablesRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bigtable_table_service_messages_8de662681746d77d, []int{1}
+	return fileDescriptor_bigtable_table_service_messages_db488db316a00db0, []int{1}
 }
 func (m *ListTablesRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListTablesRequest.Unmarshal(m, b)
@@ -142,7 +142,7 @@ func (m *ListTablesRequest) GetName() string {
 type ListTablesResponse struct {
 	// The tables present in the requested cluster.
 	// At present, only the names of the tables are populated.
-	Tables               []*Table `protobuf:"bytes,1,rep,name=tables" json:"tables,omitempty"`
+	Tables               []*Table `protobuf:"bytes,1,rep,name=tables,proto3" json:"tables,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -152,7 +152,7 @@ func (m *ListTablesResponse) Reset()         { *m = ListTablesResponse{} }
 func (m *ListTablesResponse) String() string { return proto.CompactTextString(m) }
 func (*ListTablesResponse) ProtoMessage()    {}
 func (*ListTablesResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bigtable_table_service_messages_8de662681746d77d, []int{2}
+	return fileDescriptor_bigtable_table_service_messages_db488db316a00db0, []int{2}
 }
 func (m *ListTablesResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListTablesResponse.Unmarshal(m, b)
@@ -181,7 +181,7 @@ func (m *ListTablesResponse) GetTables() []*Table {
 
 type GetTableRequest struct {
 	// The unique name of the requested table.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -191,7 +191,7 @@ func (m *GetTableRequest) Reset()         { *m = GetTableRequest{} }
 func (m *GetTableRequest) String() string { return proto.CompactTextString(m) }
 func (*GetTableRequest) ProtoMessage()    {}
 func (*GetTableRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bigtable_table_service_messages_8de662681746d77d, []int{3}
+	return fileDescriptor_bigtable_table_service_messages_db488db316a00db0, []int{3}
 }
 func (m *GetTableRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetTableRequest.Unmarshal(m, b)
@@ -220,7 +220,7 @@ func (m *GetTableRequest) GetName() string {
 
 type DeleteTableRequest struct {
 	// The unique name of the table to be deleted.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -230,7 +230,7 @@ func (m *DeleteTableRequest) Reset()         { *m = DeleteTableRequest{} }
 func (m *DeleteTableRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteTableRequest) ProtoMessage()    {}
 func (*DeleteTableRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bigtable_table_service_messages_8de662681746d77d, []int{4}
+	return fileDescriptor_bigtable_table_service_messages_db488db316a00db0, []int{4}
 }
 func (m *DeleteTableRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeleteTableRequest.Unmarshal(m, b)
@@ -259,10 +259,10 @@ func (m *DeleteTableRequest) GetName() string {
 
 type RenameTableRequest struct {
 	// The current unique name of the table.
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// The new name by which the table should be referred to within its containing
 	// cluster, e.g. "foobar" rather than "<cluster_name>/tables/foobar".
-	NewId                string   `protobuf:"bytes,2,opt,name=new_id,json=newId" json:"new_id,omitempty"`
+	NewId                string   `protobuf:"bytes,2,opt,name=new_id,json=newId,proto3" json:"new_id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -272,7 +272,7 @@ func (m *RenameTableRequest) Reset()         { *m = RenameTableRequest{} }
 func (m *RenameTableRequest) String() string { return proto.CompactTextString(m) }
 func (*RenameTableRequest) ProtoMessage()    {}
 func (*RenameTableRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bigtable_table_service_messages_8de662681746d77d, []int{5}
+	return fileDescriptor_bigtable_table_service_messages_db488db316a00db0, []int{5}
 }
 func (m *RenameTableRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_RenameTableRequest.Unmarshal(m, b)
@@ -308,12 +308,12 @@ func (m *RenameTableRequest) GetNewId() string {
 
 type CreateColumnFamilyRequest struct {
 	// The unique name of the table in which to create the new column family.
-	Name string `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// The name by which the new column family should be referred to within the
 	// table, e.g. "foobar" rather than "<table_name>/columnFamilies/foobar".
-	ColumnFamilyId string `protobuf:"bytes,2,opt,name=column_family_id,json=columnFamilyId" json:"column_family_id,omitempty"`
+	ColumnFamilyId string `protobuf:"bytes,2,opt,name=column_family_id,json=columnFamilyId,proto3" json:"column_family_id,omitempty"`
 	// The column family to create. The `name` field must be left blank.
-	ColumnFamily         *ColumnFamily `protobuf:"bytes,3,opt,name=column_family,json=columnFamily" json:"column_family,omitempty"`
+	ColumnFamily         *ColumnFamily `protobuf:"bytes,3,opt,name=column_family,json=columnFamily,proto3" json:"column_family,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}      `json:"-"`
 	XXX_unrecognized     []byte        `json:"-"`
 	XXX_sizecache        int32         `json:"-"`
@@ -323,7 +323,7 @@ func (m *CreateColumnFamilyRequest) Reset()         { *m = CreateColumnFamilyReq
 func (m *CreateColumnFamilyRequest) String() string { return proto.CompactTextString(m) }
 func (*CreateColumnFamilyRequest) ProtoMessage()    {}
 func (*CreateColumnFamilyRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bigtable_table_service_messages_8de662681746d77d, []int{6}
+	return fileDescriptor_bigtable_table_service_messages_db488db316a00db0, []int{6}
 }
 func (m *CreateColumnFamilyRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CreateColumnFamilyRequest.Unmarshal(m, b)
@@ -366,7 +366,7 @@ func (m *CreateColumnFamilyRequest) GetColumnFamily() *ColumnFamily {
 
 type DeleteColumnFamilyRequest struct {
 	// The unique name of the column family to be deleted.
-	Name                 string   `protobuf:"bytes,1,opt,name=name" json:"name,omitempty"`
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -376,7 +376,7 @@ func (m *DeleteColumnFamilyRequest) Reset()         { *m = DeleteColumnFamilyReq
 func (m *DeleteColumnFamilyRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteColumnFamilyRequest) ProtoMessage()    {}
 func (*DeleteColumnFamilyRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bigtable_table_service_messages_8de662681746d77d, []int{7}
+	return fileDescriptor_bigtable_table_service_messages_db488db316a00db0, []int{7}
 }
 func (m *DeleteColumnFamilyRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DeleteColumnFamilyRequest.Unmarshal(m, b)
@@ -405,7 +405,7 @@ func (m *DeleteColumnFamilyRequest) GetName() string {
 
 type BulkDeleteRowsRequest struct {
 	// The unique name of the table on which to perform the bulk delete
-	TableName string `protobuf:"bytes,1,opt,name=table_name,json=tableName" json:"table_name,omitempty"`
+	TableName string `protobuf:"bytes,1,opt,name=table_name,json=tableName,proto3" json:"table_name,omitempty"`
 	// Types that are valid to be assigned to Target:
 	//	*BulkDeleteRowsRequest_RowKeyPrefix
 	//	*BulkDeleteRowsRequest_DeleteAllDataFromTable
@@ -419,7 +419,7 @@ func (m *BulkDeleteRowsRequest) Reset()         { *m = BulkDeleteRowsRequest{} }
 func (m *BulkDeleteRowsRequest) String() string { return proto.CompactTextString(m) }
 func (*BulkDeleteRowsRequest) ProtoMessage()    {}
 func (*BulkDeleteRowsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bigtable_table_service_messages_8de662681746d77d, []int{8}
+	return fileDescriptor_bigtable_table_service_messages_db488db316a00db0, []int{8}
 }
 func (m *BulkDeleteRowsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_BulkDeleteRowsRequest.Unmarshal(m, b)
@@ -439,6 +439,13 @@ func (m *BulkDeleteRowsRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_BulkDeleteRowsRequest proto.InternalMessageInfo
 
+func (m *BulkDeleteRowsRequest) GetTableName() string {
+	if m != nil {
+		return m.TableName
+	}
+	return ""
+}
+
 type isBulkDeleteRowsRequest_Target interface {
 	isBulkDeleteRowsRequest_Target()
 }
@@ -446,11 +453,13 @@ type isBulkDeleteRowsRequest_Target interface {
 type BulkDeleteRowsRequest_RowKeyPrefix struct {
 	RowKeyPrefix []byte `protobuf:"bytes,2,opt,name=row_key_prefix,json=rowKeyPrefix,proto3,oneof"`
 }
+
 type BulkDeleteRowsRequest_DeleteAllDataFromTable struct {
-	DeleteAllDataFromTable bool `protobuf:"varint,3,opt,name=delete_all_data_from_table,json=deleteAllDataFromTable,oneof"`
+	DeleteAllDataFromTable bool `protobuf:"varint,3,opt,name=delete_all_data_from_table,json=deleteAllDataFromTable,proto3,oneof"`
 }
 
-func (*BulkDeleteRowsRequest_RowKeyPrefix) isBulkDeleteRowsRequest_Target()           {}
+func (*BulkDeleteRowsRequest_RowKeyPrefix) isBulkDeleteRowsRequest_Target() {}
+
 func (*BulkDeleteRowsRequest_DeleteAllDataFromTable) isBulkDeleteRowsRequest_Target() {}
 
 func (m *BulkDeleteRowsRequest) GetTarget() isBulkDeleteRowsRequest_Target {
@@ -458,13 +467,6 @@ func (m *BulkDeleteRowsRequest) GetTarget() isBulkDeleteRowsRequest_Target {
 		return m.Target
 	}
 	return nil
-}
-
-func (m *BulkDeleteRowsRequest) GetTableName() string {
-	if m != nil {
-		return m.TableName
-	}
-	return ""
 }
 
 func (m *BulkDeleteRowsRequest) GetRowKeyPrefix() []byte {
@@ -563,10 +565,10 @@ func init() {
 }
 
 func init() {
-	proto.RegisterFile("google/bigtable/admin/table/v1/bigtable_table_service_messages.proto", fileDescriptor_bigtable_table_service_messages_8de662681746d77d)
+	proto.RegisterFile("google/bigtable/admin/table/v1/bigtable_table_service_messages.proto", fileDescriptor_bigtable_table_service_messages_db488db316a00db0)
 }
 
-var fileDescriptor_bigtable_table_service_messages_8de662681746d77d = []byte{
+var fileDescriptor_bigtable_table_service_messages_db488db316a00db0 = []byte{
 	// 514 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x53, 0xc1, 0x6e, 0xd3, 0x40,
 	0x10, 0xad, 0x49, 0x1b, 0x92, 0x21, 0x94, 0xb2, 0x52, 0x51, 0x52, 0x09, 0x14, 0x56, 0x2a, 0xe4,

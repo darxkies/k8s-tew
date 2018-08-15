@@ -29,12 +29,12 @@ type SetIamPolicyRequest struct {
 	// REQUIRED: The resource for which the policy is being specified.
 	// `resource` is usually specified as a path. For example, a Project
 	// resource is specified as `projects/{project}`.
-	Resource string `protobuf:"bytes,1,opt,name=resource" json:"resource,omitempty"`
+	Resource string `protobuf:"bytes,1,opt,name=resource,proto3" json:"resource,omitempty"`
 	// REQUIRED: The complete policy to be applied to the `resource`. The size of
 	// the policy is limited to a few 10s of KB. An empty policy is a
 	// valid policy but certain Cloud Platform services (such as Projects)
 	// might reject them.
-	Policy               *Policy  `protobuf:"bytes,2,opt,name=policy" json:"policy,omitempty"`
+	Policy               *Policy  `protobuf:"bytes,2,opt,name=policy,proto3" json:"policy,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -44,7 +44,7 @@ func (m *SetIamPolicyRequest) Reset()         { *m = SetIamPolicyRequest{} }
 func (m *SetIamPolicyRequest) String() string { return proto.CompactTextString(m) }
 func (*SetIamPolicyRequest) ProtoMessage()    {}
 func (*SetIamPolicyRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_iam_policy_511a6b0802f7199d, []int{0}
+	return fileDescriptor_iam_policy_58547b5cf2e9d67a, []int{0}
 }
 func (m *SetIamPolicyRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SetIamPolicyRequest.Unmarshal(m, b)
@@ -83,7 +83,7 @@ type GetIamPolicyRequest struct {
 	// REQUIRED: The resource for which the policy is being requested.
 	// `resource` is usually specified as a path. For example, a Project
 	// resource is specified as `projects/{project}`.
-	Resource             string   `protobuf:"bytes,1,opt,name=resource" json:"resource,omitempty"`
+	Resource             string   `protobuf:"bytes,1,opt,name=resource,proto3" json:"resource,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -93,7 +93,7 @@ func (m *GetIamPolicyRequest) Reset()         { *m = GetIamPolicyRequest{} }
 func (m *GetIamPolicyRequest) String() string { return proto.CompactTextString(m) }
 func (*GetIamPolicyRequest) ProtoMessage()    {}
 func (*GetIamPolicyRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_iam_policy_511a6b0802f7199d, []int{1}
+	return fileDescriptor_iam_policy_58547b5cf2e9d67a, []int{1}
 }
 func (m *GetIamPolicyRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetIamPolicyRequest.Unmarshal(m, b)
@@ -125,12 +125,12 @@ type TestIamPermissionsRequest struct {
 	// REQUIRED: The resource for which the policy detail is being requested.
 	// `resource` is usually specified as a path. For example, a Project
 	// resource is specified as `projects/{project}`.
-	Resource string `protobuf:"bytes,1,opt,name=resource" json:"resource,omitempty"`
+	Resource string `protobuf:"bytes,1,opt,name=resource,proto3" json:"resource,omitempty"`
 	// The set of permissions to check for the `resource`. Permissions with
 	// wildcards (such as '*' or 'storage.*') are not allowed. For more
 	// information see
 	// [IAM Overview](https://cloud.google.com/iam/docs/overview#permissions).
-	Permissions          []string `protobuf:"bytes,2,rep,name=permissions" json:"permissions,omitempty"`
+	Permissions          []string `protobuf:"bytes,2,rep,name=permissions,proto3" json:"permissions,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -140,7 +140,7 @@ func (m *TestIamPermissionsRequest) Reset()         { *m = TestIamPermissionsReq
 func (m *TestIamPermissionsRequest) String() string { return proto.CompactTextString(m) }
 func (*TestIamPermissionsRequest) ProtoMessage()    {}
 func (*TestIamPermissionsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_iam_policy_511a6b0802f7199d, []int{2}
+	return fileDescriptor_iam_policy_58547b5cf2e9d67a, []int{2}
 }
 func (m *TestIamPermissionsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_TestIamPermissionsRequest.Unmarshal(m, b)
@@ -178,7 +178,7 @@ func (m *TestIamPermissionsRequest) GetPermissions() []string {
 type TestIamPermissionsResponse struct {
 	// A subset of `TestPermissionsRequest.permissions` that the caller is
 	// allowed.
-	Permissions          []string `protobuf:"bytes,1,rep,name=permissions" json:"permissions,omitempty"`
+	Permissions          []string `protobuf:"bytes,1,rep,name=permissions,proto3" json:"permissions,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -188,7 +188,7 @@ func (m *TestIamPermissionsResponse) Reset()         { *m = TestIamPermissionsRe
 func (m *TestIamPermissionsResponse) String() string { return proto.CompactTextString(m) }
 func (*TestIamPermissionsResponse) ProtoMessage()    {}
 func (*TestIamPermissionsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_iam_policy_511a6b0802f7199d, []int{3}
+	return fileDescriptor_iam_policy_58547b5cf2e9d67a, []int{3}
 }
 func (m *TestIamPermissionsResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_TestIamPermissionsResponse.Unmarshal(m, b)
@@ -282,8 +282,7 @@ func (c *iAMPolicyClient) TestIamPermissions(ctx context.Context, in *TestIamPer
 	return out, nil
 }
 
-// Server API for IAMPolicy service
-
+// IAMPolicyServer is the server API for IAMPolicy service.
 type IAMPolicyServer interface {
 	// Sets the access control policy on the specified resource. Replaces any
 	// existing policy.
@@ -378,10 +377,10 @@ var _IAMPolicy_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("google/iam/v1/iam_policy.proto", fileDescriptor_iam_policy_511a6b0802f7199d)
+	proto.RegisterFile("google/iam/v1/iam_policy.proto", fileDescriptor_iam_policy_58547b5cf2e9d67a)
 }
 
-var fileDescriptor_iam_policy_511a6b0802f7199d = []byte{
+var fileDescriptor_iam_policy_58547b5cf2e9d67a = []byte{
 	// 411 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x92, 0x4b, 0xcf, 0xcf, 0x4f,
 	0xcf, 0x49, 0xd5, 0xcf, 0x4c, 0xcc, 0xd5, 0x2f, 0x33, 0x04, 0x51, 0xf1, 0x05, 0xf9, 0x39, 0x99,

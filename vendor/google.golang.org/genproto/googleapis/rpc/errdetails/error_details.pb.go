@@ -34,7 +34,7 @@ const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 // reached.
 type RetryInfo struct {
 	// Clients should wait at least this long between retrying the same request.
-	RetryDelay           *duration.Duration `protobuf:"bytes,1,opt,name=retry_delay,json=retryDelay" json:"retry_delay,omitempty"`
+	RetryDelay           *duration.Duration `protobuf:"bytes,1,opt,name=retry_delay,json=retryDelay,proto3" json:"retry_delay,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}           `json:"-"`
 	XXX_unrecognized     []byte             `json:"-"`
 	XXX_sizecache        int32              `json:"-"`
@@ -44,7 +44,7 @@ func (m *RetryInfo) Reset()         { *m = RetryInfo{} }
 func (m *RetryInfo) String() string { return proto.CompactTextString(m) }
 func (*RetryInfo) ProtoMessage()    {}
 func (*RetryInfo) Descriptor() ([]byte, []int) {
-	return fileDescriptor_error_details_4199ce9006de828a, []int{0}
+	return fileDescriptor_error_details_816025d2d1ab7c4c, []int{0}
 }
 func (m *RetryInfo) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_RetryInfo.Unmarshal(m, b)
@@ -74,9 +74,9 @@ func (m *RetryInfo) GetRetryDelay() *duration.Duration {
 // Describes additional debugging info.
 type DebugInfo struct {
 	// The stack trace entries indicating where the error occurred.
-	StackEntries []string `protobuf:"bytes,1,rep,name=stack_entries,json=stackEntries" json:"stack_entries,omitempty"`
+	StackEntries []string `protobuf:"bytes,1,rep,name=stack_entries,json=stackEntries,proto3" json:"stack_entries,omitempty"`
 	// Additional debugging information provided by the server.
-	Detail               string   `protobuf:"bytes,2,opt,name=detail" json:"detail,omitempty"`
+	Detail               string   `protobuf:"bytes,2,opt,name=detail,proto3" json:"detail,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -86,7 +86,7 @@ func (m *DebugInfo) Reset()         { *m = DebugInfo{} }
 func (m *DebugInfo) String() string { return proto.CompactTextString(m) }
 func (*DebugInfo) ProtoMessage()    {}
 func (*DebugInfo) Descriptor() ([]byte, []int) {
-	return fileDescriptor_error_details_4199ce9006de828a, []int{1}
+	return fileDescriptor_error_details_816025d2d1ab7c4c, []int{1}
 }
 func (m *DebugInfo) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DebugInfo.Unmarshal(m, b)
@@ -133,7 +133,7 @@ func (m *DebugInfo) GetDetail() string {
 // quota failure.
 type QuotaFailure struct {
 	// Describes all quota violations.
-	Violations           []*QuotaFailure_Violation `protobuf:"bytes,1,rep,name=violations" json:"violations,omitempty"`
+	Violations           []*QuotaFailure_Violation `protobuf:"bytes,1,rep,name=violations,proto3" json:"violations,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                  `json:"-"`
 	XXX_unrecognized     []byte                    `json:"-"`
 	XXX_sizecache        int32                     `json:"-"`
@@ -143,7 +143,7 @@ func (m *QuotaFailure) Reset()         { *m = QuotaFailure{} }
 func (m *QuotaFailure) String() string { return proto.CompactTextString(m) }
 func (*QuotaFailure) ProtoMessage()    {}
 func (*QuotaFailure) Descriptor() ([]byte, []int) {
-	return fileDescriptor_error_details_4199ce9006de828a, []int{2}
+	return fileDescriptor_error_details_816025d2d1ab7c4c, []int{2}
 }
 func (m *QuotaFailure) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_QuotaFailure.Unmarshal(m, b)
@@ -176,7 +176,7 @@ type QuotaFailure_Violation struct {
 	// The subject on which the quota check failed.
 	// For example, "clientip:<ip address of client>" or "project:<Google
 	// developer project id>".
-	Subject string `protobuf:"bytes,1,opt,name=subject" json:"subject,omitempty"`
+	Subject string `protobuf:"bytes,1,opt,name=subject,proto3" json:"subject,omitempty"`
 	// A description of how the quota check failed. Clients can use this
 	// description to find more about the quota configuration in the service's
 	// public documentation, or find the relevant quota limit to adjust through
@@ -184,7 +184,7 @@ type QuotaFailure_Violation struct {
 	//
 	// For example: "Service disabled" or "Daily Limit for read operations
 	// exceeded".
-	Description          string   `protobuf:"bytes,2,opt,name=description" json:"description,omitempty"`
+	Description          string   `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -194,7 +194,7 @@ func (m *QuotaFailure_Violation) Reset()         { *m = QuotaFailure_Violation{}
 func (m *QuotaFailure_Violation) String() string { return proto.CompactTextString(m) }
 func (*QuotaFailure_Violation) ProtoMessage()    {}
 func (*QuotaFailure_Violation) Descriptor() ([]byte, []int) {
-	return fileDescriptor_error_details_4199ce9006de828a, []int{2, 0}
+	return fileDescriptor_error_details_816025d2d1ab7c4c, []int{2, 0}
 }
 func (m *QuotaFailure_Violation) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_QuotaFailure_Violation.Unmarshal(m, b)
@@ -235,7 +235,7 @@ func (m *QuotaFailure_Violation) GetDescription() string {
 // PreconditionFailure message.
 type PreconditionFailure struct {
 	// Describes all precondition violations.
-	Violations           []*PreconditionFailure_Violation `protobuf:"bytes,1,rep,name=violations" json:"violations,omitempty"`
+	Violations           []*PreconditionFailure_Violation `protobuf:"bytes,1,rep,name=violations,proto3" json:"violations,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                         `json:"-"`
 	XXX_unrecognized     []byte                           `json:"-"`
 	XXX_sizecache        int32                            `json:"-"`
@@ -245,7 +245,7 @@ func (m *PreconditionFailure) Reset()         { *m = PreconditionFailure{} }
 func (m *PreconditionFailure) String() string { return proto.CompactTextString(m) }
 func (*PreconditionFailure) ProtoMessage()    {}
 func (*PreconditionFailure) Descriptor() ([]byte, []int) {
-	return fileDescriptor_error_details_4199ce9006de828a, []int{3}
+	return fileDescriptor_error_details_816025d2d1ab7c4c, []int{3}
 }
 func (m *PreconditionFailure) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_PreconditionFailure.Unmarshal(m, b)
@@ -277,16 +277,16 @@ type PreconditionFailure_Violation struct {
 	// The type of PreconditionFailure. We recommend using a service-specific
 	// enum type to define the supported precondition violation types. For
 	// example, "TOS" for "Terms of Service violation".
-	Type string `protobuf:"bytes,1,opt,name=type" json:"type,omitempty"`
+	Type string `protobuf:"bytes,1,opt,name=type,proto3" json:"type,omitempty"`
 	// The subject, relative to the type, that failed.
 	// For example, "google.com/cloud" relative to the "TOS" type would
 	// indicate which terms of service is being referenced.
-	Subject string `protobuf:"bytes,2,opt,name=subject" json:"subject,omitempty"`
+	Subject string `protobuf:"bytes,2,opt,name=subject,proto3" json:"subject,omitempty"`
 	// A description of how the precondition failed. Developers can use this
 	// description to understand how to fix the failure.
 	//
 	// For example: "Terms of service not accepted".
-	Description          string   `protobuf:"bytes,3,opt,name=description" json:"description,omitempty"`
+	Description          string   `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -296,7 +296,7 @@ func (m *PreconditionFailure_Violation) Reset()         { *m = PreconditionFailu
 func (m *PreconditionFailure_Violation) String() string { return proto.CompactTextString(m) }
 func (*PreconditionFailure_Violation) ProtoMessage()    {}
 func (*PreconditionFailure_Violation) Descriptor() ([]byte, []int) {
-	return fileDescriptor_error_details_4199ce9006de828a, []int{3, 0}
+	return fileDescriptor_error_details_816025d2d1ab7c4c, []int{3, 0}
 }
 func (m *PreconditionFailure_Violation) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_PreconditionFailure_Violation.Unmarshal(m, b)
@@ -341,7 +341,7 @@ func (m *PreconditionFailure_Violation) GetDescription() string {
 // syntactic aspects of the request.
 type BadRequest struct {
 	// Describes all violations in a client request.
-	FieldViolations      []*BadRequest_FieldViolation `protobuf:"bytes,1,rep,name=field_violations,json=fieldViolations" json:"field_violations,omitempty"`
+	FieldViolations      []*BadRequest_FieldViolation `protobuf:"bytes,1,rep,name=field_violations,json=fieldViolations,proto3" json:"field_violations,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                     `json:"-"`
 	XXX_unrecognized     []byte                       `json:"-"`
 	XXX_sizecache        int32                        `json:"-"`
@@ -351,7 +351,7 @@ func (m *BadRequest) Reset()         { *m = BadRequest{} }
 func (m *BadRequest) String() string { return proto.CompactTextString(m) }
 func (*BadRequest) ProtoMessage()    {}
 func (*BadRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_error_details_4199ce9006de828a, []int{4}
+	return fileDescriptor_error_details_816025d2d1ab7c4c, []int{4}
 }
 func (m *BadRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_BadRequest.Unmarshal(m, b)
@@ -383,9 +383,9 @@ type BadRequest_FieldViolation struct {
 	// A path leading to a field in the request body. The value will be a
 	// sequence of dot-separated identifiers that identify a protocol buffer
 	// field. E.g., "field_violations.field" would identify this field.
-	Field string `protobuf:"bytes,1,opt,name=field" json:"field,omitempty"`
+	Field string `protobuf:"bytes,1,opt,name=field,proto3" json:"field,omitempty"`
 	// A description of why the request element is bad.
-	Description          string   `protobuf:"bytes,2,opt,name=description" json:"description,omitempty"`
+	Description          string   `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -395,7 +395,7 @@ func (m *BadRequest_FieldViolation) Reset()         { *m = BadRequest_FieldViola
 func (m *BadRequest_FieldViolation) String() string { return proto.CompactTextString(m) }
 func (*BadRequest_FieldViolation) ProtoMessage()    {}
 func (*BadRequest_FieldViolation) Descriptor() ([]byte, []int) {
-	return fileDescriptor_error_details_4199ce9006de828a, []int{4, 0}
+	return fileDescriptor_error_details_816025d2d1ab7c4c, []int{4, 0}
 }
 func (m *BadRequest_FieldViolation) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_BadRequest_FieldViolation.Unmarshal(m, b)
@@ -434,10 +434,10 @@ func (m *BadRequest_FieldViolation) GetDescription() string {
 type RequestInfo struct {
 	// An opaque string that should only be interpreted by the service generating
 	// it. For example, it can be used to identify requests in the service's logs.
-	RequestId string `protobuf:"bytes,1,opt,name=request_id,json=requestId" json:"request_id,omitempty"`
+	RequestId string `protobuf:"bytes,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
 	// Any data that was used to serve this request. For example, an encrypted
 	// stack trace that can be sent back to the service provider for debugging.
-	ServingData          string   `protobuf:"bytes,2,opt,name=serving_data,json=servingData" json:"serving_data,omitempty"`
+	ServingData          string   `protobuf:"bytes,2,opt,name=serving_data,json=servingData,proto3" json:"serving_data,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -447,7 +447,7 @@ func (m *RequestInfo) Reset()         { *m = RequestInfo{} }
 func (m *RequestInfo) String() string { return proto.CompactTextString(m) }
 func (*RequestInfo) ProtoMessage()    {}
 func (*RequestInfo) Descriptor() ([]byte, []int) {
-	return fileDescriptor_error_details_4199ce9006de828a, []int{5}
+	return fileDescriptor_error_details_816025d2d1ab7c4c, []int{5}
 }
 func (m *RequestInfo) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_RequestInfo.Unmarshal(m, b)
@@ -486,19 +486,19 @@ type ResourceInfo struct {
 	// A name for the type of resource being accessed, e.g. "sql table",
 	// "cloud storage bucket", "file", "Google calendar"; or the type URL
 	// of the resource: e.g. "type.googleapis.com/google.pubsub.v1.Topic".
-	ResourceType string `protobuf:"bytes,1,opt,name=resource_type,json=resourceType" json:"resource_type,omitempty"`
+	ResourceType string `protobuf:"bytes,1,opt,name=resource_type,json=resourceType,proto3" json:"resource_type,omitempty"`
 	// The name of the resource being accessed.  For example, a shared calendar
 	// name: "example.com_4fghdhgsrgh@group.calendar.google.com", if the current
 	// error is [google.rpc.Code.PERMISSION_DENIED][google.rpc.Code.PERMISSION_DENIED].
-	ResourceName string `protobuf:"bytes,2,opt,name=resource_name,json=resourceName" json:"resource_name,omitempty"`
+	ResourceName string `protobuf:"bytes,2,opt,name=resource_name,json=resourceName,proto3" json:"resource_name,omitempty"`
 	// The owner of the resource (optional).
 	// For example, "user:<owner email>" or "project:<Google developer project
 	// id>".
-	Owner string `protobuf:"bytes,3,opt,name=owner" json:"owner,omitempty"`
+	Owner string `protobuf:"bytes,3,opt,name=owner,proto3" json:"owner,omitempty"`
 	// Describes what error is encountered when accessing this resource.
 	// For example, updating a cloud project may require the `writer` permission
 	// on the developer console project.
-	Description          string   `protobuf:"bytes,4,opt,name=description" json:"description,omitempty"`
+	Description          string   `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -508,7 +508,7 @@ func (m *ResourceInfo) Reset()         { *m = ResourceInfo{} }
 func (m *ResourceInfo) String() string { return proto.CompactTextString(m) }
 func (*ResourceInfo) ProtoMessage()    {}
 func (*ResourceInfo) Descriptor() ([]byte, []int) {
-	return fileDescriptor_error_details_4199ce9006de828a, []int{6}
+	return fileDescriptor_error_details_816025d2d1ab7c4c, []int{6}
 }
 func (m *ResourceInfo) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ResourceInfo.Unmarshal(m, b)
@@ -563,7 +563,7 @@ func (m *ResourceInfo) GetDescription() string {
 // directly to the right place in the developer console to flip the bit.
 type Help struct {
 	// URL(s) pointing to additional information on handling the current error.
-	Links                []*Help_Link `protobuf:"bytes,1,rep,name=links" json:"links,omitempty"`
+	Links                []*Help_Link `protobuf:"bytes,1,rep,name=links,proto3" json:"links,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
 	XXX_unrecognized     []byte       `json:"-"`
 	XXX_sizecache        int32        `json:"-"`
@@ -573,7 +573,7 @@ func (m *Help) Reset()         { *m = Help{} }
 func (m *Help) String() string { return proto.CompactTextString(m) }
 func (*Help) ProtoMessage()    {}
 func (*Help) Descriptor() ([]byte, []int) {
-	return fileDescriptor_error_details_4199ce9006de828a, []int{7}
+	return fileDescriptor_error_details_816025d2d1ab7c4c, []int{7}
 }
 func (m *Help) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Help.Unmarshal(m, b)
@@ -603,9 +603,9 @@ func (m *Help) GetLinks() []*Help_Link {
 // Describes a URL link.
 type Help_Link struct {
 	// Describes what the link offers.
-	Description string `protobuf:"bytes,1,opt,name=description" json:"description,omitempty"`
+	Description string `protobuf:"bytes,1,opt,name=description,proto3" json:"description,omitempty"`
 	// The URL of the link.
-	Url                  string   `protobuf:"bytes,2,opt,name=url" json:"url,omitempty"`
+	Url                  string   `protobuf:"bytes,2,opt,name=url,proto3" json:"url,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -615,7 +615,7 @@ func (m *Help_Link) Reset()         { *m = Help_Link{} }
 func (m *Help_Link) String() string { return proto.CompactTextString(m) }
 func (*Help_Link) ProtoMessage()    {}
 func (*Help_Link) Descriptor() ([]byte, []int) {
-	return fileDescriptor_error_details_4199ce9006de828a, []int{7, 0}
+	return fileDescriptor_error_details_816025d2d1ab7c4c, []int{7, 0}
 }
 func (m *Help_Link) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Help_Link.Unmarshal(m, b)
@@ -655,9 +655,9 @@ type LocalizedMessage struct {
 	// The locale used following the specification defined at
 	// http://www.rfc-editor.org/rfc/bcp/bcp47.txt.
 	// Examples are: "en-US", "fr-CH", "es-MX"
-	Locale string `protobuf:"bytes,1,opt,name=locale" json:"locale,omitempty"`
+	Locale string `protobuf:"bytes,1,opt,name=locale,proto3" json:"locale,omitempty"`
 	// The localized error message in the above locale.
-	Message              string   `protobuf:"bytes,2,opt,name=message" json:"message,omitempty"`
+	Message              string   `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -667,7 +667,7 @@ func (m *LocalizedMessage) Reset()         { *m = LocalizedMessage{} }
 func (m *LocalizedMessage) String() string { return proto.CompactTextString(m) }
 func (*LocalizedMessage) ProtoMessage()    {}
 func (*LocalizedMessage) Descriptor() ([]byte, []int) {
-	return fileDescriptor_error_details_4199ce9006de828a, []int{8}
+	return fileDescriptor_error_details_816025d2d1ab7c4c, []int{8}
 }
 func (m *LocalizedMessage) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_LocalizedMessage.Unmarshal(m, b)
@@ -718,10 +718,10 @@ func init() {
 }
 
 func init() {
-	proto.RegisterFile("google/rpc/error_details.proto", fileDescriptor_error_details_4199ce9006de828a)
+	proto.RegisterFile("google/rpc/error_details.proto", fileDescriptor_error_details_816025d2d1ab7c4c)
 }
 
-var fileDescriptor_error_details_4199ce9006de828a = []byte{
+var fileDescriptor_error_details_816025d2d1ab7c4c = []byte{
 	// 595 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x54, 0xcd, 0x6e, 0xd3, 0x4c,
 	0x14, 0x95, 0x9b, 0xb4, 0x9f, 0x7c, 0x93, 0xaf, 0x14, 0xf3, 0xa3, 0x10, 0x09, 0x14, 0x8c, 0x90,

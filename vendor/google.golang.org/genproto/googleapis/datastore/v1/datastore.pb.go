@@ -52,7 +52,7 @@ func (x CommitRequest_Mode) String() string {
 	return proto.EnumName(CommitRequest_Mode_name, int32(x))
 }
 func (CommitRequest_Mode) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_datastore_59155d08d600834e, []int{8, 0}
+	return fileDescriptor_datastore_43db8ce3c69efb71, []int{8, 0}
 }
 
 // The possible values for read consistencies.
@@ -82,17 +82,17 @@ func (x ReadOptions_ReadConsistency) String() string {
 	return proto.EnumName(ReadOptions_ReadConsistency_name, int32(x))
 }
 func (ReadOptions_ReadConsistency) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_datastore_59155d08d600834e, []int{16, 0}
+	return fileDescriptor_datastore_43db8ce3c69efb71, []int{16, 0}
 }
 
 // The request for [Datastore.Lookup][google.datastore.v1.Datastore.Lookup].
 type LookupRequest struct {
 	// The ID of the project against which to make the request.
-	ProjectId string `protobuf:"bytes,8,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,8,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// The options for this lookup request.
-	ReadOptions *ReadOptions `protobuf:"bytes,1,opt,name=read_options,json=readOptions" json:"read_options,omitempty"`
+	ReadOptions *ReadOptions `protobuf:"bytes,1,opt,name=read_options,json=readOptions,proto3" json:"read_options,omitempty"`
 	// Keys of entities to look up.
-	Keys                 []*Key   `protobuf:"bytes,3,rep,name=keys" json:"keys,omitempty"`
+	Keys                 []*Key   `protobuf:"bytes,3,rep,name=keys,proto3" json:"keys,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -102,7 +102,7 @@ func (m *LookupRequest) Reset()         { *m = LookupRequest{} }
 func (m *LookupRequest) String() string { return proto.CompactTextString(m) }
 func (*LookupRequest) ProtoMessage()    {}
 func (*LookupRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_datastore_59155d08d600834e, []int{0}
+	return fileDescriptor_datastore_43db8ce3c69efb71, []int{0}
 }
 func (m *LookupRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_LookupRequest.Unmarshal(m, b)
@@ -148,15 +148,15 @@ type LookupResponse struct {
 	// Entities found as `ResultType.FULL` entities. The order of results in this
 	// field is undefined and has no relation to the order of the keys in the
 	// input.
-	Found []*EntityResult `protobuf:"bytes,1,rep,name=found" json:"found,omitempty"`
+	Found []*EntityResult `protobuf:"bytes,1,rep,name=found,proto3" json:"found,omitempty"`
 	// Entities not found as `ResultType.KEY_ONLY` entities. The order of results
 	// in this field is undefined and has no relation to the order of the keys
 	// in the input.
-	Missing []*EntityResult `protobuf:"bytes,2,rep,name=missing" json:"missing,omitempty"`
+	Missing []*EntityResult `protobuf:"bytes,2,rep,name=missing,proto3" json:"missing,omitempty"`
 	// A list of keys that were not looked up due to resource constraints. The
 	// order of results in this field is undefined and has no relation to the
 	// order of the keys in the input.
-	Deferred             []*Key   `protobuf:"bytes,3,rep,name=deferred" json:"deferred,omitempty"`
+	Deferred             []*Key   `protobuf:"bytes,3,rep,name=deferred,proto3" json:"deferred,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -166,7 +166,7 @@ func (m *LookupResponse) Reset()         { *m = LookupResponse{} }
 func (m *LookupResponse) String() string { return proto.CompactTextString(m) }
 func (*LookupResponse) ProtoMessage()    {}
 func (*LookupResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_datastore_59155d08d600834e, []int{1}
+	return fileDescriptor_datastore_43db8ce3c69efb71, []int{1}
 }
 func (m *LookupResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_LookupResponse.Unmarshal(m, b)
@@ -210,14 +210,14 @@ func (m *LookupResponse) GetDeferred() []*Key {
 // The request for [Datastore.RunQuery][google.datastore.v1.Datastore.RunQuery].
 type RunQueryRequest struct {
 	// The ID of the project against which to make the request.
-	ProjectId string `protobuf:"bytes,8,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,8,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// Entities are partitioned into subsets, identified by a partition ID.
 	// Queries are scoped to a single partition.
 	// This partition ID is normalized with the standard default context
 	// partition ID.
-	PartitionId *PartitionId `protobuf:"bytes,2,opt,name=partition_id,json=partitionId" json:"partition_id,omitempty"`
+	PartitionId *PartitionId `protobuf:"bytes,2,opt,name=partition_id,json=partitionId,proto3" json:"partition_id,omitempty"`
 	// The options for this query.
-	ReadOptions *ReadOptions `protobuf:"bytes,1,opt,name=read_options,json=readOptions" json:"read_options,omitempty"`
+	ReadOptions *ReadOptions `protobuf:"bytes,1,opt,name=read_options,json=readOptions,proto3" json:"read_options,omitempty"`
 	// The type of query.
 	//
 	// Types that are valid to be assigned to QueryType:
@@ -233,7 +233,7 @@ func (m *RunQueryRequest) Reset()         { *m = RunQueryRequest{} }
 func (m *RunQueryRequest) String() string { return proto.CompactTextString(m) }
 func (*RunQueryRequest) ProtoMessage()    {}
 func (*RunQueryRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_datastore_59155d08d600834e, []int{2}
+	return fileDescriptor_datastore_43db8ce3c69efb71, []int{2}
 }
 func (m *RunQueryRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_RunQueryRequest.Unmarshal(m, b)
@@ -253,27 +253,6 @@ func (m *RunQueryRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_RunQueryRequest proto.InternalMessageInfo
 
-type isRunQueryRequest_QueryType interface {
-	isRunQueryRequest_QueryType()
-}
-
-type RunQueryRequest_Query struct {
-	Query *Query `protobuf:"bytes,3,opt,name=query,oneof"`
-}
-type RunQueryRequest_GqlQuery struct {
-	GqlQuery *GqlQuery `protobuf:"bytes,7,opt,name=gql_query,json=gqlQuery,oneof"`
-}
-
-func (*RunQueryRequest_Query) isRunQueryRequest_QueryType()    {}
-func (*RunQueryRequest_GqlQuery) isRunQueryRequest_QueryType() {}
-
-func (m *RunQueryRequest) GetQueryType() isRunQueryRequest_QueryType {
-	if m != nil {
-		return m.QueryType
-	}
-	return nil
-}
-
 func (m *RunQueryRequest) GetProjectId() string {
 	if m != nil {
 		return m.ProjectId
@@ -291,6 +270,29 @@ func (m *RunQueryRequest) GetPartitionId() *PartitionId {
 func (m *RunQueryRequest) GetReadOptions() *ReadOptions {
 	if m != nil {
 		return m.ReadOptions
+	}
+	return nil
+}
+
+type isRunQueryRequest_QueryType interface {
+	isRunQueryRequest_QueryType()
+}
+
+type RunQueryRequest_Query struct {
+	Query *Query `protobuf:"bytes,3,opt,name=query,proto3,oneof"`
+}
+
+type RunQueryRequest_GqlQuery struct {
+	GqlQuery *GqlQuery `protobuf:"bytes,7,opt,name=gql_query,json=gqlQuery,proto3,oneof"`
+}
+
+func (*RunQueryRequest_Query) isRunQueryRequest_QueryType() {}
+
+func (*RunQueryRequest_GqlQuery) isRunQueryRequest_QueryType() {}
+
+func (m *RunQueryRequest) GetQueryType() isRunQueryRequest_QueryType {
+	if m != nil {
+		return m.QueryType
 	}
 	return nil
 }
@@ -386,9 +388,9 @@ func _RunQueryRequest_OneofSizer(msg proto.Message) (n int) {
 // The response for [Datastore.RunQuery][google.datastore.v1.Datastore.RunQuery].
 type RunQueryResponse struct {
 	// A batch of query results (always present).
-	Batch *QueryResultBatch `protobuf:"bytes,1,opt,name=batch" json:"batch,omitempty"`
+	Batch *QueryResultBatch `protobuf:"bytes,1,opt,name=batch,proto3" json:"batch,omitempty"`
 	// The parsed form of the `GqlQuery` from the request, if it was set.
-	Query                *Query   `protobuf:"bytes,2,opt,name=query" json:"query,omitempty"`
+	Query                *Query   `protobuf:"bytes,2,opt,name=query,proto3" json:"query,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -398,7 +400,7 @@ func (m *RunQueryResponse) Reset()         { *m = RunQueryResponse{} }
 func (m *RunQueryResponse) String() string { return proto.CompactTextString(m) }
 func (*RunQueryResponse) ProtoMessage()    {}
 func (*RunQueryResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_datastore_59155d08d600834e, []int{3}
+	return fileDescriptor_datastore_43db8ce3c69efb71, []int{3}
 }
 func (m *RunQueryResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_RunQueryResponse.Unmarshal(m, b)
@@ -435,9 +437,9 @@ func (m *RunQueryResponse) GetQuery() *Query {
 // The request for [Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction].
 type BeginTransactionRequest struct {
 	// The ID of the project against which to make the request.
-	ProjectId string `protobuf:"bytes,8,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,8,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// Options for a new transaction.
-	TransactionOptions   *TransactionOptions `protobuf:"bytes,10,opt,name=transaction_options,json=transactionOptions" json:"transaction_options,omitempty"`
+	TransactionOptions   *TransactionOptions `protobuf:"bytes,10,opt,name=transaction_options,json=transactionOptions,proto3" json:"transaction_options,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}            `json:"-"`
 	XXX_unrecognized     []byte              `json:"-"`
 	XXX_sizecache        int32               `json:"-"`
@@ -447,7 +449,7 @@ func (m *BeginTransactionRequest) Reset()         { *m = BeginTransactionRequest
 func (m *BeginTransactionRequest) String() string { return proto.CompactTextString(m) }
 func (*BeginTransactionRequest) ProtoMessage()    {}
 func (*BeginTransactionRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_datastore_59155d08d600834e, []int{4}
+	return fileDescriptor_datastore_43db8ce3c69efb71, []int{4}
 }
 func (m *BeginTransactionRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_BeginTransactionRequest.Unmarshal(m, b)
@@ -494,7 +496,7 @@ func (m *BeginTransactionResponse) Reset()         { *m = BeginTransactionRespon
 func (m *BeginTransactionResponse) String() string { return proto.CompactTextString(m) }
 func (*BeginTransactionResponse) ProtoMessage()    {}
 func (*BeginTransactionResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_datastore_59155d08d600834e, []int{5}
+	return fileDescriptor_datastore_43db8ce3c69efb71, []int{5}
 }
 func (m *BeginTransactionResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_BeginTransactionResponse.Unmarshal(m, b)
@@ -524,7 +526,7 @@ func (m *BeginTransactionResponse) GetTransaction() []byte {
 // The request for [Datastore.Rollback][google.datastore.v1.Datastore.Rollback].
 type RollbackRequest struct {
 	// The ID of the project against which to make the request.
-	ProjectId string `protobuf:"bytes,8,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,8,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// The transaction identifier, returned by a call to
 	// [Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction].
 	Transaction          []byte   `protobuf:"bytes,1,opt,name=transaction,proto3" json:"transaction,omitempty"`
@@ -537,7 +539,7 @@ func (m *RollbackRequest) Reset()         { *m = RollbackRequest{} }
 func (m *RollbackRequest) String() string { return proto.CompactTextString(m) }
 func (*RollbackRequest) ProtoMessage()    {}
 func (*RollbackRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_datastore_59155d08d600834e, []int{6}
+	return fileDescriptor_datastore_43db8ce3c69efb71, []int{6}
 }
 func (m *RollbackRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_RollbackRequest.Unmarshal(m, b)
@@ -583,7 +585,7 @@ func (m *RollbackResponse) Reset()         { *m = RollbackResponse{} }
 func (m *RollbackResponse) String() string { return proto.CompactTextString(m) }
 func (*RollbackResponse) ProtoMessage()    {}
 func (*RollbackResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_datastore_59155d08d600834e, []int{7}
+	return fileDescriptor_datastore_43db8ce3c69efb71, []int{7}
 }
 func (m *RollbackResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_RollbackResponse.Unmarshal(m, b)
@@ -606,9 +608,9 @@ var xxx_messageInfo_RollbackResponse proto.InternalMessageInfo
 // The request for [Datastore.Commit][google.datastore.v1.Datastore.Commit].
 type CommitRequest struct {
 	// The ID of the project against which to make the request.
-	ProjectId string `protobuf:"bytes,8,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,8,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// The type of commit to perform. Defaults to `TRANSACTIONAL`.
-	Mode CommitRequest_Mode `protobuf:"varint,5,opt,name=mode,enum=google.datastore.v1.CommitRequest_Mode" json:"mode,omitempty"`
+	Mode CommitRequest_Mode `protobuf:"varint,5,opt,name=mode,proto3,enum=google.datastore.v1.CommitRequest_Mode" json:"mode,omitempty"`
 	// Must be set when mode is `TRANSACTIONAL`.
 	//
 	// Types that are valid to be assigned to TransactionSelector:
@@ -627,7 +629,7 @@ type CommitRequest struct {
 	//
 	// When mode is `NON_TRANSACTIONAL`, no two mutations may affect a single
 	// entity.
-	Mutations            []*Mutation `protobuf:"bytes,6,rep,name=mutations" json:"mutations,omitempty"`
+	Mutations            []*Mutation `protobuf:"bytes,6,rep,name=mutations,proto3" json:"mutations,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
 	XXX_unrecognized     []byte      `json:"-"`
 	XXX_sizecache        int32       `json:"-"`
@@ -637,7 +639,7 @@ func (m *CommitRequest) Reset()         { *m = CommitRequest{} }
 func (m *CommitRequest) String() string { return proto.CompactTextString(m) }
 func (*CommitRequest) ProtoMessage()    {}
 func (*CommitRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_datastore_59155d08d600834e, []int{8}
+	return fileDescriptor_datastore_43db8ce3c69efb71, []int{8}
 }
 func (m *CommitRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CommitRequest.Unmarshal(m, b)
@@ -657,6 +659,20 @@ func (m *CommitRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_CommitRequest proto.InternalMessageInfo
 
+func (m *CommitRequest) GetProjectId() string {
+	if m != nil {
+		return m.ProjectId
+	}
+	return ""
+}
+
+func (m *CommitRequest) GetMode() CommitRequest_Mode {
+	if m != nil {
+		return m.Mode
+	}
+	return CommitRequest_MODE_UNSPECIFIED
+}
+
 type isCommitRequest_TransactionSelector interface {
 	isCommitRequest_TransactionSelector()
 }
@@ -672,20 +688,6 @@ func (m *CommitRequest) GetTransactionSelector() isCommitRequest_TransactionSele
 		return m.TransactionSelector
 	}
 	return nil
-}
-
-func (m *CommitRequest) GetProjectId() string {
-	if m != nil {
-		return m.ProjectId
-	}
-	return ""
-}
-
-func (m *CommitRequest) GetMode() CommitRequest_Mode {
-	if m != nil {
-		return m.Mode
-	}
-	return CommitRequest_MODE_UNSPECIFIED
 }
 
 func (m *CommitRequest) GetTransaction() []byte {
@@ -757,10 +759,10 @@ func _CommitRequest_OneofSizer(msg proto.Message) (n int) {
 type CommitResponse struct {
 	// The result of performing the mutations.
 	// The i-th mutation result corresponds to the i-th mutation in the request.
-	MutationResults []*MutationResult `protobuf:"bytes,3,rep,name=mutation_results,json=mutationResults" json:"mutation_results,omitempty"`
+	MutationResults []*MutationResult `protobuf:"bytes,3,rep,name=mutation_results,json=mutationResults,proto3" json:"mutation_results,omitempty"`
 	// The number of index entries updated during the commit, or zero if none were
 	// updated.
-	IndexUpdates         int32    `protobuf:"varint,4,opt,name=index_updates,json=indexUpdates" json:"index_updates,omitempty"`
+	IndexUpdates         int32    `protobuf:"varint,4,opt,name=index_updates,json=indexUpdates,proto3" json:"index_updates,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -770,7 +772,7 @@ func (m *CommitResponse) Reset()         { *m = CommitResponse{} }
 func (m *CommitResponse) String() string { return proto.CompactTextString(m) }
 func (*CommitResponse) ProtoMessage()    {}
 func (*CommitResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_datastore_59155d08d600834e, []int{9}
+	return fileDescriptor_datastore_43db8ce3c69efb71, []int{9}
 }
 func (m *CommitResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CommitResponse.Unmarshal(m, b)
@@ -807,10 +809,10 @@ func (m *CommitResponse) GetIndexUpdates() int32 {
 // The request for [Datastore.AllocateIds][google.datastore.v1.Datastore.AllocateIds].
 type AllocateIdsRequest struct {
 	// The ID of the project against which to make the request.
-	ProjectId string `protobuf:"bytes,8,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,8,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// A list of keys with incomplete key paths for which to allocate IDs.
 	// No key may be reserved/read-only.
-	Keys                 []*Key   `protobuf:"bytes,1,rep,name=keys" json:"keys,omitempty"`
+	Keys                 []*Key   `protobuf:"bytes,1,rep,name=keys,proto3" json:"keys,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -820,7 +822,7 @@ func (m *AllocateIdsRequest) Reset()         { *m = AllocateIdsRequest{} }
 func (m *AllocateIdsRequest) String() string { return proto.CompactTextString(m) }
 func (*AllocateIdsRequest) ProtoMessage()    {}
 func (*AllocateIdsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_datastore_59155d08d600834e, []int{10}
+	return fileDescriptor_datastore_43db8ce3c69efb71, []int{10}
 }
 func (m *AllocateIdsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_AllocateIdsRequest.Unmarshal(m, b)
@@ -858,7 +860,7 @@ func (m *AllocateIdsRequest) GetKeys() []*Key {
 type AllocateIdsResponse struct {
 	// The keys specified in the request (in the same order), each with
 	// its key path completed with a newly allocated ID.
-	Keys                 []*Key   `protobuf:"bytes,1,rep,name=keys" json:"keys,omitempty"`
+	Keys                 []*Key   `protobuf:"bytes,1,rep,name=keys,proto3" json:"keys,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -868,7 +870,7 @@ func (m *AllocateIdsResponse) Reset()         { *m = AllocateIdsResponse{} }
 func (m *AllocateIdsResponse) String() string { return proto.CompactTextString(m) }
 func (*AllocateIdsResponse) ProtoMessage()    {}
 func (*AllocateIdsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_datastore_59155d08d600834e, []int{11}
+	return fileDescriptor_datastore_43db8ce3c69efb71, []int{11}
 }
 func (m *AllocateIdsResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_AllocateIdsResponse.Unmarshal(m, b)
@@ -898,12 +900,12 @@ func (m *AllocateIdsResponse) GetKeys() []*Key {
 // The request for [Datastore.ReserveIds][google.datastore.v1.Datastore.ReserveIds].
 type ReserveIdsRequest struct {
 	// The ID of the project against which to make the request.
-	ProjectId string `protobuf:"bytes,8,opt,name=project_id,json=projectId" json:"project_id,omitempty"`
+	ProjectId string `protobuf:"bytes,8,opt,name=project_id,json=projectId,proto3" json:"project_id,omitempty"`
 	// If not empty, the ID of the database against which to make the request.
-	DatabaseId string `protobuf:"bytes,9,opt,name=database_id,json=databaseId" json:"database_id,omitempty"`
+	DatabaseId string `protobuf:"bytes,9,opt,name=database_id,json=databaseId,proto3" json:"database_id,omitempty"`
 	// A list of keys with complete key paths whose numeric IDs should not be
 	// auto-allocated.
-	Keys                 []*Key   `protobuf:"bytes,1,rep,name=keys" json:"keys,omitempty"`
+	Keys                 []*Key   `protobuf:"bytes,1,rep,name=keys,proto3" json:"keys,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -913,7 +915,7 @@ func (m *ReserveIdsRequest) Reset()         { *m = ReserveIdsRequest{} }
 func (m *ReserveIdsRequest) String() string { return proto.CompactTextString(m) }
 func (*ReserveIdsRequest) ProtoMessage()    {}
 func (*ReserveIdsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_datastore_59155d08d600834e, []int{12}
+	return fileDescriptor_datastore_43db8ce3c69efb71, []int{12}
 }
 func (m *ReserveIdsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ReserveIdsRequest.Unmarshal(m, b)
@@ -965,7 +967,7 @@ func (m *ReserveIdsResponse) Reset()         { *m = ReserveIdsResponse{} }
 func (m *ReserveIdsResponse) String() string { return proto.CompactTextString(m) }
 func (*ReserveIdsResponse) ProtoMessage()    {}
 func (*ReserveIdsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_datastore_59155d08d600834e, []int{13}
+	return fileDescriptor_datastore_43db8ce3c69efb71, []int{13}
 }
 func (m *ReserveIdsResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ReserveIdsResponse.Unmarshal(m, b)
@@ -1018,7 +1020,7 @@ func (m *Mutation) Reset()         { *m = Mutation{} }
 func (m *Mutation) String() string { return proto.CompactTextString(m) }
 func (*Mutation) ProtoMessage()    {}
 func (*Mutation) Descriptor() ([]byte, []int) {
-	return fileDescriptor_datastore_59155d08d600834e, []int{14}
+	return fileDescriptor_datastore_43db8ce3c69efb71, []int{14}
 }
 func (m *Mutation) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Mutation.Unmarshal(m, b)
@@ -1041,41 +1043,34 @@ var xxx_messageInfo_Mutation proto.InternalMessageInfo
 type isMutation_Operation interface {
 	isMutation_Operation()
 }
-type isMutation_ConflictDetectionStrategy interface {
-	isMutation_ConflictDetectionStrategy()
-}
 
 type Mutation_Insert struct {
-	Insert *Entity `protobuf:"bytes,4,opt,name=insert,oneof"`
-}
-type Mutation_Update struct {
-	Update *Entity `protobuf:"bytes,5,opt,name=update,oneof"`
-}
-type Mutation_Upsert struct {
-	Upsert *Entity `protobuf:"bytes,6,opt,name=upsert,oneof"`
-}
-type Mutation_Delete struct {
-	Delete *Key `protobuf:"bytes,7,opt,name=delete,oneof"`
-}
-type Mutation_BaseVersion struct {
-	BaseVersion int64 `protobuf:"varint,8,opt,name=base_version,json=baseVersion,oneof"`
+	Insert *Entity `protobuf:"bytes,4,opt,name=insert,proto3,oneof"`
 }
 
-func (*Mutation_Insert) isMutation_Operation()                      {}
-func (*Mutation_Update) isMutation_Operation()                      {}
-func (*Mutation_Upsert) isMutation_Operation()                      {}
-func (*Mutation_Delete) isMutation_Operation()                      {}
-func (*Mutation_BaseVersion) isMutation_ConflictDetectionStrategy() {}
+type Mutation_Update struct {
+	Update *Entity `protobuf:"bytes,5,opt,name=update,proto3,oneof"`
+}
+
+type Mutation_Upsert struct {
+	Upsert *Entity `protobuf:"bytes,6,opt,name=upsert,proto3,oneof"`
+}
+
+type Mutation_Delete struct {
+	Delete *Key `protobuf:"bytes,7,opt,name=delete,proto3,oneof"`
+}
+
+func (*Mutation_Insert) isMutation_Operation() {}
+
+func (*Mutation_Update) isMutation_Operation() {}
+
+func (*Mutation_Upsert) isMutation_Operation() {}
+
+func (*Mutation_Delete) isMutation_Operation() {}
 
 func (m *Mutation) GetOperation() isMutation_Operation {
 	if m != nil {
 		return m.Operation
-	}
-	return nil
-}
-func (m *Mutation) GetConflictDetectionStrategy() isMutation_ConflictDetectionStrategy {
-	if m != nil {
-		return m.ConflictDetectionStrategy
 	}
 	return nil
 }
@@ -1104,6 +1099,23 @@ func (m *Mutation) GetUpsert() *Entity {
 func (m *Mutation) GetDelete() *Key {
 	if x, ok := m.GetOperation().(*Mutation_Delete); ok {
 		return x.Delete
+	}
+	return nil
+}
+
+type isMutation_ConflictDetectionStrategy interface {
+	isMutation_ConflictDetectionStrategy()
+}
+
+type Mutation_BaseVersion struct {
+	BaseVersion int64 `protobuf:"varint,8,opt,name=base_version,json=baseVersion,proto3,oneof"`
+}
+
+func (*Mutation_BaseVersion) isMutation_ConflictDetectionStrategy() {}
+
+func (m *Mutation) GetConflictDetectionStrategy() isMutation_ConflictDetectionStrategy {
+	if m != nil {
+		return m.ConflictDetectionStrategy
 	}
 	return nil
 }
@@ -1257,16 +1269,16 @@ func _Mutation_OneofSizer(msg proto.Message) (n int) {
 type MutationResult struct {
 	// The automatically allocated key.
 	// Set only when the mutation allocated a key.
-	Key *Key `protobuf:"bytes,3,opt,name=key" json:"key,omitempty"`
+	Key *Key `protobuf:"bytes,3,opt,name=key,proto3" json:"key,omitempty"`
 	// The version of the entity on the server after processing the mutation. If
 	// the mutation doesn't change anything on the server, then the version will
 	// be the version of the current entity or, if no entity is present, a version
 	// that is strictly greater than the version of any previous entity and less
 	// than the version of any possible future entity.
-	Version int64 `protobuf:"varint,4,opt,name=version" json:"version,omitempty"`
+	Version int64 `protobuf:"varint,4,opt,name=version,proto3" json:"version,omitempty"`
 	// Whether a conflict was detected for this mutation. Always false when a
 	// conflict detection strategy field is not set in the mutation.
-	ConflictDetected     bool     `protobuf:"varint,5,opt,name=conflict_detected,json=conflictDetected" json:"conflict_detected,omitempty"`
+	ConflictDetected     bool     `protobuf:"varint,5,opt,name=conflict_detected,json=conflictDetected,proto3" json:"conflict_detected,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -1276,7 +1288,7 @@ func (m *MutationResult) Reset()         { *m = MutationResult{} }
 func (m *MutationResult) String() string { return proto.CompactTextString(m) }
 func (*MutationResult) ProtoMessage()    {}
 func (*MutationResult) Descriptor() ([]byte, []int) {
-	return fileDescriptor_datastore_59155d08d600834e, []int{15}
+	return fileDescriptor_datastore_43db8ce3c69efb71, []int{15}
 }
 func (m *MutationResult) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_MutationResult.Unmarshal(m, b)
@@ -1336,7 +1348,7 @@ func (m *ReadOptions) Reset()         { *m = ReadOptions{} }
 func (m *ReadOptions) String() string { return proto.CompactTextString(m) }
 func (*ReadOptions) ProtoMessage()    {}
 func (*ReadOptions) Descriptor() ([]byte, []int) {
-	return fileDescriptor_datastore_59155d08d600834e, []int{16}
+	return fileDescriptor_datastore_43db8ce3c69efb71, []int{16}
 }
 func (m *ReadOptions) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ReadOptions.Unmarshal(m, b)
@@ -1361,14 +1373,16 @@ type isReadOptions_ConsistencyType interface {
 }
 
 type ReadOptions_ReadConsistency_ struct {
-	ReadConsistency ReadOptions_ReadConsistency `protobuf:"varint,1,opt,name=read_consistency,json=readConsistency,enum=google.datastore.v1.ReadOptions_ReadConsistency,oneof"`
+	ReadConsistency ReadOptions_ReadConsistency `protobuf:"varint,1,opt,name=read_consistency,json=readConsistency,proto3,enum=google.datastore.v1.ReadOptions_ReadConsistency,oneof"`
 }
+
 type ReadOptions_Transaction struct {
 	Transaction []byte `protobuf:"bytes,2,opt,name=transaction,proto3,oneof"`
 }
 
 func (*ReadOptions_ReadConsistency_) isReadOptions_ConsistencyType() {}
-func (*ReadOptions_Transaction) isReadOptions_ConsistencyType()      {}
+
+func (*ReadOptions_Transaction) isReadOptions_ConsistencyType() {}
 
 func (m *ReadOptions) GetConsistencyType() isReadOptions_ConsistencyType {
 	if m != nil {
@@ -1478,7 +1492,7 @@ func (m *TransactionOptions) Reset()         { *m = TransactionOptions{} }
 func (m *TransactionOptions) String() string { return proto.CompactTextString(m) }
 func (*TransactionOptions) ProtoMessage()    {}
 func (*TransactionOptions) Descriptor() ([]byte, []int) {
-	return fileDescriptor_datastore_59155d08d600834e, []int{17}
+	return fileDescriptor_datastore_43db8ce3c69efb71, []int{17}
 }
 func (m *TransactionOptions) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_TransactionOptions.Unmarshal(m, b)
@@ -1503,14 +1517,16 @@ type isTransactionOptions_Mode interface {
 }
 
 type TransactionOptions_ReadWrite_ struct {
-	ReadWrite *TransactionOptions_ReadWrite `protobuf:"bytes,1,opt,name=read_write,json=readWrite,oneof"`
+	ReadWrite *TransactionOptions_ReadWrite `protobuf:"bytes,1,opt,name=read_write,json=readWrite,proto3,oneof"`
 }
+
 type TransactionOptions_ReadOnly_ struct {
-	ReadOnly *TransactionOptions_ReadOnly `protobuf:"bytes,2,opt,name=read_only,json=readOnly,oneof"`
+	ReadOnly *TransactionOptions_ReadOnly `protobuf:"bytes,2,opt,name=read_only,json=readOnly,proto3,oneof"`
 }
 
 func (*TransactionOptions_ReadWrite_) isTransactionOptions_Mode() {}
-func (*TransactionOptions_ReadOnly_) isTransactionOptions_Mode()  {}
+
+func (*TransactionOptions_ReadOnly_) isTransactionOptions_Mode() {}
 
 func (m *TransactionOptions) GetMode() isTransactionOptions_Mode {
 	if m != nil {
@@ -1620,7 +1636,7 @@ func (m *TransactionOptions_ReadWrite) Reset()         { *m = TransactionOptions
 func (m *TransactionOptions_ReadWrite) String() string { return proto.CompactTextString(m) }
 func (*TransactionOptions_ReadWrite) ProtoMessage()    {}
 func (*TransactionOptions_ReadWrite) Descriptor() ([]byte, []int) {
-	return fileDescriptor_datastore_59155d08d600834e, []int{17, 0}
+	return fileDescriptor_datastore_43db8ce3c69efb71, []int{17, 0}
 }
 func (m *TransactionOptions_ReadWrite) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_TransactionOptions_ReadWrite.Unmarshal(m, b)
@@ -1658,7 +1674,7 @@ func (m *TransactionOptions_ReadOnly) Reset()         { *m = TransactionOptions_
 func (m *TransactionOptions_ReadOnly) String() string { return proto.CompactTextString(m) }
 func (*TransactionOptions_ReadOnly) ProtoMessage()    {}
 func (*TransactionOptions_ReadOnly) Descriptor() ([]byte, []int) {
-	return fileDescriptor_datastore_59155d08d600834e, []int{17, 1}
+	return fileDescriptor_datastore_43db8ce3c69efb71, []int{17, 1}
 }
 func (m *TransactionOptions_ReadOnly) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_TransactionOptions_ReadOnly.Unmarshal(m, b)
@@ -1805,8 +1821,7 @@ func (c *datastoreClient) ReserveIds(ctx context.Context, in *ReserveIdsRequest,
 	return out, nil
 }
 
-// Server API for Datastore service
-
+// DatastoreServer is the server API for Datastore service.
 type DatastoreServer interface {
 	// Looks up entities by key.
 	Lookup(context.Context, *LookupRequest) (*LookupResponse, error)
@@ -1995,10 +2010,10 @@ var _Datastore_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("google/datastore/v1/datastore.proto", fileDescriptor_datastore_59155d08d600834e)
+	proto.RegisterFile("google/datastore/v1/datastore.proto", fileDescriptor_datastore_43db8ce3c69efb71)
 }
 
-var fileDescriptor_datastore_59155d08d600834e = []byte{
+var fileDescriptor_datastore_43db8ce3c69efb71 = []byte{
 	// 1390 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x57, 0xdf, 0x6f, 0x1b, 0xc5,
 	0x13, 0xcf, 0x3a, 0x89, 0x63, 0x8f, 0xf3, 0xc3, 0xd9, 0xe4, 0xfb, 0xad, 0x71, 0x5b, 0xd5, 0x5c,

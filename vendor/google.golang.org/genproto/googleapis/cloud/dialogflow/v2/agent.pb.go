@@ -57,39 +57,39 @@ func (x Agent_MatchMode) String() string {
 	return proto.EnumName(Agent_MatchMode_name, int32(x))
 }
 func (Agent_MatchMode) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_agent_6b29945a8d6d5015, []int{0, 0}
+	return fileDescriptor_agent_6cbd45e0738ac4ce, []int{0, 0}
 }
 
 // Represents a conversational agent.
 type Agent struct {
 	// Required. The project of this agent.
 	// Format: `projects/<Project ID>`.
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// Required. The name of this agent.
-	DisplayName string `protobuf:"bytes,2,opt,name=display_name,json=displayName" json:"display_name,omitempty"`
+	DisplayName string `protobuf:"bytes,2,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`
 	// Required. The default language of the agent as a language tag. See
 	// [Language Support](https://dialogflow.com/docs/reference/language) for a
 	// list of the currently supported language codes.
 	// This field cannot be set by the `Update` method.
-	DefaultLanguageCode string `protobuf:"bytes,3,opt,name=default_language_code,json=defaultLanguageCode" json:"default_language_code,omitempty"`
+	DefaultLanguageCode string `protobuf:"bytes,3,opt,name=default_language_code,json=defaultLanguageCode,proto3" json:"default_language_code,omitempty"`
 	// Optional. The list of all languages supported by this agent (except for the
 	// `default_language_code`).
-	SupportedLanguageCodes []string `protobuf:"bytes,4,rep,name=supported_language_codes,json=supportedLanguageCodes" json:"supported_language_codes,omitempty"`
+	SupportedLanguageCodes []string `protobuf:"bytes,4,rep,name=supported_language_codes,json=supportedLanguageCodes,proto3" json:"supported_language_codes,omitempty"`
 	// Required. The time zone of this agent from the
 	// [time zone database](https://www.iana.org/time-zones), e.g.,
 	// America/New_York, Europe/Paris.
-	TimeZone string `protobuf:"bytes,5,opt,name=time_zone,json=timeZone" json:"time_zone,omitempty"`
+	TimeZone string `protobuf:"bytes,5,opt,name=time_zone,json=timeZone,proto3" json:"time_zone,omitempty"`
 	// Optional. The description of this agent.
 	// The maximum length is 500 characters. If exceeded, the request is rejected.
-	Description string `protobuf:"bytes,6,opt,name=description" json:"description,omitempty"`
+	Description string `protobuf:"bytes,6,opt,name=description,proto3" json:"description,omitempty"`
 	// Optional. The URI of the agent's avatar.
 	// Avatars are used throughout the Dialogflow console and in the self-hosted
 	// [Web Demo](https://dialogflow.com/docs/integrations/web-demo) integration.
-	AvatarUri string `protobuf:"bytes,7,opt,name=avatar_uri,json=avatarUri" json:"avatar_uri,omitempty"`
+	AvatarUri string `protobuf:"bytes,7,opt,name=avatar_uri,json=avatarUri,proto3" json:"avatar_uri,omitempty"`
 	// Optional. Determines whether this agent should log conversation queries.
-	EnableLogging bool `protobuf:"varint,8,opt,name=enable_logging,json=enableLogging" json:"enable_logging,omitempty"`
+	EnableLogging bool `protobuf:"varint,8,opt,name=enable_logging,json=enableLogging,proto3" json:"enable_logging,omitempty"`
 	// Optional. Determines how intents are detected from user queries.
-	MatchMode Agent_MatchMode `protobuf:"varint,9,opt,name=match_mode,json=matchMode,enum=google.cloud.dialogflow.v2.Agent_MatchMode" json:"match_mode,omitempty"`
+	MatchMode Agent_MatchMode `protobuf:"varint,9,opt,name=match_mode,json=matchMode,proto3,enum=google.cloud.dialogflow.v2.Agent_MatchMode" json:"match_mode,omitempty"`
 	// Optional. To filter out false positive results and still get variety in
 	// matched natural language inputs for your agent, you can tune the machine
 	// learning classification threshold. If the returned score value is less than
@@ -97,7 +97,7 @@ type Agent struct {
 	// are no fallback intents defined, no intent will be triggered. The score
 	// values range from 0.0 (completely uncertain) to 1.0 (completely certain).
 	// If set to 0.0, the default of 0.3 is used.
-	ClassificationThreshold float32  `protobuf:"fixed32,10,opt,name=classification_threshold,json=classificationThreshold" json:"classification_threshold,omitempty"`
+	ClassificationThreshold float32  `protobuf:"fixed32,10,opt,name=classification_threshold,json=classificationThreshold,proto3" json:"classification_threshold,omitempty"`
 	XXX_NoUnkeyedLiteral    struct{} `json:"-"`
 	XXX_unrecognized        []byte   `json:"-"`
 	XXX_sizecache           int32    `json:"-"`
@@ -107,7 +107,7 @@ func (m *Agent) Reset()         { *m = Agent{} }
 func (m *Agent) String() string { return proto.CompactTextString(m) }
 func (*Agent) ProtoMessage()    {}
 func (*Agent) Descriptor() ([]byte, []int) {
-	return fileDescriptor_agent_6b29945a8d6d5015, []int{0}
+	return fileDescriptor_agent_6cbd45e0738ac4ce, []int{0}
 }
 func (m *Agent) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Agent.Unmarshal(m, b)
@@ -201,7 +201,7 @@ func (m *Agent) GetClassificationThreshold() float32 {
 type GetAgentRequest struct {
 	// Required. The project that the agent to fetch is associated with.
 	// Format: `projects/<Project ID>`.
-	Parent               string   `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent               string   `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -211,7 +211,7 @@ func (m *GetAgentRequest) Reset()         { *m = GetAgentRequest{} }
 func (m *GetAgentRequest) String() string { return proto.CompactTextString(m) }
 func (*GetAgentRequest) ProtoMessage()    {}
 func (*GetAgentRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_agent_6b29945a8d6d5015, []int{1}
+	return fileDescriptor_agent_6cbd45e0738ac4ce, []int{1}
 }
 func (m *GetAgentRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_GetAgentRequest.Unmarshal(m, b)
@@ -242,12 +242,12 @@ func (m *GetAgentRequest) GetParent() string {
 type SearchAgentsRequest struct {
 	// Required. The project to list agents from.
 	// Format: `projects/<Project ID or '-'>`.
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// Optional. The maximum number of items to return in a single page. By
 	// default 100 and at most 1000.
-	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize" json:"page_size,omitempty"`
+	PageSize int32 `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	// Optional. The next_page_token value returned from a previous list request.
-	PageToken            string   `protobuf:"bytes,3,opt,name=page_token,json=pageToken" json:"page_token,omitempty"`
+	PageToken            string   `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -257,7 +257,7 @@ func (m *SearchAgentsRequest) Reset()         { *m = SearchAgentsRequest{} }
 func (m *SearchAgentsRequest) String() string { return proto.CompactTextString(m) }
 func (*SearchAgentsRequest) ProtoMessage()    {}
 func (*SearchAgentsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_agent_6b29945a8d6d5015, []int{2}
+	return fileDescriptor_agent_6cbd45e0738ac4ce, []int{2}
 }
 func (m *SearchAgentsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SearchAgentsRequest.Unmarshal(m, b)
@@ -302,10 +302,10 @@ func (m *SearchAgentsRequest) GetPageToken() string {
 type SearchAgentsResponse struct {
 	// The list of agents. There will be a maximum number of items returned based
 	// on the page_size field in the request.
-	Agents []*Agent `protobuf:"bytes,1,rep,name=agents" json:"agents,omitempty"`
+	Agents []*Agent `protobuf:"bytes,1,rep,name=agents,proto3" json:"agents,omitempty"`
 	// Token to retrieve the next page of results, or empty if there are no
 	// more results in the list.
-	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken" json:"next_page_token,omitempty"`
+	NextPageToken        string   `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -315,7 +315,7 @@ func (m *SearchAgentsResponse) Reset()         { *m = SearchAgentsResponse{} }
 func (m *SearchAgentsResponse) String() string { return proto.CompactTextString(m) }
 func (*SearchAgentsResponse) ProtoMessage()    {}
 func (*SearchAgentsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_agent_6b29945a8d6d5015, []int{3}
+	return fileDescriptor_agent_6cbd45e0738ac4ce, []int{3}
 }
 func (m *SearchAgentsResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SearchAgentsResponse.Unmarshal(m, b)
@@ -353,7 +353,7 @@ func (m *SearchAgentsResponse) GetNextPageToken() string {
 type TrainAgentRequest struct {
 	// Required. The project that the agent to train is associated with.
 	// Format: `projects/<Project ID>`.
-	Parent               string   `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent               string   `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -363,7 +363,7 @@ func (m *TrainAgentRequest) Reset()         { *m = TrainAgentRequest{} }
 func (m *TrainAgentRequest) String() string { return proto.CompactTextString(m) }
 func (*TrainAgentRequest) ProtoMessage()    {}
 func (*TrainAgentRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_agent_6b29945a8d6d5015, []int{4}
+	return fileDescriptor_agent_6cbd45e0738ac4ce, []int{4}
 }
 func (m *TrainAgentRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_TrainAgentRequest.Unmarshal(m, b)
@@ -394,11 +394,11 @@ func (m *TrainAgentRequest) GetParent() string {
 type ExportAgentRequest struct {
 	// Required. The project that the agent to export is associated with.
 	// Format: `projects/<Project ID>`.
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// Optional. The Google Cloud Storage URI to export the agent to.
 	// Note: The URI must start with
 	// "gs://". If left unspecified, the serialized agent is returned inline.
-	AgentUri             string   `protobuf:"bytes,2,opt,name=agent_uri,json=agentUri" json:"agent_uri,omitempty"`
+	AgentUri             string   `protobuf:"bytes,2,opt,name=agent_uri,json=agentUri,proto3" json:"agent_uri,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -408,7 +408,7 @@ func (m *ExportAgentRequest) Reset()         { *m = ExportAgentRequest{} }
 func (m *ExportAgentRequest) String() string { return proto.CompactTextString(m) }
 func (*ExportAgentRequest) ProtoMessage()    {}
 func (*ExportAgentRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_agent_6b29945a8d6d5015, []int{5}
+	return fileDescriptor_agent_6cbd45e0738ac4ce, []int{5}
 }
 func (m *ExportAgentRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ExportAgentRequest.Unmarshal(m, b)
@@ -459,7 +459,7 @@ func (m *ExportAgentResponse) Reset()         { *m = ExportAgentResponse{} }
 func (m *ExportAgentResponse) String() string { return proto.CompactTextString(m) }
 func (*ExportAgentResponse) ProtoMessage()    {}
 func (*ExportAgentResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_agent_6b29945a8d6d5015, []int{6}
+	return fileDescriptor_agent_6cbd45e0738ac4ce, []int{6}
 }
 func (m *ExportAgentResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ExportAgentResponse.Unmarshal(m, b)
@@ -484,13 +484,15 @@ type isExportAgentResponse_Agent interface {
 }
 
 type ExportAgentResponse_AgentUri struct {
-	AgentUri string `protobuf:"bytes,1,opt,name=agent_uri,json=agentUri,oneof"`
+	AgentUri string `protobuf:"bytes,1,opt,name=agent_uri,json=agentUri,proto3,oneof"`
 }
+
 type ExportAgentResponse_AgentContent struct {
 	AgentContent []byte `protobuf:"bytes,2,opt,name=agent_content,json=agentContent,proto3,oneof"`
 }
 
-func (*ExportAgentResponse_AgentUri) isExportAgentResponse_Agent()     {}
+func (*ExportAgentResponse_AgentUri) isExportAgentResponse_Agent() {}
+
 func (*ExportAgentResponse_AgentContent) isExportAgentResponse_Agent() {}
 
 func (m *ExportAgentResponse) GetAgent() isExportAgentResponse_Agent {
@@ -584,7 +586,7 @@ func _ExportAgentResponse_OneofSizer(msg proto.Message) (n int) {
 type ImportAgentRequest struct {
 	// Required. The project that the agent to import is associated with.
 	// Format: `projects/<Project ID>`.
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// Required. The agent to import.
 	//
 	// Types that are valid to be assigned to Agent:
@@ -600,7 +602,7 @@ func (m *ImportAgentRequest) Reset()         { *m = ImportAgentRequest{} }
 func (m *ImportAgentRequest) String() string { return proto.CompactTextString(m) }
 func (*ImportAgentRequest) ProtoMessage()    {}
 func (*ImportAgentRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_agent_6b29945a8d6d5015, []int{7}
+	return fileDescriptor_agent_6cbd45e0738ac4ce, []int{7}
 }
 func (m *ImportAgentRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ImportAgentRequest.Unmarshal(m, b)
@@ -620,18 +622,27 @@ func (m *ImportAgentRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_ImportAgentRequest proto.InternalMessageInfo
 
+func (m *ImportAgentRequest) GetParent() string {
+	if m != nil {
+		return m.Parent
+	}
+	return ""
+}
+
 type isImportAgentRequest_Agent interface {
 	isImportAgentRequest_Agent()
 }
 
 type ImportAgentRequest_AgentUri struct {
-	AgentUri string `protobuf:"bytes,2,opt,name=agent_uri,json=agentUri,oneof"`
+	AgentUri string `protobuf:"bytes,2,opt,name=agent_uri,json=agentUri,proto3,oneof"`
 }
+
 type ImportAgentRequest_AgentContent struct {
 	AgentContent []byte `protobuf:"bytes,3,opt,name=agent_content,json=agentContent,proto3,oneof"`
 }
 
-func (*ImportAgentRequest_AgentUri) isImportAgentRequest_Agent()     {}
+func (*ImportAgentRequest_AgentUri) isImportAgentRequest_Agent() {}
+
 func (*ImportAgentRequest_AgentContent) isImportAgentRequest_Agent() {}
 
 func (m *ImportAgentRequest) GetAgent() isImportAgentRequest_Agent {
@@ -639,13 +650,6 @@ func (m *ImportAgentRequest) GetAgent() isImportAgentRequest_Agent {
 		return m.Agent
 	}
 	return nil
-}
-
-func (m *ImportAgentRequest) GetParent() string {
-	if m != nil {
-		return m.Parent
-	}
-	return ""
 }
 
 func (m *ImportAgentRequest) GetAgentUri() string {
@@ -732,7 +736,7 @@ func _ImportAgentRequest_OneofSizer(msg proto.Message) (n int) {
 type RestoreAgentRequest struct {
 	// Required. The project that the agent to restore is associated with.
 	// Format: `projects/<Project ID>`.
-	Parent string `protobuf:"bytes,1,opt,name=parent" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,1,opt,name=parent,proto3" json:"parent,omitempty"`
 	// Required. The agent to restore.
 	//
 	// Types that are valid to be assigned to Agent:
@@ -748,7 +752,7 @@ func (m *RestoreAgentRequest) Reset()         { *m = RestoreAgentRequest{} }
 func (m *RestoreAgentRequest) String() string { return proto.CompactTextString(m) }
 func (*RestoreAgentRequest) ProtoMessage()    {}
 func (*RestoreAgentRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_agent_6b29945a8d6d5015, []int{8}
+	return fileDescriptor_agent_6cbd45e0738ac4ce, []int{8}
 }
 func (m *RestoreAgentRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_RestoreAgentRequest.Unmarshal(m, b)
@@ -768,18 +772,27 @@ func (m *RestoreAgentRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_RestoreAgentRequest proto.InternalMessageInfo
 
+func (m *RestoreAgentRequest) GetParent() string {
+	if m != nil {
+		return m.Parent
+	}
+	return ""
+}
+
 type isRestoreAgentRequest_Agent interface {
 	isRestoreAgentRequest_Agent()
 }
 
 type RestoreAgentRequest_AgentUri struct {
-	AgentUri string `protobuf:"bytes,2,opt,name=agent_uri,json=agentUri,oneof"`
+	AgentUri string `protobuf:"bytes,2,opt,name=agent_uri,json=agentUri,proto3,oneof"`
 }
+
 type RestoreAgentRequest_AgentContent struct {
 	AgentContent []byte `protobuf:"bytes,3,opt,name=agent_content,json=agentContent,proto3,oneof"`
 }
 
-func (*RestoreAgentRequest_AgentUri) isRestoreAgentRequest_Agent()     {}
+func (*RestoreAgentRequest_AgentUri) isRestoreAgentRequest_Agent() {}
+
 func (*RestoreAgentRequest_AgentContent) isRestoreAgentRequest_Agent() {}
 
 func (m *RestoreAgentRequest) GetAgent() isRestoreAgentRequest_Agent {
@@ -787,13 +800,6 @@ func (m *RestoreAgentRequest) GetAgent() isRestoreAgentRequest_Agent {
 		return m.Agent
 	}
 	return nil
-}
-
-func (m *RestoreAgentRequest) GetParent() string {
-	if m != nil {
-		return m.Parent
-	}
-	return ""
 }
 
 func (m *RestoreAgentRequest) GetAgentUri() string {
@@ -1002,8 +1008,7 @@ func (c *agentsClient) RestoreAgent(ctx context.Context, in *RestoreAgentRequest
 	return out, nil
 }
 
-// Server API for Agents service
-
+// AgentsServer is the server API for Agents service.
 type AgentsServer interface {
 	// Retrieves the specified agent.
 	GetAgent(context.Context, *GetAgentRequest) (*Agent, error)
@@ -1190,10 +1195,10 @@ var _Agents_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("google/cloud/dialogflow/v2/agent.proto", fileDescriptor_agent_6b29945a8d6d5015)
+	proto.RegisterFile("google/cloud/dialogflow/v2/agent.proto", fileDescriptor_agent_6cbd45e0738ac4ce)
 }
 
-var fileDescriptor_agent_6b29945a8d6d5015 = []byte{
+var fileDescriptor_agent_6cbd45e0738ac4ce = []byte{
 	// 965 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xc4, 0x56, 0x41, 0x6f, 0xdc, 0x44,
 	0x14, 0xae, 0x37, 0xcd, 0x76, 0xf7, 0x25, 0x69, 0xd3, 0x09, 0x0d, 0xd6, 0xb6, 0x81, 0xad, 0x4b,

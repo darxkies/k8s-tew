@@ -71,15 +71,15 @@ func (x BuildStatus_Result) String() string {
 	return proto.EnumName(BuildStatus_Result_name, int32(x))
 }
 func (BuildStatus_Result) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_build_status_72c860664f7eaf4b, []int{0, 0}
+	return fileDescriptor_build_status_062894fe191e028f, []int{0, 0}
 }
 
 // Status used for both invocation attempt and overall build completion.
 type BuildStatus struct {
 	// The end result.
-	Result BuildStatus_Result `protobuf:"varint,1,opt,name=result,enum=google.devtools.build.v1.BuildStatus_Result" json:"result,omitempty"`
+	Result BuildStatus_Result `protobuf:"varint,1,opt,name=result,proto3,enum=google.devtools.build.v1.BuildStatus_Result" json:"result,omitempty"`
 	// Fine-grained diagnostic information to complement the status.
-	Details              *any.Any `protobuf:"bytes,2,opt,name=details" json:"details,omitempty"`
+	Details              *any.Any `protobuf:"bytes,2,opt,name=details,proto3" json:"details,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -89,7 +89,7 @@ func (m *BuildStatus) Reset()         { *m = BuildStatus{} }
 func (m *BuildStatus) String() string { return proto.CompactTextString(m) }
 func (*BuildStatus) ProtoMessage()    {}
 func (*BuildStatus) Descriptor() ([]byte, []int) {
-	return fileDescriptor_build_status_72c860664f7eaf4b, []int{0}
+	return fileDescriptor_build_status_062894fe191e028f, []int{0}
 }
 func (m *BuildStatus) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_BuildStatus.Unmarshal(m, b)
@@ -129,10 +129,10 @@ func init() {
 }
 
 func init() {
-	proto.RegisterFile("google/devtools/build/v1/build_status.proto", fileDescriptor_build_status_72c860664f7eaf4b)
+	proto.RegisterFile("google/devtools/build/v1/build_status.proto", fileDescriptor_build_status_062894fe191e028f)
 }
 
-var fileDescriptor_build_status_72c860664f7eaf4b = []byte{
+var fileDescriptor_build_status_062894fe191e028f = []byte{
 	// 390 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x74, 0x92, 0x4f, 0x0b, 0xd3, 0x30,
 	0x18, 0xc6, 0xcd, 0xd4, 0x4e, 0x33, 0x1d, 0x35, 0xa8, 0x6c, 0x63, 0xc2, 0xd8, 0x69, 0xa0, 0xa4,

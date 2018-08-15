@@ -106,7 +106,7 @@ func (x DockerImage_Layer_Directive) String() string {
 	return proto.EnumName(DockerImage_Layer_Directive_name, int32(x))
 }
 func (DockerImage_Layer_Directive) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_image_basis_5e1fc101263caa17, []int{0, 0, 0}
+	return fileDescriptor_image_basis_f0f54fd9664d71be, []int{0, 0, 0}
 }
 
 // DockerImage holds types defining base image notes
@@ -121,7 +121,7 @@ func (m *DockerImage) Reset()         { *m = DockerImage{} }
 func (m *DockerImage) String() string { return proto.CompactTextString(m) }
 func (*DockerImage) ProtoMessage()    {}
 func (*DockerImage) Descriptor() ([]byte, []int) {
-	return fileDescriptor_image_basis_5e1fc101263caa17, []int{0}
+	return fileDescriptor_image_basis_f0f54fd9664d71be, []int{0}
 }
 func (m *DockerImage) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DockerImage.Unmarshal(m, b)
@@ -144,9 +144,9 @@ var xxx_messageInfo_DockerImage proto.InternalMessageInfo
 // Layer holds metadata specific to a layer of a Docker image.
 type DockerImage_Layer struct {
 	// The recovered Dockerfile directive used to construct this layer.
-	Directive DockerImage_Layer_Directive `protobuf:"varint,1,opt,name=directive,enum=google.devtools.containeranalysis.v1alpha1.DockerImage_Layer_Directive" json:"directive,omitempty"`
+	Directive DockerImage_Layer_Directive `protobuf:"varint,1,opt,name=directive,proto3,enum=google.devtools.containeranalysis.v1alpha1.DockerImage_Layer_Directive" json:"directive,omitempty"`
 	// The recovered arguments to the Dockerfile directive.
-	Arguments            string   `protobuf:"bytes,2,opt,name=arguments" json:"arguments,omitempty"`
+	Arguments            string   `protobuf:"bytes,2,opt,name=arguments,proto3" json:"arguments,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -156,7 +156,7 @@ func (m *DockerImage_Layer) Reset()         { *m = DockerImage_Layer{} }
 func (m *DockerImage_Layer) String() string { return proto.CompactTextString(m) }
 func (*DockerImage_Layer) ProtoMessage()    {}
 func (*DockerImage_Layer) Descriptor() ([]byte, []int) {
-	return fileDescriptor_image_basis_5e1fc101263caa17, []int{0, 0}
+	return fileDescriptor_image_basis_f0f54fd9664d71be, []int{0, 0}
 }
 func (m *DockerImage_Layer) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DockerImage_Layer.Unmarshal(m, b)
@@ -195,15 +195,15 @@ type DockerImage_Fingerprint struct {
 	// The layer-id of the final layer in the Docker image's v1
 	// representation.
 	// This field can be used as a filter in list requests.
-	V1Name string `protobuf:"bytes,1,opt,name=v1_name,json=v1Name" json:"v1_name,omitempty"`
+	V1Name string `protobuf:"bytes,1,opt,name=v1_name,json=v1Name,proto3" json:"v1_name,omitempty"`
 	// The ordered list of v2 blobs that represent a given image.
-	V2Blob []string `protobuf:"bytes,2,rep,name=v2_blob,json=v2Blob" json:"v2_blob,omitempty"`
+	V2Blob []string `protobuf:"bytes,2,rep,name=v2_blob,json=v2Blob,proto3" json:"v2_blob,omitempty"`
 	// Output only. The name of the image's v2 blobs computed via:
 	//   [bottom] := v2_blob[bottom]
 	//   [N] := sha256(v2_blob[N] + " " + v2_name[N+1])
 	// Only the name of the final blob is kept.
 	// This field can be used as a filter in list requests.
-	V2Name               string   `protobuf:"bytes,3,opt,name=v2_name,json=v2Name" json:"v2_name,omitempty"`
+	V2Name               string   `protobuf:"bytes,3,opt,name=v2_name,json=v2Name,proto3" json:"v2_name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -213,7 +213,7 @@ func (m *DockerImage_Fingerprint) Reset()         { *m = DockerImage_Fingerprint
 func (m *DockerImage_Fingerprint) String() string { return proto.CompactTextString(m) }
 func (*DockerImage_Fingerprint) ProtoMessage()    {}
 func (*DockerImage_Fingerprint) Descriptor() ([]byte, []int) {
-	return fileDescriptor_image_basis_5e1fc101263caa17, []int{0, 1}
+	return fileDescriptor_image_basis_f0f54fd9664d71be, []int{0, 1}
 }
 func (m *DockerImage_Fingerprint) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DockerImage_Fingerprint.Unmarshal(m, b)
@@ -262,9 +262,9 @@ func (m *DockerImage_Fingerprint) GetV2Name() string {
 type DockerImage_Basis struct {
 	// The resource_url for the resource representing the basis of
 	// associated occurrence images.
-	ResourceUrl string `protobuf:"bytes,1,opt,name=resource_url,json=resourceUrl" json:"resource_url,omitempty"`
+	ResourceUrl string `protobuf:"bytes,1,opt,name=resource_url,json=resourceUrl,proto3" json:"resource_url,omitempty"`
 	// The fingerprint of the base image.
-	Fingerprint          *DockerImage_Fingerprint `protobuf:"bytes,2,opt,name=fingerprint" json:"fingerprint,omitempty"`
+	Fingerprint          *DockerImage_Fingerprint `protobuf:"bytes,2,opt,name=fingerprint,proto3" json:"fingerprint,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}                 `json:"-"`
 	XXX_unrecognized     []byte                   `json:"-"`
 	XXX_sizecache        int32                    `json:"-"`
@@ -274,7 +274,7 @@ func (m *DockerImage_Basis) Reset()         { *m = DockerImage_Basis{} }
 func (m *DockerImage_Basis) String() string { return proto.CompactTextString(m) }
 func (*DockerImage_Basis) ProtoMessage()    {}
 func (*DockerImage_Basis) Descriptor() ([]byte, []int) {
-	return fileDescriptor_image_basis_5e1fc101263caa17, []int{0, 2}
+	return fileDescriptor_image_basis_f0f54fd9664d71be, []int{0, 2}
 }
 func (m *DockerImage_Basis) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DockerImage_Basis.Unmarshal(m, b)
@@ -313,17 +313,17 @@ func (m *DockerImage_Basis) GetFingerprint() *DockerImage_Fingerprint {
 // with FROM <DockerImage.Basis in attached Note>.
 type DockerImage_Derived struct {
 	// The fingerprint of the derived image.
-	Fingerprint *DockerImage_Fingerprint `protobuf:"bytes,1,opt,name=fingerprint" json:"fingerprint,omitempty"`
+	Fingerprint *DockerImage_Fingerprint `protobuf:"bytes,1,opt,name=fingerprint,proto3" json:"fingerprint,omitempty"`
 	// Output only. The number of layers by which this image differs from the
 	// associated image basis.
-	Distance uint32 `protobuf:"varint,2,opt,name=distance" json:"distance,omitempty"`
+	Distance uint32 `protobuf:"varint,2,opt,name=distance,proto3" json:"distance,omitempty"`
 	// This contains layer-specific metadata, if populated it has length
 	// "distance" and is ordered with [distance] being the layer immediately
 	// following the base image and [1] being the final layer.
-	LayerInfo []*DockerImage_Layer `protobuf:"bytes,3,rep,name=layer_info,json=layerInfo" json:"layer_info,omitempty"`
+	LayerInfo []*DockerImage_Layer `protobuf:"bytes,3,rep,name=layer_info,json=layerInfo,proto3" json:"layer_info,omitempty"`
 	// Output only. This contains the base image URL for the derived image
 	// occurrence.
-	BaseResourceUrl      string   `protobuf:"bytes,4,opt,name=base_resource_url,json=baseResourceUrl" json:"base_resource_url,omitempty"`
+	BaseResourceUrl      string   `protobuf:"bytes,4,opt,name=base_resource_url,json=baseResourceUrl,proto3" json:"base_resource_url,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -333,7 +333,7 @@ func (m *DockerImage_Derived) Reset()         { *m = DockerImage_Derived{} }
 func (m *DockerImage_Derived) String() string { return proto.CompactTextString(m) }
 func (*DockerImage_Derived) ProtoMessage()    {}
 func (*DockerImage_Derived) Descriptor() ([]byte, []int) {
-	return fileDescriptor_image_basis_5e1fc101263caa17, []int{0, 3}
+	return fileDescriptor_image_basis_f0f54fd9664d71be, []int{0, 3}
 }
 func (m *DockerImage_Derived) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DockerImage_Derived.Unmarshal(m, b)
@@ -391,10 +391,10 @@ func init() {
 }
 
 func init() {
-	proto.RegisterFile("google/devtools/containeranalysis/v1alpha1/image_basis.proto", fileDescriptor_image_basis_5e1fc101263caa17)
+	proto.RegisterFile("google/devtools/containeranalysis/v1alpha1/image_basis.proto", fileDescriptor_image_basis_f0f54fd9664d71be)
 }
 
-var fileDescriptor_image_basis_5e1fc101263caa17 = []byte{
+var fileDescriptor_image_basis_f0f54fd9664d71be = []byte{
 	// 627 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x94, 0xdf, 0x6e, 0xda, 0x30,
 	0x14, 0xc6, 0x17, 0x28, 0xd0, 0x9c, 0xf4, 0x8f, 0x6b, 0x69, 0x1a, 0x43, 0xbd, 0x60, 0x95, 0x26,

@@ -210,13 +210,58 @@ func HasOS(os []string) bool {
 	return false
 }
 
-func ShowProgress(label string, step, count int) func() {
-	_spinner := spinner.New(spinner.CharSets[9], 100*time.Millisecond)
+var _spinner *spinner.Spinner
+var _progressSteps int
+var _progressStep int
+var _progressShow bool
+
+func init() {
+	_spinner = spinner.New(spinner.CharSets[9], 100*time.Millisecond)
+}
+
+func ShowProgress() {
 	_spinner.Prefix = "["
-	_spinner.Suffix = fmt.Sprintf("] %s: %d/%d", label, step, count)
+	_spinner.Suffix = fmt.Sprintf("] Progress: %d/%d", _progressStep+1, _progressSteps)
+
 	_spinner.Start()
 
-	return func() {
-		defer _spinner.Stop()
+	_progressShow = true
+}
+
+func HideProgress() {
+	_spinner.Stop()
+
+	_progressShow = false
+}
+
+func IncreaseProgressStep() {
+	_progressStep += 1
+}
+
+func SetProgressSteps(steps int) {
+	_progressSteps = steps
+}
+
+type logrusHook struct{}
+
+func (hook logrusHook) Fire(entry *log.Entry) error {
+	show := _progressShow
+
+	HideProgress()
+
+	entry.Message = fmt.Sprintf("[%d/%d]", _progressStep+1, _progressSteps) + " " + entry.Message
+
+	if show {
+		ShowProgress()
 	}
+
+	return nil
+}
+
+func (hook logrusHook) Levels() []log.Level {
+	return log.AllLevels
+}
+
+func SetupLogger() {
+	log.AddHook(logrusHook{})
 }

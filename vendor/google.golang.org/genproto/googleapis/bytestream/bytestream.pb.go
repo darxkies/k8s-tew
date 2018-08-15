@@ -28,13 +28,13 @@ const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 // Request object for ByteStream.Read.
 type ReadRequest struct {
 	// The name of the resource to read.
-	ResourceName string `protobuf:"bytes,1,opt,name=resource_name,json=resourceName" json:"resource_name,omitempty"`
+	ResourceName string `protobuf:"bytes,1,opt,name=resource_name,json=resourceName,proto3" json:"resource_name,omitempty"`
 	// The offset for the first byte to return in the read, relative to the start
 	// of the resource.
 	//
 	// A `read_offset` that is negative or greater than the size of the resource
 	// will cause an `OUT_OF_RANGE` error.
-	ReadOffset int64 `protobuf:"varint,2,opt,name=read_offset,json=readOffset" json:"read_offset,omitempty"`
+	ReadOffset int64 `protobuf:"varint,2,opt,name=read_offset,json=readOffset,proto3" json:"read_offset,omitempty"`
 	// The maximum number of `data` bytes the server is allowed to return in the
 	// sum of all `ReadResponse` messages. A `read_limit` of zero indicates that
 	// there is no limit, and a negative `read_limit` will cause an error.
@@ -42,7 +42,7 @@ type ReadRequest struct {
 	// If the stream returns fewer bytes than allowed by the `read_limit` and no
 	// error occurred, the stream includes all data from the `read_offset` to the
 	// end of the resource.
-	ReadLimit            int64    `protobuf:"varint,3,opt,name=read_limit,json=readLimit" json:"read_limit,omitempty"`
+	ReadLimit            int64    `protobuf:"varint,3,opt,name=read_limit,json=readLimit,proto3" json:"read_limit,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -52,7 +52,7 @@ func (m *ReadRequest) Reset()         { *m = ReadRequest{} }
 func (m *ReadRequest) String() string { return proto.CompactTextString(m) }
 func (*ReadRequest) ProtoMessage()    {}
 func (*ReadRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bytestream_e11cc2aa04efc9ca, []int{0}
+	return fileDescriptor_bytestream_414b76681ba3f568, []int{0}
 }
 func (m *ReadRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ReadRequest.Unmarshal(m, b)
@@ -109,7 +109,7 @@ func (m *ReadResponse) Reset()         { *m = ReadResponse{} }
 func (m *ReadResponse) String() string { return proto.CompactTextString(m) }
 func (*ReadResponse) ProtoMessage()    {}
 func (*ReadResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bytestream_e11cc2aa04efc9ca, []int{1}
+	return fileDescriptor_bytestream_414b76681ba3f568, []int{1}
 }
 func (m *ReadResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ReadResponse.Unmarshal(m, b)
@@ -141,7 +141,7 @@ type WriteRequest struct {
 	// The name of the resource to write. This **must** be set on the first
 	// `WriteRequest` of each `Write()` action. If it is set on subsequent calls,
 	// it **must** match the value of the first request.
-	ResourceName string `protobuf:"bytes,1,opt,name=resource_name,json=resourceName" json:"resource_name,omitempty"`
+	ResourceName string `protobuf:"bytes,1,opt,name=resource_name,json=resourceName,proto3" json:"resource_name,omitempty"`
 	// The offset from the beginning of the resource at which the data should be
 	// written. It is required on all `WriteRequest`s.
 	//
@@ -154,11 +154,11 @@ type WriteRequest struct {
 	// sent previously on this stream.
 	//
 	// An incorrect value will cause an error.
-	WriteOffset int64 `protobuf:"varint,2,opt,name=write_offset,json=writeOffset" json:"write_offset,omitempty"`
+	WriteOffset int64 `protobuf:"varint,2,opt,name=write_offset,json=writeOffset,proto3" json:"write_offset,omitempty"`
 	// If `true`, this indicates that the write is complete. Sending any
 	// `WriteRequest`s subsequent to one in which `finish_write` is `true` will
 	// cause an error.
-	FinishWrite bool `protobuf:"varint,3,opt,name=finish_write,json=finishWrite" json:"finish_write,omitempty"`
+	FinishWrite bool `protobuf:"varint,3,opt,name=finish_write,json=finishWrite,proto3" json:"finish_write,omitempty"`
 	// A portion of the data for the resource. The client **may** leave `data`
 	// empty for any given `WriteRequest`. This enables the client to inform the
 	// service that the request is still live while it is running an operation to
@@ -173,7 +173,7 @@ func (m *WriteRequest) Reset()         { *m = WriteRequest{} }
 func (m *WriteRequest) String() string { return proto.CompactTextString(m) }
 func (*WriteRequest) ProtoMessage()    {}
 func (*WriteRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bytestream_e11cc2aa04efc9ca, []int{2}
+	return fileDescriptor_bytestream_414b76681ba3f568, []int{2}
 }
 func (m *WriteRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_WriteRequest.Unmarshal(m, b)
@@ -224,7 +224,7 @@ func (m *WriteRequest) GetData() []byte {
 // Response object for ByteStream.Write.
 type WriteResponse struct {
 	// The number of bytes that have been processed for the given resource.
-	CommittedSize        int64    `protobuf:"varint,1,opt,name=committed_size,json=committedSize" json:"committed_size,omitempty"`
+	CommittedSize        int64    `protobuf:"varint,1,opt,name=committed_size,json=committedSize,proto3" json:"committed_size,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -234,7 +234,7 @@ func (m *WriteResponse) Reset()         { *m = WriteResponse{} }
 func (m *WriteResponse) String() string { return proto.CompactTextString(m) }
 func (*WriteResponse) ProtoMessage()    {}
 func (*WriteResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bytestream_e11cc2aa04efc9ca, []int{3}
+	return fileDescriptor_bytestream_414b76681ba3f568, []int{3}
 }
 func (m *WriteResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_WriteResponse.Unmarshal(m, b)
@@ -264,7 +264,7 @@ func (m *WriteResponse) GetCommittedSize() int64 {
 // Request object for ByteStream.QueryWriteStatus.
 type QueryWriteStatusRequest struct {
 	// The name of the resource whose write status is being requested.
-	ResourceName         string   `protobuf:"bytes,1,opt,name=resource_name,json=resourceName" json:"resource_name,omitempty"`
+	ResourceName         string   `protobuf:"bytes,1,opt,name=resource_name,json=resourceName,proto3" json:"resource_name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -274,7 +274,7 @@ func (m *QueryWriteStatusRequest) Reset()         { *m = QueryWriteStatusRequest
 func (m *QueryWriteStatusRequest) String() string { return proto.CompactTextString(m) }
 func (*QueryWriteStatusRequest) ProtoMessage()    {}
 func (*QueryWriteStatusRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bytestream_e11cc2aa04efc9ca, []int{4}
+	return fileDescriptor_bytestream_414b76681ba3f568, []int{4}
 }
 func (m *QueryWriteStatusRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_QueryWriteStatusRequest.Unmarshal(m, b)
@@ -304,10 +304,10 @@ func (m *QueryWriteStatusRequest) GetResourceName() string {
 // Response object for ByteStream.QueryWriteStatus.
 type QueryWriteStatusResponse struct {
 	// The number of bytes that have been processed for the given resource.
-	CommittedSize int64 `protobuf:"varint,1,opt,name=committed_size,json=committedSize" json:"committed_size,omitempty"`
+	CommittedSize int64 `protobuf:"varint,1,opt,name=committed_size,json=committedSize,proto3" json:"committed_size,omitempty"`
 	// `complete` is `true` only if the client has sent a `WriteRequest` with
 	// `finish_write` set to true, and the server has processed that request.
-	Complete             bool     `protobuf:"varint,2,opt,name=complete" json:"complete,omitempty"`
+	Complete             bool     `protobuf:"varint,2,opt,name=complete,proto3" json:"complete,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -317,7 +317,7 @@ func (m *QueryWriteStatusResponse) Reset()         { *m = QueryWriteStatusRespon
 func (m *QueryWriteStatusResponse) String() string { return proto.CompactTextString(m) }
 func (*QueryWriteStatusResponse) ProtoMessage()    {}
 func (*QueryWriteStatusResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_bytestream_e11cc2aa04efc9ca, []int{5}
+	return fileDescriptor_bytestream_414b76681ba3f568, []int{5}
 }
 func (m *QueryWriteStatusResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_QueryWriteStatusResponse.Unmarshal(m, b)
@@ -499,8 +499,7 @@ func (c *byteStreamClient) QueryWriteStatus(ctx context.Context, in *QueryWriteS
 	return out, nil
 }
 
-// Server API for ByteStream service
-
+// ByteStreamServer is the server API for ByteStream service.
 type ByteStreamServer interface {
 	// `Read()` is used to retrieve the contents of a resource as a sequence
 	// of bytes. The bytes are returned in a sequence of responses, and the
@@ -640,10 +639,10 @@ var _ByteStream_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("google/bytestream/bytestream.proto", fileDescriptor_bytestream_e11cc2aa04efc9ca)
+	proto.RegisterFile("google/bytestream/bytestream.proto", fileDescriptor_bytestream_414b76681ba3f568)
 }
 
-var fileDescriptor_bytestream_e11cc2aa04efc9ca = []byte{
+var fileDescriptor_bytestream_414b76681ba3f568 = []byte{
 	// 446 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x53, 0x5b, 0x8b, 0x13, 0x31,
 	0x14, 0x66, 0xb6, 0xab, 0x74, 0x4f, 0xa7, 0x5e, 0x02, 0xe2, 0x30, 0xe8, 0x6e, 0x77, 0x44, 0x28,
