@@ -50,11 +50,11 @@ func (config *InternalConfig) GetFullAssetFilename(baseDirectory, name string) s
 	var directory *AssetDirectory
 
 	if result, ok = config.Config.Assets.Files[name]; !ok {
-		log.WithFields(log.Fields{"name": name}).Fatal("missing asset file")
+		log.WithFields(log.Fields{"name": name}).Fatal("Missing asset file")
 	}
 
 	if directory, ok = config.Config.Assets.Directories[result.Directory]; !ok {
-		log.WithFields(log.Fields{"name": name, "directory": result.Directory, "file": name}).Fatal("missing asset directory")
+		log.WithFields(log.Fields{"name": name, "directory": result.Directory, "file": name}).Fatal("Missing asset directory")
 	}
 
 	filename := name
@@ -67,7 +67,7 @@ func (config *InternalConfig) GetFullAssetFilename(baseDirectory, name string) s
 
 	resultFilename, error := config.ApplyTemplate("asset-file", filename)
 	if error != nil {
-		log.WithFields(log.Fields{"name": name, "error": error}).Fatal("asset file expansion")
+		log.WithFields(log.Fields{"name": name, "error": error}).Fatal("Asset file expansion")
 	}
 
 	if directory.Absolute {
@@ -103,7 +103,7 @@ func (config *InternalConfig) GetFullAssetDirectory(baseDirectory, name string) 
 	var ok bool
 
 	if result, ok = config.Config.Assets.Directories[name]; !ok {
-		log.WithFields(log.Fields{"name": name, "directory": name}).Fatal("missing asset directory")
+		log.WithFields(log.Fields{"name": name, "directory": name}).Fatal("Missing asset directory")
 	}
 
 	if result.Absolute {
@@ -472,25 +472,25 @@ func (config *InternalConfig) addAssetDirectory(name string, labels Labels, dire
 }
 
 func (config *InternalConfig) Dump() {
-	log.WithFields(log.Fields{"base-directory": config.BaseDirectory}).Info("config")
-	log.WithFields(log.Fields{"name": config.Name}).Info("config")
+	log.WithFields(log.Fields{"base-directory": config.BaseDirectory}).Info("Config")
+	log.WithFields(log.Fields{"name": config.Name}).Info("Config")
 
 	if config.Node != nil {
-		log.WithFields(log.Fields{"ip": config.Node.IP}).Info("config")
-		log.WithFields(log.Fields{"labels": config.Node.Labels}).Info("config")
-		log.WithFields(log.Fields{"index": config.Node.Index}).Info("config")
+		log.WithFields(log.Fields{"ip": config.Node.IP}).Info("Config")
+		log.WithFields(log.Fields{"labels": config.Node.Labels}).Info("Config")
+		log.WithFields(log.Fields{"index": config.Node.Index}).Info("Config")
 	}
 
 	for name, assetFile := range config.Config.Assets.Files {
-		log.WithFields(log.Fields{"name": name, "directory": assetFile.Directory, "labels": assetFile.Labels}).Info("config asset file")
+		log.WithFields(log.Fields{"name": name, "directory": assetFile.Directory, "labels": assetFile.Labels}).Info("Config asset file")
 	}
 
 	for name, node := range config.Config.Nodes {
-		log.WithFields(log.Fields{"name": name, "index": node.Index, "labels": node.Labels, "ip": node.IP}).Info("config node")
+		log.WithFields(log.Fields{"name": name, "index": node.Index, "labels": node.Labels, "ip": node.IP}).Info("Config node")
 	}
 
 	for name, command := range config.Config.Commands {
-		log.WithFields(log.Fields{"name": name, "command": command.Command, "labels": command.Labels}).Info("config command")
+		log.WithFields(log.Fields{"name": name, "command": command.Command, "labels": command.Labels}).Info("Config command")
 	}
 
 	for _, serverConfig := range config.Config.Servers {
@@ -526,7 +526,7 @@ func (config *InternalConfig) Save() error {
 		return error
 	}
 
-	log.WithFields(log.Fields{"filename": filename}).Info("saved config")
+	log.WithFields(log.Fields{"_filename": filename}).Info("Saved config")
 
 	return nil
 }

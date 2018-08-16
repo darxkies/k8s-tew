@@ -24,6 +24,8 @@ func addNode() error {
 		return error
 	}
 
+	utils.SetProgressSteps(1)
+
 	var error error
 
 	labels := []string{}
@@ -33,7 +35,7 @@ func addNode() error {
 	}
 
 	if nodeSelf {
-		log.Println("adding self as node")
+		log.Println("Adding self as node")
 
 		if len(nodeIP) == 0 {
 			nodeIP, error = utils.RunCommandWithOutput("ip route get 8.8.8.8 | cut -d ' ' -f 7")
@@ -84,7 +86,7 @@ var nodeAddCmd = &cobra.Command{
 	Long:  "Add a node. This can be also called when updating a node, only the name has to be unique.",
 	Run: func(cmd *cobra.Command, args []string) {
 		if error := addNode(); error != nil {
-			log.WithFields(log.Fields{"error": error}).Error("node-add failed")
+			log.WithFields(log.Fields{"error": error}).Error("Failed to add node")
 
 			os.Exit(-1)
 		}

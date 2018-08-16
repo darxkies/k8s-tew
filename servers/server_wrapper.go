@@ -66,10 +66,10 @@ func (server *ServerWrapper) Start() error {
 		}
 	}
 
+	log.WithFields(log.Fields{"name": server.Name(), "_command": strings.Join(server.command, " ")}).Info("Starting server")
+
 	go func() {
 		for !server.stop {
-			log.WithFields(log.Fields{"name": server.Name(), "command": strings.Join(server.command, " ")}).Info("starting server")
-
 			command := exec.Command(server.command[0], server.command[1:]...)
 
 			var logFile *os.File
@@ -79,7 +79,7 @@ func (server *ServerWrapper) Start() error {
 				logFile, error = os.OpenFile(server.logger.Filename, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 
 				if error != nil {
-					log.WithFields(log.Fields{"filename": logFile, "error": error}).Error("could no open file")
+					log.WithFields(log.Fields{"filename": logFile, "error": error}).Error("Could not open file")
 
 					continue
 				}
@@ -99,7 +99,7 @@ func (server *ServerWrapper) Start() error {
 			time.Sleep(time.Second)
 
 			if !server.stop {
-				log.WithFields(log.Fields{"name": server.name}).Error("server terminated")
+				log.WithFields(log.Fields{"name": server.name}).Error("Restarting server")
 			}
 		}
 	}()

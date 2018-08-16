@@ -7,8 +7,6 @@ import (
 
 	"github.com/darxkies/k8s-tew/pki"
 	"github.com/darxkies/k8s-tew/utils"
-
-	log "github.com/sirupsen/logrus"
 )
 
 type Generator struct {
@@ -140,7 +138,7 @@ func (generator *Generator) generateEncryptionFile() error {
 	fullEncryptionConfigFilename := generator.config.GetFullLocalAssetFilename(utils.ENCRYPTION_CONFIG)
 
 	if utils.FileExists(fullEncryptionConfigFilename) {
-		log.WithFields(log.Fields{"filename": fullEncryptionConfigFilename}).Info("skipped")
+		utils.LogFilename("skipped", fullEncryptionConfigFilename)
 
 		return nil
 	}
@@ -309,7 +307,7 @@ func (generator *Generator) generateCertificates() error {
 
 func (generator *Generator) generateConfigKubeConfig(kubeConfigFilename, caFilename, user, apiServers, certificateFilename, keyFilename string, force bool) error {
 	if utils.FileExists(kubeConfigFilename) && !force {
-		log.WithFields(log.Fields{"filename": kubeConfigFilename}).Info("skipped")
+		utils.LogFilename("skipped", kubeConfigFilename)
 
 		return nil
 	}

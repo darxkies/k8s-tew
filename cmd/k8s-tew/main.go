@@ -17,6 +17,7 @@ import (
 )
 
 var debug *bool
+var hideProgress *bool
 var baseDirectory string
 var _config *config.InternalConfig
 
@@ -41,13 +42,16 @@ var RootCmd = &cobra.Command{
 func GetBaseDirectory() string {
 	directory, error := os.Getwd()
 	if error != nil {
-		log.WithFields(log.Fields{"error": error}).Fatal("cwd failed")
+		log.WithFields(log.Fields{"error": error}).Fatal("Failed to retrieve cwd")
 	}
 
 	return path.Join(directory, utils.BASE_DIRECTORY)
 }
 
 func Bootstrap(needsRoot bool) error {
+	utils.SetDebug(*debug)
+	utils.SupressProgress(*hideProgress)
+
 	if needsRoot && !utils.IsRoot() {
 		return errors.New("this program needs root rights")
 	}
@@ -65,6 +69,7 @@ func Bootstrap(needsRoot bool) error {
 
 func main() {
 	debug = RootCmd.PersistentFlags().BoolP("debug", "d", false, "Show debug messages")
+	hideProgress = RootCmd.PersistentFlags().Bool("hide-progress", false, "Hide progress")
 	RootCmd.PersistentFlags().StringVar(&baseDirectory, "base-directory", GetBaseDirectory(), "Base directory")
 
 	if _error := RootCmd.Execute(); _error != nil {

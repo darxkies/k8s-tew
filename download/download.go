@@ -10,8 +10,6 @@ import (
 
 	"github.com/darxkies/k8s-tew/config"
 	"github.com/darxkies/k8s-tew/utils"
-
-	log "github.com/sirupsen/logrus"
 )
 
 type CompressedFile struct {
@@ -59,12 +57,12 @@ func (downloader Downloader) getURL(url, filename string) (string, error) {
 
 func (downloader Downloader) downloadFile(url, filename string) (bool, error) {
 	if utils.FileExists(filename) {
-		log.WithFields(log.Fields{"url": filename}).Info("skipped downloading")
+		utils.LogURL("Skipped downloading", url)
 
 		return false, nil
 	}
 
-	log.WithFields(log.Fields{"url": url}).Info("downloading")
+	utils.LogURL("Downloading", url)
 
 	output, error := os.Create(filename)
 
@@ -103,9 +101,9 @@ func (downloader Downloader) downloadExecutable(urlTemplate, remoteFilename, fil
 	}
 
 	if installed {
-		log.WithFields(log.Fields{"filename": filename}).Info("installed")
+		utils.LogFilename("Installed", filename)
 	} else {
-		log.WithFields(log.Fields{"filename": filename}).Info("skipped installing")
+		utils.LogFilename("Skipped installing", filename)
 	}
 
 	return nil
@@ -196,10 +194,10 @@ func (downloader Downloader) downloadAndExtractTGZFiles(urlTemplate, baseName st
 
 	// All files exist, print skip message and bail out
 	if exist {
-		log.WithFields(log.Fields{"url": url}).Info("skipped downloading")
+		utils.LogURL("Skipped downloading", url)
 
 		for _, compressedFile := range files {
-			log.WithFields(log.Fields{"filename": compressedFile.TargetFile}).Info("skipped installing")
+			utils.LogFilename("Skipped installing", compressedFile.TargetFile)
 		}
 
 		return nil
@@ -238,7 +236,7 @@ func (downloader Downloader) downloadAndExtractTGZFiles(urlTemplate, baseName st
 			return error
 		}
 
-		log.WithFields(log.Fields{"filename": compressedFile.TargetFile}).Info("installed")
+		utils.LogFilename("Installed", compressedFile.TargetFile)
 	}
 
 	return nil
@@ -254,7 +252,7 @@ func (downloader Downloader) copyK8STEW() error {
 	targetFilename := downloader.config.GetFullLocalAssetFilename(utils.K8S_TEW_BINARY)
 
 	if binaryName == targetFilename {
-		log.WithFields(log.Fields{"filename": targetFilename}).Info("skipped")
+		utils.LogFilename("Skipped", targetFilename)
 
 		return nil
 	}
@@ -281,7 +279,7 @@ func (downloader Downloader) copyK8STEW() error {
 		return error
 	}
 
-	log.WithFields(log.Fields{"filename": targetFilename}).Info("copied")
+	utils.LogFilename("Copied", targetFilename)
 
 	return targetFile.Sync()
 }

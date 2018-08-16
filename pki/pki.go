@@ -17,7 +17,6 @@ import (
 	"time"
 
 	"github.com/darxkies/k8s-tew/utils"
-	log "github.com/sirupsen/logrus"
 )
 
 func GenerateEncryptionConfig() (string, error) {
@@ -164,16 +163,16 @@ func createAndSaveCertificate(signer *CertificateAndPrivateKey, template *x509.C
 		return error
 	}
 
-	log.WithFields(log.Fields{"filename": certificateFilename}).Info("generated")
-	log.WithFields(log.Fields{"filename": privateKeyFilename}).Info("generated")
+	utils.LogFilename("Generated", certificateFilename)
+	utils.LogFilename("Generated", privateKeyFilename)
 
 	return nil
 }
 
 func GenerateCA(rsaSize uint16, validityPeriod uint, commonName, organization, certificateFilename, privateKeyFilename string) error {
 	if utils.FileExists(certificateFilename) && utils.FileExists(privateKeyFilename) {
-		log.WithFields(log.Fields{"filename": certificateFilename}).Info("skipped")
-		log.WithFields(log.Fields{"filename": privateKeyFilename}).Info("skipped")
+		utils.LogFilename("Skipped", certificateFilename)
+		utils.LogFilename("Skipped", privateKeyFilename)
 
 		return nil
 	}
@@ -193,8 +192,8 @@ func GenerateCA(rsaSize uint16, validityPeriod uint, commonName, organization, c
 
 func GenerateClient(signer *CertificateAndPrivateKey, rsaSize uint16, validityPeriod uint, commonName, organization string, dnsNames []string, ipAddresses []string, certificateFilename, privateKeyFilename string, force bool) error {
 	if utils.FileExists(certificateFilename) && utils.FileExists(privateKeyFilename) && !force {
-		log.WithFields(log.Fields{"filename": certificateFilename}).Info("skipped")
-		log.WithFields(log.Fields{"filename": privateKeyFilename}).Info("skipped")
+		utils.LogFilename("Skipped", certificateFilename)
+		utils.LogFilename("Skipped", privateKeyFilename)
 
 		return nil
 	}

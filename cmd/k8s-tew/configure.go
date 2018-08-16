@@ -18,10 +18,12 @@ var configureCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		// Load config and check the rights
 		if error := Bootstrap(false); error != nil {
-			log.WithFields(log.Fields{"error": error}).Error("configure failed")
+			log.WithFields(log.Fields{"error": error}).Error("Configure failed")
 
 			os.Exit(-1)
 		}
+
+		utils.SetProgressSteps(1)
 
 		cmd.Flags().Visit(func(flag *pflag.Flag) {
 			for key, handler := range setterHandlers {
@@ -38,7 +40,7 @@ var configureCmd = &cobra.Command{
 		})
 
 		if error := _config.Save(); error != nil {
-			log.WithFields(log.Fields{"error": error}).Error("configure failed")
+			log.WithFields(log.Fields{"error": error}).Error("Configure failed")
 
 			os.Exit(-1)
 		}

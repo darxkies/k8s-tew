@@ -15,9 +15,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/briandowns/spinner"
 	oslib "github.com/redpois0n/goslib"
-	log "github.com/sirupsen/logrus"
 )
 
 func WaitForSignal(signal <-chan struct{}, timeout uint) error {
@@ -137,7 +135,7 @@ func ApplyTemplate(content string, data interface{}) (string, error) {
 
 func ApplyTemplateAndSave(content string, data interface{}, filename string, force bool) error {
 	if FileExists(filename) && !force {
-		log.WithFields(log.Fields{"filename": filename}).Info("skipped")
+		LogFilename("Skipped", filename)
 
 		return nil
 	}
@@ -151,7 +149,7 @@ func ApplyTemplateAndSave(content string, data interface{}, filename string, for
 		return error
 	}
 
-	log.WithFields(log.Fields{"filename": filename}).Info("generated")
+	LogFilename("Generated", filename)
 
 	return nil
 }
@@ -208,60 +206,4 @@ func HasOS(os []string) bool {
 	}
 
 	return false
-}
-
-var _spinner *spinner.Spinner
-var _progressSteps int
-var _progressStep int
-var _progressShow bool
-
-func init() {
-	_spinner = spinner.New(spinner.CharSets[9], 100*time.Millisecond)
-}
-
-func ShowProgress() {
-	_spinner.Prefix = "["
-	_spinner.Suffix = fmt.Sprintf("] Progress: %d/%d", _progressStep+1, _progressSteps)
-
-	_spinner.Start()
-
-	_progressShow = true
-}
-
-func HideProgress() {
-	_spinner.Stop()
-
-	_progressShow = false
-}
-
-func IncreaseProgressStep() {
-	_progressStep += 1
-}
-
-func SetProgressSteps(steps int) {
-	_progressSteps = steps
-}
-
-type logrusHook struct{}
-
-func (hook logrusHook) Fire(entry *log.Entry) error {
-	show := _progressShow
-
-	HideProgress()
-
-	entry.Message = fmt.Sprintf("[%d/%d]", _progressStep+1, _progressSteps) + " " + entry.Message
-
-	if show {
-		ShowProgress()
-	}
-
-	return nil
-}
-
-func (hook logrusHook) Levels() []log.Level {
-	return log.AllLevels
-}
-
-func SetupLogger() {
-	log.AddHook(logrusHook{})
 }

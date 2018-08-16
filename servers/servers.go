@@ -33,7 +33,7 @@ func (servers *Servers) runCommand(command *config.Command, commandRetries uint,
 		return error
 	}
 
-	log.WithFields(log.Fields{"name": command.Name, "command": newCommand}).Info("executing command")
+	log.WithFields(log.Fields{"name": command.Name, "_command": newCommand}).Info("Executing command")
 
 	for retries := uint(0); retries < commandRetries; retries++ {
 		if servers.stop {
@@ -49,7 +49,7 @@ func (servers *Servers) runCommand(command *config.Command, commandRetries uint,
 	}
 
 	if error != nil {
-		log.WithFields(log.Fields{"name": command.Name, "command": newCommand, "error": error}).Error("command failed")
+		log.WithFields(log.Fields{"name": command.Name, "command": newCommand, "error": error}).Error("Command failed")
 
 		return error
 	}
@@ -57,10 +57,11 @@ func (servers *Servers) runCommand(command *config.Command, commandRetries uint,
 	return nil
 }
 
-func (servers *Servers) Run(commandRetries uint) error {
-	// Dump configuration
-	servers.config.Dump()
+func (servers *Servers) Steps() int {
+	return len(servers.config.Config.Servers) + len(servers.config.Config.Commands) + 1
+}
 
+func (servers *Servers) Run(commandRetries uint) error {
 	// Add servers
 	for _, serverConfig := range servers.config.Config.Servers {
 		if !serverConfig.Enabled {
@@ -93,41 +94,50 @@ func (servers *Servers) Run(commandRetries uint) error {
 	// Start servers
 	for _, server := range servers.servers {
 		if error := server.Start(); error != nil {
-			log.WithFields(log.Fields{"name": server.Name(), "error": error}).Error("server start failed")
+			log.WithFields(log.Fields{"name": server.Name(), "error": error}).Error("Server start failed")
 
 			return error
 		}
 
+		utils.IncreaseProgressStep()
 	}
 
 	// Register servers' stop
 	defer func() {
 		for _, server := range servers.servers {
-			log.WithFields(log.Fields{"name": server.Name()}).Info("stopping server")
+			log.WithFields(log.Fields{"name": server.Name()}).Info("Stopping server")
 
 			server.Stop()
 		}
 
-		log.Info("stopped all servers")
+		log.Info("Stopped all servers")
 	}()
 
 	go func() {
 		// Register commands based on labels to be executed asynchronously
 		for index, command := range servers.config.Config.Commands {
 			if !config.CompareLabels(servers.config.Node.Labels, command.Labels) {
+				utils.IncreaseProgressStep()
+
 				continue
 			}
 
 			if !utils.HasOS(command.OS) {
+				utils.IncreaseProgressStep()
+
 				continue
 			}
 
 			if error := servers.runCommand(command, commandRetries, index+1, len(servers.config.Config.Commands)); error != nil {
-				log.WithFields(log.Fields{"error": error}).Fatal("cluster setup failed")
+				log.WithFields(log.Fields{"error": error}).Fatal("Cluster setup failed")
 			}
+
+			utils.IncreaseProgressStep()
 		}
 
-		log.Info("cluster setup finished")
+		log.Info("Cluster setup finished")
+
+		utils.HideProgress()
 	}()
 
 	// Wait for signals to stop

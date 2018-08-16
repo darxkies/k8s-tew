@@ -16,9 +16,9 @@ type ServerConfig struct {
 type Servers []ServerConfig
 
 func (config ServerConfig) Dump() {
-	log.WithFields(log.Fields{"name": config.Name, "labels": config.Labels, "command": config.Command}).Info("config server")
+	log.WithFields(log.Fields{"name": config.Name, "labels": config.Labels, "command": config.Command}).Info("Config server")
 
 	for key, value := range config.Arguments {
-		log.WithFields(log.Fields{"name": config.Name, "argument": key, "value": value}).Info("config server argument")
+		log.WithFields(log.Fields{"name": config.Name, "argument": key, "value": value}).Info("Config server argument")
 	}
 }

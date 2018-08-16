@@ -20,7 +20,7 @@ var deployCmd = &cobra.Command{
 	Long:  "Deploy assets to a remote cluster",
 	Run: func(cmd *cobra.Command, args []string) {
 		if error := Bootstrap(false); error != nil {
-			log.WithFields(log.Fields{"error": error}).Error("deploy failed")
+			log.WithFields(log.Fields{"error": error}).Error("Failed initializing")
 
 			os.Exit(-1)
 		}
@@ -30,20 +30,20 @@ var deployCmd = &cobra.Command{
 		utils.ShowProgress()
 
 		if error := deployment.Deploy(_config, identityFile); error != nil {
-			log.WithFields(log.Fields{"error": error}).Error("deploy failed")
+			log.WithFields(log.Fields{"error": error}).Error("Failed deploying")
 
 			os.Exit(-2)
 		}
 
 		if error := deployment.Setup(_config, commandRetries); error != nil {
-			log.WithFields(log.Fields{"error": error}).Error("setup failed")
+			log.WithFields(log.Fields{"error": error}).Error("Failed to setup")
 
 			os.Exit(-3)
 		}
 
 		utils.HideProgress()
 
-		log.Info("done")
+		log.Info("Done")
 	},
 }
 

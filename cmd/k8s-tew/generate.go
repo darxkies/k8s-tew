@@ -18,7 +18,7 @@ var generateCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		// Load config and check the rights
 		if error := Bootstrap(false); error != nil {
-			log.WithFields(log.Fields{"error": error}).Error("generate failed")
+			log.WithFields(log.Fields{"error": error}).Error("Generate failed")
 
 			os.Exit(-1)
 		}
@@ -32,12 +32,12 @@ var generateCmd = &cobra.Command{
 
 		_config.Generate()
 
-		log.Info("generated config entries")
+		log.Info("Generated config entries")
 
 		utils.IncreaseProgressStep()
 
 		if error := _config.Save(); error != nil {
-			log.WithFields(log.Fields{"error": error}).Error("generate failed")
+			log.WithFields(log.Fields{"error": error}).Error("Generate failed")
 
 			os.Exit(-1)
 		}
@@ -46,21 +46,21 @@ var generateCmd = &cobra.Command{
 
 		// Download binaries
 		if error := downloader.DownloadBinaries(); error != nil {
-			log.WithFields(log.Fields{"error": error}).Error("generate failed")
+			log.WithFields(log.Fields{"error": error}).Error("Generate failed")
 
 			os.Exit(-1)
 		}
 
 		// Download binaries
 		if error := generator.GenerateFiles(); error != nil {
-			log.WithFields(log.Fields{"error": error}).Error("generate failed")
+			log.WithFields(log.Fields{"error": error}).Error("Generate failed")
 
 			os.Exit(-1)
 		}
 
 		utils.HideProgress()
 
-		log.Info("done")
+		log.Info("Done")
 	},
 }
 

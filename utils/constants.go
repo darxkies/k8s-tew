@@ -329,7 +329,7 @@ const SERVICE_CONFIG_TEMPLATE = `[Unit]
 Description={{.ProjectTitle}}
 
 [Service]
-ExecStart={{.Command}} run --base-directory={{.BaseDirectory}}
+ExecStart={{.Command}} run --base-directory={{.BaseDirectory}} --hide-progress
 ExecStop=/usr/bin/killall -INT {{.Binary}}
 Restart=on-failure
 RestartSec=5

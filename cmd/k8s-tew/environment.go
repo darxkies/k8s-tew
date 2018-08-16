@@ -17,7 +17,7 @@ var environmentCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		// Load config and check the rights
 		if error := Bootstrap(false); error != nil {
-			log.WithFields(log.Fields{"error": error}).Error("environment failed")
+			log.WithFields(log.Fields{"error": error}).Error("Failed initializing")
 
 			os.Exit(-1)
 		}
@@ -43,7 +43,7 @@ var environmentCmd = &cobra.Command{
 		})
 
 		if error != nil {
-			log.WithFields(log.Fields{"error": error}).Error("environment failed")
+			log.WithFields(log.Fields{"error": error}).Error("Failed generating environment")
 
 			os.Exit(-1)
 		}

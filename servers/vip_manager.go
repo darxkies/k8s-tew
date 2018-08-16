@@ -89,13 +89,13 @@ func (manager *VIPManager) updateNetworkConfiguration(action string) error {
 }
 
 func (manager *VIPManager) addIP() error {
-	log.WithFields(log.Fields{"name": manager.Name()}).Info("add virtual ip")
+	log.WithFields(log.Fields{"name": manager.Name()}).Info("Add virtual ip")
 
 	return manager.updateNetworkConfiguration("add")
 }
 
 func (manager *VIPManager) deleteIP() error {
-	log.WithFields(log.Fields{"name": manager.Name()}).Info("delete virtual ip")
+	log.WithFields(log.Fields{"name": manager.Name()}).Info("Delete virtual ip")
 
 	return manager.updateNetworkConfiguration("delete")
 }
@@ -111,7 +111,7 @@ func (manager *VIPManager) Start() error {
 			session, error := manager.getSession()
 
 			if error != nil {
-				log.WithFields(log.Fields{"name": manager.Name(), "error": error}).Error("starting campaign failed")
+				log.WithFields(log.Fields{"name": manager.Name(), "error": error}).Error("Starting campaign failed")
 
 				continue
 			}
@@ -122,17 +122,17 @@ func (manager *VIPManager) Start() error {
 			// Initiate an election
 			election := concurrency.NewElection(session, utils.ELECTION_NAMESPACE+manager.electionKey)
 
-			log.WithFields(log.Fields{"name": manager.Name()}).Info("start campaign")
+			log.WithFields(log.Fields{"name": manager.Name()}).Info("Start campaign")
 
 			// Enter campaign
 			if error := election.Campaign(manager.campaignContext, manager.id); error != nil {
 				if error.Error() == "context canceled" {
-					log.WithFields(log.Fields{"name": manager.Name()}).Info("campaign canceled")
+					log.WithFields(log.Fields{"name": manager.Name()}).Info("Campaign canceled")
 
 					break
 				}
 
-				log.WithFields(log.Fields{"name": manager.Name(), "error": error}).Error("campaign terminated")
+				log.WithFields(log.Fields{"name": manager.Name(), "error": error}).Error("Campaign terminated")
 
 				continue
 			}
@@ -141,7 +141,7 @@ func (manager *VIPManager) Start() error {
 			defer election.Resign(context.Background())
 
 			// Elected
-			log.WithFields(log.Fields{"name": manager.Name()}).Info("elected leader")
+			log.WithFields(log.Fields{"name": manager.Name()}).Info("Elected leader")
 		}
 
 		manager.stopWaitGroup.Done()
@@ -154,7 +154,7 @@ func (manager *VIPManager) Start() error {
 			session, error := manager.getSession()
 
 			if error != nil {
-				log.WithFields(log.Fields{"name": manager.Name(), "error": error}).Error("starting observation failed")
+				log.WithFields(log.Fields{"name": manager.Name(), "error": error}).Error("Starting observation failed")
 
 				continue
 			}
@@ -165,12 +165,12 @@ func (manager *VIPManager) Start() error {
 			// Initiate observation
 			election := concurrency.NewElection(session, utils.ELECTION_NAMESPACE+manager.electionKey)
 
-			log.WithFields(log.Fields{"name": manager.Name()}).Info("start observation")
+			log.WithFields(log.Fields{"name": manager.Name()}).Info("Start observation")
 
 			for observation := range election.Observe(manager.observationContext) {
 				value := string(observation.Kvs[0].Value)
 
-				log.WithFields(log.Fields{"name": manager.Name(), "value": value, "own": manager.id}).Info("observation notification")
+				log.WithFields(log.Fields{"name": manager.Name(), "value": value, "own": manager.id}).Info("Observation notification")
 
 				if value == manager.id {
 					manager.addIP()
@@ -187,7 +187,7 @@ func (manager *VIPManager) Start() error {
 		manager.stopWaitGroup.Done()
 	}()
 
-	log.WithFields(log.Fields{"name": manager.Name()}).Info("started server")
+	log.WithFields(log.Fields{"name": manager.Name()}).Info("Started server")
 
 	return nil
 }

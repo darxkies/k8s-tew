@@ -18,7 +18,7 @@ var dashboardCmd = &cobra.Command{
 	Long:  "Retrieves and shows the dashboard token",
 	Run: func(cmd *cobra.Command, args []string) {
 		if error := Bootstrap(false); error != nil {
-			log.WithFields(log.Fields{"error": error}).Error("dashboard failed")
+			log.WithFields(log.Fields{"error": error}).Error("Failed initializing")
 
 			os.Exit(-1)
 		}
@@ -28,7 +28,7 @@ var dashboardCmd = &cobra.Command{
 
 		output, error := utils.RunCommandWithOutput(dashboardKeyCommand)
 		if error != nil {
-			log.WithFields(log.Fields{"error": error}).Error("dashboard failed")
+			log.WithFields(log.Fields{"error": error}).Error("Failed retrieving token")
 
 			os.Exit(-2)
 		}
@@ -42,13 +42,13 @@ var dashboardCmd = &cobra.Command{
 
 			ip, error := _config.GetWorkerIP()
 			if error != nil {
-				log.WithFields(log.Fields{"error": error}).Error("failed to get worker ip address")
+				log.WithFields(log.Fields{"error": error}).Error("Failed to get worker ip address")
 
 				os.Exit(-3)
 			}
 
 			if _, error := utils.RunCommandWithOutput(fmt.Sprintf("xdg-open https://%s:%d", ip, _config.Config.DashboardPort)); error != nil {
-				log.WithFields(log.Fields{"error": error}).Error("failed to open the web browser")
+				log.WithFields(log.Fields{"error": error}).Error("Failed to open the web browser")
 
 				os.Exit(-4)
 			}

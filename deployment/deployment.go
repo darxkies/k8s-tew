@@ -8,6 +8,7 @@ import (
 	"io"
 	"io/ioutil"
 	"os"
+	"path"
 	"strings"
 	"time"
 
@@ -79,7 +80,7 @@ func (deployment *Deployment) CreateDirectories() error {
 		createDirectoriesCommand += " " + directoryName
 	}
 
-	if _, error := deployment.Execute(createDirectoriesCommand); error != nil {
+	if _, error := deployment.Execute("create-directories", createDirectoriesCommand); error != nil {
 		return error
 	}
 
@@ -112,7 +113,7 @@ func (deployment *Deployment) getRemoteFileChecksums() map[string]string {
 		checksumCommand += " " + toFile
 	}
 
-	output, _ := deployment.Execute(checksumCommand)
+	output, _ := deployment.Execute("get-checksums", checksumCommand)
 
 	// Parse remote checksum values
 	checksums := map[string]string{}
@@ -159,7 +160,7 @@ func (deployment *Deployment) UploadFiles() error {
 	}
 
 	// Stop service
-	_, _ = deployment.Execute(fmt.Sprintf("systemctl stop %s", utils.SERVICE_NAME))
+	_, _ = deployment.Execute("stop-service", fmt.Sprintf("systemctl stop %s", utils.SERVICE_NAME))
 
 	// Copy changed files
 	for fromFile, toFile := range changedFiles {
@@ -169,7 +170,7 @@ func (deployment *Deployment) UploadFiles() error {
 	}
 
 	// Registrate and start service
-	_, error := deployment.Execute(fmt.Sprintf("systemctl daemon-reload && systemctl enable %s && systemctl start %s", utils.SERVICE_NAME, utils.SERVICE_NAME))
+	_, error := deployment.Execute("start-service", fmt.Sprintf("systemctl daemon-reload && systemctl enable %s && systemctl start %s", utils.SERVICE_NAME, utils.SERVICE_NAME))
 
 	return error
 }
@@ -199,8 +200,8 @@ func (deployment *Deployment) getSession() (*ssh.Session, error) {
 	return client.NewSession()
 }
 
-func (deployment *Deployment) Execute(command string) (string, error) {
-	log.WithFields(log.Fields{"target": deployment.node.IP, "command": command}).Info("executing remote command")
+func (deployment *Deployment) Execute(name, command string) (string, error) {
+	log.WithFields(log.Fields{"name": name, "target": deployment.node.IP, "_command": command}).Info("Executing remote command")
 
 	session, error := deployment.getSession()
 	if error != nil {
@@ -219,7 +220,9 @@ func (deployment *Deployment) Execute(command string) (string, error) {
 }
 
 func (deployment *Deployment) UploadFile(from, to string) error {
-	log.WithFields(log.Fields{"target": deployment.node.IP, "source-filename": from, "destination-filename": to}).Info("deploying")
+	filename := path.Base(to)
+
+	log.WithFields(log.Fields{"name": filename, "target": deployment.node.IP, "_source-filename": from, "_destination-filename": to}).Info("Deploying")
 
 	session, error := deployment.getSession()
 	if error != nil {
@@ -287,7 +290,7 @@ func Setup(_config *config.InternalConfig, commandRetries uint) error {
 			return error
 		}
 
-		log.WithFields(log.Fields{"name": command.Name, "command": newCommand}).Info("executing command")
+		log.WithFields(log.Fields{"name": command.Name, "_command": newCommand}).Info("Executing command")
 
 		for retries := uint(0); retries < commandRetries; retries++ {
 			// Run command
@@ -300,7 +303,7 @@ func Setup(_config *config.InternalConfig, commandRetries uint) error {
 		}
 
 		if error != nil {
-			log.WithFields(log.Fields{"name": command.Name, "command": newCommand, "error": error}).Error("command failed")
+			log.WithFields(log.Fields{"name": command.Name, "command": newCommand, "error": error}).Error("Command failed")
 
 			return error
 		}
