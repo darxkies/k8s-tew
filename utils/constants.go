@@ -16,8 +16,8 @@ const MINIO_CLIENT_VERSION = "RELEASE.2018-08-18T02-13-04Z"
 // Settings
 const PROJECT_TITLE = "Kubernetes - The Easier Way"
 const RSA_SIZE = 2048
-const CA_VALIDITY_PERIOD = 5
-const CLIENT_VALIDITY_PERIOD = 1
+const CA_VALIDITY_PERIOD = 20
+const CLIENT_VALIDITY_PERIOD = 15
 const BASE_DIRECTORY = "assets"
 const CLUSTER_DOMAIN = "cluster.local"
 const CLUSTER_IP_RANGE = "10.32.0.0/24"

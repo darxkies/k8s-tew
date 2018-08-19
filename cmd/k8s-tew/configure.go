@@ -33,7 +33,7 @@ var configureCmd = &cobra.Command{
 
 				handler(flag.Value.String())
 
-				fmt.Printf("%s = %s\n", flag.Name, flag.Value)
+				log.WithFields(log.Fields{"parameter": flag.Name, "value": flag.Value}).Info("Configuration changed")
 
 				break
 			}
@@ -75,6 +75,18 @@ func addUint16Option(name string, value uint16, description string, handler uint
 func init() {
 	setterHandlers = map[string]stringSetter{}
 
+	addUint16Option("rsa-key-size", utils.RSA_SIZE, "RSA Key Size", func(value uint16) {
+		_config.Config.RSASize = value
+	})
+
+	addUint16Option("ca-certificate-validity-period", utils.CA_VALIDITY_PERIOD, "CA Certificate Validity Period", func(value uint16) {
+		_config.Config.CAValidityPeriod = uint(value)
+	})
+
+	addUint16Option("client-certificate-validity-period", utils.CLIENT_VALIDITY_PERIOD, "Client Certificate Validity Period", func(value uint16) {
+		_config.Config.ClientValidityPeriod = uint(value)
+	})
+
 	addUint16Option("apiserver-port", utils.API_SERVER_PORT, "API Server Port", func(value uint16) {
 		_config.Config.APIServerPort = value
 	})
@@ -87,19 +99,19 @@ func init() {
 		_config.Config.DashboardPort = value
 	})
 
-	addStringOption("controller-virtual-ip", "", "Controller Virtual IP for the cluster", func(value string) {
+	addStringOption("controller-virtual-ip", "", "Controller Virtual/Floating IP for the cluster", func(value string) {
 		_config.Config.ControllerVirtualIP = value
 	})
 
-	addStringOption("controller-virtual-ip-interface", "", "Controller Virtual IP interface for the cluster", func(value string) {
+	addStringOption("controller-virtual-ip-interface", "", "Controller Virtual/Floating IP interface for the cluster", func(value string) {
 		_config.Config.ControllerVirtualIPInterface = value
 	})
 
-	addStringOption("worker-virtual-ip", "", "Worker Virtual IP for the cluster", func(value string) {
+	addStringOption("worker-virtual-ip", "", "Worker Virtual/Floating IP for the cluster", func(value string) {
 		_config.Config.WorkerVirtualIP = value
 	})
 
-	addStringOption("worker-virtual-ip-interface", "", "Worker Virtual IP interface for the cluster", func(value string) {
+	addStringOption("worker-virtual-ip-interface", "", "Worker Virtual/Floating IP interface for the cluster", func(value string) {
 		_config.Config.WorkerVirtualIPInterface = value
 	})
 

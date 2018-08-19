@@ -52,6 +52,6 @@ var initializeCmd = &cobra.Command{
 }
 
 func init() {
-	initializeCmd.Flags().BoolVarP(&force, "force", "f", false, "Force initialization if already initialized. This will remove any config changes.")
+	initializeCmd.Flags().BoolVarP(&force, "force", "f", false, "Force initialization if already initialized. This will basically remove the previous configuration.")
 	RootCmd.AddCommand(initializeCmd)
 }
