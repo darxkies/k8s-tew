@@ -9,6 +9,9 @@ const RUNC_VERSION = "1.0.0-rc5"
 const CRICTL_VERSION = "1.11.1"
 const GOBETWEEN_VERSION = "0.5.0"
 const HELM_VERSION = "2.9.1"
+const ARK_VERSION = "0.9.3"
+const MINIO_SERVER_VERSION = "RELEASE.2018-08-18T03-49-57Z"
+const MINIO_CLIENT_VERSION = "RELEASE.2018-08-18T02-13-04Z"
 
 // Settings
 const PROJECT_TITLE = "Kubernetes - The Easier Way"
@@ -28,6 +31,7 @@ const DASHBOARD_PORT = 32443
 const HELM_SERVICE_ACCOUNT = "tiller"
 const EMAIL = "k8s-tew@gmail.com"
 const DEPLOYMENT_DIRECTORY = "/"
+const INGRESS_DOMAIN = "k8s-tew.net"
 
 // URLs
 const K8S_DOWNLOAD_URL = "https://storage.googleapis.com/kubernetes-release/release/v{{.Versions.K8S}}/bin/linux/amd64/{{.Filename}}"
@@ -45,6 +49,8 @@ const GOBETWEEN_BASE_NAME = "gobetween_{{.Versions.Gobetween}}_linux_amd64"
 const GOBETWEEN_DOWNLOAD_URL = "https://github.com/yyyar/gobetween/releases/download/{{.Versions.Gobetween}}/{{.Filename}}.tar.gz"
 const HELM_BASE_NAME = "helm-v{{.Versions.Helm}}-linux-amd64"
 const HELM_DOWNLOAD_URL = "https://storage.googleapis.com/kubernetes-helm/{{.Filename}}.tar.gz"
+const ARK_BASE_NAME = "ark-v{{.Versions.Ark}}-linux-amd64"
+const ARK_DOWNLOAD_URL = "https://github.com/heptio/ark/releases/download/v{{.Versions.Ark}}/{{.Filename}}.tar.gz"
 
 // Config
 const CONFIG_FILENAME = "config.yaml"
@@ -86,12 +92,14 @@ const PROFILE_D_SUBDIRECTORY = "profile.d"
 const LOAD_BALANCER_SUBDIRECTORY = "lb"
 const HELM_SUBDIRECTORY = "helm"
 const KUBELET_SUBDIRECTORY = "kubelet"
+const PODS_SUBDIRECTORY = "pods"
 const MANIFESTS_SUBDIRECTORY = "manifests"
 const CEPH_SUBDIRECTORY = "ceph"
 const CEPH_BOOTSTRAP_MDS_SUBDIRECTORY = "bootstrap-mds"
 const CEPH_BOOTSTRAP_OSD_SUBDIRECTORY = "bootstrap-osd"
 const CEPH_BOOTSTRAP_RBD_SUBDIRECTORY = "bootstrap-rbd"
 const CEPH_BOOTSTRAP_RGW_SUBDIRECTORY = "bootstrap-rgw"
+const ARK_SUBDIRECTORY = "ark"
 
 // Directories
 const CONFIG_DIRECTORY = "config"
@@ -119,6 +127,7 @@ const GOBETWEEN_BINARIES_DIRECTORY = "gobetween-binaries"
 const GOBETWEEN_CONFIG_DIRECTORY = "gobetween-config"
 const HELM_DATA_DIRECTORY = "helm-data"
 const KUBELET_DATA_DIRECTORY = "kubelet-data"
+const PODS_DATA_DIRECTORY = "pods-data"
 const TEMPORARY_DIRECTORY = "temporary"
 const K8S_MANIFESTS_DIRECTORY = "kubelet-manifests"
 const CEPH_DIRECTORY = "ceph"
@@ -128,6 +137,7 @@ const CEPH_BOOTSTRAP_MDS_DIRECTORY = "bootstrap-mds"
 const CEPH_BOOTSTRAP_OSD_DIRECTORY = "bootstrap-osd"
 const CEPH_BOOTSTRAP_RBD_DIRECTORY = "bootstrap-rbd"
 const CEPH_BOOTSTRAP_RGW_DIRECTORY = "bootstrap-rgw"
+const ARK_BINARIES_DIRECTORY = "ark"
 
 // Binaries
 const K8S_TEW_BINARY = "k8s-tew"
@@ -156,6 +166,10 @@ const KUBE_SCHEDULER_BINARY = "kube-scheduler"
 
 // Gobeween Binary
 const GOBETWEEN_BINARY = "gobetween"
+
+// Ark Binaries
+const ARK_BINARY = "ark"
+const ARK_RESTIC_RESTORE_HELPER_BINARY = "ark-restic-restore-helper"
 
 // Certificates
 const CA_PEM = "ca.pem"
@@ -205,6 +219,8 @@ const K8S_COREDNS_SETUP = "coredns-setup.yaml"
 const K8S_CALICO_SETUP = "calico-setup.yaml"
 const K8S_ELASTICSEARCH_OPERATOR_SETUP = "elasticsearch-operator-setup.yaml"
 const K8S_EFK_SETUP = "efk-setup.yaml"
+const K8S_ARK_SETUP = "ark-setup.yaml"
+const WORDPRESS_SETUP = "wordpress-setup.yaml"
 
 // Gobetween Config
 const GOBETWEEN_CONFIG = "config.toml"
@@ -346,7 +362,7 @@ eval $({{.Binary}} environment)
 `
 
 const ENVIRONMENT_TEMPLATE = `
-export PATH={{.K8STEWPath}}:{{.K8SPath}}:{{.EtcdPath}}:{{.CRIPath}}:{{.CNIPath}}:{{.CurrentPath}}
+export PATH={{.K8STEWPath}}:{{.K8SPath}}:{{.EtcdPath}}:{{.CRIPath}}:{{.CNIPath}}:{{.ArkPath}}:{{.CurrentPath}}
 export KUBECONFIG={{.KubeConfig}}
 export CONTAINER_RUNTIME_ENDPOINT=unix://{{.ContainerdSock}}
 `
@@ -1744,4 +1760,538 @@ spec:
       - name: config
         configMap:
           name: efk-fluent-bit-config
+`
+
+const K8S_ARK_SETUP_TEMPLATE = `apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  name: backups.ark.heptio.com
+  labels:
+    component: ark
+spec:
+  group: ark.heptio.com
+  version: v1
+  scope: Namespaced
+  names:
+    plural: backups
+    kind: Backup
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  name: schedules.ark.heptio.com
+  labels:
+    component: ark
+spec:
+  group: ark.heptio.com
+  version: v1
+  scope: Namespaced
+  names:
+    plural: schedules
+    kind: Schedule
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  name: restores.ark.heptio.com
+  labels:
+    component: ark
+spec:
+  group: ark.heptio.com
+  version: v1
+  scope: Namespaced
+  names:
+    plural: restores
+    kind: Restore
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  name: configs.ark.heptio.com
+  labels:
+    component: ark
+spec:
+  group: ark.heptio.com
+  version: v1
+  scope: Namespaced
+  names:
+    plural: configs
+    kind: Config
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  name: downloadrequests.ark.heptio.com
+  labels:
+    component: ark
+spec:
+  group: ark.heptio.com
+  version: v1
+  scope: Namespaced
+  names:
+    plural: downloadrequests
+    kind: DownloadRequest
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  name: deletebackuprequests.ark.heptio.com
+  labels:
+    component: ark
+spec:
+  group: ark.heptio.com
+  version: v1
+  scope: Namespaced
+  names:
+    plural: deletebackuprequests
+    kind: DeleteBackupRequest
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  name: podvolumebackups.ark.heptio.com
+  labels:
+    component: ark
+spec:
+  group: ark.heptio.com
+  version: v1
+  scope: Namespaced
+  names:
+    plural: podvolumebackups
+    kind: PodVolumeBackup
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  name: podvolumerestores.ark.heptio.com
+  labels:
+    component: ark
+spec:
+  group: ark.heptio.com
+  version: v1
+  scope: Namespaced
+  names:
+    plural: podvolumerestores
+    kind: PodVolumeRestore
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  name: resticrepositories.ark.heptio.com
+  labels:
+    component: ark
+spec:
+  group: ark.heptio.com
+  version: v1
+  scope: Namespaced
+  names:
+    plural: resticrepositories
+    kind: ResticRepository
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: backup
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ark
+  namespace: backup
+  labels:
+    component: ark
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: ark
+  labels:
+    component: ark
+subjects:
+  - kind: ServiceAccount
+    namespace: backup
+    name: ark
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  namespace: backup
+  name: minio
+  labels:
+    component: minio
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        component: minio
+    spec:
+      volumes:
+      - name: storage
+        emptyDir: {}
+      - name: config
+        emptyDir: {}
+      containers:
+      - name: minio
+        image: minio/minio:{{.MinioServerVersion}}
+        imagePullPolicy: IfNotPresent
+        args:
+        - server
+        - /storage
+        - --config-dir=/config
+        env:
+        - name: MINIO_ACCESS_KEY
+          value: "minio"
+        - name: MINIO_SECRET_KEY
+          value: "changeme"
+        ports:
+        - containerPort: 9000
+        volumeMounts:
+        - name: storage
+          mountPath: "/storage"
+        - name: config
+          mountPath: "/config"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: backup
+  name: minio
+  labels:
+    component: minio
+spec:
+  type: NodePort
+  ports:
+    - port: 9000
+      targetPort: 9000
+      protocol: TCP
+      nodePort: 30800
+  selector:
+    component: minio
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  namespace: backup
+  name: cloud-credentials
+  labels:
+    component: minio
+stringData:
+  cloud: |
+    [default]
+    aws_access_key_id = minio
+    aws_secret_access_key = changeme
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  namespace: backup
+  name: minio-setup
+  labels:
+    component: minio
+spec:
+  template:
+    metadata:
+      name: minio-setup
+    spec:
+      restartPolicy: OnFailure
+      volumes:
+      - name: config
+        emptyDir: {}
+      containers:
+      - name: mc
+        image: minio/mc:{{.MinioClientVersion}}
+        imagePullPolicy: IfNotPresent
+        command:
+        - /bin/sh
+        - -c
+        - "mc --config-folder=/config config host add ark http://minio:9000 minio changeme && mc --config-folder=/config mb -p ark/ark && mc --config-folder=/config mb -p ark/restic"
+        volumeMounts:
+        - name: config
+          mountPath: "/config"
+---
+apiVersion: ark.heptio.com/v1
+kind: Config
+metadata:
+  namespace: backup
+  name: default
+backupStorageProvider:
+  name: aws
+  bucket: ark
+  resticLocation: restic
+  config:
+    region: minio
+    s3ForcePathStyle: "true"
+    s3Url: http://minio.backup.svc:9000
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  namespace: backup
+  name: ark
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: ark
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8085"
+        prometheus.io/path: "/metrics"
+    spec:
+      restartPolicy: Always
+      serviceAccountName: ark
+      containers:
+        - name: ark
+          image: gcr.io/heptio-images/ark:v{{.ArkVersion}}
+          ports:
+            - name: metrics
+              containerPort: 8085
+          command:
+            - /ark
+          args:
+            - server
+          volumeMounts:
+            - name: cloud-credentials
+              mountPath: /credentials
+            - name: plugins
+              mountPath: /plugins
+            - name: scratch
+              mountPath: /scratch
+          env:
+            - name: AWS_SHARED_CREDENTIALS_FILE
+              value: /credentials/cloud
+            - name: ARK_SCRATCH_DIR
+              value: /scratch
+      volumes:
+        - name: cloud-credentials
+          secret:
+            secretName: cloud-credentials
+        - name: plugins
+          emptyDir: {}
+        - name: scratch
+          emptyDir: {}
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata: 
+  name: restic
+  namespace: backup
+spec:
+  selector:
+    matchLabels:
+      name: restic
+  template:
+    metadata:
+      labels:
+        name: restic
+    spec:
+      serviceAccountName: ark
+      securityContext:
+        runAsUser: 0
+      volumes:
+        - name: cloud-credentials
+          secret:
+            secretName: cloud-credentials
+        - name: host-pods
+          hostPath:
+            path: {{.PodsDirectory}}
+        - name: scratch
+          emptyDir: {}
+      containers:
+        - name: ark
+          image: gcr.io/heptio-images/ark:{{.ArkVersion}}
+          command:
+            - /ark
+          args:
+            - restic
+            - server
+          volumeMounts:
+            - name: cloud-credentials
+              mountPath: /credentials
+            - name: host-pods
+              mountPath: /host_pods
+              mountPropagation: HostToContainer
+            - name: scratch
+              mountPath: /scratch
+          env:
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: HEPTIO_ARK_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: AWS_SHARED_CREDENTIALS_FILE
+              value: /credentials/cloud
+            - name: ARK_SCRATCH_DIR
+              value: /scratch
+`
+
+const WORDPRESS_SETUP_TEMPLATE = `apiVersion: v1
+kind: Namespace
+metadata:
+    name: wordpress
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pv-claim
+  namespace: wordpress
+  labels:
+    app: wordpress
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: wordpress-pv-claim
+  namespace: wordpress
+  labels:
+    app: wordpress
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: mysql
+  namespace: wordpress
+  labels:
+    app: wordpress
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: wordpress
+        tier: mysql
+      annotations:
+        backup.ark.heptio.com/backup-volumes: mysql-persistent-storage
+    spec:
+      containers:
+      - image: mysql:5.6
+        name: mysql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: changeme
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-pv-claim
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: wordpress
+  namespace: wordpress
+  labels:
+    app: wordpress
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: wordpress
+        tier: frontend
+      annotations:
+        backup.ark.heptio.com/backup-volumes: wordpress-persistent-storage
+    spec:
+      containers:
+      - image: wordpress:4.6.1-apache
+        name: wordpress
+        env:
+        - name: WORDPRESS_DB_HOST
+          value: mysql
+        - name: WORDPRESS_DB_PASSWORD
+          value: changeme
+        ports:
+        - containerPort: 80
+          name: wordpress
+        volumeMounts:
+        - name: wordpress-persistent-storage
+          mountPath: /var/www/html
+      volumes:
+      - name: wordpress-persistent-storage
+        persistentVolumeClaim:
+          claimName: wordpress-pv-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  namespace: wordpress
+  labels:
+    app: wordpress
+spec:
+  ports:
+    - port: 3306
+  selector:
+    app: wordpress
+    tier: mysql
+  clusterIP: None
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wordpress
+  namespace: wordpress
+  labels:
+    app: wordpress
+spec:
+  ports:
+  - port: 80
+    nodePort: 30100
+  selector:
+    app: wordpress
+    tier: frontend
+  type: NodePort
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: wordpress
+  namespace: wordpress
+  annotations:
+    ingress.kubernetes.io/ssl-redirect: "true"
+    kubernetes.io/tls-acme: "true"
+    certmanager.k8s.io/cluster-issuer: letsencrypt-production
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  tls:
+  - hosts:
+    - wordpress.{{.IngressDomain}}
+    secretName: wordpress-letsencrypt
+  rules:
+  - host: wordpress.{{.IngressDomain}}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: wordpress
+          servicePort: 80
 `

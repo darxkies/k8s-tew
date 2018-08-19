@@ -131,6 +131,10 @@ func init() {
 		_config.Config.Email = value
 	})
 
+	addStringOption("ingress-domain", utils.INGRESS_DOMAIN, "Ingress domain name", func(value string) {
+		_config.Config.IngressDomain = value
+	})
+
 	addStringOption("deployment-directory", utils.DEPLOYMENT_DIRECTORY, "Deployment directory", func(value string) {
 		_config.Config.DeploymentDirectory = value
 	})
@@ -161,6 +165,18 @@ func init() {
 
 	addStringOption("version-gobetween", utils.GOBETWEEN_VERSION, "Gobetween version", func(value string) {
 		_config.Config.Versions.Gobetween = value
+	})
+
+	addStringOption("version-ark", utils.ARK_VERSION, "Ark version", func(value string) {
+		_config.Config.Versions.Ark = value
+	})
+
+	addStringOption("version-minio-server", utils.MINIO_SERVER_VERSION, "Minio server version", func(value string) {
+		_config.Config.Versions.MinioServer = value
+	})
+
+	addStringOption("version-minio-client", utils.MINIO_CLIENT_VERSION, "Minio client version", func(value string) {
+		_config.Config.Versions.MinioClient = value
 	})
 
 	RootCmd.AddCommand(configureCmd)

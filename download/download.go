@@ -34,6 +34,7 @@ func NewDownloader(config *config.InternalConfig) Downloader {
 		downloader.downloadRuncBinary,
 		downloader.downloadCriCtlBinary,
 		downloader.downloadGobetweenBinary,
+		downloader.downloadArkBinaries,
 	}
 
 	return downloader
@@ -387,6 +388,21 @@ func (downloader Downloader) downloadGobetweenBinary() error {
 	}
 
 	return downloader.downloadAndExtractTGZFiles(utils.GOBETWEEN_DOWNLOAD_URL, utils.GOBETWEEN_BASE_NAME, compressedFiles)
+}
+
+func (downloader Downloader) downloadArkBinaries() error {
+	compressedFiles := []CompressedFile{
+		CompressedFile{
+			SourceFile: utils.ARK_BINARY,
+			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.ARK_BINARY),
+		},
+		CompressedFile{
+			SourceFile: utils.ARK_RESTIC_RESTORE_HELPER_BINARY,
+			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.ARK_RESTIC_RESTORE_HELPER_BINARY),
+		},
+	}
+
+	return downloader.downloadAndExtractTGZFiles(utils.ARK_DOWNLOAD_URL, utils.ARK_BASE_NAME, compressedFiles)
 }
 
 func (downloader Downloader) createLocalDirectories() error {

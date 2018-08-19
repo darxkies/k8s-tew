@@ -55,6 +55,10 @@ func NewGenerator(config *config.InternalConfig) *Generator {
 		generator.generateElasticSearchOperatorSetup,
 		// Generate ElasticSearch/Fluent-Bit/Kibana setup file
 		generator.generateEFKSetup,
+		// Generate ark setup file
+		generator.generateARKSetup,
+		// Generate wordpress setup file
+		generator.generateWordpressSetup,
 	}
 
 	return generator
@@ -548,6 +552,28 @@ func (generator *Generator) generateElasticSearchOperatorSetup() error {
 
 func (generator *Generator) generateEFKSetup() error {
 	return utils.ApplyTemplateAndSave(utils.K8S_EFK_SETUP_TEMPLATE, struct{}{}, generator.config.GetFullLocalAssetFilename(utils.K8S_EFK_SETUP), true)
+}
+
+func (generator *Generator) generateARKSetup() error {
+	return utils.ApplyTemplateAndSave(utils.K8S_ARK_SETUP_TEMPLATE, struct {
+		ArkVersion         string
+		MinioServerVersion string
+		MinioClientVersion string
+		PodsDirectory      string
+	}{
+		ArkVersion:         generator.config.Config.Versions.Ark,
+		MinioServerVersion: generator.config.Config.Versions.MinioServer,
+		MinioClientVersion: generator.config.Config.Versions.MinioClient,
+		PodsDirectory:      generator.config.GetFullTargetAssetDirectory(utils.PODS_DATA_DIRECTORY),
+	}, generator.config.GetFullLocalAssetFilename(utils.K8S_ARK_SETUP), true)
+}
+
+func (generator *Generator) generateWordpressSetup() error {
+	return utils.ApplyTemplateAndSave(utils.WORDPRESS_SETUP_TEMPLATE, struct {
+		IngressDomain string
+	}{
+		IngressDomain: generator.config.Config.IngressDomain,
+	}, generator.config.GetFullLocalAssetFilename(utils.WORDPRESS_SETUP), true)
 }
 
 func (generator *Generator) GenerateFiles() error {

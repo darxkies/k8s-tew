@@ -29,6 +29,7 @@ var environmentCmd = &cobra.Command{
 			EtcdPath       string
 			CRIPath        string
 			CNIPath        string
+			ArkPath        string
 			KubeConfig     string
 			ContainerdSock string
 		}{
@@ -38,6 +39,7 @@ var environmentCmd = &cobra.Command{
 			EtcdPath:       _config.GetFullLocalAssetDirectory(utils.ETCD_BINARIES_DIRECTORY),
 			CRIPath:        _config.GetFullLocalAssetDirectory(utils.CRI_BINARIES_DIRECTORY),
 			CNIPath:        _config.GetFullLocalAssetDirectory(utils.CNI_BINARIES_DIRECTORY),
+			ArkPath:        _config.GetFullLocalAssetDirectory(utils.ARK_BINARIES_DIRECTORY),
 			KubeConfig:     _config.GetFullLocalAssetFilename(utils.ADMIN_KUBECONFIG),
 			ContainerdSock: _config.GetFullTargetAssetFilename(utils.CONTAINERD_SOCK),
 		})

@@ -148,6 +148,7 @@ func (config *InternalConfig) registerAssetDirectories() {
 	config.addAssetDirectory(utils.CRI_BINARIES_DIRECTORY, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.BINARIES_DIRECTORY), utils.CRI_SUBDIRECTORY), false)
 	config.addAssetDirectory(utils.CNI_BINARIES_DIRECTORY, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, path.Join(config.GetRelativeAssetDirectory(utils.BINARIES_DIRECTORY), utils.CNI_SUBDIRECTORY), false)
 	config.addAssetDirectory(utils.GOBETWEEN_BINARIES_DIRECTORY, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.BINARIES_DIRECTORY), utils.LOAD_BALANCER_SUBDIRECTORY), false)
+	config.addAssetDirectory(utils.ARK_BINARIES_DIRECTORY, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.BINARIES_DIRECTORY), utils.ARK_SUBDIRECTORY), false)
 
 	// Misc
 	config.addAssetDirectory(utils.GOBETWEEN_CONFIG_DIRECTORY, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.CONFIG_DIRECTORY), utils.LOAD_BALANCER_SUBDIRECTORY), false)
@@ -155,6 +156,7 @@ func (config *InternalConfig) registerAssetDirectories() {
 	config.addAssetDirectory(utils.ETCD_DATA_DIRECTORY, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.DYNAMIC_DATA_DIRECTORY), utils.ETCD_SUBDIRECTORY), false)
 	config.addAssetDirectory(utils.CONTAINERD_DATA_DIRECTORY, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.DYNAMIC_DATA_DIRECTORY), utils.CONTAINERD_SUBDIRECTORY), false)
 	config.addAssetDirectory(utils.KUBELET_DATA_DIRECTORY, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.DYNAMIC_DATA_DIRECTORY), utils.KUBELET_SUBDIRECTORY), false)
+	config.addAssetDirectory(utils.PODS_DATA_DIRECTORY, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.KUBELET_DATA_DIRECTORY), utils.PODS_SUBDIRECTORY), false)
 	config.addAssetDirectory(utils.LOGGING_DIRECTORY, Labels{}, path.Join(utils.VARIABLE_SUBDIRECTORY, utils.LOGGING_SUBDIRECTORY, utils.K8S_TEW_SUBDIRECTORY), false)
 	config.addAssetDirectory(utils.SERVICE_DIRECTORY, Labels{}, path.Join(utils.CONFIG_SUBDIRECTORY, utils.SYSTEMD_SUBDIRECTORY, utils.SYSTEM_SUBDIRECTORY), false)
 	config.addAssetDirectory(utils.CONTAINERD_STATE_DIRECTORY, Labels{}, path.Join(utils.VARIABLE_SUBDIRECTORY, utils.RUN_SUBDIRECTORY, utils.K8S_TEW_SUBDIRECTORY, utils.CONTAINERD_SUBDIRECTORY), false)
@@ -203,6 +205,10 @@ func (config *InternalConfig) registerAssetFiles() {
 
 	// Gobetween Binary
 	config.addAssetFile(utils.GOBETWEEN_BINARY, Labels{utils.NODE_CONTROLLER}, "", utils.GOBETWEEN_BINARIES_DIRECTORY)
+
+	// Ark Binaries
+	config.addAssetFile(utils.ARK_BINARY, Labels{}, "", utils.ARK_BINARIES_DIRECTORY)
+	config.addAssetFile(utils.ARK_RESTIC_RESTORE_HELPER_BINARY, Labels{}, "", utils.ARK_BINARIES_DIRECTORY)
 
 	// Certificates
 	config.addAssetFile(utils.CA_PEM, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, "", utils.CERTIFICATES_DIRECTORY)
@@ -256,6 +262,8 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.K8S_COREDNS_SETUP, Labels{}, "", utils.K8S_SETUP_CONFIG_DIRECTORY)
 	config.addAssetFile(utils.K8S_ELASTICSEARCH_OPERATOR_SETUP, Labels{}, "", utils.K8S_SETUP_CONFIG_DIRECTORY)
 	config.addAssetFile(utils.K8S_EFK_SETUP, Labels{}, "", utils.K8S_SETUP_CONFIG_DIRECTORY)
+	config.addAssetFile(utils.K8S_ARK_SETUP, Labels{}, "", utils.K8S_SETUP_CONFIG_DIRECTORY)
+	config.addAssetFile(utils.WORDPRESS_SETUP, Labels{}, "", utils.K8S_SETUP_CONFIG_DIRECTORY)
 
 	// K8S Config
 	config.addAssetFile(utils.K8S_KUBE_SCHEDULER_CONFIG, Labels{utils.NODE_CONTROLLER}, "", utils.K8S_CONFIG_DIRECTORY)
@@ -408,8 +416,8 @@ func (config *InternalConfig) registerCommands() {
 	config.addCommand("enable-net-forwarding", Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, OS{}, "sysctl net.ipv4.conf.all.forwarding=1")
 	config.addCommand("k8s-kubelet-setup", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_KUBELET_SETUP)))
 	config.addCommand("k8s-admin-user-setup", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_ADMIN_USER_SETUP)))
-	config.addCommand("k8s-calico", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_CALICO_SETUP)))
-	config.addCommand("k8s-coredns", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_COREDNS_SETUP)))
+	config.addCommand("k8s-calico-setup", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_CALICO_SETUP)))
+	config.addCommand("k8s-coredns-setup", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_COREDNS_SETUP)))
 	config.addCommand("k8s-helm-user-setup", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_HELM_USER_SETUP)))
 	config.addCommand("ceph-secrets", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.CEPH_SECRETS)))
 	config.addCommand("ceph-setup", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.CEPH_SETUP)))
@@ -419,19 +427,21 @@ func (config *InternalConfig) registerCommands() {
 	config.addCommand("helm-add-coreos-repository", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s repo add coreos https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/", helmCommand))
 	config.addCommand("helm-repository-update", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s repo update", helmCommand))
 	config.addCommand("helm-kubernetes-dashboard", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s get svc kubernetes-dashboard -n kube-system || %s install stable/kubernetes-dashboard --name kubernetes-dashboard --set=service.type=NodePort,service.nodePort=%d --namespace kube-system", kubectlCommand, helmCommand, config.Config.DashboardPort))
-	config.addCommand("helm-cert-manager", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s list -q | grep cert-manager || %s install --name cert-manager --namespace kube-system stable/cert-manager", helmCommand, helmCommand))
-	config.addCommand("helm-nginx-ingress", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s list -q | grep nginx-ingress || %s install --namespace kube-system --name nginx-ingress stable/nginx-ingress --set rbac.create=true,controller.kind=DaemonSet,controller.service.type=NodePort,controller.service.nodePorts.http=30080,controller.service.nodePorts.https=30443,controller.image.tag=0.18.0", helmCommand, helmCommand))
-	config.addCommand("k8s-letsencrypt-cluster-issuer", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.LETSENCRYPT_CLUSTER_ISSUER)))
-	config.addCommand("helm-heapster", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s list -q | grep heapster || %s install --name heapster --namespace kube-system stable/heapster --set rbac.create=true", helmCommand, helmCommand))
+	config.addCommand("helm-cert-manager-setup", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s list -q | grep cert-manager || %s install --name cert-manager --namespace kube-system stable/cert-manager", helmCommand, helmCommand))
+	config.addCommand("helm-nginx-ingress-setup", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s list -q | grep nginx-ingress || %s install --namespace kube-system --name nginx-ingress stable/nginx-ingress --set controller.hostNetwork=true --set controller.kind=DaemonSet --set controller.image.tag=0.18.0", helmCommand, helmCommand))
+	config.addCommand("k8s-letsencrypt-cluster-issuer-setup", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.LETSENCRYPT_CLUSTER_ISSUER)))
+	config.addCommand("helm-heapster-setup", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s list -q | grep heapster || %s install --name heapster --namespace kube-system stable/heapster --set rbac.create=true", helmCommand, helmCommand))
 	config.addCommand("create-monitoring-namespace", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s get namespace monitoring|| %s create namespace monitoring", kubectlCommand, kubectlCommand))
-	config.addCommand("helm-metrics-server", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s list -q | grep metrics-server || %s install stable/metrics-server --name metrics-server --namespace monitoring --set serviceAccount.name=metrics-server", helmCommand, helmCommand))
-	config.addCommand("helm-prometheus-operator", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s list -q | grep prometheus-operator || %s install coreos/prometheus-operator --name prometheus-operator --namespace monitoring", helmCommand, helmCommand))
-	config.addCommand("helm-kube-prometheus", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s list -q | grep kube-prometheus || %s install coreos/kube-prometheus --name kube-prometheus --namespace monitoring", helmCommand, helmCommand))
+	config.addCommand("helm-metrics-server-setup", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s list -q | grep metrics-server || %s install stable/metrics-server --name metrics-server --namespace monitoring --set serviceAccount.name=metrics-server", helmCommand, helmCommand))
+	config.addCommand("helm-prometheus-operator-setup", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s list -q | grep prometheus-operator || %s install coreos/prometheus-operator --name prometheus-operator --namespace monitoring", helmCommand, helmCommand))
+	config.addCommand("helm-kube-prometheus-setup", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s list -q | grep kube-prometheus || %s install coreos/kube-prometheus --name kube-prometheus --namespace monitoring", helmCommand, helmCommand))
 	config.addCommand("patch-grafana-service", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf(`%s get svc kube-prometheus-grafana -n monitoring --output=jsonpath={.spec..nodePort} | grep 30900 || %s patch service kube-prometheus-grafana -n monitoring -p '{"spec":{"type":"NodePort","ports":[{"port":80,"nodePort":30900}]}}'`, kubectlCommand, kubectlCommand))
 	config.addCommand("k8s-elasticsearch-operator-setup", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_ELASTICSEARCH_OPERATOR_SETUP)))
 	config.addCommand("k8s-efk-setup", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_EFK_SETUP)))
 	config.addCommand("patch-kibana-service", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf(`%s get svc kibana-elasticsearch-cluster -n logging --output=jsonpath={.spec..nodePort} | grep 30980 || %s patch service kibana-elasticsearch-cluster -n logging -p '{"spec":{"type":"NodePort","ports":[{"port":80,"nodePort":30980}]}}'`, kubectlCommand, kubectlCommand))
 	config.addCommand("patch-cerebro-service", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf(`%s get svc cerebro-elasticsearch-cluster -n logging --output=jsonpath={.spec..nodePort} | grep 30990 || %s patch service cerebro-elasticsearch-cluster -n logging -p '{"spec":{"type":"NodePort","ports":[{"port":80,"nodePort":30990}]}}'`, kubectlCommand, kubectlCommand))
+	config.addCommand("k8s-ark-setup", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_ARK_SETUP)))
+	config.addCommand("wordpress-setup", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.WORDPRESS_SETUP)))
 }
 
 func (config *InternalConfig) Generate() {

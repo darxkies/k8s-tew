@@ -11,6 +11,7 @@ type Config struct {
 	Version                      string      `yaml:"version"`
 	ClusterID                    string      `yaml:"cluster-id"`
 	Email                        string      `ỳaml:"email"`
+	IngressDomain                string      `ỳaml:"ingress-domain"`
 	LoadBalancerPort             uint16      `yaml:"load-balancer-port"`
 	DashboardPort                uint16      `yaml:"dashboard-port"`
 	APIServerPort                uint16      `yaml:"apiserver-port,omitempty"`
@@ -40,6 +41,7 @@ func NewConfig() *Config {
 
 	config.ClusterID = fmt.Sprintf("%s", uuid.NewV4())
 	config.Email = utils.EMAIL
+	config.IngressDomain = utils.INGRESS_DOMAIN
 	config.LoadBalancerPort = utils.LOAD_BALANCER_PORT
 	config.DashboardPort = utils.DASHBOARD_PORT
 	config.APIServerPort = utils.API_SERVER_PORT
