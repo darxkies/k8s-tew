@@ -9,9 +9,9 @@ run: destroy up deploy
 
 deploy:
 	k8s-tew initialize -f
-	k8s-tew configure --controller-virtual-ip=$(IP_PREFIX).10 
+	k8s-tew configure --controller-virtual-ip=$(IP_PREFIX).20 
 	k8s-tew configure --controller-virtual-ip-interface=eth1 
-	k8s-tew configure --worker-virtual-ip=$(IP_PREFIX).20 
+	k8s-tew configure --worker-virtual-ip=$(IP_PREFIX).10 
 	k8s-tew configure --worker-virtual-ip-interface=eth1 
 	k8s-tew configure --public-network=$(IP_PREFIX).0/24
 	k8s-tew node-add -n controller00 -i $(IP_PREFIX).200 -x 0 -l controller

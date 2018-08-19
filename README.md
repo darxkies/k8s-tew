@@ -15,14 +15,16 @@ Thus, this project's aim is to give newbies an easy to use tool that allows them
 # Features
 
 * Multi node setup passes all CNCF conformance tests ([Kubernetes 1.10](https://github.com/cncf/k8s-conformance/tree/master/v1.10/k8s-tew), [Kubernetes 1.11](https://github.com/cncf/k8s-conformance/tree/master/v1.11/k8s-tew))
-* Networking: [Calico](https://www.projectcalico.org) for
+* Container Management: [Containerd](https://containerd.io/)
+* Networking: [Calico](https://www.projectcalico.org)
 * Ingress: [NGINX Ingress](https://kubernetes.github.io/ingress-nginx/) and [cert-manager](http://docs.cert-manager.io/en/latest/) for [Let's Encrypt](https://letsencrypt.org/)
 * Storage: [Ceph/RBD](https://ceph.com/)
 * Metrics: [metering-metrics](https://github.com/kubernetes-incubator/metrics-server) and [Heapster](https://github.com/kubernetes/heapster)
 * Monitoring: [Prometheus](https://prometheus.io/) and [Grafana](https://grafana.com/)
 * Logging: [Fluent-Bit](https://fluentbit.io/), [Elasticsearch](https://www.elastic.co/), [Kibana](https://www.elastic.co/products/kibana) and [Cerebro](https://github.com/lmenezes/cerebro)
 * Backups: [Ark](https://github.com/heptio/ark), [Restic](https://restic.net/) and [Minio](https://www.minio.io/)
-* Package manager: [Helm](https://helm.sh/)
+* Controller Load Balancing: [gobetween](http://gobetween.io/)
+* Package Manager: [Helm](https://helm.sh/)
 * Dashboard: [Kubernetes Dashboard](https://github.com/kubernetes/dashboard)
 * The communication between the components is encrypted
 * RBAC is enabled
@@ -30,7 +32,7 @@ Thus, this project's aim is to give newbies an easy to use tool that allows them
 * Integrated Load Balancer for the API Servers
 * Support for deployment to a HA cluster using ssh
 * Only the changed files are deployed
-* No docker installation required (uses containerd)
+* No [Docker](https://www.docker.com/) installation required
 * No cloud provider required
 * Single binary without any dependencies
 * Runs locally
@@ -293,76 +295,23 @@ The Vagrantfile can be configured using the environment variables:
 * CONTROLLERS - defines the number of controller nodes. The default number is 3.
 * WORKERS - specifies the number of worker nodes. The default number is 2.
 
-__NOTE__: The multi-node setup with the default settings needs about 16GB RAM for itself.
+__NOTE__: The multi-node setup with the default settings needs about 20G RAM for itself.
 
-## Ubuntu Single-Node
+__NOTE__: The Vagrantfile expects $HOME/.ssh/id_rsa to be in place. Otherwise the deployment will not work. If is not there it can be ganerated only by invoking the command ssh-keygen with no parameters.
 
-Steps to generate a single-node / Ubuntu cluster:
+## Usage
 
-```shell
-# Create the single-node VM
-vagrant destroy single-node -f
-OS=ubuntu vagrant up
+The directory called setup contains sub-directories for various cluster setup configurations:
 
-# Create the assets and deploy them
-k8s-tew initialize -f
-k8s-tew configure --controller-virtual-ip=192.168.100.10 --controller-virtual-ip-interface=enp0s8 --worker-virtual-ip=192.168.100.20 --worker-virtual-ip-interface=enp0s8 --resolv-conf=/run/systemd/resolve/resolv.conf
-k8s-tew node-add -n single-node -i 192.168.100.50 -x 0 -l controller,worker
-k8s-tew generate --deployment-directory=/
-k8s-tew deploy
+* local - it starts single-node cluster locally without using any kind of virtualization. This kind of setup needs root rights.
+* ubuntu-single-node - Ubuntu 18.04 single-node cluster. It needs about 8G Ram.
+* ubuntu-multi-node - Ubuntu 18.04 HA cluster. It needs around 20G Ram.
+* centos-single-node - CentOS 7.5 single-node cluster. It needs about 8G Ram.
+* centos-multi-node - CentOS 7.5 HA cluster. It needs around 20G Ram.
 
-# Setup local environment to execute kubectl, helm, etcdcl and so on
-eval $(k8s-tew environment)
+__NOTE__: Regardless of the setup, once the deployment is done it will take a while to download all required containers from the internet. So better use kubectl to check the status of the pods.
 
-# Get token for Kubernetes Dashboard
-kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}') | grep token: | awk '{print $2}'
-
-# Access Kubernetes dashboard
-xdg-open https://192.168.100.20:32443
-```
-
-## Ubuntu Multi-Node
-
-Steps to generate a multi-node / Ubuntu cluster:
-
-```shell
-# Create the multi-node VM (3 controllers & 2 workers)
-OS=ubuntu MULTI_NODE=true vagrant destroy -f
-OS=ubuntu MULTI_NODE=true vagrant up
-
-# Create the assets and deploy them
-k8s-tew initialize -f
-k8s-tew configure --controller-virtual-ip=192.168.100.10 --controller-virtual-ip-interface=enp0s8 --worker-virtual-ip=192.168.100.20 --worker-virtual-ip-interface=enp0s8 --resolv-conf=/run/systemd/resolve/resolv.conf
-k8s-tew node-add -n controller00 -i 192.168.100.100 -x 0 -l controller
-k8s-tew node-add -n controller01 -i 192.168.100.101 -x 1 -l controller
-k8s-tew node-add -n controller02 -i 192.168.100.102 -x 2 -l controller
-k8s-tew node-add -n worker00 -i 192.168.100.200 -x 3 -l worker
-k8s-tew node-add -n worker01 -i 192.168.100.201 -x 4 -l worker
-k8s-tew generate --deployment-directory=/
-k8s-tew deploy
-
-# Setup local environment to execute kubectl, helm, etcdcl and so on
-eval $(k8s-tew environment)
-
-# Get token for Kubernetes Dashboard
-kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}') | grep token: | awk '{print $2}'
-
-# Access Kubernetes dashboard
-xdg-open https://192.168.100.20:32443
-```
-
-## Local
-
-This steps can be used to get k8s-tew to run locally without any virtual machine.
-
-```shell
-k8s-tew initialize -f
-k8s-tew node-add -s
-k8s-tew generate
-sudo k8s-tew run
-```
-
-__NOTE__: To access Kuberntes Dashboard use the internal IP address and 127.0.0.1/localhost. Depending on the hardware used, it might take a while until it starts and setups everything.
+__NOTE__: To access Kuberntes Dashboard use the internal IP address and not 127.0.0.1/localhost. Depending on the hardware used, it might take a while until it starts and setups everything.
 
 # Troubleshooting
 
@@ -370,8 +319,8 @@ k8s-tew enables logging for all components by default. The log files are stored 
 
 # Caveats
 
-* k8s-tew needs root privileges to be executed. Thus, it should be executed on a virtual machine or in a Docker container to generate the assets and to deploy the cluster.
+* The local setup leaves the containers running when stopped and for ingress the ports 80, 443 need to be free on the host. It also turns swapping off which is a requirement for kubelet.
 
 # Feedback
 
-* Gmail: darxkies@gmail.com
+* E-Mail: darxkies@gmail.com
