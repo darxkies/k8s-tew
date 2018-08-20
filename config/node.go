@@ -33,3 +33,7 @@ func (node *Node) IsWorker() bool {
 
 	return false
 }
+
+func (node *Node) IsControllerOnly() bool {
+	return node.IsController() && !node.IsWorker()
+}

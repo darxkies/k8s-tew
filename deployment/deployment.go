@@ -20,6 +20,11 @@ import (
 	"golang.org/x/crypto/ssh"
 
 	"github.com/tmc/scp"
+
+	"k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/tools/clientcmd"
 )
 
 type Deployment struct {
@@ -246,6 +251,9 @@ func Steps(_config *config.InternalConfig) int {
 	// Run Commands
 	result += len(_config.Config.Nodes) * len(_config.Config.Commands)
 
+	// Taint commands
+	result += len(_config.Config.Nodes)
+
 	return result
 }
 
@@ -276,8 +284,109 @@ func Deploy(_config *config.InternalConfig, identityFile string) error {
 	return nil
 }
 
+func taintNode(kubeconfig, nodeName string, isControllerOnly bool) error {
+	// Configure connection
+	config, error := clientcmd.BuildConfigFromFlags("", kubeconfig)
+	if error != nil {
+		return error
+	}
+
+	// Create client
+	clientset, error := kubernetes.NewForConfig(config)
+	if error != nil {
+		return error
+	}
+
+	// Get Node
+	node, error := clientset.CoreV1().Nodes().Get(nodeName, metav1.GetOptions{})
+	if error != nil {
+		return error
+	}
+
+	log.WithFields(log.Fields{"node": nodeName}).Info("Taint node")
+
+	changed := false
+
+	// TODO use node-role.kubernetes.io/master and NoSchedule as kube-prometheus-node uses that
+	if isControllerOnly {
+		found := false
+
+		for _, taint := range node.Spec.Taints {
+			if taint.Key == CONTROLLER_ONLY_TAINT_KEY {
+				found = true
+
+				break
+			}
+		}
+
+		if !found {
+			node.Spec.Taints = append(node.Spec.Taints, v1.Taint{Key: CONTROLLER_ONLY_TAINT_KEY, Value: "true", Effect: v1.TaintEffectNoExecute})
+
+			changed = true
+		}
+	} else {
+		taints := []v1.Taint{}
+
+		for _, taint := range node.Spec.Taints {
+			if taint.Key == CONTROLLER_ONLY_TAINT_KEY {
+				changed = true
+
+				continue
+			}
+
+			taints = append(taints, taint)
+		}
+
+		node.Spec.Taints = taints
+	}
+
+	if !changed {
+		return nil
+	}
+
+	_, error = clientset.CoreV1().Nodes().Update(node)
+
+	return error
+}
+
+func runCommand(name, command string, commandRetries uint) error {
+	var error error
+
+	log.WithFields(log.Fields{"name": name, "_command": command}).Info("Executing command")
+
+	for retries := uint(0); retries < commandRetries; retries++ {
+		// Run command
+		if error = utils.RunCommand(command); error == nil {
+			break
+		}
+
+		time.Sleep(time.Second)
+	}
+
+	if error != nil {
+		log.WithFields(log.Fields{"name": name, "command": command, "error": error}).Error("Command failed")
+
+		return error
+	}
+
+	return nil
+}
+
+const CONTROLLER_ONLY_TAINT_KEY = "controller-only"
+
 // Run bootstrapper commands
 func Setup(_config *config.InternalConfig, commandRetries uint) error {
+	kubeconfig := _config.GetFullLocalAssetFilename(utils.ADMIN_KUBECONFIG)
+
+	for nodeName, node := range _config.Config.Nodes {
+		// TODO retry if there is an error
+		if error := taintNode(kubeconfig, nodeName, node.IsControllerOnly()); error != nil {
+			return error
+		}
+
+		utils.IncreaseProgressStep()
+	}
+
 	for _, command := range _config.Config.Commands {
 		if !command.Labels.HasLabels([]string{utils.NODE_BOOTSTRAPPER}) {
 			utils.IncreaseProgressStep()
@@ -290,21 +399,7 @@ func Setup(_config *config.InternalConfig, commandRetries uint) error {
 			return error
 		}
 
-		log.WithFields(log.Fields{"name": command.Name, "_command": newCommand}).Info("Executing command")
-
-		for retries := uint(0); retries < commandRetries; retries++ {
-			// Run command
-			error = utils.RunCommand(newCommand)
-			if error == nil {
-				break
-			}
-
-			time.Sleep(time.Second)
-		}
-
-		if error != nil {
-			log.WithFields(log.Fields{"name": command.Name, "command": newCommand, "error": error}).Error("Command failed")
-
+		if error := runCommand(command.Name, newCommand, commandRetries); error != nil {
 			return error
 		}
 

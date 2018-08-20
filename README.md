@@ -313,6 +313,52 @@ __NOTE__: Regardless of the setup, once the deployment is done it will take a wh
 
 __NOTE__: To access Kuberntes Dashboard use the internal IP address and not 127.0.0.1/localhost. Depending on the hardware used, it might take a while until it starts and setups everything.
 
+### Create
+
+Change to one of the sub-directories and enter the following command to start the cluster:
+
+```shell
+make
+```
+
+### Stop
+
+For the local setup, just press CTRL+C.
+
+For the other setups enter:
+
+```shell
+make halt
+```
+
+### Start
+
+To start an existing setup enter:
+
+```shell
+make up
+```
+
+__NOTE__: This and the following commands work only for Vagrant based setups.
+
+### SSH
+
+For single-node setups enter:
+
+```shell
+make ssh
+```
+
+And for multi-node setups:
+
+```shell
+make ssh-controller00
+make ssh-controller01
+make ssh-controller02
+make ssh-worker00
+make ssh-worker01
+```
+
 # Troubleshooting
 
 k8s-tew enables logging for all components by default. The log files are stored in {base-directory}/var/log/k8s-tew/.

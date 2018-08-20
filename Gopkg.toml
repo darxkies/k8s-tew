@@ -28,3 +28,15 @@
 [[constraint]]
   branch = "master"
   name = "github.com/redpois0n/goslib"
+
+[[constraint]]
+  branch = "release-1.11"
+  name = "k8s.io/apimachinery"
+
+[[constraint]]
+  branch = "release-1.11"
+  name = "k8s.io/api"
+
+[[constraint]]
+  name = "k8s.io/client-go"
+  version = "8.0.0"

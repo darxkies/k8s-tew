@@ -726,6 +726,9 @@ spec:
           type: DirectoryOrCreate
       nodeSelector:
         kubernetes.io/hostname: {{$node.Name}}
+      tolerations:
+        - effect: NoExecute
+          operator: Exists
       containers:
       - name: ceph-mon
         image: ceph/daemon:v3.0.5-stable-3.0-luminous-ubuntu-16.04-x86_64
@@ -771,6 +774,9 @@ spec:
           type: DirectoryOrCreate
       nodeSelector:
         kubernetes.io/hostname: {{$node.Name}}
+      tolerations:
+        - effect: NoExecute
+          operator: Exists
       containers:
       - name: ceph-osd
         image: ceph/daemon:v3.0.5-stable-3.0-luminous-ubuntu-16.04-x86_64
@@ -1747,6 +1753,9 @@ spec:
           mountPath: /fluent-bit/etc/fluent-bit.conf
           subPath: fluent-bit.conf
       terminationGracePeriodSeconds: 10
+      tolerations:
+        - effect: NoExecute
+          operator: Exists
       volumes:
       - name: varlog
         hostPath:
@@ -2104,9 +2113,12 @@ spec:
             path: {{.PodsDirectory}}
         - name: scratch
           emptyDir: {}
+      tolerations:
+        - effect: NoExecute
+          operator: Exists
       containers:
         - name: ark
-          image: gcr.io/heptio-images/ark:{{.ArkVersion}}
+          image: gcr.io/heptio-images/ark:v{{.ArkVersion}}
           command:
             - /ark
           args:
