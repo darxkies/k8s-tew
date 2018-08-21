@@ -13,6 +13,9 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+const DIAL_TIMEOUT = 5
+const SESSION_TTL = 5
+
 type VIPManager struct {
 	id                 string
 	session            *concurrency.Session
@@ -66,7 +69,7 @@ func (manager *VIPManager) getSession() (*concurrency.Session, error) {
 
 	config := clientv3.Config{
 		Endpoints:   manager.endpoints,
-		DialTimeout: time.Second,
+		DialTimeout: time.Second * DIAL_TIMEOUT,
 		TLS:         tlsConfig,
 	}
 
@@ -75,7 +78,7 @@ func (manager *VIPManager) getSession() (*concurrency.Session, error) {
 		return nil, error
 	}
 
-	return concurrency.NewSession(_client, concurrency.WithTTL(2))
+	return concurrency.NewSession(_client, concurrency.WithTTL(SESSION_TTL))
 }
 
 func (manager *VIPManager) Name() string {
