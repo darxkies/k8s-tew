@@ -303,11 +303,8 @@ func taintNode(kubeconfig, nodeName string, isControllerOnly bool) error {
 		return error
 	}
 
-	log.WithFields(log.Fields{"node": nodeName}).Info("Taint node")
-
 	changed := false
 
-	// TODO use node-role.kubernetes.io/master and NoSchedule as kube-prometheus-node uses that
 	if isControllerOnly {
 		found := false
 
@@ -320,7 +317,7 @@ func taintNode(kubeconfig, nodeName string, isControllerOnly bool) error {
 		}
 
 		if !found {
-			node.Spec.Taints = append(node.Spec.Taints, v1.Taint{Key: CONTROLLER_ONLY_TAINT_KEY, Value: "true", Effect: v1.TaintEffectNoExecute})
+			node.Spec.Taints = append(node.Spec.Taints, v1.Taint{Key: CONTROLLER_ONLY_TAINT_KEY, Value: "true", Effect: v1.TaintEffectNoSchedule})
 
 			changed = true
 		}
@@ -372,19 +369,32 @@ func runCommand(name, command string, commandRetries uint) error {
 	return nil
 }
 
-const CONTROLLER_ONLY_TAINT_KEY = "controller-only"
+const CONTROLLER_ONLY_TAINT_KEY = "node-role.kubernetes.io/master"
 
 // Run bootstrapper commands
 func Setup(_config *config.InternalConfig, commandRetries uint) error {
 	kubeconfig := _config.GetFullLocalAssetFilename(utils.ADMIN_KUBECONFIG)
 
+	var error error
+
 	for nodeName, node := range _config.Config.Nodes {
-		// TODO retry if there is an error
-		if error := taintNode(kubeconfig, nodeName, node.IsControllerOnly()); error != nil {
-			return error
+		log.WithFields(log.Fields{"node": nodeName}).Info("Taint node")
+
+		for retries := uint(0); retries < commandRetries; retries++ {
+			if error = taintNode(kubeconfig, nodeName, node.IsControllerOnly()); error == nil {
+				break
+			}
+
+			time.Sleep(time.Second)
 		}
 
 		utils.IncreaseProgressStep()
+
+		if error != nil {
+			log.WithFields(log.Fields{"node": nodeName, "error": error}).Error("Taint node failed")
+
+			return error
+		}
 	}
 
 	for _, command := range _config.Config.Commands {

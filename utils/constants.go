@@ -727,6 +727,8 @@ spec:
       nodeSelector:
         kubernetes.io/hostname: {{$node.Name}}
       tolerations:
+        - effect: NoSchedule
+          operator: Exists
         - effect: NoExecute
           operator: Exists
       containers:
@@ -1754,6 +1756,8 @@ spec:
           subPath: fluent-bit.conf
       terminationGracePeriodSeconds: 10
       tolerations:
+        - effect: NoSchedule
+          operator: Exists
         - effect: NoExecute
           operator: Exists
       volumes:
@@ -2114,6 +2118,8 @@ spec:
         - name: scratch
           emptyDir: {}
       tolerations:
+        - effect: NoSchedule
+          operator: Exists
         - effect: NoExecute
           operator: Exists
       containers:
