@@ -1,0 +1,190 @@
+apiVersion: enterprises.upmc.com/v1
+kind: ElasticsearchCluster
+metadata:
+  name: elasticsearch-cluster
+  namespace: logging
+  labels:
+    app: elasticsearch
+    release: elasticsearch
+spec:
+  kibana:
+    image: {{.KibanaImage}}
+  cerebro:
+    image: {{.CerebroImage}}
+  elastic-search-image: "{{.ElasticsearchImage}}"
+  client-node-replicas: 1
+  master-node-replicas: 1
+  data-node-replicas: 1
+  network-host: 0.0.0.0
+  zones: []
+  data-volume-size: 1Gi
+  java-options: -Xms256m -Xmx256m
+  snapshot:
+    scheduler-enabled: false
+    bucket-name: elasticsnapshots
+    cron-schedule: "@every 2m"
+    image: "{{.ElasticsearchCronImage}}"
+  resources:
+    limits:
+      cpu: "1"
+      memory: 1024Mi
+    requests:
+      cpu: 500m
+      memory: 512Mi
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app: fluent-bit
+  name: efk-fluent-bit
+  namespace: logging
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: efk-fluent-bit
+  namespace: logging
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - get
+  - list
+  - watch
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: efk-fluent-bit
+roleRef:
+  kind: ClusterRole
+  name: efk-fluent-bit
+  apiGroup: rbac.authorization.k8s.io
+subjects:
+- kind: ServiceAccount
+  name: efk-fluent-bit
+  namespace: logging
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: efk-fluent-bit-config
+  namespace: logging
+  labels:
+    app: efk-fluent-bit
+data:
+  fluent-bit.conf: |-
+    [SERVICE]
+        Flush        1
+        Daemon       Off
+        Log_Level    info
+        Parsers_File parsers.conf
+    [INPUT]
+        Name             tail
+        Path             /var/log/containers/*.log
+        Parser           docker
+        Tag              kube.*
+        Refresh_Interval 5
+        Mem_Buf_Limit    5MB
+        Skip_Long_Lines  On
+    [INPUT]
+        Name             tail
+        Path             /var/log/k8s-tew/*.log
+        Parser           syslog
+        Tag              k8s-tew.*
+        Refresh_Interval 5
+        Mem_Buf_Limit    5MB
+        Skip_Long_Lines  On
+    [FILTER]
+        Name                kubernetes
+        Match               kube.*
+        Kube_URL            https://kubernetes.default.svc:443
+        Kube_CA_File        /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        Kube_Token_File     /var/run/secrets/kubernetes.io/serviceaccount/token
+        tls.verify 0
+        tls.debug 1
+    [OUTPUT]
+        Name  es
+        Match *
+        Host  elasticsearch-elasticsearch-cluster
+        Port  9200
+        Logstash_Format On
+        Retry_Limit False
+        Type  flb_type
+        Logstash_Prefix kubernetes_cluster
+        tls on
+        tls.verify 0
+        tls.debug 1
+  parsers.conf: |-
+    [PARSER]
+        Name        docker
+        Format      json
+        Time_Key    time
+        Time_Format %Y-%m-%dT%H:%M:%S.%L
+        Time_Keep   On
+
+    [PARSER]
+        Name        syslog
+        Format      regex
+        Regex       ^\<(?<pri>[0-9]+)\>(?<time>[^ ]* {1,2}[^ ]* [^ ]*) (?<host>[^ ]*) (?<ident>[a-zA-Z0-9_\/\.\-]*)(?:\[(?<pid>[0-9]+)\])?(?:[^\:]*\:)? *(?<message>.*)$
+        Time_Key    time
+        Time_Format %b %d %H:%M:%S
+---
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: fluent-bit
+  namespace: logging
+  labels:
+    app: efk-fluent-bit
+spec:
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: efk-fluent-bit
+    spec:
+      serviceAccountName: efk-fluent-bit
+      containers:
+      - name: fluent-bit
+        image: "{{.FluentBitImage}}"
+        resources:
+          limits:
+            memory: 100Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        volumeMounts:
+        - name: varlog
+          mountPath: /var/log
+        - name: varlogk8stew
+          mountPath: /var/log/k8s-tew
+        - name: varlogcontainers
+          mountPath: /var/log/containers
+          readOnly: true
+        - name: config
+          mountPath: /fluent-bit/etc/fluent-bit.conf
+          subPath: fluent-bit.conf
+      terminationGracePeriodSeconds: 10
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
+        - effect: NoExecute
+          operator: Exists
+      volumes:
+      - name: varlog
+        hostPath:
+          path: /var/log
+      - name: varlogk8stew
+        hostPath:
+          path: /var/log/k8s-tew
+      - name: varlogcontainers
+        hostPath:
+          path: /var/log/containers
+      - name: config
+        configMap:
+          name: efk-fluent-bit-config

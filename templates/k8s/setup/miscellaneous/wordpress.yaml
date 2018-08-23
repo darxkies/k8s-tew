@@ -1,0 +1,159 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+    name: wordpress
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pv-claim
+  namespace: wordpress
+  labels:
+    app: wordpress
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: wordpress-pv-claim
+  namespace: wordpress
+  labels:
+    app: wordpress
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: mysql
+  namespace: wordpress
+  labels:
+    app: wordpress
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: wordpress
+        tier: mysql
+      annotations:
+        backup.ark.heptio.com/backup-volumes: mysql-persistent-storage
+    spec:
+      containers:
+      - image: mysql:5.6
+        name: mysql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: changeme
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-pv-claim
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: wordpress
+  namespace: wordpress
+  labels:
+    app: wordpress
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: wordpress
+        tier: frontend
+      annotations:
+        backup.ark.heptio.com/backup-volumes: wordpress-persistent-storage
+    spec:
+      containers:
+      - image: wordpress:4.6.1-apache
+        name: wordpress
+        env:
+        - name: WORDPRESS_DB_HOST
+          value: mysql
+        - name: WORDPRESS_DB_PASSWORD
+          value: changeme
+        ports:
+        - containerPort: 80
+          name: wordpress
+        volumeMounts:
+        - name: wordpress-persistent-storage
+          mountPath: /var/www/html
+      volumes:
+      - name: wordpress-persistent-storage
+        persistentVolumeClaim:
+          claimName: wordpress-pv-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  namespace: wordpress
+  labels:
+    app: wordpress
+spec:
+  ports:
+    - port: 3306
+  selector:
+    app: wordpress
+    tier: mysql
+  clusterIP: None
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wordpress
+  namespace: wordpress
+  labels:
+    app: wordpress
+spec:
+  ports:
+  - port: 80
+    nodePort: 30100
+  selector:
+    app: wordpress
+    tier: frontend
+  type: NodePort
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: wordpress
+  namespace: wordpress
+  annotations:
+    ingress.kubernetes.io/ssl-redirect: "true"
+    kubernetes.io/tls-acme: "true"
+    certmanager.k8s.io/cluster-issuer: letsencrypt-production
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  tls:
+  - hosts:
+    - wordpress.{{.IngressDomain}}
+    secretName: wordpress-letsencrypt
+  rules:
+  - host: wordpress.{{.IngressDomain}}
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: wordpress
+          servicePort: 80

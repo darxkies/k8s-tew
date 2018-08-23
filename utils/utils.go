@@ -16,6 +16,7 @@ import (
 	"time"
 
 	oslib "github.com/redpois0n/goslib"
+	log "github.com/sirupsen/logrus"
 )
 
 func WaitForSignal(signal <-chan struct{}, timeout uint) error {
@@ -96,6 +97,15 @@ func IsRoot() bool {
 	return os.Geteuid() == 0
 }
 
+func GetFullImageName(name, version string) string {
+	content, error := ApplyTemplate(name, struct{ Version string }{Version: version})
+	if error != nil {
+		log.WithFields(log.Fields{"name": name, "version": version, "error": error}).Panic("Image template failure")
+	}
+
+	return content
+}
+
 func ApplyTemplate(content string, data interface{}) (string, error) {
 	var result bytes.Buffer
 
@@ -133,7 +143,9 @@ func ApplyTemplate(content string, data interface{}) (string, error) {
 	return result.String(), nil
 }
 
-func ApplyTemplateAndSave(content string, data interface{}, filename string, force bool) error {
+func ApplyTemplateAndSave(templateName string, data interface{}, filename string, force bool) error {
+	content := GetTemplate(templateName)
+
 	if FileExists(filename) && !force {
 		LogFilename("Skipped", filename)
 

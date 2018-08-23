@@ -1,0 +1,242 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: storage
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: rbd-provisioner
+  namespace: kube-system
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: rbd-provisioner
+rules:
+  - apiGroups: [""]
+    resources: ["persistentvolumes"]
+    verbs: ["get", "list", "watch", "create", "delete"]
+  - apiGroups: [""]
+    resources: ["persistentvolumeclaims"]
+    verbs: ["get", "list", "watch", "update"]
+  - apiGroups: ["storage.k8s.io"]
+    resources: ["storageclasses"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: [""]
+    resources: ["events"]
+    verbs: ["list", "watch", "create", "update", "patch"]
+  - apiGroups: [""]
+    resources: ["services"]
+    resourceNames: ["kube-dns"]
+    verbs: ["list", "get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: rbd-provisioner
+  namespace: kube-system
+rules:
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["get"]
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: rbd-provisioner
+subjects:
+  - kind: ServiceAccount
+    name: rbd-provisioner
+    namespace: kube-system
+roleRef:
+  kind: ClusterRole
+  name: rbd-provisioner
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: rbd-provisioner
+  namespace: kube-system
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: rbd-provisioner
+subjects:
+- kind: ServiceAccount
+  name: rbd-provisioner
+  namespace: kube-system
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: ceph
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "true"
+provisioner: ceph.com/rbd
+parameters:
+  monitors: {{range $index, $node := .StorageControllers}}{{if $index}},{{end}}{{$node.IP}}:6789{{end}}
+  pool: {{.CephPoolName}}
+  adminId: admin
+  adminSecretName: ceph-admin
+  adminSecretNamespace: kube-system
+  userId: k8s-tew
+  userSecretName: ceph-k8s-tew
+  userSecretNamespace: kube-system
+  imageFormat: "2"
+  imageFeatures: layering
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: rbd-provisioner
+  namespace: kube-system
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: rbd-provisioner
+    spec:
+      containers:
+      - name: rbd-provisioner
+        image: "{{$.RBDProvisionerImage}}"
+        env:
+        - name: PROVISIONER_NAME
+          value: ceph.com/rbd
+      serviceAccount: rbd-provisioner
+{{range $index, $node := .StorageControllers}}---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ceph-mon-{{$node.Name}}
+  namespace: storage
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: ceph-mon-{{$node.Name}}
+    spec:
+      hostNetwork: true
+      volumes:
+      - name: ceph-config
+        hostPath:
+          path: {{$.CephConfigDirectory}}
+          type: DirectoryOrCreate
+      - name: ceph-data
+        hostPath:
+          path: {{$.CephDataDirectory}}
+          type: DirectoryOrCreate
+      nodeSelector:
+        kubernetes.io/hostname: {{$node.Name}}
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
+        - effect: NoExecute
+          operator: Exists
+      containers:
+      - name: ceph-mon
+        image: {{$.CephImage}}
+        args: ["mon"]
+        env:
+        - name: MON_IP
+          value: {{$node.IP}}
+        - name: CEPH_PUBLIC_NETWORK
+          value: {{$.PublicNetwork}}
+        volumeMounts:
+        - name: ceph-config
+          mountPath: /etc/ceph
+        - name: ceph-data
+          mountPath: /var/lib/ceph
+{{end}}{{range $index, $node := .StorageNodes}}---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ceph-osd-{{$node.Name}}
+  namespace: storage
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: ceph-osd-{{$node.Name}}
+    spec:
+      hostNetwork: true
+      volumes:
+      - name: ceph-config
+        hostPath:
+          path: {{$.CephConfigDirectory}}
+          type: DirectoryOrCreate
+      - name: ceph-data
+        hostPath:
+          path: {{$.CephDataDirectory}}
+          type: DirectoryOrCreate
+      - name: ceph-dev
+        hostPath:
+          path: /dev
+          type: DirectoryOrCreate
+      nodeSelector:
+        kubernetes.io/hostname: {{$node.Name}}
+      tolerations:
+        - effect: NoExecute
+          operator: Exists
+      containers:
+      - name: ceph-osd
+        image: {{$.CephImage}}
+        args: ["osd"]
+        securityContext:
+          privileged: true
+        env:
+        - name: OSD_TYPE
+          value: directory
+        volumeMounts:
+        - name: ceph-config
+          mountPath: /etc/ceph
+        - name: ceph-data
+          mountPath: /var/lib/ceph
+        - name: ceph-dev
+          mountPath: /dev
+{{end}}---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ceph-mgr
+  namespace: storage
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: ceph-mgr
+    spec:
+      hostNetwork: true
+      volumes:
+      - name: ceph-config
+        hostPath:
+          path: {{$.CephConfigDirectory}}
+          type: DirectoryOrCreate
+      - name: ceph-data
+        hostPath:
+          path: {{$.CephDataDirectory}}
+          type: DirectoryOrCreate
+      containers:
+      - name: ceph-mgr
+        image: {{$.CephImage}}
+        securityContext:
+          privileged: true
+        args: ["mgr"]
+        volumeMounts:
+        - name: ceph-config
+          mountPath: /etc/ceph
+        - name: ceph-data
+          mountPath: /var/lib/ceph

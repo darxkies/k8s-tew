@@ -42,6 +42,12 @@
   version = "v1.0.0"
 
 [[projects]]
+  name = "github.com/gobuffalo/packr"
+  packages = ["."]
+  revision = "ee1318b82b25993be2f7161d48315e1f14697528"
+  version = "v1.13.3"
+
+[[projects]]
   name = "github.com/gogo/protobuf"
   packages = [
     "gogoproto",
@@ -195,6 +201,12 @@
   packages = ["."]
   revision = "5f041e8faa004a95c88a202771f4cc3e991971e6"
   version = "v2.0.1"
+
+[[projects]]
+  name = "github.com/pkg/errors"
+  packages = ["."]
+  revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
+  version = "v0.8.0"
 
 [[projects]]
   branch = "master"
@@ -377,7 +389,7 @@
   version = "v2.2.1"
 
 [[projects]]
-  branch = "master"
+  branch = "release-1.11"
   name = "k8s.io/api"
   packages = [
     "admissionregistration/v1alpha1",
@@ -410,7 +422,7 @@
     "storage/v1alpha1",
     "storage/v1beta1"
   ]
-  revision = "2315b41a07e851014d77070954fc391a9b2d9aa9"
+  revision = "61b11ee6533278ae17d77fd36825d0b47ec3a293"
 
 [[projects]]
   branch = "release-1.11"
@@ -516,6 +528,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "f30d05a1d77d6ab45df2efd813c8fe0b08b08b82dbde2b73cbdf87278507f36b"
+  inputs-digest = "867e6f665995f408f99dc90f05564498d468db52c8863409f7dee4eb288280b0"
   solver-name = "gps-cdcl"
   solver-version = 1

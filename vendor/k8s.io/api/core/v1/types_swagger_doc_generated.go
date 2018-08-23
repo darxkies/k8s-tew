@@ -319,7 +319,7 @@ var map_Container = map[string]string{
 	"ports":                    "List of ports to expose from the container. Exposing a port here gives the system additional information about the network connections a container uses, but is primarily informational. Not specifying a port here DOES NOT prevent that port from being exposed. Any port which is listening on the default \"0.0.0.0\" address inside a container will be accessible from the network. Cannot be updated.",
 	"envFrom":                  "List of sources to populate environment variables in the container. The keys defined within a source must be a C_IDENTIFIER. All invalid keys will be reported as an event when the container is starting. When a key exists in multiple sources, the value associated with the last source will take precedence. Values defined by an Env with a duplicate key will take precedence. Cannot be updated.",
 	"env":                      "List of environment variables to set in the container. Cannot be updated.",
-	"resources":                "Compute Resources required by this container. Cannot be updated. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/",
+	"resources":                "Compute Resources required by this container. Cannot be updated. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources",
 	"volumeMounts":             "Pod volumes to mount into the container's filesystem. Cannot be updated.",
 	"volumeDevices":            "volumeDevices is the list of block devices to be used by the container. This is an alpha feature and may change in the future.",
 	"livenessProbe":            "Periodic probe of container liveness. Container will be restarted if the probe fails. Cannot be updated. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes",
@@ -1512,7 +1512,7 @@ var map_PodSpec = map[string]string{
 	"hostNetwork":                   "Host networking requested for this pod. Use the host's network namespace. If this option is set, the ports that will be used must be specified. Default to false.",
 	"hostPID":                       "Use the host's pid namespace. Optional: Default to false.",
 	"hostIPC":                       "Use the host's ipc namespace. Optional: Default to false.",
-	"shareProcessNamespace":         "Share a single process namespace between all of the containers in a pod. When this is set containers will be able to view and signal processes from other containers in the same pod, and the first process in each container will not be assigned PID 1. HostPID and ShareProcessNamespace cannot both be set. Optional: Default to false. This field is beta-level and may be disabled with the PodShareProcessNamespace feature.",
+	"shareProcessNamespace":         "Share a single process namespace between all of the containers in a pod. When this is set containers will be able to view and signal processes from other containers in the same pod, and the first process in each container will not be assigned PID 1. HostPID and ShareProcessNamespace cannot both be set. Optional: Default to false. This field is alpha-level and is honored only by servers that enable the PodShareProcessNamespace feature.",
 	"securityContext":               "SecurityContext holds pod-level security attributes and common container settings. Optional: Defaults to empty.  See type description for default values of each field.",
 	"imagePullSecrets":              "ImagePullSecrets is an optional list of references to secrets in the same namespace to use for pulling any of the images used by this PodSpec. If specified, these secrets will be passed to individual puller implementations for them to use. For example, in the case of docker, only DockerConfig type secrets are honored. More info: https://kubernetes.io/docs/concepts/containers/images#specifying-imagepullsecrets-on-a-pod",
 	"hostname":                      "Specifies the hostname of the Pod If not specified, the pod's hostname will be set to a system-defined value.",
@@ -1854,9 +1854,9 @@ var map_ScaleIOPersistentVolumeSource = map[string]string{
 	"sslEnabled":       "Flag to enable/disable SSL communication with Gateway, default false",
 	"protectionDomain": "The name of the ScaleIO Protection Domain for the configured storage.",
 	"storagePool":      "The ScaleIO Storage Pool associated with the protection domain.",
-	"storageMode":      "Indicates whether the storage for a volume should be ThickProvisioned or ThinProvisioned. Default is ThinProvisioned.",
+	"storageMode":      "Indicates whether the storage for a volume should be ThickProvisioned or ThinProvisioned.",
 	"volumeName":       "The name of a volume already created in the ScaleIO system that is associated with this volume source.",
-	"fsType":           "Filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. \"ext4\", \"xfs\", \"ntfs\". Default is \"xfs\"",
+	"fsType":           "Filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. \"ext4\", \"xfs\", \"ntfs\". Implicitly inferred to be \"ext4\" if unspecified.",
 	"readOnly":         "Defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts.",
 }
 
@@ -1872,9 +1872,9 @@ var map_ScaleIOVolumeSource = map[string]string{
 	"sslEnabled":       "Flag to enable/disable SSL communication with Gateway, default false",
 	"protectionDomain": "The name of the ScaleIO Protection Domain for the configured storage.",
 	"storagePool":      "The ScaleIO Storage Pool associated with the protection domain.",
-	"storageMode":      "Indicates whether the storage for a volume should be ThickProvisioned or ThinProvisioned. Default is ThinProvisioned.",
+	"storageMode":      "Indicates whether the storage for a volume should be ThickProvisioned or ThinProvisioned.",
 	"volumeName":       "The name of a volume already created in the ScaleIO system that is associated with this volume source.",
-	"fsType":           "Filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. \"ext4\", \"xfs\", \"ntfs\". Default is \"xfs\".",
+	"fsType":           "Filesystem type to mount. Must be a filesystem type supported by the host operating system. Ex. \"ext4\", \"xfs\", \"ntfs\". Implicitly inferred to be \"ext4\" if unspecified.",
 	"readOnly":         "Defaults to false (read/write). ReadOnly here will force the ReadOnly setting in VolumeMounts.",
 }
 

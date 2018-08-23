@@ -13,6 +13,7 @@ import (
 
 var identityFile string
 var commandRetries uint
+var skipSetup bool
 
 var deployCmd = &cobra.Command{
 	Use:   "deploy",
@@ -25,20 +26,16 @@ var deployCmd = &cobra.Command{
 			os.Exit(-1)
 		}
 
-		utils.SetProgressSteps(deployment.Steps(_config) + 1)
+		_deployment := deployment.NewDeployment(_config, identityFile, skipSetup, commandRetries)
+
+		utils.SetProgressSteps(_deployment.Steps() + 1)
 
 		utils.ShowProgress()
 
-		if error := deployment.Deploy(_config, identityFile); error != nil {
+		if error := _deployment.Deploy(); error != nil {
 			log.WithFields(log.Fields{"error": error}).Error("Failed deploying")
 
 			os.Exit(-2)
-		}
-
-		if error := deployment.Setup(_config, commandRetries); error != nil {
-			log.WithFields(log.Fields{"error": error}).Error("Failed to setup")
-
-			os.Exit(-3)
 		}
 
 		utils.HideProgress()
@@ -50,5 +47,6 @@ var deployCmd = &cobra.Command{
 func init() {
 	deployCmd.Flags().StringVarP(&identityFile, "identity-file", "i", path.Join(os.Getenv("HOME"), ".ssh/id_rsa"), "SSH identity file")
 	deployCmd.Flags().UintVarP(&commandRetries, "command-retries", "r", 300, "The count of command retries during the setup")
+	deployCmd.Flags().BoolVarP(&skipSetup, "skip-setup", "s", false, "Skip setup steps")
 	RootCmd.AddCommand(deployCmd)
 }

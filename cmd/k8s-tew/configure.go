@@ -151,44 +151,96 @@ func init() {
 		_config.Config.DeploymentDirectory = value
 	})
 
-	addStringOption("version-etcd", utils.ETCD_VERSION, "Etcd version", func(value string) {
+	addStringOption("version-etcd", utils.VERSION_ETCD, "Etcd version", func(value string) {
 		_config.Config.Versions.Etcd = value
 	})
 
-	addStringOption("version-k8s", utils.K8S_VERSION, "Kubernetes version", func(value string) {
+	addStringOption("version-k8s", utils.VERSION_K8S, "Kubernetes version", func(value string) {
 		_config.Config.Versions.K8S = value
 	})
 
-	addStringOption("version-helm", utils.HELM_VERSION, "Helm version", func(value string) {
+	addStringOption("version-helm", utils.VERSION_HELM, "Helm version", func(value string) {
 		_config.Config.Versions.Helm = value
 	})
 
-	addStringOption("version-containerd", utils.CONTAINERD_VERSION, "Containerd version", func(value string) {
+	addStringOption("version-containerd", utils.VERSION_CONTAINERD, "Containerd version", func(value string) {
 		_config.Config.Versions.Containerd = value
 	})
 
-	addStringOption("version-runc", utils.RUNC_VERSION, "Runc version", func(value string) {
+	addStringOption("version-runc", utils.VERSION_RUNC, "Runc version", func(value string) {
 		_config.Config.Versions.Runc = value
 	})
 
-	addStringOption("version-crictl", utils.CRICTL_VERSION, "CriCtl version", func(value string) {
+	addStringOption("version-crictl", utils.VERSION_CRICTL, "CriCtl version", func(value string) {
 		_config.Config.Versions.CriCtl = value
 	})
 
-	addStringOption("version-gobetween", utils.GOBETWEEN_VERSION, "Gobetween version", func(value string) {
+	addStringOption("version-gobetween", utils.VERSION_GOBETWEEN, "Gobetween version", func(value string) {
 		_config.Config.Versions.Gobetween = value
 	})
 
-	addStringOption("version-ark", utils.ARK_VERSION, "Ark version", func(value string) {
+	addStringOption("version-ark", utils.VERSION_ARK, "Ark version", func(value string) {
 		_config.Config.Versions.Ark = value
 	})
 
-	addStringOption("version-minio-server", utils.MINIO_SERVER_VERSION, "Minio server version", func(value string) {
+	addStringOption("version-minio-server", utils.VERSION_MINIO_SERVER, "Minio server version", func(value string) {
 		_config.Config.Versions.MinioServer = value
 	})
 
-	addStringOption("version-minio-client", utils.MINIO_CLIENT_VERSION, "Minio client version", func(value string) {
+	addStringOption("version-minio-client", utils.VERSION_MINIO_CLIENT, "Minio client version", func(value string) {
 		_config.Config.Versions.MinioClient = value
+	})
+
+	addStringOption("version-pause", utils.VERSION_PAUSE, "Pause version", func(value string) {
+		_config.Config.Versions.Pause = value
+	})
+
+	addStringOption("version-coredns", utils.VERSION_COREDNS, "CoreDNS version", func(value string) {
+		_config.Config.Versions.CoreDNS = value
+	})
+
+	addStringOption("version-elasticsearch", utils.VERSION_ELASTICSEARCH, "Elasticsearch version", func(value string) {
+		_config.Config.Versions.Elasticsearch = value
+	})
+
+	addStringOption("version-elasticsearch-cron", utils.VERSION_ELASTICSEARCH_CRON, "Elasticsearch Cron version", func(value string) {
+		_config.Config.Versions.ElasticsearchCron = value
+	})
+
+	addStringOption("version-elasticsearch-operator", utils.VERSION_ELASTICSEARCH_OPERATOR, "Elasticsearch Operator version", func(value string) {
+		_config.Config.Versions.ElasticsearchOperator = value
+	})
+
+	addStringOption("version-kibana", utils.VERSION_KIBANA, "Kibana version", func(value string) {
+		_config.Config.Versions.Kibana = value
+	})
+
+	addStringOption("version-cerebro", utils.VERSION_CEREBRO, "Cerebro version", func(value string) {
+		_config.Config.Versions.Cerebro = value
+	})
+
+	addStringOption("version-fluent-bit", utils.VERSION_FLUENT_BIT, "Fluent-Bit version", func(value string) {
+		_config.Config.Versions.FluentBit = value
+	})
+
+	addStringOption("version-calico-typha", utils.VERSION_CALICO_TYPHA, "Calico Typha version", func(value string) {
+		_config.Config.Versions.CalicoTypha = value
+	})
+
+	addStringOption("version-calico-node", utils.VERSION_CALICO_NODE, "Calico Node version", func(value string) {
+		_config.Config.Versions.CalicoNode = value
+	})
+
+	addStringOption("version-calico-cni", utils.VERSION_CALICO_CNI, "Calico CNI version", func(value string) {
+		_config.Config.Versions.CalicoCNI = value
+	})
+
+	addStringOption("version-rbd-provisioner", utils.VERSION_RBD_PROVISIONER, "RBD-Provisioner version", func(value string) {
+		_config.Config.Versions.RBDProvisioner = value
+	})
+
+	addStringOption("version-ceph", utils.VERSION_CEPH, "Ceph version", func(value string) {
+		_config.Config.Versions.Ceph = value
 	})
 
 	RootCmd.AddCommand(configureCmd)

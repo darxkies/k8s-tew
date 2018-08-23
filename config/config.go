@@ -37,7 +37,7 @@ type Config struct {
 }
 
 func NewConfig() *Config {
-	config := &Config{Version: utils.CONFIG_VERSION}
+	config := &Config{Version: utils.VERSION_CONFIG}
 
 	config.ClusterID = fmt.Sprintf("%s", uuid.NewV4())
 	config.Email = utils.EMAIL

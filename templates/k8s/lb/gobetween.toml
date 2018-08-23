@@ -1,0 +1,13 @@
+[servers.kube-apiserver]
+bind = "0.0.0.0:{{ .LoadBalancerPort }}"
+protocol = "tcp" 
+balance = "roundrobin"
+
+max_connections = 10000
+client_idle_timeout = "10m"
+backend_idle_timeout = "10m"
+backend_connection_timeout = "2s"
+
+[servers.kube-apiserver.discovery]
+kind = "static"
+static_list = [ {{ .KubeAPIServers | quoted_string_list }} ]

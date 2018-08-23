@@ -22,7 +22,7 @@ var environmentCmd = &cobra.Command{
 			os.Exit(-1)
 		}
 
-		content, error := utils.ApplyTemplate(utils.ENVIRONMENT_TEMPLATE, struct {
+		content, error := utils.ApplyTemplate(utils.GetTemplate(utils.TEMPLATE_ENVIRONMENT), struct {
 			CurrentPath    string
 			K8STEWPath     string
 			K8SPath        string
