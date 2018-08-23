@@ -243,5 +243,13 @@ func init() {
 		_config.Config.Versions.Ceph = value
 	})
 
+	addStringOption("version-kubernetes-dashboard", utils.VERSION_KUBERNETES_DASHBOARD, "Kuberntees Dashboard version", func(value string) {
+		_config.Config.Versions.KubernetesDashboard = value
+	})
+
+	addStringOption("version-cert-manager", utils.VERSION_CERT_MANAGER, "Cert Manager version", func(value string) {
+		_config.Config.Versions.CertManager = value
+	})
+
 	RootCmd.AddCommand(configureCmd)
 }

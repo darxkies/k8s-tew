@@ -4,10 +4,8 @@ import "github.com/darxkies/k8s-tew/utils"
 
 type Versions struct {
 	Etcd                  string
-	Flanneld              string
 	K8S                   string
 	Helm                  string
-	CNI                   string
 	Containerd            string
 	Runc                  string
 	CriCtl                string
@@ -28,6 +26,8 @@ type Versions struct {
 	CalicoCNI             string
 	RBDProvisioner        string
 	Ceph                  string
+	KubernetesDashboard   string
+	CertManager           string
 }
 
 func NewVersions() Versions {
@@ -55,5 +55,7 @@ func NewVersions() Versions {
 		CalicoCNI:             utils.VERSION_CALICO_CNI,
 		RBDProvisioner:        utils.VERSION_RBD_PROVISIONER,
 		Ceph:                  utils.VERSION_CEPH,
+		KubernetesDashboard:   utils.VERSION_KUBERNETES_DASHBOARD,
+		CertManager:           utils.VERSION_CERT_MANAGER,
 	}
 }

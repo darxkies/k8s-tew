@@ -25,6 +25,8 @@ const VERSION_CALICO_NODE = "3.1.3"
 const VERSION_CALICO_CNI = "3.1.3"
 const VERSION_RBD_PROVISIONER = "1.0.0-k8s1.10"
 const VERSION_CEPH = "3.0.5-stable-3.0-luminous-ubuntu-16.04-x86_64"
+const VERSION_KUBERNETES_DASHBOARD = "1.8.3"
+const VERSION_CERT_MANAGER = "0.4.1"
 
 // Images
 const IMAGE_PAUSE = "k8s.gcr.io/pause:{{.Version}}"

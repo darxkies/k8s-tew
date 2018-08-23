@@ -206,8 +206,7 @@ func (deployment *NodeDeployment) pullImage(image string) error {
 	containerdSock := deployment.config.GetFullTargetAssetFilename(utils.CONTAINERD_SOCK)
 	command := fmt.Sprintf("CONTAINER_RUNTIME_ENDPOINT=unix://%s %s pull %s", containerdSock, crictl, image)
 
-	output, error := deployment.Execute(image, command)
-
+	output, error := deployment.Execute(fmt.Sprintf("pull-%s", image), command)
 	if error != nil {
 		return fmt.Errorf("%s (%s)", error.Error(), output)
 	}
