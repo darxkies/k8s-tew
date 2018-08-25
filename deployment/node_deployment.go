@@ -22,15 +22,18 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 )
 
+const CONCURRENT_SSH_CONNECTIONS_LIMIT = 10
+
 type NodeDeployment struct {
 	identityFile string
 	name         string
 	node         *config.Node
 	config       *config.InternalConfig
+	sshLimiter   *utils.Limiter
 }
 
 func NewNodeDeployment(identityFile string, name string, node *config.Node, config *config.InternalConfig) *NodeDeployment {
-	return &NodeDeployment{identityFile: identityFile, name: name, node: node, config: config}
+	return &NodeDeployment{identityFile: identityFile, name: name, node: node, config: config, sshLimiter: utils.NewLimiter(CONCURRENT_SSH_CONNECTIONS_LIMIT)}
 }
 
 func (deployment *NodeDeployment) md5sum(filename string) (result string, error error) {
@@ -153,21 +156,37 @@ func (deployment *NodeDeployment) getChangedFiles() map[string]string {
 	return files
 }
 
-func (deployment *NodeDeployment) UploadFiles() error {
-	changedFiles := deployment.getChangedFiles()
+func (deployment *NodeDeployment) UploadFiles(forceUpload bool) error {
+	var files map[string]string
 
-	if len(changedFiles) == 0 {
+	if forceUpload {
+		files = deployment.getFiles()
+	} else {
+		files = deployment.getChangedFiles()
+	}
+
+	if len(files) == 0 {
 		return nil
 	}
 
 	// Stop service
 	_, _ = deployment.Execute("stop-service", fmt.Sprintf("systemctl stop %s", utils.SERVICE_NAME))
 
+	tasks := utils.Tasks{}
+
 	// Copy changed files
-	for fromFile, toFile := range changedFiles {
-		if error := deployment.UploadFile(fromFile, toFile); error != nil {
-			return error
-		}
+	for fromFile, toFile := range files {
+		fromFile := fromFile
+		toFile := toFile
+
+		tasks = append(tasks, func() error {
+			return deployment.UploadFile(fromFile, toFile)
+		})
+	}
+
+	// Upload files
+	if errors := utils.RunParallelTasks(tasks); len(errors) > 0 {
+		return errors[0]
 	}
 
 	// Registrate and start service
@@ -202,11 +221,14 @@ func (deployment *NodeDeployment) getSession() (*ssh.Session, error) {
 }
 
 func (deployment *NodeDeployment) pullImage(image string) error {
+	deployment.sshLimiter.Lock()
+	defer deployment.sshLimiter.Unlock()
+
 	crictl := deployment.config.GetFullTargetAssetFilename(utils.CRICTL_BINARY)
 	containerdSock := deployment.config.GetFullTargetAssetFilename(utils.CONTAINERD_SOCK)
 	command := fmt.Sprintf("CONTAINER_RUNTIME_ENDPOINT=unix://%s %s pull %s", containerdSock, crictl, image)
 
-	output, error := deployment.Execute(fmt.Sprintf("pull-%s", image), command)
+	output, error := deployment.Execute(fmt.Sprintf("pull-image-%s", image), command)
 	if error != nil {
 		return fmt.Errorf("%s (%s)", error.Error(), output)
 	}
@@ -234,6 +256,9 @@ func (deployment *NodeDeployment) Execute(name, command string) (string, error) 
 }
 
 func (deployment *NodeDeployment) UploadFile(from, to string) error {
+	deployment.sshLimiter.Lock()
+	defer deployment.sshLimiter.Unlock()
+
 	filename := path.Base(to)
 
 	log.WithFields(log.Fields{"name": filename, "node": deployment.name, "_target": deployment.node.IP, "_source-filename": from, "_destination-filename": to}).Info("Deploying")

@@ -2,6 +2,7 @@ package utils
 
 import (
 	"bytes"
+	"context"
 	"crypto/rand"
 	"encoding/base64"
 	"encoding/binary"
@@ -18,6 +19,8 @@ import (
 	oslib "github.com/redpois0n/goslib"
 	log "github.com/sirupsen/logrus"
 )
+
+const COMMAND_TIMEOUT = 60 // In seconds
 
 func WaitForSignal(signal <-chan struct{}, timeout uint) error {
 	select {
@@ -64,13 +67,21 @@ func FileExists(filename string) bool {
 }
 
 func RunCommandWithOutput(command string) (string, error) {
-	cmd := exec.Command("sh", "-c", command)
+	_context, cancel := context.WithTimeout(context.Background(), COMMAND_TIMEOUT*time.Second)
+	defer cancel()
+
+	log.WithFields(log.Fields{"command": command}).Debug("Command started")
+
+	cmd := exec.CommandContext(_context, "sh", "-c", command)
 
 	output, error := cmd.CombinedOutput()
-
 	if error != nil {
+		log.WithFields(log.Fields{"command": command, "error": error}).Debug("Command failed")
+
 		return "", errors.New(fmt.Sprintf("Command '%s' failed with error '%s' (Output: %s)", command, error, output))
 	}
+
+	log.WithFields(log.Fields{"command": command, "output": string(output)}).Debug("Command ended")
 
 	return string(output), nil
 }

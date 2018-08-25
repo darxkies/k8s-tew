@@ -5,8 +5,6 @@ OS=ubuntu
 IP_PREFIX=192.168.120
 MULTI_NODE=true
 
-all: destroy up  deploy
-
 deploy:
 	k8s-tew initialize -f
 	k8s-tew configure --controller-virtual-ip=$(IP_PREFIX).20 
@@ -21,13 +19,33 @@ deploy:
 	k8s-tew node-add -n worker00 -i $(IP_PREFIX).100 -x 3 -l worker
 	k8s-tew node-add -n worker01 -i $(IP_PREFIX).101 -x 4 -l worker
 	k8s-tew generate 
-	k8s-tew deploy
+	k8s-tew deploy --skip-images-pull -d
 
 destroy:
 	vagrant destroy -f
 
 up:
 	vagrant up
+
+recreate: destroy up save-clean
+
+save-clean: 
+	vagrant halt
+	vagrant snapshot save controller00 clean
+	vagrant snapshot save controller01 clean
+	vagrant snapshot save controller02 clean
+	vagrant snapshot save worker00 clean
+	vagrant snapshot save worker01 clean
+	vagrant up --parallel
+
+restore-clean: 
+	vagrant halt -f
+	vagrant snapshot restore controller00 clean
+	vagrant snapshot restore controller01 clean
+	vagrant snapshot restore controller02 clean
+	vagrant snapshot restore worker00 clean
+	vagrant snapshot restore worker01 clean
+	vagrant up --parallel
 
 halt:
 	vagrant halt

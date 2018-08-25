@@ -3,7 +3,7 @@ package utils
 // Versions
 const VERSION_K8S = "1.11.2"
 const VERSION_CONFIG = "2.0.0"
-const VERSION_ETCD = "3.3.7"
+const VERSION_ETCD = "3.3.9"
 const VERSION_CONTAINERD = "1.1.2"
 const VERSION_RUNC = "1.0.0-rc5"
 const VERSION_CRICTL = "1.11.1"
@@ -48,6 +48,8 @@ const IMAGE_CEPH = "docker.io/ceph/daemon:v{{.Version}}"
 
 // Settings
 const PROJECT_TITLE = "Kubernetes - The Easier Way"
+const VIP_RAFT_CONTROLLER_PORT = 16277
+const VIP_RAFT_WORKER_PORT = 16728
 const RSA_SIZE = 2048
 const CA_VALIDITY_PERIOD = 20
 const CLIENT_VALIDITY_PERIOD = 15

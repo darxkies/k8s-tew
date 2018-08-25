@@ -21,9 +21,6 @@
 #  version = "2.4.0"
 
 
-[[constraint]]
-  name = "github.com/coreos/etcd"
-  version = "3.2.10"
 
 [[constraint]]
   branch = "master"

@@ -9,6 +9,8 @@ import (
 
 type Config struct {
 	Version                      string      `yaml:"version"`
+	VIPRaftControllerPort        uint16      `yaml:"vip-raft-controller-port"`
+	VIPRaftWorkerPort            uint16      `yaml:"vip-raft-worker-port"`
 	ClusterID                    string      `yaml:"cluster-id"`
 	Email                        string      `ỳaml:"email"`
 	IngressDomain                string      `yaml:"ingress-domain"`
@@ -39,6 +41,8 @@ type Config struct {
 func NewConfig() *Config {
 	config := &Config{Version: utils.VERSION_CONFIG}
 
+	config.VIPRaftControllerPort = utils.VIP_RAFT_CONTROLLER_PORT
+	config.VIPRaftWorkerPort = utils.VIP_RAFT_WORKER_PORT
 	config.ClusterID = fmt.Sprintf("%s", uuid.NewV4())
 	config.Email = utils.EMAIL
 	config.IngressDomain = utils.INGRESS_DOMAIN

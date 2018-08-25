@@ -91,6 +91,14 @@ func init() {
 		_config.Config.APIServerPort = value
 	})
 
+	addUint16Option("vip-raft-controller-port", utils.VIP_RAFT_CONTROLLER_PORT, "VIP Raft Controller Port", func(value uint16) {
+		_config.Config.VIPRaftControllerPort = value
+	})
+
+	addUint16Option("vip-raft-worker-port", utils.VIP_RAFT_WORKER_PORT, "VIP Raft Worker Port", func(value uint16) {
+		_config.Config.VIPRaftWorkerPort = value
+	})
+
 	addUint16Option("load-balancer-port", utils.LOAD_BALANCER_PORT, "Load Balancer Port", func(value uint16) {
 		_config.Config.LoadBalancerPort = value
 	})

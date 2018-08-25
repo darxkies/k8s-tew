@@ -2,26 +2,16 @@
 
 
 [[projects]]
+  branch = "master"
+  name = "github.com/armon/go-metrics"
+  packages = ["."]
+  revision = "3c58d8115a78a6879e5df75ae900846768d36895"
+
+[[projects]]
   name = "github.com/briandowns/spinner"
   packages = ["."]
   revision = "5b875a9171af19dbde37e70a8fcbe2ebd7285e05"
   version = "1.1"
-
-[[projects]]
-  name = "github.com/coreos/etcd"
-  packages = [
-    "auth/authpb",
-    "clientv3",
-    "clientv3/concurrency",
-    "etcdserver/api/v3rpc/rpctypes",
-    "etcdserver/etcdserverpb",
-    "mvcc/mvccpb",
-    "pkg/tlsutil",
-    "pkg/transport",
-    "pkg/types"
-  ]
-  revision = "fca8add78a9d926166eb739b8e4a124434025ba3"
-  version = "v3.3.9"
 
 [[projects]]
   name = "github.com/fatih/color"
@@ -50,9 +40,7 @@
 [[projects]]
   name = "github.com/gogo/protobuf"
   packages = [
-    "gogoproto",
     "proto",
-    "protoc-gen-gogo/descriptor",
     "sortkeys"
   ]
   revision = "636bf0302bc95575d69441b25a2603156ffdddf1"
@@ -109,6 +97,24 @@
 
 [[projects]]
   branch = "master"
+  name = "github.com/hashicorp/go-immutable-radix"
+  packages = ["."]
+  revision = "7f3cd4390caab3250a57f30efdb2a65dd7649ecf"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/hashicorp/go-msgpack"
+  packages = ["codec"]
+  revision = "fa3f63826f7c23912c15263591e65d54d080b458"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/hashicorp/golang-lru"
+  packages = ["simplelru"]
+  revision = "0fb14efe8c47ae851c0034ed7a448854d3d34cf3"
+
+[[projects]]
+  branch = "master"
   name = "github.com/hashicorp/hcl"
   packages = [
     ".",
@@ -123,6 +129,12 @@
     "json/token"
   ]
   revision = "ef8a98b0bbce4a65b5aa4c368430a80ddc533168"
+
+[[projects]]
+  name = "github.com/hashicorp/raft"
+  packages = ["."]
+  revision = "6d14f0c70869faabd9e60ba7ed88a6cbbd6a661f"
+  version = "v1.0.0"
 
 [[projects]]
   name = "github.com/imdario/mergo"
@@ -294,9 +306,7 @@
     "http/httpguts",
     "http2",
     "http2/hpack",
-    "idna",
-    "internal/timeseries",
-    "trace"
+    "idna"
   ]
   revision = "c39426892332e1bb5ec0a434a079bf82f5d30c54"
 
@@ -335,46 +345,6 @@
   name = "golang.org/x/time"
   packages = ["rate"]
   revision = "fbb02b2291d28baffd63558aa44b4b56f178d650"
-
-[[projects]]
-  branch = "master"
-  name = "google.golang.org/genproto"
-  packages = ["googleapis/rpc/status"]
-  revision = "383e8b2c3b9e36c4076b235b32537292176bae20"
-
-[[projects]]
-  name = "google.golang.org/grpc"
-  packages = [
-    ".",
-    "balancer",
-    "balancer/base",
-    "balancer/roundrobin",
-    "codes",
-    "connectivity",
-    "credentials",
-    "encoding",
-    "encoding/proto",
-    "grpclog",
-    "health/grpc_health_v1",
-    "internal",
-    "internal/backoff",
-    "internal/channelz",
-    "internal/envconfig",
-    "internal/grpcrand",
-    "internal/transport",
-    "keepalive",
-    "metadata",
-    "naming",
-    "peer",
-    "resolver",
-    "resolver/dns",
-    "resolver/passthrough",
-    "stats",
-    "status",
-    "tap"
-  ]
-  revision = "32fb0ac620c32ba40a4626ddf94d90d12cce3455"
-  version = "v1.14.0"
 
 [[projects]]
   name = "gopkg.in/inf.v0"
@@ -528,6 +498,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "867e6f665995f408f99dc90f05564498d468db52c8863409f7dee4eb288280b0"
+  inputs-digest = "c6d58ed35d78533ef72797e035fec9ee98c2ad00735002211a75d05451a3be0d"
   solver-name = "gps-cdcl"
   solver-version = 1

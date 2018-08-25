@@ -1,6 +1,7 @@
 package servers
 
 import (
+	"fmt"
 	"os"
 	"os/signal"
 	"syscall"
@@ -61,6 +62,34 @@ func (servers *Servers) Steps() int {
 	return len(servers.config.Config.Servers) + len(servers.config.Config.Commands) + 1
 }
 
+func (servers *Servers) addVIPManager(enabled bool, virtualIP, virtualIPInterface, nodeName, nodeIP, nodeRole string, raftPort uint16) {
+	if !enabled {
+		return
+	}
+
+	if len(virtualIP) == 0 {
+		return
+	}
+
+	if len(virtualIPInterface) == 0 {
+		return
+	}
+
+	peers := Peers{}
+
+	for nodeName, node := range servers.config.Config.Nodes {
+		if !node.Labels.HasLabels(config.Labels{nodeRole}) {
+			continue
+		}
+
+		peers[nodeName] = fmt.Sprintf("%s:%d", node.IP, raftPort)
+	}
+
+	logger := Logger{}
+
+	servers.add(NewVIPManager(nodeRole, nodeName, fmt.Sprintf("%s:%d", nodeIP, raftPort), virtualIP, peers, logger, virtualIPInterface))
+}
+
 func (servers *Servers) Run(commandRetries uint) error {
 	// Add servers
 	for _, serverConfig := range servers.config.Config.Servers {
@@ -81,15 +110,9 @@ func (servers *Servers) Run(commandRetries uint) error {
 		servers.add(server)
 	}
 
-	// Add Controller VIP Manager
-	if servers.config.Node.IsController() && len(servers.config.Config.ControllerVirtualIP) > 0 && len(servers.config.Config.ControllerVirtualIPInterface) > 0 {
-		servers.add(NewVIPManager(utils.ELECTION_CONTROLLER, servers.config.Node.IP, servers.config.Config.ControllerVirtualIP, servers.config.Config.ControllerVirtualIPInterface, servers.config.GetETCDClientEndpoints(), servers.config.GetFullLocalAssetFilename(utils.CA_PEM), servers.config.GetFullLocalAssetFilename(utils.VIRTUAL_IP_PEM), servers.config.GetFullLocalAssetFilename(utils.VIRTUAL_IP_KEY_PEM)))
-	}
-
-	// Add Worker VIP Manager
-	if servers.config.Node.IsWorker() && len(servers.config.Config.WorkerVirtualIP) > 0 && len(servers.config.Config.WorkerVirtualIPInterface) > 0 {
-		servers.add(NewVIPManager(utils.ELECTION_WORKER, servers.config.Node.IP, servers.config.Config.WorkerVirtualIP, servers.config.Config.WorkerVirtualIPInterface, servers.config.GetETCDClientEndpoints(), servers.config.GetFullLocalAssetFilename(utils.CA_PEM), servers.config.GetFullLocalAssetFilename(utils.VIRTUAL_IP_PEM), servers.config.GetFullLocalAssetFilename(utils.VIRTUAL_IP_KEY_PEM)))
-	}
+	// Add Controllers/Workers VIP servers
+	servers.addVIPManager(servers.config.Node.IsController(), servers.config.Config.ControllerVirtualIP, servers.config.Config.ControllerVirtualIPInterface, servers.config.Name, servers.config.Node.IP, utils.NODE_CONTROLLER, servers.config.Config.VIPRaftControllerPort)
+	servers.addVIPManager(servers.config.Node.IsWorker(), servers.config.Config.WorkerVirtualIP, servers.config.Config.WorkerVirtualIPInterface, servers.config.Name, servers.config.Node.IP, utils.NODE_WORKER, servers.config.Config.VIPRaftWorkerPort)
 
 	// Start servers
 	for _, server := range servers.servers {

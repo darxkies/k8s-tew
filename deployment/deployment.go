@@ -15,18 +15,37 @@ type Deployment struct {
 	config         *config.InternalConfig
 	identityFile   string
 	skipSetup      bool
+	skipImagesPull bool
+	forceUpload    bool
 	commandRetries uint
 	nodes          map[string]*NodeDeployment
+	images         []string
 }
 
-func NewDeployment(_config *config.InternalConfig, identityFile string, skipSetup bool, commandRetries uint) *Deployment {
+func NewDeployment(_config *config.InternalConfig, identityFile string, skipSetup bool, skipImagesPull bool, forceUpload bool, commandRetries uint) *Deployment {
 	nodes := map[string]*NodeDeployment{}
 
 	for nodeName, node := range _config.Config.Nodes {
 		nodes[nodeName] = NewNodeDeployment(identityFile, nodeName, node, _config)
 	}
 
-	return &Deployment{config: _config, identityFile: identityFile, skipSetup: skipSetup, commandRetries: commandRetries, nodes: nodes}
+	deployment := &Deployment{config: _config, identityFile: identityFile, skipSetup: skipSetup, skipImagesPull: skipImagesPull, forceUpload: forceUpload, commandRetries: commandRetries, nodes: nodes}
+
+	deployment.images = []string{
+		utils.GetFullImageName(utils.IMAGE_PAUSE, deployment.config.Config.Versions.Pause),
+		utils.GetFullImageName(utils.IMAGE_CALICO_CNI, deployment.config.Config.Versions.CalicoCNI),
+		utils.GetFullImageName(utils.IMAGE_CALICO_NODE, deployment.config.Config.Versions.CalicoNode),
+		utils.GetFullImageName(utils.IMAGE_CALICO_TYPHA, deployment.config.Config.Versions.CalicoTypha),
+		utils.GetFullImageName(utils.IMAGE_COREDNS, deployment.config.Config.Versions.CoreDNS),
+		utils.GetFullImageName(utils.IMAGE_MINIO_SERVER, deployment.config.Config.Versions.MinioServer),
+		utils.GetFullImageName(utils.IMAGE_MINIO_CLIENT, deployment.config.Config.Versions.MinioClient),
+		utils.GetFullImageName(utils.IMAGE_ARK, deployment.config.Config.Versions.Ark),
+		utils.GetFullImageName(utils.IMAGE_CEPH, deployment.config.Config.Versions.Ceph),
+		utils.GetFullImageName(utils.IMAGE_FLUENT_BIT, deployment.config.Config.Versions.FluentBit),
+		utils.GetFullImageName(utils.IMAGE_RBD_PROVISIONER, deployment.config.Config.Versions.RBDProvisioner),
+	}
+
+	return deployment
 }
 
 func (deployment *Deployment) Steps() int {
@@ -62,7 +81,7 @@ func (deployment *Deployment) Deploy() error {
 
 		utils.IncreaseProgressStep()
 
-		if error := nodeDeployment.UploadFiles(); error != nil {
+		if error := nodeDeployment.UploadFiles(deployment.forceUpload); error != nil {
 			return error
 		}
 
@@ -98,7 +117,7 @@ func (deployment *Deployment) runCommand(name, command string) error {
 }
 
 func (deployment *Deployment) configureTaint() error {
-	var error error
+	var _error error
 
 	sortedNodeKeys := deployment.config.GetSortedNodeKeys()
 
@@ -107,10 +126,10 @@ func (deployment *Deployment) configureTaint() error {
 
 		deployment.config.SetNode(nodeName, nodeDeployment.node)
 
-		log.WithFields(log.Fields{"node": nodeName}).Info("Configure taint")
+		log.WithFields(log.Fields{"node": nodeName}).Info("Configuring taint")
 
 		for retries := uint(0); retries < deployment.commandRetries; retries++ {
-			if error = nodeDeployment.configureTaint(); error == nil {
+			if _error = nodeDeployment.configureTaint(); _error == nil {
 				break
 			}
 
@@ -119,27 +138,16 @@ func (deployment *Deployment) configureTaint() error {
 
 		utils.IncreaseProgressStep()
 
-		if error != nil {
-			log.WithFields(log.Fields{"node": nodeName, "error": error}).Error("Taint node failed")
+		if _error != nil {
+			log.WithFields(log.Fields{"node": nodeName, "error": _error}).Error("Taint node failed")
 
-			return error
+			return _error
 		}
 
 	}
 
-	// TODO add support for labels
-	images := []string{
-		utils.GetFullImageName(utils.IMAGE_PAUSE, deployment.config.Config.Versions.Pause),
-		utils.GetFullImageName(utils.IMAGE_CALICO_CNI, deployment.config.Config.Versions.CalicoCNI),
-		utils.GetFullImageName(utils.IMAGE_CALICO_NODE, deployment.config.Config.Versions.CalicoNode),
-		utils.GetFullImageName(utils.IMAGE_CALICO_TYPHA, deployment.config.Config.Versions.CalicoTypha),
-		utils.GetFullImageName(utils.IMAGE_COREDNS, deployment.config.Config.Versions.CoreDNS),
-		utils.GetFullImageName(utils.IMAGE_MINIO_SERVER, deployment.config.Config.Versions.MinioServer),
-		utils.GetFullImageName(utils.IMAGE_MINIO_CLIENT, deployment.config.Config.Versions.MinioClient),
-		utils.GetFullImageName(utils.IMAGE_ARK, deployment.config.Config.Versions.Ark),
-		utils.GetFullImageName(utils.IMAGE_CEPH, deployment.config.Config.Versions.Ceph),
-		utils.GetFullImageName(utils.IMAGE_FLUENT_BIT, deployment.config.Config.Versions.FluentBit),
-		utils.GetFullImageName(utils.IMAGE_RBD_PROVISIONER, deployment.config.Config.Versions.RBDProvisioner),
+	if deployment.skipImagesPull {
+		return nil
 	}
 
 	for _, nodeName := range sortedNodeKeys {
@@ -147,10 +155,19 @@ func (deployment *Deployment) configureTaint() error {
 
 		deployment.config.SetNode(nodeName, nodeDeployment.node)
 
-		for _, image := range images {
-			if error = nodeDeployment.pullImage(image); error != nil {
-				return error
-			}
+		tasks := utils.Tasks{}
+
+		for _, image := range deployment.images {
+			image := image
+
+			tasks = append(tasks, func() error {
+				return nodeDeployment.pullImage(image)
+			})
+		}
+
+		errors := utils.RunParallelTasks(tasks)
+		if len(errors) > 0 {
+			return errors[0]
 		}
 	}
 
@@ -159,6 +176,10 @@ func (deployment *Deployment) configureTaint() error {
 
 // Run bootstrapper commands
 func (deployment *Deployment) setup() error {
+	if deployment.skipSetup {
+		return nil
+	}
+
 	if error := deployment.configureTaint(); error != nil {
 		return error
 	}

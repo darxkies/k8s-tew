@@ -19,25 +19,38 @@ type CompressedFile struct {
 
 type Downloader struct {
 	config          *config.InternalConfig
-	downloaderSteps []func() error
+	downloaderSteps utils.Tasks
+	forceDownload   bool
 }
 
-func NewDownloader(config *config.InternalConfig) Downloader {
-	downloader := Downloader{config: config}
+func NewDownloader(config *config.InternalConfig, forceDownload bool) Downloader {
+	downloader := Downloader{config: config, forceDownload: forceDownload}
 
-	downloader.downloaderSteps = []func() error{
-		downloader.copyK8STEW,
-		downloader.downloadEtcdBinaries,
-		downloader.downloadK8SBinaries,
-		downloader.downloadHelmBinary,
-		downloader.downloadContainerdBinaries,
-		downloader.downloadRuncBinary,
-		downloader.downloadCriCtlBinary,
-		downloader.downloadGobetweenBinary,
-		downloader.downloadArkBinaries,
-	}
+	downloader.downloaderSteps = utils.Tasks{}
+	downloader.addTask(downloader.copyK8STEW)
+	downloader.addTask(downloader.downloadEtcdBinaries)
+	downloader.addTask(downloader.downloadKubectl)
+	downloader.addTask(downloader.downloadKubeApiServer)
+	downloader.addTask(downloader.downloadKubeControllerManager)
+	downloader.addTask(downloader.downloadKubeScheduler)
+	downloader.addTask(downloader.downloadKubeProxy)
+	downloader.addTask(downloader.downloadKubelet)
+	downloader.addTask(downloader.downloadHelmBinary)
+	downloader.addTask(downloader.downloadContainerdBinaries)
+	downloader.addTask(downloader.downloadRuncBinary)
+	downloader.addTask(downloader.downloadCriCtlBinary)
+	downloader.addTask(downloader.downloadGobetweenBinary)
+	downloader.addTask(downloader.downloadArkBinaries)
 
 	return downloader
+}
+
+func (downloader *Downloader) addTask(task utils.Task) {
+	downloader.downloaderSteps = append(downloader.downloaderSteps, func() error {
+		defer utils.IncreaseProgressStep()
+
+		return task()
+	})
 }
 
 func (downloader Downloader) Steps() int {
@@ -57,7 +70,7 @@ func (downloader Downloader) getURL(url, filename string) (string, error) {
 }
 
 func (downloader Downloader) downloadFile(url, filename string) (bool, error) {
-	if utils.FileExists(filename) {
+	if !downloader.forceDownload && utils.FileExists(filename) {
 		utils.LogURL("Skipped downloading", url)
 
 		return false, nil
@@ -65,8 +78,7 @@ func (downloader Downloader) downloadFile(url, filename string) (bool, error) {
 
 	utils.LogURL("Downloading", url)
 
-	output, error := os.Create(filename)
-
+	output, error := os.OpenFile(filename, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0666)
 	if error != nil {
 		return false, error
 	}
@@ -74,7 +86,6 @@ func (downloader Downloader) downloadFile(url, filename string) (bool, error) {
 	defer output.Close()
 
 	response, error := http.Get(url)
-
 	if error != nil {
 		return false, error
 	}
@@ -97,7 +108,7 @@ func (downloader Downloader) downloadExecutable(urlTemplate, remoteFilename, fil
 		return error
 	}
 
-	if error := os.Chmod(filename, 0555); error != nil {
+	if error := os.Chmod(filename, 0777); error != nil {
 		return error
 	}
 
@@ -174,11 +185,16 @@ func (downloader Downloader) downloadAndExtractTGZFiles(urlTemplate, baseName st
 	exist := true
 	temporaryDirectory := downloader.config.GetFullLocalAssetDirectory(utils.TEMPORARY_DIRECTORY)
 
-	for _, compressedFile := range files {
-		if !utils.FileExists(compressedFile.TargetFile) {
-			exist = false
+	if downloader.forceDownload {
+		exist = false
 
-			break
+	} else {
+		for _, compressedFile := range files {
+			if !utils.FileExists(compressedFile.TargetFile) {
+				exist = false
+
+				break
+			}
 		}
 	}
 
@@ -285,32 +301,28 @@ func (downloader Downloader) copyK8STEW() error {
 	return targetFile.Sync()
 }
 
-func (downloader Downloader) downloadK8SBinaries() error {
-	if error := downloader.downloadExecutable(utils.K8S_DOWNLOAD_URL, utils.KUBECTL_BINARY, downloader.config.GetFullLocalAssetFilename(utils.KUBECTL_BINARY)); error != nil {
-		return error
-	}
+func (downloader Downloader) downloadKubectl() error {
+	return downloader.downloadExecutable(utils.K8S_DOWNLOAD_URL, utils.KUBECTL_BINARY, downloader.config.GetFullLocalAssetFilename(utils.KUBECTL_BINARY))
+}
 
-	if error := downloader.downloadExecutable(utils.K8S_DOWNLOAD_URL, utils.KUBE_APISERVER_BINARY, downloader.config.GetFullLocalAssetFilename(utils.KUBE_APISERVER_BINARY)); error != nil {
-		return error
-	}
+func (downloader Downloader) downloadKubeApiServer() error {
+	return downloader.downloadExecutable(utils.K8S_DOWNLOAD_URL, utils.KUBE_APISERVER_BINARY, downloader.config.GetFullLocalAssetFilename(utils.KUBE_APISERVER_BINARY))
+}
 
-	if error := downloader.downloadExecutable(utils.K8S_DOWNLOAD_URL, utils.KUBE_CONTROLLER_MANAGER_BINARY, downloader.config.GetFullLocalAssetFilename(utils.KUBE_CONTROLLER_MANAGER_BINARY)); error != nil {
-		return error
-	}
+func (downloader Downloader) downloadKubeControllerManager() error {
+	return downloader.downloadExecutable(utils.K8S_DOWNLOAD_URL, utils.KUBE_CONTROLLER_MANAGER_BINARY, downloader.config.GetFullLocalAssetFilename(utils.KUBE_CONTROLLER_MANAGER_BINARY))
+}
 
-	if error := downloader.downloadExecutable(utils.K8S_DOWNLOAD_URL, utils.KUBE_SCHEDULER_BINARY, downloader.config.GetFullLocalAssetFilename(utils.KUBE_SCHEDULER_BINARY)); error != nil {
-		return error
-	}
+func (downloader Downloader) downloadKubeScheduler() error {
+	return downloader.downloadExecutable(utils.K8S_DOWNLOAD_URL, utils.KUBE_SCHEDULER_BINARY, downloader.config.GetFullLocalAssetFilename(utils.KUBE_SCHEDULER_BINARY))
+}
 
-	if error := downloader.downloadExecutable(utils.K8S_DOWNLOAD_URL, utils.KUBE_PROXY_BINARY, downloader.config.GetFullLocalAssetFilename(utils.KUBE_PROXY_BINARY)); error != nil {
-		return error
-	}
+func (downloader Downloader) downloadKubeProxy() error {
+	return downloader.downloadExecutable(utils.K8S_DOWNLOAD_URL, utils.KUBE_PROXY_BINARY, downloader.config.GetFullLocalAssetFilename(utils.KUBE_PROXY_BINARY))
+}
 
-	if error := downloader.downloadExecutable(utils.K8S_DOWNLOAD_URL, utils.KUBELET_BINARY, downloader.config.GetFullLocalAssetFilename(utils.KUBELET_BINARY)); error != nil {
-		return error
-	}
-
-	return nil
+func (downloader Downloader) downloadKubelet() error {
+	return downloader.downloadExecutable(utils.K8S_DOWNLOAD_URL, utils.KUBELET_BINARY, downloader.config.GetFullLocalAssetFilename(utils.KUBELET_BINARY))
 }
 
 func (downloader Downloader) downloadHelmBinary() error {
@@ -426,12 +438,9 @@ func (downloader Downloader) DownloadBinaries() error {
 		return error
 	}
 
-	for _, _downloadStep := range downloader.downloaderSteps {
-		if error := _downloadStep(); error != nil {
-			return error
-		}
-
-		utils.IncreaseProgressStep()
+	errors := utils.RunParallelTasks(downloader.downloaderSteps)
+	if len(errors) > 0 {
+		return errors[0]
 	}
 
 	return nil
