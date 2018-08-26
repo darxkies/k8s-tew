@@ -2,7 +2,7 @@ package utils
 
 // Versions
 const VERSION_K8S = "1.11.2"
-const VERSION_CONFIG = "2.0.0"
+const VERSION_CONFIG = "2.1.0"
 const VERSION_ETCD = "3.3.9"
 const VERSION_CONTAINERD = "1.1.2"
 const VERSION_RUNC = "1.0.0-rc5"
