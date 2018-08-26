@@ -307,41 +307,41 @@ When asked to login, enter the admin token.
 For working Ingress make sure ports 80 and 443 are available. The Ingress Domain have to be also configured before 'generate' and 'deploy' are executed:
 
 ```shell
-k8s-tew configure --ingress-domain <ingress-domain>
+k8s-tew configure --ingress-domain [ingress-domain]
 ```
 
 ## WordPress
 
-* Address: http://<worker-ip>:30100
-* Address: https://wordpress.<ingress-domain>
+* Address: http://[worker-ip]:30100
+* Address: https://wordpress.[ingress-domain]
 
-__NOTE__: Wordpress is installed for testing purposes and <ingress-domain> can be be configured using
+__NOTE__: Wordpress is installed for testing purposes and [ingress-domain] can be be configured using
 
 ## Minio
 
-* Address: http://<worker-ip>:30800
+* Address: http://[worker-ip]:30800
 * Username: minio
 * Password: changeme
 
 ## Grafana
 
-* Address: http://<worker-ip>:30900
+* Address: http://[worker-ip]:30900
 * Username: admin
 * Password: admin
 
 ## Kibana
 
-* Address: https://<worker-ip>:30980
+* Address: https://[worker-ip]:30980
 
 ## Cerebro
 
-* Address: http://<worker-ip>:30990
+* Address: http://[worker-ip]:30990
 
 ## Ceph Dashboard
 
- * Address: http://<worker-ip>:7000
+ * Address: http://[worker-ip]:7000
 
-__NOTE__: <worker-ip> is the IP of the worker where ceph-mgr is running. The port for this service is not exposed as a Kuernetes NodePort.
+__NOTE__: [worker-ip] is the IP of the worker where ceph-mgr is running. The port for this service is not exposed as a Kuernetes NodePort.
 
 # Cluster Setups
 
