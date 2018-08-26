@@ -9,12 +9,12 @@ import (
 
 type Config struct {
 	Version                      string      `yaml:"version"`
-	VIPRaftControllerPort        uint16      `yaml:"vip-raft-controller-port"`
-	VIPRaftWorkerPort            uint16      `yaml:"vip-raft-worker-port"`
 	ClusterID                    string      `yaml:"cluster-id"`
 	Email                        string      `ỳaml:"email"`
 	IngressDomain                string      `yaml:"ingress-domain"`
 	LoadBalancerPort             uint16      `yaml:"load-balancer-port"`
+	VIPRaftControllerPort        uint16      `yaml:"vip-raft-controller-port"`
+	VIPRaftWorkerPort            uint16      `yaml:"vip-raft-worker-port"`
 	DashboardPort                uint16      `yaml:"dashboard-port"`
 	APIServerPort                uint16      `yaml:"apiserver-port,omitempty"`
 	PublicNetwork                string      `yaml:"public-network"`

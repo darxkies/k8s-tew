@@ -68,10 +68,11 @@ To compile it from source you will need a Go (version 1.10+) environment and Git
 
 ```shell
 export GOPATH=~/go
+export PATH=$GOPATH/bin:$PATH
 mkdir -p $GOPATH
 go get github.com/darxkies/k8s-tew
 cd ~/go/src/github.com/darxkies/k8s-tew
-make
+make setup compile
 sudo mv ~/go/bin/k8s-tew /usr/local/bin
 ```
 

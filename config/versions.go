@@ -3,31 +3,31 @@ package config
 import "github.com/darxkies/k8s-tew/utils"
 
 type Versions struct {
-	Etcd                  string
-	K8S                   string
-	Helm                  string
-	Containerd            string
-	Runc                  string
-	CriCtl                string
-	Gobetween             string
-	Ark                   string
-	MinioServer           string
-	MinioClient           string
-	Pause                 string
-	CoreDNS               string
-	Elasticsearch         string
-	ElasticsearchCron     string
-	ElasticsearchOperator string
-	Kibana                string
-	Cerebro               string
-	FluentBit             string
-	CalicoTypha           string
-	CalicoNode            string
-	CalicoCNI             string
-	RBDProvisioner        string
-	Ceph                  string
-	KubernetesDashboard   string
-	CertManager           string
+	Etcd                  string `yaml:"etcd"`
+	K8S                   string `yaml:"kubernetes"`
+	Helm                  string `yaml:"helm"`
+	Containerd            string `yaml:"containerd"`
+	Runc                  string `yaml:"runc"`
+	CriCtl                string `yaml:"crictl"`
+	Gobetween             string `yaml:"gobetween"`
+	Ark                   string `yaml:"ark"`
+	MinioServer           string `yaml:"minio-server"`
+	MinioClient           string `yaml:"minio-client"`
+	Pause                 string `yaml:"pause"`
+	CoreDNS               string `yaml:"core-dns"`
+	Elasticsearch         string `yaml:"elasticsearch"`
+	ElasticsearchCron     string `yaml:"elasticsearch-cron"`
+	ElasticsearchOperator string `yaml:"elasticsearch-operator"`
+	Kibana                string `yaml:"kibana"`
+	Cerebro               string `yaml:"cerebro"`
+	FluentBit             string `yaml:"fluent-bit"`
+	CalicoTypha           string `yaml:"calico-typha"`
+	CalicoNode            string `yaml:"calico-node"`
+	CalicoCNI             string `yaml:"calico-cni"`
+	RBDProvisioner        string `yaml:"rbd-provisioner"`
+	Ceph                  string `yaml:"ceph"`
+	KubernetesDashboard   string `yaml:"kubernetes-dashboard"`
+	CertManager           string `yaml:"cert-manager"`
 }
 
 func NewVersions() Versions {
