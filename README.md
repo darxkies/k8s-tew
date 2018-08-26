@@ -131,35 +131,52 @@ That command generates the config file called assets/etc/k8s-tew/config.yaml. To
 
 After the initialization step the parameters of the cluster should be be adapted. These are the configure parameters and their defaults:
 
-* --apiserver-port - API Server Port (default 6443)
-* --ca-certificate-validity-period - CA Certificat eValidity Period (default 20)
-* --client-validity-period - Client Certificate Validity Period (default 15)
-* --cluster-cidr - Cluster CIDR (default "10.200.0.0/16")
-* --cluster-dns-ip - Cluster DNS IP (default "10.32.0.10")
-* --cluster-domain - Cluster domain (default "cluster.local")
-* --cluster-ip-range - Cluster IP range (default "10.32.0.0/24")
-* --controller-virtual-ip - Controller Virtual/Floating IP for the cluster
-* --controller-virtual-ip-interface - Controller Virtual/Floating IP interface for the cluster
-* --dashboard-port - Dashboard Port (default 32443)
-* --deployment-directory - Deployment directory (default "/")
-* --email - Email address used for example for Let's Encrypt (default "k8s-tew@gmail.com")
-* --ingress-domain - Ingress domain name (default "k8s-tew.net")
-* --load-balancer-port - Load Balancer Port (default 16443)
-* --public-network - Public Network (default "192.168.0.0/24")
-* --resolv-conf - Custom resolv.conf (default "/etc/resolv.conf")
-* --rsa-key-size - RSA Key Size (default 2048)
-* --version-ark - Ark version (default "0.9.3")
-* --version-containerd - Containerd version (default "1.1.2")
-* --version-crictl - CriCtl version (default "1.11.1")
-* --version-etcd - Etcd version (default "3.3.7")
-* --version-gobetween - Gobetween version (default "0.5.0")
-* --version-helm - Helm version (default "2.9.1")
-* --version-k8s - Kubernetes version (default "1.11.2")
-* --version-minio-client - Minio client version (default "RELEASE.2018-08-18T02-13-04Z")
-* --version-minio-server- Minio server version (default "RELEASE.2018-08-18T03-49-57Z")
-* --version-runc - Runc version (default "1.0.0-rc5")
-* --worker-virtual-ip - Worker Virtual/Floating IP for the cluster
-* --worker-virtual-ip-interface - Worker Virtual/Floating IP interface for the cluster
+* --apiserver-port -                       API Server Port (default 6443)
+* --ca-certificate-validity-period -       CA Certificate Validity Period (default 20)
+* --client-certificate-validity-period -   Client Certificate Validity Period (default 15)
+* --cluster-cidr -                         Cluster CIDR (default "10.200.0.0/16")
+* --cluster-dns-ip -                       Cluster DNS IP (default "10.32.0.10")
+* --cluster-domain -                       Cluster domain (default "cluster.local")
+* --cluster-ip-range -                     Cluster IP range (default "10.32.0.0/24")
+* --controller-virtual-ip -                Controller Virtual/Floating IP for the cluster
+* --controller-virtual-ip-interface -      Controller Virtual/Floating IP interface for the cluster
+* --dashboard-port -                       Dashboard Port (default 32443)
+* --deployment-directory -                 Deployment directory (default "/")
+* --email -                                Email address used for example for Let's Encrypt (default "k8s-tew@gmail.com")
+* --ingress-domain -                       Ingress domain name (default "k8s-tew.net")
+* --load-balancer-port -                   Load Balancer Port (default 16443)
+* --public-network -                       Public Network (default "192.168.0.0/24")
+* --resolv-conf -                          Custom resolv.conf (default "/etc/resolv.conf")
+* --rsa-key-size -                         RSA Key Size (default 2048)
+* --version-ark -                          Ark version (default "0.9.3")
+* --version-calico-cni -                   Calico CNI version (default "3.1.3")
+* --version-calico-node -                  Calico Node version (default "3.1.3")
+* --version-calico-typha -                 Calico Typha version (default "0.7.4")
+* --version-ceph -                         Ceph version (default "3.0.5-stable-3.0-luminous-ubuntu-16.04-x86_64")
+* --version-cerebro -                      Cerebro version (default "0.6.8")
+* --version-cert-manager -                 Cert Manager version (default "0.4.1")
+* --version-containerd -                   Containerd version (default "1.1.2")
+* --version-coredns -                      CoreDNS version (default "1.2.0")
+* --version-crictl -                       CriCtl version (default "1.11.1")
+* --version-elasticsearch -                Elasticsearch version (default "6.1.3_0")
+* --version-elasticsearch-cron -           Elasticsearch Cron version (default "0.0.3")
+* --version-elasticsearch-operator -       Elasticsearch Operator version (default "0.0.12")
+* --version-etcd -                         Etcd version (default "3.3.9")
+* --version-fluent-bit -                   Fluent-Bit version (default "0.13.0")
+* --version-gobetween -                    Gobetween version (default "0.5.0")
+* --version-helm -                         Helm version (default "2.9.1")
+* --version-k8s -                          Kubernetes version (default "1.11.2")
+* --version-kibana -                       Kibana version (default "6.1.3")
+* --version-kubernetes-dashboard -         Kuberntees Dashboard version (default "1.8.3")
+* --version-minio-client -                 Minio client version (default "RELEASE.2018-08-18T02-13-04Z")
+* --version-minio-server -                 Minio server version (default "RELEASE.2018-08-18T03-49-57Z")
+* --version-pause -                        Pause version (default "3.1")
+* --version-rbd-provisioner -              RBD-Provisioner version (default "1.0.0-k8s1.10")
+* --version-runc -                         Runc version (default "1.0.0-rc5")
+* --vip-raft-controller-port -             VIP Raft Controller Port (default 16277)
+* --vip-raft-worker-port -                 VIP Raft Worker Port (default 16728)
+* --worker-virtual-ip -                    Worker Virtual/Floating IP for the cluster
+* --worker-virtual-ip-interface -          Worker Virtual/Floating IP interface for the cluster
 
 The email and the ingress-domain parameters need to be changed if you want a working Ingress and Lets' Encrypt configuration. It goes like this:
 
@@ -284,6 +301,47 @@ kubectl get pods -n kube-system
 Once the pod is running the dashboard can be accessed through the TCP port 32443. Regarding the IP address, use the IP address of a worker node or the worker Virtual IP if one was specified.
 
 When asked to login, enter the admin token.
+
+## Ingress
+
+For working Ingress make sure ports 80 and 443 are available. The Ingress Domain have to be also configured before 'generate' and 'deploy' are executed:
+
+```shell
+k8s-tew configure --ingress-domain <ingress-domain>
+```
+
+## WordPress
+
+* Address: http://<worker-ip>:30100
+* Address: https://wordpress.<ingress-domain>
+
+__NOTE__: Wordpress is installed for testing purposes and <ingress-domain> can be be configured using
+
+## Minio
+
+* Address: http://<worker-ip>:30800
+* Username: minio
+* Password: changeme
+
+## Grafana
+
+* Address: http://<worker-ip>:30900
+* Username: admin
+* Password: admin
+
+## Kibana
+
+* Address: https://<worker-ip>:30980
+
+## Cerebro
+
+* Address: http://<worker-ip>:30990
+
+## Ceph Dashboard
+
+ * Address: http://<worker-ip>:7000
+
+__NOTE__: <worker-ip> is the IP of the worker where ceph-mgr is running. The port for this service is not exposed as a Kuernetes NodePort.
 
 # Cluster Setups
 
