@@ -5,3 +5,5 @@ compile:
 
 setup:
 	go get -u github.com/gobuffalo/packr/...
+
+.PHONY: setup compile
