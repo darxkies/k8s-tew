@@ -1,13 +1,8 @@
 apiVersion: v1
-kind: Namespace
-metadata:
-  name: storage
----
-apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: rbd-provisioner
-  namespace: kube-system
+  namespace: storage
 ---
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
@@ -35,7 +30,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: rbd-provisioner
-  namespace: kube-system
+  namespace: storage
 rules:
 - apiGroups: [""]
   resources: ["secrets"]
@@ -48,7 +43,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: rbd-provisioner
-    namespace: kube-system
+    namespace: storage
 roleRef:
   kind: ClusterRole
   name: rbd-provisioner
@@ -58,7 +53,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: rbd-provisioner
-  namespace: kube-system
+  namespace: storage
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -66,7 +61,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: rbd-provisioner
-  namespace: kube-system
+  namespace: storage
 ---
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
@@ -80,10 +75,10 @@ parameters:
   pool: {{.CephPoolName}}
   adminId: admin
   adminSecretName: ceph-admin
-  adminSecretNamespace: kube-system
+  adminSecretNamespace: storage
   userId: k8s-tew
   userSecretName: ceph-k8s-tew
-  userSecretNamespace: kube-system
+  userSecretNamespace: storage
   imageFormat: "2"
   imageFeatures: layering
 ---
@@ -91,7 +86,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: rbd-provisioner
-  namespace: kube-system
+  namespace: storage
 spec:
   replicas: 1
   strategy:
