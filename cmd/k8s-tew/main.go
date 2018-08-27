@@ -39,13 +39,25 @@ var RootCmd = &cobra.Command{
 	},
 }
 
-func GetBaseDirectory() string {
+func GetDefaultBaseDirectory() string {
 	directory, error := os.Getwd()
 	if error != nil {
 		log.WithFields(log.Fields{"error": error}).Fatal("Failed to retrieve cwd")
 	}
 
 	return path.Join(directory, utils.BASE_DIRECTORY)
+}
+
+func GetBaseDirectory() string {
+	result := baseDirectory
+
+	environmentBaseDirectory := os.Getenv(utils.K8S_TEW_BASE_DIRECTORY)
+
+	if len(environmentBaseDirectory) > 0 {
+		result = environmentBaseDirectory
+	}
+
+	return result
 }
 
 func Bootstrap(needsRoot bool) error {
@@ -56,13 +68,7 @@ func Bootstrap(needsRoot bool) error {
 		return errors.New("this program needs root rights")
 	}
 
-	environmentBaseDirectory := os.Getenv(utils.K8S_TEW_BASE_DIRECTORY)
-
-	if len(environmentBaseDirectory) > 0 {
-		baseDirectory = environmentBaseDirectory
-	}
-
-	_config = config.NewInternalConfig(baseDirectory)
+	_config = config.NewInternalConfig(GetBaseDirectory())
 
 	return _config.Load()
 }
@@ -70,7 +76,7 @@ func Bootstrap(needsRoot bool) error {
 func main() {
 	debug = RootCmd.PersistentFlags().BoolP("debug", "d", false, "Show debug messages")
 	hideProgress = RootCmd.PersistentFlags().Bool("hide-progress", false, "Hide progress")
-	RootCmd.PersistentFlags().StringVar(&baseDirectory, "base-directory", GetBaseDirectory(), "Base directory")
+	RootCmd.PersistentFlags().StringVar(&baseDirectory, "base-directory", GetDefaultBaseDirectory(), "Base directory")
 
 	if _error := RootCmd.Execute(); _error != nil {
 		fmt.Println(_error)
