@@ -1,8 +1,13 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: networking
+---
 kind: ConfigMap
 apiVersion: v1
 metadata:
   name: calico-config
-  namespace: kube-system
+  namespace: networking
 data:
   typha_service_name: "none"
   cni_network_config: |-
@@ -39,7 +44,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: calico-typha
-  namespace: kube-system
+  namespace: networking
   labels:
     k8s-app: calico-typha
 spec:
@@ -55,7 +60,7 @@ apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
   name: calico-typha
-  namespace: kube-system
+  namespace: networking
   labels:
     k8s-app: calico-typha
 spec:
@@ -113,7 +118,7 @@ kind: DaemonSet
 apiVersion: extensions/v1beta1
 metadata:
   name: calico-node
-  namespace: kube-system
+  namespace: networking
   labels:
     k8s-app: calico-node
 spec:
@@ -367,7 +372,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: calico-node
-  namespace: kube-system
+  namespace: networking
 ---
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1beta1
@@ -456,4 +461,4 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: calico-node
-  namespace: kube-system
+  namespace: networking
