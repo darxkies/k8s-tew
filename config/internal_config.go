@@ -164,6 +164,7 @@ func (config *InternalConfig) registerAssetDirectories() {
 	config.addAssetDirectory(utils.PROFILE_DIRECTORY, Labels{}, path.Join(utils.CONFIG_SUBDIRECTORY, utils.PROFILE_D_SUBDIRECTORY), false)
 	config.addAssetDirectory(utils.HELM_DATA_DIRECTORY, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.DYNAMIC_DATA_DIRECTORY), utils.HELM_SUBDIRECTORY), false)
 	config.addAssetDirectory(utils.TEMPORARY_DIRECTORY, Labels{}, path.Join(utils.TEMPORARY_SUBDIRECTORY), false)
+	config.addAssetDirectory(utils.BASH_COMPLETION_DIRECTORY, Labels{}, path.Join(utils.CONFIG_SUBDIRECTORY, utils.BASH_COMPLETION_SUBDIRECTORY), false)
 
 	// Ceph
 	config.addAssetDirectory(utils.CEPH_CONFIG_DIRECTORY, Labels{utils.NODE_WORKER}, path.Join(config.GetRelativeAssetDirectory(utils.CONFIG_DIRECTORY), utils.CEPH_SUBDIRECTORY), false)
@@ -283,6 +284,12 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.CEPH_BOOTSTRAP_OSD_KEYRING, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, utils.CEPH_KEYRING, utils.CEPH_BOOTSTRAP_OSD_DIRECTORY)
 	config.addAssetFile(utils.CEPH_BOOTSTRAP_RBD_KEYRING, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, utils.CEPH_KEYRING, utils.CEPH_BOOTSTRAP_RBD_DIRECTORY)
 	config.addAssetFile(utils.CEPH_BOOTSTRAP_RGW_KEYRING, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, utils.CEPH_KEYRING, utils.CEPH_BOOTSTRAP_RGW_DIRECTORY)
+
+	// Bash Completion
+	config.addAssetFile(utils.BASH_COMPLETION_K8S_TEW, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, "", utils.BASH_COMPLETION_DIRECTORY)
+	config.addAssetFile(utils.BASH_COMPLETION_KUBECTL, Labels{utils.NODE_CONTROLLER}, "", utils.BASH_COMPLETION_DIRECTORY)
+	config.addAssetFile(utils.BASH_COMPLETION_HELM, Labels{}, "", utils.BASH_COMPLETION_DIRECTORY)
+	config.addAssetFile(utils.BASH_COMPLETION_ARK, Labels{}, "", utils.BASH_COMPLETION_DIRECTORY)
 }
 
 func (config *InternalConfig) registerServers() {

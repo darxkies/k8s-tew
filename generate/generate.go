@@ -7,6 +7,7 @@ import (
 
 	"github.com/darxkies/k8s-tew/pki"
 	"github.com/darxkies/k8s-tew/utils"
+	log "github.com/sirupsen/logrus"
 )
 
 type Generator struct {
@@ -59,6 +60,14 @@ func NewGenerator(config *config.InternalConfig) *Generator {
 		generator.generateARKSetup,
 		// Generate wordpress setup file
 		generator.generateWordpressSetup,
+		// Generate Bash Completion for K8S-TEW
+		generator.generateBashCompletionK8STEW,
+		// Generate Bash Completion for Kubectl
+		generator.generateBashCompletionKubectl,
+		// Generate Bash Completion for Helm
+		generator.generateBashCompletionHelm,
+		// Generate Bash Completion for Ark
+		generator.generateBashCompletionArk,
 	}
 
 	return generator
@@ -604,6 +613,33 @@ func (generator *Generator) generateWordpressSetup() error {
 	}{
 		IngressDomain: generator.config.Config.IngressDomain,
 	}, generator.config.GetFullLocalAssetFilename(utils.WORDPRESS_SETUP), true)
+}
+
+func (generator *Generator) generateBashCompletion(binaryName, bashCompletionFilename string) error {
+	binary := generator.config.GetFullLocalAssetFilename(binaryName)
+	bashCompletionFullFilename := generator.config.GetFullLocalAssetFilename(bashCompletionFilename)
+
+	command := fmt.Sprintf("%s completion bash > %s", binary, bashCompletionFullFilename)
+
+	log.WithFields(log.Fields{"name": bashCompletionFilename}).Info("Generating")
+
+	return utils.RunCommand(command)
+}
+
+func (generator *Generator) generateBashCompletionK8STEW() error {
+	return generator.generateBashCompletion(utils.K8S_TEW_BINARY, utils.BASH_COMPLETION_K8S_TEW)
+}
+
+func (generator *Generator) generateBashCompletionKubectl() error {
+	return generator.generateBashCompletion(utils.KUBECTL_BINARY, utils.BASH_COMPLETION_KUBECTL)
+}
+
+func (generator *Generator) generateBashCompletionHelm() error {
+	return generator.generateBashCompletion(utils.HELM_BINARY, utils.BASH_COMPLETION_HELM)
+}
+
+func (generator *Generator) generateBashCompletionArk() error {
+	return generator.generateBashCompletion(utils.ARK_BINARY, utils.BASH_COMPLETION_ARK)
 }
 
 func (generator *Generator) GenerateFiles() error {

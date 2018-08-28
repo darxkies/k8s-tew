@@ -135,6 +135,7 @@ const CEPH_BOOTSTRAP_OSD_SUBDIRECTORY = "bootstrap-osd"
 const CEPH_BOOTSTRAP_RBD_SUBDIRECTORY = "bootstrap-rbd"
 const CEPH_BOOTSTRAP_RGW_SUBDIRECTORY = "bootstrap-rgw"
 const ARK_SUBDIRECTORY = "ark"
+const BASH_COMPLETION_SUBDIRECTORY = "bash_completion.d"
 
 // Directories
 const CONFIG_DIRECTORY = "config"
@@ -173,6 +174,7 @@ const CEPH_BOOTSTRAP_OSD_DIRECTORY = "bootstrap-osd"
 const CEPH_BOOTSTRAP_RBD_DIRECTORY = "bootstrap-rbd"
 const CEPH_BOOTSTRAP_RGW_DIRECTORY = "bootstrap-rgw"
 const ARK_BINARIES_DIRECTORY = "ark"
+const BASH_COMPLETION_DIRECTORY = "bash-completion"
 
 // Binaries
 const K8S_TEW_BINARY = "k8s-tew"
@@ -262,6 +264,12 @@ const GOBETWEEN_CONFIG = "config.toml"
 
 // Profile
 const K8S_TEW_PROFILE = "k8s-tew.sh"
+
+// Bash Completion
+const BASH_COMPLETION_K8S_TEW = "k8s-tew.bash-completion"
+const BASH_COMPLETION_KUBECTL = "kubectl.bash-completion"
+const BASH_COMPLETION_HELM = "helm.bash-completion"
+const BASH_COMPLETION_ARK = "ark.bash-completion"
 
 // Logging
 const AUDIT_LOG = "audit.log"
