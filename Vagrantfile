@@ -52,7 +52,7 @@ if $os == "ubuntu"
     $box = "bento/ubuntu-18.04"
 
     $script += <<-SCRIPT
-apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y apt-transport-https socat conntrack ipset ceph-common
+apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y apt-transport-https socat conntrack ipset ceph-common bash-completion
 SCRIPT
 
 else

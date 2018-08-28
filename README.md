@@ -84,7 +84,7 @@ On each Ubuntu 18.04 node the following commands have to be executed:
 
 ```shell
 apt-get update
-apt-get install -y apt-transport-https socat conntrack ipset ceph-common
+apt-get install -y apt-transport-https socat conntrack ipset ceph-common bash-completion
 ```
 
 And for Centos 7.5:
@@ -108,7 +108,7 @@ gpgcheck=1
 gpgkey=https://download.ceph.com/keys/release.asc
 EOF
 
-yum install socat conntrack ipset ceph-common -y
+yum install socat conntrack ipset ceph-common bash-completion -y
 ```
 
 # Usage
@@ -117,12 +117,18 @@ All k8s-tew commands accept the argument --base-directory, which defines where a
 
 To see all the commands and their arguments use the -h argument.
 
+To activate completion enter:
+
+```shell
+source <(k8s-tew completion)
+```
+
 ## Initialization
 
 The first step in using k8s-tew is to create a config file. This is achieved by executing this command:
 
 ```shell
-  k8s-tew initialize
+k8s-tew initialize
 ```
 
 That command generates the config file called assets/etc/k8s-tew/config.yaml. To overwrite the existing configuration use the argument -f.
