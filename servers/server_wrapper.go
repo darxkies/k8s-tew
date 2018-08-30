@@ -6,6 +6,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"syscall"
 	"time"
 
 	"github.com/darxkies/k8s-tew/config"
@@ -71,6 +72,10 @@ func (server *ServerWrapper) Start() error {
 	go func() {
 		for !server.stop {
 			command := exec.Command(server.command[0], server.command[1:]...)
+			command.SysProcAttr = &syscall.SysProcAttr{
+				Setpgid: true,
+				Pgid:    0,
+			}
 
 			var logFile *os.File
 			var error error

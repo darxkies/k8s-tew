@@ -10,6 +10,8 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+var killTimeout uint
+
 var runCmd = &cobra.Command{
 	Use:   "run",
 	Short: "Run",
@@ -33,7 +35,7 @@ var runCmd = &cobra.Command{
 			os.Exit(-1)
 		}
 
-		serversContainer := servers.NewServers(_config)
+		serversContainer := servers.NewServers(_config, killTimeout)
 
 		utils.SetProgressSteps(serversContainer.Steps())
 
@@ -49,5 +51,6 @@ var runCmd = &cobra.Command{
 
 func init() {
 	runCmd.Flags().UintVarP(&commandRetries, "command-retries", "r", 300, "The count of command retries")
+	runCmd.Flags().UintVar(&killTimeout, "kill-timeout", 10, "Kill timeout for child processes")
 	RootCmd.AddCommand(runCmd)
 }

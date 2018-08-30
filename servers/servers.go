@@ -15,13 +15,14 @@ import (
 )
 
 type Servers struct {
-	config  *config.InternalConfig
-	servers []Server
-	stop    bool
+	config      *config.InternalConfig
+	servers     []Server
+	stop        bool
+	killTimeout uint
 }
 
-func NewServers(_config *config.InternalConfig) *Servers {
-	return &Servers{config: _config, servers: []Server{}, stop: false}
+func NewServers(_config *config.InternalConfig, killTimeout uint) *Servers {
+	return &Servers{config: _config, servers: []Server{}, stop: false, killTimeout: killTimeout}
 }
 
 func (servers *Servers) add(server Server) {
@@ -134,6 +135,8 @@ func (servers *Servers) Run(commandRetries uint) error {
 		}
 
 		log.Info("Stopped all servers")
+
+		utils.KillProcessChildren(os.Getpid(), servers.killTimeout)
 	}()
 
 	go func() {
