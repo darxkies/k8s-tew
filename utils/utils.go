@@ -8,12 +8,12 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
-	"html/template"
 	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
+	"text/template"
 	"time"
 
 	oslib "github.com/redpois0n/goslib"
@@ -78,7 +78,7 @@ func RunCommandWithOutput(command string) (string, error) {
 	if error != nil {
 		log.WithFields(log.Fields{"command": command, "error": error}).Debug("Command failed")
 
-		return "", errors.New(fmt.Sprintf("Command '%s' failed with error '%s' (Output: %s)", command, error, output))
+		return "", fmt.Errorf("Command '%s' failed with error '%s' (Output: %s)", command, error, output)
 	}
 
 	log.WithFields(log.Fields{"command": command, "output": string(output)}).Debug("Command ended")
@@ -109,7 +109,7 @@ func IsRoot() bool {
 }
 
 func GetFullImageName(name, version string) string {
-	content, error := ApplyTemplate(name, struct{ Version string }{Version: version})
+	content, error := ApplyTemplate(name, name, struct{ Version string }{Version: version}, false)
 	if error != nil {
 		log.WithFields(log.Fields{"name": name, "version": version, "error": error}).Panic("Image template failure")
 	}
@@ -117,17 +117,17 @@ func GetFullImageName(name, version string) string {
 	return content
 }
 
-func ApplyTemplate(content string, data interface{}) (string, error) {
+func ApplyTemplate(label, content string, data interface{}, alternativeDelimiters bool) (string, error) {
 	var result bytes.Buffer
 
 	var functions = template.FuncMap{
-		"unescape": func(value string) template.HTML {
-			return template.HTML(value)
+		"unescape": func(value string) string {
+			return value
 		},
-		"base64": func(value string) template.HTML {
-			return template.HTML(base64.StdEncoding.EncodeToString([]byte(value)))
+		"base64": func(value string) string {
+			return base64.StdEncoding.EncodeToString([]byte(value))
 		},
-		"quoted_string_list": func(values []string) template.HTML {
+		"quoted_string_list": func(values []string) string {
 			result := ""
 
 			for i, value := range values {
@@ -138,23 +138,31 @@ func ApplyTemplate(content string, data interface{}) (string, error) {
 				result += "\"" + value + "\""
 			}
 
-			return template.HTML(result)
+			return result
 		},
 	}
 
-	argumentTemplate, error := template.New("ApplyTemplate").Funcs(functions).Parse(content)
+	startDelimiter := "{{"
+	endDelimiter := "}}"
+
+	if alternativeDelimiters {
+		startDelimiter = "[["
+		endDelimiter = "]]"
+	}
+
+	argumentTemplate, error := template.New(label).Delims(startDelimiter, endDelimiter).Funcs(functions).Parse(content)
 	if error != nil {
-		return "", error
+		return "", fmt.Errorf("Could not apply template '%s' (%s)", label, error.Error())
 	}
 
 	if error = argumentTemplate.Execute(&result, data); error != nil {
-		return "", error
+		return "", fmt.Errorf("Could not apply template '%s' (%s)", label, error.Error())
 	}
 
 	return result.String(), nil
 }
 
-func ApplyTemplateAndSave(templateName string, data interface{}, filename string, force bool) error {
+func ApplyTemplateAndSave(label, templateName string, data interface{}, filename string, force bool, extendedDelimiters bool) error {
 	content := GetTemplate(templateName)
 
 	if FileExists(filename) && !force {
@@ -163,13 +171,13 @@ func ApplyTemplateAndSave(templateName string, data interface{}, filename string
 		return nil
 	}
 
-	content, error := ApplyTemplate(content, data)
+	content, error := ApplyTemplate(label, content, data, extendedDelimiters)
 	if error != nil {
 		return error
 	}
 
 	if error := ioutil.WriteFile(filename, []byte(content), 0644); error != nil {
-		return error
+		return fmt.Errorf("Could not write to '%s' (%s)", filename, error.Error())
 	}
 
 	LogFilename("Generated", filename)

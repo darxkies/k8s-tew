@@ -251,12 +251,48 @@ func init() {
 		_config.Config.Versions.Ceph = value
 	})
 
-	addStringOption("version-kubernetes-dashboard", utils.VERSION_KUBERNETES_DASHBOARD, "Kuberntees Dashboard version", func(value string) {
+	addStringOption("version-cert-manager", utils.VERSION_CERT_MANAGER, "Cert Manager version", func(value string) {
+		_config.Config.Versions.CertManager = value
+	})
+
+	addStringOption("version-heapster", utils.VERSION_HEAPSTER, "Heapster version", func(value string) {
+		_config.Config.Versions.Heapster = value
+	})
+
+	addStringOption("version-addon-resizer", utils.VERSION_ADDON_RESIZER, "Addon-Resizer version", func(value string) {
+		_config.Config.Versions.AddonResizer = value
+	})
+
+	addStringOption("version-kubernetes-dashboard", utils.VERSION_KUBERNETES_DASHBOARD, "Kubernetes Dashboard version", func(value string) {
 		_config.Config.Versions.KubernetesDashboard = value
 	})
 
-	addStringOption("version-cert-manager", utils.VERSION_CERT_MANAGER, "Cert Manager version", func(value string) {
-		_config.Config.Versions.CertManager = value
+	addStringOption("version-cert-manager-controller", utils.VERSION_CERT_MANAGER_CONTROLLER, "Cert Manager Controller version", func(value string) {
+		_config.Config.Versions.CertManagerController = value
+	})
+
+	addStringOption("version-nginx-ingress-controller", utils.VERSION_NGINX_INGRESS_CONTROLLER, "Nginx Ingress Controller version", func(value string) {
+		_config.Config.Versions.NginxIngressController = value
+	})
+
+	addStringOption("version-nginx-ingress-default-backend", utils.VERSION_NGINX_INGRESS_DEFAULT_BACKEND, "Nginx Ingress Default Backend version", func(value string) {
+		_config.Config.Versions.NginxIngressDefaultBackend = value
+	})
+
+	addStringOption("version-metrics-server", utils.VERSION_METRICS_SERVER, "Metrics Server version", func(value string) {
+		_config.Config.Versions.MetricsServer = value
+	})
+
+	addStringOption("version-prometheus-operator", utils.VERSION_PROMETHEUS_OPERATOR, "Prometheus Operator version", func(value string) {
+		_config.Config.Versions.PrometheusOperator = value
+	})
+
+	addStringOption("version-prometheus-config-reloader", utils.VERSION_PROMETHEUS_CONFIG_RELOADER, "Prometheus Config Reloader version", func(value string) {
+		_config.Config.Versions.PrometheusConfigReloader = value
+	})
+
+	addStringOption("version-configmap-reload", utils.VERSION_CONFIGMAP_RELOAD, "ConfigMap Reload version", func(value string) {
+		_config.Config.Versions.ConfigMapReload = value
 	})
 
 	RootCmd.AddCommand(configureCmd)

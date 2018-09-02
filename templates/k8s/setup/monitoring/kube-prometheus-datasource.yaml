@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: monitoring
+  name: kube-prometheus-datasource
+  labels:
+    app: kube-prometheus-datasource
+data:
+  prometheus-datasource.json: |+
+    {
+      "access": "proxy",
+      "basicAuth": false,
+      "name": "prometheus",
+      "type": "prometheus",
+      "url": "http://kube-prometheus:9090"
+    }

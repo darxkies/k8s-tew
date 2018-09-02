@@ -58,6 +58,40 @@ func NewGenerator(config *config.InternalConfig) *Generator {
 		generator.generateEFKSetup,
 		// Generate ark setup file
 		generator.generateARKSetup,
+		// Generate heapster setup file
+		generator.generateHeapsterSetup,
+		// Generate kubernetes dashboard setup file
+		generator.generateKubernetesDashboardSetup,
+		// Generate cert-manager setup file
+		generator.generateCertManagerSetup,
+		// Generate nginx ingress setup file
+		generator.generateNginxIngressSetup,
+		// Generate metrics server setup file
+		generator.generateMetricsServerSetup,
+		// Generate prometheus operator setup file
+		generator.generatePrometheusOperatorSetup,
+		// Generate kube prometheus setup file
+		generator.generateKubePrometheusSetup,
+		// Generate kube prometheus dashboard setup file
+		generator.generateKubePrometheusDatasourceSetup,
+		// Generate kube prometheus dashboard setup file
+		generator.generateKubePrometheusKubernetesClusterStatusDashboardSetup,
+		// Generate kube prometheus dashboard setup file
+		generator.generateKubePrometheusPodsDashboardSetup,
+		// Generate kube prometheus dashboard setup file
+		generator.generateKubePrometheusDeploymentDashboardSetup,
+		// Generate kube prometheus dashboard setup file
+		generator.generateKubePrometheusKubernetesControlPlaneStatusDashboardSetup,
+		// Generate kube prometheus dashboard setup file
+		generator.generateKubePrometheusStatefulsetDashboardSetup,
+		// Generate kube prometheus dashboard setup file
+		generator.generateKubePrometheusKubernetesCapacityPlanningDashboardSetup,
+		// Generate kube prometheus dashboard setup file
+		generator.generateKubePrometheusKubernetesResourceRequestsDashboardSetup,
+		// Generate kube prometheus dashboard setup file
+		generator.generateKubePrometheusKubernetesClusterHealthDashboardSetup,
+		// Generate kube prometheus dashboard setup file
+		generator.generateKubePrometheusNodesDashboardSetup,
 		// Generate wordpress setup file
 		generator.generateWordpressSetup,
 		// Generate Bash Completion for K8S-TEW
@@ -78,17 +112,17 @@ func (generator *Generator) Steps() int {
 }
 
 func (generator *Generator) generateProfileFile() error {
-	return utils.ApplyTemplateAndSave(utils.TEMPLATE_K8S_TEW_PROFILE, struct {
+	return utils.ApplyTemplateAndSave("profile", utils.TEMPLATE_K8S_TEW_PROFILE, struct {
 		Binary        string
 		BaseDirectory string
 	}{
 		Binary:        generator.config.GetFullTargetAssetFilename(utils.K8S_TEW_BINARY),
 		BaseDirectory: generator.config.Config.DeploymentDirectory,
-	}, generator.config.GetFullLocalAssetFilename(utils.K8S_TEW_PROFILE), true)
+	}, generator.config.GetFullLocalAssetFilename(utils.K8S_TEW_PROFILE), true, false)
 }
 
 func (generator *Generator) generateServiceFile() error {
-	return utils.ApplyTemplateAndSave(utils.TEMPLATE_K8S_TEW_SERVICE, struct {
+	return utils.ApplyTemplateAndSave("service", utils.TEMPLATE_K8S_TEW_SERVICE, struct {
 		ProjectTitle  string
 		Command       string
 		BaseDirectory string
@@ -98,21 +132,21 @@ func (generator *Generator) generateServiceFile() error {
 		Command:       generator.config.GetFullTargetAssetFilename(utils.K8S_TEW_BINARY),
 		BaseDirectory: generator.config.Config.DeploymentDirectory,
 		Binary:        utils.K8S_TEW_BINARY,
-	}, generator.config.GetFullLocalAssetFilename(utils.SERVICE_CONFIG), true)
+	}, generator.config.GetFullLocalAssetFilename(utils.SERVICE_CONFIG), true, false)
 }
 
 func (generator *Generator) generateGobetweenConfig() error {
-	return utils.ApplyTemplateAndSave(utils.TEMPLATE_GOBETWEEN_TOML, struct {
+	return utils.ApplyTemplateAndSave("gobetween", utils.TEMPLATE_GOBETWEEN_TOML, struct {
 		LoadBalancerPort uint16
 		KubeAPIServers   []string
 	}{
 		LoadBalancerPort: generator.config.Config.LoadBalancerPort,
 		KubeAPIServers:   generator.config.GetKubeAPIServerAddresses(),
-	}, generator.config.GetFullLocalAssetFilename(utils.GOBETWEEN_CONFIG), true)
+	}, generator.config.GetFullLocalAssetFilename(utils.GOBETWEEN_CONFIG), true, false)
 }
 
 func (generator *Generator) generateCalicoSetup() error {
-	return utils.ApplyTemplateAndSave(utils.TEMPLATE_CALICO_SETUP, struct {
+	return utils.ApplyTemplateAndSave("calico-setup", utils.TEMPLATE_CALICO_SETUP, struct {
 		ClusterCIDR          string
 		CNIConfigDirectory   string
 		CNIBinariesDirectory string
@@ -126,31 +160,31 @@ func (generator *Generator) generateCalicoSetup() error {
 		CalicoTyphaImage:     utils.GetFullImageName(utils.IMAGE_CALICO_TYPHA, generator.config.Config.Versions.CalicoTypha),
 		CalicoNodeImage:      utils.GetFullImageName(utils.IMAGE_CALICO_NODE, generator.config.Config.Versions.CalicoNode),
 		CalicoCNIImage:       utils.GetFullImageName(utils.IMAGE_CALICO_CNI, generator.config.Config.Versions.CalicoCNI),
-	}, generator.config.GetFullLocalAssetFilename(utils.K8S_CALICO_SETUP), true)
+	}, generator.config.GetFullLocalAssetFilename(utils.K8S_CALICO_SETUP), true, false)
 }
 
 func (generator *Generator) generateK8SKubeletConfigFile() error {
-	return utils.ApplyTemplateAndSave(utils.TEMPLATE_KUBELET_SETUP, nil, generator.config.GetFullLocalAssetFilename(utils.K8S_KUBELET_SETUP), true)
+	return utils.ApplyTemplateAndSave("kubelet-config", utils.TEMPLATE_KUBELET_SETUP, nil, generator.config.GetFullLocalAssetFilename(utils.K8S_KUBELET_SETUP), true, false)
 }
 
 func (generator *Generator) generateK8SAdminUserConfigFile() error {
-	return utils.ApplyTemplateAndSave(utils.TEMPLATE_SERVICE_ACCOUNT, struct {
+	return utils.ApplyTemplateAndSave("admin-user-config", utils.TEMPLATE_SERVICE_ACCOUNT, struct {
 		Name      string
 		Namespace string
 	}{
 		Name:      "admin-user",
 		Namespace: "kube-system",
-	}, generator.config.GetFullLocalAssetFilename(utils.K8S_ADMIN_USER_SETUP), true)
+	}, generator.config.GetFullLocalAssetFilename(utils.K8S_ADMIN_USER_SETUP), true, false)
 }
 
 func (generator *Generator) generateK8SHelmUserConfigFile() error {
-	return utils.ApplyTemplateAndSave(utils.TEMPLATE_SERVICE_ACCOUNT, struct {
+	return utils.ApplyTemplateAndSave("helm-user-config", utils.TEMPLATE_SERVICE_ACCOUNT, struct {
 		Name      string
 		Namespace string
 	}{
 		Name:      utils.HELM_SERVICE_ACCOUNT,
 		Namespace: "kube-system",
-	}, generator.config.GetFullLocalAssetFilename(utils.K8S_HELM_USER_SETUP), true)
+	}, generator.config.GetFullLocalAssetFilename(utils.K8S_HELM_USER_SETUP), true, false)
 }
 
 func (generator *Generator) generateEncryptionFile() error {
@@ -167,18 +201,18 @@ func (generator *Generator) generateEncryptionFile() error {
 		return error
 	}
 
-	return utils.ApplyTemplateAndSave(utils.TEMPLATE_ENCRYPTION_CONFIG, struct {
+	return utils.ApplyTemplateAndSave("encryption-config", utils.TEMPLATE_ENCRYPTION_CONFIG, struct {
 		EncryptionKey string
 	}{
 		EncryptionKey: encryptionKey,
-	}, fullEncryptionConfigFilename, false)
+	}, fullEncryptionConfigFilename, false, false)
 }
 
 func (generator *Generator) generateContainerdConfig() error {
 	for nodeName, node := range generator.config.Config.Nodes {
 		generator.config.SetNode(nodeName, node)
 
-		if error := utils.ApplyTemplateAndSave(utils.TEMPLATE_CONTAINERD_TOML, struct {
+		if error := utils.ApplyTemplateAndSave("containerd-config", utils.TEMPLATE_CONTAINERD_TOML, struct {
 			ContainerdRootDirectory  string
 			ContainerdStateDirectory string
 			ContainerdSock           string
@@ -196,7 +230,7 @@ func (generator *Generator) generateContainerdConfig() error {
 			CRIBinariesDirectory:     generator.config.GetFullTargetAssetDirectory(utils.CRI_BINARIES_DIRECTORY),
 			IP:                       node.IP,
 			PauseImage:               utils.GetFullImageName(utils.IMAGE_PAUSE, generator.config.Config.Versions.Pause),
-		}, generator.config.GetFullLocalAssetFilename(utils.CONTAINERD_CONFIG), true); error != nil {
+		}, generator.config.GetFullLocalAssetFilename(utils.CONTAINERD_CONFIG), true, false); error != nil {
 			return error
 		}
 	}
@@ -205,18 +239,18 @@ func (generator *Generator) generateContainerdConfig() error {
 }
 
 func (generator *Generator) generateKubeSchedulerConfig() error {
-	return utils.ApplyTemplateAndSave(utils.TEMPLATE_KUBE_SCHEDULER_CONFIGURATION, struct {
+	return utils.ApplyTemplateAndSave("kube-scheduler-config", utils.TEMPLATE_KUBE_SCHEDULER_CONFIGURATION, struct {
 		KubeConfig string
 	}{
 		KubeConfig: generator.config.GetFullTargetAssetFilename(utils.SCHEDULER_KUBECONFIG),
-	}, generator.config.GetFullLocalAssetFilename(utils.K8S_KUBE_SCHEDULER_CONFIG), true)
+	}, generator.config.GetFullLocalAssetFilename(utils.K8S_KUBE_SCHEDULER_CONFIG), true, false)
 }
 
 func (generator *Generator) generateKubeletConfig() error {
 	for nodeName, node := range generator.config.Config.Nodes {
 		generator.config.SetNode(nodeName, node)
 
-		if error := utils.ApplyTemplateAndSave(utils.TEMPLATE_KUBELET_CONFIGURATION, struct {
+		if error := utils.ApplyTemplateAndSave("kubelet-configuration", utils.TEMPLATE_KUBELET_CONFIGURATION, struct {
 			CA                  string
 			CertificateFilename string
 			KeyFilename         string
@@ -232,7 +266,7 @@ func (generator *Generator) generateKubeletConfig() error {
 			ClusterDNSIP:        generator.config.Config.ClusterDNSIP,
 			PODCIDR:             generator.config.Config.ClusterCIDR,
 			StaticPodPath:       generator.config.GetFullTargetAssetDirectory(utils.K8S_MANIFESTS_DIRECTORY),
-		}, generator.config.GetFullLocalAssetFilename(utils.K8S_KUBELET_CONFIG), true); error != nil {
+		}, generator.config.GetFullLocalAssetFilename(utils.K8S_KUBELET_CONFIG), true, false); error != nil {
 			return error
 		}
 	}
@@ -268,16 +302,6 @@ func (generator *Generator) generateCertificates() error {
 	for nodeName, node := range generator.config.Config.Nodes {
 		kubernetesDNSNames = append(kubernetesDNSNames, nodeName)
 		kubernetesIPAddresses = append(kubernetesIPAddresses, node.IP)
-	}
-
-	// Generate flanneld certificate
-	if error := pki.GenerateClient(generator.ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, "flanneld", "flanneld", []string{}, []string{}, generator.config.GetFullLocalAssetFilename(utils.FLANNELD_PEM), generator.config.GetFullLocalAssetFilename(utils.FLANNELD_KEY_PEM), false); error != nil {
-		return error
-	}
-
-	// Generate virtual-ip certificate
-	if error := pki.GenerateClient(generator.ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, "virtual-ip", "virtual-ip", []string{}, []string{}, generator.config.GetFullLocalAssetFilename(utils.VIRTUAL_IP_PEM), generator.config.GetFullLocalAssetFilename(utils.VIRTUAL_IP_KEY_PEM), false); error != nil {
-		return error
 	}
 
 	// Generate admin certificate
@@ -351,7 +375,7 @@ func (generator *Generator) generateConfigKubeConfig(kubeConfigFilename, caFilen
 		return error
 	}
 
-	if error := utils.ApplyTemplateAndSave(utils.TEMPLATE_KUBECONFIG, struct {
+	if error := utils.ApplyTemplateAndSave("kubeconfig", utils.TEMPLATE_KUBECONFIG, struct {
 		Name            string
 		User            string
 		APIServer       string
@@ -365,7 +389,7 @@ func (generator *Generator) generateConfigKubeConfig(kubeConfigFilename, caFilen
 		CAData:          base64CA,
 		CertificateData: base64Certificate,
 		KeyData:         base64Key,
-	}, kubeConfigFilename, true); error != nil {
+	}, kubeConfigFilename, true, false); error != nil {
 		return error
 	}
 
@@ -408,7 +432,7 @@ func (generator *Generator) generateKubeConfigs() error {
 }
 
 func (generator *Generator) generateCephConfig() error {
-	return utils.ApplyTemplateAndSave(utils.TEMPLATE_CEPH_CONFIG, struct {
+	return utils.ApplyTemplateAndSave("ceph-config", utils.TEMPLATE_CEPH_CONFIG, struct {
 		ClusterID          string
 		PublicNetwork      string
 		ClusterNetwork     string
@@ -420,11 +444,11 @@ func (generator *Generator) generateCephConfig() error {
 		ClusterNetwork:     generator.config.Config.PublicNetwork,
 		StorageControllers: generator.config.GetStorageControllers(),
 		StorageNodes:       generator.config.GetStorageNodes(),
-	}, generator.config.GetFullLocalAssetFilename(utils.CEPH_CONFIG), true)
+	}, generator.config.GetFullLocalAssetFilename(utils.CEPH_CONFIG), true, false)
 }
 
 func (generator *Generator) generateCephSetup() error {
-	return utils.ApplyTemplateAndSave(utils.TEMPLATE_CEPH_SETUP, struct {
+	return utils.ApplyTemplateAndSave("ceph-setup", utils.TEMPLATE_CEPH_SETUP, struct {
 		CephPoolName        string
 		PublicNetwork       string
 		StorageControllers  []config.NodeData
@@ -442,7 +466,7 @@ func (generator *Generator) generateCephSetup() error {
 		CephDataDirectory:   generator.config.GetFullTargetAssetDirectory(utils.CEPH_DATA_DIRECTORY),
 		RBDProvisionerImage: utils.GetFullImageName(utils.IMAGE_RBD_PROVISIONER, generator.config.Config.Versions.RBDProvisioner),
 		CephImage:           utils.GetFullImageName(utils.IMAGE_CEPH, generator.config.Config.Versions.Ceph),
-	}, generator.config.GetFullLocalAssetFilename(utils.CEPH_SETUP), true)
+	}, generator.config.GetFullLocalAssetFilename(utils.CEPH_SETUP), true, false)
 }
 
 func (generator *Generator) generateCephFiles() error {
@@ -466,7 +490,7 @@ func (generator *Generator) generateCephFiles() error {
 	clientBootstrapRadosGatewayKey := utils.GenerateCephKey()
 	clientK8STEWKey := utils.GenerateCephKey()
 
-	if error := utils.ApplyTemplateAndSave(utils.TEMPLATE_CEPH_MONITOR_KEYRING, struct {
+	if error := utils.ApplyTemplateAndSave("ceph-monitor-keyring", utils.TEMPLATE_CEPH_MONITOR_KEYRING, struct {
 		MonitorKey                         string
 		ClientAdminKey                     string
 		ClientBootstrapMetadataServerKey   string
@@ -484,65 +508,65 @@ func (generator *Generator) generateCephFiles() error {
 		ClientBootstrapRadosGatewayKey:     clientBootstrapRadosGatewayKey,
 		ClientK8STEWKey:                    clientK8STEWKey,
 		CephPoolName:                       utils.CEPH_POOL_NAME,
-	}, generator.config.GetFullLocalAssetFilename(utils.CEPH_MONITOR_KEYRING), false); error != nil {
+	}, generator.config.GetFullLocalAssetFilename(utils.CEPH_MONITOR_KEYRING), false, false); error != nil {
 		return error
 	}
 
-	if error := utils.ApplyTemplateAndSave(utils.TEMPLATE_CEPH_CLIENT_ADMIN_KEYRING, struct {
+	if error := utils.ApplyTemplateAndSave("ceph-client-admin", utils.TEMPLATE_CEPH_CLIENT_ADMIN_KEYRING, struct {
 		Key string
 	}{
 		Key: clientAdminKey,
-	}, generator.config.GetFullLocalAssetFilename(utils.CEPH_CLIENT_ADMIN_KEYRING), false); error != nil {
+	}, generator.config.GetFullLocalAssetFilename(utils.CEPH_CLIENT_ADMIN_KEYRING), false, false); error != nil {
 		return error
 	}
 
-	if error := utils.ApplyTemplateAndSave(utils.TEMPLATE_CEPH_CLIENT_KEYRING, struct {
+	if error := utils.ApplyTemplateAndSave("ceph-bootstrap-mds-client-keyring", utils.TEMPLATE_CEPH_CLIENT_KEYRING, struct {
 		Name string
 		Key  string
 	}{
 		Name: "bootstrap-mds",
 		Key:  clientBootstrapMetadataServerKey,
-	}, generator.config.GetFullLocalAssetFilename(utils.CEPH_BOOTSTRAP_MDS_KEYRING), false); error != nil {
+	}, generator.config.GetFullLocalAssetFilename(utils.CEPH_BOOTSTRAP_MDS_KEYRING), false, false); error != nil {
 		return error
 	}
 
-	if error := utils.ApplyTemplateAndSave(utils.TEMPLATE_CEPH_CLIENT_KEYRING, struct {
+	if error := utils.ApplyTemplateAndSave("ceph-bootstrap-osd-client-keyring", utils.TEMPLATE_CEPH_CLIENT_KEYRING, struct {
 		Name string
 		Key  string
 	}{
 		Name: "bootstrap-osd",
 		Key:  clientBootstrapObjectStorageKey,
-	}, generator.config.GetFullLocalAssetFilename(utils.CEPH_BOOTSTRAP_OSD_KEYRING), false); error != nil {
+	}, generator.config.GetFullLocalAssetFilename(utils.CEPH_BOOTSTRAP_OSD_KEYRING), false, false); error != nil {
 		return error
 	}
 
-	if error := utils.ApplyTemplateAndSave(utils.TEMPLATE_CEPH_CLIENT_KEYRING, struct {
+	if error := utils.ApplyTemplateAndSave("ceph-bootstrap-rbd-client-keyring", utils.TEMPLATE_CEPH_CLIENT_KEYRING, struct {
 		Name string
 		Key  string
 	}{
 		Name: "bootstrap-rbd",
 		Key:  clientBootstrapRadosBlockDeviceKey,
-	}, generator.config.GetFullLocalAssetFilename(utils.CEPH_BOOTSTRAP_RBD_KEYRING), false); error != nil {
+	}, generator.config.GetFullLocalAssetFilename(utils.CEPH_BOOTSTRAP_RBD_KEYRING), false, false); error != nil {
 		return error
 	}
 
-	if error := utils.ApplyTemplateAndSave(utils.TEMPLATE_CEPH_CLIENT_KEYRING, struct {
+	if error := utils.ApplyTemplateAndSave("ceph-bootstrap-rgw-client-keyring", utils.TEMPLATE_CEPH_CLIENT_KEYRING, struct {
 		Name string
 		Key  string
 	}{
 		Name: "bootstrap-rgw",
 		Key:  clientBootstrapRadosGatewayKey,
-	}, generator.config.GetFullLocalAssetFilename(utils.CEPH_BOOTSTRAP_RGW_KEYRING), false); error != nil {
+	}, generator.config.GetFullLocalAssetFilename(utils.CEPH_BOOTSTRAP_RGW_KEYRING), false, false); error != nil {
 		return error
 	}
 
-	if error := utils.ApplyTemplateAndSave(utils.TEMPLATE_CEPH_SECRETS, struct {
+	if error := utils.ApplyTemplateAndSave("ceph-secrets", utils.TEMPLATE_CEPH_SECRETS, struct {
 		ClientAdminKey  string
 		ClientK8STEWKey string
 	}{
 		ClientAdminKey:  clientAdminKey,
 		ClientK8STEWKey: clientK8STEWKey,
-	}, generator.config.GetFullLocalAssetFilename(utils.CEPH_SECRETS), false); error != nil {
+	}, generator.config.GetFullLocalAssetFilename(utils.CEPH_SECRETS), false, false); error != nil {
 		return error
 	}
 
@@ -550,15 +574,15 @@ func (generator *Generator) generateCephFiles() error {
 }
 
 func (generator *Generator) generateLetsEncryptClusterIssuer() error {
-	return utils.ApplyTemplateAndSave(utils.TEMPLATE_LETSENCRYPT_CLUSTER_ISSUER_SETUP, struct {
+	return utils.ApplyTemplateAndSave("lets-encrypt-cluster-issuer", utils.TEMPLATE_LETSENCRYPT_CLUSTER_ISSUER_SETUP, struct {
 		Email string
 	}{
 		Email: generator.config.Config.Email,
-	}, generator.config.GetFullLocalAssetFilename(utils.LETSENCRYPT_CLUSTER_ISSUER), true)
+	}, generator.config.GetFullLocalAssetFilename(utils.LETSENCRYPT_CLUSTER_ISSUER), true, false)
 }
 
 func (generator *Generator) generateCoreDNSSetup() error {
-	return utils.ApplyTemplateAndSave(utils.TEMPLATE_COREDNS_SETUP, struct {
+	return utils.ApplyTemplateAndSave("core-dns", utils.TEMPLATE_COREDNS_SETUP, struct {
 		ClusterDomain string
 		ClusterDNSIP  string
 		CoreDNSImage  string
@@ -566,19 +590,19 @@ func (generator *Generator) generateCoreDNSSetup() error {
 		ClusterDomain: generator.config.Config.ClusterDomain,
 		ClusterDNSIP:  generator.config.Config.ClusterDNSIP,
 		CoreDNSImage:  utils.GetFullImageName(utils.IMAGE_COREDNS, generator.config.Config.Versions.CoreDNS),
-	}, generator.config.GetFullLocalAssetFilename(utils.K8S_COREDNS_SETUP), true)
+	}, generator.config.GetFullLocalAssetFilename(utils.K8S_COREDNS_SETUP), true, false)
 }
 
 func (generator *Generator) generateElasticSearchOperatorSetup() error {
-	return utils.ApplyTemplateAndSave(utils.TEMPLATE_ELASTICSEARCH_OPERATOR_SETUP, struct {
+	return utils.ApplyTemplateAndSave("elasticsearch-operator", utils.TEMPLATE_ELASTICSEARCH_OPERATOR_SETUP, struct {
 		ElasticsearchOperatorImage string
 	}{
 		ElasticsearchOperatorImage: utils.GetFullImageName(utils.IMAGE_ELASTICSEARCH_OPERATOR, generator.config.Config.Versions.ElasticsearchOperator),
-	}, generator.config.GetFullLocalAssetFilename(utils.K8S_ELASTICSEARCH_OPERATOR_SETUP), true)
+	}, generator.config.GetFullLocalAssetFilename(utils.K8S_ELASTICSEARCH_OPERATOR_SETUP), true, false)
 }
 
 func (generator *Generator) generateEFKSetup() error {
-	return utils.ApplyTemplateAndSave(utils.TEMPLATE_EFK_SETUP, struct {
+	return utils.ApplyTemplateAndSave("efk", utils.TEMPLATE_EFK_SETUP, struct {
 		ElasticsearchImage     string
 		ElasticsearchCronImage string
 		KibanaImage            string
@@ -590,11 +614,11 @@ func (generator *Generator) generateEFKSetup() error {
 		KibanaImage:            utils.GetFullImageName(utils.IMAGE_KIBANA, generator.config.Config.Versions.Kibana),
 		CerebroImage:           utils.GetFullImageName(utils.IMAGE_CEREBRO, generator.config.Config.Versions.Cerebro),
 		FluentBitImage:         utils.GetFullImageName(utils.IMAGE_FLUENT_BIT, generator.config.Config.Versions.FluentBit),
-	}, generator.config.GetFullLocalAssetFilename(utils.K8S_EFK_SETUP), true)
+	}, generator.config.GetFullLocalAssetFilename(utils.K8S_EFK_SETUP), true, false)
 }
 
 func (generator *Generator) generateARKSetup() error {
-	return utils.ApplyTemplateAndSave(utils.TEMPLATE_ARK_SETUP, struct {
+	return utils.ApplyTemplateAndSave("ark-setup", utils.TEMPLATE_ARK_SETUP, struct {
 		ArkImage         string
 		MinioServerImage string
 		MinioClientImage string
@@ -604,15 +628,117 @@ func (generator *Generator) generateARKSetup() error {
 		MinioServerImage: utils.GetFullImageName(utils.IMAGE_MINIO_SERVER, generator.config.Config.Versions.MinioServer),
 		MinioClientImage: utils.GetFullImageName(utils.IMAGE_MINIO_CLIENT, generator.config.Config.Versions.MinioClient),
 		PodsDirectory:    generator.config.GetFullTargetAssetDirectory(utils.PODS_DATA_DIRECTORY),
-	}, generator.config.GetFullLocalAssetFilename(utils.K8S_ARK_SETUP), true)
+	}, generator.config.GetFullLocalAssetFilename(utils.K8S_ARK_SETUP), true, false)
+}
+
+func (generator *Generator) generateHeapsterSetup() error {
+	return utils.ApplyTemplateAndSave("heapster", utils.TEMPLATE_HEAPSTER_SETUP, struct {
+		HeapsterImage     string
+		AddonResizerImage string
+	}{
+		HeapsterImage:     utils.GetFullImageName(utils.IMAGE_HEAPSTER, generator.config.Config.Versions.Heapster),
+		AddonResizerImage: utils.GetFullImageName(utils.IMAGE_ADDON_RESIZER, generator.config.Config.Versions.AddonResizer),
+	}, generator.config.GetFullLocalAssetFilename(utils.K8S_HEAPSTER_SETUP), true, false)
+}
+
+func (generator *Generator) generateKubernetesDashboardSetup() error {
+	return utils.ApplyTemplateAndSave("kubernetes-dashboard", utils.TEMPLATE_KUBERNETES_DASHBOARD_SETUP, struct {
+		KubernetesDashboardPort  uint16
+		KubernetesDashboardImage string
+	}{
+		KubernetesDashboardPort:  generator.config.Config.DashboardPort,
+		KubernetesDashboardImage: utils.GetFullImageName(utils.IMAGE_KUBERNETES_DASHBOARD, generator.config.Config.Versions.KubernetesDashboard),
+	}, generator.config.GetFullLocalAssetFilename(utils.K8S_KUBERNETES_DASHBOARD_SETUP), true, false)
+}
+
+func (generator *Generator) generateCertManagerSetup() error {
+	return utils.ApplyTemplateAndSave("cert-manager", utils.TEMPLATE_CERT_MANAGER_SETUP, struct {
+		CertManagerControllerImage string
+	}{
+		CertManagerControllerImage: utils.GetFullImageName(utils.IMAGE_CERT_MANAGER_CONTROLLER, generator.config.Config.Versions.CertManagerController),
+	}, generator.config.GetFullLocalAssetFilename(utils.K8S_CERT_MANAGER_SETUP), true, false)
+}
+
+func (generator *Generator) generateNginxIngressSetup() error {
+	return utils.ApplyTemplateAndSave("nginx-ingress", utils.TEMPLATE_NGINX_INGRESS_SETUP, struct {
+		NginxIngressControllerImage     string
+		NginxIngressDefaultBackendImage string
+	}{
+		NginxIngressControllerImage:     utils.GetFullImageName(utils.IMAGE_NGINX_INGRESS_CONTROLLER, generator.config.Config.Versions.NginxIngressController),
+		NginxIngressDefaultBackendImage: utils.GetFullImageName(utils.IMAGE_NGINX_INGRESS_DEFAULT_BACKEND, generator.config.Config.Versions.NginxIngressDefaultBackend),
+	}, generator.config.GetFullLocalAssetFilename(utils.K8S_NGINX_INGRESS_SETUP), true, false)
+}
+
+func (generator *Generator) generateMetricsServerSetup() error {
+	return utils.ApplyTemplateAndSave("metrics-server", utils.TEMPLATE_METRICS_SERVER_SETUP, struct {
+		MetricsServerImage string
+	}{
+		MetricsServerImage: utils.GetFullImageName(utils.IMAGE_METRICS_SERVER, generator.config.Config.Versions.MetricsServer),
+	}, generator.config.GetFullLocalAssetFilename(utils.K8S_METRICS_SERVER_SETUP), true, false)
+}
+
+func (generator *Generator) generatePrometheusOperatorSetup() error {
+	return utils.ApplyTemplateAndSave("prometheus-operator", utils.TEMPLATE_PROMETHEUS_OPERATOR_SETUP, struct {
+		PrometheusOperatorImage       string
+		PrometheusConfigReloaderImage string
+		ConfigMapReloadImage          string
+	}{
+		PrometheusOperatorImage:       utils.GetFullImageName(utils.IMAGE_PROMETHEUS_OPERATOR, generator.config.Config.Versions.PrometheusOperator),
+		PrometheusConfigReloaderImage: utils.GetFullImageName(utils.IMAGE_PROMETHEUS_CONFIG_RELOADER, generator.config.Config.Versions.PrometheusConfigReloader),
+		ConfigMapReloadImage:          utils.GetFullImageName(utils.IMAGE_CONFIGMAP_RELOAD, generator.config.Config.Versions.ConfigMapReload),
+	}, generator.config.GetFullLocalAssetFilename(utils.K8S_PROMETHEUS_OPERATOR_SETUP), true, false)
+}
+
+func (generator *Generator) generateKubePrometheusSetup() error {
+	return utils.ApplyTemplateAndSave("kube-prometheus", utils.TEMPLATE_KUBE_PROMETHEUS_SETUP, struct{}{}, generator.config.GetFullLocalAssetFilename(utils.K8S_KUBE_PROMETHEUS_SETUP), true, true)
+}
+
+func (generator *Generator) generateKubePrometheusDatasourceSetup() error {
+	return utils.ApplyTemplateAndSave("kube-prometheus-datasource", utils.TEMPLATE_KUBE_PROMETHEUS_DATASOURCE_SETUP, struct{}{}, generator.config.GetFullLocalAssetFilename(utils.K8S_KUBE_PROMETHEUS_DATASOURCE_SETUP), true, true)
+}
+
+func (generator *Generator) generateKubePrometheusKubernetesClusterStatusDashboardSetup() error {
+	return utils.ApplyTemplateAndSave("kube-prometheus-kubernetes-cluster-status-dashboard", utils.TEMPLATE_KUBE_PROMETHEUS_KUBERNETES_CLUSTER_STATUS_DASHBOARD_SETUP, struct{}{}, generator.config.GetFullLocalAssetFilename(utils.K8S_KUBE_PROMETHEUS_KUBERNETES_CLUSTER_STATUS_DASHBOARD_SETUP), true, true)
+}
+
+func (generator *Generator) generateKubePrometheusPodsDashboardSetup() error {
+	return utils.ApplyTemplateAndSave("kube-prometheus-pods-dashboard", utils.TEMPLATE_KUBE_PROMETHEUS_PODS_DASHBOARD_SETUP, struct{}{}, generator.config.GetFullLocalAssetFilename(utils.K8S_KUBE_PROMETHEUS_PODS_DASHBOARD_SETUP), true, true)
+}
+
+func (generator *Generator) generateKubePrometheusDeploymentDashboardSetup() error {
+	return utils.ApplyTemplateAndSave("kube-prometheus-deployment-dashboard", utils.TEMPLATE_KUBE_PROMETHEUS_DEPLOYMENT_DASHBOARD_SETUP, struct{}{}, generator.config.GetFullLocalAssetFilename(utils.K8S_KUBE_PROMETHEUS_DEPLOYMENT_DASHBOARD_SETUP), true, true)
+}
+
+func (generator *Generator) generateKubePrometheusKubernetesControlPlaneStatusDashboardSetup() error {
+	return utils.ApplyTemplateAndSave("kube-prometheus-kuberntes-control-plane-status-dashboard", utils.TEMPLATE_KUBE_PROMETHEUS_KUBERNETES_CONTROL_PLANE_STATUS_DASHBOARD_SETUP, struct{}{}, generator.config.GetFullLocalAssetFilename(utils.K8S_KUBE_PROMETHEUS_KUBERNETES_CONTROL_PLANE_STATUS_DASHBOARD_SETUP), true, true)
+}
+
+func (generator *Generator) generateKubePrometheusStatefulsetDashboardSetup() error {
+	return utils.ApplyTemplateAndSave("kube-prometheus-stateful-dashboard", utils.TEMPLATE_KUBE_PROMETHEUS_STATEFULSET_DASHBOARD_SETUP, struct{}{}, generator.config.GetFullLocalAssetFilename(utils.K8S_KUBE_PROMETHEUS_STATEFULSET_DASHBOARD_SETUP), true, true)
+}
+
+func (generator *Generator) generateKubePrometheusKubernetesCapacityPlanningDashboardSetup() error {
+	return utils.ApplyTemplateAndSave("kube-prometheus-kubernetes-capacity-planning-dashboard", utils.TEMPLATE_KUBE_PROMETHEUS_KUBERNETES_CAPACITY_PLANNING_DASHBOARD_SETUP, struct{}{}, generator.config.GetFullLocalAssetFilename(utils.K8S_KUBE_PROMETHEUS_KUBERNETES_CAPACITY_PLANNING_DASHBOARD_SETUP), true, true)
+}
+
+func (generator *Generator) generateKubePrometheusKubernetesResourceRequestsDashboardSetup() error {
+	return utils.ApplyTemplateAndSave("kube-prometheus-kubernetes-resource-requests-dashboard", utils.TEMPLATE_KUBE_PROMETHEUS_KUBERNETES_RESOURCE_REQUESTS_DASHBOARD_SETUP, struct{}{}, generator.config.GetFullLocalAssetFilename(utils.K8S_KUBE_PROMETHEUS_KUBERNETES_RESOURCE_REQUESTS_DASHBOARD_SETUP), true, true)
+}
+
+func (generator *Generator) generateKubePrometheusKubernetesClusterHealthDashboardSetup() error {
+	return utils.ApplyTemplateAndSave("kube-prometheus-kubernetes-cluster-health-dashboard", utils.TEMPLATE_KUBE_PROMETHEUS_KUBERNETES_CLUSTER_HEALTH_DASHBOARD_SETUP, struct{}{}, generator.config.GetFullLocalAssetFilename(utils.K8S_KUBE_PROMETHEUS_KUBERNETES_CLUSTER_HEALTH_DASHBOARD_SETUP), true, true)
+}
+
+func (generator *Generator) generateKubePrometheusNodesDashboardSetup() error {
+	return utils.ApplyTemplateAndSave("kube-prometheus-nodes-dashboard", utils.TEMPLATE_KUBE_PROMETHEUS_NODES_DASHBOARD_SETUP, struct{}{}, generator.config.GetFullLocalAssetFilename(utils.K8S_KUBE_PROMETHEUS_NODES_DASHBOARD_SETUP), true, true)
 }
 
 func (generator *Generator) generateWordpressSetup() error {
-	return utils.ApplyTemplateAndSave(utils.TEMPLATE_WORDPRESS_SETUP, struct {
+	return utils.ApplyTemplateAndSave("wordpress", utils.TEMPLATE_WORDPRESS_SETUP, struct {
 		IngressDomain string
 	}{
 		IngressDomain: generator.config.Config.IngressDomain,
-	}, generator.config.GetFullLocalAssetFilename(utils.WORDPRESS_SETUP), true)
+	}, generator.config.GetFullLocalAssetFilename(utils.WORDPRESS_SETUP), true, false)
 }
 
 func (generator *Generator) generateBashCompletion(binaryName, bashCompletionFilename string) error {

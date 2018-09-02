@@ -1,0 +1,141 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  namespace: kube-system
+  name: heapster-heapster
+  labels:
+    app: heapster
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    app: heapster
+  name: heapster-heapster
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:heapster
+subjects:
+  - kind: ServiceAccount
+    name: heapster-heapster
+    namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: Role
+metadata:
+  namespace: kube-system
+  name: heapster-heapster-pod-nanny
+  labels:
+    app: heapster
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - get
+- apiGroups:
+  - "extensions"
+  resources:
+  - deployments
+  verbs:
+  - get
+  - update
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: RoleBinding
+metadata:
+  namespace: kube-system
+  name: heapster-heapster-pod-nanny
+  labels:
+    app: heapster
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: heapster-heapster-pod-nanny
+subjects:
+- kind: ServiceAccount
+  name: heapster-heapster
+  namespace: kube-system
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: kube-system
+  name: heapster
+  labels:
+    app: heapster-heapster
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8082
+    targetPort: 8082
+    protocol: TCP
+  selector:
+    app: heapster-heapster
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  namespace: kube-system
+  name: heapster-heapster
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: heapster-heapster
+    spec:
+      serviceAccountName: heapster-heapster
+      containers:
+      - name: heapster
+        image: "{{.HeapsterImage}}"
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8082
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8082
+          initialDelaySeconds: 180
+          timeoutSeconds: 5
+        resources:
+            limits:
+              cpu: 100m
+              memory: 128Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+        command:
+          - "/heapster"
+          - "--source=kubernetes.summary_api:''"
+      - name: heapster-nanny
+        image: "{{.AddonResizerImage}}"
+        imagePullPolicy: IfNotPresent
+        resources:
+            limits:
+              cpu: 50m
+              memory: 90Mi
+            requests:
+              cpu: 50m
+              memory: 90Mi
+        env:
+          - name: MY_POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: MY_POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+        command:
+          - "/pod_nanny"
+          - "--deployment=heapster-heapster"
+          - "--container=heapster"
+          - "--cpu=150m"
+          - "--extra-cpu=10m"
+          - "--memory=200Mi"
+          - "--extra-memory=6Mi"
+          - "--threshold=5"
+          - "--poll-period=300000"

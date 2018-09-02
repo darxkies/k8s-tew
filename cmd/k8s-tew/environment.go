@@ -22,7 +22,7 @@ var environmentCmd = &cobra.Command{
 			os.Exit(-1)
 		}
 
-		content, error := utils.ApplyTemplate(utils.GetTemplate(utils.TEMPLATE_ENVIRONMENT), struct {
+		content, error := utils.ApplyTemplate("Environment", utils.GetTemplate(utils.TEMPLATE_ENVIRONMENT), struct {
 			CurrentPath    string
 			K8STEWPath     string
 			K8SPath        string
@@ -42,7 +42,7 @@ var environmentCmd = &cobra.Command{
 			ArkPath:        _config.GetFullLocalAssetDirectory(utils.ARK_BINARIES_DIRECTORY),
 			KubeConfig:     _config.GetFullLocalAssetFilename(utils.ADMIN_KUBECONFIG),
 			ContainerdSock: _config.GetFullTargetAssetFilename(utils.CONTAINERD_SOCK),
-		})
+		}, false)
 
 		if error != nil {
 			log.WithFields(log.Fields{"error": error}).Error("Failed generating environment")

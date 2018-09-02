@@ -1,0 +1,370 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: networking
+  name: nginx-ingress-controller
+  labels:
+    app: nginx-ingress
+    component: "controller"
+data:
+  enable-vts-status: "false"
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  namespace: networking
+  name: nginx-ingress
+  labels:
+    app: nginx-ingress
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: nginx-ingress
+  labels:
+    app: nginx-ingress
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - configmaps
+      - endpoints
+      - nodes
+      - pods
+      - secrets
+    verbs:
+      - list
+      - watch
+  - apiGroups:
+      - ""
+    resources:
+      - nodes
+    verbs:
+      - get
+  - apiGroups:
+      - ""
+    resources:
+      - services
+    verbs:
+      - get
+      - list
+      - update
+      - watch
+  - apiGroups:
+      - extensions
+    resources:
+      - ingresses
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - ""
+    resources:
+      - events
+    verbs:
+      - create
+      - patch
+  - apiGroups:
+      - extensions
+    resources:
+      - ingresses/status
+    verbs:
+      - update
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: nginx-ingress
+  labels:
+    app: nginx-ingress
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: nginx-ingress
+subjects:
+  - kind: ServiceAccount
+    namespace: networking
+    name: nginx-ingress
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: Role
+metadata:
+  namespace: networking
+  name: nginx-ingress
+  labels:
+    app: nginx-ingress
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - namespaces
+    verbs:
+      - get
+  - apiGroups:
+      - ""
+    resources:
+      - configmaps
+      - pods
+      - secrets
+      - endpoints
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - ""
+    resources:
+      - services
+    verbs:
+      - get
+      - list
+      - update
+      - watch
+  - apiGroups:
+      - extensions
+    resources:
+      - ingresses
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - extensions
+    resources:
+      - ingresses/status
+    verbs:
+      - update
+  - apiGroups:
+      - ""
+    resources:
+      - configmaps
+    resourceNames:
+      - ingress-controller-leader-nginx
+    verbs:
+      - get
+      - update
+  - apiGroups:
+      - ""
+    resources:
+      - configmaps
+    verbs:
+      - create
+  - apiGroups:
+      - ""
+    resources:
+      - endpoints
+    verbs:
+      - create
+      - get
+      - update
+  - apiGroups:
+      - ""
+    resources:
+      - events
+    verbs:
+      - create
+      - patch
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: RoleBinding
+metadata:
+  namespace: networking
+  name: nginx-ingress
+  labels:
+    app: nginx-ingress
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: nginx-ingress
+subjects:
+  - kind: ServiceAccount
+    namespace: networking
+    name: nginx-ingress
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: networking
+  name: nginx-ingress-controller
+  labels:
+    app: nginx-ingress
+    component: "controller"
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: http
+    - name: https
+      port: 443
+      protocol: TCP
+      targetPort: https
+  selector:
+    app: nginx-ingress
+    component: "controller"
+  type: "LoadBalancer"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: networking
+  name: nginx-ingress-default-backend
+  labels:
+    app: nginx-ingress
+    component: "default-backend"
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: http
+  selector:
+    app: nginx-ingress
+    component: "default-backend"
+  type: "ClusterIP"
+---
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  namespace: networking
+  name: nginx-ingress-controller
+  labels:
+    app: nginx-ingress
+    component: "controller"
+spec:
+  revisionHistoryLimit: 10
+  updateStrategy:
+    {}
+  minReadySeconds: 0
+  template:
+    metadata:
+      labels:
+        app: nginx-ingress
+        component: "controller"
+    spec:
+      dnsPolicy: ClusterFirst
+      containers:
+        - name: nginx-ingress-controller
+          image: "{{.NginxIngressControllerImage}}"
+          imagePullPolicy: "IfNotPresent"
+          args:
+            - /nginx-ingress-controller
+            - --default-backend-service=networking/nginx-ingress-default-backend
+            - --election-id=ingress-controller-leader
+            - --ingress-class=nginx
+            - --configmap=networking/nginx-ingress-controller
+          securityContext:
+            capabilities:
+                drop:
+                - ALL
+                add:
+                - NET_BIND_SERVICE
+            # www-data -> 33
+            runAsUser: 33
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 10254
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 3
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+            - name: https
+              containerPort: 443
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 10254
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 3
+          resources:
+            {}
+      hostNetwork: true
+      serviceAccountName: nginx-ingress
+      terminationGracePeriodSeconds: 60
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  namespace: networking
+  name: nginx-ingress-default-backend
+  labels:
+    app: nginx-ingress
+    component: "default-backend"
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  template:
+    metadata:
+      labels:
+        app: nginx-ingress
+        component: "default-backend"
+    spec:
+      containers:
+        - name: nginx-ingress-default-backend
+          image: "{{.NginxIngressDefaultBackendImage}}"
+          imagePullPolicy: "IfNotPresent"
+          args:
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 30
+            timeoutSeconds: 5
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+      terminationGracePeriodSeconds: 60
+---
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  namespace: networking
+  name: nginx-ingress-controller
+  labels:
+    app: nginx-ingress
+    component: "controller"
+spec:
+  selector:
+    matchLabels:
+      app: nginx-ingress
+      component: "controller"
+  minAvailable: 1
+---
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  namespace: networking
+  name: nginx-ingress-default-backend
+  labels:
+    app: nginx-ingress
+    component: "default-backend"
+spec:
+  selector:
+    matchLabels:
+      app: nginx-ingress
+      component: "default-backend"
+  minAvailable: 1

@@ -66,7 +66,7 @@ func (downloader Downloader) getURL(url, filename string) (string, error) {
 		Versions: downloader.config.Config.Versions,
 	}
 
-	return utils.ApplyTemplate(url, data)
+	return utils.ApplyTemplate(url, url, data, false)
 }
 
 func (downloader Downloader) downloadFile(url, filename string) (bool, error) {
