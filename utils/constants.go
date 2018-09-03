@@ -318,6 +318,7 @@ const BASH_COMPLETION_K8S_TEW = "k8s-tew.bash-completion"
 const BASH_COMPLETION_KUBECTL = "kubectl.bash-completion"
 const BASH_COMPLETION_HELM = "helm.bash-completion"
 const BASH_COMPLETION_ARK = "ark.bash-completion"
+const BASH_COMPLETION_CRICTL = "crictl.bash-completion"
 
 // Logging
 const AUDIT_LOG = "audit.log"

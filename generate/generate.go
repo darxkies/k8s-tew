@@ -102,6 +102,8 @@ func NewGenerator(config *config.InternalConfig) *Generator {
 		generator.generateBashCompletionHelm,
 		// Generate Bash Completion for Ark
 		generator.generateBashCompletionArk,
+		// Generate Bash Completion for CriCtl
+		generator.generateBashCompletionCriCtl,
 	}
 
 	return generator
@@ -782,6 +784,10 @@ func (generator *Generator) generateBashCompletionHelm() error {
 
 func (generator *Generator) generateBashCompletionArk() error {
 	return generator.generateBashCompletion(utils.ARK_BINARY, utils.BASH_COMPLETION_ARK)
+}
+
+func (generator *Generator) generateBashCompletionCriCtl() error {
+	return generator.generateBashCompletion(utils.CRICTL_BINARY, utils.BASH_COMPLETION_CRICTL)
 }
 
 func (generator *Generator) GenerateFiles() error {

@@ -301,6 +301,7 @@ func (config *InternalConfig) registerAssetFiles() {
 	// Bash Completion
 	config.addAssetFile(utils.BASH_COMPLETION_K8S_TEW, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, "", utils.BASH_COMPLETION_DIRECTORY)
 	config.addAssetFile(utils.BASH_COMPLETION_KUBECTL, Labels{utils.NODE_CONTROLLER}, "", utils.BASH_COMPLETION_DIRECTORY)
+	config.addAssetFile(utils.BASH_COMPLETION_CRICTL, Labels{utils.NODE_CONTROLLER}, "", utils.BASH_COMPLETION_DIRECTORY)
 	config.addAssetFile(utils.BASH_COMPLETION_HELM, Labels{}, "", utils.BASH_COMPLETION_DIRECTORY)
 	config.addAssetFile(utils.BASH_COMPLETION_ARK, Labels{}, "", utils.BASH_COMPLETION_DIRECTORY)
 }
