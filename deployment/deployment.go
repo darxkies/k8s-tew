@@ -15,21 +15,22 @@ type Deployment struct {
 	config         *config.InternalConfig
 	identityFile   string
 	skipSetup      bool
-	skipImagesPull bool
+	pullImages     bool
 	forceUpload    bool
 	commandRetries uint
 	nodes          map[string]*NodeDeployment
 	images         []string
+	parallel       bool
 }
 
-func NewDeployment(_config *config.InternalConfig, identityFile string, skipSetup bool, skipImagesPull bool, forceUpload bool, commandRetries uint) *Deployment {
+func NewDeployment(_config *config.InternalConfig, identityFile string, skipSetup bool, pullImages bool, forceUpload bool, parallel bool, commandRetries uint) *Deployment {
 	nodes := map[string]*NodeDeployment{}
 
 	for nodeName, node := range _config.Config.Nodes {
-		nodes[nodeName] = NewNodeDeployment(identityFile, nodeName, node, _config)
+		nodes[nodeName] = NewNodeDeployment(identityFile, nodeName, node, _config, parallel)
 	}
 
-	deployment := &Deployment{config: _config, identityFile: identityFile, skipSetup: skipSetup, skipImagesPull: skipImagesPull, forceUpload: forceUpload, commandRetries: commandRetries, nodes: nodes}
+	deployment := &Deployment{config: _config, identityFile: identityFile, skipSetup: skipSetup, pullImages: pullImages, forceUpload: forceUpload, parallel: parallel, commandRetries: commandRetries, nodes: nodes}
 
 	deployment.images = []string{
 		utils.GetFullImageName(utils.IMAGE_PAUSE, deployment.config.Config.Versions.Pause),
@@ -43,6 +44,27 @@ func NewDeployment(_config *config.InternalConfig, identityFile string, skipSetu
 		utils.GetFullImageName(utils.IMAGE_CEPH, deployment.config.Config.Versions.Ceph),
 		utils.GetFullImageName(utils.IMAGE_FLUENT_BIT, deployment.config.Config.Versions.FluentBit),
 		utils.GetFullImageName(utils.IMAGE_RBD_PROVISIONER, deployment.config.Config.Versions.RBDProvisioner),
+		utils.GetFullImageName(utils.IMAGE_ELASTICSEARCH, deployment.config.Config.Versions.Elasticsearch),
+		utils.GetFullImageName(utils.IMAGE_ELASTICSEARCH_CRON, deployment.config.Config.Versions.ElasticsearchCron),
+		utils.GetFullImageName(utils.IMAGE_ELASTICSEARCH_OPERATOR, deployment.config.Config.Versions.ElasticsearchOperator),
+		utils.GetFullImageName(utils.IMAGE_KIBANA, deployment.config.Config.Versions.Kibana),
+		utils.GetFullImageName(utils.IMAGE_CEREBRO, deployment.config.Config.Versions.Cerebro),
+		utils.GetFullImageName(utils.IMAGE_HEAPSTER, deployment.config.Config.Versions.Heapster),
+		utils.GetFullImageName(utils.IMAGE_ADDON_RESIZER, deployment.config.Config.Versions.AddonResizer),
+		utils.GetFullImageName(utils.IMAGE_KUBERNETES_DASHBOARD, deployment.config.Config.Versions.KubernetesDashboard),
+		utils.GetFullImageName(utils.IMAGE_CERT_MANAGER_CONTROLLER, deployment.config.Config.Versions.CertManagerController),
+		utils.GetFullImageName(utils.IMAGE_NGINX_INGRESS_DEFAULT_BACKEND, deployment.config.Config.Versions.NginxIngressDefaultBackend),
+		utils.GetFullImageName(utils.IMAGE_NGINX_INGRESS_CONTROLLER, deployment.config.Config.Versions.NginxIngressController),
+		utils.GetFullImageName(utils.IMAGE_METRICS_SERVER, deployment.config.Config.Versions.MetricsServer),
+		utils.GetFullImageName(utils.IMAGE_PROMETHEUS_OPERATOR, deployment.config.Config.Versions.PrometheusOperator),
+		utils.GetFullImageName(utils.IMAGE_PROMETHEUS_CONFIG_RELOADER, deployment.config.Config.Versions.PrometheusConfigReloader),
+		utils.GetFullImageName(utils.IMAGE_CONFIGMAP_RELOAD, deployment.config.Config.Versions.ConfigMapReload),
+		utils.GetFullImageName(utils.IMAGE_KUBE_STATE_METRICS, deployment.config.Config.Versions.KubeStateMetrics),
+		utils.GetFullImageName(utils.IMAGE_GRAFANA, deployment.config.Config.Versions.Grafana),
+		utils.GetFullImageName(utils.IMAGE_GRAFANA_WATCHER, deployment.config.Config.Versions.GrafanaWatcher),
+		utils.GetFullImageName(utils.IMAGE_PROMETHEUS, deployment.config.Config.Versions.Prometheus),
+		utils.GetFullImageName(utils.IMAGE_PROMETHEUS_NODE_EXPORTER, deployment.config.Config.Versions.PrometheusNodeExporter),
+		utils.GetFullImageName(utils.IMAGE_PROMETHEUS_ALERT_MANAGER, deployment.config.Config.Versions.PrometheusAlertManager),
 	}
 
 	return deployment
@@ -146,7 +168,7 @@ func (deployment *Deployment) configureTaint() error {
 
 	}
 
-	if deployment.skipImagesPull {
+	if !deployment.pullImages {
 		return nil
 	}
 
@@ -165,8 +187,7 @@ func (deployment *Deployment) configureTaint() error {
 			})
 		}
 
-		errors := utils.RunParallelTasks(tasks)
-		if len(errors) > 0 {
+		if errors := utils.RunParallelTasks(tasks, deployment.parallel); len(errors) > 0 {
 			return errors[0]
 		}
 	}

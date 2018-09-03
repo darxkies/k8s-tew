@@ -1,8 +1,8 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: rbd-provisioner
   namespace: storage
+  name: rbd-provisioner
 ---
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
@@ -23,18 +23,21 @@ rules:
     verbs: ["list", "watch", "create", "update", "patch"]
   - apiGroups: [""]
     resources: ["services"]
-    resourceNames: ["kube-dns"]
+    resourceNames: ["kube-dns", "coredns"]
     verbs: ["list", "get"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: rbd-provisioner
   namespace: storage
+  name: rbd-provisioner
 rules:
 - apiGroups: [""]
   resources: ["secrets"]
   verbs: ["get"]
+- apiGroups: [""]
+  resources: ["endpoints"]
+  verbs: ["get", "list", "watch", "create", "update", "patch"]
 ---
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
@@ -85,8 +88,8 @@ parameters:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: rbd-provisioner
   namespace: storage
+  name: rbd-provisioner
 spec:
   replicas: 1
   strategy:
@@ -107,8 +110,8 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: ceph-mon-{{$node.Name}}
   namespace: storage
+  name: ceph-mon-{{$node.Name}}
 spec:
   replicas: 1
   strategy:
@@ -153,8 +156,8 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: ceph-osd-{{$node.Name}}
   namespace: storage
+  name: ceph-osd-{{$node.Name}}
 spec:
   replicas: 1
   strategy:
@@ -203,8 +206,8 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: ceph-mgr
   namespace: storage
+  name: ceph-mgr
 spec:
   replicas: 1
   strategy:
@@ -230,6 +233,39 @@ spec:
         securityContext:
           privileged: true
         args: ["mgr"]
+        volumeMounts:
+        - name: ceph-config
+          mountPath: /etc/ceph
+        - name: ceph-data
+          mountPath: /var/lib/ceph
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  namespace: storage
+  name: ceph-setup
+spec:
+  template:
+    metadata:
+      name: ceph-setup
+    spec:
+      restartPolicy: OnFailure
+      volumes:
+      - name: ceph-config
+        hostPath:
+          path: {{$.CephConfigDirectory}}
+          type: DirectoryOrCreate
+      - name: ceph-data
+        hostPath:
+          path: {{$.CephDataDirectory}}
+          type: DirectoryOrCreate
+      containers:
+      - name: ceph
+        image: {{$.CephImage}}
+        command:
+        - /bin/sh
+        - -c
+        - "ceph osd pool create {{.CephPoolName}} 256 256 && ceph mgr module enable dashboard && ceph osd pool application enable ceph rbd && ceph dashboard create-self-signed-cert && ceph config set mgr mgr/dashboard/server_port 7000 && ceph dashboard set-login-credentials admin changeme && ceph mgr module disable dashboard && ceph mgr module enable dashboard"
         volumeMounts:
         - name: ceph-config
           mountPath: /etc/ceph

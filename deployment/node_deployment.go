@@ -30,10 +30,11 @@ type NodeDeployment struct {
 	node         *config.Node
 	config       *config.InternalConfig
 	sshLimiter   *utils.Limiter
+	parallel     bool
 }
 
-func NewNodeDeployment(identityFile string, name string, node *config.Node, config *config.InternalConfig) *NodeDeployment {
-	return &NodeDeployment{identityFile: identityFile, name: name, node: node, config: config, sshLimiter: utils.NewLimiter(CONCURRENT_SSH_CONNECTIONS_LIMIT)}
+func NewNodeDeployment(identityFile string, name string, node *config.Node, config *config.InternalConfig, parallel bool) *NodeDeployment {
+	return &NodeDeployment{identityFile: identityFile, name: name, node: node, config: config, sshLimiter: utils.NewLimiter(CONCURRENT_SSH_CONNECTIONS_LIMIT), parallel: parallel}
 }
 
 func (deployment *NodeDeployment) md5sum(filename string) (result string, error error) {
@@ -185,7 +186,7 @@ func (deployment *NodeDeployment) UploadFiles(forceUpload bool) error {
 	}
 
 	// Upload files
-	if errors := utils.RunParallelTasks(tasks); len(errors) > 0 {
+	if errors := utils.RunParallelTasks(tasks, deployment.parallel); len(errors) > 0 {
 		return errors[0]
 	}
 
@@ -228,9 +229,8 @@ func (deployment *NodeDeployment) pullImage(image string) error {
 	containerdSock := deployment.config.GetFullTargetAssetFilename(utils.CONTAINERD_SOCK)
 	command := fmt.Sprintf("CONTAINER_RUNTIME_ENDPOINT=unix://%s %s pull %s", containerdSock, crictl, image)
 
-	output, error := deployment.Execute(fmt.Sprintf("pull-image-%s", image), command)
-	if error != nil {
-		return fmt.Errorf("%s (%s)", error.Error(), output)
+	if _, error := deployment.Execute(fmt.Sprintf("pull-image-%s", image), command); error != nil {
+		return fmt.Errorf("Failed to pull image %s (%s)", image, error.Error())
 	}
 
 	return nil

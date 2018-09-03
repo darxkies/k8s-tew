@@ -214,10 +214,6 @@ func (config *InternalConfig) registerAssetFiles() {
 	// Certificates
 	config.addAssetFile(utils.CA_PEM, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, "", utils.CERTIFICATES_DIRECTORY)
 	config.addAssetFile(utils.CA_KEY_PEM, Labels{utils.NODE_CONTROLLER}, "", utils.CERTIFICATES_DIRECTORY)
-	config.addAssetFile(utils.VIRTUAL_IP_PEM, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, "", utils.CERTIFICATES_DIRECTORY)
-	config.addAssetFile(utils.VIRTUAL_IP_KEY_PEM, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, "", utils.CERTIFICATES_DIRECTORY)
-	config.addAssetFile(utils.FLANNELD_PEM, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, "", utils.CERTIFICATES_DIRECTORY)
-	config.addAssetFile(utils.FLANNELD_KEY_PEM, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, "", utils.CERTIFICATES_DIRECTORY)
 	config.addAssetFile(utils.KUBERNETES_PEM, Labels{utils.NODE_CONTROLLER}, "", utils.CERTIFICATES_DIRECTORY)
 	config.addAssetFile(utils.KUBERNETES_KEY_PEM, Labels{utils.NODE_CONTROLLER}, "", utils.CERTIFICATES_DIRECTORY)
 	config.addAssetFile(utils.SERVICE_ACCOUNT_PEM, Labels{utils.NODE_CONTROLLER}, "", utils.CERTIFICATES_DIRECTORY)
@@ -427,7 +423,7 @@ func (config *InternalConfig) registerServers() {
 func (config *InternalConfig) registerCommands() {
 	kubectlCommand := fmt.Sprintf("%s --request-timeout 30s --kubeconfig %s", config.GetFullLocalAssetFilename(utils.KUBECTL_BINARY), config.GetFullLocalAssetFilename(utils.ADMIN_KUBECONFIG))
 	helmCommand := fmt.Sprintf("KUBECONFIG=%s HELM_HOME=%s %s", config.GetFullLocalAssetFilename(utils.ADMIN_KUBECONFIG), config.GetFullLocalAssetDirectory(utils.HELM_DATA_DIRECTORY), config.GetFullLocalAssetFilename(utils.HELM_BINARY))
-	cephCommand := fmt.Sprintf("%s exec -t -i $(%s get pods -n storage -l app=ceph-mgr -o=jsonpath='{.items[0].metadata.name}') -n storage -- ceph", kubectlCommand, kubectlCommand)
+	//cephCommand := fmt.Sprintf("%s exec -t -i $(%s get pods -n storage -l app=ceph-mgr -o=jsonpath='{.items[0].metadata.name}') -n storage -- ceph", kubectlCommand, kubectlCommand)
 
 	// Dependencies
 	config.addCommand("setup-ubuntu", Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, OS{utils.OS_UBUNTU}, "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y apt-transport-https socat conntrack ipset ceph-common")
@@ -445,11 +441,8 @@ func (config *InternalConfig) registerCommands() {
 	config.addCommand("helm-user-setup", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_HELM_USER_SETUP)))
 	config.addCommand("ceph-secrets", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.CEPH_SECRETS)))
 	config.addCommand("ceph-setup", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.CEPH_SETUP)))
-	config.addCommand("ceph-create-pool", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s osd pool create %s 256 256", cephCommand, utils.CEPH_POOL_NAME))
-	config.addCommand("ceph-enable-dashboard", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s mgr module enable dashboard", cephCommand))
+	//config.addCommand("ceph-create-pool", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s osd pool create %s 256 256", cephCommand, utils.CEPH_POOL_NAME))
 	config.addCommand("helm-init", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s init --service-account %s --upgrade", helmCommand, utils.HELM_SERVICE_ACCOUNT))
-	config.addCommand("helm-add-coreos-repository", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s repo add coreos https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/", helmCommand))
-	config.addCommand("helm-repository-update", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s repo update", helmCommand))
 	config.addCommand("kubernetes-dashboard-setup", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_KUBERNETES_DASHBOARD_SETUP)))
 	config.addCommand("cert-manager-setup", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_CERT_MANAGER_SETUP)))
 	config.addCommand("nginx-ingress-setup", Labels{utils.NODE_BOOTSTRAPPER}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_NGINX_INGRESS_SETUP)))

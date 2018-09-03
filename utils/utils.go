@@ -140,6 +140,24 @@ func ApplyTemplate(label, content string, data interface{}, alternativeDelimiter
 
 			return result
 		},
+		"image_name": func(value string) string {
+			tokens := strings.Split(value, ":")
+
+			if len(tokens) > 0 {
+				return tokens[0]
+			}
+
+			return value
+		},
+		"image_tag": func(value string) string {
+			tokens := strings.Split(value, ":")
+
+			if len(tokens) > 1 {
+				return tokens[1]
+			}
+
+			return value
+		},
 	}
 
 	startDelimiter := "{{"

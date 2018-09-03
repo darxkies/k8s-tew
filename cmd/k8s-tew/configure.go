@@ -295,5 +295,29 @@ func init() {
 		_config.Config.Versions.ConfigMapReload = value
 	})
 
+	addStringOption("version-kube-state-metrics", utils.VERSION_KUBE_STATE_METRICS, "Kube State Metrics version", func(value string) {
+		_config.Config.Versions.KubeStateMetrics = value
+	})
+
+	addStringOption("version-grafana", utils.VERSION_GRAFANA, "Grafana version", func(value string) {
+		_config.Config.Versions.Grafana = value
+	})
+
+	addStringOption("version-grafana-watcher", utils.VERSION_GRAFANA_WATCHER, "Grafana Watcher version", func(value string) {
+		_config.Config.Versions.GrafanaWatcher = value
+	})
+
+	addStringOption("version-prometheus-node-exporter", utils.VERSION_PROMETHEUS_NODE_EXPORTER, "Prometheus Node Exporter version", func(value string) {
+		_config.Config.Versions.PrometheusNodeExporter = value
+	})
+
+	addStringOption("version-prometheus-alert-manager", utils.VERSION_PROMETHEUS_ALERT_MANAGER, "Prometheus Alert Manager version", func(value string) {
+		_config.Config.Versions.PrometheusAlertManager = value
+	})
+
+	addStringOption("version-prometheus", utils.VERSION_PROMETHEUS, "Prometheus version", func(value string) {
+		_config.Config.Versions.Prometheus = value
+	})
+
 	RootCmd.AddCommand(configureCmd)
 }

@@ -129,7 +129,6 @@ spec:
       containers:
       - name: kubernetes-dashboard
         image: "{{.KubernetesDashboardImage}}"
-        imagePullPolicy: IfNotPresent
         args:
           - --auto-generate-certificates
         ports:
@@ -161,3 +160,11 @@ spec:
           secretName: kubernetes-dashboard
       - name: tmp-volume
         emptyDir: {}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: kube-system
+  name: kubernetes-dashboard-settings
+data:
+  _global: '{"clusterName":"k8s-tew","itemsPerPage":50,"autoRefreshTimeInterval":5}'

@@ -6,7 +6,19 @@ type Task func() error
 type Tasks []Task
 type Errors []error
 
-func RunParallelTasks(tasks Tasks) (errors Errors) {
+func RunParallelTasks(tasks Tasks, parallel bool) (errors Errors) {
+	if !parallel {
+		for _, task := range tasks {
+			if error := task(); error != nil {
+				errors = append(errors, error)
+
+				return
+			}
+		}
+
+		return
+	}
+
 	waitGroup := sync.WaitGroup{}
 
 	waitGroup.Add(len(tasks))
@@ -17,8 +29,6 @@ func RunParallelTasks(tasks Tasks) (errors Errors) {
 	// Schedule tasks to be executed
 	for _, task := range tasks {
 		go func(_task Task) {
-			//fmt.Printf("%d) %#v\n", i, _task)
-
 			if error := _task(); error != nil {
 				errorChannel <- error
 			}

@@ -90,7 +90,6 @@ spec:
       containers:
       - name: coredns
         image: {{.CoreDNSImage}}
-        imagePullPolicy: IfNotPresent
         args: [ "-conf", "/etc/coredns/Corefile" ]
         volumeMounts:
         - name: config-volume

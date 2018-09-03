@@ -37,6 +37,12 @@ type Versions struct {
 	PrometheusOperator         string `yaml:"prometheus-operator"`
 	PrometheusConfigReloader   string `yaml:"prometheus-config-reloader"`
 	ConfigMapReload            string `yaml:"configmap-reload"`
+	KubeStateMetrics           string `yaml:"kube-state-metrics"`
+	Grafana                    string `yaml:"grafana"`
+	GrafanaWatcher             string `yaml:"grafana-watcher"`
+	Prometheus                 string `yaml:"prometheus"`
+	PrometheusNodeExporter     string `yaml:"prometheus-node-exporter"`
+	PrometheusAlertManager     string `yaml:"prometheus-alert-manager"`
 }
 
 func NewVersions() Versions {
@@ -75,5 +81,11 @@ func NewVersions() Versions {
 		PrometheusOperator:         utils.VERSION_PROMETHEUS_OPERATOR,
 		PrometheusConfigReloader:   utils.VERSION_PROMETHEUS_CONFIG_RELOADER,
 		ConfigMapReload:            utils.VERSION_CONFIGMAP_RELOAD,
+		KubeStateMetrics:           utils.VERSION_KUBE_STATE_METRICS,
+		Grafana:                    utils.VERSION_GRAFANA,
+		GrafanaWatcher:             utils.VERSION_GRAFANA_WATCHER,
+		Prometheus:                 utils.VERSION_PROMETHEUS,
+		PrometheusNodeExporter:     utils.VERSION_PROMETHEUS_NODE_EXPORTER,
+		PrometheusAlertManager:     utils.VERSION_PROMETHEUS_ALERT_MANAGER,
 	}
 }

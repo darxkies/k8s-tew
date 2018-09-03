@@ -91,7 +91,6 @@ spec:
       containers:
       - name: heapster
         image: "{{.HeapsterImage}}"
-        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8082
         livenessProbe:
@@ -112,7 +111,6 @@ spec:
           - "--source=kubernetes.summary_api:''"
       - name: heapster-nanny
         image: "{{.AddonResizerImage}}"
-        imagePullPolicy: IfNotPresent
         resources:
             limits:
               cpu: 50m

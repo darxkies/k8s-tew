@@ -126,7 +126,6 @@ spec:
       containers:
         - name: prometheus-operator
           image: "{{.PrometheusOperatorImage}}"
-          imagePullPolicy: "IfNotPresent"
           args:
             - --kubelet-service=kube-system/kubelet
             - --prometheus-config-reloader={{.PrometheusConfigReloaderImage}}

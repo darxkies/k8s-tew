@@ -690,7 +690,23 @@ func (generator *Generator) generatePrometheusOperatorSetup() error {
 }
 
 func (generator *Generator) generateKubePrometheusSetup() error {
-	return utils.ApplyTemplateAndSave("kube-prometheus", utils.TEMPLATE_KUBE_PROMETHEUS_SETUP, struct{}{}, generator.config.GetFullLocalAssetFilename(utils.K8S_KUBE_PROMETHEUS_SETUP), true, true)
+	return utils.ApplyTemplateAndSave("kube-prometheus", utils.TEMPLATE_KUBE_PROMETHEUS_SETUP, struct {
+		AddonResizerImage           string
+		KubeStateMetricsImage       string
+		GrafanaImage                string
+		GrafanaWatcherImage         string
+		PrometheusImage             string
+		PrometheusNodeExporterImage string
+		PrometheusAlertManagerImage string
+	}{
+		AddonResizerImage:           utils.GetFullImageName(utils.IMAGE_ADDON_RESIZER, generator.config.Config.Versions.AddonResizer),
+		KubeStateMetricsImage:       utils.GetFullImageName(utils.IMAGE_KUBE_STATE_METRICS, generator.config.Config.Versions.KubeStateMetrics),
+		GrafanaImage:                utils.GetFullImageName(utils.IMAGE_GRAFANA, generator.config.Config.Versions.Grafana),
+		GrafanaWatcherImage:         utils.GetFullImageName(utils.IMAGE_GRAFANA_WATCHER, generator.config.Config.Versions.GrafanaWatcher),
+		PrometheusImage:             utils.GetFullImageName(utils.IMAGE_PROMETHEUS, generator.config.Config.Versions.Prometheus),
+		PrometheusNodeExporterImage: utils.GetFullImageName(utils.IMAGE_PROMETHEUS_NODE_EXPORTER, generator.config.Config.Versions.PrometheusNodeExporter),
+		PrometheusAlertManagerImage: utils.GetFullImageName(utils.IMAGE_PROMETHEUS_ALERT_MANAGER, generator.config.Config.Versions.PrometheusAlertManager),
+	}, generator.config.GetFullLocalAssetFilename(utils.K8S_KUBE_PROMETHEUS_SETUP), true, true)
 }
 
 func (generator *Generator) generateKubePrometheusDatasourceSetup() error {

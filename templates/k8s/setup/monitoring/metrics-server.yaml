@@ -118,7 +118,6 @@ spec:
       containers:
         - name: metrics-server
           image: "{{.MetricsServerImage}}"
-          imagePullPolicy: IfNotPresent
           command:
             - /metrics-server
             - "--source=kubernetes.summary_api:''"

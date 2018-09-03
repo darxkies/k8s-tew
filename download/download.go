@@ -21,10 +21,11 @@ type Downloader struct {
 	config          *config.InternalConfig
 	downloaderSteps utils.Tasks
 	forceDownload   bool
+	parallel        bool
 }
 
-func NewDownloader(config *config.InternalConfig, forceDownload bool) Downloader {
-	downloader := Downloader{config: config, forceDownload: forceDownload}
+func NewDownloader(config *config.InternalConfig, forceDownload bool, parallel bool) Downloader {
+	downloader := Downloader{config: config, forceDownload: forceDownload, parallel: parallel}
 
 	downloader.downloaderSteps = utils.Tasks{}
 	downloader.addTask(downloader.copyK8STEW)
@@ -438,7 +439,7 @@ func (downloader Downloader) DownloadBinaries() error {
 		return error
 	}
 
-	errors := utils.RunParallelTasks(downloader.downloaderSteps)
+	errors := utils.RunParallelTasks(downloader.downloaderSteps, downloader.parallel)
 	if len(errors) > 0 {
 		return errors[0]
 	}

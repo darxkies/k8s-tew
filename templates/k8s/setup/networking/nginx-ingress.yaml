@@ -247,7 +247,6 @@ spec:
       containers:
         - name: nginx-ingress-controller
           image: "{{.NginxIngressControllerImage}}"
-          imagePullPolicy: "IfNotPresent"
           args:
             - /nginx-ingress-controller
             - --default-backend-service=networking/nginx-ingress-default-backend
@@ -324,8 +323,6 @@ spec:
       containers:
         - name: nginx-ingress-default-backend
           image: "{{.NginxIngressDefaultBackendImage}}"
-          imagePullPolicy: "IfNotPresent"
-          args:
           livenessProbe:
             httpGet:
               path: /healthz

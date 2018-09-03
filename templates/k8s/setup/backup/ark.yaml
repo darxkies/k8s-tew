@@ -175,7 +175,6 @@ spec:
       containers:
       - name: minio
         image: {{.MinioServerImage}}
-        imagePullPolicy: IfNotPresent
         args:
         - server
         - /storage
@@ -242,7 +241,6 @@ spec:
       containers:
       - name: mc
         image: {{.MinioClientImage}}
-        imagePullPolicy: IfNotPresent
         command:
         - /bin/sh
         - -c

@@ -12,6 +12,7 @@ import (
 )
 
 var forceDownload bool
+var parallel bool
 
 var generateCmd = &cobra.Command{
 	Use:   "generate",
@@ -25,7 +26,7 @@ var generateCmd = &cobra.Command{
 			os.Exit(-1)
 		}
 
-		downloader := download.NewDownloader(_config, forceDownload)
+		downloader := download.NewDownloader(_config, forceDownload, parallel)
 		generator := generate.NewGenerator(_config)
 
 		utils.SetProgressSteps(2 + downloader.Steps() + generator.Steps() + 1)
@@ -69,5 +70,6 @@ var generateCmd = &cobra.Command{
 func init() {
 	generateCmd.Flags().UintVarP(&commandRetries, "command-retries", "r", 300, "The count of command retries during the setup")
 	generateCmd.Flags().BoolVar(&forceDownload, "force-download", false, "Force download")
+	generateCmd.Flags().BoolVar(&parallel, "parallel", false, "Download in parallel")
 	RootCmd.AddCommand(generateCmd)
 }

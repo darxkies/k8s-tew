@@ -506,8 +506,7 @@ spec:
     spec:
       containers:
         - name: node-exporter
-          image: "quay.io/prometheus/node-exporter:v0.15.2"
-          imagePullPolicy: "IfNotPresent"
+          image: "[[.PrometheusNodeExporterImage]]"
           args:
           - --web.listen-address=0.0.0.0:9100
           - --path.procfs=/host/proc
@@ -570,8 +569,7 @@ spec:
     spec:
       containers:
       - name: exporter-kube-state
-        image: "gcr.io/google_containers/kube-state-metrics:v1.2.0"
-        imagePullPolicy: IfNotPresent
+        image: "[[.KubeStateMetricsImage]]"
         ports:
         - containerPort: 8080
           protocol: TCP
@@ -588,7 +586,7 @@ spec:
           initialDelaySeconds: 30
           timeoutSeconds: 5
       - name: exporter-kube-state-addon-resizer
-        image: "k8s.gcr.io/addon-resizer:1.7"
+        image: "[[.AddonResizerImage]]"
         env:
           - name: MY_POD_NAME
             valueFrom:
@@ -633,7 +631,7 @@ spec:
     spec:
       containers:
       - name: grafana
-        image: grafana/grafana:5.0.0
+        image: "[[.GrafanaImage]]"
         env:
         - name: GF_AUTH_BASIC_ENABLED
           value: "true"
@@ -664,7 +662,7 @@ spec:
           successThreshold: 1
           failureThreshold: 10
       - name: grafana-watcher
-        image: quay.io/coreos/grafana-watcher:v0.0.8
+        image: "[[.GrafanaWatcherImage]]"
         args:
           - '--watch-dir=/var/grafana-dashboards'
           - '--grafana-url=http://127.0.0.1:3000'
@@ -754,11 +752,11 @@ metadata:
     alertmanager: kube-prometheus
     app: alertmanager
 spec:
-  baseImage: "quay.io/prometheus/alertmanager"
+  baseImage: "[[.PrometheusAlertManagerImage | image_name]]"
   externalUrl: http://kube-prometheus-alertmanager.monitoring:9093
   paused: false
   replicas: 1
-  version: "v0.15.1"
+  version: "[[.PrometheusAlertManagerImage | image_tag]]"
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
@@ -967,7 +965,7 @@ spec:
       - namespace: monitoring
         name: kube-prometheus-alertmanager
         port: http
-  baseImage: "quay.io/prometheus/prometheus"
+  baseImage: "[[.PrometheusImage | image_name]]"
   externalUrl: http://kube-prometheus.monitoring:9090
   paused: false
   replicas: 1
@@ -981,7 +979,7 @@ spec:
   ruleSelector:
     matchLabels:
       prometheus: "kube-prometheus"
-  version: "v2.2.1"
+  version: "[[.PrometheusImage | image_tag]]"
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
