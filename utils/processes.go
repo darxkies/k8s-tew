@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -136,7 +137,7 @@ func (processes *Processes) GetAllChildrenByParent(pid int) *Children {
 func (children *Children) sendSignal(pid int, signal os.Signal) error {
 	process, error := os.FindProcess(pid)
 	if error != nil {
-		return error
+		return fmt.Errorf("Process '%d' not found (%s)", pid, error.Error())
 	}
 
 	return process.Signal(signal)

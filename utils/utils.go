@@ -207,7 +207,7 @@ func GetBase64OfPEM(filename string) (string, error) {
 	content, error := ioutil.ReadFile(filename)
 
 	if error != nil {
-		return "", error
+		return "", fmt.Errorf("Could not read file '%s' (%s)", filename, error.Error())
 	}
 
 	return base64.StdEncoding.EncodeToString(content), nil
