@@ -79,6 +79,7 @@ const IMAGE_PROMETHEUS_ALERT_MANAGER = "quay.io/prometheus/alertmanager:v{{.Vers
 
 // Settings
 const PROJECT_TITLE = "Kubernetes - The Easier Way"
+const CLUSTER_NAME = "k8s-tew"
 const VIP_RAFT_CONTROLLER_PORT = 16277
 const VIP_RAFT_WORKER_PORT = 16728
 const RSA_SIZE = 2048
@@ -87,6 +88,7 @@ const CLIENT_VALIDITY_PERIOD = 15
 const BASE_DIRECTORY = "assets"
 const CLUSTER_DOMAIN = "cluster.local"
 const CLUSTER_IP_RANGE = "10.32.0.0/24"
+const CALICO_TYPHA_IP = "10.32.0.5"
 const CLUSTER_DNS_IP = "10.32.0.10"
 const CLUSTER_CIDR = "10.200.0.0/16"
 const RESOLV_CONF = "/etc/resolv.conf"

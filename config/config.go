@@ -10,7 +10,8 @@ import (
 type Config struct {
 	Version                      string      `yaml:"version"`
 	ClusterID                    string      `yaml:"cluster-id"`
-	Email                        string      `ỳaml:"email"`
+	ClusterName                  string      `yaml:"cluster-name"`
+	Email                        string      `yaml:"email"`
 	IngressDomain                string      `yaml:"ingress-domain"`
 	LoadBalancerPort             uint16      `yaml:"load-balancer-port"`
 	VIPRaftControllerPort        uint16      `yaml:"vip-raft-controller-port"`
@@ -26,6 +27,7 @@ type Config struct {
 	ClusterIPRange               string      `yaml:"cluster-ip-range"`
 	ClusterDNSIP                 string      `yaml:"cluster-dns-ip"`
 	ClusterCIDR                  string      `yaml:"cluster-cidr"`
+	CalicoTyphaIP                string      `yaml:"calico-typha-ip"`
 	ResolvConf                   string      `yaml:"resolv-conf"`
 	DeploymentDirectory          string      `yaml:"deployment-directory,omitempty"`
 	RSASize                      uint16      `yaml:"rsa-size"`
@@ -44,6 +46,7 @@ func NewConfig() *Config {
 	config.VIPRaftControllerPort = utils.VIP_RAFT_CONTROLLER_PORT
 	config.VIPRaftWorkerPort = utils.VIP_RAFT_WORKER_PORT
 	config.ClusterID = fmt.Sprintf("%s", uuid.NewV4())
+	config.ClusterName = utils.CLUSTER_NAME
 	config.Email = utils.EMAIL
 	config.IngressDomain = utils.INGRESS_DOMAIN
 	config.LoadBalancerPort = utils.LOAD_BALANCER_PORT
@@ -54,6 +57,7 @@ func NewConfig() *Config {
 	config.ClusterIPRange = utils.CLUSTER_IP_RANGE
 	config.ClusterDNSIP = utils.CLUSTER_DNS_IP
 	config.ClusterCIDR = utils.CLUSTER_CIDR
+	config.CalicoTyphaIP = utils.CALICO_TYPHA_IP
 	config.ResolvConf = utils.RESOLV_CONF
 	config.DeploymentDirectory = utils.DEPLOYMENT_DIRECTORY
 	config.RSASize = utils.RSA_SIZE

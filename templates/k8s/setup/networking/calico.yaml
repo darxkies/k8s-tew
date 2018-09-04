@@ -48,6 +48,7 @@ metadata:
   labels:
     k8s-app: calico-typha
 spec:
+  clusterIP: {{.CalicoTyphaIP}}
   ports:
     - port: 5473
       protocol: TCP

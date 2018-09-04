@@ -149,6 +149,7 @@ func (generator *Generator) generateGobetweenConfig() error {
 
 func (generator *Generator) generateCalicoSetup() error {
 	return utils.ApplyTemplateAndSave("calico-setup", utils.TEMPLATE_CALICO_SETUP, struct {
+		CalicoTyphaIP        string
 		ClusterCIDR          string
 		CNIConfigDirectory   string
 		CNIBinariesDirectory string
@@ -156,6 +157,7 @@ func (generator *Generator) generateCalicoSetup() error {
 		CalicoNodeImage      string
 		CalicoCNIImage       string
 	}{
+		CalicoTyphaIP:        generator.config.Config.CalicoTyphaIP,
 		ClusterCIDR:          generator.config.Config.ClusterCIDR,
 		CNIConfigDirectory:   generator.config.GetFullTargetAssetDirectory(utils.CNI_CONFIG_DIRECTORY),
 		CNIBinariesDirectory: generator.config.GetFullTargetAssetDirectory(utils.CNI_BINARIES_DIRECTORY),
@@ -645,9 +647,11 @@ func (generator *Generator) generateHeapsterSetup() error {
 
 func (generator *Generator) generateKubernetesDashboardSetup() error {
 	return utils.ApplyTemplateAndSave("kubernetes-dashboard", utils.TEMPLATE_KUBERNETES_DASHBOARD_SETUP, struct {
+		ClusterName              string
 		KubernetesDashboardPort  uint16
 		KubernetesDashboardImage string
 	}{
+		ClusterName:              generator.config.Config.ClusterName,
 		KubernetesDashboardPort:  generator.config.Config.DashboardPort,
 		KubernetesDashboardImage: utils.GetFullImageName(utils.IMAGE_KUBERNETES_DASHBOARD, generator.config.Config.Versions.KubernetesDashboard),
 	}, generator.config.GetFullLocalAssetFilename(utils.K8S_KUBERNETES_DASHBOARD_SETUP), true, false)

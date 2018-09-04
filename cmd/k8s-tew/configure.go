@@ -139,12 +139,20 @@ func init() {
 		_config.Config.ClusterCIDR = value
 	})
 
+	addStringOption("calico-typha-ip", utils.CALICO_TYPHA_IP, "Calico Typha IP", func(value string) {
+		_config.Config.CalicoTyphaIP = value
+	})
+
 	addStringOption("resolv-conf", utils.RESOLV_CONF, "Custom resolv.conf", func(value string) {
 		_config.Config.ResolvConf = value
 	})
 
 	addStringOption("public-network", utils.PUBLIC_NETWORK, "Public Network", func(value string) {
 		_config.Config.PublicNetwork = value
+	})
+
+	addStringOption("cluster-name", utils.CLUSTER_NAME, "Cluster Name used for Kubernetes Dashboard", func(value string) {
+		_config.Config.ClusterName = value
 	})
 
 	addStringOption("email", utils.EMAIL, "Email address used for example for Let's Encrypt", func(value string) {

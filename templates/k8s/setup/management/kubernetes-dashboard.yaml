@@ -167,4 +167,4 @@ metadata:
   namespace: kube-system
   name: kubernetes-dashboard-settings
 data:
-  _global: '{"clusterName":"k8s-tew","itemsPerPage":50,"autoRefreshTimeInterval":5}'
+  _global: '{"clusterName":"{{.ClusterName}}","itemsPerPage":50,"autoRefreshTimeInterval":5}'
