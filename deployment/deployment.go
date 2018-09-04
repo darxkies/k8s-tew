@@ -73,16 +73,23 @@ func NewDeployment(_config *config.InternalConfig, identityFile string, skipSetu
 func (deployment *Deployment) Steps() int {
 	result := 0
 
+	// Files deployment
 	for _, node := range deployment.nodes {
 		result += node.Steps()
 	}
 
 	if !deployment.skipSetup {
+		// Taint commands
+		result += len(deployment.config.Config.Nodes)
+
+		if deployment.pullImages {
+			// Taint commands
+			result += len(deployment.config.Config.Nodes) * len(deployment.images)
+		}
+
 		// Run Commands
 		result += len(deployment.config.Config.Nodes) * len(deployment.config.Config.Commands)
 
-		// Taint commands
-		result += len(deployment.config.Config.Nodes)
 	}
 
 	return result
@@ -130,7 +137,7 @@ func (deployment *Deployment) runCommand(name, command string) error {
 	return nil
 }
 
-func (deployment *Deployment) configureTaint() error {
+func (deployment *Deployment) runConfigureTaints() error {
 	var _error error
 
 	sortedNodeKeys := deployment.config.GetSortedNodeKeys()
@@ -160,9 +167,15 @@ func (deployment *Deployment) configureTaint() error {
 
 	}
 
+	return nil
+}
+
+func (deployment *Deployment) runPullImages() error {
 	if !deployment.pullImages {
 		return nil
 	}
+
+	sortedNodeKeys := deployment.config.GetSortedNodeKeys()
 
 	for _, nodeName := range sortedNodeKeys {
 		nodeDeployment := deployment.nodes[nodeName]
@@ -175,6 +188,8 @@ func (deployment *Deployment) configureTaint() error {
 			image := image
 
 			tasks = append(tasks, func() error {
+				defer utils.IncreaseProgressStep()
+
 				return nodeDeployment.pullImage(image)
 			})
 		}
@@ -188,15 +203,7 @@ func (deployment *Deployment) configureTaint() error {
 }
 
 // Run bootstrapper commands
-func (deployment *Deployment) setup() error {
-	if deployment.skipSetup {
-		return nil
-	}
-
-	if error := deployment.configureTaint(); error != nil {
-		return error
-	}
-
+func (deployment *Deployment) runBoostrapperCommands() error {
 	for _, command := range deployment.config.Config.Commands {
 		if !command.Labels.HasLabels([]string{utils.NODE_BOOTSTRAPPER}) {
 			utils.IncreaseProgressStep()
@@ -217,4 +224,21 @@ func (deployment *Deployment) setup() error {
 	}
 
 	return nil
+}
+
+// Setup nodes
+func (deployment *Deployment) setup() error {
+	if deployment.skipSetup {
+		return nil
+	}
+
+	if error := deployment.runConfigureTaints(); error != nil {
+		return error
+	}
+
+	if error := deployment.runPullImages(); error != nil {
+		return error
+	}
+
+	return deployment.runBoostrapperCommands()
 }
