@@ -587,6 +587,10 @@ func (config *InternalConfig) Load() error {
 		return error
 	}
 
+	if config.Config.Version != utils.VERSION_CONFIG {
+		return fmt.Errorf("Unsupported config version '%s'", config.Config.Version)
+	}
+
 	if len(config.Name) == 0 {
 		config.Name, error = os.Hostname()
 
