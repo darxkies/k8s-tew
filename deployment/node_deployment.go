@@ -37,6 +37,24 @@ func NewNodeDeployment(identityFile string, name string, node *config.Node, conf
 	return &NodeDeployment{identityFile: identityFile, name: name, node: node, config: config, sshLimiter: utils.NewLimiter(CONCURRENT_SSH_CONNECTIONS_LIMIT), parallel: parallel}
 }
 
+func (deployment *NodeDeployment) Steps() (result int) {
+	result = 0
+
+	// Create Directories
+	result += 1
+
+	// Stop service
+	result += 1
+
+	// Upload files
+	result += len(deployment.config.Config.Assets.Files)
+
+	// Start service
+	result += 1
+
+	return
+}
+
 func (deployment *NodeDeployment) md5sum(filename string) (result string, error error) {
 	file, error := os.Open(filename)
 
@@ -57,7 +75,9 @@ func (deployment *NodeDeployment) md5sum(filename string) (result string, error 
 	return
 }
 
-func (deployment *NodeDeployment) CreateDirectories() error {
+func (deployment *NodeDeployment) createDirectories() error {
+	defer utils.IncreaseProgressStep()
+
 	directories := map[string]bool{}
 
 	// Collect remote directories based on the files that have to be uploaded
@@ -157,7 +177,11 @@ func (deployment *NodeDeployment) getChangedFiles() map[string]string {
 	return files
 }
 
-func (deployment *NodeDeployment) UploadFiles(forceUpload bool) error {
+func (deployment *NodeDeployment) UploadFiles(forceUpload bool) (_error error) {
+	if _error = deployment.createDirectories(); _error != nil {
+		return
+	}
+
 	var files map[string]string
 
 	if forceUpload {
@@ -166,21 +190,34 @@ func (deployment *NodeDeployment) UploadFiles(forceUpload bool) error {
 		files = deployment.getChangedFiles()
 	}
 
-	if len(files) == 0 {
-		return nil
+	if len(files) > 0 {
+		// Stop service
+		_, _ = deployment.Execute("stop-service", fmt.Sprintf("systemctl stop %s", utils.SERVICE_NAME))
 	}
 
-	// Stop service
-	_, _ = deployment.Execute("stop-service", fmt.Sprintf("systemctl stop %s", utils.SERVICE_NAME))
+	utils.IncreaseProgressStep()
 
 	tasks := utils.Tasks{}
 
-	// Copy changed files
-	for fromFile, toFile := range files {
-		fromFile := fromFile
-		toFile := toFile
+	for name, file := range deployment.config.Config.Assets.Files {
+		fromFile := deployment.config.GetFullLocalAssetFilename(name)
+		toFile := deployment.config.GetFullTargetAssetFilename(name)
+
+		if !config.CompareLabels(deployment.node.Labels, file.Labels) {
+			utils.IncreaseProgressStep()
+
+			continue
+		}
+
+		if _, ok := files[fromFile]; !ok {
+			utils.IncreaseProgressStep()
+
+			continue
+		}
 
 		tasks = append(tasks, func() error {
+			defer utils.IncreaseProgressStep()
+
 			return deployment.UploadFile(fromFile, toFile)
 		})
 	}
@@ -190,10 +227,14 @@ func (deployment *NodeDeployment) UploadFiles(forceUpload bool) error {
 		return errors[0]
 	}
 
-	// Registrate and start service
-	_, error := deployment.Execute("start-service", fmt.Sprintf("systemctl daemon-reload && systemctl enable %s && systemctl start %s", utils.SERVICE_NAME, utils.SERVICE_NAME))
+	if len(files) > 0 {
+		// Registrate and start service
+		_, _error = deployment.Execute("start-service", fmt.Sprintf("systemctl daemon-reload && systemctl enable %s && systemctl start %s", utils.SERVICE_NAME, utils.SERVICE_NAME))
+	}
 
-	return error
+	utils.IncreaseProgressStep()
+
+	return
 }
 
 func (deployment *NodeDeployment) getSession() (*ssh.Session, error) {
@@ -270,7 +311,11 @@ func (deployment *NodeDeployment) UploadFile(from, to string) error {
 
 	defer session.Close()
 
-	return scp.CopyPath(from, to, session)
+	if error := scp.CopyPath(from, to, session); error != nil {
+		return fmt.Errorf("Could not deploy file '%s' (%s)", from, error.Error())
+	}
+
+	return nil
 }
 
 func (deployment *NodeDeployment) configureTaint() error {

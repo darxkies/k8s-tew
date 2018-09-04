@@ -73,17 +73,17 @@ func NewDeployment(_config *config.InternalConfig, identityFile string, skipSetu
 func (deployment *Deployment) Steps() int {
 	result := 0
 
-	// Create Directories
-	result += len(deployment.config.Config.Nodes)
+	for _, node := range deployment.nodes {
+		result += node.Steps()
+	}
 
-	// Upload Files
-	result += len(deployment.config.Config.Nodes)
+	if !deployment.skipSetup {
+		// Run Commands
+		result += len(deployment.config.Config.Nodes) * len(deployment.config.Config.Commands)
 
-	// Run Commands
-	result += len(deployment.config.Config.Nodes) * len(deployment.config.Config.Commands)
-
-	// Taint commands
-	result += len(deployment.config.Config.Nodes)
+		// Taint commands
+		result += len(deployment.config.Config.Nodes)
+	}
 
 	return result
 }
@@ -97,17 +97,9 @@ func (deployment *Deployment) Deploy() error {
 
 		deployment.config.SetNode(nodeName, nodeDeployment.node)
 
-		if error := nodeDeployment.CreateDirectories(); error != nil {
-			return error
-		}
-
-		utils.IncreaseProgressStep()
-
 		if error := nodeDeployment.UploadFiles(deployment.forceUpload); error != nil {
 			return error
 		}
-
-		utils.IncreaseProgressStep()
 	}
 
 	return deployment.setup()

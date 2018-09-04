@@ -765,7 +765,7 @@ func (generator *Generator) generateBashCompletion(binaryName, bashCompletionFil
 
 	command := fmt.Sprintf("%s completion bash > %s", binary, bashCompletionFullFilename)
 
-	log.WithFields(log.Fields{"name": bashCompletionFilename}).Info("Generating")
+	log.WithFields(log.Fields{"name": bashCompletionFilename}).Info("Generated")
 
 	return utils.RunCommand(command)
 }
