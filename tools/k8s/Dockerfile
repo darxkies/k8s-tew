@@ -1,13 +1,19 @@
 FROM ubuntu:18.04 AS source
 
-RUN apt-get update && apt-get install -y socat ipset conntrack ceph-common
+RUN apt-get update && apt-get install -y socat ipset conntrack ceph-common golang
 
-ADD freezer.sh /
+ADD freezer.go /
 
-RUN ./freezer.sh /usr/bin/socat       /assets
-RUN ./freezer.sh /sbin/ipset          /assets
-RUN ./freezer.sh /usr/sbin/conntrack  /assets
-RUN ./freezer.sh /usr/bin/rbd         /assets
+RUN mkdir /assets
+
+RUN CGO_ENABLED=0 go build -o /assets/freezer /freezer.go
+
+RUN /assets/freezer freeze /usr/bin/socat       /assets
+RUN /assets/freezer freeze /sbin/ipset          /assets
+RUN /assets/freezer freeze /usr/sbin/conntrack  /assets
+RUN /assets/freezer freeze /usr/bin/rbd         /assets
+
+RUN mkdir /assets/deployment
 
 FROM scratch
 
