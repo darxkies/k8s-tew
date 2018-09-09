@@ -4,7 +4,7 @@ VERSION=$(git describe --tags)
 
 echo "Packr"
 
-RUN go get -u github.com/gobuffalo/packr/...
+go get -u github.com/gobuffalo/packr/...
 
 echo "Build freezer"
 
