@@ -3,8 +3,11 @@
 <p align="center"><a href="https://github.com/cncf/k8s-conformance/tree/master/v1.10/k8s-tew"><img src="conformance/certified-kubernetes-1.10-color.svg" width="120"></a><a href="https://github.com/cncf/k8s-conformance/tree/master/v1.11/k8s-tew"><img src="conformance/certified-kubernetes-1.11-color.svg" width="120"></a></p>
 
 <p align="center">
+
 [![Build Status](https://travis-ci.org/darxkies/k8s-tew.svg?branch=master)](https://travis-ci.org/darxkies/k8s-tew)
+
 [![Go Report Card](https://goreportcard.com/badge/github.com/darxkies/k8s-tew)](https://goreportcard.com/report/github.com/darxkies/k8s-tew)
+
 </p>
 
 # Kubernetes - The Easier Way (k8s-tew)
