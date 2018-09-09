@@ -11,8 +11,8 @@ go:
 install: true
 
 script:
-  - docker build -t $(BUILD_IMAGE) build
-  - docker run --rm -v $(GOPATH):/go $(BUILD_IMAGE)
+  - docker build -t darxkies/k8s-tew-build build
+  - docker run --rm -v $(GOPATH):/go darxkies/k8s-tew-build
 
 deploy:
   provider: releases
