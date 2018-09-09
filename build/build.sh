@@ -2,10 +2,12 @@
 
 VERSION=$(git describe --tags)
 
+echo "Version: $VERSION"
+
 echo "Build packr"
 
 if [ ! -f $GOBIN/packr ]; then
-	go get -u github.com/gobuffalo/packr/...
+  go get -u github.com/gobuffalo/packr/...
 fi
 
 echo "Build freezer"
@@ -37,4 +39,4 @@ packr
 
 echo "Build k8s-tew"
 
-CGO_ENABLED=0 go install -ldflags '-X github.com/darxkies/k8s-tew/version.Version=$VERSION -s -w' github.com/darxkies/k8s-tew/cmd/k8s-tew
+CGO_ENABLED=0 go install -ldflags "-X github.com/darxkies/k8s-tew/version.Version=$VERSION -s -w" github.com/darxkies/k8s-tew/cmd/k8s-tew
