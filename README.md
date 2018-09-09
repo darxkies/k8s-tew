@@ -6,8 +6,10 @@
 
 [![Build Status](https://travis-ci.org/darxkies/k8s-tew.svg?branch=master)](https://travis-ci.org/darxkies/k8s-tew)
 [![Go Report Card](https://goreportcard.com/badge/github.com/darxkies/k8s-tew)](https://goreportcard.com/report/github.com/darxkies/k8s-tew)
+![GitHub](https://img.shields.io/github/license/darxkies/k8s-tew.svg)
 
-k8s-tew is a CLI tool to install a [Kubernetes](https://kubernetes.io/) Cluster (local, single-node, multi-node or HA-cluster) on Bare Metal. It installs the most essential components needed by a cluster such as  networking, storage, monitoring, logging, backuping/restoring and so on. Besides that, k8s-tew is also a also a supervisor that starts all cluster components on each node.
+
+k8s-tew is a CLI tool to install a [Kubernetes](https://kubernetes.io/) Cluster (local, single-node, multi-node or HA-cluster) on Bare Metal. It installs the most essential components needed by a cluster such as networking, storage, monitoring, logging, backuping/restoring and so on. Besides that, k8s-tew is also a supervisor that starts all cluster components on each node, once it setup the nodes.
 
 ## Why
 
@@ -67,52 +69,24 @@ sudo chmod a+x /usr/local/bin/k8s-tew
 
 ## From source
 
-To compile it from source you will need a Go (version 1.10+) environment and Git installed. Once Go is configured, enter the following commands:
+To compile it from source you will need a Go (version 1.10+) environment, Git, Make and Docker installed. Once everything is installed, enter the following commands:
 
 ```shell
 export GOPATH=~/go
 export PATH=$GOPATH/bin:$PATH
-mkdir -p $GOPATH
-go get github.com/darxkies/k8s-tew
-cd ~/go/src/github.com/darxkies/k8s-tew
-make setup compile
-sudo mv ~/go/bin/k8s-tew /usr/local/bin
+mkdir -p $GOPATH/src/github.com/darxkies
+cd $GOPATH/src/github.com/darxkies
+git clone https://github.com/darxkies/k8s-tew.git
+cd k8s-tew
+make
+sudo mv $GOPATH/bin/k8s-tew /usr/local/bin
 ```
 
 # Requirements
 
 k8s-tew was tested so far on Ubuntu 18.04 and CentOS 7.5. But it should be able to run on other Linux distributions.
 
-On each Ubuntu 18.04 node the following commands have to be executed:
-
-```shell
-apt-get update
-apt-get install -y apt-transport-https socat conntrack ipset ceph-common bash-completion
-```
-
-And for Centos 7.5:
-
-```shell
-setenforce 0
-sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
-
-sudo systemctl disable firewalld
-sudo systemctl stop firewalld
-
-yum install -y yum-utils && sudo yum-config-manager --add-repo https://dl.fedoraproject.org/pub/epel/7/x86_64/ && sudo yum install --nogpgcheck -y epel-release && sudo rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7 && sudo rm /etc/yum.repos.d/dl.fedoraproject.org*
-
-cat <<EOF > /etc/yum.repos.d/ceph.repo
-[ceph]
-name=Ceph packages for $basearch
-baseurl=https://download.ceph.com/rpm-luminous/el7/x86_64/
-enabled=1
-priority=2
-gpgcheck=1
-gpgkey=https://download.ceph.com/keys/release.asc
-EOF
-
-yum install socat conntrack ipset ceph-common bash-completion -y
-```
+Host related dependencies such as socat, conntrack, ipset and rbd are embedded in k8s-tew and put in place, once the cluster is running. Thus it is fairly portable to other Linux distributions.
 
 # Usage
 
@@ -433,7 +407,8 @@ k8s-tew enables logging for all components by default. The log files are stored 
 
 # Caveats
 
-* The local setup leaves the containers running when stopped and for ingress the ports 80, 443 need to be free on the host. It also turns swapping off which is a requirement for kubelet.
+* The local setup uses for ingress the ports 80, 443 so they need to be free on the host. It also turns swapping off which is a requirement for kubelet.
+* On CentOS nodes the firewall and SELinux are disabled to not interfere with Kubernetes.
 
 # Feedback
 
