@@ -453,6 +453,1069 @@ make forward-443
 
 __NOTE__: Both commands are blocking. So you need two different terminal sessions.
 
+### Example
+
+This is what the configuration looks like when using ubuntu-single-node:
+
+<details>
+  <summary>{base-directory}/etc/k8s-tew/config.yaml</summary>
+
+```yaml
+version: 2.1.0
+cluster-id: 33a54ca2-7d4a-47f9-95ad-f40a07f70465
+cluster-name: k8s-tew
+email: k8s-tew@gmail.com
+ingress-domain: k8s-tew.net
+load-balancer-port: 16443
+vip-raft-controller-port: 16277
+vip-raft-worker-port: 16728
+dashboard-port: 32443
+apiserver-port: 6443
+public-network: 192.168.110.0/24
+cluster-domain: cluster.local
+cluster-ip-range: 10.32.0.0/24
+cluster-dns-ip: 10.32.0.10
+cluster-cidr: 10.200.0.0/16
+calico-typha-ip: 10.32.0.5
+resolv-conf: /run/systemd/resolve/resolv.conf
+deployment-directory: /
+rsa-size: 2048
+ca-validity-period: 20
+client-validity-period: 15
+versions:
+  etcd: 3.3.9
+  kubernetes: 1.11.2
+  helm: 2.9.1
+  containerd: 1.1.3
+  runc: 1.0.0-rc5
+  crictl: 1.11.1
+  gobetween: 0.6.0
+  ark: gcr.io/heptio-images/ark:v0.9.4
+  minio-server: docker.io/minio/minio:RELEASE.2018-08-18T03-49-57Z
+  minio-client: docker.io/minio/mc:RELEASE.2018-08-18T02-13-04Z
+  pause: k8s.gcr.io/pause:3.1
+  core-dns: docker.io/coredns/coredns:1.2.0
+  elasticsearch: docker.io/upmcenterprises/docker-elasticsearch-kubernetes:6.1.3_0
+  elasticsearch-cron: docker.io/upmcenterprises/elasticsearch-cron:0.0.3
+  elasticsearch-operator: docker.io/upmcenterprises/elasticsearch-operator:0.0.12
+  kibana: docker.elastic.co/kibana/kibana-oss:6.1.3
+  cerebro: docker.io/upmcenterprises/cerebro:0.6.8
+  fluent-bit: docker.io/fluent/fluent-bit:0.13.0
+  calico-typha: quay.io/calico/typha:v0.7.4
+  calico-node: quay.io/calico/node:v3.1.3
+  calico-cni: quay.io/calico/cni:v3.1.3
+  rbd-provisioner: quay.io/external_storage/rbd-provisioner:v2.1.1-k8s1.11
+  ceph: docker.io/ceph/daemon:v3.0.7-stable-3.0-mimic-centos-7-x86_64
+  heapster: k8s.gcr.io/heapster:v1.3.0
+  addon-resizer: k8s.gcr.io/addon-resizer:1.7
+  kubernetes-dashboard: k8s.gcr.io/kubernetes-dashboard-amd64:v1.8.3
+  cert-manager-controller: quay.io/jetstack/cert-manager-controller:v0.4.1
+  nginx-ingress-controller: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.18.0
+  nginx-ingress-default-backend: k8s.gcr.io/defaultbackend:1.4
+  metrics-server: gcr.io/google_containers/metrics-server-amd64:v0.2.1
+  prometheus-operator: quay.io/coreos/prometheus-operator:v0.20.0
+  prometheus-config-reloader: quay.io/coreos/prometheus-config-reloader:v0.20.0
+  configmap-reload: quay.io/coreos/configmap-reload:v0.0.1
+  kube-state-metrics: gcr.io/google_containers/kube-state-metrics:v1.2.0
+  grafana: docker.io/grafana/grafana:5.0.0
+  grafana-watcher: quay.io/coreos/grafana-watcher:v0.0.8
+  prometheus: quay.io/prometheus/prometheus:v2.2.1
+  prometheus-node-exporter: quay.io/prometheus/node-exporter:v0.15.2
+  prometheus-alert-manager: quay.io/prometheus/alertmanager:v0.15.1
+assets:
+  directories:
+    absolute-containerd-state:
+      directory: run/containerd
+      absolute: true
+    ark:
+      directory: opt/k8s-tew/bin/ark
+    bash-completion:
+      directory: etc/bash_completion.d
+    binaries:
+      directory: opt/k8s-tew/bin
+    bootstrap-mds:
+      labels:
+      - worker
+      directory: var/lib/k8s-tew/ceph/bootstrap-mds
+    bootstrap-osd:
+      labels:
+      - worker
+      directory: var/lib/k8s-tew/ceph/bootstrap-osd
+    bootstrap-rbd:
+      labels:
+      - worker
+      directory: var/lib/k8s-tew/ceph/bootstrap-rbd
+    bootstrap-rgw:
+      labels:
+      - worker
+      directory: var/lib/k8s-tew/ceph/bootstrap-rgw
+    ceph-config:
+      labels:
+      - worker
+      directory: etc/k8s-tew/ceph
+    ceph-data:
+      labels:
+      - worker
+      directory: var/lib/k8s-tew/ceph
+    certificates:
+      directory: etc/k8s-tew/ssl
+    cni-binaries:
+      labels:
+      - controller
+      - worker
+      directory: opt/k8s-tew/bin/cni
+    cni-config:
+      labels:
+      - controller
+      - worker
+      directory: etc/k8s-tew/cni
+    config:
+      directory: etc/k8s-tew
+    containerd-data:
+      directory: var/lib/k8s-tew/containerd
+    containerd-state:
+      directory: var/run/k8s-tew/containerd
+    cri-binaries:
+      directory: opt/k8s-tew/bin/cri
+    cri-config:
+      directory: etc/k8s-tew/cri
+    dynamic-data:
+      directory: var/lib/k8s-tew
+    etcd-binaries:
+      directory: opt/k8s-tew/bin/etcd
+    etcd-data:
+      directory: var/lib/k8s-tew/etcd
+    gobetween-binaries:
+      directory: opt/k8s-tew/bin/lb
+    gobetween-config:
+      directory: etc/k8s-tew/lb
+    helm-data:
+      directory: var/lib/k8s-tew/helm
+    host-binaries:
+      labels:
+      - controller
+      - worker
+      directory: opt/k8s-tew/bin/host
+    k8s-binaries:
+      directory: opt/k8s-tew/bin/k8s
+    k8s-config:
+      directory: etc/k8s-tew/k8s
+    kube-config:
+      directory: etc/k8s-tew/k8s/kubeconfig
+    kubelet-data:
+      directory: var/lib/k8s-tew/kubelet
+    kubelet-manifests:
+      labels:
+      - worker
+      directory: etc/k8s-tew/k8s/manifests
+    logging:
+      directory: var/log/k8s-tew
+    pods-data:
+      directory: var/lib/k8s-tew/kubelet/pods
+    profile:
+      directory: etc/profile.d
+    security-config:
+      directory: etc/k8s-tew/k8s/security
+    service:
+      directory: etc/systemd/system
+    setup-config:
+      directory: etc/k8s-tew/k8s/setup
+    temporary:
+      directory: tmp
+  files:
+    admin-key.pem:
+      directory: certificates
+    admin-user-setup.yaml:
+      directory: setup-config
+    admin.kubeconfig:
+      directory: kube-config
+    admin.pem:
+      directory: certificates
+    aggregator-key.pem:
+      labels:
+      - controller
+      directory: certificates
+    aggregator.pem:
+      labels:
+      - controller
+      directory: certificates
+    ark:
+      directory: ark
+    ark-restic-restore-helper:
+      directory: ark
+    ark-setup.yaml:
+      directory: setup-config
+    ark.bash-completion:
+      directory: bash-completion
+    ca-key.pem:
+      labels:
+      - controller
+      directory: certificates
+    ca.pem:
+      labels:
+      - controller
+      - worker
+      directory: certificates
+    calico-setup.yaml:
+      directory: setup-config
+    ceph-secrets.yaml:
+      directory: setup-config
+    ceph-setup.yaml:
+      directory: setup-config
+    ceph.bootstrap.mds.keyring:
+      labels:
+      - controller
+      - worker
+      filename: ceph.keyring
+      directory: bootstrap-mds
+    ceph.bootstrap.osd.keyring:
+      labels:
+      - controller
+      - worker
+      filename: ceph.keyring
+      directory: bootstrap-osd
+    ceph.bootstrap.rbd.keyring:
+      labels:
+      - controller
+      - worker
+      filename: ceph.keyring
+      directory: bootstrap-rbd
+    ceph.bootstrap.rgw.keyring:
+      labels:
+      - controller
+      - worker
+      filename: ceph.keyring
+      directory: bootstrap-rgw
+    ceph.client.admin.keyring:
+      labels:
+      - controller
+      - worker
+      directory: ceph-config
+    ceph.conf:
+      labels:
+      - controller
+      - worker
+      directory: ceph-config
+    ceph.mon.keyring:
+      labels:
+      - controller
+      - worker
+      directory: ceph-config
+    cert-manager-setup.yaml:
+      directory: setup-config
+    config-{{.Name}}.toml:
+      labels:
+      - controller
+      - worker
+      directory: cri-config
+    config.toml:
+      labels:
+      - controller
+      directory: gobetween-config
+    config.yaml:
+      labels:
+      - controller
+      - worker
+      directory: config
+    containerd:
+      labels:
+      - controller
+      - worker
+      directory: cri-binaries
+    containerd-shim:
+      labels:
+      - controller
+      - worker
+      directory: cri-binaries
+    containerd.sock:
+      directory: absolute-containerd-state
+    controller-manager-key.pem:
+      directory: certificates
+    controller-manager.kubeconfig:
+      labels:
+      - controller
+      directory: kube-config
+    controller-manager.pem:
+      directory: certificates
+    coredns-setup.yaml:
+      directory: setup-config
+    crictl:
+      labels:
+      - controller
+      - worker
+      directory: cri-binaries
+    crictl.bash-completion:
+      labels:
+      - controller
+      directory: bash-completion
+    ctr:
+      labels:
+      - controller
+      - worker
+      directory: cri-binaries
+    efk-setup.yaml:
+      directory: setup-config
+    elasticsearch-operator-setup.yaml:
+      directory: setup-config
+    encryption-config.yaml:
+      labels:
+      - controller
+      directory: security-config
+    etcd:
+      labels:
+      - controller
+      directory: etcd-binaries
+    etcdctl:
+      labels:
+      - controller
+      directory: etcd-binaries
+    gobetween:
+      labels:
+      - controller
+      directory: gobetween-binaries
+    heapster-setup.yaml:
+      directory: setup-config
+    helm:
+      directory: k8s-binaries
+    helm-user-setup.yaml:
+      directory: setup-config
+    helm.bash-completion:
+      directory: bash-completion
+    k8s-tew:
+      labels:
+      - controller
+      - worker
+      directory: binaries
+    k8s-tew.bash-completion:
+      labels:
+      - controller
+      - worker
+      directory: bash-completion
+    k8s-tew.service:
+      labels:
+      - controller
+      - worker
+      directory: service
+    k8s-tew.sh:
+      labels:
+      - controller
+      - worker
+      directory: profile
+    kube-apiserver:
+      labels:
+      - controller
+      directory: k8s-binaries
+    kube-controller-manager:
+      labels:
+      - controller
+      directory: k8s-binaries
+    kube-prometheus-datasource-setup.yaml:
+      directory: setup-config
+    kube-prometheus-deployment-dashboard-setup.yaml:
+      directory: setup-config
+    kube-prometheus-kubernetes-capacity-planning-dashboard-setup.yaml:
+      directory: setup-config
+    kube-prometheus-kubernetes-cluster-health-dashboard-setup.yaml:
+      directory: setup-config
+    kube-prometheus-kubernetes-cluster-status-dashboard-setup.yaml:
+      directory: setup-config
+    kube-prometheus-kubernetes-control-plane-status-dashboard-setup.yaml:
+      directory: setup-config
+    kube-prometheus-kubernetes-resource-requests-dashboard-setup.yaml:
+      directory: setup-config
+    kube-prometheus-nodes-dashboard-setup.yaml:
+      directory: setup-config
+    kube-prometheus-pods-dashboard-setup.yaml:
+      directory: setup-config
+    kube-prometheus-setup.yaml:
+      directory: setup-config
+    kube-prometheus-statefulset-dashboard-setup.yaml:
+      directory: setup-config
+    kube-proxy:
+      labels:
+      - controller
+      - worker
+      directory: k8s-binaries
+    kube-scheduler:
+      labels:
+      - controller
+      directory: k8s-binaries
+    kube-scheduler-config.yaml:
+      labels:
+      - controller
+      directory: k8s-config
+    kubectl:
+      labels:
+      - controller
+      directory: k8s-binaries
+    kubectl.bash-completion:
+      labels:
+      - controller
+      directory: bash-completion
+    kubelet:
+      labels:
+      - controller
+      - worker
+      directory: k8s-binaries
+    kubelet-{{.Name}}-config.yaml:
+      labels:
+      - controller
+      - worker
+      directory: k8s-config
+    kubelet-{{.Name}}-key.pem:
+      labels:
+      - controller
+      - worker
+      directory: certificates
+    kubelet-{{.Name}}.kubeconfig:
+      labels:
+      - controller
+      - worker
+      directory: kube-config
+    kubelet-{{.Name}}.pem:
+      labels:
+      - controller
+      - worker
+      directory: certificates
+    kubelet-setup.yaml:
+      directory: setup-config
+    kubernetes-dashboard-setup.yaml:
+      directory: setup-config
+    kubernetes-key.pem:
+      labels:
+      - controller
+      directory: certificates
+    kubernetes.pem:
+      labels:
+      - controller
+      directory: certificates
+    letsencrypt-cluster-issuer.yaml:
+      directory: setup-config
+    metrics-server-setup.yaml:
+      directory: setup-config
+    nginx-ingress-setup.yaml:
+      directory: setup-config
+    prometheus-operator-setup.yaml:
+      directory: setup-config
+    proxy-key.pem:
+      directory: certificates
+    proxy.kubeconfig:
+      labels:
+      - controller
+      - worker
+      directory: kube-config
+    proxy.pem:
+      directory: certificates
+    runc:
+      labels:
+      - controller
+      - worker
+      directory: cri-binaries
+    scheduler-key.pem:
+      directory: certificates
+    scheduler.kubeconfig:
+      labels:
+      - controller
+      directory: kube-config
+    scheduler.pem:
+      directory: certificates
+    service-account-key.pem:
+      labels:
+      - controller
+      directory: certificates
+    service-account.pem:
+      labels:
+      - controller
+      directory: certificates
+    wordpress-setup.yaml:
+      directory: setup-config
+nodes:
+  single-node:
+    ip: 192.168.110.50
+    index: 0
+    labels:
+    - controller
+    - worker
+commands:
+- name: setup-ubuntu
+  command: apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y apt-transport-https
+    bash-completion
+  labels:
+  - controller
+  - worker
+  os:
+  - ubuntu
+- name: setup-centos
+  command: systemctl disable firewalld && systemctl stop firewalld && setenforce 0
+    && sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
+  labels:
+  - controller
+  - worker
+  os:
+  - centos{base-directory}
+- name: setup-centos-disable-selinux
+  command: setenforce 0
+  labels:
+  - controller
+  - worker
+  os:
+  - centos
+- name: swapoff
+  command: swapoff -a
+  labels:
+  - controller
+  - worker
+- name: load-overlay
+  command: modprobe overlay
+  labels:
+  - controller
+  - worker
+- name: load-btrfs
+  command: modprobe btrfs
+  labels:
+  - controller
+  - worker
+- name: load-br_netfilter
+  command: modprobe br_netfilter
+  labels:
+  - controller
+  - worker
+- name: enable-br_netfilter
+  command: echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
+  labels:
+  - controller
+  - worker
+- name: enable-net-forwarding
+  command: sysctl net.ipv4.conf.all.forwarding=1
+  labels:
+  - controller
+  - worker
+- name: kubelet-setup
+  command: /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/opt/k8s-tew/bin/k8s/kubectl
+    --request-timeout 30s --kubeconfig /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/kubeconfig/admin.kubeconfig
+    apply -f /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/setup/kubelet-setup.yaml
+  labels:
+  - bootstrapper
+- name: admin-user-setup
+  command: /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/opt/k8s-tew/bin/k8s/kubectl
+    --request-timeout 30s --kubeconfig /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/kubeconfig/admin.kubeconfig
+    apply -f /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/setup/admin-user-setup.yaml
+  labels:
+  - bootstrapper
+- name: calico-setup
+  command: /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/opt/k8s-tew/bin/k8s/kubectl
+    --request-timeout 30s --kubeconfig /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/kubeconfig/admin.kubeconfig
+    apply -f /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/setup/calico-setup.yaml
+  labels:
+  - bootstrapper
+- name: coredns-setup
+  command: /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/opt/k8s-tew/bin/k8s/kubectl
+    --request-timeout 30s --kubeconfig /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/kubeconfig/admin.kubeconfig
+    apply -f /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/setup/coredns-setup.yaml
+  labels:
+  - bootstrapper
+- name: helm-user-setup
+  command: /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/opt/k8s-tew/bin/k8s/kubectl
+    --request-timeout 30s --kubeconfig /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/kubeconfig/admin.kubeconfig
+    apply -f /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/setup/helm-user-setup.yaml
+  labels:
+  - bootstrapper
+- name: ceph-secrets
+  command: /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/opt/k8s-tew/bin/k8s/kubectl
+    --request-timeout 30s --kubeconfig /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/kubeconfig/admin.kubeconfig
+    apply -f /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/setup/ceph-secrets.yaml
+  labels:
+  - bootstrapper
+- name: ceph-setup
+  command: /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/opt/k8s-tew/bin/k8s/kubectl
+    --request-timeout 30s --kubeconfig /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/kubeconfig/admin.kubeconfig
+    apply -f /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/setup/ceph-setup.yaml
+  labels:
+  - bootstrapper
+- name: helm-init
+  command: KUBECONFIG=/workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/kubeconfig/admin.kubeconfig
+    HELM_HOME=/workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/var/lib/k8s-tew/helm
+    /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/opt/k8s-tew/bin/k8s/helm
+    init --service-account tiller --upgrade
+  labels:
+  - bootstrapper
+- name: kubernetes-dashboard-setup
+  command: /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/opt/k8s-tew/bin/k8s/kubectl
+    --request-timeout 30s --kubeconfig /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/kubeconfig/admin.kubeconfig
+    apply -f /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/setup/kubernetes-dashboard-setup.yaml
+  labels:
+  - bootstrapper
+- name: cert-manager-setup
+  command: /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/opt/k8s-tew/bin/k8s/kubectl
+    --request-timeout 30s --kubeconfig /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/kubeconfig/admin.kubeconfig
+    apply -f /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/setup/cert-manager-setup.yaml
+  labels:
+  - bootstrapper
+- name: nginx-ingress-setup
+  command: /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/opt/k8s-tew/bin/k8s/kubectl
+    --request-timeout 30s --kubeconfig /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/kubeconfig/admin.kubeconfig
+    apply -f{base-directory} /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/setup/nginx-ingress-setup.yaml
+  labels:
+  - bootstrapper
+- name: letsencrypt-cluster-issuer-setup
+  command: /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/opt/k8s-tew/bin/k8s/kubectl
+    --request-timeout 30s --kubeconfig /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/kubeconfig/admin.kubeconfig
+    apply -f /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/setup/letsencrypt-cluster-issuer.yaml
+  labels:
+  - bootstrapper
+- name: heapster-setup
+  command: /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/opt/k8s-tew/bin/k8s/kubectl
+    --request-timeout 30s --kubeconfig /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/kubeconfig/admin.kubeconfig
+    apply -f /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/setup/heapster-setup.yaml
+  labels:
+  - bootstrapper
+- name: metrics-server-setup
+  command: /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/opt/k8s-tew/bin/k8s/kubectl
+    --request-timeout 30s --kubeconfig /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/kubeconfig/admin.kubeconfig
+    apply -f /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/setup/metrics-server-setup.yaml
+  labels:
+  - bootstrapper
+- name: prometheus-operator-setup
+  command: /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/opt/k8s-tew/bin/k8s/kubectl
+    --request-timeout 30s --kubeconfig /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/kubeconfig/admin.kubeconfig
+    apply -f /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/setup/prometheus-operator-setup.yaml
+  labels:
+  - bootstrapper
+- name: kube-prometheus-datasource-setup
+  command: /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/opt/k8s-tew/bin/k8s/kubectl
+    --request-timeout 30s --kubeconfig /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/kubeconfig/admin.kubeconfig
+    apply -f /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/setup/kube-prometheus-datasource-setup.yaml
+  labels:
+  - bootstrapper
+- name: kube-prometheus-kuberntes-cluster-status-dashboard-setup
+  command: /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/opt/k8s-tew/bin/k8s/kubectl
+    --request-timeout 30s --kubeconfig /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/kubeconfig/admin.kubeconfig
+    apply -f /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/setup/kube-prometheus-kubernetes-cluster-status-dashboard-setup.yaml
+  labels:
+  - bootstrapper
+- name: kube-prometheus-kuberntes-cluster-health-dashboard-setup
+  command: /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/opt/k8s-tew/bin/k8s/kubectl
+    --request-timeout 30s --kubeconfig /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/kubeconfig/admin.kubeconfig
+    apply -f /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/setup/kube-prometheus-kubernetes-cluster-health-dashboard-setup.yaml
+  labels:
+  - bootstrapper
+- name: kube-prometheus-kuberntes-control-plane-status-dashboard-setup
+  command: /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/opt/k8s-tew/bin/k8s/kubectl
+    --request-timeout 30s --kubeconfig /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/kubeconfig/admin.kubeconfig
+    apply -f /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/setup/kube-prometheus-kubernetes-control-plane-status-dashboard-setup.yaml
+  labels:
+  - bootstrapper
+- name: kube-prometheus-kuberntes-capacity-planning-dashboard-setup
+  command: /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/opt/k8s-tew/bin/k8s/kubectl
+    --request-timeout 30s --kubeconfig /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/kubeconfig/admin.kubeconfig
+    apply -f /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/setup/kube-prometheus-kubernetes-capacity-planning-dashboard-setup.yaml
+  labels:
+  - bootstrapper
+- name: kube-prometheus-kuberntes-resource-requests-dashboard-setup
+  command: /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/opt/k8s-tew/bin/k8s/kubectl
+    --request-timeout 30s --kubeconfig /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/kubeconfig/admin.kubeconfig
+    apply -f /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/setup/kube-prometheus-kubernetes-resource-requests-dashboard-setup.yaml
+  labels:
+  - bootstrapper
+- name: kube-prometheus-nodes-dashboard-setup
+  command: /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/opt/k8s-tew/bin/k8s/kubectl
+    --request-timeout 30s --kubeconfig /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/kubeconfig/admin.kubeconfig
+    apply -f /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/setup/kube-prometheus-nodes-dashboard-setup.yaml
+  labels:
+  - bootstrapper
+- name: kube-prometheus-deployment-dashboard-setup
+  command: /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/opt/k8s-tew/bin/k8s/kubectl
+    --request-timeout 30s --kubeconfig /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/kubeconfig/admin.kubeconfig
+    apply -f /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/setup/kube-prometheus-deployment-dashboard-setup.yaml
+  labels:
+  - bootstrapper
+- name: kube-prometheus-statefulset-dashboard-setup
+  command: /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/opt/k8s-tew/bin/k8s/kubectl
+    --request-timeout 30s --kubeconfig /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/kubeconfig/admin.kubeconfig
+    apply -f /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/setup/kube-prometheus-statefulset-dashboard-setup.yaml
+  labels:
+  - bootstrapper
+- name: kube-prometheus-pods-dashboard-setup
+  command: /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/opt/k8s-tew/bin/k8s/kubectl
+    --request-timeout 30s --kubeconfig /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/kubeconfig/admin.kubeconfig
+    apply -f /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/setup/kube-prometheus-pods-dashboard-setup.yaml
+  labels:
+  - bootstrapper
+- name: kube-prometheus-setup
+  command: /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/opt/k8s-tew/bin/k8s/kubectl
+    --request-timeout 30s --kubeconfig /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/kubeconfig/admin.kubeconfig
+    apply -f /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/setup/kube-prometheus-setup.yaml
+  labels:
+  - bootstrapper
+- name: elasticsearch-operator-setup
+  command: /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/opt/k8s-tew/bin/k8s/kubectl
+    --request-timeout 30s --kubeconfig /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/kubeconfig/admin.kubeconfig
+    apply -f /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/setup/elasticsearch-operator-setup.yaml
+  labels:
+  - bootstrapper
+- name: efk-setup
+  command: /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/opt/k8s-tew/bin/k8s/kubectl
+    --request-timeout 30s --kubeconfig /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/kubeconfig/admin.kubeconfig
+    apply -f /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/setup/efk-setup.yaml
+  labels:
+  - bootstrapper
+- name: patch-kibana-service
+  command: /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/opt/k8s-tew/bin/k8s/kubectl
+    --request-timeout 30s --kubeconfig /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/kubeconfig/admin.kubeconfig
+    get svc kibana-elasticsearch-cluster -n logging --output=jsonpath={.spec..nodePort}
+    | grep 30980 || /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/opt/k8s-tew/bin/k8s/kubectl
+    --request-timeout 30s --kubeconfig /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/kubeconfig/admin.kubeconfig
+    patch service kibana-elasticsearch-cluster -n logging -p '{"spec":{"type":"NodePort","ports":[{"port":80,"nodePort":30980}]}}'
+  labels:
+  - bootstrapper
+- name: patch-cerebro-service
+  command: /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/opt/k8s-tew/bin/k8s/kubectl
+    --request-timeout 30s --kubeconfig /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/kubeconfig/admin.kubeconfig
+    get svc cerebro-elasticsearch-cluster -n logging --output=jsonpath={.spec..nodePort}
+    | grep 30990 || /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/opt/k8s-tew/bin/k8s/kubectl
+    --request-timeout 30s --kubeconfig /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/kubeconfig/admin.kubeconfig
+    patch service cerebro-elasticsearch-cluster -n logging -p '{"spec":{"type":"NodePort","ports":[{"port":80,"nodePort":30990}]}}'
+  labels:
+  - bootstrapper
+- name: ark-setup
+  command: /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/opt/k8s-tew/bin/k8s/kubectl
+    --request-timeout 30s --kubeconfig /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/kubeconfig/admin.kubeconfig
+    apply -f /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/setup/ark-setup.yaml
+  labels:
+  - bootstrapper
+- name: wordpress-setup
+  command: /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/opt/k8s-tew/bin/k8s/kubectl
+    --request-timeout 30s --kubeconfig /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/kubeconfig/admin.kubeconfig
+    apply -f /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/etc/k8s-tew/k8s/setup/wordpress-setup.yaml
+  labels:
+  - bootstrapper
+servers:
+- name: etcd
+  enabled: true
+  labels:
+  - controller
+  logger:
+    enabled: true
+    filename: '{{asset_directory "logging"}}/etcd.log'
+  command: '{{asset_file "etcd"}}'
+  arguments:
+    advertise-client-urls: https://{{.Node.IP}}:2379
+    cert-file: '{{asset_file "kubernetes.pem"}}'
+    client-cert-auth: ""
+    data-dir: '{{asset_directory "etcd-data"}}'
+    initial-advertise-peer-urls: https://{{.Node.IP}}:2380
+    initial-cluster: '{{etcd_cluster}}'
+    initial-cluster-state: new
+    initial-cluster-token: etcd-cluster
+    key-file: '{{asset_file "kubernetes-key.pem"}}'
+    listen-client-urls: https://{{.Node.IP}}:2379
+    listen-peer-urls: https://{{.Node.IP}}:2380
+    name: '{{.Name}}'
+    peer-cert-file: '{{asset_file "kubernetes.pem"}}'
+    peer-client-cert-auth: ""
+    peer-key-file: '{{asset_file "kubernetes-key.pem"}}'
+    peer-trusted-ca-file: '{{asset_file "ca.pem"}}'
+    trusted-ca-file: '{{asset_file "ca.pem"}}'
+- name: containerd
+  enabled: true
+  labels:
+  - controller
+  - worker
+  logger:
+    enabled: true
+    filename: '{{asset_directory "logging"}}/containerd.log'
+  command: '{{asset_file "containerd"}}'
+  arguments:
+    config: '{{asset_file "config-{{.Name}}.toml"}}'
+- name: gobetween
+  enabled: true
+  labels:
+  - controller
+  logger:
+    enabled: true
+    filename: '{{asset_directory "logging"}}/gobetween.log'
+  command: '{{asset_file "gobetween"}}'
+  arguments:
+    config: '{{asset_file "config.toml"}}'
+- name: kube-apiserver
+  enabled: true
+  labels:
+  - controller
+  logger:
+    enabled: true
+    filename: '{{asset_directory "logging"}}/kube-apiserver.log'
+  command: '{{asset_file "kube-apiserver"}}'
+  arguments:
+    advertise-address: '{{.Node.IP}}'
+    allow-privileged: "true"
+    apiserver-count: '{{controllers_count}}'
+    audit-log-maxage: "30"
+    audit-log-maxbackup: "3"
+    audit-log-maxsize: "100"
+    audit-log-path: '{{asset_directory "logging"}}/audit.log'
+    authorization-mode: Node,RBAC
+    bind-address: 0.0.0.0
+    client-ca-file: '{{asset_file "ca.pem"}}'
+    enable-admission-plugins: Initializers,NamespaceLifecycle,NodeRestriction,LimitRanger,ServiceAccount,DefaultStorageClass,ResourceQuota
+    enable-aggregator-routing: "true"
+    enable-swagger-ui: "true"
+    etcd-cafile: '{{asset_file "ca.pem"}}'
+    etcd-certfile: '{{asset_file "kubernetes.pem"}}'
+    etcd-keyfile: '{{asset_file "kubernetes-key.pem"}}'
+    etcd-servers: '{{etcd_servers}}'
+    event-ttl: 1h
+    experimental-encryption-provider-config: '{{asset_file "encryption-config.yaml"}}'
+    kubelet-certificate-authority: '{{asset_file "ca.pem"}}'
+    kubelet-client-certificate: '{{asset_file "kubernetes.pem"}}'
+    kubelet-client-key: '{{asset_file "kubernetes-key.pem"}}'
+    kubelet-https: "true"
+    proxy-client-cert-file: '{{asset_file "aggregator.pem"}}'
+    proxy-client-key-file: '{{asset_file "aggregator-key.pem"}}'
+    requestheader-allowed-names: aggregator,admin,system:kube-controller-manager,system:kube-controller-manager,system:kube-scheduler,system:node:single-node
+    requestheader-client-ca-file: '{{asset_file "ca.pem"}}'
+    requestheader-extra-headers-prefix: X-Remote-Extra-
+    requestheader-group-headers: X-Remote-Group
+    requestheader-username-headers: X-Remote-User
+    runtime-config: api/all
+    secure-port: '{{.Config.APIServerPort}}'
+    service-account-key-file: '{{asset_file "service-account.pem"}}'
+    service-cluster-ip-range: '{{.Config.ClusterIPRange}}'
+    service-node-port-range: 30000-32767
+    tls-cert-file: '{{asset_file "kubernetes.pem"}}'
+    tls-private-key-file: '{{asset_file "kubernetes-key.pem"}}'
+    v: "0"
+- name: kube-controller-manager
+  enabled: true
+  labels:
+  - controller
+  logger:
+    enabled: true
+    filename: '{{asset_directory "logging"}}/kube-controller-manager.log'
+  command: '{{asset_file "kube-controller-manager"}}'
+  arguments:
+    address: 0.0.0.0
+    allocate-node-cidrs: "true"
+    cluster-cidr: '{{.Config.ClusterCIDR}}'
+    cluster-name: kubernetes
+    cluster-signing-cert-file: '{{asset_file "ca.pem"}}'
+    cluster-signing-key-file: '{{asset_file "ca-key.pem"}}'
+    kubeconfig: '{{asset_file "controller-manager.kubeconfig"}}'
+    leader-elect: "true"
+    root-ca-file: '{{asset_file "ca.pem"}}'
+    service-account-private-key-file: '{{asset_file "service-account-key.pem"}}'
+    service-cluster-ip-range: '{{.Config.ClusterIPRange}}'
+    use-service-account-credentials: "true"
+    v: "0"
+- name: kube-scheduler
+  enabled: true
+  labels:
+  - controller
+  logger:
+    enabled: true
+    filename: '{{asset_directory "logging"}}/kube-scheduler.log'
+  command: '{{asset_file "kube-scheduler"}}'
+  arguments:
+    config: '{{asset_file "kube-scheduler-config.yaml"}}'
+    v: "0"
+- name: kube-proxy
+  enabled: true
+  labels:
+  - controller
+  - worker
+  logger:
+    enabled: true
+    filename: '{{asset_directory "logging"}}/kube-proxy.log'
+  command: '{{asset_file "kube-proxy"}}'
+  arguments:
+    cluster-cidr: '{{.Config.ClusterCIDR}}'
+    kubeconfig: '{{asset_file "proxy.kubeconfig"}}'
+    proxy-mode: iptables
+    v: "0"
+- name: kubelet
+  enabled: true
+  labels:
+  - controller
+  - worker
+  logger:
+    enabled: true
+    filename: '{{asset_directory "logging"}}/kubelet.log'
+  command: '{{asset_file "kubelet"}}'
+  arguments:
+    config: '{{asset_file "kubelet-{{.Name}}-config.yaml"}}'
+    container-runtime: remote
+    container-runtime-endpoint: unix://{{asset_file "containerd.sock"}}
+    fail-swap-on: "false"
+    image-pull-progress-deadline: 2m
+    kubeconfig: '{{asset_file "kubelet-{{.Name}}.kubeconfig"}}'
+    network-plugin: cni
+    read-only-port: "10255"
+    register-node: "true"
+    resolv-conf: '{{.Config.ResolvConf}}'
+    root-dir: '{{asset_directory "kubelet-data"}}'
+    v: "0"
+```
+</details>
+
+And this is the content of {base-directory}:
+
+<details/>
+  <summary>Files</summary>
+
+```shell
+assets/
+├── etc
+│   ├── bash_completion.d
+│   │   ├── ark.bash-completion
+│   │   ├── crictl.bash-completion
+│   │   ├── helm.bash-completion
+│   │   ├── k8s-tew.bash-completion
+│   │   └── kubectl.bash-completion
+│   ├── k8s-tew
+│   │   ├── ceph
+│   │   │   ├── ceph.client.admin.keyring
+│   │   │   ├── ceph.conf
+│   │   │   └── ceph.mon.keyring
+│   │   ├── cni
+│   │   ├── config.yaml
+│   │   ├── cri
+│   │   │   └── config-single-node.toml
+│   │   ├── k8s
+│   │   │   ├── kubeconfig
+│   │   │   │   ├── admin.kubeconfig
+│   │   │   │   ├── controller-manager.kubeconfig
+│   │   │   │   ├── kubelet-single-node.kubeconfig
+│   │   │   │   ├── proxy.kubeconfig
+│   │   │   │   └── scheduler.kubeconfig
+│   │   │   ├── kubelet-single-node-config.yaml
+│   │   │   ├── kube-scheduler-config.yaml
+│   │   │   ├── manifests
+│   │   │   ├── security
+│   │   │   │   └── encryption-config.yaml
+│   │   │   └── setup
+│   │   │       ├── admin-user-setup.yaml
+│   │   │       ├── ark-setup.yaml
+│   │   │       ├── calico-setup.yaml
+│   │   │       ├── ceph-secrets.yaml
+│   │   │       ├── ceph-setup.yaml
+│   │   │       ├── cert-manager-setup.yaml
+│   │   │       ├── coredns-setup.yaml
+│   │   │       ├── efk-setup.yaml
+│   │   │       ├── elasticsearch-operator-setup.yaml
+│   │   │       ├── heapster-setup.yaml
+│   │   │       ├── helm-user-setup.yaml
+│   │   │       ├── kubelet-setup.yaml
+│   │   │       ├── kube-prometheus-datasource-setup.yaml
+│   │   │       ├── kube-prometheus-deployment-dashboard-setup.yaml
+│   │   │       ├── kube-prometheus-kubernetes-capacity-planning-dashboard-setup.yaml
+│   │   │       ├── kube-prometheus-kubernetes-cluster-health-dashboard-setup.yaml
+│   │   │       ├── kube-prometheus-kubernetes-cluster-status-dashboard-setup.yaml
+│   │   │       ├── kube-prometheus-kubernetes-control-plane-status-dashboard-setup.yaml
+│   │   │       ├── kube-prometheus-kubernetes-resource-requests-dashboard-setup.yaml
+│   │   │       ├── kube-prometheus-nodes-dashboard-setup.yaml
+│   │   │       ├── kube-prometheus-pods-dashboard-setup.yaml
+│   │   │       ├── kube-prometheus-setup.yaml
+│   │   │       ├── kube-prometheus-statefulset-dashboard-setup.yaml
+│   │   │       ├── kubernetes-dashboard-setup.yaml
+│   │   │       ├── letsencrypt-cluster-issuer.yaml
+│   │   │       ├── metrics-server-setup.yaml
+│   │   │       ├── nginx-ingress-setup.yaml
+│   │   │       ├── prometheus-operator-setup.yaml
+│   │   │       └── wordpress-setup.yaml
+│   │   ├── lb
+│   │   │   └── config.toml
+│   │   └── ssl
+│   │       ├── admin-key.pem
+│   │       ├── admin.pem
+│   │       ├── aggregator-key.pem
+│   │       ├── aggregator.pem
+│   │       ├── ca-key.pem
+│   │       ├── ca.pem
+│   │       ├── controller-manager-key.pem
+│   │       ├── controller-manager.pem
+│   │       ├── kubelet-single-node-key.pem
+│   │       ├── kubelet-single-node.pem
+│   │       ├── kubernetes-key.pem
+│   │       ├── kubernetes.pem
+│   │       ├── proxy-key.pem
+│   │       ├── proxy.pem
+│   │       ├── scheduler-key.pem
+│   │       ├── scheduler.pem
+│   │       ├── service-account-key.pem
+│   │       └── service-account.pem
+│   ├── profile.d
+│   │   └── k8s-tew.sh
+│   └── systemd
+│       └── system
+│           └── k8s-tew.service
+├── opt
+│   └── k8s-tew
+│       └── bin
+│           ├── ark
+│           │   ├── ark
+│           │   └── ark-restic-restore-helper
+│           ├── cni
+│           ├── cri
+│           │   ├── containerd
+│           │   ├── containerd-shim
+│           │   ├── crictl
+│           │   ├── ctr
+│           │   └── runc
+│           ├── etcd
+│           │   ├── etcd
+│           │   └── etcdctl
+│           ├── host
+│           ├── k8s
+│           │   ├── helm
+│           │   ├── kube-apiserver
+│           │   ├── kube-controller-manager
+│           │   ├── kubectl
+│           │   ├── kubelet
+│           │   ├── kube-proxy
+│           │   └── kube-scheduler
+│           ├── k8s-tew
+│           └── lb
+│               └── gobetween
+├── tmp
+│   └── ark-vv0.9.4-linux-amd64
+└── var
+    ├── lib
+    │   └── k8s-tew
+    │       ├── ceph
+    │       │   ├── bootstrap-mds
+    │       │   │   └── ceph.keyring
+    │       │   ├── bootstrap-osd
+    │       │   │   └── ceph.keyring
+    │       │   ├── bootstrap-rbd
+    │       │   │   └── ceph.keyring
+    │       │   └── bootstrap-rgw
+    │       │       └── ceph.keyring
+    │       ├── containerd
+    │       ├── etcd
+    │       ├── helm
+    │       │   ├── cache
+    │       │   │   └── archive
+    │       │   ├── plugins
+    │       │   ├── repository
+    │       │   │   ├── cache
+    │       │   │   │   ├── local-index.yaml -> /workspace/k8s-tew/src/github.com/darxkies/k8s-tew/setup/ubuntu-single-node/assets/var/lib/k8s-tew/helm/repository/local/index.yaml
+    │       │   │   │   └── stable-index.yaml
+    │       │   │   ├── local
+    │       │   │   │   └── index.yaml
+    │       │   │   └── repositories.yaml
+    │       │   └── starters
+    │       └── kubelet
+    │           └── pods
+    ├── log
+    │   └── k8s-tew
+    └── run
+        └── k8s-tew
+            └── containerd
+
+53 directories, 94 files
+```
+</details>
+
+
 # Troubleshooting
 
 k8s-tew enables logging for all components by default. The log files are stored in {base-directory}/var/log/k8s-tew/.
