@@ -106,13 +106,24 @@ func IsRoot() bool {
 	return os.Geteuid() == 0
 }
 
-func GetFullImageName(name, version string) string {
-	content, error := ApplyTemplate(name, name, struct{ Version string }{Version: version}, false)
-	if error != nil {
-		log.WithFields(log.Fields{"name": name, "version": version, "error": error}).Panic("Image template failure")
+func ExtractImageName(value string) string {
+	tokens := strings.Split(value, ":")
+
+	if len(tokens) > 0 {
+		return tokens[0]
 	}
 
-	return content
+	return value
+}
+
+func ExtractImageTag(value string) string {
+	tokens := strings.Split(value, ":")
+
+	if len(tokens) > 1 {
+		return tokens[1]
+	}
+
+	return value
 }
 
 func ApplyTemplate(label, content string, data interface{}, alternativeDelimiters bool) (string, error) {
@@ -139,22 +150,10 @@ func ApplyTemplate(label, content string, data interface{}, alternativeDelimiter
 			return result
 		},
 		"image_name": func(value string) string {
-			tokens := strings.Split(value, ":")
-
-			if len(tokens) > 0 {
-				return tokens[0]
-			}
-
-			return value
+			return ExtractImageName(value)
 		},
 		"image_tag": func(value string) string {
-			tokens := strings.Split(value, ":")
-
-			if len(tokens) > 1 {
-				return tokens[1]
-			}
-
-			return value
+			return ExtractImageTag(value)
 		},
 	}
 

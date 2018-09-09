@@ -26,7 +26,6 @@ type Versions struct {
 	CalicoCNI                  string `yaml:"calico-cni"`
 	RBDProvisioner             string `yaml:"rbd-provisioner"`
 	Ceph                       string `yaml:"ceph"`
-	CertManager                string `yaml:"cert-manager"`
 	Heapster                   string `yaml:"heapster"`
 	AddonResizer               string `yaml:"addon-resizer"`
 	KubernetesDashboard        string `yaml:"kubernetes-dashboard"`
@@ -70,7 +69,6 @@ func NewVersions() Versions {
 		CalicoCNI:                  utils.VERSION_CALICO_CNI,
 		RBDProvisioner:             utils.VERSION_RBD_PROVISIONER,
 		Ceph:                       utils.VERSION_CEPH,
-		CertManager:                utils.VERSION_CERT_MANAGER,
 		Heapster:                   utils.VERSION_HEAPSTER,
 		AddonResizer:               utils.VERSION_ADDON_RESIZER,
 		KubernetesDashboard:        utils.VERSION_KUBERNETES_DASHBOARD,

@@ -161,9 +161,9 @@ func (generator *Generator) generateCalicoSetup() error {
 		ClusterCIDR:          generator.config.Config.ClusterCIDR,
 		CNIConfigDirectory:   generator.config.GetFullTargetAssetDirectory(utils.CNI_CONFIG_DIRECTORY),
 		CNIBinariesDirectory: generator.config.GetFullTargetAssetDirectory(utils.CNI_BINARIES_DIRECTORY),
-		CalicoTyphaImage:     utils.GetFullImageName(utils.IMAGE_CALICO_TYPHA, generator.config.Config.Versions.CalicoTypha),
-		CalicoNodeImage:      utils.GetFullImageName(utils.IMAGE_CALICO_NODE, generator.config.Config.Versions.CalicoNode),
-		CalicoCNIImage:       utils.GetFullImageName(utils.IMAGE_CALICO_CNI, generator.config.Config.Versions.CalicoCNI),
+		CalicoTyphaImage:     generator.config.Config.Versions.CalicoTypha,
+		CalicoNodeImage:      generator.config.Config.Versions.CalicoNode,
+		CalicoCNIImage:       generator.config.Config.Versions.CalicoCNI,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8S_CALICO_SETUP), true, false)
 }
 
@@ -233,7 +233,7 @@ func (generator *Generator) generateContainerdConfig() error {
 			CNIBinariesDirectory:     generator.config.GetFullTargetAssetDirectory(utils.CNI_BINARIES_DIRECTORY),
 			CRIBinariesDirectory:     generator.config.GetFullTargetAssetDirectory(utils.CRI_BINARIES_DIRECTORY),
 			IP:                       node.IP,
-			PauseImage:               utils.GetFullImageName(utils.IMAGE_PAUSE, generator.config.Config.Versions.Pause),
+			PauseImage:               generator.config.Config.Versions.Pause,
 		}, generator.config.GetFullLocalAssetFilename(utils.CONTAINERD_CONFIG), true, false); error != nil {
 			return error
 		}
@@ -468,8 +468,8 @@ func (generator *Generator) generateCephSetup() error {
 		StorageNodes:        generator.config.GetStorageNodes(),
 		CephConfigDirectory: generator.config.GetFullTargetAssetDirectory(utils.CEPH_CONFIG_DIRECTORY),
 		CephDataDirectory:   generator.config.GetFullTargetAssetDirectory(utils.CEPH_DATA_DIRECTORY),
-		RBDProvisionerImage: utils.GetFullImageName(utils.IMAGE_RBD_PROVISIONER, generator.config.Config.Versions.RBDProvisioner),
-		CephImage:           utils.GetFullImageName(utils.IMAGE_CEPH, generator.config.Config.Versions.Ceph),
+		RBDProvisionerImage: generator.config.Config.Versions.RBDProvisioner,
+		CephImage:           generator.config.Config.Versions.Ceph,
 	}, generator.config.GetFullLocalAssetFilename(utils.CEPH_SETUP), true, false)
 }
 
@@ -593,7 +593,7 @@ func (generator *Generator) generateCoreDNSSetup() error {
 	}{
 		ClusterDomain: generator.config.Config.ClusterDomain,
 		ClusterDNSIP:  generator.config.Config.ClusterDNSIP,
-		CoreDNSImage:  utils.GetFullImageName(utils.IMAGE_COREDNS, generator.config.Config.Versions.CoreDNS),
+		CoreDNSImage:  generator.config.Config.Versions.CoreDNS,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8S_COREDNS_SETUP), true, false)
 }
 
@@ -601,7 +601,7 @@ func (generator *Generator) generateElasticSearchOperatorSetup() error {
 	return utils.ApplyTemplateAndSave("elasticsearch-operator", utils.TEMPLATE_ELASTICSEARCH_OPERATOR_SETUP, struct {
 		ElasticsearchOperatorImage string
 	}{
-		ElasticsearchOperatorImage: utils.GetFullImageName(utils.IMAGE_ELASTICSEARCH_OPERATOR, generator.config.Config.Versions.ElasticsearchOperator),
+		ElasticsearchOperatorImage: generator.config.Config.Versions.ElasticsearchOperator,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8S_ELASTICSEARCH_OPERATOR_SETUP), true, false)
 }
 
@@ -613,11 +613,11 @@ func (generator *Generator) generateEFKSetup() error {
 		CerebroImage           string
 		FluentBitImage         string
 	}{
-		ElasticsearchImage:     utils.GetFullImageName(utils.IMAGE_ELASTICSEARCH, generator.config.Config.Versions.Elasticsearch),
-		ElasticsearchCronImage: utils.GetFullImageName(utils.IMAGE_ELASTICSEARCH_CRON, generator.config.Config.Versions.ElasticsearchCron),
-		KibanaImage:            utils.GetFullImageName(utils.IMAGE_KIBANA, generator.config.Config.Versions.Kibana),
-		CerebroImage:           utils.GetFullImageName(utils.IMAGE_CEREBRO, generator.config.Config.Versions.Cerebro),
-		FluentBitImage:         utils.GetFullImageName(utils.IMAGE_FLUENT_BIT, generator.config.Config.Versions.FluentBit),
+		ElasticsearchImage:     generator.config.Config.Versions.Elasticsearch,
+		ElasticsearchCronImage: generator.config.Config.Versions.ElasticsearchCron,
+		KibanaImage:            generator.config.Config.Versions.Kibana,
+		CerebroImage:           generator.config.Config.Versions.Cerebro,
+		FluentBitImage:         generator.config.Config.Versions.FluentBit,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8S_EFK_SETUP), true, false)
 }
 
@@ -628,9 +628,9 @@ func (generator *Generator) generateARKSetup() error {
 		MinioClientImage string
 		PodsDirectory    string
 	}{
-		ArkImage:         utils.GetFullImageName(utils.IMAGE_ARK, generator.config.Config.Versions.Ark),
-		MinioServerImage: utils.GetFullImageName(utils.IMAGE_MINIO_SERVER, generator.config.Config.Versions.MinioServer),
-		MinioClientImage: utils.GetFullImageName(utils.IMAGE_MINIO_CLIENT, generator.config.Config.Versions.MinioClient),
+		ArkImage:         generator.config.Config.Versions.Ark,
+		MinioServerImage: generator.config.Config.Versions.MinioServer,
+		MinioClientImage: generator.config.Config.Versions.MinioClient,
 		PodsDirectory:    generator.config.GetFullTargetAssetDirectory(utils.PODS_DATA_DIRECTORY),
 	}, generator.config.GetFullLocalAssetFilename(utils.K8S_ARK_SETUP), true, false)
 }
@@ -640,8 +640,8 @@ func (generator *Generator) generateHeapsterSetup() error {
 		HeapsterImage     string
 		AddonResizerImage string
 	}{
-		HeapsterImage:     utils.GetFullImageName(utils.IMAGE_HEAPSTER, generator.config.Config.Versions.Heapster),
-		AddonResizerImage: utils.GetFullImageName(utils.IMAGE_ADDON_RESIZER, generator.config.Config.Versions.AddonResizer),
+		HeapsterImage:     generator.config.Config.Versions.Heapster,
+		AddonResizerImage: generator.config.Config.Versions.AddonResizer,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8S_HEAPSTER_SETUP), true, false)
 }
 
@@ -653,7 +653,7 @@ func (generator *Generator) generateKubernetesDashboardSetup() error {
 	}{
 		ClusterName:              generator.config.Config.ClusterName,
 		KubernetesDashboardPort:  generator.config.Config.DashboardPort,
-		KubernetesDashboardImage: utils.GetFullImageName(utils.IMAGE_KUBERNETES_DASHBOARD, generator.config.Config.Versions.KubernetesDashboard),
+		KubernetesDashboardImage: generator.config.Config.Versions.KubernetesDashboard,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8S_KUBERNETES_DASHBOARD_SETUP), true, false)
 }
 
@@ -661,7 +661,7 @@ func (generator *Generator) generateCertManagerSetup() error {
 	return utils.ApplyTemplateAndSave("cert-manager", utils.TEMPLATE_CERT_MANAGER_SETUP, struct {
 		CertManagerControllerImage string
 	}{
-		CertManagerControllerImage: utils.GetFullImageName(utils.IMAGE_CERT_MANAGER_CONTROLLER, generator.config.Config.Versions.CertManagerController),
+		CertManagerControllerImage: generator.config.Config.Versions.CertManagerController,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8S_CERT_MANAGER_SETUP), true, false)
 }
 
@@ -670,8 +670,8 @@ func (generator *Generator) generateNginxIngressSetup() error {
 		NginxIngressControllerImage     string
 		NginxIngressDefaultBackendImage string
 	}{
-		NginxIngressControllerImage:     utils.GetFullImageName(utils.IMAGE_NGINX_INGRESS_CONTROLLER, generator.config.Config.Versions.NginxIngressController),
-		NginxIngressDefaultBackendImage: utils.GetFullImageName(utils.IMAGE_NGINX_INGRESS_DEFAULT_BACKEND, generator.config.Config.Versions.NginxIngressDefaultBackend),
+		NginxIngressControllerImage:     generator.config.Config.Versions.NginxIngressController,
+		NginxIngressDefaultBackendImage: generator.config.Config.Versions.NginxIngressDefaultBackend,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8S_NGINX_INGRESS_SETUP), true, false)
 }
 
@@ -679,7 +679,7 @@ func (generator *Generator) generateMetricsServerSetup() error {
 	return utils.ApplyTemplateAndSave("metrics-server", utils.TEMPLATE_METRICS_SERVER_SETUP, struct {
 		MetricsServerImage string
 	}{
-		MetricsServerImage: utils.GetFullImageName(utils.IMAGE_METRICS_SERVER, generator.config.Config.Versions.MetricsServer),
+		MetricsServerImage: generator.config.Config.Versions.MetricsServer,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8S_METRICS_SERVER_SETUP), true, false)
 }
 
@@ -689,9 +689,9 @@ func (generator *Generator) generatePrometheusOperatorSetup() error {
 		PrometheusConfigReloaderImage string
 		ConfigMapReloadImage          string
 	}{
-		PrometheusOperatorImage:       utils.GetFullImageName(utils.IMAGE_PROMETHEUS_OPERATOR, generator.config.Config.Versions.PrometheusOperator),
-		PrometheusConfigReloaderImage: utils.GetFullImageName(utils.IMAGE_PROMETHEUS_CONFIG_RELOADER, generator.config.Config.Versions.PrometheusConfigReloader),
-		ConfigMapReloadImage:          utils.GetFullImageName(utils.IMAGE_CONFIGMAP_RELOAD, generator.config.Config.Versions.ConfigMapReload),
+		PrometheusOperatorImage:       generator.config.Config.Versions.PrometheusOperator,
+		PrometheusConfigReloaderImage: generator.config.Config.Versions.PrometheusConfigReloader,
+		ConfigMapReloadImage:          generator.config.Config.Versions.ConfigMapReload,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8S_PROMETHEUS_OPERATOR_SETUP), true, false)
 }
 
@@ -705,13 +705,13 @@ func (generator *Generator) generateKubePrometheusSetup() error {
 		PrometheusNodeExporterImage string
 		PrometheusAlertManagerImage string
 	}{
-		AddonResizerImage:           utils.GetFullImageName(utils.IMAGE_ADDON_RESIZER, generator.config.Config.Versions.AddonResizer),
-		KubeStateMetricsImage:       utils.GetFullImageName(utils.IMAGE_KUBE_STATE_METRICS, generator.config.Config.Versions.KubeStateMetrics),
-		GrafanaImage:                utils.GetFullImageName(utils.IMAGE_GRAFANA, generator.config.Config.Versions.Grafana),
-		GrafanaWatcherImage:         utils.GetFullImageName(utils.IMAGE_GRAFANA_WATCHER, generator.config.Config.Versions.GrafanaWatcher),
-		PrometheusImage:             utils.GetFullImageName(utils.IMAGE_PROMETHEUS, generator.config.Config.Versions.Prometheus),
-		PrometheusNodeExporterImage: utils.GetFullImageName(utils.IMAGE_PROMETHEUS_NODE_EXPORTER, generator.config.Config.Versions.PrometheusNodeExporter),
-		PrometheusAlertManagerImage: utils.GetFullImageName(utils.IMAGE_PROMETHEUS_ALERT_MANAGER, generator.config.Config.Versions.PrometheusAlertManager),
+		AddonResizerImage:           generator.config.Config.Versions.AddonResizer,
+		KubeStateMetricsImage:       generator.config.Config.Versions.KubeStateMetrics,
+		GrafanaImage:                generator.config.Config.Versions.Grafana,
+		GrafanaWatcherImage:         generator.config.Config.Versions.GrafanaWatcher,
+		PrometheusImage:             generator.config.Config.Versions.Prometheus,
+		PrometheusNodeExporterImage: generator.config.Config.Versions.PrometheusNodeExporter,
+		PrometheusAlertManagerImage: generator.config.Config.Versions.PrometheusAlertManager,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8S_KUBE_PROMETHEUS_SETUP), true, true)
 }
 

@@ -259,10 +259,6 @@ func init() {
 		_config.Config.Versions.Ceph = value
 	})
 
-	addStringOption("version-cert-manager", utils.VERSION_CERT_MANAGER, "Cert Manager version", func(value string) {
-		_config.Config.Versions.CertManager = value
-	})
-
 	addStringOption("version-heapster", utils.VERSION_HEAPSTER, "Heapster version", func(value string) {
 		_config.Config.Versions.Heapster = value
 	})

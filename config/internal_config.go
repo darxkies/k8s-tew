@@ -425,10 +425,10 @@ func (config *InternalConfig) registerServers() {
 func (config *InternalConfig) registerCommands() {
 	kubectlCommand := fmt.Sprintf("%s --request-timeout 30s --kubeconfig %s", config.GetFullLocalAssetFilename(utils.KUBECTL_BINARY), config.GetFullLocalAssetFilename(utils.ADMIN_KUBECONFIG))
 	helmCommand := fmt.Sprintf("KUBECONFIG=%s HELM_HOME=%s %s", config.GetFullLocalAssetFilename(utils.ADMIN_KUBECONFIG), config.GetFullLocalAssetDirectory(utils.HELM_DATA_DIRECTORY), config.GetFullLocalAssetFilename(utils.HELM_BINARY))
-	//cephCommand := fmt.Sprintf("%s exec -t -i $(%s get pods -n storage -l app=ceph-mgr -o=jsonpath='{.items[0].metadata.name}') -n storage -- ceph", kubectlCommand, kubectlCommand)
 
 	// Dependencies
-	config.addCommand("setup-ubuntu", Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, OS{utils.OS_UBUNTU}, "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y apt-transport-https socat conntrack ipset ceph-common")
+	config.addCommand("setup-ubuntu", Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, OS{utils.OS_UBUNTU}, "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y apt-transport-https bash-completion")
+	config.addCommand("setup-centos", Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, OS{utils.OS_CENTOS}, "systemctl disable firewalld && systemctl stop firewalld && setenforce 0 && sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux")
 	config.addCommand("setup-centos-disable-selinux", Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, OS{utils.OS_CENTOS}, "setenforce 0")
 	config.addCommand("swapoff", Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, OS{}, "swapoff -a")
 	config.addCommand("load-overlay", Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, OS{}, "modprobe overlay")

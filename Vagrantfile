@@ -100,21 +100,9 @@ puts
 ############################################################
 
 if $os == "ubuntu"
-    $box = "bento/ubuntu-18.04"
-
+  $box = "bento/ubuntu-18.04"
 else
-    $box = "centos/7"
-
-    $script += <<-SCRIPT
-
-setenforce 0
-sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
-
-sudo systemctl disable firewalld
-sudo systemctl stop firewalld
-
-SCRIPT
-
+  $box = "centos/7"
 end
 
 if ENV["CONTROLLERS"]
