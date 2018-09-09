@@ -30,6 +30,7 @@ var environmentCmd = &cobra.Command{
 			CRIPath        string
 			CNIPath        string
 			ArkPath        string
+			HostPath       string
 			KubeConfig     string
 			ContainerdSock string
 		}{
@@ -40,6 +41,7 @@ var environmentCmd = &cobra.Command{
 			CRIPath:        _config.GetFullLocalAssetDirectory(utils.CRI_BINARIES_DIRECTORY),
 			CNIPath:        _config.GetFullLocalAssetDirectory(utils.CNI_BINARIES_DIRECTORY),
 			ArkPath:        _config.GetFullLocalAssetDirectory(utils.ARK_BINARIES_DIRECTORY),
+			HostPath:       _config.GetFullLocalAssetDirectory(utils.HOST_BINARIES_DIRECTORY),
 			KubeConfig:     _config.GetFullLocalAssetFilename(utils.ADMIN_KUBECONFIG),
 			ContainerdSock: _config.GetFullTargetAssetFilename(utils.CONTAINERD_SOCK),
 		}, false)

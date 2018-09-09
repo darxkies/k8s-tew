@@ -1,9 +1,7 @@
-VERSION=$(shell git describe --tags)
+BUILD_IMAGE=darxkies/k8s-tew-build
 
-compile:
-	CGO_ENABLED=0 packr build -ldflags '-X github.com/darxkies/k8s-tew/version.Version=${VERSION} -s -w' -o ${GOPATH}/bin/k8s-tew github.com/darxkies/k8s-tew/cmd/k8s-tew
+build:
+	docker build -t $(BUILD_IMAGE) build
+	docker run --rm -v $(GOPATH):/go $(BUILD_IMAGE)
 
-setup:
-	go get -u github.com/gobuffalo/packr/...
-
-.PHONY: setup compile
+.PHONY: build

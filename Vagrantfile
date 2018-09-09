@@ -102,10 +102,6 @@ puts
 if $os == "ubuntu"
     $box = "bento/ubuntu-18.04"
 
-    $script += <<-SCRIPT
-apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y apt-transport-https socat conntrack ipset ceph-common bash-completion
-SCRIPT
-
 else
     $box = "centos/7"
 
@@ -117,19 +113,6 @@ sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig
 sudo systemctl disable firewalld
 sudo systemctl stop firewalld
 
-yum install -y yum-utils && sudo yum-config-manager --add-repo https://dl.fedoraproject.org/pub/epel/7/x86_64/ && sudo yum install --nogpgcheck -y epel-release && sudo rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7 && sudo rm /etc/yum.repos.d/dl.fedoraproject.org*
-
-cat <<EOF > /etc/yum.repos.d/ceph.repo 
-[ceph]
-name=Ceph packages for $basearch
-baseurl=https://download.ceph.com/rpm-luminous/el7/x86_64/
-enabled=1
-priority=2
-gpgcheck=1
-gpgkey=https://download.ceph.com/keys/release.asc
-EOF
-
-yum install socat conntrack ipset ceph-common -y
 SCRIPT
 
 end

@@ -169,6 +169,7 @@ const CEPH_BOOTSTRAP_RBD_SUBDIRECTORY = "bootstrap-rbd"
 const CEPH_BOOTSTRAP_RGW_SUBDIRECTORY = "bootstrap-rgw"
 const ARK_SUBDIRECTORY = "ark"
 const BASH_COMPLETION_SUBDIRECTORY = "bash_completion.d"
+const HOST_SUBDIRECTORY = "host"
 
 // Directories
 const CONFIG_DIRECTORY = "config"
@@ -208,6 +209,7 @@ const CEPH_BOOTSTRAP_RBD_DIRECTORY = "bootstrap-rbd"
 const CEPH_BOOTSTRAP_RGW_DIRECTORY = "bootstrap-rgw"
 const ARK_BINARIES_DIRECTORY = "ark"
 const BASH_COMPLETION_DIRECTORY = "bash-completion"
+const HOST_BINARIES_DIRECTORY = "host-binaries"
 
 // Binaries
 const K8S_TEW_BINARY = "k8s-tew"

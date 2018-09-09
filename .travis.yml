@@ -1,11 +1,19 @@
+sudo: required
+
 language: go
+
+services:
+- docker
+
 go:
 - 1.10.2
-env:
-- CGO_ENABLED=0
+
 install: true
+
 script:
-  - (export PATH=/home/travis/gopath/bin:$PATH && make setup compile)
+  - docker build -t $(BUILD_IMAGE) build
+  - docker run --rm -v $(GOPATH):/go $(BUILD_IMAGE)
+
 deploy:
   provider: releases
   api_key:

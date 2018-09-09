@@ -16,14 +16,15 @@ import (
 )
 
 type ServerWrapper struct {
-	stop          bool
-	name          string
-	baseDirectory string
-	command       []string
-	logger        config.LoggerConfig
+	stop            bool
+	name            string
+	baseDirectory   string
+	command         []string
+	logger          config.LoggerConfig
+	pathEnvironment string
 }
 
-func NewServerWrapper(_config config.InternalConfig, name string, serverConfig config.ServerConfig) (Server, error) {
+func NewServerWrapper(_config config.InternalConfig, name string, serverConfig config.ServerConfig, pathEnvironment string) (Server, error) {
 	var error error
 
 	serverConfig.Command, error = _config.ApplyTemplate("command", serverConfig.Command)
@@ -32,7 +33,7 @@ func NewServerWrapper(_config config.InternalConfig, name string, serverConfig c
 		return nil, error
 	}
 
-	server := &ServerWrapper{name: name, baseDirectory: _config.BaseDirectory, command: []string{serverConfig.Command}, logger: serverConfig.Logger}
+	server := &ServerWrapper{name: name, baseDirectory: _config.BaseDirectory, command: []string{serverConfig.Command}, logger: serverConfig.Logger, pathEnvironment: pathEnvironment}
 
 	server.logger.Filename, error = _config.ApplyTemplate("LoggingDirectory", server.logger.Filename)
 	if error != nil {
@@ -76,6 +77,9 @@ func (server *ServerWrapper) Start() error {
 				Setpgid: true,
 				Pgid:    0,
 			}
+
+			command.Env = os.Environ()
+			command.Env = append(command.Env, server.pathEnvironment)
 
 			var logFile *os.File
 			var error error

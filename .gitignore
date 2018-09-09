@@ -1,3 +1,5 @@
 .vagrant
 assets
 tags
+utils/a_utils-packr.go
+embedded

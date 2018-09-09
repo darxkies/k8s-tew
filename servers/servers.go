@@ -2,8 +2,10 @@ package servers
 
 import (
 	"fmt"
+	"io"
 	"os"
 	"os/signal"
+	"path"
 	"syscall"
 	"time"
 
@@ -91,7 +93,50 @@ func (servers *Servers) addVIPManager(enabled bool, virtualIP, virtualIPInterfac
 	servers.add(NewVIPManager(nodeRole, nodeName, fmt.Sprintf("%s:%d", nodeIP, raftPort), virtualIP, peers, logger, virtualIPInterface))
 }
 
+func (servers *Servers) extractEmbeddedFiles() error {
+	utils.GetEmbeddedFiles(func(filename string, in io.ReadCloser) error {
+		log.WithFields(log.Fields{"filename": filename}).Info("Extracting embedded file")
+
+		hostDirectory := servers.config.GetFullLocalAssetDirectory(utils.HOST_BINARIES_DIRECTORY)
+		outFilename := path.Join(hostDirectory, filename)
+
+		if error := utils.CreateDirectoryIfMissing(path.Dir(outFilename)); error != nil {
+			return error
+		}
+
+		// Defer source file closing
+		defer in.Close()
+
+		// Open target file
+		out, error := os.OpenFile(outFilename, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0755)
+		if error != nil {
+			return error
+		}
+
+		// Defer target file closing
+		defer out.Close()
+
+		// Copy file content
+		if _, error = io.Copy(out, in); error != nil {
+			return error
+		}
+
+		// Sync content to storage
+		return out.Sync()
+	})
+
+	return nil
+}
+
 func (servers *Servers) Run(commandRetries uint) error {
+	// Make sure the embedded dependencies are in place before the servers are started
+	if error := servers.extractEmbeddedFiles(); error != nil {
+		return error
+	}
+
+	pathEnvironment := os.Getenv("PATH")
+	pathEnvironment = fmt.Sprintf("PATH=%s:%s", servers.config.GetFullLocalAssetDirectory(utils.HOST_BINARIES_DIRECTORY), pathEnvironment)
+
 	// Add servers
 	for _, serverConfig := range servers.config.Config.Servers {
 		if !serverConfig.Enabled {
@@ -102,7 +147,7 @@ func (servers *Servers) Run(commandRetries uint) error {
 			continue
 		}
 
-		server, error := NewServerWrapper(*servers.config, serverConfig.Name, serverConfig)
+		server, error := NewServerWrapper(*servers.config, serverConfig.Name, serverConfig, pathEnvironment)
 
 		if error != nil {
 			return error
