@@ -453,12 +453,11 @@ make forward-443
 
 __NOTE__: Both commands are blocking. So you need two different terminal sessions.
 
-### Example
+### ubuntu-single-node Setup Snippets
 
-This is what the configuration looks like when using ubuntu-single-node:
+#### Configuration
 
-<details>
-  <summary>{base-directory}/etc/k8s-tew/config.yaml</summary>
+This is what the configuration looks like when using ubuntu-single-node setup:
 
 ```yaml
 version: 2.1.0
@@ -1354,12 +1353,10 @@ servers:
     root-dir: '{{asset_directory "kubelet-data"}}'
     v: "0"
 ```
-</details>
 
-And this is the content of {base-directory}:
+#### File structure
 
-<details/>
-  <summary>Files</summary>
+This is the content of {base-directory}:
 
 ```shell
 assets/
@@ -1476,7 +1473,6 @@ assets/
 │           └── lb
 │               └── gobetween
 ├── tmp
-│   └── ark-vv0.9.4-linux-amd64
 └── var
     ├── lib
     │   └── k8s-tew
@@ -1511,10 +1507,147 @@ assets/
         └── k8s-tew
             └── containerd
 
-53 directories, 94 files
+52 directories, 94 files
 ```
-</details>
 
+#### Kubectl Output
+
+And this is what `kubectl get all --all-namespaces` returns:
+
+```shell
+NAMESPACE     NAME                                                       READY     STATUS      RESTARTS   AGE
+backup        pod/ark-68c56f6d75-q5crq                                   1/1       Running     0          5m
+backup        pod/minio-7895b9d495-szkm6                                 1/1       Running     0          5m
+backup        pod/minio-setup-8k9l4                                      0/1       Completed   0          5m
+backup        pod/restic-9knmd                                           1/1       Running     0          5m
+default       pod/elasticsearch-operator-sysctl-pmgkg                    1/1       Running     0          5m
+kube-system   pod/coredns-646944c5c4-lm6xq                               1/1       Running     0          12m
+kube-system   pod/coredns-646944c5c4-smmnv                               1/1       Running     0          12m
+kube-system   pod/heapster-heapster-6b7985754b-mqhn4                     2/2       Running     0          7m
+kube-system   pod/kubernetes-dashboard-845c9dbcdf-nmjcj                  1/1       Running     0          12m
+kube-system   pod/tiller-deploy-759cb9df9-w2nhw                          1/1       Running     0          12m
+logging       pod/cerebro-elasticsearch-cluster-567468c475-d6j8j         1/1       Running     0          5m
+logging       pod/elasticsearch-operator-76769d959c-pfxd4                1/1       Running     0          8m
+logging       pod/es-client-elasticsearch-cluster-7d6fb8dcdd-dlwtz       1/1       Running     0          5m
+logging       pod/es-data-elasticsearch-cluster-default-0                1/1       Running     0          5m
+logging       pod/es-master-elasticsearch-cluster-default-0              1/1       Running     0          5m
+logging       pod/fluent-bit-nzvc7                                       1/1       Running     0          8m
+logging       pod/kibana-elasticsearch-cluster-66778d655d-l6gjh          1/1       Running     0          5m
+monitoring    pod/alertmanager-kube-prometheus-0                         2/2       Running     0          8m
+monitoring    pod/kube-prometheus-exporter-kube-state-65c6c77579-hw7vq   2/2       Running     0          8m
+monitoring    pod/kube-prometheus-exporter-node-m5k8d                    1/1       Running     0          8m
+monitoring    pod/kube-prometheus-grafana-749496574c-dsr6r               2/2       Running     0          8m
+monitoring    pod/metrics-server-6486f65987-wws9d                        1/1       Running     0          12m
+monitoring    pod/prometheus-kube-prometheus-0                           3/3       Running     1          8m
+monitoring    pod/prometheus-operator-6bc587f9fc-b62rw                   1/1       Running     0          12m
+networking    pod/calico-node-js5lx                                      2/2       Running     0          12m
+networking    pod/cert-manager-86b95f4dc8-6gpmq                          1/1       Running     0          12m
+networking    pod/nginx-ingress-controller-wdxxw                         1/1       Running     0          12m
+networking    pod/nginx-ingress-default-backend-789c7df7cb-x5ph5         1/1       Running     0          12m
+storage       pod/ceph-mgr-54b46c94c4-q92km                              1/1       Running     0          12m
+storage       pod/ceph-mon-single-node-8c98868fb-sjzqm                   1/1       Running     0          12m
+storage       pod/ceph-osd-single-node-7b7f848b97-zbtp9                  1/1       Running     0          12m
+storage       pod/ceph-setup-5cvhb                                       0/1       Completed   1          12m
+storage       pod/rbd-provisioner-789795cf94-flxdw                       1/1       Running     0          12m
+wordpress     pod/cm-acme-http-solver-hkrkp                              1/1       Running     0          5m
+wordpress     pod/mysql-65d54b75b4-zb5s2                                 1/1       Running     0          5m
+wordpress     pod/wordpress-6b74676664-p66kf                             1/1       Running     1          5m
+NAMESPACE     NAME                                                       TYPE           CLUSTER-IP    EXTERNAL-IP   PORT(S)                      AGE
+backup        service/minio                                              NodePort       10.32.0.170   <none>        9000:30800/TCP               5m
+default       service/kubernetes                                         ClusterIP      10.32.0.1     <none>        443/TCP                      12m
+kube-system   service/heapster                                           ClusterIP      10.32.0.168   <none>        8082/TCP                     12m
+kube-system   service/kube-dns                                           ClusterIP      10.32.0.10    <none>        53/UDP,53/TCP                12m
+kube-system   service/kube-prometheus-exporter-kube-controller-manager   ClusterIP      10.32.0.186   <none>        10252/TCP                    8m
+kube-system   service/kube-prometheus-exporter-kube-dns                  ClusterIP      10.32.0.73    <none>        10054/TCP,10055/TCP          8m
+kube-system   service/kube-prometheus-exporter-kube-etcd                 ClusterIP      10.32.0.102   <none>        4001/TCP                     8m
+kube-system   service/kube-prometheus-exporter-kube-scheduler            ClusterIP      10.32.0.229   <none>        10251/TCP                    8m
+kube-system   service/kubelet                                            ClusterIP      None          <none>        10250/TCP                    5m
+kube-system   service/kubernetes-dashboard                               NodePort       10.32.0.38    <none>        443:32443/TCP                12m
+kube-system   service/tiller-deploy                                      ClusterIP      10.32.0.66    <none>        44134/TCP                    12m
+logging       service/cerebro-elasticsearch-cluster                      NodePort       10.32.0.196   <none>        80:30990/TCP                 5m
+logging       service/elasticsearch-discovery-elasticsearch-cluster      ClusterIP      10.32.0.51    <none>        9300/TCP                     5m
+logging       service/elasticsearch-elasticsearch-cluster                ClusterIP      10.32.0.224   <none>        9200/TCP                     5m
+logging       service/es-data-svc-elasticsearch-cluster                  ClusterIP      10.32.0.20    <none>        9300/TCP                     5m
+logging       service/kibana-elasticsearch-cluster                       NodePort       10.32.0.118   <none>        80:30980/TCP                 5m
+monitoring    service/alertmanager-operated                              ClusterIP      None          <none>        9093/TCP,6783/TCP            8m
+monitoring    service/kube-prometheus                                    ClusterIP      10.32.0.19    <none>        9090/TCP                     8m
+monitoring    service/kube-prometheus-alertmanager                       ClusterIP      10.32.0.253   <none>        9093/TCP                     8m
+monitoring    service/kube-prometheus-exporter-kube-state                ClusterIP      10.32.0.234   <none>        80/TCP                       8m
+monitoring    service/kube-prometheus-exporter-node                      ClusterIP      10.32.0.35    <none>        9100/TCP                     8m
+monitoring    service/kube-prometheus-grafana                            NodePort       10.32.0.238   <none>        80:30900/TCP                 8m
+monitoring    service/metrics-server                                     ClusterIP      10.32.0.141   <none>        443/TCP                      12m
+monitoring    service/prometheus-operated                                ClusterIP      None          <none>        9090/TCP                     8m
+networking    service/calico-typha                                       ClusterIP      10.32.0.5     <none>        5473/TCP                     12m
+networking    service/nginx-ingress-controller                           LoadBalancer   10.32.0.108   <pending>     80:30525/TCP,443:30104/TCP   12m
+networking    service/nginx-ingress-default-backend                      ClusterIP      10.32.0.52    <none>        80/TCP                       12m
+wordpress     service/cm-acme-http-solver-fr8f8                          NodePort       10.32.0.91    <none>        8089:32756/TCP               5m
+wordpress     service/mysql                                              ClusterIP      None          <none>        3306/TCP                     5m
+wordpress     service/wordpress                                          NodePort       10.32.0.82    <none>        80:30100/TCP                 5m
+NAMESPACE    NAME                                           DESIRED   CURRENT   READY     UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
+backup       daemonset.apps/restic                          1         1         1         1            1           <none>          5m
+default      daemonset.apps/elasticsearch-operator-sysctl   1         1         1         1            1           <none>          5m
+logging      daemonset.apps/fluent-bit                      1         1         1         1            1           <none>          8m
+monitoring   daemonset.apps/kube-prometheus-exporter-node   1         1         1         1            1           <none>          8m
+networking   daemonset.apps/calico-node                     1         1         1         1            1           <none>          12m
+networking   daemonset.apps/nginx-ingress-controller        1         1         1         1            1           <none>          12m
+NAMESPACE     NAME                                                  DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
+backup        deployment.apps/ark                                   1         1         1            1           5m
+backup        deployment.apps/minio                                 1         1         1            1           5m
+kube-system   deployment.apps/coredns                               2         2         2            2           12m
+kube-system   deployment.apps/heapster-heapster                     1         1         1            1           12m
+kube-system   deployment.apps/kubernetes-dashboard                  1         1         1            1           12m
+kube-system   deployment.apps/tiller-deploy                         1         1         1            1           12m
+logging       deployment.apps/cerebro-elasticsearch-cluster         1         1         1            1           5m
+logging       deployment.apps/elasticsearch-operator                1         1         1            1           8m
+logging       deployment.apps/es-client-elasticsearch-cluster       1         1         1            1           5m
+logging       deployment.apps/kibana-elasticsearch-cluster          1         1         1            1           5m
+monitoring    deployment.apps/kube-prometheus-exporter-kube-state   1         1         1            1           8m
+monitoring    deployment.apps/kube-prometheus-grafana               1         1         1            1           8m
+monitoring    deployment.apps/metrics-server                        1         1         1            1           12m
+monitoring    deployment.apps/prometheus-operator                   1         1         1            1           12m
+networking    deployment.apps/calico-typha                          0         0         0            0           12m
+networking    deployment.apps/cert-manager                          1         1         1            1           12m
+networking    deployment.apps/nginx-ingress-default-backend         1         1         1            1           12m
+storage       deployment.apps/ceph-mgr                              1         1         1            1           12m
+storage       deployment.apps/ceph-mon-single-node                  1         1         1            1           12m
+storage       deployment.apps/ceph-osd-single-node                  1         1         1            1           12m
+storage       deployment.apps/rbd-provisioner                       1         1         1            1           12m
+wordpress     deployment.apps/mysql                                 1         1         1            1           5m
+wordpress     deployment.apps/wordpress                             1         1         1            1           5m
+NAMESPACE     NAME                                                             DESIRED   CURRENT   READY     AGE
+backup        replicaset.apps/ark-68c56f6d75                                   1         1         1         5m
+backup        replicaset.apps/minio-7895b9d495                                 1         1         1         5m
+kube-system   replicaset.apps/coredns-646944c5c4                               2         2         2         12m
+kube-system   replicaset.apps/heapster-heapster-6b7985754b                     1         1         1         7m
+kube-system   replicaset.apps/heapster-heapster-7bb6d67b9d                     0         0         0         12m
+kube-system   replicaset.apps/kubernetes-dashboard-845c9dbcdf                  1         1         1         12m
+kube-system   replicaset.apps/tiller-deploy-759cb9df9                          1         1         1         12m
+logging       replicaset.apps/cerebro-elasticsearch-cluster-567468c475         1         1         1         5m
+logging       replicaset.apps/elasticsearch-operator-76769d959c                1         1         1         8m
+logging       replicaset.apps/es-client-elasticsearch-cluster-7d6fb8dcdd       1         1         1         5m
+logging       replicaset.apps/kibana-elasticsearch-cluster-66778d655d          1         1         1         5m
+monitoring    replicaset.apps/kube-prometheus-exporter-kube-state-65c6c77579   1         1         1         8m
+monitoring    replicaset.apps/kube-prometheus-grafana-749496574c               1         1         1         8m
+monitoring    replicaset.apps/metrics-server-6486f65987                        1         1         1         12m
+monitoring    replicaset.apps/prometheus-operator-6bc587f9fc                   1         1         1         12m
+networking    replicaset.apps/calico-typha-679bd5b97f                          0         0         0         12m
+networking    replicaset.apps/cert-manager-86b95f4dc8                          1         1         1         12m
+networking    replicaset.apps/nginx-ingress-default-backend-789c7df7cb         1         1         1         12m
+storage       replicaset.apps/ceph-mgr-54b46c94c4                              1         1         1         12m
+storage       replicaset.apps/ceph-mon-single-node-8c98868fb                   1         1         1         12m
+storage       replicaset.apps/ceph-osd-single-node-7b7f848b97                  1         1         1         12m
+storage       replicaset.apps/rbd-provisioner-789795cf94                       1         1         1         12m
+wordpress     replicaset.apps/mysql-65d54b75b4                                 1         1         1         5m
+wordpress     replicaset.apps/wordpress-6b74676664                             1         1         1         5m
+NAMESPACE    NAME                                                       DESIRED   CURRENT   AGE
+logging      statefulset.apps/es-data-elasticsearch-cluster-default     1         1         5m
+logging      statefulset.apps/es-master-elasticsearch-cluster-default   1         1         5m
+monitoring   statefulset.apps/alertmanager-kube-prometheus              1         1         8m
+monitoring   statefulset.apps/prometheus-kube-prometheus                1         1         8m
+NAMESPACE   NAME                    DESIRED   SUCCESSFUL   AGE
+backup      job.batch/minio-setup   1         1            5m
+storage     job.batch/ceph-setup    1         1            12m
+```
 
 # Troubleshooting
 
