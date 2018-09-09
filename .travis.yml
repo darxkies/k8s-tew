@@ -11,8 +11,11 @@ go:
 install: true
 
 script:
+  - cat /etc/issue
+  - pwd
+  - env
   - docker build -t darxkies/k8s-tew-build build
-  - docker run --rm -v $(GOPATH):/go darxkies/k8s-tew-build
+  - docker run --rm -v /home/travis/gopath:/go darxkies/k8s-tew-build
 
 deploy:
   provider: releases
