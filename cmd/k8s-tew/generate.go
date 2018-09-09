@@ -20,7 +20,7 @@ var generateCmd = &cobra.Command{
 	Long:  "Generate assets",
 	Run: func(cmd *cobra.Command, args []string) {
 		// Load config and check the rights
-		if error := Bootstrap(false); error != nil {
+		if error := bootstrap(false); error != nil {
 			log.WithFields(log.Fields{"error": error}).Error("Generate failed")
 
 			os.Exit(-1)

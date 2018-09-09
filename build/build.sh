@@ -4,7 +4,9 @@ VERSION=$(git describe --tags)
 
 echo "Packr"
 
-go get -u github.com/gobuffalo/packr/...
+if [ ! -f $GOBIN/packr ]; then
+	go get -u github.com/gobuffalo/packr/...
+fi
 
 echo "Build freezer"
 

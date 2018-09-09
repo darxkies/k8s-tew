@@ -39,7 +39,8 @@ var RootCmd = &cobra.Command{
 	},
 }
 
-func GetDefaultBaseDirectory() string {
+// getDefaultBaseDirectory returns the base directory based on the current working directory
+func getDefaultBaseDirectory() string {
 	directory, error := os.Getwd()
 	if error != nil {
 		log.WithFields(log.Fields{"error": error}).Fatal("Failed to retrieve cwd")
@@ -48,7 +49,8 @@ func GetDefaultBaseDirectory() string {
 	return path.Join(directory, utils.BASE_DIRECTORY)
 }
 
-func GetBaseDirectory() string {
+// getBaseDirectory returns the base directory pointing to the assets
+func getBaseDirectory() string {
 	result := baseDirectory
 
 	environmentBaseDirectory := os.Getenv(utils.K8S_TEW_BASE_DIRECTORY)
@@ -60,7 +62,8 @@ func GetBaseDirectory() string {
 	return result
 }
 
-func Bootstrap(needsRoot bool) error {
+// bootstrap loads the configuration and performs other checks such as the need for root rights
+func bootstrap(needsRoot bool) error {
 	utils.SetDebug(*debug)
 	utils.SupressProgress(*hideProgress)
 
@@ -68,7 +71,7 @@ func Bootstrap(needsRoot bool) error {
 		return errors.New("this program needs root rights")
 	}
 
-	_config = config.NewInternalConfig(GetBaseDirectory())
+	_config = config.NewInternalConfig(getBaseDirectory())
 
 	return _config.Load()
 }
@@ -76,7 +79,7 @@ func Bootstrap(needsRoot bool) error {
 func main() {
 	debug = RootCmd.PersistentFlags().BoolP("debug", "d", false, "Show debug messages")
 	hideProgress = RootCmd.PersistentFlags().Bool("hide-progress", false, "Hide progress")
-	RootCmd.PersistentFlags().StringVar(&baseDirectory, "base-directory", GetDefaultBaseDirectory(), "Base directory")
+	RootCmd.PersistentFlags().StringVar(&baseDirectory, "base-directory", getDefaultBaseDirectory(), "Base directory")
 
 	if _error := RootCmd.Execute(); _error != nil {
 		fmt.Println(_error)

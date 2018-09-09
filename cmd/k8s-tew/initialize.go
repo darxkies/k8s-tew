@@ -17,7 +17,7 @@ var initializeCmd = &cobra.Command{
 	Short: "Initialize the configuration",
 	Long:  "Initialize the configuration",
 	Run: func(cmd *cobra.Command, args []string) {
-		_config = config.NewInternalConfig(GetBaseDirectory())
+		_config = config.NewInternalConfig(getBaseDirectory())
 
 		if force {
 			utils.SetProgressSteps(3)

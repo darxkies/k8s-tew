@@ -22,7 +22,7 @@ var deployCmd = &cobra.Command{
 	Short: "Deploy assets to a remote cluster",
 	Long:  "Deploy assets to a remote cluster",
 	Run: func(cmd *cobra.Command, args []string) {
-		if error := Bootstrap(false); error != nil {
+		if error := bootstrap(false); error != nil {
 			log.WithFields(log.Fields{"error": error}).Error("Failed initializing")
 
 			os.Exit(-1)

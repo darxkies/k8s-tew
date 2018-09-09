@@ -17,7 +17,7 @@ var dashboardCmd = &cobra.Command{
 	Short: "Retrieves and shows the dashboard token",
 	Long:  "Retrieves and shows the dashboard token",
 	Run: func(cmd *cobra.Command, args []string) {
-		if error := Bootstrap(false); error != nil {
+		if error := bootstrap(false); error != nil {
 			log.WithFields(log.Fields{"error": error}).Error("Failed initializing")
 
 			os.Exit(-1)

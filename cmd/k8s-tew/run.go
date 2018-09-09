@@ -17,7 +17,7 @@ var runCmd = &cobra.Command{
 	Short: "Run",
 	Long:  "Run servers",
 	Run: func(cmd *cobra.Command, args []string) {
-		if error := Bootstrap(true); error != nil {
+		if error := bootstrap(true); error != nil {
 			log.WithFields(log.Fields{"error": error}).Error("Failed initialization")
 
 			os.Exit(-1)

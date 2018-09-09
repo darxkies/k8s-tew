@@ -30,8 +30,6 @@ func WaitForSignal(signal <-chan struct{}, timeout uint) error {
 	case <-time.After(time.Duration(timeout) * time.Second):
 		return errors.New("signal timeout")
 	}
-
-	return nil
 }
 
 func GetWorkingDirectory() (string, error) {
