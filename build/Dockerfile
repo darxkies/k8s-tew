@@ -9,8 +9,6 @@ ENV GOBIN=$GOPATH/bin
 ENV PATH=$GOBIN:$PATH
 ENV GOCACHE=$GOPATH/pkg
 
-RUN go get -u github.com/gobuffalo/packr/...
-
 WORKDIR /go/src/github.com/darxkies/k8s-tew
 
 CMD ["build/build.sh"]

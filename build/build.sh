@@ -2,6 +2,10 @@
 
 VERSION=$(git describe --tags)
 
+echo "Packr"
+
+RUN go get -u github.com/gobuffalo/packr/...
+
 echo "Build freezer"
 
 CGO_ENABLED=0 go install -ldflags '-s -w' github.com/darxkies/k8s-tew/cmd/freezer
