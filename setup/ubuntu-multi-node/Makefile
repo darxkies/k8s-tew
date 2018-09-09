@@ -71,7 +71,7 @@ ssh-worker01:
 	vagrant ssh worker01
 
 forward-80:
-	sudo socat -d -v TCP-LISTEN:80,fork TCP:$(IP_PREFIX).20:30080
+	sudo socat -d -v TCP-LISTEN:80,fork TCP:$(IP_PREFIX).20:80
 
 forward-443:
-	sudo socat -d -v TCP-LISTEN:443,fork TCP:$(IP_PREFIX).20:30443
+	sudo socat -d -v TCP-LISTEN:443,fork TCP:$(IP_PREFIX).20:443

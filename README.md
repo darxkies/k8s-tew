@@ -100,6 +100,14 @@ To activate completion enter:
 source <(k8s-tew completion)
 ```
 
+## Workflow
+
+To setup a local singl-node cluster, the workflow is: initialize -> configure -> generate -> run
+
+For a remote cluster, the workflow is: initialize -> configure -> generate -> deploy
+
+If something in one of the steps is changed, (e.g. configuration), then all the following steps have to be performed.
+
 ## Initialization
 
 The first step in using k8s-tew is to create a config file. This is achieved by executing this command:
@@ -108,58 +116,74 @@ The first step in using k8s-tew is to create a config file. This is achieved by 
 k8s-tew initialize
 ```
 
-That command generates the config file called assets/etc/k8s-tew/config.yaml. To overwrite the existing configuration use the argument -f.
+That command generates the config file called {base-directory}/etc/k8s-tew/config.yaml. To overwrite the existing configuration use the argument -f.
 
 ## Configuration
 
 After the initialization step the parameters of the cluster should be be adapted. These are the configure parameters and their defaults:
 
-* --apiserver-port -                       API Server Port (default 6443)
-* --ca-certificate-validity-period -       CA Certificate Validity Period (default 20)
-* --client-certificate-validity-period -   Client Certificate Validity Period (default 15)
-* --cluster-cidr -                         Cluster CIDR (default "10.200.0.0/16")
-* --cluster-dns-ip -                       Cluster DNS IP (default "10.32.0.10")
-* --cluster-domain -                       Cluster domain (default "cluster.local")
-* --cluster-ip-range -                     Cluster IP range (default "10.32.0.0/24")
-* --controller-virtual-ip -                Controller Virtual/Floating IP for the cluster
-* --controller-virtual-ip-interface -      Controller Virtual/Floating IP interface for the cluster
-* --dashboard-port -                       Dashboard Port (default 32443)
-* --deployment-directory -                 Deployment directory (default "/")
-* --email -                                Email address used for example for Let's Encrypt (default "k8s-tew@gmail.com")
-* --ingress-domain -                       Ingress domain name (default "k8s-tew.net")
-* --load-balancer-port -                   Load Balancer Port (default 16443)
-* --public-network -                       Public Network (default "192.168.0.0/24")
-* --resolv-conf -                          Custom resolv.conf (default "/etc/resolv.conf")
-* --rsa-key-size -                         RSA Key Size (default 2048)
-* --version-ark -                          Ark version (default "0.9.3")
-* --version-calico-cni -                   Calico CNI version (default "3.1.3")
-* --version-calico-node -                  Calico Node version (default "3.1.3")
-* --version-calico-typha -                 Calico Typha version (default "0.7.4")
-* --version-ceph -                         Ceph version (default "3.0.5-stable-3.0-luminous-ubuntu-16.04-x86_64")
-* --version-cerebro -                      Cerebro version (default "0.6.8")
-* --version-cert-manager -                 Cert Manager version (default "0.4.1")
-* --version-containerd -                   Containerd version (default "1.1.2")
-* --version-coredns -                      CoreDNS version (default "1.2.0")
-* --version-crictl -                       CriCtl version (default "1.11.1")
-* --version-elasticsearch -                Elasticsearch version (default "6.1.3_0")
-* --version-elasticsearch-cron -           Elasticsearch Cron version (default "0.0.3")
-* --version-elasticsearch-operator -       Elasticsearch Operator version (default "0.0.12")
-* --version-etcd -                         Etcd version (default "3.3.9")
-* --version-fluent-bit -                   Fluent-Bit version (default "0.13.0")
-* --version-gobetween -                    Gobetween version (default "0.5.0")
-* --version-helm -                         Helm version (default "2.9.1")
-* --version-k8s -                          Kubernetes version (default "1.11.2")
-* --version-kibana -                       Kibana version (default "6.1.3")
-* --version-kubernetes-dashboard -         Kuberntees Dashboard version (default "1.8.3")
-* --version-minio-client -                 Minio client version (default "RELEASE.2018-08-18T02-13-04Z")
-* --version-minio-server -                 Minio server version (default "RELEASE.2018-08-18T03-49-57Z")
-* --version-pause -                        Pause version (default "3.1")
-* --version-rbd-provisioner -              RBD-Provisioner version (default "1.0.0-k8s1.10")
-* --version-runc -                         Runc version (default "1.0.0-rc5")
-* --vip-raft-controller-port -             VIP Raft Controller Port (default 16277)
-* --vip-raft-worker-port -                 VIP Raft Worker Port (default 16728)
-* --worker-virtual-ip -                    Worker Virtual/Floating IP for the cluster
-* --worker-virtual-ip-interface -          Worker Virtual/Floating IP interface for the cluster
+* --apiserver-port -                          API Server Port (default 6443)
+* --ca-certificate-validity-period -          CA Certificate Validity Period (default 20)
+* --calico-typha-ip -                 Calico Typha IP (default "10.32.0.5")
+* --client-certificate-validity-period -      Client Certificate Validity Period (default 15)
+* --cluster-cidr -                            Cluster CIDR (default "10.200.0.0/16")
+* --cluster-dns-ip -                          Cluster DNS IP (default "10.32.0.10")
+* --cluster-domain  -                          Cluster domain (default "cluster.local")
+* --cluster-ip-range  -                        Cluster IP range (default "10.32.0.0/24")
+* --cluster-name  -                            Cluster Name used for Kubernetes Dashboard (default "k8s-tew")
+* --controller-virtual-ip  -                   Controller Virtual/Floating IP for the cluster
+* --controller-virtual-ip-interface  -         Controller Virtual/Floating IP interface for the cluster
+* --dashboard-port  -                          Dashboard Port (default 32443)
+* --deployment-directory  -                    Deployment directory (default "/")
+* --email  -                                   Email address used for example for Let's Encrypt (default "k8s-tew@gmail.com")
+* --ingress-domain  -                          Ingress domain name (default "k8s-tew.net")
+* --load-balancer-port  -                      Load Balancer Port (default 16443)
+* --public-network  -                          Public Network (default "192.168.0.0/24")
+* --resolv-conf  -                             Custom resolv.conf (default "/etc/resolv.conf")
+* --rsa-key-size  -                            RSA Key Size (default 2048)
+* --version-addon-resizer  -                   Addon-Resizer version (default "k8s.gcr.io/addon-resizer:1.7")
+* --version-ark  -                             Ark version (default "gcr.io/heptio-images/ark:v0.9.4")
+* --version-calico-cni  -                      Calico CNI version (default "quay.io/calico/cni:v3.1.3")
+* --version-calico-node  -                     Calico Node version (default "quay.io/calico/node:v3.1.3")
+* --version-calico-typha  -                    Calico Typha version (default "quay.io/calico/typha:v0.7.4")
+* --version-ceph  -                            Ceph version (default "docker.io/ceph/daemon:v3.0.7-stable-3.0-mimic-centos-7-x86_64")
+* --version-cerebro  -                         Cerebro version (default "docker.io/upmcenterprises/cerebro:0.6.8")
+* --version-cert-manager-controller  -         Cert Manager Controller version (default "quay.io/jetstack/cert-manager-controller:v0.4.1")
+* --version-configmap-reload  -                ConfigMap Reload version (default "quay.io/coreos/configmap-reload:v0.0.1")
+* --version-containerd  -                      Containerd version (default "1.1.3")
+* --version-coredns  -                         CoreDNS version (default "docker.io/coredns/coredns:1.2.0")
+* --version-crictl  -                          CriCtl version (default "1.11.1")
+* --version-elasticsearch  -                   Elasticsearch version (default "docker.io/upmcenterprises/docker-elasticsearch-kubernetes:6.1.3_0")
+* --version-elasticsearch-cron  -              Elasticsearch Cron version (default "docker.io/upmcenterprises/elasticsearch-cron:0.0.3")
+* --version-elasticsearch-operator  -          Elasticsearch Operator version (default "docker.io/upmcenterprises/elasticsearch-operator:0.0.12")
+* --version-etcd  -                            Etcd version (default "3.3.9")
+* --version-fluent-bit  -                      Fluent-Bit version (default "docker.io/fluent/fluent-bit:0.13.0")
+* --version-gobetween  -                       Gobetween version (default "0.6.0")
+* --version-grafana  -                         Grafana version (default "docker.io/grafana/grafana:5.0.0")
+* --version-grafana-watcher  -                 Grafana Watcher version (default "quay.io/coreos/grafana-watcher:v0.0.8")
+* --version-heapster  -                        Heapster version (default "k8s.gcr.io/heapster:v1.3.0")
+* --version-helm  -                            Helm version (default "2.9.1")
+* --version-k8s  -                             Kubernetes version (default "1.11.2")
+* --version-kibana  -                          Kibana version (default "docker.elastic.co/kibana/kibana-oss:6.1.3")
+* --version-kube-state-metrics  -              Kube State Metrics version (default "gcr.io/google_containers/kube-state-metrics:v1.2.0")
+* --version-kubernetes-dashboard  -            Kubernetes Dashboard version (default "k8s.gcr.io/kubernetes-dashboard-amd64:v1.8.3")
+* --version-metrics-server  -                  Metrics Server version (default "gcr.io/google_containers/metrics-server-amd64:v0.2.1")
+* --version-minio-client  -                    Minio client version (default "docker.io/minio/mc:RELEASE.2018-08-18T02-13-04Z")
+* --version-minio-server  -                    Minio server version (default "docker.io/minio/minio:RELEASE.2018-08-18T03-49-57Z")
+* --version-nginx-ingress-controller  -        Nginx Ingress Controller version (default "quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.18.0")
+* --version-nginx-ingress-default-backend  -   Nginx Ingress Default Backend version (default "k8s.gcr.io/defaultbackend:1.4")
+* --version-pause  -                           Pause version (default "k8s.gcr.io/pause:3.1")
+* --version-prometheus  -                      Prometheus version (default "quay.io/prometheus/prometheus:v2.2.1")
+* --version-prometheus-alert-manager  -        Prometheus Alert Manager version (default "quay.io/prometheus/alertmanager:v0.15.1")
+* --version-prometheus-config-reloader  -      Prometheus Config Reloader version (default "quay.io/coreos/prometheus-config-reloader:v0.20.0")
+* --version-prometheus-node-exporter  -        Prometheus Node Exporter version (default "quay.io/prometheus/node-exporter:v0.15.2")
+* --version-prometheus-operator  -             Prometheus Operator version (default "quay.io/coreos/prometheus-operator:v0.20.0")
+* --version-rbd-provisioner  -                 RBD-Provisioner version (default "quay.io/external_storage/rbd-provisioner:v2.1.1-k8s1.11")
+* --version-runc  -                            Runc version (default "1.0.0-rc5")
+* --vip-raft-controller-port  -                VIP Raft Controller Port (default 16277)
+* --vip-raft-worker-port  -                    VIP Raft Worker Port (default 16728)
+* --worker-virtual-ip  -                       Worker Virtual/Floating IP for the cluster
+* --worker-virtual-ip-interface  -             Worker Virtual/Floating IP interface for the cluster
 
 The email and the ingress-domain parameters need to be changed if you want a working Ingress and Lets' Encrypt configuration. It goes like this:
 
@@ -169,7 +193,7 @@ k8s-tew configure --email john.doe@gmail.com --ingress-domain example.com
 
 Another important argument is --resolv-conf which is used to define which resolv.conf file should be used for DNS.
 
-The Virtual/Floating IP parameters should be accordingly changed if you want true HA. This is especially for the controllers important. Then if there are for example three controllers then the IP of the first controller is used by the whole cluster and if that one fails then the whole cluster will stop working. k8s-tew uses [etcd](https://coreos.com/etcd/) and its [RAFT](https://raft.github.io/) functionality to keep track of the available nodes and if the current leader fails, its Virtual IP is passed automatically to another node.
+The Virtual/Floating IP parameters should be accordingly changed if you want true HA. This is especially for the controllers important. Then if there are for example three controllers then the IP of the first controller is used by the whole cluster and if that one fails then the whole cluster will stop working. k8s-tew uses internally [RAFT](https://raft.github.io/) and its leader election functionality to select one node on which the Virtual IP is set. If the leader fails, one of the remaining nodes gets the Virtual IP assigned.
 
 ## Labels
 
@@ -198,6 +222,8 @@ The arguments:
 * -i - The IP of the node
 * -x - Each node needs a unique number. Do not reuse this number even though the node does not exist anymore.
 * -l - The role of the node in the cluster: controller and/or worker and/or storage
+
+__NOTE__: Make sure the IP address of the node matches the public network set using the configuration argument --public-network.
 
 ### Add Local Node
 k8s-tew is also able to start a cluster on the local computer and for that the local computer has to be added as a node:
@@ -233,6 +259,8 @@ Once all the nodes were added, the required files (third party binares, certific
 k8s-tew generate
 ```
 
+__NOTE__: Depending on your internet connection, you could speed up the download process by using the argument --parallel.
+
 ## Run
 
 With this command the local cluster can be started:
@@ -252,6 +280,8 @@ k8s-tew deploy
 ```
 
 The files are copied using scp and the ssh private key $HOME/.ssh/id_rsa. In case the file  $HOME/.ssh/id_rsa does not exist it should be generated using the command ssh-keygen. If another private key should be used, it can be specified using the command line argument -i.
+
+__NOTE__: The argument --pull-images downloads the required Docker Images on the nodes, before the setup process is executed. That could speed up the whole setup process later on. Furthermore, by using --parallel the process of uploading files to the nodes and the download of Docker Images can be again considerable shortened. Use these parameters with caution, as they can starve your network.
 
 ## Environment
 
@@ -275,7 +305,7 @@ If you have a GUI web browser installed, then you can use the following command 
 k8s-tew dashboard -o
 ```
 
-__NOTE__: It takes minutes to actually download dashboard. Use the following command to check the status of the pods:
+__NOTE__: It takes minutes to actually download the dashboard. Use the following command to check the status of the pods:
 
 ```shell
 kubectl get pods -n kube-system
@@ -298,7 +328,7 @@ k8s-tew configure --ingress-domain [ingress-domain]
 * Address: http://[worker-ip]:30100
 * Address: https://wordpress.[ingress-domain]
 
-__NOTE__: Wordpress is installed for testing purposes and [ingress-domain] can be be configured using
+__NOTE__: Wordpress is installed for testing purposes and [ingress-domain] can be set using the configure command.
 
 ## Minio
 
@@ -310,7 +340,7 @@ __NOTE__: Wordpress is installed for testing purposes and [ingress-domain] can b
 
 * Address: http://[worker-ip]:30900
 * Username: admin
-* Password: admin
+* Password: changeme
 
 ## Kibana
 
@@ -322,9 +352,11 @@ __NOTE__: Wordpress is installed for testing purposes and [ingress-domain] can b
 
 ## Ceph Dashboard
 
- * Address: http://[worker-ip]:7000
+ * Address: https://[worker-ip]:7000
+ * Username: admin
+ * Password: changeme
 
-__NOTE__: [worker-ip] is the IP of the worker where ceph-mgr is running. The port for this service is not exposed as a Kuernetes NodePort.
+__NOTE__: [worker-ip] is the IP of the worker where ceph-mgr is running. The port for this service is not exposed as a Kubernetes NodePort.
 
 # Cluster Setups
 
@@ -332,14 +364,14 @@ Vagrant/VirtualBox can be used to test drive k8s-tew. The host is used to bootst
 
 The Vagrantfile can be configured using the environment variables:
 
-* OS - define the operating system. It accepts ubuntu and centos.
+* OS - define the operating system. It accepts ubuntu, the default value, and centos.
 * MULTI_NODE - if set then a HA cluster is generated. Otherwise a single-node setup is used.
 * CONTROLLERS - defines the number of controller nodes. The default number is 3.
 * WORKERS - specifies the number of worker nodes. The default number is 2.
+* SSH_PUBLIC_KEY - if this environment variable is not set, then $HOME/.ssh/id_rsa is used by default.
+* IP_PREFIX - this value is used to generate the IP addresses of the nodes. If not set 192.168.100 will be used.
 
 __NOTE__: The multi-node setup with the default settings needs about 20G RAM for itself.
-
-__NOTE__: The Vagrantfile expects $HOME/.ssh/id_rsa to be in place. Otherwise the deployment will not work. If is not there it can be ganerated only by invoking the command ssh-keygen with no parameters.
 
 ## Usage
 
@@ -353,7 +385,7 @@ The directory called setup contains sub-directories for various cluster setup co
 
 __NOTE__: Regardless of the setup, once the deployment is done it will take a while to download all required containers from the internet. So better use kubectl to check the status of the pods.
 
-__NOTE__: To access Kuberntes Dashboard use the internal IP address and not 127.0.0.1/localhost. Depending on the hardware used, it might take a while until it starts and setups everything.
+__NOTE__: For the local setup, to access the Kubernetes Dashboard use the internal IP address (e.g. 192.168.x.y or 10.x.y.z) and not 127.0.0.1/localhost. Depending on the hardware used, it might take a while until it starts and setups everything.
 
 ### Create
 
@@ -362,6 +394,7 @@ Change to one of the sub-directories and enter the following command to start th
 ```shell
 make
 ```
+__NOTE__: This will destroy any existing VMs, creates new VMs and performs all the steps (forced initialization, configuration, generation and deployment) to create the cluster.
 
 ### Stop
 
@@ -375,7 +408,7 @@ make halt
 
 ### Start
 
-To start an existing setup enter:
+To start an existing setup/VMs enter:
 
 ```shell
 make up
@@ -400,6 +433,25 @@ make ssh-controller02
 make ssh-worker00
 make ssh-worker01
 ```
+
+### Kubernetes Dashboard
+
+This will display the token for three seconds, and then it will open the web browser pointing to the address of Kubernetes Dashboard:
+
+```shell
+make dashboard
+```
+
+### Ingress Port Forwarding
+
+In order to start port forwarding from your host's ports 80 and 443 to Vagrant's VMs for Ingress enter:
+
+```shell
+make forward-80
+make forward-443
+```
+
+__NOTE__: Both commands are blocking. So you need two different terminal sessions.
 
 # Troubleshooting
 
