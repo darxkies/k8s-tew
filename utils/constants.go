@@ -1,7 +1,7 @@
 package utils
 
 // Versions
-const VERSION_K8S = "1.11.2"
+const VERSION_K8S = "1.11.3"
 const VERSION_CONFIG = "2.1.0"
 const VERSION_ETCD = "3.3.9"
 const VERSION_CONTAINERD = "1.1.3"
@@ -27,7 +27,7 @@ const VERSION_RBD_PROVISIONER = "quay.io/external_storage/rbd-provisioner:v2.1.1
 const VERSION_CEPH = "docker.io/ceph/daemon:v3.0.7-stable-3.0-mimic-centos-7-x86_64"
 const VERSION_HEAPSTER = "k8s.gcr.io/heapster:v1.3.0"
 const VERSION_ADDON_RESIZER = "k8s.gcr.io/addon-resizer:1.7"
-const VERSION_KUBERNETES_DASHBOARD = "k8s.gcr.io/kubernetes-dashboard-amd64:v1.8.3"
+const VERSION_KUBERNETES_DASHBOARD = "k8s.gcr.io/kubernetes-dashboard-amd64:v1.10.0"
 const VERSION_CERT_MANAGER_CONTROLLER = "quay.io/jetstack/cert-manager-controller:v0.4.1"
 const VERSION_NGINX_INGRESS_DEFAULT_BACKEND = "k8s.gcr.io/defaultbackend:1.4"
 const VERSION_NGINX_INGRESS_CONTROLLER = "quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.18.0"
