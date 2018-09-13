@@ -46,6 +46,12 @@ func NewGenerator(config *config.InternalConfig) *Generator {
 		generator.generateCertificates,
 		// Generate kubeconfig files
 		generator.generateKubeConfigs,
+		// Generate Ceph Config
+		generator.generateCephConfig,
+		// Generate Ceph Config
+		generator.generateCephSetup,
+		// Generate Ceph CSI
+		generator.generateCephCSI,
 		// Generate ceph files
 		generator.generateCephFiles,
 		// Generate Let's Encrypt Cluster Issuer
@@ -453,7 +459,8 @@ func (generator *Generator) generateCephConfig() error {
 
 func (generator *Generator) generateCephSetup() error {
 	return utils.ApplyTemplateAndSave("ceph-setup", utils.TEMPLATE_CEPH_SETUP, struct {
-		CephPoolName        string
+		CephRBDPoolName     string
+		CephFSPoolName      string
 		PublicNetwork       string
 		StorageControllers  []config.NodeData
 		StorageNodes        []config.NodeData
@@ -462,7 +469,8 @@ func (generator *Generator) generateCephSetup() error {
 		RBDProvisionerImage string
 		CephImage           string
 	}{
-		CephPoolName:        utils.CEPH_POOL_NAME,
+		CephRBDPoolName:     utils.CEPH_RBD_POOL_NAME,
+		CephFSPoolName:      utils.CEPH_FS_POOL_NAME,
 		PublicNetwork:       generator.config.Config.PublicNetwork,
 		StorageControllers:  generator.config.GetStorageControllers(),
 		StorageNodes:        generator.config.GetStorageNodes(),
@@ -473,15 +481,37 @@ func (generator *Generator) generateCephSetup() error {
 	}, generator.config.GetFullLocalAssetFilename(utils.CEPH_SETUP), true, false)
 }
 
+func (generator *Generator) generateCephCSI() error {
+	return utils.ApplyTemplateAndSave("ceph-csi", utils.TEMPLATE_CEPH_CSI, struct {
+		PodsDirectory           string
+		PluginsDirectory        string
+		CephFSPluginDirectory   string
+		CephRBDPluginDirectory  string
+		CephRBDPoolName         string
+		CephFSPoolName          string
+		StorageControllers      []config.NodeData
+		CSIAttacherImage        string
+		CSIProvisionerImage     string
+		CSIDriverRegistrarImage string
+		CSICephRBDPluginImage   string
+		CSICephFSPluginImage    string
+	}{
+		PodsDirectory:           generator.config.GetFullTargetAssetDirectory(utils.PODS_DATA_DIRECTORY),
+		PluginsDirectory:        generator.config.GetFullTargetAssetDirectory(utils.KUBELET_PLUGINS_DIRECTORY),
+		CephFSPluginDirectory:   generator.config.GetFullTargetAssetDirectory(utils.CEPH_FS_PLUGIN_DIRECTORY),
+		CephRBDPluginDirectory:  generator.config.GetFullTargetAssetDirectory(utils.CEPH_RBD_PLUGIN_DIRECTORY),
+		CephRBDPoolName:         utils.CEPH_RBD_POOL_NAME,
+		CephFSPoolName:          utils.CEPH_FS_POOL_NAME,
+		StorageControllers:      generator.config.GetStorageControllers(),
+		CSIAttacherImage:        generator.config.Config.Versions.CSIAttacher,
+		CSIProvisionerImage:     generator.config.Config.Versions.CSIProvisioner,
+		CSIDriverRegistrarImage: generator.config.Config.Versions.CSIDriverRegistrar,
+		CSICephRBDPluginImage:   generator.config.Config.Versions.CSICephRBDPlugin,
+		CSICephFSPluginImage:    generator.config.Config.Versions.CSICephFSPlugin,
+	}, generator.config.GetFullLocalAssetFilename(utils.CEPH_CSI), true, false)
+}
+
 func (generator *Generator) generateCephFiles() error {
-	if error := generator.generateCephConfig(); error != nil {
-		return error
-	}
-
-	if error := generator.generateCephSetup(); error != nil {
-		return error
-	}
-
 	if utils.FileExists(generator.config.GetFullLocalAssetFilename(utils.CEPH_MONITOR_KEYRING)) {
 		return nil
 	}
@@ -511,7 +541,7 @@ func (generator *Generator) generateCephFiles() error {
 		ClientBootstrapRadosBlockDeviceKey: clientBootstrapRadosBlockDeviceKey,
 		ClientBootstrapRadosGatewayKey:     clientBootstrapRadosGatewayKey,
 		ClientK8STEWKey:                    clientK8STEWKey,
-		CephPoolName:                       utils.CEPH_POOL_NAME,
+		CephPoolName:                       utils.CEPH_RBD_POOL_NAME,
 	}, generator.config.GetFullLocalAssetFilename(utils.CEPH_MONITOR_KEYRING), false, false); error != nil {
 		return error
 	}

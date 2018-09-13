@@ -41,6 +41,11 @@ const VERSION_GRAFANA_WATCHER = "quay.io/coreos/grafana-watcher:v0.0.8"
 const VERSION_PROMETHEUS = "quay.io/prometheus/prometheus:v2.2.1"
 const VERSION_PROMETHEUS_NODE_EXPORTER = "quay.io/prometheus/node-exporter:v0.15.2"
 const VERSION_PROMETHEUS_ALERT_MANAGER = "quay.io/prometheus/alertmanager:v0.15.1"
+const VERSION_CSI_ATTACHER = "quay.io/k8scsi/csi-attacher:v0.3.0"
+const VERSION_CSI_PROVISIONER = "quay.io/k8scsi/csi-provisioner:v0.3.0"
+const VERSION_CSI_DRIVER_REGISTRAR = "quay.io/k8scsi/driver-registrar:v0.3.0"
+const VERSION_CSI_CEPH_RBD_PLUGIN = "quay.io/cephcsi/rbdplugin:v0.3.0"
+const VERSION_CSI_CEPH_FS_PLUGIN = "quay.io/cephcsi/cephfsplugin:v0.3.0"
 
 // Settings
 const PROJECT_TITLE = "Kubernetes - The Easier Way"
@@ -94,6 +99,15 @@ const NODE_CONTROLLER = "controller"
 const NODE_WORKER = "worker"
 const NODE_STORAGE = "storage"
 
+// Features
+const FEATURE_STORAGE = "storage"
+const FEATURE_MONITORING = "monitoring"
+const FEATURE_LOGGING = "logging"
+const FEATURE_BACKUP = "backup"
+const FEATURE_SHOWCASE = "showcase"
+const FEATURE_INGRESS = "ingress"
+const FEATURE_PACKAGING = "packaging"
+
 // OS
 const OS_UBUNTU = "ubuntu"
 const OS_UBUNTU_18_04 = "ubuntu/18.04"
@@ -135,6 +149,9 @@ const CEPH_BOOTSTRAP_RGW_SUBDIRECTORY = "bootstrap-rgw"
 const ARK_SUBDIRECTORY = "ark"
 const BASH_COMPLETION_SUBDIRECTORY = "bash_completion.d"
 const HOST_SUBDIRECTORY = "host"
+const PLUGINS_SUBDIRECTORY = "plugins"
+const CSI_CEPHFS_PLUGIN = "csi-cephfsplugin"
+const CSI_RBD_PLUGIN = "csi-rbdplugin"
 
 // Directories
 const CONFIG_DIRECTORY = "config"
@@ -175,6 +192,9 @@ const CEPH_BOOTSTRAP_RGW_DIRECTORY = "bootstrap-rgw"
 const ARK_BINARIES_DIRECTORY = "ark"
 const BASH_COMPLETION_DIRECTORY = "bash-completion"
 const HOST_BINARIES_DIRECTORY = "host-binaries"
+const CEPH_RBD_PLUGIN_DIRECTORY = "ceph-rbd-plugin"
+const CEPH_FS_PLUGIN_DIRECTORY = "ceph-fs-plugin"
+const KUBELET_PLUGINS_DIRECTORY = "kubelet-plugins"
 
 // Binaries
 const K8S_TEW_BINARY = "k8s-tew"
@@ -300,7 +320,8 @@ const SERVICE_NAME = "k8s-tew"
 const SERVICE_CONFIG = SERVICE_NAME + ".service"
 
 // Ceph
-const CEPH_POOL_NAME = "ceph"
+const CEPH_RBD_POOL_NAME = "cephrbd"
+const CEPH_FS_POOL_NAME = "cephfs"
 const CEPH_CONFIG = "ceph.conf"
 const CEPH_CLIENT_ADMIN_KEYRING = "ceph.client.admin.keyring"
 const CEPH_MONITOR_KEYRING = "ceph.mon.keyring"
@@ -311,6 +332,7 @@ const CEPH_BOOTSTRAP_RBD_KEYRING = "ceph.bootstrap.rbd.keyring"
 const CEPH_BOOTSTRAP_RGW_KEYRING = "ceph.bootstrap.rgw.keyring"
 const CEPH_SECRETS = "ceph-secrets.yaml"
 const CEPH_SETUP = "ceph-setup.yaml"
+const CEPH_CSI = "ceph-csi.yaml"
 
 // Cluster Issuer
 const LETSENCRYPT_CLUSTER_ISSUER = "letsencrypt-cluster-issuer.yaml"
@@ -349,6 +371,7 @@ const TEMPLATE_CEPH_MONITOR_KEYRING = "ceph/monitor.keyring"
 const TEMPLATE_CEPH_CONFIG = "ceph/ceph.conf"
 const TEMPLATE_CEPH_SECRETS = "k8s/setup/storage/ceph-secrets.yaml"
 const TEMPLATE_CEPH_SETUP = "k8s/setup/storage/ceph-setup.yaml"
+const TEMPLATE_CEPH_CSI = "k8s/setup/storage/ceph-csi.yaml"
 const TEMPLATE_LETSENCRYPT_CLUSTER_ISSUER_SETUP = "k8s/setup/ingress/letsencrypt-cluster-issuer.yaml"
 const TEMPLATE_COREDNS_SETUP = "k8s/setup/dns/coredns.yaml"
 const TEMPLATE_CALICO_SETUP = "k8s/setup/networking/calico.yaml"

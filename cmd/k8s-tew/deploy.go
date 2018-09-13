@@ -14,6 +14,13 @@ import (
 var identityFile string
 var commandRetries uint
 var skipSetup bool
+var skipStorageSetup bool
+var skipMonitoringSetup bool
+var skipLoggingSetup bool
+var skipBackupSetup bool
+var skipShowcaseSetup bool
+var skipIngressSetup bool
+var skipPackagingSetup bool
 var pullImages bool
 var forceUpload bool
 
@@ -28,7 +35,7 @@ var deployCmd = &cobra.Command{
 			os.Exit(-1)
 		}
 
-		_deployment := deployment.NewDeployment(_config, identityFile, skipSetup, pullImages, forceUpload, parallel, commandRetries)
+		_deployment := deployment.NewDeployment(_config, identityFile, pullImages, forceUpload, parallel, commandRetries, skipSetup, skipStorageSetup, skipMonitoringSetup, skipLoggingSetup, skipBackupSetup, skipShowcaseSetup, skipIngressSetup, skipPackagingSetup)
 
 		utils.SetProgressSteps(_deployment.Steps() + 1)
 
@@ -49,7 +56,14 @@ var deployCmd = &cobra.Command{
 func init() {
 	deployCmd.Flags().StringVarP(&identityFile, "identity-file", "i", path.Join(os.Getenv("HOME"), ".ssh/id_rsa"), "SSH identity file")
 	deployCmd.Flags().UintVarP(&commandRetries, "command-retries", "r", 300, "The count of command retries during the setup")
-	deployCmd.Flags().BoolVarP(&skipSetup, "skip-setup", "s", false, "Skip setup steps")
+	deployCmd.Flags().BoolVar(&skipSetup, "skip-setup", false, "Skip setup steps")
+	deployCmd.Flags().BoolVar(&skipStorageSetup, "skip-storage-setup", false, "Skip storage setup and all other setup steps that require storage")
+	deployCmd.Flags().BoolVar(&skipMonitoringSetup, "skip-monitoring-setup", false, "Skip monitoring setup")
+	deployCmd.Flags().BoolVar(&skipLoggingSetup, "skip-logging-setup", false, "Skip logging setup")
+	deployCmd.Flags().BoolVar(&skipBackupSetup, "skip-backup-setup", false, "Skip backup setup")
+	deployCmd.Flags().BoolVar(&skipShowcaseSetup, "skip-showcase-setup", false, "Skip showcase setup")
+	deployCmd.Flags().BoolVar(&skipIngressSetup, "skip-ingress-setup", false, "Skip ingress setup")
+	deployCmd.Flags().BoolVar(&skipPackagingSetup, "skip-packaging-setup", false, "Skip packaging setup")
 	deployCmd.Flags().BoolVar(&pullImages, "pull-images", false, "Pull images")
 	deployCmd.Flags().BoolVar(&parallel, "parallel", false, "Run steps in parallel")
 	deployCmd.Flags().BoolVar(&forceUpload, "force-upload", false, "Files are uploaded without without any checks")

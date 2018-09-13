@@ -75,7 +75,7 @@ metadata:
 provisioner: ceph.com/rbd
 parameters:
   monitors: {{range $index, $node := .StorageControllers}}{{if $index}},{{end}}{{$node.IP}}:6789{{end}}
-  pool: {{.CephPoolName}}
+  pool: {{.CephRBDPoolName}}
   adminId: admin
   adminSecretName: ceph-admin
   adminSecretNamespace: storage
@@ -152,6 +152,69 @@ spec:
           mountPath: /etc/ceph
         - name: ceph-data
           mountPath: /var/lib/ceph
+{{end}}{{range $index, $node := .StorageNodes}}---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  namespace: storage
+  name: ceph-mds-{{$node.Name}}
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: ceph-mds-{{$node.Name}}
+    spec:
+      hostNetwork: true
+      volumes:
+      - name: ceph-config
+        hostPath:
+          path: {{$.CephConfigDirectory}}
+          type: DirectoryOrCreate
+      - name: ceph-data
+        hostPath:
+          path: {{$.CephDataDirectory}}
+          type: DirectoryOrCreate
+      - name: ceph-dev
+        hostPath:
+          path: /dev
+          type: DirectoryOrCreate
+      nodeSelector:
+        kubernetes.io/hostname: {{$node.Name}}
+      tolerations:
+        - effect: NoExecute
+          operator: Exists
+      containers:
+      - name: ceph-mds
+        image: {{$.CephImage}}
+        args: ["mds"]
+        ports:
+        - containerPort: 6800
+        env:
+        - name: CEPHFS_CREATE
+          value: "1"
+        - name: CEPHFS_DATA_POOL
+          value: "{{$.CephFSPoolName}}"
+        - name: CEPHFS_METADATA_POOL
+          value: "{{$.CephFSPoolName}}_metadata"
+        volumeMounts:
+        - name: ceph-config
+          mountPath: /etc/ceph
+        - name: ceph-data
+          mountPath: /var/lib/ceph
+        - name: ceph-dev
+          mountPath: /dev
+        livenessProbe:
+          tcpSocket:
+            port: 6800
+          initialDelaySeconds: 60
+          timeoutSeconds: 5
+        readinessProbe:
+          tcpSocket:
+            port: 6800
+          timeoutSeconds: 5
 {{end}}{{range $index, $node := .StorageNodes}}---
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -239,6 +302,51 @@ spec:
         - name: ceph-data
           mountPath: /var/lib/ceph
 ---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  namespace: storage
+  name: ceph-rgw
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: ceph-rgw
+    spec:
+      volumes:
+      - name: ceph-config
+        hostPath:
+          path: {{$.CephConfigDirectory}}
+          type: DirectoryOrCreate
+      - name: ceph-data
+        hostPath:
+          path: {{$.CephDataDirectory}}
+          type: DirectoryOrCreate
+      containers:
+      - name: ceph-mgr
+        image: {{$.CephImage}}
+        args: ["rgw"]
+        ports:
+        - containerPort: 8080
+          name: rgw
+        volumeMounts:
+        - name: ceph-config
+          mountPath: /etc/ceph
+        - name: ceph-data
+          mountPath: /var/lib/ceph
+        livenessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 60
+          timeoutSeconds: 5
+        readinessProbe:
+          tcpSocket:
+            port: 8080
+          timeoutSeconds: 5
+---
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -265,9 +373,27 @@ spec:
         command:
         - /bin/sh
         - -c
-        - "ceph osd pool create {{.CephPoolName}} 256 256 && ceph mgr module enable dashboard && ceph osd pool application enable ceph rbd && ceph dashboard create-self-signed-cert && ceph config set mgr mgr/dashboard/server_port 7000 && ceph dashboard set-login-credentials admin changeme && ceph mgr module disable dashboard && ceph mgr module enable dashboard"
+        - "ceph mgr module enable dashboard && ceph dashboard create-self-signed-cert && ceph config set mgr mgr/dashboard/server_port 7000 && ceph dashboard set-login-credentials admin changeme && ceph mgr module disable dashboard && ceph mgr module enable dashboard && ceph osd pool create {{.CephRBDPoolName}} 256 256 && ceph osd pool application enable {{.CephRBDPoolName}} rbd"
         volumeMounts:
         - name: ceph-config
           mountPath: /etc/ceph
         - name: ceph-data
           mountPath: /var/lib/ceph
+---
+apiVersion: v1
+kind: Service
+metadata:
+    namespace: storage
+    name: ceph-rgw
+    labels:
+        app: ceph
+        daemon: rgw
+spec:
+    type: NodePort
+    ports:
+    - port: 8080
+      protocol: TCP
+      nodePort: 30808
+    selector:
+      app: ceph
+      daemon: rgw

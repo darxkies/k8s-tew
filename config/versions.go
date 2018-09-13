@@ -42,6 +42,11 @@ type Versions struct {
 	Prometheus                 string `yaml:"prometheus"`
 	PrometheusNodeExporter     string `yaml:"prometheus-node-exporter"`
 	PrometheusAlertManager     string `yaml:"prometheus-alert-manager"`
+	CSIAttacher                string `yaml:"csi-attacher"`
+	CSIProvisioner             string `yaml:"csi-provisioner"`
+	CSIDriverRegistrar         string `yaml:"csi-driver-registrar"`
+	CSICephRBDPlugin           string `yaml:"csi-ceph-rbd-plugin"`
+	CSICephFSPlugin            string `yaml:"csi-ceph-fs-plugin"`
 }
 
 func NewVersions() Versions {
@@ -85,5 +90,10 @@ func NewVersions() Versions {
 		Prometheus:                 utils.VERSION_PROMETHEUS,
 		PrometheusNodeExporter:     utils.VERSION_PROMETHEUS_NODE_EXPORTER,
 		PrometheusAlertManager:     utils.VERSION_PROMETHEUS_ALERT_MANAGER,
+		CSIAttacher:                utils.VERSION_CSI_ATTACHER,
+		CSIProvisioner:             utils.VERSION_CSI_PROVISIONER,
+		CSIDriverRegistrar:         utils.VERSION_CSI_DRIVER_REGISTRAR,
+		CSICephRBDPlugin:           utils.VERSION_CSI_CEPH_RBD_PLUGIN,
+		CSICephFSPlugin:            utils.VERSION_CSI_CEPH_FS_PLUGIN,
 	}
 }

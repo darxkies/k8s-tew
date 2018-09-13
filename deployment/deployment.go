@@ -11,60 +11,101 @@ import (
 
 const CONTROLLER_ONLY_TAINT_KEY = "node-role.kubernetes.io/master"
 
-type Deployment struct {
-	config         *config.InternalConfig
-	identityFile   string
-	skipSetup      bool
-	pullImages     bool
-	forceUpload    bool
-	commandRetries uint
-	nodes          map[string]*NodeDeployment
-	images         []string
-	parallel       bool
+type Image struct {
+	Name     string
+	Features config.Features
 }
 
-func NewDeployment(_config *config.InternalConfig, identityFile string, skipSetup bool, pullImages bool, forceUpload bool, parallel bool, commandRetries uint) *Deployment {
+type Deployment struct {
+	config            *config.InternalConfig
+	identityFile      string
+	skipSetup         bool
+	skipSetupFeatures config.Features
+	pullImages        bool
+	forceUpload       bool
+	commandRetries    uint
+	nodes             map[string]*NodeDeployment
+	images            []Image
+	parallel          bool
+}
+
+func NewDeployment(_config *config.InternalConfig, identityFile string, pullImages bool, forceUpload bool, parallel bool, commandRetries uint, skipSetup, skipStorageSetup, skipMonitoringSetup, skipLoggingSetup, skipBackupSetup, skipShowcaseSetup, skipIngressSetup, skipPackagingSetup bool) *Deployment {
 	nodes := map[string]*NodeDeployment{}
 
 	for nodeName, node := range _config.Config.Nodes {
 		nodes[nodeName] = NewNodeDeployment(identityFile, nodeName, node, _config, parallel)
 	}
 
-	deployment := &Deployment{config: _config, identityFile: identityFile, skipSetup: skipSetup, pullImages: pullImages, forceUpload: forceUpload, parallel: parallel, commandRetries: commandRetries, nodes: nodes}
+	skipSetupFeatures := config.Features{}
 
-	deployment.images = []string{
-		deployment.config.Config.Versions.Pause,
-		deployment.config.Config.Versions.CalicoCNI,
-		deployment.config.Config.Versions.CalicoNode,
-		deployment.config.Config.Versions.CalicoTypha,
-		deployment.config.Config.Versions.CoreDNS,
-		deployment.config.Config.Versions.MinioServer,
-		deployment.config.Config.Versions.MinioClient,
-		deployment.config.Config.Versions.Ark,
-		deployment.config.Config.Versions.Ceph,
-		deployment.config.Config.Versions.FluentBit,
-		deployment.config.Config.Versions.RBDProvisioner,
-		deployment.config.Config.Versions.Elasticsearch,
-		deployment.config.Config.Versions.ElasticsearchCron,
-		deployment.config.Config.Versions.ElasticsearchOperator,
-		deployment.config.Config.Versions.Kibana,
-		deployment.config.Config.Versions.Cerebro,
-		deployment.config.Config.Versions.Heapster,
-		deployment.config.Config.Versions.AddonResizer,
-		deployment.config.Config.Versions.KubernetesDashboard,
-		deployment.config.Config.Versions.CertManagerController,
-		deployment.config.Config.Versions.NginxIngressDefaultBackend,
-		deployment.config.Config.Versions.NginxIngressController,
-		deployment.config.Config.Versions.MetricsServer,
-		deployment.config.Config.Versions.PrometheusOperator,
-		deployment.config.Config.Versions.PrometheusConfigReloader,
-		deployment.config.Config.Versions.ConfigMapReload,
-		deployment.config.Config.Versions.KubeStateMetrics,
-		deployment.config.Config.Versions.Grafana,
-		deployment.config.Config.Versions.GrafanaWatcher,
-		deployment.config.Config.Versions.Prometheus,
-		deployment.config.Config.Versions.PrometheusNodeExporter,
-		deployment.config.Config.Versions.PrometheusAlertManager,
+	if skipStorageSetup {
+		skipSetupFeatures = append(skipSetupFeatures, utils.FEATURE_STORAGE)
+	}
+
+	if skipMonitoringSetup {
+		skipSetupFeatures = append(skipSetupFeatures, utils.FEATURE_MONITORING)
+	}
+
+	if skipLoggingSetup {
+		skipSetupFeatures = append(skipSetupFeatures, utils.FEATURE_LOGGING)
+	}
+
+	if skipBackupSetup {
+		skipSetupFeatures = append(skipSetupFeatures, utils.FEATURE_BACKUP)
+	}
+
+	if skipShowcaseSetup {
+		skipSetupFeatures = append(skipSetupFeatures, utils.FEATURE_SHOWCASE)
+	}
+
+	if skipIngressSetup {
+		skipSetupFeatures = append(skipSetupFeatures, utils.FEATURE_INGRESS)
+	}
+
+	if skipPackagingSetup {
+		skipSetupFeatures = append(skipSetupFeatures, utils.FEATURE_PACKAGING)
+	}
+
+	deployment := &Deployment{config: _config, identityFile: identityFile, pullImages: pullImages, forceUpload: forceUpload, parallel: parallel, commandRetries: commandRetries, nodes: nodes, skipSetup: skipSetup, skipSetupFeatures: skipSetupFeatures}
+
+	deployment.images = []Image{
+		Image{Name: deployment.config.Config.Versions.Pause, Features: config.Features{}},
+		Image{Name: deployment.config.Config.Versions.CalicoCNI, Features: config.Features{}},
+		Image{Name: deployment.config.Config.Versions.CalicoNode, Features: config.Features{}},
+		Image{Name: deployment.config.Config.Versions.CalicoTypha, Features: config.Features{}},
+		Image{Name: deployment.config.Config.Versions.CoreDNS, Features: config.Features{}},
+		Image{Name: deployment.config.Config.Versions.MinioServer, Features: config.Features{utils.FEATURE_BACKUP, utils.FEATURE_STORAGE}},
+		Image{Name: deployment.config.Config.Versions.MinioClient, Features: config.Features{utils.FEATURE_BACKUP, utils.FEATURE_STORAGE}},
+		Image{Name: deployment.config.Config.Versions.Ark, Features: config.Features{utils.FEATURE_BACKUP, utils.FEATURE_STORAGE}},
+		Image{Name: deployment.config.Config.Versions.Ceph, Features: config.Features{utils.FEATURE_STORAGE}},
+		Image{Name: deployment.config.Config.Versions.CSIAttacher, Features: config.Features{utils.FEATURE_STORAGE}},
+		Image{Name: deployment.config.Config.Versions.CSIProvisioner, Features: config.Features{utils.FEATURE_STORAGE}},
+		Image{Name: deployment.config.Config.Versions.CSIDriverRegistrar, Features: config.Features{utils.FEATURE_STORAGE}},
+		Image{Name: deployment.config.Config.Versions.CSICephRBDPlugin, Features: config.Features{utils.FEATURE_STORAGE}},
+		Image{Name: deployment.config.Config.Versions.CSICephFSPlugin, Features: config.Features{utils.FEATURE_STORAGE}},
+		Image{Name: deployment.config.Config.Versions.RBDProvisioner, Features: config.Features{utils.FEATURE_STORAGE}},
+		Image{Name: deployment.config.Config.Versions.FluentBit, Features: config.Features{utils.FEATURE_LOGGING, utils.FEATURE_STORAGE}},
+		Image{Name: deployment.config.Config.Versions.Elasticsearch, Features: config.Features{utils.FEATURE_LOGGING, utils.FEATURE_STORAGE}},
+		Image{Name: deployment.config.Config.Versions.ElasticsearchCron, Features: config.Features{utils.FEATURE_LOGGING, utils.FEATURE_STORAGE}},
+		Image{Name: deployment.config.Config.Versions.ElasticsearchOperator, Features: config.Features{utils.FEATURE_LOGGING, utils.FEATURE_STORAGE}},
+		Image{Name: deployment.config.Config.Versions.Kibana, Features: config.Features{utils.FEATURE_LOGGING, utils.FEATURE_STORAGE}},
+		Image{Name: deployment.config.Config.Versions.Cerebro, Features: config.Features{utils.FEATURE_LOGGING, utils.FEATURE_STORAGE}},
+		Image{Name: deployment.config.Config.Versions.Heapster, Features: config.Features{utils.FEATURE_MONITORING, utils.FEATURE_STORAGE}},
+		Image{Name: deployment.config.Config.Versions.AddonResizer, Features: config.Features{utils.FEATURE_MONITORING, utils.FEATURE_STORAGE}},
+		Image{Name: deployment.config.Config.Versions.MetricsServer, Features: config.Features{utils.FEATURE_MONITORING, utils.FEATURE_STORAGE}},
+		Image{Name: deployment.config.Config.Versions.KubernetesDashboard, Features: config.Features{}},
+		Image{Name: deployment.config.Config.Versions.PrometheusOperator, Features: config.Features{utils.FEATURE_MONITORING, utils.FEATURE_STORAGE}},
+		Image{Name: deployment.config.Config.Versions.PrometheusConfigReloader, Features: config.Features{utils.FEATURE_MONITORING, utils.FEATURE_STORAGE}},
+		Image{Name: deployment.config.Config.Versions.ConfigMapReload, Features: config.Features{utils.FEATURE_MONITORING, utils.FEATURE_STORAGE}},
+		Image{Name: deployment.config.Config.Versions.KubeStateMetrics, Features: config.Features{utils.FEATURE_MONITORING, utils.FEATURE_STORAGE}},
+		Image{Name: deployment.config.Config.Versions.Grafana, Features: config.Features{utils.FEATURE_MONITORING, utils.FEATURE_STORAGE}},
+		Image{Name: deployment.config.Config.Versions.GrafanaWatcher, Features: config.Features{utils.FEATURE_MONITORING, utils.FEATURE_STORAGE}},
+		Image{Name: deployment.config.Config.Versions.Prometheus, Features: config.Features{utils.FEATURE_MONITORING, utils.FEATURE_STORAGE}},
+		Image{Name: deployment.config.Config.Versions.PrometheusNodeExporter, Features: config.Features{utils.FEATURE_MONITORING, utils.FEATURE_STORAGE}},
+		Image{Name: deployment.config.Config.Versions.PrometheusAlertManager, Features: config.Features{utils.FEATURE_MONITORING, utils.FEATURE_STORAGE}},
+		Image{Name: deployment.config.Config.Versions.CertManagerController, Features: config.Features{utils.FEATURE_INGRESS, utils.FEATURE_STORAGE}},
+		Image{Name: deployment.config.Config.Versions.NginxIngressDefaultBackend, Features: config.Features{utils.FEATURE_INGRESS, utils.FEATURE_STORAGE}},
+		Image{Name: deployment.config.Config.Versions.NginxIngressController, Features: config.Features{utils.FEATURE_INGRESS, utils.FEATURE_STORAGE}},
 	}
 
 	return deployment
@@ -190,7 +231,11 @@ func (deployment *Deployment) runPullImages() error {
 			tasks = append(tasks, func() error {
 				defer utils.IncreaseProgressStep()
 
-				return nodeDeployment.pullImage(image)
+				if image.Features.HasFeatures(deployment.skipSetupFeatures) {
+					return nil
+				}
+
+				return nodeDeployment.pullImage(image.Name)
 			})
 		}
 
@@ -206,6 +251,12 @@ func (deployment *Deployment) runPullImages() error {
 func (deployment *Deployment) runBoostrapperCommands() error {
 	for _, command := range deployment.config.Config.Commands {
 		if !command.Labels.HasLabels([]string{utils.NODE_BOOTSTRAPPER}) {
+			utils.IncreaseProgressStep()
+
+			continue
+		}
+
+		if command.Features.HasFeatures(deployment.skipSetupFeatures) {
 			utils.IncreaseProgressStep()
 
 			continue

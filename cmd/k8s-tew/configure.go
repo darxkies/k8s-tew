@@ -323,5 +323,25 @@ func init() {
 		_config.Config.Versions.Prometheus = value
 	})
 
+	addStringOption("version-csi-attacher", utils.VERSION_CSI_ATTACHER, "CSI Attacher version", func(value string) {
+		_config.Config.Versions.CSIAttacher = value
+	})
+
+	addStringOption("version-csi-provisioner", utils.VERSION_CSI_PROVISIONER, "CSI Provisioner version", func(value string) {
+		_config.Config.Versions.CSIProvisioner = value
+	})
+
+	addStringOption("version-csi-driver-registrar", utils.VERSION_CSI_DRIVER_REGISTRAR, "CSI Driver Registrar version", func(value string) {
+		_config.Config.Versions.CSIDriverRegistrar = value
+	})
+
+	addStringOption("version-csi-ceph-rbd-plugin", utils.VERSION_CSI_CEPH_RBD_PLUGIN, "CSI Ceph RBD Plugin version", func(value string) {
+		_config.Config.Versions.CSICephRBDPlugin = value
+	})
+
+	addStringOption("version-csi-ceph-fs-plugin", utils.VERSION_CSI_CEPH_FS_PLUGIN, "CSI Ceph FS Plugin version", func(value string) {
+		_config.Config.Versions.CSICephFSPlugin = value
+	})
+
 	RootCmd.AddCommand(configureCmd)
 }
