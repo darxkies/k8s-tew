@@ -105,6 +105,7 @@ func NewDeployment(_config *config.InternalConfig, identityFile string, pullImag
 		Image{Name: deployment.config.Config.Versions.PrometheusAlertManager, Features: config.Features{utils.FEATURE_MONITORING, utils.FEATURE_STORAGE}},
 		Image{Name: deployment.config.Config.Versions.CertManagerController, Features: config.Features{utils.FEATURE_INGRESS, utils.FEATURE_STORAGE}},
 		Image{Name: deployment.config.Config.Versions.NginxIngressDefaultBackend, Features: config.Features{utils.FEATURE_INGRESS, utils.FEATURE_STORAGE}},
+		Image{Name: deployment.config.Config.Versions.NginxIngressController, Features: config.Features{utils.FEATURE_INGRESS, utils.FEATURE_STORAGE}},
 		Image{Name: deployment.config.Config.Versions.MySQL, Features: config.Features{utils.FEATURE_SHOWCASE, utils.FEATURE_STORAGE}},
 		Image{Name: deployment.config.Config.Versions.WordPress, Features: config.Features{utils.FEATURE_SHOWCASE, utils.FEATURE_STORAGE}},
 	}
