@@ -419,6 +419,9 @@ func (downloader Downloader) downloadArkBinaries() error {
 }
 
 func (downloader Downloader) createLocalDirectories() error {
+	// Remove any temporary remains of previous downloads
+	os.RemoveAll(downloader.config.GetFullLocalAssetDirectory(utils.TEMPORARY_DIRECTORY))
+
 	for name, directory := range downloader.config.Config.Assets.Directories {
 		if directory.Absolute {
 			continue

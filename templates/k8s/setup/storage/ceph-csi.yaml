@@ -497,6 +497,8 @@ kind: StorageClass
 metadata:
     namespace: storage
     name: csi-rbd
+    annotations:
+      storageclass.kubernetes.io/is-default-class: "true"
 provisioner: csi-rbdplugin 
 reclaimPolicy: Delete
 parameters:

@@ -47,6 +47,8 @@ type Versions struct {
 	CSIDriverRegistrar         string `yaml:"csi-driver-registrar"`
 	CSICephRBDPlugin           string `yaml:"csi-ceph-rbd-plugin"`
 	CSICephFSPlugin            string `yaml:"csi-ceph-fs-plugin"`
+	WordPress                  string `yaml:"wordpress"`
+	MySQL                      string `yaml:"mysql"`
 }
 
 func NewVersions() Versions {
@@ -95,5 +97,7 @@ func NewVersions() Versions {
 		CSIDriverRegistrar:         utils.VERSION_CSI_DRIVER_REGISTRAR,
 		CSICephRBDPlugin:           utils.VERSION_CSI_CEPH_RBD_PLUGIN,
 		CSICephFSPlugin:            utils.VERSION_CSI_CEPH_FS_PLUGIN,
+		WordPress:                  utils.VERSION_WORDPRESS,
+		MySQL:                      utils.VERSION_MYSQL,
 	}
 }

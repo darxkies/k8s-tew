@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-    name: wordpress
+    name: showcase
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mysql-pv-claim
-  namespace: wordpress
+  namespace: showcase
   labels:
     app: wordpress
 spec:
@@ -21,7 +21,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: wordpress-pv-claim
-  namespace: wordpress
+  namespace: showcase
   labels:
     app: wordpress
 spec:
@@ -35,7 +35,7 @@ apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
   name: mysql
-  namespace: wordpress
+  namespace: showcase
   labels:
     app: wordpress
 spec:
@@ -50,7 +50,7 @@ spec:
         backup.ark.heptio.com/backup-volumes: mysql-persistent-storage
     spec:
       containers:
-      - image: mysql:5.6
+      - image: {{.MySQLImage}}
         name: mysql
         env:
         - name: MYSQL_ROOT_PASSWORD
@@ -70,7 +70,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: wordpress
-  namespace: wordpress
+  namespace: showcase
   labels:
     app: wordpress
 spec:
@@ -85,7 +85,7 @@ spec:
         backup.ark.heptio.com/backup-volumes: wordpress-persistent-storage
     spec:
       containers:
-      - image: wordpress:4.6.1-apache
+      - image: {{.WordPressImage}}
         name: wordpress
         env:
         - name: WORDPRESS_DB_HOST
@@ -107,7 +107,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: mysql
-  namespace: wordpress
+  namespace: showcase
   labels:
     app: wordpress
 spec:
@@ -122,7 +122,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: wordpress
-  namespace: wordpress
+  namespace: showcase
   labels:
     app: wordpress
 spec:
@@ -138,7 +138,7 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: wordpress
-  namespace: wordpress
+  namespace: showcase
   annotations:
     ingress.kubernetes.io/ssl-redirect: "true"
     kubernetes.io/tls-acme: "true"

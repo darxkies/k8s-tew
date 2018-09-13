@@ -70,8 +70,6 @@ apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
   name: ceph
-  annotations:
-    storageclass.kubernetes.io/is-default-class: "true"
 provisioner: ceph.com/rbd
 parameters:
   monitors: {{range $index, $node := .StorageControllers}}{{if $index}},{{end}}{{$node.IP}}:6789{{end}}
@@ -326,7 +324,7 @@ spec:
           path: {{$.CephDataDirectory}}
           type: DirectoryOrCreate
       containers:
-      - name: ceph-mgr
+      - name: ceph-rgw
         image: {{$.CephImage}}
         args: ["rgw"]
         ports:
@@ -386,14 +384,28 @@ metadata:
     namespace: storage
     name: ceph-rgw
     labels:
-        app: ceph
-        daemon: rgw
+        app: ceph-rgw
 spec:
     type: NodePort
     ports:
     - port: 8080
       protocol: TCP
-      nodePort: 30808
+      nodePort: 30750
     selector:
-      app: ceph
-      daemon: rgw
+      app: ceph-rgw
+---
+apiVersion: v1
+kind: Service
+metadata:
+    namespace: storage
+    name: ceph-mgr
+    labels:
+        app: ceph-mgr
+spec:
+    type: NodePort
+    ports:
+    - port: 7000
+      protocol: TCP
+      nodePort: 30700
+    selector:
+      app: ceph-mgr

@@ -787,9 +787,13 @@ func (generator *Generator) generateKubePrometheusNodesDashboardSetup() error {
 
 func (generator *Generator) generateWordpressSetup() error {
 	return utils.ApplyTemplateAndSave("wordpress", utils.TEMPLATE_WORDPRESS_SETUP, struct {
-		IngressDomain string
+		IngressDomain  string
+		MySQLImage     string
+		WordPressImage string
 	}{
-		IngressDomain: generator.config.Config.IngressDomain,
+		IngressDomain:  generator.config.Config.IngressDomain,
+		MySQLImage:     generator.config.Config.Versions.MySQL,
+		WordPressImage: generator.config.Config.Versions.WordPress,
 	}, generator.config.GetFullLocalAssetFilename(utils.WORDPRESS_SETUP), true, false)
 }
 

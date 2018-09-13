@@ -343,5 +343,13 @@ func init() {
 		_config.Config.Versions.CSICephFSPlugin = value
 	})
 
+	addStringOption("version-wordpress", utils.VERSION_WORDPRESS, "WordPress version", func(value string) {
+		_config.Config.Versions.WordPress = value
+	})
+
+	addStringOption("version-mysql", utils.VERSION_MYSQL, "MySQL version", func(value string) {
+		_config.Config.Versions.MySQL = value
+	})
+
 	RootCmd.AddCommand(configureCmd)
 }

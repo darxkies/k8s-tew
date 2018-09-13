@@ -46,6 +46,8 @@ const VERSION_CSI_PROVISIONER = "quay.io/k8scsi/csi-provisioner:v0.3.0"
 const VERSION_CSI_DRIVER_REGISTRAR = "quay.io/k8scsi/driver-registrar:v0.3.0"
 const VERSION_CSI_CEPH_RBD_PLUGIN = "quay.io/cephcsi/rbdplugin:v0.3.0"
 const VERSION_CSI_CEPH_FS_PLUGIN = "quay.io/cephcsi/cephfsplugin:v0.3.0"
+const VERSION_MYSQL = "docker.io/library/mysql:5.6"
+const VERSION_WORDPRESS = "docker.io/library/wordpress:4.8-apache"
 
 // Settings
 const PROJECT_TITLE = "Kubernetes - The Easier Way"
