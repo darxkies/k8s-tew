@@ -152,6 +152,18 @@ roleRef:
   name: cluster-admin
   apiGroup: rbac.authorization.k8s.io
 ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: backup
+  name: minio-storage
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+---
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
@@ -169,7 +181,8 @@ spec:
     spec:
       volumes:
       - name: storage
-        emptyDir: {}
+        persistentVolumeClaim:
+          claimName: minio-storage
       - name: config
         emptyDir: {}
       containers:
