@@ -8,6 +8,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var removeNodeName string
+
 func removeNode() error {
 	// Load config and check the rights
 	if error := bootstrap(false); error != nil {
@@ -16,7 +18,7 @@ func removeNode() error {
 
 	utils.SetProgressSteps(1)
 
-	if error := _config.RemoveNode(nodeName); error != nil {
+	if error := _config.RemoveNode(removeNodeName); error != nil {
 		return error
 	}
 
@@ -41,6 +43,6 @@ var nodeRemoveCmd = &cobra.Command{
 }
 
 func init() {
-	nodeRemoveCmd.Flags().StringVarP(&nodeName, "name", "n", "", "Unique name of the node")
+	nodeRemoveCmd.Flags().StringVarP(&removeNodeName, "name", "n", "", "Unique name of the node")
 	RootCmd.AddCommand(nodeRemoveCmd)
 }

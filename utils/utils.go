@@ -102,6 +102,18 @@ func RunSSHClient(ip string) {
 	_ = cmd.Run()
 }
 
+func GetURL(protocol, ip string, port uint16) string {
+	return fmt.Sprintf("%s://%s:%d", protocol, ip, port)
+}
+
+func OpenWebBrowser(name, url string) error {
+	if _, error := RunCommandWithOutput(fmt.Sprintf("xdg-open %s", url)); error != nil {
+		return fmt.Errorf("Could not open %s at %s (%s)", name, url, error.Error())
+	}
+
+	return nil
+}
+
 func IsRoot() bool {
 	return os.Geteuid() == 0
 }

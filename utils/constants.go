@@ -52,8 +52,6 @@ const VERSION_WORDPRESS = "docker.io/library/wordpress:4.8-apache"
 // Settings
 const PROJECT_TITLE = "Kubernetes - The Easier Way"
 const CLUSTER_NAME = "k8s-tew"
-const VIP_RAFT_CONTROLLER_PORT = 16277
-const VIP_RAFT_WORKER_PORT = 16728
 const RSA_SIZE = 2048
 const CA_VALIDITY_PERIOD = 20
 const CLIENT_VALIDITY_PERIOD = 15
@@ -64,14 +62,26 @@ const CALICO_TYPHA_IP = "10.32.0.5"
 const CLUSTER_DNS_IP = "10.32.0.10"
 const CLUSTER_CIDR = "10.200.0.0/16"
 const RESOLV_CONF = "/etc/resolv.conf"
-const API_SERVER_PORT = 6443
-const PUBLIC_NETWORK = "192.168.0.0/24"
-const LOAD_BALANCER_PORT = 16443
-const DASHBOARD_PORT = 32443
+const PUBLIC_NETWORK = "192.168.100.0/24"
 const HELM_SERVICE_ACCOUNT = "tiller"
 const EMAIL = "k8s-tew@gmail.com"
 const DEPLOYMENT_DIRECTORY = "/"
 const INGRESS_DOMAIN = "k8s-tew.net"
+const INGRESS_SUBDOMAIN_WORDPRESS = "wordpress"
+
+// Ports
+const PORT_VIP_RAFT_CONTROLLER uint16 = 16277
+const PORT_VIP_RAFT_WORKER uint16 = 16728
+const PORT_LOAD_BALANCER uint16 = 16443
+const PORT_KUBERNETES_DASHBOARD uint16 = 32443
+const PORT_API_SERVER uint16 = 6443
+const PORT_CEPH_MANAGER uint16 = 30700
+const PORT_CEPH_RADOS_GATEWAY uint16 = 30750
+const PORT_MINIO uint16 = 30800
+const PORT_GRAFANA uint16 = 30900
+const PORT_KIBANA uint16 = 30980
+const PORT_CEREBRO uint16 = 30990
+const PORT_WORDPRESS uint16 = 30100
 
 // URLs
 const K8S_DOWNLOAD_URL = "https://storage.googleapis.com/kubernetes-release/release/v{{.Versions.K8S}}/bin/linux/amd64/{{.Filename}}"

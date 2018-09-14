@@ -459,25 +459,29 @@ func (generator *Generator) generateCephConfig() error {
 
 func (generator *Generator) generateCephSetup() error {
 	return utils.ApplyTemplateAndSave("ceph-setup", utils.TEMPLATE_CEPH_SETUP, struct {
-		CephRBDPoolName     string
-		CephFSPoolName      string
-		PublicNetwork       string
-		StorageControllers  []config.NodeData
-		StorageNodes        []config.NodeData
-		CephConfigDirectory string
-		CephDataDirectory   string
-		RBDProvisionerImage string
-		CephImage           string
+		CephRBDPoolName      string
+		CephFSPoolName       string
+		PublicNetwork        string
+		StorageControllers   []config.NodeData
+		StorageNodes         []config.NodeData
+		CephConfigDirectory  string
+		CephDataDirectory    string
+		RBDProvisionerImage  string
+		CephImage            string
+		CephManagerPort      uint16
+		CephRadosGatewayPort uint16
 	}{
-		CephRBDPoolName:     utils.CEPH_RBD_POOL_NAME,
-		CephFSPoolName:      utils.CEPH_FS_POOL_NAME,
-		PublicNetwork:       generator.config.Config.PublicNetwork,
-		StorageControllers:  generator.config.GetStorageControllers(),
-		StorageNodes:        generator.config.GetStorageNodes(),
-		CephConfigDirectory: generator.config.GetFullTargetAssetDirectory(utils.CEPH_CONFIG_DIRECTORY),
-		CephDataDirectory:   generator.config.GetFullTargetAssetDirectory(utils.CEPH_DATA_DIRECTORY),
-		RBDProvisionerImage: generator.config.Config.Versions.RBDProvisioner,
-		CephImage:           generator.config.Config.Versions.Ceph,
+		CephRBDPoolName:      utils.CEPH_RBD_POOL_NAME,
+		CephFSPoolName:       utils.CEPH_FS_POOL_NAME,
+		PublicNetwork:        generator.config.Config.PublicNetwork,
+		StorageControllers:   generator.config.GetStorageControllers(),
+		StorageNodes:         generator.config.GetStorageNodes(),
+		CephConfigDirectory:  generator.config.GetFullTargetAssetDirectory(utils.CEPH_CONFIG_DIRECTORY),
+		CephDataDirectory:    generator.config.GetFullTargetAssetDirectory(utils.CEPH_DATA_DIRECTORY),
+		RBDProvisionerImage:  generator.config.Config.Versions.RBDProvisioner,
+		CephImage:            generator.config.Config.Versions.Ceph,
+		CephManagerPort:      utils.PORT_CEPH_MANAGER,
+		CephRadosGatewayPort: utils.PORT_CEPH_RADOS_GATEWAY,
 	}, generator.config.GetFullLocalAssetFilename(utils.CEPH_SETUP), true, false)
 }
 
@@ -657,11 +661,13 @@ func (generator *Generator) generateARKSetup() error {
 		MinioServerImage string
 		MinioClientImage string
 		PodsDirectory    string
+		MinioPort        uint16
 	}{
 		ArkImage:         generator.config.Config.Versions.Ark,
 		MinioServerImage: generator.config.Config.Versions.MinioServer,
 		MinioClientImage: generator.config.Config.Versions.MinioClient,
 		PodsDirectory:    generator.config.GetFullTargetAssetDirectory(utils.PODS_DATA_DIRECTORY),
+		MinioPort:        utils.PORT_MINIO,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8S_ARK_SETUP), true, false)
 }
 
@@ -682,7 +688,7 @@ func (generator *Generator) generateKubernetesDashboardSetup() error {
 		KubernetesDashboardImage string
 	}{
 		ClusterName:              generator.config.Config.ClusterName,
-		KubernetesDashboardPort:  generator.config.Config.DashboardPort,
+		KubernetesDashboardPort:  generator.config.Config.KubernetesDashboardPort,
 		KubernetesDashboardImage: generator.config.Config.Versions.KubernetesDashboard,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8S_KUBERNETES_DASHBOARD_SETUP), true, false)
 }
@@ -734,6 +740,7 @@ func (generator *Generator) generateKubePrometheusSetup() error {
 		PrometheusImage             string
 		PrometheusNodeExporterImage string
 		PrometheusAlertManagerImage string
+		GrafanaPort                 uint16
 	}{
 		AddonResizerImage:           generator.config.Config.Versions.AddonResizer,
 		KubeStateMetricsImage:       generator.config.Config.Versions.KubeStateMetrics,
@@ -742,6 +749,7 @@ func (generator *Generator) generateKubePrometheusSetup() error {
 		PrometheusImage:             generator.config.Config.Versions.Prometheus,
 		PrometheusNodeExporterImage: generator.config.Config.Versions.PrometheusNodeExporter,
 		PrometheusAlertManagerImage: generator.config.Config.Versions.PrometheusAlertManager,
+		GrafanaPort:                 utils.PORT_GRAFANA,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8S_KUBE_PROMETHEUS_SETUP), true, true)
 }
 
@@ -787,13 +795,15 @@ func (generator *Generator) generateKubePrometheusNodesDashboardSetup() error {
 
 func (generator *Generator) generateWordpressSetup() error {
 	return utils.ApplyTemplateAndSave("wordpress", utils.TEMPLATE_WORDPRESS_SETUP, struct {
-		IngressDomain  string
-		MySQLImage     string
-		WordPressImage string
+		WordPressIngressDomain string
+		MySQLImage             string
+		WordPressImage         string
+		WordPressPort          uint16
 	}{
-		IngressDomain:  generator.config.Config.IngressDomain,
-		MySQLImage:     generator.config.Config.Versions.MySQL,
-		WordPressImage: generator.config.Config.Versions.WordPress,
+		WordPressIngressDomain: fmt.Sprintf("%s.%s", utils.INGRESS_SUBDOMAIN_WORDPRESS, generator.config.Config.IngressDomain),
+		MySQLImage:             generator.config.Config.Versions.MySQL,
+		WordPressImage:         generator.config.Config.Versions.WordPress,
+		WordPressPort:          utils.PORT_WORDPRESS,
 	}, generator.config.GetFullLocalAssetFilename(utils.WORDPRESS_SETUP), true, false)
 }
 

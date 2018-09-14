@@ -87,24 +87,24 @@ func init() {
 		_config.Config.ClientValidityPeriod = uint(value)
 	})
 
-	addUint16Option("apiserver-port", utils.API_SERVER_PORT, "API Server Port", func(value uint16) {
+	addUint16Option("apiserver-port", utils.PORT_API_SERVER, "API Server Port", func(value uint16) {
 		_config.Config.APIServerPort = value
 	})
 
-	addUint16Option("vip-raft-controller-port", utils.VIP_RAFT_CONTROLLER_PORT, "VIP Raft Controller Port", func(value uint16) {
+	addUint16Option("vip-raft-controller-port", utils.PORT_VIP_RAFT_CONTROLLER, "VIP Raft Controller Port", func(value uint16) {
 		_config.Config.VIPRaftControllerPort = value
 	})
 
-	addUint16Option("vip-raft-worker-port", utils.VIP_RAFT_WORKER_PORT, "VIP Raft Worker Port", func(value uint16) {
+	addUint16Option("vip-raft-worker-port", utils.PORT_VIP_RAFT_WORKER, "VIP Raft Worker Port", func(value uint16) {
 		_config.Config.VIPRaftWorkerPort = value
 	})
 
-	addUint16Option("load-balancer-port", utils.LOAD_BALANCER_PORT, "Load Balancer Port", func(value uint16) {
+	addUint16Option("load-balancer-port", utils.PORT_KUBERNETES_DASHBOARD, "Load Balancer Port", func(value uint16) {
 		_config.Config.LoadBalancerPort = value
 	})
 
-	addUint16Option("dashboard-port", utils.DASHBOARD_PORT, "Dashboard Port", func(value uint16) {
-		_config.Config.DashboardPort = value
+	addUint16Option("kubernetes-dashboard-port", utils.PORT_KUBERNETES_DASHBOARD, "Kubernetes Dashboard Port", func(value uint16) {
+		_config.Config.KubernetesDashboardPort = value
 	})
 
 	addStringOption("controller-virtual-ip", "", "Controller Virtual/Floating IP for the cluster", func(value string) {

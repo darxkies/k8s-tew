@@ -16,7 +16,7 @@ type Config struct {
 	LoadBalancerPort             uint16      `yaml:"load-balancer-port"`
 	VIPRaftControllerPort        uint16      `yaml:"vip-raft-controller-port"`
 	VIPRaftWorkerPort            uint16      `yaml:"vip-raft-worker-port"`
-	DashboardPort                uint16      `yaml:"dashboard-port"`
+	KubernetesDashboardPort      uint16      `yaml:"kubernetes-dashboard-port"`
 	APIServerPort                uint16      `yaml:"apiserver-port,omitempty"`
 	PublicNetwork                string      `yaml:"public-network"`
 	ControllerVirtualIP          string      `yaml:"controller-virtual-ip,omitempty"`
@@ -43,15 +43,15 @@ type Config struct {
 func NewConfig() *Config {
 	config := &Config{Version: utils.VERSION_CONFIG}
 
-	config.VIPRaftControllerPort = utils.VIP_RAFT_CONTROLLER_PORT
-	config.VIPRaftWorkerPort = utils.VIP_RAFT_WORKER_PORT
+	config.VIPRaftControllerPort = utils.PORT_VIP_RAFT_CONTROLLER
+	config.VIPRaftWorkerPort = utils.PORT_VIP_RAFT_WORKER
 	config.ClusterID = fmt.Sprintf("%s", uuid.NewV4())
 	config.ClusterName = utils.CLUSTER_NAME
 	config.Email = utils.EMAIL
 	config.IngressDomain = utils.INGRESS_DOMAIN
-	config.LoadBalancerPort = utils.LOAD_BALANCER_PORT
-	config.DashboardPort = utils.DASHBOARD_PORT
-	config.APIServerPort = utils.API_SERVER_PORT
+	config.LoadBalancerPort = utils.PORT_LOAD_BALANCER
+	config.KubernetesDashboardPort = utils.PORT_KUBERNETES_DASHBOARD
+	config.APIServerPort = utils.PORT_API_SERVER
 	config.PublicNetwork = utils.PUBLIC_NETWORK
 	config.ClusterDomain = utils.CLUSTER_DOMAIN
 	config.ClusterIPRange = utils.CLUSTER_IP_RANGE

@@ -47,7 +47,9 @@ var dashboardCmd = &cobra.Command{
 				os.Exit(-3)
 			}
 
-			if _, error := utils.RunCommandWithOutput(fmt.Sprintf("xdg-open https://%s:%d", ip, _config.Config.DashboardPort)); error != nil {
+			url := utils.GetURL("https", ip, _config.Config.KubernetesDashboardPort)
+
+			if error := utils.OpenWebBrowser("Kubernetes Dashboard", url); error != nil {
 				log.WithFields(log.Fields{"error": error}).Error("Failed to open the web browser")
 
 				os.Exit(-4)

@@ -465,7 +465,7 @@ spec:
       port: 80
       protocol: TCP
       targetPort: 3000
-      nodePort: 30900
+      nodePort: [[.GrafanaPort]]
   selector:
     app: kube-prometheus-grafana
   type: NodePort

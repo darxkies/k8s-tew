@@ -390,7 +390,7 @@ spec:
     ports:
     - port: 8080
       protocol: TCP
-      nodePort: 30750
+      nodePort: {{.CephRadosGatewayPort}}
     selector:
       app: ceph-rgw
 ---
@@ -406,6 +406,6 @@ spec:
     ports:
     - port: 7000
       protocol: TCP
-      nodePort: 30700
+      nodePort: {{.CephManagerPort}}
     selector:
       app: ceph-mgr

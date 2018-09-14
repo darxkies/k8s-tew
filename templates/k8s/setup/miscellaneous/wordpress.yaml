@@ -128,7 +128,7 @@ metadata:
 spec:
   ports:
   - port: 80
-    nodePort: 30100
+    nodePort: {{.WordPressPort}}
   selector:
     app: wordpress
     tier: frontend
@@ -147,10 +147,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - wordpress.{{.IngressDomain}}
+    - {{.WordPressIngressDomain}}
     secretName: wordpress-letsencrypt
   rules:
-  - host: wordpress.{{.IngressDomain}}
+  - host: {{.WordPressIngressDomain}}
     http:
       paths:
       - path: /
