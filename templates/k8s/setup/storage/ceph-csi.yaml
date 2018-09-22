@@ -134,10 +134,10 @@ spec:
             - "--csi-address=$(ADDRESS)"
           env:
             - name: ADDRESS
-              value: /var/lib/kubelet/plugins/csi-rbdplugin/csi.sock
+              value: {{.CephRBDPluginDirectory}}/csi.sock
           volumeMounts:
             - name: socket-dir
-              mountPath: /var/lib/kubelet/plugins/csi-rbdplugin
+              mountPath: {{.CephRBDPluginDirectory}}
       volumes:
         - name: socket-dir
           hostPath:
@@ -167,11 +167,10 @@ spec:
             - "--v=5"
           env:
             - name: ADDRESS
-              value: /var/lib/kubelet/plugins/csi-rbdplugin/csi.sock
-          imagePullPolicy: "IfNotPresent"
+              value: {{.CephRBDPluginDirectory}}/csi.sock
           volumeMounts:
             - name: socket-dir
-              mountPath: /var/lib/kubelet/plugins/csi-rbdplugin
+              mountPath: {{.CephRBDPluginDirectory}}
       volumes:
         - name: socket-dir
           hostPath:
@@ -203,16 +202,16 @@ spec:
             - "--kubelet-registration-path=$(DRIVER_REG_SOCK_PATH)"              
           env:
             - name: ADDRESS
-              value: /var/lib/kubelet/plugins/csi-rbdplugin/csi.sock
+              value: {{.CephRBDPluginDirectory}}/csi.sock
             - name: DRIVER_REG_SOCK_PATH
-              value: /var/lib/kubelet/plugins/csi-rbdplugin/csi.sock
+              value: {{.CephRBDPluginDirectory}}/csi.sock
             - name: KUBE_NODE_NAME
               valueFrom:
                 fieldRef:
                   fieldPath: spec.nodeName
           volumeMounts:
             - name: socket-dir
-              mountPath: /var/lib/kubelet/plugins/csi-rbdplugin
+              mountPath: {{.CephRBDPluginDirectory}}
             - name: registration-dir
               mountPath: /registration
         - name: csi-rbdplugin 
@@ -233,10 +232,11 @@ spec:
                 fieldRef:
                   fieldPath: spec.nodeName
             - name: CSI_ENDPOINT
-              value: unix://var/lib/kubelet/plugins/csi-rbdplugin/csi.sock
+              value: unix:///var/lib/kubelet/plugins/csi-rbdplugin/csi.sock
           volumeMounts:
             - name: plugin-dir
               mountPath: /var/lib/kubelet/plugins/csi-rbdplugin
+              # Hardcoded path in plugin 
             - name: pods-mount-dir
               mountPath: /var/lib/kubelet/pods
               mountPropagation: "Bidirectional"
@@ -296,10 +296,10 @@ spec:
             - "--csi-address=$(ADDRESS)"
           env:
             - name: ADDRESS
-              value: /var/lib/kubelet/plugins/csi-cephfsplugin/csi.sock
+              value: {{.CephFSPluginDirectory}}/csi.sock
           volumeMounts:
             - name: socket-dir
-              mountPath: /var/lib/kubelet/plugins/csi-cephfsplugin
+              mountPath: {{.CephFSPluginDirectory}}
       volumes:
         - name: socket-dir
           hostPath:
@@ -329,10 +329,10 @@ spec:
             - "--v=5"
           env:
             - name: ADDRESS
-              value: /var/lib/kubelet/plugins/csi-cephfsplugin/csi.sock
+              value: {{.CephFSPluginDirectory}}/csi.sock
           volumeMounts:
             - name: socket-dir
-              mountPath: /var/lib/kubelet/plugins/csi-cephfsplugin
+              mountPath: {{.CephFSPluginDirectory}}
       volumes:
         - name: socket-dir
           hostPath:
@@ -364,16 +364,16 @@ spec:
             - "--kubelet-registration-path=$(DRIVER_REG_SOCK_PATH)"              
           env:
             - name: ADDRESS
-              value: /var/lib/kubelet/plugins/csi-cephfsplugin/csi.sock
+              value: {{.CephFSPluginDirectory}}/csi.sock
             - name: DRIVER_REG_SOCK_PATH
-              value: /var/lib/kubelet/plugins/csi-cephfsplugin/csi.sock
+              value: {{.CephFSPluginDirectory}}/csi.sock
             - name: KUBE_NODE_NAME
               valueFrom:
                 fieldRef:
                   fieldPath: spec.nodeName
           volumeMounts:
             - name: socket-dir
-              mountPath: /var/lib/kubelet/plugins/csi-cephfsplugin
+              mountPath: {{.CephFSPluginDirectory}}
             - name: registration-dir
               mountPath: /registration
         - name: csi-cephfsplugin
@@ -394,8 +394,7 @@ spec:
                 fieldRef:
                   fieldPath: spec.nodeName
             - name: CSI_ENDPOINT
-              value: unix://var/lib/kubelet/plugins/csi-cephfsplugin/csi.sock
-          imagePullPolicy: "IfNotPresent"
+              value: unix:///var/lib/kubelet/plugins/csi-cephfsplugin/csi.sock
           volumeMounts:
             - name: plugin-dir
               mountPath: /var/lib/kubelet/plugins/csi-cephfsplugin
