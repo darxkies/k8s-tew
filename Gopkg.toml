@@ -37,3 +37,7 @@
 [[constraint]]
   name = "k8s.io/client-go"
   version = "8.0.0"
+
+[[constraint]]
+  name = "github.com/cavaliercoder/grab"
+  version = "2.0.0"

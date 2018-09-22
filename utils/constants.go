@@ -9,7 +9,7 @@ const VERSION_RUNC = "1.0.0-rc5"
 const VERSION_CRICTL = "1.11.1"
 const VERSION_GOBETWEEN = "0.6.0"
 const VERSION_HELM = "2.9.1"
-const VERSION_ARK = "gcr.io/heptio-images/ark:v0.9.4"
+const VERSION_ARK = "gcr.io/heptio-images/ark:v0.9.6"
 const VERSION_MINIO_SERVER = "docker.io/minio/minio:RELEASE.2018-08-18T03-49-57Z"
 const VERSION_MINIO_CLIENT = "docker.io/minio/mc:RELEASE.2018-08-18T02-13-04Z"
 const VERSION_PAUSE = "k8s.gcr.io/pause:3.1"
@@ -84,7 +84,9 @@ const PORT_CEREBRO uint16 = 30990
 const PORT_WORDPRESS uint16 = 30100
 
 // URLs
-const K8S_DOWNLOAD_URL = "https://storage.googleapis.com/kubernetes-release/release/v{{.Versions.K8S}}/bin/linux/amd64/{{.Filename}}"
+
+const K8S_BASE_NAME = "kubernetes-server-linux-amd64"
+const K8S_DOWNLOAD_URL = "https://storage.googleapis.com/kubernetes-release/release/v{{.Versions.K8S}}/{{.Filename}}.tar.gz"
 const ETCD_BASE_NAME = "etcd-v{{.Versions.Etcd}}-linux-amd64"
 const ETCD_DOWNLOAD_URL = "https://github.com/coreos/etcd/releases/download/v{{.Versions.Etcd}}/{{.Filename}}.tar.gz"
 const FLANNELD_DOWNLOAD_URL = "https://github.com/coreos/flannel/releases/download/v{{.Versions.Flanneld}}/flanneld-amd64"
@@ -238,7 +240,6 @@ const GOBETWEEN_BINARY = "gobetween"
 
 // Ark Binaries
 const ARK_BINARY = "ark"
-const ARK_RESTIC_RESTORE_HELPER_BINARY = "ark-restic-restore-helper"
 
 // Certificates
 const CA_PEM = "ca.pem"

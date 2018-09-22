@@ -214,7 +214,6 @@ func (config *InternalConfig) registerAssetFiles() {
 
 	// Ark Binaries
 	config.addAssetFile(utils.ARK_BINARY, Labels{}, "", utils.ARK_BINARIES_DIRECTORY)
-	config.addAssetFile(utils.ARK_RESTIC_RESTORE_HELPER_BINARY, Labels{}, "", utils.ARK_BINARIES_DIRECTORY)
 
 	// Certificates
 	config.addAssetFile(utils.CA_PEM, Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, "", utils.CERTIFICATES_DIRECTORY)

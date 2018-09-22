@@ -3,11 +3,15 @@ package download
 import (
 	"archive/tar"
 	"compress/gzip"
+	"crypto/tls"
+	"fmt"
 	"io"
 	"net/http"
 	"os"
 	"path"
+	"time"
 
+	"github.com/cavaliercoder/grab"
 	"github.com/darxkies/k8s-tew/config"
 	"github.com/darxkies/k8s-tew/utils"
 )
@@ -30,12 +34,7 @@ func NewDownloader(config *config.InternalConfig, forceDownload bool, parallel b
 	downloader.downloaderSteps = utils.Tasks{}
 	downloader.addTask(downloader.copyK8STEW)
 	downloader.addTask(downloader.downloadEtcdBinaries)
-	downloader.addTask(downloader.downloadKubectl)
-	downloader.addTask(downloader.downloadKubeApiServer)
-	downloader.addTask(downloader.downloadKubeControllerManager)
-	downloader.addTask(downloader.downloadKubeScheduler)
-	downloader.addTask(downloader.downloadKubeProxy)
-	downloader.addTask(downloader.downloadKubelet)
+	downloader.addTask(downloader.downloadKubernetesBinaries)
 	downloader.addTask(downloader.downloadHelmBinary)
 	downloader.addTask(downloader.downloadContainerdBinaries)
 	downloader.addTask(downloader.downloadRuncBinary)
@@ -70,32 +69,41 @@ func (downloader Downloader) getURL(url, filename string) (string, error) {
 	return utils.ApplyTemplate(url, url, data, false)
 }
 
-func (downloader Downloader) downloadFile(url, filename string) (bool, error) {
-	if !downloader.forceDownload && utils.FileExists(filename) {
-		utils.LogURL("Skipped downloading", url)
-
-		return false, nil
-	}
-
+func (downloader Downloader) downloadFile(url, filename string) error {
 	utils.LogURL("Downloading", url)
 
-	output, error := os.OpenFile(filename, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0666)
-	if error != nil {
-		return false, error
+	// Create client
+	client := grab.NewClient()
+
+	// Set User Agent
+	client.UserAgent = "k8s-tew"
+
+	// Set connection timeout
+	client.HTTPClient.Timeout = 10 * time.Second
+
+	// Disable any proxies
+	client.HTTPClient = &http.Client{
+		Transport: &http.Transport{
+			Proxy:           nil,
+			TLSClientConfig: &tls.Config{},
+		},
 	}
 
-	defer output.Close()
-
-	response, error := http.Get(url)
+	// Create new request
+	request, error := grab.NewRequest(filename, url)
 	if error != nil {
-		return false, error
+		return fmt.Errorf("Could not create request to download file %s from %s (%s)", filename, url, error.Error())
 	}
 
-	defer response.Body.Close()
+	// Send request
+	response := client.Do(request)
 
-	_, error = io.Copy(output, response.Body)
+	// Check error
+	if error := response.Err(); error != nil {
+		return fmt.Errorf("Could not download file %s from %s (%s)", filename, url, error.Error())
+	}
 
-	return true, error
+	return nil
 }
 
 func (downloader Downloader) downloadExecutable(urlTemplate, remoteFilename, filename string) error {
@@ -104,20 +112,35 @@ func (downloader Downloader) downloadExecutable(urlTemplate, remoteFilename, fil
 		return error
 	}
 
-	installed, error := downloader.downloadFile(url, filename)
-	if error != nil {
+	if !downloader.forceDownload && utils.FileExists(filename) {
+		utils.LogURL("Skipped downloading", url)
+		utils.LogFilename("Skipped installing", filename)
+
+		return nil
+	}
+
+	temporaryFilename := path.Join(downloader.config.GetFullLocalAssetDirectory(utils.TEMPORARY_DIRECTORY), path.Base(filename))
+
+	// Make sure the file is deleted once done
+	defer func() {
+		_ = os.Remove(temporaryFilename)
+	}()
+
+	if error := downloader.downloadFile(url, temporaryFilename); error != nil {
 		return error
 	}
 
+	// Move target temporary file to target file
+	if error := os.Rename(temporaryFilename, filename); error != nil {
+		return error
+	}
+
+	// Make target file executable
 	if error := os.Chmod(filename, 0777); error != nil {
 		return error
 	}
 
-	if installed {
-		utils.LogFilename("Installed", filename)
-	} else {
-		utils.LogFilename("Skipped installing", filename)
-	}
+	utils.LogFilename("Installed", filename)
 
 	return nil
 }
@@ -225,8 +248,7 @@ func (downloader Downloader) downloadAndExtractTGZFiles(urlTemplate, baseName st
 	temporaryFile := path.Join(temporaryDirectory, baseName+".tgz")
 
 	// Download file
-	_, error = downloader.downloadFile(url, temporaryFile)
-	if error != nil {
+	if error = downloader.downloadFile(url, temporaryFile); error != nil {
 		return error
 	}
 
@@ -362,6 +384,39 @@ func (downloader Downloader) downloadEtcdBinaries() error {
 	return downloader.downloadAndExtractTGZFiles(utils.ETCD_DOWNLOAD_URL, utils.ETCD_BASE_NAME, compressedFiles)
 }
 
+func (downloader Downloader) downloadKubernetesBinaries() error {
+	kubernetesServerBin := path.Join("kubernetes", "server", "bin")
+
+	compressedFiles := []CompressedFile{
+		CompressedFile{
+			SourceFile: path.Join(kubernetesServerBin, utils.KUBE_APISERVER_BINARY),
+			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.KUBE_APISERVER_BINARY),
+		},
+		CompressedFile{
+			SourceFile: path.Join(kubernetesServerBin, utils.KUBE_CONTROLLER_MANAGER_BINARY),
+			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.KUBE_CONTROLLER_MANAGER_BINARY),
+		},
+		CompressedFile{
+			SourceFile: path.Join(kubernetesServerBin, utils.KUBE_SCHEDULER_BINARY),
+			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.KUBE_SCHEDULER_BINARY),
+		},
+		CompressedFile{
+			SourceFile: path.Join(kubernetesServerBin, utils.KUBE_PROXY_BINARY),
+			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.KUBE_PROXY_BINARY),
+		},
+		CompressedFile{
+			SourceFile: path.Join(kubernetesServerBin, utils.KUBELET_BINARY),
+			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.KUBELET_BINARY),
+		},
+		CompressedFile{
+			SourceFile: path.Join(kubernetesServerBin, utils.KUBECTL_BINARY),
+			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.KUBECTL_BINARY),
+		},
+	}
+
+	return downloader.downloadAndExtractTGZFiles(utils.K8S_DOWNLOAD_URL, utils.K8S_BASE_NAME, compressedFiles)
+}
+
 func (downloader Downloader) downloadContainerdBinaries() error {
 	compressedFiles := []CompressedFile{
 		CompressedFile{
@@ -408,10 +463,6 @@ func (downloader Downloader) downloadArkBinaries() error {
 		CompressedFile{
 			SourceFile: utils.ARK_BINARY,
 			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.ARK_BINARY),
-		},
-		CompressedFile{
-			SourceFile: utils.ARK_RESTIC_RESTORE_HELPER_BINARY,
-			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.ARK_RESTIC_RESTORE_HELPER_BINARY),
 		},
 	}
 

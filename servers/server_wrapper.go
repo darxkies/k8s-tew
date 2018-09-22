@@ -108,7 +108,7 @@ func (server *ServerWrapper) Start() error {
 			time.Sleep(time.Second)
 
 			if !server.stop {
-				log.WithFields(log.Fields{"name": server.name}).Error("Restarting server")
+				log.WithFields(log.Fields{"name": server.name, "_command": strings.Join(server.command, " ")}).Error("Restarting server")
 			}
 		}
 	}()
