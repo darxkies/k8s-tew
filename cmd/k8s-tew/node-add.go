@@ -37,36 +37,40 @@ func addNode() error {
 	if nodeSelf {
 		log.Println("Adding self as node")
 
+		// Get ip of the node
+		nodeIP, error = utils.RunCommandWithOutput("ip route get 8.8.8.8 | cut -d ' ' -f 7")
+		if error != nil {
+			return error
+		}
+
+		// Parse the ip
+		nodeIP = strings.Trim(nodeIP, "\n")
+
+		// Throw error if the ip could not be retrieved
 		if len(nodeIP) == 0 {
-			nodeIP, error = utils.RunCommandWithOutput("ip route get 8.8.8.8 | cut -d ' ' -f 7")
-			if error != nil {
-				return error
-			}
-
-			nodeIP = strings.Trim(nodeIP, "\n")
-
-			if len(nodeIP) == 0 {
-				return errors.New("Could not find own ip")
-			}
+			return errors.New("Could not find own ip")
 		}
 
-		if len(nodeName) == 0 {
-			nodeName, error = os.Hostname()
-			if error != nil {
-				return error
-			}
+		// Set name of the node
+		nodeName, error = os.Hostname()
+		if error != nil {
+			return error
 		}
 
-		if len(labels) == 0 {
-			labels = []string{utils.NODE_BOOTSTRAPPER, utils.NODE_CONTROLLER, utils.NODE_WORKER}
-		}
+		// Set labels
+		labels = []string{utils.NODE_BOOTSTRAPPER, utils.NODE_CONTROLLER, utils.NODE_WORKER}
 
+		// Get public network settings
 		network, error := utils.RunCommandWithOutput(fmt.Sprintf("ip address | grep %s | cut -d ' ' -f 6", nodeIP))
 		if error != nil {
 			return error
 		}
 
+		// Set public network settings
 		_config.Config.PublicNetwork = network
+
+		// Set deployment directory by assigning the base directory
+		_config.Config.DeploymentDirectory = _config.BaseDirectory
 	}
 
 	if _, error = _config.AddNode(nodeName, nodeIP, nodeIndex, labels); error != nil {

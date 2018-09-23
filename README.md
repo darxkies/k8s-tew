@@ -239,7 +239,7 @@ k8s-tew node-add -s
 
 The arguments:
 
-* -s - it overrides the previously described flags by overwriting the name and the ip after inferring them.
+* -s - it overrides the previously described flags by overwriting the labels, the name, and the ip after inferring them. It also changes the public-network and deployment-directory.
 
 ### Remove Node
 
