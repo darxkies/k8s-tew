@@ -166,7 +166,7 @@ func (config *InternalConfig) registerAssetDirectories() {
 	config.addAssetDirectory(utils.HELM_DATA_DIRECTORY, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.DYNAMIC_DATA_DIRECTORY), utils.HELM_SUBDIRECTORY), false)
 	config.addAssetDirectory(utils.TEMPORARY_DIRECTORY, Labels{}, path.Join(utils.TEMPORARY_SUBDIRECTORY), false)
 	config.addAssetDirectory(utils.BASH_COMPLETION_DIRECTORY, Labels{}, path.Join(utils.CONFIG_SUBDIRECTORY, utils.BASH_COMPLETION_SUBDIRECTORY), false)
-	config.addAssetDirectory(utils.KUBELET_PLUGINS_DIRECTORY, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.KUBELET_DATA_DIRECTORY), utils.PLUGINS_SUBDIRECTORY), false)
+	config.addAssetDirectory(utils.KUBELET_PLUGINS_DIRECTORY, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.KUBELET_DATA_DIRECTORY), utils.PLUGINS_SUBDIRECTORY), true)
 
 	// Ceph
 	config.addAssetDirectory(utils.CEPH_CONFIG_DIRECTORY, Labels{utils.NODE_WORKER}, path.Join(config.GetRelativeAssetDirectory(utils.CONFIG_DIRECTORY), utils.CEPH_SUBDIRECTORY), false)
@@ -473,7 +473,7 @@ func (config *InternalConfig) registerCommands() {
 	config.addCommand("efk-setup", Labels{utils.NODE_BOOTSTRAPPER}, Features{utils.FEATURE_LOGGING, utils.FEATURE_STORAGE}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_EFK_SETUP)))
 	config.addCommand("patch-kibana-service", Labels{utils.NODE_BOOTSTRAPPER}, Features{utils.FEATURE_LOGGING, utils.FEATURE_STORAGE}, OS{}, fmt.Sprintf(`%s get svc kibana-elasticsearch-cluster -n logging --output=jsonpath={.spec..nodePort} | grep %d || %s patch service kibana-elasticsearch-cluster -n logging -p '{"spec":{"type":"NodePort","ports":[{"port":80,"nodePort":%d}]}}'`, kubectlCommand, utils.PORT_KIBANA, kubectlCommand, utils.PORT_KIBANA))
 	config.addCommand("patch-cerebro-service", Labels{utils.NODE_BOOTSTRAPPER}, Features{utils.FEATURE_LOGGING, utils.FEATURE_STORAGE}, OS{}, fmt.Sprintf(`%s get svc cerebro-elasticsearch-cluster -n logging --output=jsonpath={.spec..nodePort} | grep %d || %s patch service cerebro-elasticsearch-cluster -n logging -p '{"spec":{"type":"NodePort","ports":[{"port":80,"nodePort":%d}]}}'`, kubectlCommand, utils.PORT_CEREBRO, kubectlCommand, utils.PORT_CEREBRO))
-	config.addCommand("ark-setup", Labels{utils.NODE_BOOTSTRAPPER}, Features{utils.FEATURE_BACKUP, utils.FEATURE_STORAGE}, OS{utils.FEATURE_BACKUP, utils.FEATURE_STORAGE}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_ARK_SETUP)))
+	config.addCommand("ark-setup", Labels{utils.NODE_BOOTSTRAPPER}, Features{utils.FEATURE_BACKUP, utils.FEATURE_STORAGE}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_ARK_SETUP)))
 	config.addCommand("wordpress-setup", Labels{utils.NODE_BOOTSTRAPPER}, Features{utils.FEATURE_SHOWCASE, utils.FEATURE_STORAGE}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.WORDPRESS_SETUP)))
 }
 
