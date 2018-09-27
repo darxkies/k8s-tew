@@ -434,8 +434,7 @@ func (config *InternalConfig) registerCommands() {
 
 	// Dependencies
 	config.addCommand("setup-ubuntu", Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, Features{}, OS{utils.OS_UBUNTU}, "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y apt-transport-https bash-completion")
-	config.addCommand("setup-centos", Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, Features{}, OS{utils.OS_CENTOS}, "systemctl disable firewalld && systemctl stop firewalld && setenforce 0 && sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux")
-	config.addCommand("setup-centos-disable-selinux", Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, Features{}, OS{utils.OS_CENTOS}, "setenforce 0")
+	config.addCommand("setup-centos", Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, Features{}, OS{utils.OS_CENTOS}, "systemctl disable firewalld && systemctl stop firewalld && yum install -y bash-completion libseccomp && sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux && (setenforce 0 || true)")
 	config.addCommand("swapoff", Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, Features{}, OS{}, "swapoff -a")
 	config.addCommand("load-overlay", Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, Features{}, OS{}, "modprobe overlay")
 	config.addCommand("load-btrfs", Labels{utils.NODE_CONTROLLER, utils.NODE_WORKER}, Features{}, OS{}, "modprobe btrfs")
