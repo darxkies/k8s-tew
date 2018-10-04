@@ -4,6 +4,10 @@ VERSION=$(git describe --tags)
 
 echo "Version: $VERSION"
 
+echo "Getting dependencies"
+
+go mod vendor
+
 echo "Build packr"
 
 if [ ! -f $GOBIN/packr ]; then

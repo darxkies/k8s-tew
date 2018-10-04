@@ -3,3 +3,6 @@ assets
 tags
 utils/a_utils-packr.go
 embedded
+bin
+vendor
+.env
