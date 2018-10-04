@@ -15,7 +15,7 @@ script:
   - pwd
   - env
   - docker build -t darxkies/k8s-tew-build build
-  - docker run --rm -v $(TRAVIS_BUILD_DIR):/go darxkies/k8s-tew-build
+  - docker run --rm -v $TRAVIS_BUILD_DIR:/go darxkies/k8s-tew-build
 
 deploy:
   provider: releases
