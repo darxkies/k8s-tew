@@ -182,6 +182,8 @@ func (servers *Servers) Run(commandRetries uint) error {
 		log.Info("Stopped all servers")
 
 		utils.KillProcessChildren(os.Getpid(), servers.killTimeout)
+
+		utils.UnmountDirectories()
 	}()
 
 	go func() {

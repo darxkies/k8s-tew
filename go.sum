@@ -115,6 +115,8 @@ golang.org/x/net v0.0.0-20180811021610-c39426892332/go.mod h1:mL1N/T3taQHkDXs73r
 golang.org/x/net v0.0.0-20180921000356-2f5d2388922f/go.mod h1:mL1N/T3taQHkDXs73rZJwtUhF3w3ftmwwsq0BUmARs4=
 golang.org/x/net v0.0.0-20181003013248-f5e5bdd77824 h1:MkjFNbaZJyH98M67Q3umtwZ+EdVdrNJLqSwZp5vcv60=
 golang.org/x/net v0.0.0-20181003013248-f5e5bdd77824/go.mod h1:mL1N/T3taQHkDXs73rZJwtUhF3w3ftmwwsq0BUmARs4=
+golang.org/x/net v0.0.0-20181004194319-68fc911561ed h1:I/REEzHOaFBzlimCr4aoxCQY/gZkX+QCakxUXRInmwg=
+golang.org/x/net v0.0.0-20181004194319-68fc911561ed/go.mod h1:mL1N/T3taQHkDXs73rZJwtUhF3w3ftmwwsq0BUmARs4=
 golang.org/x/sync v0.0.0-20180314180146-1d60e4601c6f h1:wMNYb4v58l5UBM7MYRLPG6ZhfOqbKu7X5eyFl8ZhKvA=
 golang.org/x/sync v0.0.0-20180314180146-1d60e4601c6f/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
 golang.org/x/sys v0.0.0-20180815093151-14742f9018cd h1:Vdp9FdQnZJQQF78wgpudgkchp80Nu37AWr8+mprtgAo=

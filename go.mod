@@ -52,7 +52,7 @@ require (
 	github.com/spf13/viper v1.1.0
 	github.com/tmc/scp v0.0.0-20170824174625-f7b48647feef
 	golang.org/x/crypto v0.0.0-20180808211826-de0752318171
-	golang.org/x/net v0.0.0-20181003013248-f5e5bdd77824 // indirect
+	golang.org/x/net v0.0.0-20181004194319-68fc911561ed // indirect
 	golang.org/x/sys v0.0.0-20180815093151-14742f9018cd // indirect
 	golang.org/x/text v0.3.0 // indirect
 	golang.org/x/time v0.0.0-20180412165947-fbb02b2291d2 // indirect

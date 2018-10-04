@@ -170,3 +170,9 @@ func KillProcessChildren(pid int, timeout uint) {
 
 	children.Kill(timeout)
 }
+
+func UnmountDirectories() error {
+	log.Info("Unmounting directories")
+
+	return RunCommand("umount $(mount | cut -d \" \" -f 3 | grep k8s-tew)")
+}
