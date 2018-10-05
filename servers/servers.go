@@ -187,6 +187,8 @@ func (servers *Servers) Run(commandRetries uint) error {
 	}()
 
 	go func() {
+		successful := true
+
 		// Register commands based on labels to be executed asynchronously
 		for index, command := range servers.config.Config.Commands {
 			if !config.CompareLabels(servers.config.Node.Labels, command.Labels) {
@@ -202,13 +204,21 @@ func (servers *Servers) Run(commandRetries uint) error {
 			}
 
 			if error := servers.runCommand(command, commandRetries, index+1, len(servers.config.Config.Commands)); error != nil {
-				log.WithFields(log.Fields{"error": error}).Fatal("Cluster setup failed")
+				log.WithFields(log.Fields{"error": error}).Error("Cluster setup failed")
+
+				successful = false
+
+				servers.stop = true
+
+				break
 			}
 
 			utils.IncreaseProgressStep()
 		}
 
-		log.Info("Cluster setup finished")
+		if successful {
+			log.Info("Cluster setup finished - Supervising servers")
+		}
 
 		utils.HideProgress()
 	}()

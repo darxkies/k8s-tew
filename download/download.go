@@ -70,6 +70,9 @@ func (downloader Downloader) getURL(url, filename string) (string, error) {
 }
 
 func (downloader Downloader) downloadFile(url, filename string) error {
+	// Remove file to be downloaded
+	os.Remove(filename)
+
 	utils.LogURL("Downloading", url)
 
 	// Create client
@@ -146,33 +149,42 @@ func (downloader Downloader) downloadExecutable(urlTemplate, remoteFilename, fil
 }
 
 func (downloader Downloader) extractTGZ(filename string, targetDirectory string) error {
+	// Remove any previous content
+	os.RemoveAll(targetDirectory)
+
+	// Create directory
 	if error := utils.CreateDirectoryIfMissing(targetDirectory); error != nil {
 		return error
 	}
 
+	// Open compressed file
 	file, error := os.Open(filename)
-
 	if error != nil {
 		return error
 	}
 
+	// Defer file close operation
 	defer file.Close()
 
+	// Open gzip reader
 	gzipReader, error := gzip.NewReader(file)
-
 	if error != nil {
 		return error
 	}
 
+	// Open tar reader
 	tarReader := tar.NewReader(gzipReader)
 
 	for true {
+		// Get tar header
 		header, error := tarReader.Next()
 
+		// Exit on end of file
 		if error == io.EOF {
 			break
 		}
 
+		// Exit if any other error occured
 		if error != nil {
 			return error
 		}
@@ -470,9 +482,6 @@ func (downloader Downloader) downloadArkBinaries() error {
 }
 
 func (downloader Downloader) createLocalDirectories() error {
-	// Remove any temporary remains of previous downloads
-	os.RemoveAll(downloader.config.GetFullLocalAssetDirectory(utils.TEMPORARY_DIRECTORY))
-
 	for name, directory := range downloader.config.Config.Assets.Directories {
 		if directory.Absolute {
 			continue

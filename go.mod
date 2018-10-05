@@ -4,6 +4,7 @@ require (
 	github.com/armon/go-metrics v0.0.0-20180713145231-3c58d8115a78 // indirect
 	github.com/briandowns/spinner v0.0.0-20180626164024-5b875a9171af
 	github.com/cavaliercoder/grab v2.0.0+incompatible
+	github.com/cespare/reflex v0.2.0 // indirect
 	github.com/davidrjenni/reftools v0.0.0-20180914123528-654d0ba4f96d // indirect
 	github.com/fatih/color v1.7.0 // indirect
 	github.com/fatih/motion v0.0.0-20180408211639-218875ebe238 // indirect
@@ -29,6 +30,7 @@ require (
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51 // indirect
 	github.com/klauspost/asmfmt v0.0.0-20171230121622-022c51c61cbd // indirect
 	github.com/koron/iferr v0.0.0-20180615142939-bb332a3b1d91 // indirect
+	github.com/kr/pty v1.1.3 // indirect
 	github.com/magiconair/properties v1.8.0 // indirect
 	github.com/markbates/grift v1.0.1 // indirect
 	github.com/mattn/go-colorable v0.0.9 // indirect
@@ -38,6 +40,7 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v0.0.0-20180701023420-4b7aa43c6742 // indirect
 	github.com/nsf/gocode v0.0.0-20180902125341-7b1d4e18cdc5 // indirect
+	github.com/ogier/pflag v0.0.1 // indirect
 	github.com/pelletier/go-toml v1.2.0 // indirect
 	github.com/petar/GoLLRB v0.0.0-20130427215148-53be0d36a84c // indirect
 	github.com/peterbourgon/diskv v2.0.1+incompatible // indirect
@@ -52,7 +55,7 @@ require (
 	github.com/spf13/viper v1.1.0
 	github.com/tmc/scp v0.0.0-20170824174625-f7b48647feef
 	golang.org/x/crypto v0.0.0-20180808211826-de0752318171
-	golang.org/x/net v0.0.0-20181004194319-68fc911561ed // indirect
+	golang.org/x/net v0.0.0-20181005035420-146acd28ed58 // indirect
 	golang.org/x/sys v0.0.0-20180815093151-14742f9018cd // indirect
 	golang.org/x/text v0.3.0 // indirect
 	golang.org/x/time v0.0.0-20180412165947-fbb02b2291d2 // indirect

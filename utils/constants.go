@@ -84,7 +84,6 @@ const PORT_CEREBRO uint16 = 30990
 const PORT_WORDPRESS uint16 = 30100
 
 // URLs
-
 const K8S_BASE_NAME = "kubernetes-server-linux-amd64"
 const K8S_DOWNLOAD_URL = "https://storage.googleapis.com/kubernetes-release/release/v{{.Versions.K8S}}/{{.Filename}}.tar.gz"
 const ETCD_BASE_NAME = "etcd-v{{.Versions.Etcd}}-linux-amd64"
