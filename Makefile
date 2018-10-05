@@ -4,4 +4,8 @@ build:
 	docker build -t $(BUILD_IMAGE) build
 	docker run --rm -v $$(pwd):/go $(BUILD_IMAGE)
 
+watch-and-compile:
+	go get github.com/cespare/reflex
+	reflex -r '\.go$$' -R '^vendor' -R '^utils/a_utils-packr\.go$$' build/build.sh
+
 .PHONY: build
