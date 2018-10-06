@@ -83,7 +83,6 @@ func NewDeployment(_config *config.InternalConfig, identityFile string, pullImag
 		Image{Name: deployment.config.Config.Versions.CSIDriverRegistrar, Features: config.Features{utils.FEATURE_STORAGE}},
 		Image{Name: deployment.config.Config.Versions.CSICephRBDPlugin, Features: config.Features{utils.FEATURE_STORAGE}},
 		Image{Name: deployment.config.Config.Versions.CSICephFSPlugin, Features: config.Features{utils.FEATURE_STORAGE}},
-		Image{Name: deployment.config.Config.Versions.RBDProvisioner, Features: config.Features{utils.FEATURE_STORAGE}},
 		Image{Name: deployment.config.Config.Versions.FluentBit, Features: config.Features{utils.FEATURE_LOGGING, utils.FEATURE_STORAGE}},
 		Image{Name: deployment.config.Config.Versions.Elasticsearch, Features: config.Features{utils.FEATURE_LOGGING, utils.FEATURE_STORAGE}},
 		Image{Name: deployment.config.Config.Versions.ElasticsearchCron, Features: config.Features{utils.FEATURE_LOGGING, utils.FEATURE_STORAGE}},

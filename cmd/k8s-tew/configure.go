@@ -251,10 +251,6 @@ func init() {
 		_config.Config.Versions.CalicoCNI = value
 	})
 
-	addStringOption("version-rbd-provisioner", utils.VERSION_RBD_PROVISIONER, "RBD-Provisioner version", func(value string) {
-		_config.Config.Versions.RBDProvisioner = value
-	})
-
 	addStringOption("version-ceph", utils.VERSION_CEPH, "Ceph version", func(value string) {
 		_config.Config.Versions.Ceph = value
 	})

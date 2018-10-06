@@ -24,7 +24,6 @@ type Versions struct {
 	CalicoTypha                string `yaml:"calico-typha"`
 	CalicoNode                 string `yaml:"calico-node"`
 	CalicoCNI                  string `yaml:"calico-cni"`
-	RBDProvisioner             string `yaml:"rbd-provisioner"`
 	Ceph                       string `yaml:"ceph"`
 	Heapster                   string `yaml:"heapster"`
 	AddonResizer               string `yaml:"addon-resizer"`
@@ -74,7 +73,6 @@ func NewVersions() Versions {
 		CalicoTypha:                utils.VERSION_CALICO_TYPHA,
 		CalicoNode:                 utils.VERSION_CALICO_NODE,
 		CalicoCNI:                  utils.VERSION_CALICO_CNI,
-		RBDProvisioner:             utils.VERSION_RBD_PROVISIONER,
 		Ceph:                       utils.VERSION_CEPH,
 		Heapster:                   utils.VERSION_HEAPSTER,
 		AddonResizer:               utils.VERSION_ADDON_RESIZER,

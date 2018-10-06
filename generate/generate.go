@@ -466,7 +466,6 @@ func (generator *Generator) generateCephSetup() error {
 		StorageNodes         []config.NodeData
 		CephConfigDirectory  string
 		CephDataDirectory    string
-		RBDProvisionerImage  string
 		CephImage            string
 		CephManagerPort      uint16
 		CephRadosGatewayPort uint16
@@ -478,7 +477,6 @@ func (generator *Generator) generateCephSetup() error {
 		StorageNodes:         generator.config.GetStorageNodes(),
 		CephConfigDirectory:  generator.config.GetFullTargetAssetDirectory(utils.CEPH_CONFIG_DIRECTORY),
 		CephDataDirectory:    generator.config.GetFullTargetAssetDirectory(utils.CEPH_DATA_DIRECTORY),
-		RBDProvisionerImage:  generator.config.Config.Versions.RBDProvisioner,
 		CephImage:            generator.config.Config.Versions.Ceph,
 		CephManagerPort:      utils.PORT_CEPH_MANAGER,
 		CephRadosGatewayPort: utils.PORT_CEPH_RADOS_GATEWAY,

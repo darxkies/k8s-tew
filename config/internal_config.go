@@ -176,8 +176,8 @@ func (config *InternalConfig) registerAssetDirectories() {
 	config.addAssetDirectory(utils.CEPH_BOOTSTRAP_RBD_DIRECTORY, Labels{utils.NODE_WORKER}, path.Join(config.GetRelativeAssetDirectory(utils.CEPH_DATA_DIRECTORY), utils.CEPH_BOOTSTRAP_RBD_DIRECTORY), false)
 	config.addAssetDirectory(utils.CEPH_BOOTSTRAP_RGW_DIRECTORY, Labels{utils.NODE_WORKER}, path.Join(config.GetRelativeAssetDirectory(utils.CEPH_DATA_DIRECTORY), utils.CEPH_BOOTSTRAP_RGW_DIRECTORY), false)
 	config.addAssetDirectory(utils.CEPH_BOOTSTRAP_RGW_DIRECTORY, Labels{utils.NODE_WORKER}, path.Join(config.GetRelativeAssetDirectory(utils.CEPH_DATA_DIRECTORY), utils.CEPH_BOOTSTRAP_RGW_DIRECTORY), false)
-	config.addAssetDirectory(utils.CEPH_FS_PLUGIN_DIRECTORY, Labels{utils.NODE_WORKER}, path.Join(config.GetRelativeAssetDirectory(utils.KUBELET_PLUGINS_DIRECTORY), utils.CSI_CEPHFS_PLUGIN), false)
-	config.addAssetDirectory(utils.CEPH_RBD_PLUGIN_DIRECTORY, Labels{utils.NODE_WORKER}, path.Join(config.GetRelativeAssetDirectory(utils.KUBELET_PLUGINS_DIRECTORY), utils.CSI_RBD_PLUGIN), false)
+	config.addAssetDirectory(utils.CEPH_FS_PLUGIN_DIRECTORY, Labels{utils.NODE_WORKER}, path.Join(config.GetRelativeAssetDirectory(utils.KUBELET_PLUGINS_DIRECTORY), utils.CSI_CEPHFS_PLUGIN), true)
+	config.addAssetDirectory(utils.CEPH_RBD_PLUGIN_DIRECTORY, Labels{utils.NODE_WORKER}, path.Join(config.GetRelativeAssetDirectory(utils.KUBELET_PLUGINS_DIRECTORY), utils.CSI_RBD_PLUGIN), true)
 }
 
 func (config *InternalConfig) registerAssetFiles() {
