@@ -98,10 +98,10 @@ var nodeAddCmd = &cobra.Command{
 }
 
 func init() {
-	nodeAddCmd.Flags().StringVarP(&nodeName, "name", "n", "single-node", "Unique name of the node")
+	nodeAddCmd.Flags().StringVarP(&nodeName, "name", "n", "single-node", "The hostname of the node")
 	nodeAddCmd.Flags().StringVarP(&nodeIP, "ip", "i", "192.168.100.50", "IP of the node")
-	nodeAddCmd.Flags().UintVarP(&nodeIndex, "index", "x", 0, "The unique index of the node.")
-	nodeAddCmd.Flags().StringVarP(&nodeLabels, "labels", "l", fmt.Sprintf("%s,%s", utils.NODE_CONTROLLER, utils.NODE_WORKER), "The labels of the node which define the attributes of the node.")
-	nodeAddCmd.Flags().BoolVarP(&nodeSelf, "self", "s", false, "Add this machine by infering the name, the ip and assuming it is a controller and a worker")
+	nodeAddCmd.Flags().UintVarP(&nodeIndex, "index", "x", 0, "The unique index of the node which should never be reused")
+	nodeAddCmd.Flags().StringVarP(&nodeLabels, "labels", "l", fmt.Sprintf("%s,%s", utils.NODE_CONTROLLER, utils.NODE_WORKER), "The labels of the node which define the attributes of the node")
+	nodeAddCmd.Flags().BoolVarP(&nodeSelf, "self", "s", false, "Add this machine by infering the host's name & ip and by setting the labels controller,worker,bootstrapper - The public-network and the deployment-directory are also updated")
 	RootCmd.AddCommand(nodeAddCmd)
 }

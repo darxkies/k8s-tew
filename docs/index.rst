@@ -1,3 +1,7 @@
+.. spelling::
+
+   prem
+
 .. k8s-tew documentation master file, created by
    sphinx-quickstart on Sat Oct  6 19:46:44 2018.
    You can adapt this file completely to your liking, but it should at least
@@ -10,11 +14,14 @@ Welcome to k8s-tew's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   installation
+   usage
+   setups
+
 
 
 Indices and tables
 ==================
 
 * :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`

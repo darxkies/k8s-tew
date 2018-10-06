@@ -57,7 +57,7 @@ func init() {
 	deployCmd.Flags().StringVarP(&identityFile, "identity-file", "i", path.Join(os.Getenv("HOME"), ".ssh/id_rsa"), "SSH identity file")
 	deployCmd.Flags().UintVarP(&commandRetries, "command-retries", "r", 300, "The count of command retries during the setup")
 	deployCmd.Flags().BoolVar(&skipSetup, "skip-setup", false, "Skip setup steps")
-	deployCmd.Flags().BoolVar(&skipStorageSetup, "skip-storage-setup", false, "Skip storage setup and all other setup steps that require storage")
+	deployCmd.Flags().BoolVar(&skipStorageSetup, "skip-storage-setup", false, "Skip storage setup and all other feature setup steps")
 	deployCmd.Flags().BoolVar(&skipMonitoringSetup, "skip-monitoring-setup", false, "Skip monitoring setup")
 	deployCmd.Flags().BoolVar(&skipLoggingSetup, "skip-logging-setup", false, "Skip logging setup")
 	deployCmd.Flags().BoolVar(&skipBackupSetup, "skip-backup-setup", false, "Skip backup setup")
@@ -66,6 +66,6 @@ func init() {
 	deployCmd.Flags().BoolVar(&skipPackagingSetup, "skip-packaging-setup", false, "Skip packaging setup")
 	deployCmd.Flags().BoolVar(&pullImages, "pull-images", false, "Pull images")
 	deployCmd.Flags().BoolVar(&parallel, "parallel", false, "Run steps in parallel")
-	deployCmd.Flags().BoolVar(&forceUpload, "force-upload", false, "Files are uploaded without without any checks")
+	deployCmd.Flags().BoolVar(&forceUpload, "force-upload", false, "Files are uploaded without checking if they are already installed")
 	RootCmd.AddCommand(deployCmd)
 }

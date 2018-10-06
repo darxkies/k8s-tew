@@ -69,7 +69,7 @@ var generateCmd = &cobra.Command{
 
 func init() {
 	generateCmd.Flags().UintVarP(&commandRetries, "command-retries", "r", 300, "The count of command retries during the setup")
-	generateCmd.Flags().BoolVar(&forceDownload, "force-download", false, "Force download")
-	generateCmd.Flags().BoolVar(&parallel, "parallel", false, "Download in parallel")
+	generateCmd.Flags().BoolVar(&forceDownload, "force-download", false, "Force downloading all binary dependencies from the internet")
+	generateCmd.Flags().BoolVar(&parallel, "parallel", false, "Download binary dependencies in parallel")
 	RootCmd.AddCommand(generateCmd)
 }

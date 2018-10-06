@@ -1,0 +1,336 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Setups &mdash; k8s-tew  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Usage" href="usage.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> k8s-tew
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Setups</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#vagrant">Vagrant</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create">Create</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stop">Stop</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#start">Start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ssh">SSH</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#kubernetes-dashboard">Kubernetes Dashboard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ingress-port-forwarding">Ingress Port Forwarding</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">k8s-tew</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Setups</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/setups.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="setups">
+<h1>Setups<a class="headerlink" href="#setups" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="vagrant">
+<h2>Vagrant<a class="headerlink" href="#vagrant" title="Permalink to this headline">¶</a></h2>
+<p>Vagrant/VirtualBox can be used to test drive k8s-tew. The host is used to bootstrap the cluster which runs in VirtualBox. The Vagrantfile included in the repository can be used for single-node/multi-node &amp; Ubuntu 18.04/CentOS 7.5 setups.</p>
+<p>The Vagrantfile can be configured using the environment variables:</p>
+<ul class="simple">
+<li>OS - define the operating system. It accepts ubuntu, the default value, and centos.</li>
+<li>MULTI_NODE - if set then a HA cluster is generated. Otherwise a single-node setup is used.</li>
+<li>CONTROLLERS - defines the number of controller nodes. The default number is 3.</li>
+<li>WORKERS - specifies the number of worker nodes. The default number is 2.</li>
+<li>SSH_PUBLIC_KEY - if this environment variable is not set, then <code class="file docutils literal notranslate"><span class="pre">$HOME/.ssh/id_rsa</span></code> is used by default.</li>
+<li>IP_PREFIX - this value is used to generate the IP addresses of the nodes. If not set 192.168.100 will be used. The single node has the IP address 192.168.100.50. The controllers start with the IP address 192.168.100.200 and the workers with 192.168.100.100.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The multi-node setup with the default settings needs about 20GB RAM for itself.</p>
+</div>
+<div class="section" id="usage">
+<h3>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h3>
+<p>The directory called <code class="file docutils literal notranslate"><span class="pre">setup</span></code> contains sub-directories for various cluster setup configurations:</p>
+<ul class="simple">
+<li>local - it starts single-node cluster locally without using any kind of virtualization. This kind of setup needs root rights.</li>
+<li>ubuntu-single-node - Ubuntu 18.04 single-node cluster. It needs about 8G Ram.</li>
+<li>ubuntu-multi-node - Ubuntu 18.04 HA cluster. It needs around 20G Ram.</li>
+<li>centos-single-node - CentOS 7.5 single-node cluster. It needs about 8G Ram.</li>
+<li>centos-multi-node - CentOS 7.5 HA cluster. It needs around 20G Ram.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Regardless of the setup, once the deployment is done it will take a while to download all required containers from the internet. So better use kubectl to check the status of the pods.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For the local setup, to access the Kubernetes Dashboard use the internal IP address (e.g. 192.168.x.y or 10.x.y.z) and not 127.0.0.1/localhost. Depending on the hardware used, it might take a while until it starts and setups everything.</p>
+</div>
+</div>
+<div class="section" id="create">
+<h3>Create<a class="headerlink" href="#create" title="Permalink to this headline">¶</a></h3>
+<p>Change to one of the sub-directories and enter the following command to start the cluster:</p>
+<blockquote>
+<div><div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span>
+</pre></div>
+</div>
+</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This will destroy any existing VMs, creates new VMs and performs all the steps (forced initialization, configuration, generation and deployment) to create the cluster.</p>
+</div>
+</div>
+<div class="section" id="stop">
+<h3>Stop<a class="headerlink" href="#stop" title="Permalink to this headline">¶</a></h3>
+<p>For the local setup, just press CTRL+C.</p>
+<p>For the other setups enter:</p>
+<blockquote>
+<div><div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">halt</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="start">
+<h3>Start<a class="headerlink" href="#start" title="Permalink to this headline">¶</a></h3>
+<p>To start an existing setup/VMs enter:</p>
+<blockquote>
+<div><div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">up</span>
+</pre></div>
+</div>
+</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This and the following commands work only for Vagrant based setups.</p>
+</div>
+</div>
+<div class="section" id="ssh">
+<h3>SSH<a class="headerlink" href="#ssh" title="Permalink to this headline">¶</a></h3>
+<p>For single-node setups enter:</p>
+<blockquote>
+<div><div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">ssh</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>And for multi-node setups:</p>
+<blockquote>
+<div><div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">ssh</span><span class="o">-</span><span class="n">controller00</span>
+<span class="n">make</span> <span class="n">ssh</span><span class="o">-</span><span class="n">controller01</span>
+<span class="n">make</span> <span class="n">ssh</span><span class="o">-</span><span class="n">controller02</span>
+<span class="n">make</span> <span class="n">ssh</span><span class="o">-</span><span class="n">worker00</span>
+<span class="n">make</span> <span class="n">ssh</span><span class="o">-</span><span class="n">worker01</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="kubernetes-dashboard">
+<h3>Kubernetes Dashboard<a class="headerlink" href="#kubernetes-dashboard" title="Permalink to this headline">¶</a></h3>
+<p>This will display the token for three seconds, and then it will open the web browser pointing to the address of Kubernetes Dashboard:</p>
+<blockquote>
+<div><div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">dashboard</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="ingress-port-forwarding">
+<h3>Ingress Port Forwarding<a class="headerlink" href="#ingress-port-forwarding" title="Permalink to this headline">¶</a></h3>
+<p>In order to start port forwarding from your host’s ports 80 and 443 to Vagrant’s VMs for Ingress enter:</p>
+<blockquote>
+<div><div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">forward</span><span class="o">-</span><span class="mi">80</span>
+<span class="n">make</span> <span class="n">forward</span><span class="o">-</span><span class="mi">443</span>
+</pre></div>
+</div>
+</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Both commands are blocking. So you need two different terminal sessions.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="usage.html" class="btn btn-neutral" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Mircea-Cristian Racasan
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
