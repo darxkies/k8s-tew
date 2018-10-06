@@ -17,11 +17,5 @@ Welcome to k8s-tew's documentation!
    installation
    usage
    setups
+   troubleshooting
 
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`search`
