@@ -357,6 +357,10 @@ func (deployment *NodeDeployment) configureTaint() error {
 
 			changed = true
 		}
+
+		// Make e2e compliance test suit happy
+		node.Labels[CONTROLLER_ONLY_TAINT_KEY] = "true"
+
 	} else {
 		taints := []v1.Taint{}
 
@@ -371,6 +375,9 @@ func (deployment *NodeDeployment) configureTaint() error {
 		}
 
 		node.Spec.Taints = taints
+
+		// Make e2e compliance test suit happy and remove the label
+		delete(node.Labels, CONTROLLER_ONLY_TAINT_KEY)
 	}
 
 	if !changed {
