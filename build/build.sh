@@ -1,5 +1,7 @@
 #!/bin/sh
 
+unset GOPATH
+
 VERSION=$(git describe --tags)
 
 echo "Version: $VERSION"
