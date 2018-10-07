@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Troubleshooting &mdash; k8s-tew  documentation</title>
+  <title>Quick Start &mdash; k8s-tew  documentation</title>
   
 
   
@@ -29,7 +29,8 @@
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Setups" href="setups.html" /> 
+    <link rel="next" title="Installation" href="installation.html" />
+    <link rel="prev" title="Features" href="features.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -82,11 +83,11 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="features.html">Features</a></li>
-<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="setups.html">Setups</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
 </ul>
 
             
@@ -132,13 +133,13 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Troubleshooting</li>
+      <li>Quick Start</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/troubleshooting.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/quickstart.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -151,9 +152,43 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="troubleshooting">
-<h1>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h1>
-<p>k8s-tew enables logging for all components by default. The log files are stored in <code class="file docutils literal notranslate"><em><span class="pre">base-directory</span></em><span class="pre">/var/log/k8s-tew/</span></code>.</p>
+  <div class="section" id="quick-start">
+<h1>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h1>
+<p>The following snippet will create a cluster on the host computer or in a virtual machine:</p>
+<blockquote>
+<div><div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Switch to user root</span>
+<span class="n">sudo</span> <span class="n">su</span> <span class="o">-</span>
+
+<span class="c1"># Download Binary</span>
+<span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">darxkies</span><span class="o">/</span><span class="n">k8s</span><span class="o">-</span><span class="n">tew</span><span class="o">/</span><span class="n">releases</span><span class="o">/</span><span class="n">download</span><span class="o">/</span><span class="mf">2.1</span><span class="o">.</span><span class="mi">0</span><span class="o">/</span><span class="n">k8s</span><span class="o">-</span><span class="n">tew</span>
+<span class="n">chmod</span> <span class="n">a</span><span class="o">+</span><span class="n">x</span> <span class="n">k8s</span><span class="o">-</span><span class="n">tew</span>
+
+<span class="c1"># Everything is installed relative to the root directory</span>
+<span class="n">export</span> <span class="n">K8S_TEW_BASE_DIRECTORY</span><span class="o">=/</span>
+
+<span class="c1"># Create cluster data</span>
+<span class="o">./</span><span class="n">k8s</span><span class="o">-</span><span class="n">tew</span> <span class="n">initialize</span>
+<span class="o">./</span><span class="n">k8s</span><span class="o">-</span><span class="n">tew</span> <span class="n">node</span><span class="o">-</span><span class="n">add</span> <span class="o">-</span><span class="n">s</span>
+<span class="o">./</span><span class="n">k8s</span><span class="o">-</span><span class="n">tew</span> <span class="n">generate</span>
+
+<span class="c1"># Activate and start service</span>
+<span class="n">systemctl</span> <span class="n">daemon</span><span class="o">-</span><span class="n">reload</span>
+<span class="n">systemctl</span> <span class="n">enable</span> <span class="n">k8s</span><span class="o">-</span><span class="n">tew</span>
+<span class="n">systemctl</span> <span class="n">start</span> <span class="n">k8s</span><span class="o">-</span><span class="n">tew</span>
+
+<span class="c1"># Activate environment variables and switch back to root</span>
+<span class="n">exit</span>
+<span class="n">sudo</span> <span class="n">su</span> <span class="o">-</span>
+
+<span class="c1"># Watch the pods being installed</span>
+<span class="n">watch</span> <span class="o">-</span><span class="n">n</span> <span class="mi">1</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">pods</span> <span class="o">--</span><span class="nb">all</span><span class="o">-</span><span class="n">namespaces</span>
+</pre></div>
+</div>
+</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You will need at least 20GB HDD, 8GB RAM and 4 CPU Cores.</p>
+</div>
 </div>
 
 
@@ -164,8 +199,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
+        <a href="installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-        <a href="setups.html" class="btn btn-neutral" title="Setups" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+        <a href="features.html" class="btn btn-neutral" title="Features" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

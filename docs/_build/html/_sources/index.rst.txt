@@ -16,6 +16,7 @@ Welcome to k8s-tew's documentation!
 
    about
    features
+   quickstart
    installation
    usage
    setups

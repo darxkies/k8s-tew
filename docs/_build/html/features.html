@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Troubleshooting &mdash; k8s-tew  documentation</title>
+  <title>Features &mdash; k8s-tew  documentation</title>
   
 
   
@@ -29,7 +29,8 @@
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Setups" href="setups.html" /> 
+    <link rel="next" title="Quick Start" href="quickstart.html" />
+    <link rel="prev" title="About" href="about.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -81,12 +82,12 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
-<li class="toctree-l1"><a class="reference internal" href="features.html">Features</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="setups.html">Setups</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
 </ul>
 
             
@@ -132,13 +133,13 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Troubleshooting</li>
+      <li>Features</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/troubleshooting.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/features.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -151,9 +152,36 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="troubleshooting">
-<h1>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h1>
-<p>k8s-tew enables logging for all components by default. The log files are stored in <code class="file docutils literal notranslate"><em><span class="pre">base-directory</span></em><span class="pre">/var/log/k8s-tew/</span></code>.</p>
+  <div class="section" id="features">
+<h1>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>HA cluster setup passes all CNCF conformance tests (<a class="reference external" href="https://github.com/cncf/k8s-conformance/tree/master/v1.10/k8s-tew">Kubernetes 1.10</a>, <a class="reference external" href="https://github.com/cncf/k8s-conformance/tree/master/v1.11/k8s-tew">Kubernetes 1.11</a>)</li>
+<li>Container Management: <a class="reference external" href="https://containerd.io/">Containerd</a></li>
+<li>Networking: <a class="reference external" href="https://www.projectcalico.org">Calico</a></li>
+<li>Ingress: <a class="reference external" href="https://kubernetes.github.io/ingress-nginx/">NGINX Ingress</a> and <a class="reference external" href="http://docs.cert-manager.io/en/latest/">cert-manager</a> for <a class="reference external" href="https://letsencrypt.org/">Let’s Encrypt</a></li>
+<li>Storage: <a class="reference external" href="https://ceph.com/">Ceph/RBD</a></li>
+<li>Metrics: <a class="reference external" href="https://github.com/kubernetes-incubator/metrics-server">metering-metrics</a> and <a class="reference external" href="https://github.com/kubernetes/heapster">Heapster</a></li>
+<li>Monitoring: <a class="reference external" href="https://prometheus.io/">Prometheus</a> and <a class="reference external" href="https://grafana.com/">Grafana</a></li>
+<li>Logging: <a class="reference external" href="https://fluentbit.io/">Fluent-Bit</a>, <a class="reference external" href="https://www.elastic.co/">Elasticsearch</a>, <a class="reference external" href="https://www.elastic.co/products/kibana">Kibana</a> and <a class="reference external" href="https://github.com/lmenezes/cerebro">Cerebro</a></li>
+<li>Backups: <a class="reference external" href="https://github.com/heptio/ark">Ark</a>, <a class="reference external" href="https://restic.net/">Restic</a> and <a class="reference external" href="https://www.minio.io/">Minio</a></li>
+<li>Controller Load Balancing: <a class="reference external" href="http://gobetween.io/">gobetween</a></li>
+<li>Package Manager: <a class="reference external" href="https://helm.sh/">Helm</a></li>
+<li>Dashboard: <a class="reference external" href="https://github.com/kubernetes/dashboard">Kubernetes Dashboard</a></li>
+<li>The communication between the components is encrypted</li>
+<li>RBAC is enabled</li>
+<li>The controllers and the workers have Floating/Virtual IPs</li>
+<li>Integrated Load Balancer for the API Servers</li>
+<li>Support for deployment to a HA cluster using ssh</li>
+<li>Only the changed files are deployed</li>
+<li>No <a class="reference external" href="https://www.docker.com/">Docker</a> installation required</li>
+<li>No cloud provider required</li>
+<li>Single binary without any dependencies</li>
+<li>Runs locally</li>
+<li>Nodes management from the command line</li>
+<li>Downloads all the used binaries (kubernetes, calico, ceph…) from the Internet</li>
+<li>Uses systemd to install itself as a service on the remote machine</li>
+<li>Installs <a class="reference external" href="https://wordpress.com">WordPress</a> and <a class="reference external" href="https://www.mysql.com">MySQL</a> to test drive the installation</li>
+</ul>
 </div>
 
 
@@ -164,8 +192,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
+        <a href="quickstart.html" class="btn btn-neutral float-right" title="Quick Start" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-        <a href="setups.html" class="btn btn-neutral" title="Setups" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+        <a href="about.html" class="btn btn-neutral" title="About" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

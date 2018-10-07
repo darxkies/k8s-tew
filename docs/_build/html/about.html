@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Troubleshooting &mdash; k8s-tew  documentation</title>
+  <title>About &mdash; k8s-tew  documentation</title>
   
 
   
@@ -26,10 +26,11 @@
 
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="author" title="About these documents" href="#" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Setups" href="setups.html" /> 
+    <link rel="next" title="Features" href="features.html" />
+    <link rel="prev" title="Welcome to k8s-tew’s documentation!" href="index.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -80,13 +81,16 @@
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">About</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#why">Why</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="features.html">Features</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="setups.html">Setups</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
 </ul>
 
             
@@ -132,13 +136,13 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Troubleshooting</li>
+      <li>About</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/troubleshooting.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/about.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -151,9 +155,14 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="troubleshooting">
-<h1>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h1>
-<p>k8s-tew enables logging for all components by default. The log files are stored in <code class="file docutils literal notranslate"><em><span class="pre">base-directory</span></em><span class="pre">/var/log/k8s-tew/</span></code>.</p>
+  <div class="section" id="about">
+<h1>About<a class="headerlink" href="#about" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="https://github.com/darxkies/k8s-tew">k8s-tew</a> is a CLI tool to install a Kubernetes Cluster (local, single-node, multi-node or HA-cluster) on Bare Metal. It installs the most essential components needed by a cluster such as networking, storage, monitoring, logging, backuping/restoring and so on. Besides that, k8s-tew is also a supervisor that starts all cluster components on each node, once it setup the nodes.</p>
+<div class="section" id="why">
+<h2>Why<a class="headerlink" href="#why" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://kubernetes.io/">Kubernetes</a> is a fairly complex project. For a newbie it is hard to understand and also to use. While <a class="reference external" href="https://github.com/kelseyhightower/kubernetes-the-hard-way">Kelsey Hightower’s Kubernetes The Hard Way</a>, on which this project is based, helps a lot to understand Kubernetes, it is optimized for the use with Google Cloud Platform.</p>
+<p>Thus, this project’s aim is to give newbies an easy to use tool that allows them to tinker with Kubernetes and later on to install HA production grade clusters.</p>
+</div>
 </div>
 
 
@@ -164,8 +173,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
+        <a href="features.html" class="btn btn-neutral float-right" title="Features" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-        <a href="setups.html" class="btn btn-neutral" title="Setups" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+        <a href="index.html" class="btn btn-neutral" title="Welcome to k8s-tew’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -23,11 +23,11 @@ Usage
 
 The directory called :file:`setup` contains sub-directories for various cluster setup configurations:
 
-- local - it starts single-node cluster locally without using any kind of virtualization. This kind of setup needs root rights.
-- ubuntu-single-node - Ubuntu 18.04 single-node cluster. It needs about 8G Ram.
-- ubuntu-multi-node - Ubuntu 18.04 HA cluster. It needs around 20G Ram.
-- centos-single-node - CentOS 7.5 single-node cluster. It needs about 8G Ram.
-- centos-multi-node - CentOS 7.5 HA cluster. It needs around 20G Ram.
+- local - it starts a single-node cluster locally without using any kind of virtualization. This kind of setup needs root rights. It is meant for local development where it might be important to fire the cluster up and shut it down fast. If you want it to start automatically, take a look at the quickstart section.
+- ubuntu-single-node - Ubuntu 18.04 single-node cluster. It needs about 8GB Ram.
+- ubuntu-multi-node - Ubuntu 18.04 HA cluster. It needs around 20GB Ram.
+- centos-single-node - CentOS 7.5 single-node cluster. It needs about 8GB Ram.
+- centos-multi-node - CentOS 7.5 HA cluster. It needs around 20GB Ram.
 
 .. note:: Regardless of the setup, once the deployment is done it will take a while to download all required containers from the internet. So better use kubectl to check the status of the pods.
 
