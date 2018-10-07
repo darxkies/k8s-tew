@@ -9,6 +9,6 @@ watch-and-compile:
 	reflex -r '\.go$$' -R '^vendor' -R '^utils/a_utils-packr\.go$$' build/build.sh
 
 watch-and-update-documentation:
-	(cd docs && reflex -v -r '\.rst' -R "^_build" make clean html)
+	(cd docs && reflex -r '\.rst' -R "^_build" make clean html)
 
 .PHONY: build
