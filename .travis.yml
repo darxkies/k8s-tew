@@ -6,22 +6,21 @@ services:
 - docker
 
 go:
-- 1.10.2
+- 1.11.1
 
 install: true
 
 script:
   - cat /etc/issue
-  - pwd
-  - env
   - docker build -t darxkies/k8s-tew-build build
   - docker run --rm -v $TRAVIS_BUILD_DIR:/go darxkies/k8s-tew-build
 
 deploy:
+  skip_cleanup: true
   provider: releases
   api_key:
     secure: K77MYgAKRfhhfrE3JE7OLyewlqbaxSLAvoWxoNu53aB6bxDhJFasS8k7ABpOcwQ86nnC8wg0GzyRuDj8E4CwEJiCAMuMlMujCv/7H/RHpdRWtb3NLr4w5yeR9e/Ux1wqNX11DQVNXLwsFbS5sHfhUn2Z8VNWzjrX2fctfNt0omEaQxtn9WaIquY7dpkzjhM7fRsKg1F+mngPlEn9XCn6D4nSmVnDubRRaRGpiyuXEvuSGsFrmyw2P1UfH0PMDLSLFeOdYLkA49Kxbc4eofbLmDuL9Nvd4A7u3A85tZJXjAwGyv6cgraiJ04cvR2veU5HSDkXE63l/46Y3CLqFTHb8EXk2UkGE9kbappc+RuewXpj+v6zNabl/jcuA+hH1blt5aKtX6BNE6afviNYxhwwx9TMpjKCS9hbyQH8pSUevSXEmOTLUwC0n3/M3rcBhtvnW3pcRW65t3GeN9jVCe23RhV5k465i06l2nxDRLL8hIkEPKjqHbQtyhmtrCA/eTNSQiTz/9Ify6m8JWFIFS5uuFJebq/06GUYuNxsCnyz9JwLUJOY28zTQd0UylAmVgGJfOjcrLXJ/P08Hcv6rDSUBzgUOvImK0KvjTfyorxsTiFGMI95Np8S4L7nsrWsK1xOt6zxxaG8KAMjqIHBjH8sDNe8P/VP0b7/kg/4qThYZQE=
-  file: /home/travis/gopath/bin/k8s-tew 
+  file: $TRAVIS_BUILD_DIR/bin/k8s-tew 
   on:
     tags: true
     repo: darxkies/k8s-tew
