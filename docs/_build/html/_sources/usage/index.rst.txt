@@ -1,8 +1,0 @@
-Usage
-=====
-
-.. toctree::
-
-  introduction
-  requirements
-  workflow

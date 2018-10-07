@@ -14,6 +14,8 @@ Welcome to k8s-tew's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   about
+   features
    installation
    usage
    setups
