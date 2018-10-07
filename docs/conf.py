@@ -29,8 +29,10 @@ project = u'k8s-tew'
 copyright = u'2018, Mircea-Cristian Racasan'
 author = u'Mircea-Cristian Racasan'
 
+html_logo = '../logo.svg'
+
 # The short X.Y version
-version = u''
+version = u'2.1.0'
 # The full version, including alpha/beta/rc tags
 release = u''
 
