@@ -1,7 +1,7 @@
 Features
 ========
 
-* HA cluster setup passes all CNCF conformance tests (`Kubernetes 1.10 <https://github.com/cncf/k8s-conformance/tree/master/v1.10/k8s-tew>`_, `Kubernetes 1.11 <https://github.com/cncf/k8s-conformance/tree/master/v1.11/k8s-tew>`_)
+* HA cluster setup passes all CNCF conformance tests (`Kubernetes 1.10 <https://github.com/cncf/k8s-conformance/tree/master/v1.10/k8s-tew>`_, `Kubernetes 1.11 <https://github.com/cncf/k8s-conformance/tree/master/v1.11/k8s-tew>`_, `Kubernetes 1.12 <https://github.com/cncf/k8s-conformance/tree/master/v1.12/k8s-tew>`_)
 * Container Management: `Containerd <https://containerd.io/>`_
 * Networking: `Calico <https://www.projectcalico.org>`_
 * Ingress: `NGINX Ingress <https://kubernetes.github.io/ingress-nginx/>`_ and `cert-manager <http://docs.cert-manager.io/en/latest/>`_ for `Let's Encrypt <https://letsencrypt.org/>`_
