@@ -22,9 +22,9 @@ var completionCmd = &cobra.Command{
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if completionShell == "bash" {
-			RootCmd.GenBashCompletion(os.Stdout)
+			_ = RootCmd.GenBashCompletion(os.Stdout)
 		} else if completionShell == "zsh" {
-			RootCmd.GenZshCompletion(os.Stdout)
+			_ = RootCmd.GenZshCompletion(os.Stdout)
 		}
 	},
 }

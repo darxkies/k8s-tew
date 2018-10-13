@@ -33,7 +33,7 @@ var dashboardCmd = &cobra.Command{
 			os.Exit(-2)
 		}
 
-		fmt.Printf(output)
+		fmt.Printf("%s", output)
 
 		if openBrowser {
 			fmt.Printf("\nOpening web browser...\n")

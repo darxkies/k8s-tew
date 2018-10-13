@@ -235,7 +235,7 @@ func GenerateCephKey() string {
 	binary.LittleEndian.PutUint32(buffer[6:], uint32(nanos))
 	binary.LittleEndian.PutUint16(buffer[10:], uint16(keySize))
 
-	rand.Read(buffer[headerSize:])
+	_, _ = rand.Read(buffer[headerSize:])
 
 	return base64.StdEncoding.EncodeToString(buffer)
 }

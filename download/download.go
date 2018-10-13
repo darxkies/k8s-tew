@@ -175,7 +175,7 @@ func (downloader Downloader) extractTGZ(filename string, targetDirectory string)
 	// Open tar reader
 	tarReader := tar.NewReader(gzipReader)
 
-	for true {
+	for {
 		// Get tar header
 		header, error := tarReader.Next()
 
@@ -334,30 +334,6 @@ func (downloader Downloader) copyK8STEW() error {
 	utils.LogFilename("Copied", targetFilename)
 
 	return targetFile.Sync()
-}
-
-func (downloader Downloader) downloadKubectl() error {
-	return downloader.downloadExecutable(utils.K8S_DOWNLOAD_URL, utils.KUBECTL_BINARY, downloader.config.GetFullLocalAssetFilename(utils.KUBECTL_BINARY))
-}
-
-func (downloader Downloader) downloadKubeApiServer() error {
-	return downloader.downloadExecutable(utils.K8S_DOWNLOAD_URL, utils.KUBE_APISERVER_BINARY, downloader.config.GetFullLocalAssetFilename(utils.KUBE_APISERVER_BINARY))
-}
-
-func (downloader Downloader) downloadKubeControllerManager() error {
-	return downloader.downloadExecutable(utils.K8S_DOWNLOAD_URL, utils.KUBE_CONTROLLER_MANAGER_BINARY, downloader.config.GetFullLocalAssetFilename(utils.KUBE_CONTROLLER_MANAGER_BINARY))
-}
-
-func (downloader Downloader) downloadKubeScheduler() error {
-	return downloader.downloadExecutable(utils.K8S_DOWNLOAD_URL, utils.KUBE_SCHEDULER_BINARY, downloader.config.GetFullLocalAssetFilename(utils.KUBE_SCHEDULER_BINARY))
-}
-
-func (downloader Downloader) downloadKubeProxy() error {
-	return downloader.downloadExecutable(utils.K8S_DOWNLOAD_URL, utils.KUBE_PROXY_BINARY, downloader.config.GetFullLocalAssetFilename(utils.KUBE_PROXY_BINARY))
-}
-
-func (downloader Downloader) downloadKubelet() error {
-	return downloader.downloadExecutable(utils.K8S_DOWNLOAD_URL, utils.KUBELET_BINARY, downloader.config.GetFullLocalAssetFilename(utils.KUBELET_BINARY))
 }
 
 func (downloader Downloader) downloadHelmBinary() error {

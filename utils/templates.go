@@ -26,9 +26,7 @@ func GetTemplate(name string) string {
 }
 
 func GetEmbeddedFiles(callback func(path string, readCloser io.ReadCloser) error) error {
-	embeddedBox.Walk(func(path string, file packr.File) error {
+	return embeddedBox.Walk(func(path string, file packr.File) error {
 		return callback(path, file)
 	})
-
-	return nil
 }

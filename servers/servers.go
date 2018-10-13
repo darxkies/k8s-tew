@@ -94,7 +94,7 @@ func (servers *Servers) addVIPManager(enabled bool, virtualIP, virtualIPInterfac
 }
 
 func (servers *Servers) extractEmbeddedFiles() error {
-	utils.GetEmbeddedFiles(func(filename string, in io.ReadCloser) error {
+	return utils.GetEmbeddedFiles(func(filename string, in io.ReadCloser) error {
 		log.WithFields(log.Fields{"filename": filename}).Info("Extracting embedded file")
 
 		hostDirectory := servers.config.GetFullLocalAssetDirectory(utils.HOST_BINARIES_DIRECTORY)
@@ -124,8 +124,6 @@ func (servers *Servers) extractEmbeddedFiles() error {
 		// Sync content to storage
 		return out.Sync()
 	})
-
-	return nil
 }
 
 func (servers *Servers) Run(commandRetries uint) error {
@@ -183,7 +181,7 @@ func (servers *Servers) Run(commandRetries uint) error {
 
 		utils.KillProcessChildren(os.Getpid(), servers.killTimeout)
 
-		utils.UnmountDirectories()
+		_ = utils.UnmountDirectories()
 	}()
 
 	go func() {

@@ -1,10 +1,8 @@
 package config
 
 import (
-	"fmt"
-
 	"github.com/darxkies/k8s-tew/utils"
-	"github.com/satori/go.uuid"
+	uuid "github.com/satori/go.uuid"
 )
 
 type Config struct {
@@ -45,7 +43,7 @@ func NewConfig() *Config {
 
 	config.VIPRaftControllerPort = utils.PORT_VIP_RAFT_CONTROLLER
 	config.VIPRaftWorkerPort = utils.PORT_VIP_RAFT_WORKER
-	config.ClusterID = fmt.Sprintf("%s", uuid.NewV4())
+	config.ClusterID = uuid.NewV4().String()
 	config.ClusterName = utils.CLUSTER_NAME
 	config.Email = utils.EMAIL
 	config.IngressDomain = utils.INGRESS_DOMAIN

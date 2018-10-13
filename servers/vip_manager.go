@@ -137,20 +137,20 @@ func (manager *VIPManager) Start() error {
 
 	manager.stop = make(chan bool, 1)
 
-	manager.deleteIP()
+	_ = manager.deleteIP()
 
 	go func() {
 		for {
 			select {
 			case leader := <-raftServer.LeaderCh():
 				if leader {
-					manager.addIP()
+					_ = manager.addIP()
 				} else {
-					manager.deleteIP()
+					_ = manager.deleteIP()
 				}
 
 			case <-manager.stop:
-				manager.deleteIP()
+				_ = manager.deleteIP()
 			}
 		}
 	}()

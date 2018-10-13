@@ -8,7 +8,6 @@ import (
 	"crypto/x509/pkix"
 	"encoding/base64"
 	"encoding/pem"
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"math/big"
@@ -43,7 +42,10 @@ func bigIntHash() ([]byte, error) {
 
 	hash := sha1.New()
 
-	hash.Write(number.Bytes())
+	_, error = hash.Write(number.Bytes())
+	if error != nil {
+		return nil, error
+	}
 
 	return hash.Sum(nil), nil
 }
@@ -212,7 +214,7 @@ func GenerateClient(signer *CertificateAndPrivateKey, rsaSize uint16, validityPe
 		ipAddress := net.ParseIP(ipString)
 
 		if ipAddress == nil {
-			return errors.New(fmt.Sprintf("'%s' is not a valid IP address", ipString))
+			return fmt.Errorf("'%s' is not a valid IP address", ipString)
 		}
 
 		template.IPAddresses = append(template.IPAddresses, ipAddress)

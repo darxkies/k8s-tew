@@ -35,7 +35,7 @@ var RootCmd = &cobra.Command{
 		fmt.Printf("OS: %s\n", utils.GetOSNameAndRelease())
 		fmt.Println()
 
-		cmd.Help()
+		_ = cmd.Help()
 	},
 }
 

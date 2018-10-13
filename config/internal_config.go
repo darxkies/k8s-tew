@@ -580,7 +580,7 @@ func (config *InternalConfig) Load() error {
 
 	// Check if config file exists
 	if _, error := os.Stat(filename); os.IsNotExist(error) {
-		return errors.New(fmt.Sprintf("config '%s' not found", filename))
+		return fmt.Errorf("config '%s' not found", filename)
 	}
 
 	yamlContent, error := ioutil.ReadFile(filename)
@@ -710,7 +710,7 @@ func (config *InternalConfig) ApplyTemplate(label string, value string) (string,
 
 	var newValue bytes.Buffer
 
-	argumentTemplate, error := template.New(fmt.Sprintf(label)).Funcs(functions).Parse(value)
+	argumentTemplate, error := template.New(label).Funcs(functions).Parse(value)
 
 	if error != nil {
 		return "", fmt.Errorf("Could not render template: %s (%s)", label, error.Error())
