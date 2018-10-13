@@ -16,7 +16,6 @@ import (
 const FREEZER = "freezer"
 const BINARY = "bin"
 const LIBRARY = "lib"
-const ALIASES = "aliases"
 const LD_LINUX_PREFIX = "ld-linux-"
 
 // Print usage help and exit
@@ -149,7 +148,9 @@ func freezeDependencies(filename, directory string) error {
 		library = strings.TrimSpace(library)
 
 		// Copy library
-		copyLibrary(library, directory)
+		if error := copyLibrary(library, directory); error != nil {
+			return error
+		}
 	}
 
 	return nil
