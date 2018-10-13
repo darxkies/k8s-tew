@@ -22,6 +22,7 @@ import (
 
 const COMMAND_TIMEOUT = 60 // In seconds
 
+// WaitForSignal exists when a signal was fired or a timeout occurred
 func WaitForSignal(signal <-chan struct{}, timeout uint) error {
 	select {
 	case <-signal:
@@ -32,18 +33,21 @@ func WaitForSignal(signal <-chan struct{}, timeout uint) error {
 	}
 }
 
+// GetWorkingDirectory returns the working directory of the executable
 func GetWorkingDirectory() (string, error) {
 	return os.Getwd()
 }
 
+// CreateDirectoryIfMissing creates a directory if it does not exist
 func CreateDirectoryIfMissing(directoryName string) error {
 	if stat, error := os.Stat(directoryName); error == nil && !stat.IsDir() {
-		return fmt.Errorf("'%s' already exists but it is not a directory.", directoryName)
+		return fmt.Errorf("'%s' already exists but it is not a directory", directoryName)
 	}
 
 	return os.MkdirAll(directoryName, os.ModePerm)
 }
 
+// CreateFileIfMissing writes a string to a file
 func CreateFileIfMissing(filename, content string) error {
 	if _, error := os.Stat(filename); !os.IsNotExist(error) {
 		return nil
@@ -58,12 +62,14 @@ func CreateFileIfMissing(filename, content string) error {
 	return ioutil.WriteFile(filename, []byte(content), 0644)
 }
 
+// FileExists returns true if a file exists
 func FileExists(filename string) bool {
 	_, error := os.Stat(filename)
 
 	return !os.IsNotExist(error)
 }
 
+// RunCommandWithOutput execute a shell command and return its output
 func RunCommandWithOutput(command string) (string, error) {
 	_context, cancel := context.WithTimeout(context.Background(), COMMAND_TIMEOUT*time.Second)
 	defer cancel()
@@ -84,28 +90,19 @@ func RunCommandWithOutput(command string) (string, error) {
 	return string(output), nil
 }
 
+// RunCommand executes a shell command
 func RunCommand(command string) error {
 	_, error := RunCommandWithOutput(command)
 
 	return error
 }
 
-func RunSSHClient(ip string) {
-	command := fmt.Sprintf("ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -t ubuntu@%s \"sudo su -\"", ip)
-
-	cmd := exec.Command("sh", "-c", command)
-
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	cmd.Stdin = os.Stdin
-
-	_ = cmd.Run()
-}
-
+// GetURL assembles a URL
 func GetURL(protocol, ip string, port uint16) string {
 	return fmt.Sprintf("%s://%s:%d", protocol, ip, port)
 }
 
+// OpenWebBrowser starts a web browser
 func OpenWebBrowser(name, url string) error {
 	if _, error := RunCommandWithOutput(fmt.Sprintf("xdg-open %s", url)); error != nil {
 		return fmt.Errorf("Could not open %s at %s (%s)", name, url, error.Error())
@@ -114,10 +111,12 @@ func OpenWebBrowser(name, url string) error {
 	return nil
 }
 
+// IsRoot returns true if the program is executed with root rights
 func IsRoot() bool {
 	return os.Geteuid() == 0
 }
 
+// ExtractImageName returns the name of a Docker image
 func ExtractImageName(value string) string {
 	tokens := strings.Split(value, ":")
 
@@ -128,6 +127,7 @@ func ExtractImageName(value string) string {
 	return value
 }
 
+// ExtractImageTag returns the tag from a Docker image
 func ExtractImageTag(value string) string {
 	tokens := strings.Split(value, ":")
 
@@ -138,6 +138,7 @@ func ExtractImageTag(value string) string {
 	return value
 }
 
+// ApplyTemplate generates a string using a template
 func ApplyTemplate(label, content string, data interface{}, alternativeDelimiters bool) (string, error) {
 	var result bytes.Buffer
 
@@ -189,6 +190,7 @@ func ApplyTemplate(label, content string, data interface{}, alternativeDelimiter
 	return result.String(), nil
 }
 
+// ApplyTemplateAndSave generates the content of a file based on a template
 func ApplyTemplateAndSave(label, templateName string, data interface{}, filename string, force bool, extendedDelimiters bool) error {
 	content := GetTemplate(templateName)
 
@@ -212,6 +214,7 @@ func ApplyTemplateAndSave(label, templateName string, data interface{}, filename
 	return nil
 }
 
+// GetBase64OfPEM reads the content of a PEM file and converts it to Base64
 func GetBase64OfPEM(filename string) (string, error) {
 	content, error := ioutil.ReadFile(filename)
 
@@ -222,6 +225,7 @@ func GetBase64OfPEM(filename string) (string, error) {
 	return base64.StdEncoding.EncodeToString(content), nil
 }
 
+// GenerateCephKey returns a valid ceph key
 func GenerateCephKey() string {
 	headerSize := 2 + 4 + 4 + 2
 	keySize := 16
@@ -240,18 +244,22 @@ func GenerateCephKey() string {
 	return base64.StdEncoding.EncodeToString(buffer)
 }
 
+// GetOSName returns the name of the operating system
 func GetOSName() string {
 	return strings.ToLower(oslib.GetDist().Display)
 }
 
+// GetOSRelease returns the version of the operating system
 func GetOSRelease() string {
 	return oslib.GetDist().Release
 }
 
+// GetOSNameAndRelease returns the name of the operating system and the operating system version
 func GetOSNameAndRelease() string {
 	return fmt.Sprintf("%s/%s", GetOSName(), GetOSRelease())
 }
 
+// HasOS checks if parameter os contains the name of the current operating system
 func HasOS(os []string) bool {
 	if len(os) == 0 {
 		return true

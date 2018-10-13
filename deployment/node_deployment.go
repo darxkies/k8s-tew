@@ -41,16 +41,16 @@ func (deployment *NodeDeployment) Steps() (result int) {
 	result = 0
 
 	// Create Directories
-	result += 1
+	result++
 
 	// Stop service
-	result += 1
+	result++
 
 	// Upload files
 	result += len(deployment.config.Config.Assets.Files)
 
 	// Start service
-	result += 1
+	result++
 
 	return
 }

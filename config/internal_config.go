@@ -664,7 +664,7 @@ func (config *InternalConfig) ApplyTemplate(label string, value string) (string,
 			count := 0
 			for _, node := range config.Config.Nodes {
 				if node.IsController() {
-					count += 1
+					count++
 				}
 			}
 

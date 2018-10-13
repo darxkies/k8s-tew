@@ -58,7 +58,7 @@ func IncreaseProgressStep() {
 	_mutex.Lock()
 	defer _mutex.Unlock()
 
-	_progressStep += 1
+	_progressStep++
 }
 
 func SetProgressSteps(steps int) {
