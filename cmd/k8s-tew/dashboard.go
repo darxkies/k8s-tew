@@ -23,7 +23,7 @@ var dashboardCmd = &cobra.Command{
 			os.Exit(-1)
 		}
 
-		kubectlCommand := fmt.Sprintf("%s --kubeconfig %s", _config.GetFullLocalAssetFilename(utils.KUBECTL_BINARY), _config.GetFullLocalAssetFilename(utils.ADMIN_KUBECONFIG))
+		kubectlCommand := fmt.Sprintf("%s --kubeconfig %s", _config.GetFullLocalAssetFilename(utils.BinaryKubectl), _config.GetFullLocalAssetFilename(utils.ADMIN_KUBECONFIG))
 		dashboardKeyCommand := fmt.Sprintf("%s -n kube-system describe secret $(%s -n kube-system get secret | grep admin-user | awk '{print $1}') | grep token: | awk '{print $2}'", kubectlCommand, kubectlCommand)
 
 		output, error := utils.RunCommandWithOutput(dashboardKeyCommand)

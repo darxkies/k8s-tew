@@ -39,31 +39,31 @@ func NewDeployment(_config *config.InternalConfig, identityFile string, pullImag
 	skipSetupFeatures := config.Features{}
 
 	if skipStorageSetup {
-		skipSetupFeatures = append(skipSetupFeatures, utils.FEATURE_STORAGE)
+		skipSetupFeatures = append(skipSetupFeatures, utils.FeatureStorage)
 	}
 
 	if skipMonitoringSetup {
-		skipSetupFeatures = append(skipSetupFeatures, utils.FEATURE_MONITORING)
+		skipSetupFeatures = append(skipSetupFeatures, utils.FeatureMonitoring)
 	}
 
 	if skipLoggingSetup {
-		skipSetupFeatures = append(skipSetupFeatures, utils.FEATURE_LOGGING)
+		skipSetupFeatures = append(skipSetupFeatures, utils.FeatureLogging)
 	}
 
 	if skipBackupSetup {
-		skipSetupFeatures = append(skipSetupFeatures, utils.FEATURE_BACKUP)
+		skipSetupFeatures = append(skipSetupFeatures, utils.FeatureBackup)
 	}
 
 	if skipShowcaseSetup {
-		skipSetupFeatures = append(skipSetupFeatures, utils.FEATURE_SHOWCASE)
+		skipSetupFeatures = append(skipSetupFeatures, utils.FeatureShowcase)
 	}
 
 	if skipIngressSetup {
-		skipSetupFeatures = append(skipSetupFeatures, utils.FEATURE_INGRESS)
+		skipSetupFeatures = append(skipSetupFeatures, utils.FeatureIngress)
 	}
 
 	if skipPackagingSetup {
-		skipSetupFeatures = append(skipSetupFeatures, utils.FEATURE_PACKAGING)
+		skipSetupFeatures = append(skipSetupFeatures, utils.FeaturePackaging)
 	}
 
 	deployment := &Deployment{config: _config, identityFile: identityFile, pullImages: pullImages, forceUpload: forceUpload, parallel: parallel, commandRetries: commandRetries, nodes: nodes, skipSetup: skipSetup, skipSetupFeatures: skipSetupFeatures}
@@ -74,39 +74,39 @@ func NewDeployment(_config *config.InternalConfig, identityFile string, pullImag
 		{Name: deployment.config.Config.Versions.CalicoNode, Features: config.Features{}},
 		{Name: deployment.config.Config.Versions.CalicoTypha, Features: config.Features{}},
 		{Name: deployment.config.Config.Versions.CoreDNS, Features: config.Features{}},
-		{Name: deployment.config.Config.Versions.MinioServer, Features: config.Features{utils.FEATURE_BACKUP, utils.FEATURE_STORAGE}},
-		{Name: deployment.config.Config.Versions.MinioClient, Features: config.Features{utils.FEATURE_BACKUP, utils.FEATURE_STORAGE}},
-		{Name: deployment.config.Config.Versions.Ark, Features: config.Features{utils.FEATURE_BACKUP, utils.FEATURE_STORAGE}},
-		{Name: deployment.config.Config.Versions.Ceph, Features: config.Features{utils.FEATURE_STORAGE}},
-		{Name: deployment.config.Config.Versions.CSIAttacher, Features: config.Features{utils.FEATURE_STORAGE}},
-		{Name: deployment.config.Config.Versions.CSIProvisioner, Features: config.Features{utils.FEATURE_STORAGE}},
-		{Name: deployment.config.Config.Versions.CSIDriverRegistrar, Features: config.Features{utils.FEATURE_STORAGE}},
-		{Name: deployment.config.Config.Versions.CSICephRBDPlugin, Features: config.Features{utils.FEATURE_STORAGE}},
-		{Name: deployment.config.Config.Versions.CSICephFSPlugin, Features: config.Features{utils.FEATURE_STORAGE}},
-		{Name: deployment.config.Config.Versions.FluentBit, Features: config.Features{utils.FEATURE_LOGGING, utils.FEATURE_STORAGE}},
-		{Name: deployment.config.Config.Versions.Elasticsearch, Features: config.Features{utils.FEATURE_LOGGING, utils.FEATURE_STORAGE}},
-		{Name: deployment.config.Config.Versions.ElasticsearchCron, Features: config.Features{utils.FEATURE_LOGGING, utils.FEATURE_STORAGE}},
-		{Name: deployment.config.Config.Versions.ElasticsearchOperator, Features: config.Features{utils.FEATURE_LOGGING, utils.FEATURE_STORAGE}},
-		{Name: deployment.config.Config.Versions.Kibana, Features: config.Features{utils.FEATURE_LOGGING, utils.FEATURE_STORAGE}},
-		{Name: deployment.config.Config.Versions.Cerebro, Features: config.Features{utils.FEATURE_LOGGING, utils.FEATURE_STORAGE}},
-		{Name: deployment.config.Config.Versions.Heapster, Features: config.Features{utils.FEATURE_MONITORING, utils.FEATURE_STORAGE}},
-		{Name: deployment.config.Config.Versions.AddonResizer, Features: config.Features{utils.FEATURE_MONITORING, utils.FEATURE_STORAGE}},
-		{Name: deployment.config.Config.Versions.MetricsServer, Features: config.Features{utils.FEATURE_MONITORING, utils.FEATURE_STORAGE}},
+		{Name: deployment.config.Config.Versions.MinioServer, Features: config.Features{utils.FeatureBackup, utils.FeatureStorage}},
+		{Name: deployment.config.Config.Versions.MinioClient, Features: config.Features{utils.FeatureBackup, utils.FeatureStorage}},
+		{Name: deployment.config.Config.Versions.Ark, Features: config.Features{utils.FeatureBackup, utils.FeatureStorage}},
+		{Name: deployment.config.Config.Versions.Ceph, Features: config.Features{utils.FeatureStorage}},
+		{Name: deployment.config.Config.Versions.CSIAttacher, Features: config.Features{utils.FeatureStorage}},
+		{Name: deployment.config.Config.Versions.CSIProvisioner, Features: config.Features{utils.FeatureStorage}},
+		{Name: deployment.config.Config.Versions.CSIDriverRegistrar, Features: config.Features{utils.FeatureStorage}},
+		{Name: deployment.config.Config.Versions.CSICephRBDPlugin, Features: config.Features{utils.FeatureStorage}},
+		{Name: deployment.config.Config.Versions.CSICephFSPlugin, Features: config.Features{utils.FeatureStorage}},
+		{Name: deployment.config.Config.Versions.FluentBit, Features: config.Features{utils.FeatureLogging, utils.FeatureStorage}},
+		{Name: deployment.config.Config.Versions.Elasticsearch, Features: config.Features{utils.FeatureLogging, utils.FeatureStorage}},
+		{Name: deployment.config.Config.Versions.ElasticsearchCron, Features: config.Features{utils.FeatureLogging, utils.FeatureStorage}},
+		{Name: deployment.config.Config.Versions.ElasticsearchOperator, Features: config.Features{utils.FeatureLogging, utils.FeatureStorage}},
+		{Name: deployment.config.Config.Versions.Kibana, Features: config.Features{utils.FeatureLogging, utils.FeatureStorage}},
+		{Name: deployment.config.Config.Versions.Cerebro, Features: config.Features{utils.FeatureLogging, utils.FeatureStorage}},
+		{Name: deployment.config.Config.Versions.Heapster, Features: config.Features{utils.FeatureMonitoring, utils.FeatureStorage}},
+		{Name: deployment.config.Config.Versions.AddonResizer, Features: config.Features{utils.FeatureMonitoring, utils.FeatureStorage}},
+		{Name: deployment.config.Config.Versions.MetricsServer, Features: config.Features{utils.FeatureMonitoring, utils.FeatureStorage}},
 		{Name: deployment.config.Config.Versions.KubernetesDashboard, Features: config.Features{}},
-		{Name: deployment.config.Config.Versions.PrometheusOperator, Features: config.Features{utils.FEATURE_MONITORING, utils.FEATURE_STORAGE}},
-		{Name: deployment.config.Config.Versions.PrometheusConfigReloader, Features: config.Features{utils.FEATURE_MONITORING, utils.FEATURE_STORAGE}},
-		{Name: deployment.config.Config.Versions.ConfigMapReload, Features: config.Features{utils.FEATURE_MONITORING, utils.FEATURE_STORAGE}},
-		{Name: deployment.config.Config.Versions.KubeStateMetrics, Features: config.Features{utils.FEATURE_MONITORING, utils.FEATURE_STORAGE}},
-		{Name: deployment.config.Config.Versions.Grafana, Features: config.Features{utils.FEATURE_MONITORING, utils.FEATURE_STORAGE}},
-		{Name: deployment.config.Config.Versions.GrafanaWatcher, Features: config.Features{utils.FEATURE_MONITORING, utils.FEATURE_STORAGE}},
-		{Name: deployment.config.Config.Versions.Prometheus, Features: config.Features{utils.FEATURE_MONITORING, utils.FEATURE_STORAGE}},
-		{Name: deployment.config.Config.Versions.PrometheusNodeExporter, Features: config.Features{utils.FEATURE_MONITORING, utils.FEATURE_STORAGE}},
-		{Name: deployment.config.Config.Versions.PrometheusAlertManager, Features: config.Features{utils.FEATURE_MONITORING, utils.FEATURE_STORAGE}},
-		{Name: deployment.config.Config.Versions.CertManagerController, Features: config.Features{utils.FEATURE_INGRESS, utils.FEATURE_STORAGE}},
-		{Name: deployment.config.Config.Versions.NginxIngressDefaultBackend, Features: config.Features{utils.FEATURE_INGRESS, utils.FEATURE_STORAGE}},
-		{Name: deployment.config.Config.Versions.NginxIngressController, Features: config.Features{utils.FEATURE_INGRESS, utils.FEATURE_STORAGE}},
-		{Name: deployment.config.Config.Versions.MySQL, Features: config.Features{utils.FEATURE_SHOWCASE, utils.FEATURE_STORAGE}},
-		{Name: deployment.config.Config.Versions.WordPress, Features: config.Features{utils.FEATURE_SHOWCASE, utils.FEATURE_STORAGE}},
+		{Name: deployment.config.Config.Versions.PrometheusOperator, Features: config.Features{utils.FeatureMonitoring, utils.FeatureStorage}},
+		{Name: deployment.config.Config.Versions.PrometheusConfigReloader, Features: config.Features{utils.FeatureMonitoring, utils.FeatureStorage}},
+		{Name: deployment.config.Config.Versions.ConfigMapReload, Features: config.Features{utils.FeatureMonitoring, utils.FeatureStorage}},
+		{Name: deployment.config.Config.Versions.KubeStateMetrics, Features: config.Features{utils.FeatureMonitoring, utils.FeatureStorage}},
+		{Name: deployment.config.Config.Versions.Grafana, Features: config.Features{utils.FeatureMonitoring, utils.FeatureStorage}},
+		{Name: deployment.config.Config.Versions.GrafanaWatcher, Features: config.Features{utils.FeatureMonitoring, utils.FeatureStorage}},
+		{Name: deployment.config.Config.Versions.Prometheus, Features: config.Features{utils.FeatureMonitoring, utils.FeatureStorage}},
+		{Name: deployment.config.Config.Versions.PrometheusNodeExporter, Features: config.Features{utils.FeatureMonitoring, utils.FeatureStorage}},
+		{Name: deployment.config.Config.Versions.PrometheusAlertManager, Features: config.Features{utils.FeatureMonitoring, utils.FeatureStorage}},
+		{Name: deployment.config.Config.Versions.CertManagerController, Features: config.Features{utils.FeatureIngress, utils.FeatureStorage}},
+		{Name: deployment.config.Config.Versions.NginxIngressDefaultBackend, Features: config.Features{utils.FeatureIngress, utils.FeatureStorage}},
+		{Name: deployment.config.Config.Versions.NginxIngressController, Features: config.Features{utils.FeatureIngress, utils.FeatureStorage}},
+		{Name: deployment.config.Config.Versions.MySQL, Features: config.Features{utils.FeatureShowcase, utils.FeatureStorage}},
+		{Name: deployment.config.Config.Versions.WordPress, Features: config.Features{utils.FeatureShowcase, utils.FeatureStorage}},
 	}
 
 	return deployment
@@ -251,7 +251,7 @@ func (deployment *Deployment) runPullImages() error {
 // Run bootstrapper commands
 func (deployment *Deployment) runBoostrapperCommands() error {
 	for _, command := range deployment.config.Config.Commands {
-		if !command.Labels.HasLabels([]string{utils.NODE_BOOTSTRAPPER}) {
+		if !command.Labels.HasLabels([]string{utils.NodeBootstrapper}) {
 			utils.IncreaseProgressStep()
 
 			continue

@@ -122,7 +122,7 @@ func (downloader Downloader) downloadExecutable(urlTemplate, remoteFilename, fil
 		return nil
 	}
 
-	temporaryFilename := path.Join(downloader.config.GetFullLocalAssetDirectory(utils.TEMPORARY_DIRECTORY), path.Base(filename))
+	temporaryFilename := path.Join(downloader.config.GetFullLocalAssetDirectory(utils.DirectoryTemporary), path.Base(filename))
 
 	// Make sure the file is deleted once done
 	defer func() {
@@ -219,7 +219,7 @@ func (downloader Downloader) extractTGZ(filename string, targetDirectory string)
 func (downloader Downloader) downloadAndExtractTGZFiles(urlTemplate, baseName string, files []CompressedFile) error {
 	// Check if files already exist
 	exist := true
-	temporaryDirectory := downloader.config.GetFullLocalAssetDirectory(utils.TEMPORARY_DIRECTORY)
+	temporaryDirectory := downloader.config.GetFullLocalAssetDirectory(utils.DirectoryTemporary)
 
 	if downloader.forceDownload {
 		exist = false
@@ -301,7 +301,7 @@ func (downloader Downloader) copyK8STEW() error {
 		return error
 	}
 
-	targetFilename := downloader.config.GetFullLocalAssetFilename(utils.K8S_TEW_BINARY)
+	targetFilename := downloader.config.GetFullLocalAssetFilename(utils.BinaryK8sTew)
 
 	if binaryName == targetFilename {
 		utils.LogFilename("Skipped", targetFilename)
@@ -339,37 +339,37 @@ func (downloader Downloader) copyK8STEW() error {
 func (downloader Downloader) downloadHelmBinary() error {
 	compressedFiles := []CompressedFile{
 		{
-			SourceFile: path.Join("linux-amd64", utils.HELM_BINARY),
-			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.HELM_BINARY),
+			SourceFile: path.Join("linux-amd64", utils.BinaryHelm),
+			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.BinaryHelm),
 		},
 	}
 
-	return downloader.downloadAndExtractTGZFiles(utils.HELM_DOWNLOAD_URL, utils.HELM_BASE_NAME, compressedFiles)
+	return downloader.downloadAndExtractTGZFiles(utils.HelmDownloadUrl, utils.HelmBaseName, compressedFiles)
 }
 
 func (downloader Downloader) downloadRuncBinary() error {
-	return downloader.downloadExecutable(utils.RUNC_DOWNLOAD_URL, "", downloader.config.GetFullLocalAssetFilename(utils.RUNC_BINARY))
+	return downloader.downloadExecutable(utils.RuncDownloadUrl, "", downloader.config.GetFullLocalAssetFilename(utils.BinaryRunc))
 }
 
 func (downloader Downloader) downloadEtcdBinaries() error {
 	// Build base name including the version number
-	baseName, error := downloader.getURL(utils.ETCD_BASE_NAME, "")
+	baseName, error := downloader.getURL(utils.EtcdBaseName, "")
 	if error != nil {
 		return error
 	}
 
 	compressedFiles := []CompressedFile{
 		{
-			SourceFile: path.Join(baseName, utils.ETCD_BINARY),
-			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.ETCD_BINARY),
+			SourceFile: path.Join(baseName, utils.BinaryEtcd),
+			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.BinaryEtcd),
 		},
 		{
-			SourceFile: path.Join(baseName, utils.ETCDCTL_BINARY),
-			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.ETCDCTL_BINARY),
+			SourceFile: path.Join(baseName, utils.BinaryEtcdctl),
+			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.BinaryEtcdctl),
 		},
 	}
 
-	return downloader.downloadAndExtractTGZFiles(utils.ETCD_DOWNLOAD_URL, utils.ETCD_BASE_NAME, compressedFiles)
+	return downloader.downloadAndExtractTGZFiles(utils.EtcdDownloadUrl, utils.EtcdBaseName, compressedFiles)
 }
 
 func (downloader Downloader) downloadKubernetesBinaries() error {
@@ -377,84 +377,84 @@ func (downloader Downloader) downloadKubernetesBinaries() error {
 
 	compressedFiles := []CompressedFile{
 		{
-			SourceFile: path.Join(kubernetesServerBin, utils.KUBE_APISERVER_BINARY),
-			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.KUBE_APISERVER_BINARY),
+			SourceFile: path.Join(kubernetesServerBin, utils.BinaryKubeApiserver),
+			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.BinaryKubeApiserver),
 		},
 		{
-			SourceFile: path.Join(kubernetesServerBin, utils.KUBE_CONTROLLER_MANAGER_BINARY),
-			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.KUBE_CONTROLLER_MANAGER_BINARY),
+			SourceFile: path.Join(kubernetesServerBin, utils.BinaryKubeControllerManager),
+			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.BinaryKubeControllerManager),
 		},
 		{
-			SourceFile: path.Join(kubernetesServerBin, utils.KUBE_SCHEDULER_BINARY),
-			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.KUBE_SCHEDULER_BINARY),
+			SourceFile: path.Join(kubernetesServerBin, utils.BinaryKubeScheduler),
+			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.BinaryKubeScheduler),
 		},
 		{
-			SourceFile: path.Join(kubernetesServerBin, utils.KUBE_PROXY_BINARY),
-			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.KUBE_PROXY_BINARY),
+			SourceFile: path.Join(kubernetesServerBin, utils.BinaryKubeProxy),
+			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.BinaryKubeProxy),
 		},
 		{
-			SourceFile: path.Join(kubernetesServerBin, utils.KUBELET_BINARY),
-			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.KUBELET_BINARY),
+			SourceFile: path.Join(kubernetesServerBin, utils.BinaryKubelet),
+			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.BinaryKubelet),
 		},
 		{
-			SourceFile: path.Join(kubernetesServerBin, utils.KUBECTL_BINARY),
-			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.KUBECTL_BINARY),
+			SourceFile: path.Join(kubernetesServerBin, utils.BinaryKubectl),
+			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.BinaryKubectl),
 		},
 	}
 
-	return downloader.downloadAndExtractTGZFiles(utils.K8S_DOWNLOAD_URL, utils.K8S_BASE_NAME, compressedFiles)
+	return downloader.downloadAndExtractTGZFiles(utils.K8sDownloadUrl, utils.K8sBaseName, compressedFiles)
 }
 
 func (downloader Downloader) downloadContainerdBinaries() error {
 	compressedFiles := []CompressedFile{
 		{
-			SourceFile: path.Join("bin", utils.CONTAINERD_BINARY),
-			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.CONTAINERD_BINARY),
+			SourceFile: path.Join("bin", utils.BinaryContainerd),
+			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.BinaryContainerd),
 		},
 		{
-			SourceFile: path.Join("bin", utils.CONTAINERD_SHIM_BINARY),
-			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.CONTAINERD_SHIM_BINARY),
+			SourceFile: path.Join("bin", utils.BinaryContainerdShim),
+			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.BinaryContainerdShim),
 		},
 		{
-			SourceFile: path.Join("bin", utils.CTR_BINARY),
-			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.CTR_BINARY),
+			SourceFile: path.Join("bin", utils.BinaryCtr),
+			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.BinaryCtr),
 		},
 	}
 
-	return downloader.downloadAndExtractTGZFiles(utils.CONTAINERD_DOWNLOAD_URL, utils.CONTAINERD_BASE_NAME, compressedFiles)
+	return downloader.downloadAndExtractTGZFiles(utils.ContainerdDownloadUrl, utils.ContainerdBaseName, compressedFiles)
 }
 
 func (downloader Downloader) downloadCriCtlBinary() error {
 	compressedFiles := []CompressedFile{
 		{
-			SourceFile: utils.CRICTL_BINARY,
-			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.CRICTL_BINARY),
+			SourceFile: utils.BinaryCrictl,
+			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.BinaryCrictl),
 		},
 	}
 
-	return downloader.downloadAndExtractTGZFiles(utils.CRICTL_DOWNLOAD_URL, utils.CRICTL_BASE_NAME, compressedFiles)
+	return downloader.downloadAndExtractTGZFiles(utils.CrictlDownloadUrl, utils.CrictlBaseName, compressedFiles)
 }
 
 func (downloader Downloader) downloadGobetweenBinary() error {
 	compressedFiles := []CompressedFile{
 		{
-			SourceFile: utils.GOBETWEEN_BINARY,
-			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.GOBETWEEN_BINARY),
+			SourceFile: utils.BinaryGobetween,
+			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.BinaryGobetween),
 		},
 	}
 
-	return downloader.downloadAndExtractTGZFiles(utils.GOBETWEEN_DOWNLOAD_URL, utils.GOBETWEEN_BASE_NAME, compressedFiles)
+	return downloader.downloadAndExtractTGZFiles(utils.GobetweenDownloadUrl, utils.GobetweenBaseName, compressedFiles)
 }
 
 func (downloader Downloader) downloadArkBinaries() error {
 	compressedFiles := []CompressedFile{
 		{
-			SourceFile: utils.ARK_BINARY,
-			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.ARK_BINARY),
+			SourceFile: utils.BinaryArk,
+			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.BinaryArk),
 		},
 	}
 
-	return downloader.downloadAndExtractTGZFiles(utils.ARK_DOWNLOAD_URL, utils.ARK_BASE_NAME, compressedFiles)
+	return downloader.downloadAndExtractTGZFiles(utils.ArkDownloadUrl, utils.ArkBaseName, compressedFiles)
 }
 
 func (downloader Downloader) createLocalDirectories() error {

@@ -20,7 +20,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-const COMMAND_TIMEOUT = 60 // In seconds
+const commandTimeout = 60 // In seconds
 
 // WaitForSignal exists when a signal was fired or a timeout occurred
 func WaitForSignal(signal <-chan struct{}, timeout uint) error {
@@ -71,7 +71,7 @@ func FileExists(filename string) bool {
 
 // RunCommandWithOutput execute a shell command and return its output
 func RunCommandWithOutput(command string) (string, error) {
-	_context, cancel := context.WithTimeout(context.Background(), COMMAND_TIMEOUT*time.Second)
+	_context, cancel := context.WithTimeout(context.Background(), commandTimeout*time.Second)
 	defer cancel()
 
 	log.WithFields(log.Fields{"command": command}).Debug("Command started")

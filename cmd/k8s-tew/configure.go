@@ -75,35 +75,35 @@ func addUint16Option(name string, value uint16, description string, handler uint
 func init() {
 	setterHandlers = map[string]stringSetter{}
 
-	addUint16Option("rsa-key-size", utils.RSA_SIZE, "RSA Key Size", func(value uint16) {
+	addUint16Option("rsa-key-size", utils.RsaSize, "RSA Key Size", func(value uint16) {
 		_config.Config.RSASize = value
 	})
 
-	addUint16Option("ca-certificate-validity-period", utils.CA_VALIDITY_PERIOD, "CA Certificate Validity Period", func(value uint16) {
+	addUint16Option("ca-certificate-validity-period", utils.CaValidityPeriod, "CA Certificate Validity Period", func(value uint16) {
 		_config.Config.CAValidityPeriod = uint(value)
 	})
 
-	addUint16Option("client-certificate-validity-period", utils.CLIENT_VALIDITY_PERIOD, "Client Certificate Validity Period", func(value uint16) {
+	addUint16Option("client-certificate-validity-period", utils.ClientValidityPeriod, "Client Certificate Validity Period", func(value uint16) {
 		_config.Config.ClientValidityPeriod = uint(value)
 	})
 
-	addUint16Option("apiserver-port", utils.PORT_API_SERVER, "API Server Port", func(value uint16) {
+	addUint16Option("apiserver-port", utils.PortApiServer, "API Server Port", func(value uint16) {
 		_config.Config.APIServerPort = value
 	})
 
-	addUint16Option("vip-raft-controller-port", utils.PORT_VIP_RAFT_CONTROLLER, "VIP Raft Controller Port", func(value uint16) {
+	addUint16Option("vip-raft-controller-port", utils.PortVipRaftController, "VIP Raft Controller Port", func(value uint16) {
 		_config.Config.VIPRaftControllerPort = value
 	})
 
-	addUint16Option("vip-raft-worker-port", utils.PORT_VIP_RAFT_WORKER, "VIP Raft Worker Port", func(value uint16) {
+	addUint16Option("vip-raft-worker-port", utils.PortVipRaftWorker, "VIP Raft Worker Port", func(value uint16) {
 		_config.Config.VIPRaftWorkerPort = value
 	})
 
-	addUint16Option("load-balancer-port", utils.PORT_KUBERNETES_DASHBOARD, "Load Balancer Port", func(value uint16) {
+	addUint16Option("load-balancer-port", utils.PortKubernetesDashboard, "Load Balancer Port", func(value uint16) {
 		_config.Config.LoadBalancerPort = value
 	})
 
-	addUint16Option("kubernetes-dashboard-port", utils.PORT_KUBERNETES_DASHBOARD, "Kubernetes Dashboard Port", func(value uint16) {
+	addUint16Option("kubernetes-dashboard-port", utils.PortKubernetesDashboard, "Kubernetes Dashboard Port", func(value uint16) {
 		_config.Config.KubernetesDashboardPort = value
 	})
 
@@ -123,227 +123,227 @@ func init() {
 		_config.Config.WorkerVirtualIPInterface = value
 	})
 
-	addStringOption("cluster-domain", utils.CLUSTER_DOMAIN, "Cluster domain", func(value string) {
+	addStringOption("cluster-domain", utils.ClusterDomain, "Cluster domain", func(value string) {
 		_config.Config.ClusterDomain = value
 	})
 
-	addStringOption("cluster-ip-range", utils.CLUSTER_IP_RANGE, "Cluster IP range", func(value string) {
+	addStringOption("cluster-ip-range", utils.ClusterIpRange, "Cluster IP range", func(value string) {
 		_config.Config.ClusterIPRange = value
 	})
 
-	addStringOption("cluster-dns-ip", utils.CLUSTER_DNS_IP, "Cluster DNS IP", func(value string) {
+	addStringOption("cluster-dns-ip", utils.ClusterDnsIp, "Cluster DNS IP", func(value string) {
 		_config.Config.ClusterDNSIP = value
 	})
 
-	addStringOption("cluster-cidr", utils.CLUSTER_CIDR, "Cluster CIDR", func(value string) {
+	addStringOption("cluster-cidr", utils.ClusterCidr, "Cluster CIDR", func(value string) {
 		_config.Config.ClusterCIDR = value
 	})
 
-	addStringOption("calico-typha-ip", utils.CALICO_TYPHA_IP, "Calico Typha IP", func(value string) {
+	addStringOption("calico-typha-ip", utils.CalicoTyphaIp, "Calico Typha IP", func(value string) {
 		_config.Config.CalicoTyphaIP = value
 	})
 
-	addStringOption("resolv-conf", utils.RESOLV_CONF, "Custom resolv.conf", func(value string) {
+	addStringOption("resolv-conf", utils.ResolvConf, "Custom resolv.conf", func(value string) {
 		_config.Config.ResolvConf = value
 	})
 
-	addStringOption("public-network", utils.PUBLIC_NETWORK, "Public Network", func(value string) {
+	addStringOption("public-network", utils.PublicNetwork, "Public Network", func(value string) {
 		_config.Config.PublicNetwork = value
 	})
 
-	addStringOption("cluster-name", utils.CLUSTER_NAME, "Cluster Name used for Kubernetes Dashboard", func(value string) {
+	addStringOption("cluster-name", utils.ClusterName, "Cluster Name used for Kubernetes Dashboard", func(value string) {
 		_config.Config.ClusterName = value
 	})
 
-	addStringOption("email", utils.EMAIL, "Email address used for example for Let's Encrypt", func(value string) {
+	addStringOption("email", utils.Email, "Email address used for example for Let's Encrypt", func(value string) {
 		_config.Config.Email = value
 	})
 
-	addStringOption("ingress-domain", utils.INGRESS_DOMAIN, "Ingress domain name", func(value string) {
+	addStringOption("ingress-domain", utils.IngressDomain, "Ingress domain name", func(value string) {
 		_config.Config.IngressDomain = value
 	})
 
-	addStringOption("deployment-directory", utils.DEPLOYMENT_DIRECTORY, "Deployment directory", func(value string) {
+	addStringOption("deployment-directory", utils.DeploymentDirectory, "Deployment directory", func(value string) {
 		_config.Config.DeploymentDirectory = value
 	})
 
-	addStringOption("version-etcd", utils.VERSION_ETCD, "Etcd version", func(value string) {
+	addStringOption("version-etcd", utils.VersionEtcd, "Etcd version", func(value string) {
 		_config.Config.Versions.Etcd = value
 	})
 
-	addStringOption("version-k8s", utils.VERSION_K8S, "Kubernetes version", func(value string) {
+	addStringOption("version-k8s", utils.VersionK8s, "Kubernetes version", func(value string) {
 		_config.Config.Versions.K8S = value
 	})
 
-	addStringOption("version-helm", utils.VERSION_HELM, "Helm version", func(value string) {
+	addStringOption("version-helm", utils.VersionHelm, "Helm version", func(value string) {
 		_config.Config.Versions.Helm = value
 	})
 
-	addStringOption("version-containerd", utils.VERSION_CONTAINERD, "Containerd version", func(value string) {
+	addStringOption("version-containerd", utils.VersionContainerd, "Containerd version", func(value string) {
 		_config.Config.Versions.Containerd = value
 	})
 
-	addStringOption("version-runc", utils.VERSION_RUNC, "Runc version", func(value string) {
+	addStringOption("version-runc", utils.VersionRunc, "Runc version", func(value string) {
 		_config.Config.Versions.Runc = value
 	})
 
-	addStringOption("version-crictl", utils.VERSION_CRICTL, "CriCtl version", func(value string) {
+	addStringOption("version-crictl", utils.VersionCrictl, "CriCtl version", func(value string) {
 		_config.Config.Versions.CriCtl = value
 	})
 
-	addStringOption("version-gobetween", utils.VERSION_GOBETWEEN, "Gobetween version", func(value string) {
+	addStringOption("version-gobetween", utils.VersionGobetween, "Gobetween version", func(value string) {
 		_config.Config.Versions.Gobetween = value
 	})
 
-	addStringOption("version-ark", utils.VERSION_ARK, "Ark version", func(value string) {
+	addStringOption("version-ark", utils.VersionArk, "Ark version", func(value string) {
 		_config.Config.Versions.Ark = value
 	})
 
-	addStringOption("version-minio-server", utils.VERSION_MINIO_SERVER, "Minio server version", func(value string) {
+	addStringOption("version-minio-server", utils.VersionMinioServer, "Minio server version", func(value string) {
 		_config.Config.Versions.MinioServer = value
 	})
 
-	addStringOption("version-minio-client", utils.VERSION_MINIO_CLIENT, "Minio client version", func(value string) {
+	addStringOption("version-minio-client", utils.VersionMinioClient, "Minio client version", func(value string) {
 		_config.Config.Versions.MinioClient = value
 	})
 
-	addStringOption("version-pause", utils.VERSION_PAUSE, "Pause version", func(value string) {
+	addStringOption("version-pause", utils.VersionPause, "Pause version", func(value string) {
 		_config.Config.Versions.Pause = value
 	})
 
-	addStringOption("version-coredns", utils.VERSION_COREDNS, "CoreDNS version", func(value string) {
+	addStringOption("version-coredns", utils.VersionCoredns, "CoreDNS version", func(value string) {
 		_config.Config.Versions.CoreDNS = value
 	})
 
-	addStringOption("version-elasticsearch", utils.VERSION_ELASTICSEARCH, "Elasticsearch version", func(value string) {
+	addStringOption("version-elasticsearch", utils.VersionElasticsearch, "Elasticsearch version", func(value string) {
 		_config.Config.Versions.Elasticsearch = value
 	})
 
-	addStringOption("version-elasticsearch-cron", utils.VERSION_ELASTICSEARCH_CRON, "Elasticsearch Cron version", func(value string) {
+	addStringOption("version-elasticsearch-cron", utils.VersionElasticsearchCron, "Elasticsearch Cron version", func(value string) {
 		_config.Config.Versions.ElasticsearchCron = value
 	})
 
-	addStringOption("version-elasticsearch-operator", utils.VERSION_ELASTICSEARCH_OPERATOR, "Elasticsearch Operator version", func(value string) {
+	addStringOption("version-elasticsearch-operator", utils.VersionElasticsearchOperator, "Elasticsearch Operator version", func(value string) {
 		_config.Config.Versions.ElasticsearchOperator = value
 	})
 
-	addStringOption("version-kibana", utils.VERSION_KIBANA, "Kibana version", func(value string) {
+	addStringOption("version-kibana", utils.VersionKibana, "Kibana version", func(value string) {
 		_config.Config.Versions.Kibana = value
 	})
 
-	addStringOption("version-cerebro", utils.VERSION_CEREBRO, "Cerebro version", func(value string) {
+	addStringOption("version-cerebro", utils.VersionCerebro, "Cerebro version", func(value string) {
 		_config.Config.Versions.Cerebro = value
 	})
 
-	addStringOption("version-fluent-bit", utils.VERSION_FLUENT_BIT, "Fluent-Bit version", func(value string) {
+	addStringOption("version-fluent-bit", utils.VersionFluentBit, "Fluent-Bit version", func(value string) {
 		_config.Config.Versions.FluentBit = value
 	})
 
-	addStringOption("version-calico-typha", utils.VERSION_CALICO_TYPHA, "Calico Typha version", func(value string) {
+	addStringOption("version-calico-typha", utils.VersionCalicoTypha, "Calico Typha version", func(value string) {
 		_config.Config.Versions.CalicoTypha = value
 	})
 
-	addStringOption("version-calico-node", utils.VERSION_CALICO_NODE, "Calico Node version", func(value string) {
+	addStringOption("version-calico-node", utils.VersionCalicoNode, "Calico Node version", func(value string) {
 		_config.Config.Versions.CalicoNode = value
 	})
 
-	addStringOption("version-calico-cni", utils.VERSION_CALICO_CNI, "Calico CNI version", func(value string) {
+	addStringOption("version-calico-cni", utils.VersionCalicoCni, "Calico CNI version", func(value string) {
 		_config.Config.Versions.CalicoCNI = value
 	})
 
-	addStringOption("version-ceph", utils.VERSION_CEPH, "Ceph version", func(value string) {
+	addStringOption("version-ceph", utils.VersionCeph, "Ceph version", func(value string) {
 		_config.Config.Versions.Ceph = value
 	})
 
-	addStringOption("version-heapster", utils.VERSION_HEAPSTER, "Heapster version", func(value string) {
+	addStringOption("version-heapster", utils.VersionHeapster, "Heapster version", func(value string) {
 		_config.Config.Versions.Heapster = value
 	})
 
-	addStringOption("version-addon-resizer", utils.VERSION_ADDON_RESIZER, "Addon-Resizer version", func(value string) {
+	addStringOption("version-addon-resizer", utils.VersionAddonResizer, "Addon-Resizer version", func(value string) {
 		_config.Config.Versions.AddonResizer = value
 	})
 
-	addStringOption("version-kubernetes-dashboard", utils.VERSION_KUBERNETES_DASHBOARD, "Kubernetes Dashboard version", func(value string) {
+	addStringOption("version-kubernetes-dashboard", utils.VersionKubernetesDashboard, "Kubernetes Dashboard version", func(value string) {
 		_config.Config.Versions.KubernetesDashboard = value
 	})
 
-	addStringOption("version-cert-manager-controller", utils.VERSION_CERT_MANAGER_CONTROLLER, "Cert Manager Controller version", func(value string) {
+	addStringOption("version-cert-manager-controller", utils.VersionCertManagerController, "Cert Manager Controller version", func(value string) {
 		_config.Config.Versions.CertManagerController = value
 	})
 
-	addStringOption("version-nginx-ingress-controller", utils.VERSION_NGINX_INGRESS_CONTROLLER, "Nginx Ingress Controller version", func(value string) {
+	addStringOption("version-nginx-ingress-controller", utils.VersionNginxIngressController, "Nginx Ingress Controller version", func(value string) {
 		_config.Config.Versions.NginxIngressController = value
 	})
 
-	addStringOption("version-nginx-ingress-default-backend", utils.VERSION_NGINX_INGRESS_DEFAULT_BACKEND, "Nginx Ingress Default Backend version", func(value string) {
+	addStringOption("version-nginx-ingress-default-backend", utils.VersionNginxIngressDefaultBackend, "Nginx Ingress Default Backend version", func(value string) {
 		_config.Config.Versions.NginxIngressDefaultBackend = value
 	})
 
-	addStringOption("version-metrics-server", utils.VERSION_METRICS_SERVER, "Metrics Server version", func(value string) {
+	addStringOption("version-metrics-server", utils.VersionMetricsServer, "Metrics Server version", func(value string) {
 		_config.Config.Versions.MetricsServer = value
 	})
 
-	addStringOption("version-prometheus-operator", utils.VERSION_PROMETHEUS_OPERATOR, "Prometheus Operator version", func(value string) {
+	addStringOption("version-prometheus-operator", utils.VersionPrometheusOperator, "Prometheus Operator version", func(value string) {
 		_config.Config.Versions.PrometheusOperator = value
 	})
 
-	addStringOption("version-prometheus-config-reloader", utils.VERSION_PROMETHEUS_CONFIG_RELOADER, "Prometheus Config Reloader version", func(value string) {
+	addStringOption("version-prometheus-config-reloader", utils.VersionPrometheusConfigReloader, "Prometheus Config Reloader version", func(value string) {
 		_config.Config.Versions.PrometheusConfigReloader = value
 	})
 
-	addStringOption("version-configmap-reload", utils.VERSION_CONFIGMAP_RELOAD, "ConfigMap Reload version", func(value string) {
+	addStringOption("version-configmap-reload", utils.VersionConfigmapReload, "ConfigMap Reload version", func(value string) {
 		_config.Config.Versions.ConfigMapReload = value
 	})
 
-	addStringOption("version-kube-state-metrics", utils.VERSION_KUBE_STATE_METRICS, "Kube State Metrics version", func(value string) {
+	addStringOption("version-kube-state-metrics", utils.VersionKubeStateMetrics, "Kube State Metrics version", func(value string) {
 		_config.Config.Versions.KubeStateMetrics = value
 	})
 
-	addStringOption("version-grafana", utils.VERSION_GRAFANA, "Grafana version", func(value string) {
+	addStringOption("version-grafana", utils.VersionGrafana, "Grafana version", func(value string) {
 		_config.Config.Versions.Grafana = value
 	})
 
-	addStringOption("version-grafana-watcher", utils.VERSION_GRAFANA_WATCHER, "Grafana Watcher version", func(value string) {
+	addStringOption("version-grafana-watcher", utils.VersionGrafanaWatcher, "Grafana Watcher version", func(value string) {
 		_config.Config.Versions.GrafanaWatcher = value
 	})
 
-	addStringOption("version-prometheus-node-exporter", utils.VERSION_PROMETHEUS_NODE_EXPORTER, "Prometheus Node Exporter version", func(value string) {
+	addStringOption("version-prometheus-node-exporter", utils.VersionPrometheusNodeExporter, "Prometheus Node Exporter version", func(value string) {
 		_config.Config.Versions.PrometheusNodeExporter = value
 	})
 
-	addStringOption("version-prometheus-alert-manager", utils.VERSION_PROMETHEUS_ALERT_MANAGER, "Prometheus Alert Manager version", func(value string) {
+	addStringOption("version-prometheus-alert-manager", utils.VersionPrometheusAlertManager, "Prometheus Alert Manager version", func(value string) {
 		_config.Config.Versions.PrometheusAlertManager = value
 	})
 
-	addStringOption("version-prometheus", utils.VERSION_PROMETHEUS, "Prometheus version", func(value string) {
+	addStringOption("version-prometheus", utils.VersionPrometheus, "Prometheus version", func(value string) {
 		_config.Config.Versions.Prometheus = value
 	})
 
-	addStringOption("version-csi-attacher", utils.VERSION_CSI_ATTACHER, "CSI Attacher version", func(value string) {
+	addStringOption("version-csi-attacher", utils.VersionCsiAttacher, "CSI Attacher version", func(value string) {
 		_config.Config.Versions.CSIAttacher = value
 	})
 
-	addStringOption("version-csi-provisioner", utils.VERSION_CSI_PROVISIONER, "CSI Provisioner version", func(value string) {
+	addStringOption("version-csi-provisioner", utils.VersionCsiProvisioner, "CSI Provisioner version", func(value string) {
 		_config.Config.Versions.CSIProvisioner = value
 	})
 
-	addStringOption("version-csi-driver-registrar", utils.VERSION_CSI_DRIVER_REGISTRAR, "CSI Driver Registrar version", func(value string) {
+	addStringOption("version-csi-driver-registrar", utils.VersionCsiDriverRegistrar, "CSI Driver Registrar version", func(value string) {
 		_config.Config.Versions.CSIDriverRegistrar = value
 	})
 
-	addStringOption("version-csi-ceph-rbd-plugin", utils.VERSION_CSI_CEPH_RBD_PLUGIN, "CSI Ceph RBD Plugin version", func(value string) {
+	addStringOption("version-csi-ceph-rbd-plugin", utils.VersionCsiCephRbdPlugin, "CSI Ceph RBD Plugin version", func(value string) {
 		_config.Config.Versions.CSICephRBDPlugin = value
 	})
 
-	addStringOption("version-csi-ceph-fs-plugin", utils.VERSION_CSI_CEPH_FS_PLUGIN, "CSI Ceph FS Plugin version", func(value string) {
+	addStringOption("version-csi-ceph-fs-plugin", utils.VersionCsiCephFsPlugin, "CSI Ceph FS Plugin version", func(value string) {
 		_config.Config.Versions.CSICephFSPlugin = value
 	})
 
-	addStringOption("version-wordpress", utils.VERSION_WORDPRESS, "WordPress version", func(value string) {
+	addStringOption("version-wordpress", utils.VersionWordpress, "WordPress version", func(value string) {
 		_config.Config.Versions.WordPress = value
 	})
 
-	addStringOption("version-mysql", utils.VERSION_MYSQL, "MySQL version", func(value string) {
+	addStringOption("version-mysql", utils.VersionMysql, "MySQL version", func(value string) {
 		_config.Config.Versions.MySQL = value
 	})
 

@@ -266,7 +266,7 @@ func (deployment *NodeDeployment) pullImage(image string) error {
 	deployment.sshLimiter.Lock()
 	defer deployment.sshLimiter.Unlock()
 
-	crictl := deployment.config.GetFullTargetAssetFilename(utils.CRICTL_BINARY)
+	crictl := deployment.config.GetFullTargetAssetFilename(utils.BinaryCrictl)
 	containerdSock := deployment.config.GetFullTargetAssetFilename(utils.CONTAINERD_SOCK)
 	command := fmt.Sprintf("CONTAINER_RUNTIME_ENDPOINT=unix://%s %s pull %s", containerdSock, crictl, image)
 

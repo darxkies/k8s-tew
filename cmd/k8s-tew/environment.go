@@ -35,13 +35,13 @@ var environmentCmd = &cobra.Command{
 			ContainerdSock string
 		}{
 			CurrentPath:    os.Getenv("PATH"),
-			K8STEWPath:     _config.GetFullLocalAssetDirectory(utils.BINARIES_DIRECTORY),
-			K8SPath:        _config.GetFullLocalAssetDirectory(utils.K8S_BINARIES_DIRECTORY),
-			EtcdPath:       _config.GetFullLocalAssetDirectory(utils.ETCD_BINARIES_DIRECTORY),
-			CRIPath:        _config.GetFullLocalAssetDirectory(utils.CRI_BINARIES_DIRECTORY),
-			CNIPath:        _config.GetFullLocalAssetDirectory(utils.CNI_BINARIES_DIRECTORY),
-			ArkPath:        _config.GetFullLocalAssetDirectory(utils.ARK_BINARIES_DIRECTORY),
-			HostPath:       _config.GetFullLocalAssetDirectory(utils.HOST_BINARIES_DIRECTORY),
+			K8STEWPath:     _config.GetFullLocalAssetDirectory(utils.DirectoryBinaries),
+			K8SPath:        _config.GetFullLocalAssetDirectory(utils.DirectoryK8sBinaries),
+			EtcdPath:       _config.GetFullLocalAssetDirectory(utils.DirectoryEtcdBinaries),
+			CRIPath:        _config.GetFullLocalAssetDirectory(utils.DirectoryCriBinaries),
+			CNIPath:        _config.GetFullLocalAssetDirectory(utils.DirectoryCniBinaries),
+			ArkPath:        _config.GetFullLocalAssetDirectory(utils.DirectoryArkBinaries),
+			HostPath:       _config.GetFullLocalAssetDirectory(utils.DirectoryHostBinaries),
 			KubeConfig:     _config.GetFullLocalAssetFilename(utils.ADMIN_KUBECONFIG),
 			ContainerdSock: _config.GetFullTargetAssetFilename(utils.CONTAINERD_SOCK),
 		}, false)

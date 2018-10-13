@@ -97,7 +97,7 @@ func (servers *Servers) extractEmbeddedFiles() error {
 	return utils.GetEmbeddedFiles(func(filename string, in io.ReadCloser) error {
 		log.WithFields(log.Fields{"filename": filename}).Info("Extracting embedded file")
 
-		hostDirectory := servers.config.GetFullLocalAssetDirectory(utils.HOST_BINARIES_DIRECTORY)
+		hostDirectory := servers.config.GetFullLocalAssetDirectory(utils.DirectoryHostBinaries)
 		outFilename := path.Join(hostDirectory, filename)
 
 		if error := utils.CreateDirectoryIfMissing(path.Dir(outFilename)); error != nil {
@@ -133,7 +133,7 @@ func (servers *Servers) Run(commandRetries uint) error {
 	}
 
 	pathEnvironment := os.Getenv("PATH")
-	pathEnvironment = fmt.Sprintf("PATH=%s:%s", servers.config.GetFullLocalAssetDirectory(utils.HOST_BINARIES_DIRECTORY), pathEnvironment)
+	pathEnvironment = fmt.Sprintf("PATH=%s:%s", servers.config.GetFullLocalAssetDirectory(utils.DirectoryHostBinaries), pathEnvironment)
 
 	// Add servers
 	for _, serverConfig := range servers.config.Config.Servers {
@@ -155,8 +155,8 @@ func (servers *Servers) Run(commandRetries uint) error {
 	}
 
 	// Add Controllers/Workers VIP servers
-	servers.addVIPManager(servers.config.Node.IsController(), servers.config.Config.ControllerVirtualIP, servers.config.Config.ControllerVirtualIPInterface, servers.config.Name, servers.config.Node.IP, utils.NODE_CONTROLLER, servers.config.Config.VIPRaftControllerPort)
-	servers.addVIPManager(servers.config.Node.IsWorker(), servers.config.Config.WorkerVirtualIP, servers.config.Config.WorkerVirtualIPInterface, servers.config.Name, servers.config.Node.IP, utils.NODE_WORKER, servers.config.Config.VIPRaftWorkerPort)
+	servers.addVIPManager(servers.config.Node.IsController(), servers.config.Config.ControllerVirtualIP, servers.config.Config.ControllerVirtualIPInterface, servers.config.Name, servers.config.Node.IP, utils.NodeController, servers.config.Config.VIPRaftControllerPort)
+	servers.addVIPManager(servers.config.Node.IsWorker(), servers.config.Config.WorkerVirtualIP, servers.config.Config.WorkerVirtualIPInterface, servers.config.Name, servers.config.Node.IP, utils.NodeWorker, servers.config.Config.VIPRaftWorkerPort)
 
 	// Start servers
 	for _, server := range servers.servers {

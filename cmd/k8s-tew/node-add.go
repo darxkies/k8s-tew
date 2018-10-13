@@ -58,7 +58,7 @@ func addNode() error {
 		}
 
 		// Set labels
-		labels = []string{utils.NODE_BOOTSTRAPPER, utils.NODE_CONTROLLER, utils.NODE_WORKER}
+		labels = []string{utils.NodeBootstrapper, utils.NodeController, utils.NodeWorker}
 
 		// Get public network settings
 		network, error := utils.RunCommandWithOutput(fmt.Sprintf("ip address | grep %s | cut -d ' ' -f 6", nodeIP))
@@ -101,7 +101,7 @@ func init() {
 	nodeAddCmd.Flags().StringVarP(&nodeName, "name", "n", "single-node", "The hostname of the node")
 	nodeAddCmd.Flags().StringVarP(&nodeIP, "ip", "i", "192.168.100.50", "IP of the node")
 	nodeAddCmd.Flags().UintVarP(&nodeIndex, "index", "x", 0, "The unique index of the node which should never be reused")
-	nodeAddCmd.Flags().StringVarP(&nodeLabels, "labels", "l", fmt.Sprintf("%s,%s", utils.NODE_CONTROLLER, utils.NODE_WORKER), "The labels of the node which define the attributes of the node")
+	nodeAddCmd.Flags().StringVarP(&nodeLabels, "labels", "l", fmt.Sprintf("%s,%s", utils.NodeController, utils.NodeWorker), "The labels of the node which define the attributes of the node")
 	nodeAddCmd.Flags().BoolVarP(&nodeSelf, "self", "s", false, "Add this machine by infering the host's name & ip and by setting the labels controller,worker,bootstrapper - The public-network and the deployment-directory are also updated")
 	RootCmd.AddCommand(nodeAddCmd)
 }

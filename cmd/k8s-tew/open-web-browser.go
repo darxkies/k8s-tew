@@ -52,7 +52,7 @@ var openWebBrowserCmd = &cobra.Command{
 
 		if openAll || openWordPressIngress {
 			name := "WordPress-Ingress"
-			url := fmt.Sprintf("https://%s.%s", utils.INGRESS_SUBDOMAIN_WORDPRESS, _config.Config.IngressDomain)
+			url := fmt.Sprintf("https://%s.%s", utils.IngressSubdomainWordpress, _config.Config.IngressDomain)
 
 			log.WithFields(log.Fields{"name": name, "url": url}).Info("Opening Web Browser")
 
@@ -63,43 +63,43 @@ var openWebBrowserCmd = &cobra.Command{
 			}
 		}
 
-		if error := openWebBrowser(openWordPressNodePort, "WordPress-NodePort", "http", ip, utils.PORT_WORDPRESS); error != nil {
+		if error := openWebBrowser(openWordPressNodePort, "WordPress-NodePort", "http", ip, utils.PortWordpress); error != nil {
 			log.WithFields(log.Fields{"error": error}).Error("Open Web Browser failed")
 
 			os.Exit(-3)
 		}
 
-		if error := openWebBrowser(openCephManager, "Ceph Manager", "https", ip, utils.PORT_CEPH_MANAGER); error != nil {
+		if error := openWebBrowser(openCephManager, "Ceph Manager", "https", ip, utils.PortCephManager); error != nil {
 			log.WithFields(log.Fields{"error": error}).Error("Open Web Browser failed")
 
 			os.Exit(-3)
 		}
 
-		if error := openWebBrowser(openCephRadosGateway, "Ceph Rados Gateway", "http", ip, utils.PORT_CEPH_RADOS_GATEWAY); error != nil {
+		if error := openWebBrowser(openCephRadosGateway, "Ceph Rados Gateway", "http", ip, utils.PortCephRadosGateway); error != nil {
 			log.WithFields(log.Fields{"error": error}).Error("Open Web Browser failed")
 
 			os.Exit(-3)
 		}
 
-		if error := openWebBrowser(openMinio, "Minio", "http", ip, utils.PORT_MINIO); error != nil {
+		if error := openWebBrowser(openMinio, "Minio", "http", ip, utils.PortMinio); error != nil {
 			log.WithFields(log.Fields{"error": error}).Error("Open Web Browser failed")
 
 			os.Exit(-3)
 		}
 
-		if error := openWebBrowser(openGrafana, "Grafana", "http", ip, utils.PORT_GRAFANA); error != nil {
+		if error := openWebBrowser(openGrafana, "Grafana", "http", ip, utils.PortGrafana); error != nil {
 			log.WithFields(log.Fields{"error": error}).Error("Open Web Browser failed")
 
 			os.Exit(-3)
 		}
 
-		if error := openWebBrowser(openKibana, "Kibana", "https", ip, utils.PORT_KIBANA); error != nil {
+		if error := openWebBrowser(openKibana, "Kibana", "https", ip, utils.PortKibana); error != nil {
 			log.WithFields(log.Fields{"error": error}).Error("Open Web Browser failed")
 
 			os.Exit(-3)
 		}
 
-		if error := openWebBrowser(openCerebro, "Cerebro", "http", ip, utils.PORT_CEREBRO); error != nil {
+		if error := openWebBrowser(openCerebro, "Cerebro", "http", ip, utils.PortCerebro); error != nil {
 			log.WithFields(log.Fields{"error": error}).Error("Open Web Browser failed")
 
 			os.Exit(-3)

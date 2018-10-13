@@ -16,7 +16,7 @@ func NewNode(ip string, index uint, labels []string) *Node {
 
 func (node *Node) IsController() bool {
 	for _, label := range node.Labels {
-		if label == utils.NODE_CONTROLLER {
+		if label == utils.NodeController {
 			return true
 		}
 	}
@@ -26,7 +26,7 @@ func (node *Node) IsController() bool {
 
 func (node *Node) IsWorker() bool {
 	for _, label := range node.Labels {
-		if label == utils.NODE_WORKER {
+		if label == utils.NodeWorker {
 			return true
 		}
 	}

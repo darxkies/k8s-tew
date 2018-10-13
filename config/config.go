@@ -39,28 +39,28 @@ type Config struct {
 }
 
 func NewConfig() *Config {
-	config := &Config{Version: utils.VERSION_CONFIG}
+	config := &Config{Version: utils.VersionConfig}
 
-	config.VIPRaftControllerPort = utils.PORT_VIP_RAFT_CONTROLLER
-	config.VIPRaftWorkerPort = utils.PORT_VIP_RAFT_WORKER
+	config.VIPRaftControllerPort = utils.PortVipRaftController
+	config.VIPRaftWorkerPort = utils.PortVipRaftWorker
 	config.ClusterID = uuid.NewV4().String()
-	config.ClusterName = utils.CLUSTER_NAME
-	config.Email = utils.EMAIL
-	config.IngressDomain = utils.INGRESS_DOMAIN
-	config.LoadBalancerPort = utils.PORT_LOAD_BALANCER
-	config.KubernetesDashboardPort = utils.PORT_KUBERNETES_DASHBOARD
-	config.APIServerPort = utils.PORT_API_SERVER
-	config.PublicNetwork = utils.PUBLIC_NETWORK
-	config.ClusterDomain = utils.CLUSTER_DOMAIN
-	config.ClusterIPRange = utils.CLUSTER_IP_RANGE
-	config.ClusterDNSIP = utils.CLUSTER_DNS_IP
-	config.ClusterCIDR = utils.CLUSTER_CIDR
-	config.CalicoTyphaIP = utils.CALICO_TYPHA_IP
-	config.ResolvConf = utils.RESOLV_CONF
-	config.DeploymentDirectory = utils.DEPLOYMENT_DIRECTORY
-	config.RSASize = utils.RSA_SIZE
-	config.CAValidityPeriod = utils.CA_VALIDITY_PERIOD
-	config.ClientValidityPeriod = utils.CLIENT_VALIDITY_PERIOD
+	config.ClusterName = utils.ClusterName
+	config.Email = utils.Email
+	config.IngressDomain = utils.IngressDomain
+	config.LoadBalancerPort = utils.PortLoadBalancer
+	config.KubernetesDashboardPort = utils.PortKubernetesDashboard
+	config.APIServerPort = utils.PortApiServer
+	config.PublicNetwork = utils.PublicNetwork
+	config.ClusterDomain = utils.ClusterDomain
+	config.ClusterIPRange = utils.ClusterIpRange
+	config.ClusterDNSIP = utils.ClusterDnsIp
+	config.ClusterCIDR = utils.ClusterCidr
+	config.CalicoTyphaIP = utils.CalicoTyphaIp
+	config.ResolvConf = utils.ResolvConf
+	config.DeploymentDirectory = utils.DeploymentDirectory
+	config.RSASize = utils.RsaSize
+	config.CAValidityPeriod = utils.CaValidityPeriod
+	config.ClientValidityPeriod = utils.ClientValidityPeriod
 	config.Versions = NewVersions()
 	config.Assets = AssetConfig{Directories: map[string]*AssetDirectory{}, Files: map[string]*AssetFile{}}
 	config.Nodes = Nodes{}

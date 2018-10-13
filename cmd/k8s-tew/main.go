@@ -28,8 +28,8 @@ func init() {
 // RootCmd represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{
 	Use:   "k8s-tew",
-	Short: utils.PROJECT_TITLE,
-	Long:  utils.PROJECT_TITLE,
+	Short: utils.ProjectTitle,
+	Long:  utils.ProjectTitle,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Printf("Version: %s\n", version.Version)
 		fmt.Printf("OS: %s\n", utils.GetOSNameAndRelease())
@@ -46,7 +46,7 @@ func getDefaultBaseDirectory() string {
 		log.WithFields(log.Fields{"error": error}).Fatal("Failed to retrieve cwd")
 	}
 
-	return path.Join(directory, utils.BASE_DIRECTORY)
+	return path.Join(directory, utils.BaseDirectory)
 }
 
 // getBaseDirectory returns the base directory pointing to the assets

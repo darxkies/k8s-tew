@@ -124,7 +124,7 @@ func (generator *Generator) generateProfileFile() error {
 		Binary        string
 		BaseDirectory string
 	}{
-		Binary:        generator.config.GetFullTargetAssetFilename(utils.K8S_TEW_BINARY),
+		Binary:        generator.config.GetFullTargetAssetFilename(utils.BinaryK8sTew),
 		BaseDirectory: generator.config.Config.DeploymentDirectory,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8S_TEW_PROFILE), true, false)
 }
@@ -136,10 +136,10 @@ func (generator *Generator) generateServiceFile() error {
 		BaseDirectory string
 		Binary        string
 	}{
-		ProjectTitle:  utils.PROJECT_TITLE,
-		Command:       generator.config.GetFullTargetAssetFilename(utils.K8S_TEW_BINARY),
+		ProjectTitle:  utils.ProjectTitle,
+		Command:       generator.config.GetFullTargetAssetFilename(utils.BinaryK8sTew),
 		BaseDirectory: generator.config.Config.DeploymentDirectory,
-		Binary:        utils.K8S_TEW_BINARY,
+		Binary:        utils.BinaryK8sTew,
 	}, generator.config.GetFullLocalAssetFilename(utils.SERVICE_CONFIG), true, false)
 }
 
@@ -165,8 +165,8 @@ func (generator *Generator) generateCalicoSetup() error {
 	}{
 		CalicoTyphaIP:        generator.config.Config.CalicoTyphaIP,
 		ClusterCIDR:          generator.config.Config.ClusterCIDR,
-		CNIConfigDirectory:   generator.config.GetFullTargetAssetDirectory(utils.CNI_CONFIG_DIRECTORY),
-		CNIBinariesDirectory: generator.config.GetFullTargetAssetDirectory(utils.CNI_BINARIES_DIRECTORY),
+		CNIConfigDirectory:   generator.config.GetFullTargetAssetDirectory(utils.DirectoryCniConfig),
+		CNIBinariesDirectory: generator.config.GetFullTargetAssetDirectory(utils.DirectoryCniBinaries),
 		CalicoTyphaImage:     generator.config.Config.Versions.CalicoTypha,
 		CalicoNodeImage:      generator.config.Config.Versions.CalicoNode,
 		CalicoCNIImage:       generator.config.Config.Versions.CalicoCNI,
@@ -192,7 +192,7 @@ func (generator *Generator) generateK8SHelmUserConfigFile() error {
 		Name      string
 		Namespace string
 	}{
-		Name:      utils.HELM_SERVICE_ACCOUNT,
+		Name:      utils.HelmServiceAccount,
 		Namespace: "kube-system",
 	}, generator.config.GetFullLocalAssetFilename(utils.K8S_HELM_USER_SETUP), true, false)
 }
@@ -232,12 +232,12 @@ func (generator *Generator) generateContainerdConfig() error {
 			IP                       string
 			PauseImage               string
 		}{
-			ContainerdRootDirectory:  generator.config.GetFullTargetAssetDirectory(utils.CONTAINERD_DATA_DIRECTORY),
-			ContainerdStateDirectory: generator.config.GetFullTargetAssetDirectory(utils.CONTAINERD_STATE_DIRECTORY),
+			ContainerdRootDirectory:  generator.config.GetFullTargetAssetDirectory(utils.DirectoryContainerdData),
+			ContainerdStateDirectory: generator.config.GetFullTargetAssetDirectory(utils.DirectoryContainerdState),
 			ContainerdSock:           generator.config.GetFullTargetAssetFilename(utils.CONTAINERD_SOCK),
-			CNIConfigDirectory:       generator.config.GetFullTargetAssetDirectory(utils.CNI_CONFIG_DIRECTORY),
-			CNIBinariesDirectory:     generator.config.GetFullTargetAssetDirectory(utils.CNI_BINARIES_DIRECTORY),
-			CRIBinariesDirectory:     generator.config.GetFullTargetAssetDirectory(utils.CRI_BINARIES_DIRECTORY),
+			CNIConfigDirectory:       generator.config.GetFullTargetAssetDirectory(utils.DirectoryCniConfig),
+			CNIBinariesDirectory:     generator.config.GetFullTargetAssetDirectory(utils.DirectoryCniBinaries),
+			CRIBinariesDirectory:     generator.config.GetFullTargetAssetDirectory(utils.DirectoryCriBinaries),
 			IP:                       node.IP,
 			PauseImage:               generator.config.Config.Versions.Pause,
 		}, generator.config.GetFullLocalAssetFilename(utils.CONTAINERD_CONFIG), true, false); error != nil {
@@ -275,7 +275,7 @@ func (generator *Generator) generateKubeletConfig() error {
 			ClusterDomain:       generator.config.Config.ClusterDomain,
 			ClusterDNSIP:        generator.config.Config.ClusterDNSIP,
 			PODCIDR:             generator.config.Config.ClusterCIDR,
-			StaticPodPath:       generator.config.GetFullTargetAssetDirectory(utils.K8S_MANIFESTS_DIRECTORY),
+			StaticPodPath:       generator.config.GetFullTargetAssetDirectory(utils.DirectoryK8sManifests),
 		}, generator.config.GetFullLocalAssetFilename(utils.K8S_KUBELET_CONFIG), true, false); error != nil {
 			return error
 		}
@@ -475,11 +475,11 @@ func (generator *Generator) generateCephSetup() error {
 		PublicNetwork:        generator.config.Config.PublicNetwork,
 		StorageControllers:   generator.config.GetStorageControllers(),
 		StorageNodes:         generator.config.GetStorageNodes(),
-		CephConfigDirectory:  generator.config.GetFullTargetAssetDirectory(utils.CEPH_CONFIG_DIRECTORY),
-		CephDataDirectory:    generator.config.GetFullTargetAssetDirectory(utils.CEPH_DATA_DIRECTORY),
+		CephConfigDirectory:  generator.config.GetFullTargetAssetDirectory(utils.DirectoryCephConfig),
+		CephDataDirectory:    generator.config.GetFullTargetAssetDirectory(utils.DirectoryCephData),
 		CephImage:            generator.config.Config.Versions.Ceph,
-		CephManagerPort:      utils.PORT_CEPH_MANAGER,
-		CephRadosGatewayPort: utils.PORT_CEPH_RADOS_GATEWAY,
+		CephManagerPort:      utils.PortCephManager,
+		CephRadosGatewayPort: utils.PortCephRadosGateway,
 	}, generator.config.GetFullLocalAssetFilename(utils.CEPH_SETUP), true, false)
 }
 
@@ -498,10 +498,10 @@ func (generator *Generator) generateCephCSI() error {
 		CSICephRBDPluginImage   string
 		CSICephFSPluginImage    string
 	}{
-		PodsDirectory:           generator.config.GetFullTargetAssetDirectory(utils.PODS_DATA_DIRECTORY),
-		PluginsDirectory:        generator.config.GetFullTargetAssetDirectory(utils.KUBELET_PLUGINS_DIRECTORY),
-		CephFSPluginDirectory:   generator.config.GetFullTargetAssetDirectory(utils.CEPH_FS_PLUGIN_DIRECTORY),
-		CephRBDPluginDirectory:  generator.config.GetFullTargetAssetDirectory(utils.CEPH_RBD_PLUGIN_DIRECTORY),
+		PodsDirectory:           generator.config.GetFullTargetAssetDirectory(utils.DirectoryPodsData),
+		PluginsDirectory:        generator.config.GetFullTargetAssetDirectory(utils.DirectoryKubeletPlugins),
+		CephFSPluginDirectory:   generator.config.GetFullTargetAssetDirectory(utils.DirectoryCephFsPlugin),
+		CephRBDPluginDirectory:  generator.config.GetFullTargetAssetDirectory(utils.DirectoryCephRbdPlugin),
 		CephRBDPoolName:         utils.CEPH_RBD_POOL_NAME,
 		CephFSPoolName:          utils.CEPH_FS_POOL_NAME,
 		StorageControllers:      generator.config.GetStorageControllers(),
@@ -664,8 +664,8 @@ func (generator *Generator) generateARKSetup() error {
 		ArkImage:         generator.config.Config.Versions.Ark,
 		MinioServerImage: generator.config.Config.Versions.MinioServer,
 		MinioClientImage: generator.config.Config.Versions.MinioClient,
-		PodsDirectory:    generator.config.GetFullTargetAssetDirectory(utils.PODS_DATA_DIRECTORY),
-		MinioPort:        utils.PORT_MINIO,
+		PodsDirectory:    generator.config.GetFullTargetAssetDirectory(utils.DirectoryPodsData),
+		MinioPort:        utils.PortMinio,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8S_ARK_SETUP), true, false)
 }
 
@@ -747,7 +747,7 @@ func (generator *Generator) generateKubePrometheusSetup() error {
 		PrometheusImage:             generator.config.Config.Versions.Prometheus,
 		PrometheusNodeExporterImage: generator.config.Config.Versions.PrometheusNodeExporter,
 		PrometheusAlertManagerImage: generator.config.Config.Versions.PrometheusAlertManager,
-		GrafanaPort:                 utils.PORT_GRAFANA,
+		GrafanaPort:                 utils.PortGrafana,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8S_KUBE_PROMETHEUS_SETUP), true, true)
 }
 
@@ -798,10 +798,10 @@ func (generator *Generator) generateWordpressSetup() error {
 		WordPressImage         string
 		WordPressPort          uint16
 	}{
-		WordPressIngressDomain: fmt.Sprintf("%s.%s", utils.INGRESS_SUBDOMAIN_WORDPRESS, generator.config.Config.IngressDomain),
+		WordPressIngressDomain: fmt.Sprintf("%s.%s", utils.IngressSubdomainWordpress, generator.config.Config.IngressDomain),
 		MySQLImage:             generator.config.Config.Versions.MySQL,
 		WordPressImage:         generator.config.Config.Versions.WordPress,
-		WordPressPort:          utils.PORT_WORDPRESS,
+		WordPressPort:          utils.PortWordpress,
 	}, generator.config.GetFullLocalAssetFilename(utils.WORDPRESS_SETUP), true, false)
 }
 
@@ -817,23 +817,23 @@ func (generator *Generator) generateBashCompletion(binaryName, bashCompletionFil
 }
 
 func (generator *Generator) generateBashCompletionK8STEW() error {
-	return generator.generateBashCompletion(utils.K8S_TEW_BINARY, utils.BASH_COMPLETION_K8S_TEW)
+	return generator.generateBashCompletion(utils.BinaryK8sTew, utils.BASH_COMPLETION_K8S_TEW)
 }
 
 func (generator *Generator) generateBashCompletionKubectl() error {
-	return generator.generateBashCompletion(utils.KUBECTL_BINARY, utils.BASH_COMPLETION_KUBECTL)
+	return generator.generateBashCompletion(utils.BinaryKubectl, utils.BASH_COMPLETION_KUBECTL)
 }
 
 func (generator *Generator) generateBashCompletionHelm() error {
-	return generator.generateBashCompletion(utils.HELM_BINARY, utils.BASH_COMPLETION_HELM)
+	return generator.generateBashCompletion(utils.BinaryHelm, utils.BASH_COMPLETION_HELM)
 }
 
 func (generator *Generator) generateBashCompletionArk() error {
-	return generator.generateBashCompletion(utils.ARK_BINARY, utils.BASH_COMPLETION_ARK)
+	return generator.generateBashCompletion(utils.BinaryArk, utils.BASH_COMPLETION_ARK)
 }
 
 func (generator *Generator) generateBashCompletionCriCtl() error {
-	return generator.generateBashCompletion(utils.CRICTL_BINARY, utils.BASH_COMPLETION_CRICTL)
+	return generator.generateBashCompletion(utils.BinaryCrictl, utils.BASH_COMPLETION_CRICTL)
 }
 
 func (generator *Generator) GenerateFiles() error {
