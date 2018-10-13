@@ -338,7 +338,7 @@ func (downloader Downloader) copyK8STEW() error {
 
 func (downloader Downloader) downloadHelmBinary() error {
 	compressedFiles := []CompressedFile{
-		CompressedFile{
+		{
 			SourceFile: path.Join("linux-amd64", utils.HELM_BINARY),
 			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.HELM_BINARY),
 		},
@@ -359,11 +359,11 @@ func (downloader Downloader) downloadEtcdBinaries() error {
 	}
 
 	compressedFiles := []CompressedFile{
-		CompressedFile{
+		{
 			SourceFile: path.Join(baseName, utils.ETCD_BINARY),
 			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.ETCD_BINARY),
 		},
-		CompressedFile{
+		{
 			SourceFile: path.Join(baseName, utils.ETCDCTL_BINARY),
 			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.ETCDCTL_BINARY),
 		},
@@ -376,27 +376,27 @@ func (downloader Downloader) downloadKubernetesBinaries() error {
 	kubernetesServerBin := path.Join("kubernetes", "server", "bin")
 
 	compressedFiles := []CompressedFile{
-		CompressedFile{
+		{
 			SourceFile: path.Join(kubernetesServerBin, utils.KUBE_APISERVER_BINARY),
 			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.KUBE_APISERVER_BINARY),
 		},
-		CompressedFile{
+		{
 			SourceFile: path.Join(kubernetesServerBin, utils.KUBE_CONTROLLER_MANAGER_BINARY),
 			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.KUBE_CONTROLLER_MANAGER_BINARY),
 		},
-		CompressedFile{
+		{
 			SourceFile: path.Join(kubernetesServerBin, utils.KUBE_SCHEDULER_BINARY),
 			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.KUBE_SCHEDULER_BINARY),
 		},
-		CompressedFile{
+		{
 			SourceFile: path.Join(kubernetesServerBin, utils.KUBE_PROXY_BINARY),
 			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.KUBE_PROXY_BINARY),
 		},
-		CompressedFile{
+		{
 			SourceFile: path.Join(kubernetesServerBin, utils.KUBELET_BINARY),
 			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.KUBELET_BINARY),
 		},
-		CompressedFile{
+		{
 			SourceFile: path.Join(kubernetesServerBin, utils.KUBECTL_BINARY),
 			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.KUBECTL_BINARY),
 		},
@@ -407,15 +407,15 @@ func (downloader Downloader) downloadKubernetesBinaries() error {
 
 func (downloader Downloader) downloadContainerdBinaries() error {
 	compressedFiles := []CompressedFile{
-		CompressedFile{
+		{
 			SourceFile: path.Join("bin", utils.CONTAINERD_BINARY),
 			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.CONTAINERD_BINARY),
 		},
-		CompressedFile{
+		{
 			SourceFile: path.Join("bin", utils.CONTAINERD_SHIM_BINARY),
 			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.CONTAINERD_SHIM_BINARY),
 		},
-		CompressedFile{
+		{
 			SourceFile: path.Join("bin", utils.CTR_BINARY),
 			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.CTR_BINARY),
 		},
@@ -426,7 +426,7 @@ func (downloader Downloader) downloadContainerdBinaries() error {
 
 func (downloader Downloader) downloadCriCtlBinary() error {
 	compressedFiles := []CompressedFile{
-		CompressedFile{
+		{
 			SourceFile: utils.CRICTL_BINARY,
 			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.CRICTL_BINARY),
 		},
@@ -437,7 +437,7 @@ func (downloader Downloader) downloadCriCtlBinary() error {
 
 func (downloader Downloader) downloadGobetweenBinary() error {
 	compressedFiles := []CompressedFile{
-		CompressedFile{
+		{
 			SourceFile: utils.GOBETWEEN_BINARY,
 			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.GOBETWEEN_BINARY),
 		},
@@ -448,7 +448,7 @@ func (downloader Downloader) downloadGobetweenBinary() error {
 
 func (downloader Downloader) downloadArkBinaries() error {
 	compressedFiles := []CompressedFile{
-		CompressedFile{
+		{
 			SourceFile: utils.ARK_BINARY,
 			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.ARK_BINARY),
 		},
