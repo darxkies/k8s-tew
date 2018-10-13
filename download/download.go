@@ -184,7 +184,7 @@ func (downloader Downloader) extractTGZ(filename string, targetDirectory string)
 			break
 		}
 
-		// Exit if any other error occured
+		// Exit if any other error occurred
 		if error != nil {
 			return error
 		}
