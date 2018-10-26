@@ -11,4 +11,7 @@ watch-and-compile:
 watch-and-update-documentation:
 	(cd docs && reflex -r '\.rst' -R "^_build" make clean html)
 
-.PHONY: build
+clean:
+	rm -Rf bin vendor
+
+.PHONY: build clean
