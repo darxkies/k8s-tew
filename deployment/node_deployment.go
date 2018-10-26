@@ -22,8 +22,6 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 )
 
-const CONCURRENT_SSH_CONNECTIONS_LIMIT = 10
-
 type NodeDeployment struct {
 	identityFile string
 	name         string
@@ -34,7 +32,7 @@ type NodeDeployment struct {
 }
 
 func NewNodeDeployment(identityFile string, name string, node *config.Node, config *config.InternalConfig, parallel bool) *NodeDeployment {
-	return &NodeDeployment{identityFile: identityFile, name: name, node: node, config: config, sshLimiter: utils.NewLimiter(CONCURRENT_SSH_CONNECTIONS_LIMIT), parallel: parallel}
+	return &NodeDeployment{identityFile: identityFile, name: name, node: node, config: config, sshLimiter: utils.NewLimiter(utils.ConcurrentSshConnectionsLimit), parallel: parallel}
 }
 
 func (deployment *NodeDeployment) Steps() (result int) {
@@ -192,7 +190,7 @@ func (deployment *NodeDeployment) UploadFiles(forceUpload bool) (_error error) {
 
 	if len(files) > 0 {
 		// Stop service
-		_, _ = deployment.Execute("stop-service", fmt.Sprintf("systemctl stop %s", utils.SERVICE_NAME))
+		_, _ = deployment.Execute("stop-service", fmt.Sprintf("systemctl stop %s", utils.ServiceName))
 	}
 
 	utils.IncreaseProgressStep()
@@ -229,7 +227,7 @@ func (deployment *NodeDeployment) UploadFiles(forceUpload bool) (_error error) {
 
 	if len(files) > 0 {
 		// Registrate and start service
-		_, _error = deployment.Execute("start-service", fmt.Sprintf("systemctl daemon-reload && systemctl enable %s && systemctl start %s", utils.SERVICE_NAME, utils.SERVICE_NAME))
+		_, _error = deployment.Execute("start-service", fmt.Sprintf("systemctl daemon-reload && systemctl enable %s && systemctl start %s", utils.ServiceName, utils.ServiceName))
 	}
 
 	utils.IncreaseProgressStep()
@@ -249,7 +247,7 @@ func (deployment *NodeDeployment) getSession() (*ssh.Session, error) {
 	}
 
 	client, error := ssh.Dial("tcp", deployment.node.IP+":22", &ssh.ClientConfig{
-		User: utils.DEPLOYMENT_USER,
+		User: utils.DeploymentUser,
 		Auth: []ssh.AuthMethod{
 			ssh.PublicKeys(privateKey),
 		},
@@ -267,7 +265,7 @@ func (deployment *NodeDeployment) pullImage(image string) error {
 	defer deployment.sshLimiter.Unlock()
 
 	crictl := deployment.config.GetFullTargetAssetFilename(utils.BinaryCrictl)
-	containerdSock := deployment.config.GetFullTargetAssetFilename(utils.CONTAINERD_SOCK)
+	containerdSock := deployment.config.GetFullTargetAssetFilename(utils.ContainerdSock)
 	command := fmt.Sprintf("CONTAINER_RUNTIME_ENDPOINT=unix://%s %s pull %s", containerdSock, crictl, image)
 
 	if _, error := deployment.Execute(fmt.Sprintf("pull-image-%s", image), command); error != nil {
@@ -319,7 +317,7 @@ func (deployment *NodeDeployment) UploadFile(from, to string) error {
 }
 
 func (deployment *NodeDeployment) configureTaint() error {
-	kubeconfig := deployment.config.GetFullLocalAssetFilename(utils.ADMIN_KUBECONFIG)
+	kubeconfig := deployment.config.GetFullLocalAssetFilename(utils.KubeconfigAdmin)
 
 	// Configure connection
 	config, error := clientcmd.BuildConfigFromFlags("", kubeconfig)
@@ -345,7 +343,7 @@ func (deployment *NodeDeployment) configureTaint() error {
 		found := false
 
 		for _, taint := range node.Spec.Taints {
-			if taint.Key == CONTROLLER_ONLY_TAINT_KEY {
+			if taint.Key == utils.ControllerOnlyTaintKey {
 				found = true
 
 				break
@@ -353,19 +351,19 @@ func (deployment *NodeDeployment) configureTaint() error {
 		}
 
 		if !found {
-			node.Spec.Taints = append(node.Spec.Taints, v1.Taint{Key: CONTROLLER_ONLY_TAINT_KEY, Value: "true", Effect: v1.TaintEffectNoSchedule})
+			node.Spec.Taints = append(node.Spec.Taints, v1.Taint{Key: utils.ControllerOnlyTaintKey, Value: "true", Effect: v1.TaintEffectNoSchedule})
 
 			changed = true
 		}
 
 		// Make e2e compliance test suit happy
-		node.Labels[CONTROLLER_ONLY_TAINT_KEY] = "true"
+		node.Labels[utils.ControllerOnlyTaintKey] = "true"
 
 	} else {
 		taints := []v1.Taint{}
 
 		for _, taint := range node.Spec.Taints {
-			if taint.Key == CONTROLLER_ONLY_TAINT_KEY {
+			if taint.Key == utils.ControllerOnlyTaintKey {
 				changed = true
 
 				continue
@@ -377,7 +375,7 @@ func (deployment *NodeDeployment) configureTaint() error {
 		node.Spec.Taints = taints
 
 		// Make e2e compliance test suit happy and remove the label
-		delete(node.Labels, CONTROLLER_ONLY_TAINT_KEY)
+		delete(node.Labels, utils.ControllerOnlyTaintKey)
 	}
 
 	if !changed {

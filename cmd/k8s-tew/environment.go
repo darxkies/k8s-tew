@@ -22,7 +22,7 @@ var environmentCmd = &cobra.Command{
 			os.Exit(-1)
 		}
 
-		content, error := utils.ApplyTemplate("Environment", utils.GetTemplate(utils.TEMPLATE_ENVIRONMENT), struct {
+		content, error := utils.ApplyTemplate("Environment", utils.GetTemplate(utils.TemplateEnvironment), struct {
 			CurrentPath    string
 			K8STEWPath     string
 			K8SPath        string
@@ -42,8 +42,8 @@ var environmentCmd = &cobra.Command{
 			CNIPath:        _config.GetFullLocalAssetDirectory(utils.DirectoryCniBinaries),
 			ArkPath:        _config.GetFullLocalAssetDirectory(utils.DirectoryArkBinaries),
 			HostPath:       _config.GetFullLocalAssetDirectory(utils.DirectoryHostBinaries),
-			KubeConfig:     _config.GetFullLocalAssetFilename(utils.ADMIN_KUBECONFIG),
-			ContainerdSock: _config.GetFullTargetAssetFilename(utils.CONTAINERD_SOCK),
+			KubeConfig:     _config.GetFullLocalAssetFilename(utils.KubeconfigAdmin),
+			ContainerdSock: _config.GetFullTargetAssetFilename(utils.ContainerdSock),
 		}, false)
 
 		if error != nil {

@@ -53,7 +53,7 @@ func getDefaultBaseDirectory() string {
 func getBaseDirectory() string {
 	result := baseDirectory
 
-	environmentBaseDirectory := os.Getenv(utils.K8S_TEW_BASE_DIRECTORY)
+	environmentBaseDirectory := os.Getenv(utils.K8sTewBaseDirectory)
 
 	if len(environmentBaseDirectory) > 0 {
 		result = environmentBaseDirectory

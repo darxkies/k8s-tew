@@ -9,8 +9,6 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-const CONTROLLER_ONLY_TAINT_KEY = "node-role.kubernetes.io/master"
-
 type Image struct {
 	Name     string
 	Features config.Features

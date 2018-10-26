@@ -216,111 +216,111 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.BinaryArk, Labels{}, "", utils.DirectoryArkBinaries)
 
 	// Certificates
-	config.addAssetFile(utils.CA_PEM, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryCertificates)
-	config.addAssetFile(utils.CA_KEY_PEM, Labels{utils.NodeController}, "", utils.DirectoryCertificates)
-	config.addAssetFile(utils.KUBERNETES_PEM, Labels{utils.NodeController}, "", utils.DirectoryCertificates)
-	config.addAssetFile(utils.KUBERNETES_KEY_PEM, Labels{utils.NodeController}, "", utils.DirectoryCertificates)
-	config.addAssetFile(utils.SERVICE_ACCOUNT_PEM, Labels{utils.NodeController}, "", utils.DirectoryCertificates)
-	config.addAssetFile(utils.SERVICE_ACCOUNT_KEY_PEM, Labels{utils.NodeController}, "", utils.DirectoryCertificates)
-	config.addAssetFile(utils.ADMIN_PEM, Labels{}, "", utils.DirectoryCertificates)
-	config.addAssetFile(utils.ADMIN_KEY_PEM, Labels{}, "", utils.DirectoryCertificates)
-	config.addAssetFile(utils.CONTROLLER_MANAGER_PEM, Labels{}, "", utils.DirectoryCertificates)
-	config.addAssetFile(utils.CONTROLLER_MANAGER_KEY_PEM, Labels{}, "", utils.DirectoryCertificates)
-	config.addAssetFile(utils.SCHEDULER_PEM, Labels{}, "", utils.DirectoryCertificates)
-	config.addAssetFile(utils.SCHEDULER_KEY_PEM, Labels{}, "", utils.DirectoryCertificates)
-	config.addAssetFile(utils.PROXY_PEM, Labels{}, "", utils.DirectoryCertificates)
-	config.addAssetFile(utils.PROXY_KEY_PEM, Labels{}, "", utils.DirectoryCertificates)
-	config.addAssetFile(utils.KUBELET_PEM, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryCertificates)
-	config.addAssetFile(utils.KUBELET_KEY_PEM, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryCertificates)
-	config.addAssetFile(utils.AGGREGATOR_PEM, Labels{utils.NodeController}, "", utils.DirectoryCertificates)
-	config.addAssetFile(utils.AGGREGATOR_KEY_PEM, Labels{utils.NodeController}, "", utils.DirectoryCertificates)
+	config.addAssetFile(utils.PemCa, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryCertificates)
+	config.addAssetFile(utils.PemCaKey, Labels{utils.NodeController}, "", utils.DirectoryCertificates)
+	config.addAssetFile(utils.PemKubernetes, Labels{utils.NodeController}, "", utils.DirectoryCertificates)
+	config.addAssetFile(utils.PemKubernetesKey, Labels{utils.NodeController}, "", utils.DirectoryCertificates)
+	config.addAssetFile(utils.PemServiceAccount, Labels{utils.NodeController}, "", utils.DirectoryCertificates)
+	config.addAssetFile(utils.PemServiceAccountKey, Labels{utils.NodeController}, "", utils.DirectoryCertificates)
+	config.addAssetFile(utils.PemAdmin, Labels{}, "", utils.DirectoryCertificates)
+	config.addAssetFile(utils.PemAdminKey, Labels{}, "", utils.DirectoryCertificates)
+	config.addAssetFile(utils.PemControllerManager, Labels{}, "", utils.DirectoryCertificates)
+	config.addAssetFile(utils.PemControllerManagerKey, Labels{}, "", utils.DirectoryCertificates)
+	config.addAssetFile(utils.PemScheduler, Labels{}, "", utils.DirectoryCertificates)
+	config.addAssetFile(utils.PemSchedulerKey, Labels{}, "", utils.DirectoryCertificates)
+	config.addAssetFile(utils.PemProxy, Labels{}, "", utils.DirectoryCertificates)
+	config.addAssetFile(utils.PemProxyKey, Labels{}, "", utils.DirectoryCertificates)
+	config.addAssetFile(utils.PemKubelet, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryCertificates)
+	config.addAssetFile(utils.PemKubeletKey, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryCertificates)
+	config.addAssetFile(utils.PemAggregator, Labels{utils.NodeController}, "", utils.DirectoryCertificates)
+	config.addAssetFile(utils.PemAggregatorKey, Labels{utils.NodeController}, "", utils.DirectoryCertificates)
 
 	// Kubeconfig
-	config.addAssetFile(utils.ADMIN_KUBECONFIG, Labels{}, "", utils.DirectoryK8sKubeConfig)
-	config.addAssetFile(utils.CONTROLLER_MANAGER_KUBECONFIG, Labels{utils.NodeController}, "", utils.DirectoryK8sKubeConfig)
-	config.addAssetFile(utils.SCHEDULER_KUBECONFIG, Labels{utils.NodeController}, "", utils.DirectoryK8sKubeConfig)
-	config.addAssetFile(utils.PROXY_KUBECONFIG, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryK8sKubeConfig)
-	config.addAssetFile(utils.KUBELET_KUBECONFIG, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryK8sKubeConfig)
+	config.addAssetFile(utils.KubeconfigAdmin, Labels{}, "", utils.DirectoryK8sKubeConfig)
+	config.addAssetFile(utils.KubeconfigControllerManager, Labels{utils.NodeController}, "", utils.DirectoryK8sKubeConfig)
+	config.addAssetFile(utils.KubeconfigScheduler, Labels{utils.NodeController}, "", utils.DirectoryK8sKubeConfig)
+	config.addAssetFile(utils.KubeconfigProxy, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryK8sKubeConfig)
+	config.addAssetFile(utils.KubeconfigKubelet, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryK8sKubeConfig)
 
 	// Security
-	config.addAssetFile(utils.ENCRYPTION_CONFIG, Labels{utils.NodeController}, "", utils.DirectoryK8sSecurityConfig)
+	config.addAssetFile(utils.EncryptionConfig, Labels{utils.NodeController}, "", utils.DirectoryK8sSecurityConfig)
 
 	// CRI
-	config.addAssetFile(utils.CONTAINERD_CONFIG, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryCriConfig)
-	config.addAssetFile(utils.CONTAINERD_SOCK, Labels{}, "", utils.DirectoryAbsoluteContainerdState)
+	config.addAssetFile(utils.ContainerdConfig, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryCriConfig)
+	config.addAssetFile(utils.ContainerdSock, Labels{}, "", utils.DirectoryAbsoluteContainerdState)
 
 	// Service
-	config.addAssetFile(utils.SERVICE_CONFIG, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryService)
+	config.addAssetFile(utils.ServiceConfig, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryService)
 
 	// K8S Setup
-	config.addAssetFile(utils.K8S_KUBELET_SETUP, Labels{}, "", utils.DirectoryK8sSetupConfig)
-	config.addAssetFile(utils.K8S_ADMIN_USER_SETUP, Labels{}, "", utils.DirectoryK8sSetupConfig)
-	config.addAssetFile(utils.K8S_HELM_USER_SETUP, Labels{}, "", utils.DirectoryK8sSetupConfig)
-	config.addAssetFile(utils.CEPH_SECRETS, Labels{}, "", utils.DirectoryK8sSetupConfig)
-	config.addAssetFile(utils.CEPH_SETUP, Labels{}, "", utils.DirectoryK8sSetupConfig)
-	config.addAssetFile(utils.CEPH_CSI, Labels{}, "", utils.DirectoryK8sSetupConfig)
-	config.addAssetFile(utils.LETSENCRYPT_CLUSTER_ISSUER, Labels{}, "", utils.DirectoryK8sSetupConfig)
-	config.addAssetFile(utils.K8S_CALICO_SETUP, Labels{}, "", utils.DirectoryK8sSetupConfig)
-	config.addAssetFile(utils.K8S_COREDNS_SETUP, Labels{}, "", utils.DirectoryK8sSetupConfig)
-	config.addAssetFile(utils.K8S_ELASTICSEARCH_OPERATOR_SETUP, Labels{}, "", utils.DirectoryK8sSetupConfig)
-	config.addAssetFile(utils.K8S_EFK_SETUP, Labels{}, "", utils.DirectoryK8sSetupConfig)
-	config.addAssetFile(utils.K8S_ARK_SETUP, Labels{}, "", utils.DirectoryK8sSetupConfig)
-	config.addAssetFile(utils.K8S_HEAPSTER_SETUP, Labels{}, "", utils.DirectoryK8sSetupConfig)
-	config.addAssetFile(utils.K8S_KUBERNETES_DASHBOARD_SETUP, Labels{}, "", utils.DirectoryK8sSetupConfig)
-	config.addAssetFile(utils.K8S_CERT_MANAGER_SETUP, Labels{}, "", utils.DirectoryK8sSetupConfig)
-	config.addAssetFile(utils.K8S_NGINX_INGRESS_SETUP, Labels{}, "", utils.DirectoryK8sSetupConfig)
-	config.addAssetFile(utils.K8S_METRICS_SERVER_SETUP, Labels{}, "", utils.DirectoryK8sSetupConfig)
-	config.addAssetFile(utils.K8S_PROMETHEUS_OPERATOR_SETUP, Labels{}, "", utils.DirectoryK8sSetupConfig)
-	config.addAssetFile(utils.K8S_KUBE_PROMETHEUS_SETUP, Labels{}, "", utils.DirectoryK8sSetupConfig)
-	config.addAssetFile(utils.K8S_KUBE_PROMETHEUS_DATASOURCE_SETUP, Labels{}, "", utils.DirectoryK8sSetupConfig)
-	config.addAssetFile(utils.K8S_KUBE_PROMETHEUS_KUBERNETES_CLUSTER_STATUS_DASHBOARD_SETUP, Labels{}, "", utils.DirectoryK8sSetupConfig)
-	config.addAssetFile(utils.K8S_KUBE_PROMETHEUS_PODS_DASHBOARD_SETUP, Labels{}, "", utils.DirectoryK8sSetupConfig)
-	config.addAssetFile(utils.K8S_KUBE_PROMETHEUS_DEPLOYMENT_DASHBOARD_SETUP, Labels{}, "", utils.DirectoryK8sSetupConfig)
-	config.addAssetFile(utils.K8S_KUBE_PROMETHEUS_KUBERNETES_CONTROL_PLANE_STATUS_DASHBOARD_SETUP, Labels{}, "", utils.DirectoryK8sSetupConfig)
-	config.addAssetFile(utils.K8S_KUBE_PROMETHEUS_STATEFULSET_DASHBOARD_SETUP, Labels{}, "", utils.DirectoryK8sSetupConfig)
-	config.addAssetFile(utils.K8S_KUBE_PROMETHEUS_KUBERNETES_CAPACITY_PLANNING_DASHBOARD_SETUP, Labels{}, "", utils.DirectoryK8sSetupConfig)
-	config.addAssetFile(utils.K8S_KUBE_PROMETHEUS_KUBERNETES_RESOURCE_REQUESTS_DASHBOARD_SETUP, Labels{}, "", utils.DirectoryK8sSetupConfig)
-	config.addAssetFile(utils.K8S_KUBE_PROMETHEUS_KUBERNETES_CLUSTER_HEALTH_DASHBOARD_SETUP, Labels{}, "", utils.DirectoryK8sSetupConfig)
-	config.addAssetFile(utils.K8S_KUBE_PROMETHEUS_NODES_DASHBOARD_SETUP, Labels{}, "", utils.DirectoryK8sSetupConfig)
-	config.addAssetFile(utils.WORDPRESS_SETUP, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.K8sKubeletSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.K8sAdminUserSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.K8sHelmUserSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.CephSecrets, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.CephSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.CephCsi, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.LetsencryptClusterIssuer, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.K8sCalicoSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.K8sCorednsSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.K8sElasticsearchOperatorSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.K8sEfkSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.K8sArkSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.K8sHeapsterSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.K8sKubernetesDashboardSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.K8sCertManagerSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.K8sNginxIngressSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.K8sMetricsServerSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.K8sPrometheusOperatorSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.K8sKubePrometheusSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.K8sKubePrometheusDatasourceSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.K8sKubePrometheusKubernetesClusterStatusDashboardSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.K8sKubePrometheusPodsDashboardSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.K8sKubePrometheusDeploymentDashboardSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.K8sKubePrometheusKubernetesControlPlaneStatusDashboardSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.K8sKubePrometheusStatefulsetDashboardSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.K8sKubePrometheusKubernetesCapacityPlanningDashboardSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.K8sKubePrometheusKubernetesResourceRequestsDashboardSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.K8sKubePrometheusKubernetesClusterHealthDashboardSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.K8sKubePrometheusNodesDashboardSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.WordpressSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
 
 	// K8S Config
-	config.addAssetFile(utils.K8S_KUBE_SCHEDULER_CONFIG, Labels{utils.NodeController}, "", utils.DirectoryK8sConfig)
-	config.addAssetFile(utils.K8S_KUBELET_CONFIG, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryK8sConfig)
+	config.addAssetFile(utils.K8sKubeSchedulerConfig, Labels{utils.NodeController}, "", utils.DirectoryK8sConfig)
+	config.addAssetFile(utils.K8sKubeletConfig, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryK8sConfig)
 
 	// Profile
-	config.addAssetFile(utils.K8S_TEW_PROFILE, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryProfile)
+	config.addAssetFile(utils.K8sTewProfile, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryProfile)
 
 	// Gobetween
-	config.addAssetFile(utils.GOBETWEEN_CONFIG, Labels{utils.NodeController}, "", utils.DirectoryGobetweenConfig)
+	config.addAssetFile(utils.GobetweenConfig, Labels{utils.NodeController}, "", utils.DirectoryGobetweenConfig)
 
 	// Ceph
-	config.addAssetFile(utils.CEPH_CONFIG, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryCephConfig)
-	config.addAssetFile(utils.CEPH_CLIENT_ADMIN_KEYRING, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryCephConfig)
-	config.addAssetFile(utils.CEPH_MONITOR_KEYRING, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryCephConfig)
-	config.addAssetFile(utils.CEPH_BOOTSTRAP_MDS_KEYRING, Labels{utils.NodeController, utils.NodeWorker}, utils.CEPH_KEYRING, utils.DirectoryCephBootstrapMds)
-	config.addAssetFile(utils.CEPH_BOOTSTRAP_OSD_KEYRING, Labels{utils.NodeController, utils.NodeWorker}, utils.CEPH_KEYRING, utils.DirectoryCephBootstrapOsd)
-	config.addAssetFile(utils.CEPH_BOOTSTRAP_RBD_KEYRING, Labels{utils.NodeController, utils.NodeWorker}, utils.CEPH_KEYRING, utils.DirectoryCephBootstrapRbd)
-	config.addAssetFile(utils.CEPH_BOOTSTRAP_RGW_KEYRING, Labels{utils.NodeController, utils.NodeWorker}, utils.CEPH_KEYRING, utils.DirectoryCephBootstrapRgw)
+	config.addAssetFile(utils.CephConfig, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryCephConfig)
+	config.addAssetFile(utils.CephClientAdminKeyring, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryCephConfig)
+	config.addAssetFile(utils.CephMonitorKeyring, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryCephConfig)
+	config.addAssetFile(utils.CephBootstrapMdsKeyring, Labels{utils.NodeController, utils.NodeWorker}, utils.CephKeyring, utils.DirectoryCephBootstrapMds)
+	config.addAssetFile(utils.CephBootstrapOsdKeyring, Labels{utils.NodeController, utils.NodeWorker}, utils.CephKeyring, utils.DirectoryCephBootstrapOsd)
+	config.addAssetFile(utils.CephBootstrapRbdKeyring, Labels{utils.NodeController, utils.NodeWorker}, utils.CephKeyring, utils.DirectoryCephBootstrapRbd)
+	config.addAssetFile(utils.CephBootstrapRgwKeyring, Labels{utils.NodeController, utils.NodeWorker}, utils.CephKeyring, utils.DirectoryCephBootstrapRgw)
 
 	// Bash Completion
-	config.addAssetFile(utils.BASH_COMPLETION_K8S_TEW, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryBashCompletion)
-	config.addAssetFile(utils.BASH_COMPLETION_KUBECTL, Labels{utils.NodeController}, "", utils.DirectoryBashCompletion)
-	config.addAssetFile(utils.BASH_COMPLETION_CRICTL, Labels{utils.NodeController}, "", utils.DirectoryBashCompletion)
-	config.addAssetFile(utils.BASH_COMPLETION_HELM, Labels{}, "", utils.DirectoryBashCompletion)
-	config.addAssetFile(utils.BASH_COMPLETION_ARK, Labels{}, "", utils.DirectoryBashCompletion)
+	config.addAssetFile(utils.BashCompletionK8sTew, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryBashCompletion)
+	config.addAssetFile(utils.BashCompletionKubectl, Labels{utils.NodeController}, "", utils.DirectoryBashCompletion)
+	config.addAssetFile(utils.BashCompletionCrictl, Labels{utils.NodeController}, "", utils.DirectoryBashCompletion)
+	config.addAssetFile(utils.BashCompletionHelm, Labels{}, "", utils.DirectoryBashCompletion)
+	config.addAssetFile(utils.BashCompletionArk, Labels{}, "", utils.DirectoryBashCompletion)
 }
 
 func (config *InternalConfig) registerServers() {
 	// Servers
 	config.addServer("etcd", Labels{utils.NodeController}, config.GetTemplateAssetFilename(utils.BinaryEtcd), map[string]string{
 		"name":                        "{{.Name}}",
-		"cert-file":                   config.GetTemplateAssetFilename(utils.KUBERNETES_PEM),
-		"key-file":                    config.GetTemplateAssetFilename(utils.KUBERNETES_KEY_PEM),
-		"peer-cert-file":              config.GetTemplateAssetFilename(utils.KUBERNETES_PEM),
-		"peer-key-file":               config.GetTemplateAssetFilename(utils.KUBERNETES_KEY_PEM),
-		"trusted-ca-file":             config.GetTemplateAssetFilename(utils.CA_PEM),
-		"peer-trusted-ca-file":        config.GetTemplateAssetFilename(utils.CA_PEM),
+		"cert-file":                   config.GetTemplateAssetFilename(utils.PemKubernetes),
+		"key-file":                    config.GetTemplateAssetFilename(utils.PemKubernetesKey),
+		"peer-cert-file":              config.GetTemplateAssetFilename(utils.PemKubernetes),
+		"peer-key-file":               config.GetTemplateAssetFilename(utils.PemKubernetesKey),
+		"trusted-ca-file":             config.GetTemplateAssetFilename(utils.PemCa),
+		"peer-trusted-ca-file":        config.GetTemplateAssetFilename(utils.PemCa),
 		"peer-client-cert-auth":       "",
 		"client-cert-auth":            "",
 		"initial-advertise-peer-urls": "https://{{.Node.IP}}:2380",
@@ -334,11 +334,11 @@ func (config *InternalConfig) registerServers() {
 	})
 
 	config.addServer("containerd", Labels{utils.NodeController, utils.NodeWorker}, config.GetTemplateAssetFilename(utils.BinaryContainerd), map[string]string{
-		"config": config.GetTemplateAssetFilename(utils.CONTAINERD_CONFIG),
+		"config": config.GetTemplateAssetFilename(utils.ContainerdConfig),
 	})
 
 	config.addServer("gobetween", Labels{utils.NodeController}, config.GetTemplateAssetFilename(utils.BinaryGobetween), map[string]string{
-		"config": config.GetTemplateAssetFilename(utils.GOBETWEEN_CONFIG),
+		"config": config.GetTemplateAssetFilename(utils.GobetweenConfig),
 	})
 
 	config.addServer("kube-apiserver", Labels{utils.NodeController}, config.GetTemplateAssetFilename(utils.BinaryKubeApiserver), map[string]string{
@@ -348,34 +348,34 @@ func (config *InternalConfig) registerServers() {
 		"audit-log-maxage":                        "30",
 		"audit-log-maxbackup":                     "3",
 		"audit-log-maxsize":                       "100",
-		"audit-log-path":                          path.Join(config.GetTemplateAssetDirectory(utils.DirectoryLogging), utils.AUDIT_LOG),
+		"audit-log-path":                          path.Join(config.GetTemplateAssetDirectory(utils.DirectoryLogging), utils.AuditLog),
 		"authorization-mode":                      "Node,RBAC",
 		"bind-address":                            "0.0.0.0",
 		"secure-port":                             "{{.Config.APIServerPort}}",
-		"client-ca-file":                          config.GetTemplateAssetFilename(utils.CA_PEM),
+		"client-ca-file":                          config.GetTemplateAssetFilename(utils.PemCa),
 		"enable-admission-plugins":                "Initializers,NamespaceLifecycle,NodeRestriction,LimitRanger,ServiceAccount,DefaultStorageClass,ResourceQuota",
 		"enable-aggregator-routing":               "true",
 		"enable-swagger-ui":                       "true",
-		"etcd-cafile":                             config.GetTemplateAssetFilename(utils.CA_PEM),
-		"etcd-certfile":                           config.GetTemplateAssetFilename(utils.KUBERNETES_PEM),
-		"etcd-keyfile":                            config.GetTemplateAssetFilename(utils.KUBERNETES_KEY_PEM),
+		"etcd-cafile":                             config.GetTemplateAssetFilename(utils.PemCa),
+		"etcd-certfile":                           config.GetTemplateAssetFilename(utils.PemKubernetes),
+		"etcd-keyfile":                            config.GetTemplateAssetFilename(utils.PemKubernetesKey),
 		"etcd-servers":                            "{{etcd_servers}}",
 		"event-ttl":                               "1h",
-		"experimental-encryption-provider-config": config.GetTemplateAssetFilename(utils.ENCRYPTION_CONFIG),
+		"experimental-encryption-provider-config": config.GetTemplateAssetFilename(utils.EncryptionConfig),
 		"feature-gates":                           "KubeletPluginsWatcher=true,CSIBlockVolume=true,BlockVolume=true",
-		"kubelet-certificate-authority":           config.GetTemplateAssetFilename(utils.CA_PEM),
-		"kubelet-client-certificate":              config.GetTemplateAssetFilename(utils.KUBERNETES_PEM),
-		"kubelet-client-key":                      config.GetTemplateAssetFilename(utils.KUBERNETES_KEY_PEM),
+		"kubelet-certificate-authority":           config.GetTemplateAssetFilename(utils.PemCa),
+		"kubelet-client-certificate":              config.GetTemplateAssetFilename(utils.PemKubernetes),
+		"kubelet-client-key":                      config.GetTemplateAssetFilename(utils.PemKubernetesKey),
 		"kubelet-https":                           "true",
-		"proxy-client-cert-file":                  config.GetTemplateAssetFilename(utils.AGGREGATOR_PEM),
-		"proxy-client-key-file":                   config.GetTemplateAssetFilename(utils.AGGREGATOR_KEY_PEM),
+		"proxy-client-cert-file":                  config.GetTemplateAssetFilename(utils.PemAggregator),
+		"proxy-client-key-file":                   config.GetTemplateAssetFilename(utils.PemAggregatorKey),
 		"runtime-config":                          "api/all",
-		"service-account-key-file":                config.GetTemplateAssetFilename(utils.SERVICE_ACCOUNT_PEM),
+		"service-account-key-file":                config.GetTemplateAssetFilename(utils.PemServiceAccount),
 		"service-cluster-ip-range":                "{{.Config.ClusterIPRange}}",
 		"service-node-port-range":                 "30000-32767",
-		"tls-cert-file":                           config.GetTemplateAssetFilename(utils.KUBERNETES_PEM),
-		"tls-private-key-file":                    config.GetTemplateAssetFilename(utils.KUBERNETES_KEY_PEM),
-		"requestheader-client-ca-file":            config.GetTemplateAssetFilename(utils.CA_PEM),
+		"tls-cert-file":                           config.GetTemplateAssetFilename(utils.PemKubernetes),
+		"tls-private-key-file":                    config.GetTemplateAssetFilename(utils.PemKubernetesKey),
+		"requestheader-client-ca-file":            config.GetTemplateAssetFilename(utils.PemCa),
 		"requestheader-allowed-names":             config.GetAllowedCommonNames(),
 		"requestheader-extra-headers-prefix":      "X-Remote-Extra-",
 		"requestheader-group-headers":             "X-Remote-Group",
@@ -388,37 +388,37 @@ func (config *InternalConfig) registerServers() {
 		"allocate-node-cidrs":              "true",
 		"cluster-cidr":                     "{{.Config.ClusterCIDR}}",
 		"cluster-name":                     "kubernetes",
-		"cluster-signing-cert-file":        config.GetTemplateAssetFilename(utils.CA_PEM),
-		"cluster-signing-key-file":         config.GetTemplateAssetFilename(utils.CA_KEY_PEM),
-		"kubeconfig":                       config.GetTemplateAssetFilename(utils.CONTROLLER_MANAGER_KUBECONFIG),
+		"cluster-signing-cert-file":        config.GetTemplateAssetFilename(utils.PemCa),
+		"cluster-signing-key-file":         config.GetTemplateAssetFilename(utils.PemCaKey),
+		"kubeconfig":                       config.GetTemplateAssetFilename(utils.KubeconfigControllerManager),
 		"leader-elect":                     "true",
-		"root-ca-file":                     config.GetTemplateAssetFilename(utils.CA_PEM),
-		"service-account-private-key-file": config.GetTemplateAssetFilename(utils.SERVICE_ACCOUNT_KEY_PEM),
+		"root-ca-file":                     config.GetTemplateAssetFilename(utils.PemCa),
+		"service-account-private-key-file": config.GetTemplateAssetFilename(utils.PemServiceAccountKey),
 		"service-cluster-ip-range":         "{{.Config.ClusterIPRange}}",
 		"use-service-account-credentials":  "true",
 		"v": "0",
 	})
 
 	config.addServer("kube-scheduler", Labels{utils.NodeController}, config.GetTemplateAssetFilename(utils.BinaryKubeScheduler), map[string]string{
-		"config": config.GetTemplateAssetFilename(utils.K8S_KUBE_SCHEDULER_CONFIG),
+		"config": config.GetTemplateAssetFilename(utils.K8sKubeSchedulerConfig),
 		"v":      "0",
 	})
 
 	config.addServer("kube-proxy", Labels{utils.NodeController, utils.NodeWorker}, config.GetTemplateAssetFilename(utils.BinaryKubeProxy), map[string]string{
 		"cluster-cidr": "{{.Config.ClusterCIDR}}",
-		"kubeconfig":   config.GetTemplateAssetFilename(utils.PROXY_KUBECONFIG),
+		"kubeconfig":   config.GetTemplateAssetFilename(utils.KubeconfigProxy),
 		"proxy-mode":   "iptables",
 		"v":            "0",
 	})
 
 	config.addServer("kubelet", Labels{utils.NodeController, utils.NodeWorker}, config.GetTemplateAssetFilename(utils.BinaryKubelet), map[string]string{
-		"config":                       config.GetTemplateAssetFilename(utils.K8S_KUBELET_CONFIG),
+		"config":                       config.GetTemplateAssetFilename(utils.K8sKubeletConfig),
 		"container-runtime":            "remote",
-		"container-runtime-endpoint":   "unix://" + config.GetTemplateAssetFilename(utils.CONTAINERD_SOCK),
+		"container-runtime-endpoint":   "unix://" + config.GetTemplateAssetFilename(utils.ContainerdSock),
 		"fail-swap-on":                 "false",
 		"feature-gates":                "KubeletPluginsWatcher=true,CSIBlockVolume=true,BlockVolume=true",
 		"image-pull-progress-deadline": "2m",
-		"kubeconfig":                   config.GetTemplateAssetFilename(utils.KUBELET_KUBECONFIG),
+		"kubeconfig":                   config.GetTemplateAssetFilename(utils.KubeconfigKubelet),
 		"network-plugin":               "cni",
 		"register-node":                "true",
 		"resolv-conf":                  "{{.Config.ResolvConf}}",
@@ -429,8 +429,8 @@ func (config *InternalConfig) registerServers() {
 }
 
 func (config *InternalConfig) registerCommands() {
-	kubectlCommand := fmt.Sprintf("%s --request-timeout 30s --kubeconfig %s", config.GetFullLocalAssetFilename(utils.BinaryKubectl), config.GetFullLocalAssetFilename(utils.ADMIN_KUBECONFIG))
-	helmCommand := fmt.Sprintf("KUBECONFIG=%s HELM_HOME=%s %s", config.GetFullLocalAssetFilename(utils.ADMIN_KUBECONFIG), config.GetFullLocalAssetDirectory(utils.DirectoryHelmData), config.GetFullLocalAssetFilename(utils.BinaryHelm))
+	kubectlCommand := fmt.Sprintf("%s --request-timeout 30s --kubeconfig %s", config.GetFullLocalAssetFilename(utils.BinaryKubectl), config.GetFullLocalAssetFilename(utils.KubeconfigAdmin))
+	helmCommand := fmt.Sprintf("KUBECONFIG=%s HELM_HOME=%s %s", config.GetFullLocalAssetFilename(utils.KubeconfigAdmin), config.GetFullLocalAssetDirectory(utils.DirectoryHelmData), config.GetFullLocalAssetFilename(utils.BinaryHelm))
 
 	// Dependencies
 	config.addCommand("setup-ubuntu", Labels{utils.NodeController, utils.NodeWorker}, Features{}, OS{utils.OsUbuntu}, "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y apt-transport-https bash-completion")
@@ -441,39 +441,39 @@ func (config *InternalConfig) registerCommands() {
 	config.addCommand("load-br_netfilter", Labels{utils.NodeController, utils.NodeWorker}, Features{}, OS{}, "modprobe br_netfilter")
 	config.addCommand("enable-br_netfilter", Labels{utils.NodeController, utils.NodeWorker}, Features{}, OS{}, "echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables")
 	config.addCommand("enable-net-forwarding", Labels{utils.NodeController, utils.NodeWorker}, Features{}, OS{}, "sysctl net.ipv4.conf.all.forwarding=1")
-	config.addCommand("kubelet-setup", Labels{utils.NodeBootstrapper}, Features{}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_KUBELET_SETUP)))
-	config.addCommand("admin-user-setup", Labels{utils.NodeBootstrapper}, Features{}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_ADMIN_USER_SETUP)))
-	config.addCommand("calico-setup", Labels{utils.NodeBootstrapper}, Features{}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_CALICO_SETUP)))
-	config.addCommand("coredns-setup", Labels{utils.NodeBootstrapper}, Features{}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_COREDNS_SETUP)))
-	config.addCommand("helm-user-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeaturePackaging}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_HELM_USER_SETUP)))
-	config.addCommand("ceph-secrets", Labels{utils.NodeBootstrapper}, Features{utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.CEPH_SECRETS)))
-	config.addCommand("ceph-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.CEPH_SETUP)))
-	config.addCommand("ceph-csi", Labels{utils.NodeBootstrapper}, Features{utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.CEPH_CSI)))
+	config.addCommand("kubelet-setup", Labels{utils.NodeBootstrapper}, Features{}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sKubeletSetup)))
+	config.addCommand("admin-user-setup", Labels{utils.NodeBootstrapper}, Features{}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sAdminUserSetup)))
+	config.addCommand("calico-setup", Labels{utils.NodeBootstrapper}, Features{}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sCalicoSetup)))
+	config.addCommand("coredns-setup", Labels{utils.NodeBootstrapper}, Features{}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sCorednsSetup)))
+	config.addCommand("helm-user-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeaturePackaging}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sHelmUserSetup)))
+	config.addCommand("ceph-secrets", Labels{utils.NodeBootstrapper}, Features{utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.CephSecrets)))
+	config.addCommand("ceph-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.CephSetup)))
+	config.addCommand("ceph-csi", Labels{utils.NodeBootstrapper}, Features{utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.CephCsi)))
 	config.addCommand("helm-init", Labels{utils.NodeBootstrapper}, Features{utils.FeaturePackaging}, OS{}, fmt.Sprintf("%s init --service-account %s --upgrade", helmCommand, utils.HelmServiceAccount))
-	config.addCommand("kubernetes-dashboard-setup", Labels{utils.NodeBootstrapper}, Features{}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_KUBERNETES_DASHBOARD_SETUP)))
-	config.addCommand("cert-manager-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureIngress}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_CERT_MANAGER_SETUP)))
-	config.addCommand("nginx-ingress-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureIngress}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_NGINX_INGRESS_SETUP)))
-	config.addCommand("letsencrypt-cluster-issuer-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureIngress}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.LETSENCRYPT_CLUSTER_ISSUER)))
-	config.addCommand("heapster-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_HEAPSTER_SETUP)))
-	config.addCommand("metrics-server-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_METRICS_SERVER_SETUP)))
-	config.addCommand("prometheus-operator-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_PROMETHEUS_OPERATOR_SETUP)))
-	config.addCommand("kube-prometheus-datasource-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_KUBE_PROMETHEUS_DATASOURCE_SETUP)))
-	config.addCommand("kube-prometheus-kuberntes-cluster-status-dashboard-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_KUBE_PROMETHEUS_KUBERNETES_CLUSTER_STATUS_DASHBOARD_SETUP)))
-	config.addCommand("kube-prometheus-kuberntes-cluster-health-dashboard-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_KUBE_PROMETHEUS_KUBERNETES_CLUSTER_HEALTH_DASHBOARD_SETUP)))
-	config.addCommand("kube-prometheus-kuberntes-control-plane-status-dashboard-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_KUBE_PROMETHEUS_KUBERNETES_CONTROL_PLANE_STATUS_DASHBOARD_SETUP)))
-	config.addCommand("kube-prometheus-kuberntes-capacity-planning-dashboard-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_KUBE_PROMETHEUS_KUBERNETES_CAPACITY_PLANNING_DASHBOARD_SETUP)))
-	config.addCommand("kube-prometheus-kuberntes-resource-requests-dashboard-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_KUBE_PROMETHEUS_KUBERNETES_RESOURCE_REQUESTS_DASHBOARD_SETUP)))
-	config.addCommand("kube-prometheus-nodes-dashboard-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_KUBE_PROMETHEUS_NODES_DASHBOARD_SETUP)))
-	config.addCommand("kube-prometheus-deployment-dashboard-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_KUBE_PROMETHEUS_DEPLOYMENT_DASHBOARD_SETUP)))
-	config.addCommand("kube-prometheus-statefulset-dashboard-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_KUBE_PROMETHEUS_STATEFULSET_DASHBOARD_SETUP)))
-	config.addCommand("kube-prometheus-pods-dashboard-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_KUBE_PROMETHEUS_PODS_DASHBOARD_SETUP)))
-	config.addCommand("kube-prometheus-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_KUBE_PROMETHEUS_SETUP)))
-	config.addCommand("elasticsearch-operator-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureLogging, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_ELASTICSEARCH_OPERATOR_SETUP)))
-	config.addCommand("efk-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureLogging, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_EFK_SETUP)))
+	config.addCommand("kubernetes-dashboard-setup", Labels{utils.NodeBootstrapper}, Features{}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sKubernetesDashboardSetup)))
+	config.addCommand("cert-manager-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureIngress}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sCertManagerSetup)))
+	config.addCommand("nginx-ingress-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureIngress}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sNginxIngressSetup)))
+	config.addCommand("letsencrypt-cluster-issuer-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureIngress}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.LetsencryptClusterIssuer)))
+	config.addCommand("heapster-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sHeapsterSetup)))
+	config.addCommand("metrics-server-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sMetricsServerSetup)))
+	config.addCommand("prometheus-operator-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sPrometheusOperatorSetup)))
+	config.addCommand("kube-prometheus-datasource-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sKubePrometheusDatasourceSetup)))
+	config.addCommand("kube-prometheus-kuberntes-cluster-status-dashboard-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sKubePrometheusKubernetesClusterStatusDashboardSetup)))
+	config.addCommand("kube-prometheus-kuberntes-cluster-health-dashboard-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sKubePrometheusKubernetesClusterHealthDashboardSetup)))
+	config.addCommand("kube-prometheus-kuberntes-control-plane-status-dashboard-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sKubePrometheusKubernetesControlPlaneStatusDashboardSetup)))
+	config.addCommand("kube-prometheus-kuberntes-capacity-planning-dashboard-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sKubePrometheusKubernetesCapacityPlanningDashboardSetup)))
+	config.addCommand("kube-prometheus-kuberntes-resource-requests-dashboard-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sKubePrometheusKubernetesResourceRequestsDashboardSetup)))
+	config.addCommand("kube-prometheus-nodes-dashboard-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sKubePrometheusNodesDashboardSetup)))
+	config.addCommand("kube-prometheus-deployment-dashboard-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sKubePrometheusDeploymentDashboardSetup)))
+	config.addCommand("kube-prometheus-statefulset-dashboard-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sKubePrometheusStatefulsetDashboardSetup)))
+	config.addCommand("kube-prometheus-pods-dashboard-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sKubePrometheusPodsDashboardSetup)))
+	config.addCommand("kube-prometheus-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sKubePrometheusSetup)))
+	config.addCommand("elasticsearch-operator-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureLogging, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sElasticsearchOperatorSetup)))
+	config.addCommand("efk-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureLogging, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sEfkSetup)))
 	config.addCommand("patch-kibana-service", Labels{utils.NodeBootstrapper}, Features{utils.FeatureLogging, utils.FeatureStorage}, OS{}, fmt.Sprintf(`%s get svc kibana-elasticsearch-cluster -n logging --output=jsonpath={.spec..nodePort} | grep %d || %s patch service kibana-elasticsearch-cluster -n logging -p '{"spec":{"type":"NodePort","ports":[{"port":80,"nodePort":%d}]}}'`, kubectlCommand, utils.PortKibana, kubectlCommand, utils.PortKibana))
 	config.addCommand("patch-cerebro-service", Labels{utils.NodeBootstrapper}, Features{utils.FeatureLogging, utils.FeatureStorage}, OS{}, fmt.Sprintf(`%s get svc cerebro-elasticsearch-cluster -n logging --output=jsonpath={.spec..nodePort} | grep %d || %s patch service cerebro-elasticsearch-cluster -n logging -p '{"spec":{"type":"NodePort","ports":[{"port":80,"nodePort":%d}]}}'`, kubectlCommand, utils.PortCerebro, kubectlCommand, utils.PortCerebro))
-	config.addCommand("ark-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureBackup, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8S_ARK_SETUP)))
-	config.addCommand("wordpress-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureShowcase, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.WORDPRESS_SETUP)))
+	config.addCommand("ark-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureBackup, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sArkSetup)))
+	config.addCommand("wordpress-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureShowcase, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.WordpressSetup)))
 }
 
 func (config *InternalConfig) Generate() {
@@ -817,11 +817,11 @@ func (config *InternalConfig) GetStorageNodes() []NodeData {
 }
 
 func (config *InternalConfig) GetAllowedCommonNames() string {
-	result := []string{utils.CN_AGGREGATOR, utils.CN_ADMIN, utils.CN_SYSTEM_KUBE_CONTROLLER_MANAGER, utils.CN_SYSTEM_KUBE_CONTROLLER_MANAGER, utils.CN_SYSTEM_KUBE_SCHEDULER}
+	result := []string{utils.CnAggregator, utils.CnAdmin, utils.CnSystemKubeControllerManager, utils.CnSystemKubeControllerManager, utils.CnSystemKubeScheduler}
 
 	for nodeName, node := range config.Config.Nodes {
 		if node.IsWorker() {
-			result = append(result, fmt.Sprintf(utils.CN_SYSTEM_NODE_PREFIX, nodeName))
+			result = append(result, fmt.Sprintf(utils.CnSystemNodePrefix, nodeName))
 		}
 	}
 
