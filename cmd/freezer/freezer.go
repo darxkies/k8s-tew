@@ -13,10 +13,10 @@ import (
 	"syscall"
 )
 
-const FREEZER = "freezer"
-const BINARY = "bin"
-const LIBRARY = "lib"
-const LD_LINUX_PREFIX = "ld-linux-"
+const _freezer = "freezer"
+const _binary = "bin"
+const _library = "lib"
+const _ldLinuxPrefix = "ld-linux-"
 
 // Print usage help and exit
 func help() {
@@ -83,7 +83,7 @@ func createDirectory(directoryName string) error {
 
 // Copy an executable to the binary folder
 func copyBinary(binary, directory string) error {
-	binaryPath := path.Join(directory, BINARY)
+	binaryPath := path.Join(directory, _binary)
 
 	// Create binary folder if it does not exist
 	if error := createDirectory(binaryPath); error != nil {
@@ -99,7 +99,7 @@ func copyBinary(binary, directory string) error {
 
 // Copy a library to the library directory
 func copyLibrary(library, directory string) error {
-	libraryPath := path.Join(directory, LIBRARY)
+	libraryPath := path.Join(directory, _library)
 
 	// Create library folder if missing
 	if error := createDirectory(libraryPath); error != nil {
@@ -234,7 +234,7 @@ func getLDLinuxLibrary(libraryDirectory string) (name string, error error) {
 	// Iterate over all files in the library directory
 	for _, file := range files {
 		// Check if it is the wanted file and exit if true
-		if strings.HasPrefix(file.Name(), LD_LINUX_PREFIX) {
+		if strings.HasPrefix(file.Name(), _ldLinuxPrefix) {
 			return file.Name(), nil
 		}
 	}
@@ -246,12 +246,12 @@ func getLDLinuxLibrary(libraryDirectory string) (name string, error error) {
 // Copy binary and library files to a new directory
 func deploy(sourceDirectory, targetDirectory string) error {
 	// Copy binary files
-	if error := copyDirectory(BINARY, sourceDirectory, targetDirectory); error != nil {
+	if error := copyDirectory(_binary, sourceDirectory, targetDirectory); error != nil {
 		return error
 	}
 
 	// Copy library files
-	if error := copyDirectory(LIBRARY, sourceDirectory, targetDirectory); error != nil {
+	if error := copyDirectory(_library, sourceDirectory, targetDirectory); error != nil {
 		return error
 	}
 
@@ -276,10 +276,10 @@ func wrapper(freezerExecutable string, arguments []string) error {
 	executableName := path.Base(arguments[0])
 
 	// Patch full executable name to point to the real binary
-	arguments[0] = path.Join(executablePath, BINARY, executableName)
+	arguments[0] = path.Join(executablePath, _binary, executableName)
 
 	// Get library directory
-	ldLibraryPath := path.Join(executablePath, LIBRARY)
+	ldLibraryPath := path.Join(executablePath, _library)
 
 	// If there is a ld-linux...so find it and prepend it to the list of arguments in front of the executable itself
 	ldLinuxName, error := getLDLinuxLibrary(ldLibraryPath)
@@ -344,7 +344,7 @@ func main() {
 		error = deploy(os.Args[2], os.Args[3])
 
 		// Execute the binary from the bin folder that has the same name as this executable
-	} else if path.Base(os.Args[0]) != FREEZER {
+	} else if path.Base(os.Args[0]) != _freezer {
 		error = wrapper(freezerExecutable, os.Args)
 
 		// Print usage information
