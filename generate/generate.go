@@ -268,6 +268,7 @@ func (generator *Generator) generateKubeletConfig() error {
 			ClusterDNSIP        string
 			PODCIDR             string
 			StaticPodPath       string
+			ResolvConf          string
 		}{
 			CA:                  generator.config.GetFullTargetAssetFilename(utils.PemCa),
 			CertificateFilename: generator.config.GetFullTargetAssetFilename(utils.PemKubelet),
@@ -276,6 +277,7 @@ func (generator *Generator) generateKubeletConfig() error {
 			ClusterDNSIP:        generator.config.Config.ClusterDNSIP,
 			PODCIDR:             generator.config.Config.ClusterCIDR,
 			StaticPodPath:       generator.config.GetFullTargetAssetDirectory(utils.DirectoryK8sManifests),
+			ResolvConf:          generator.config.Config.ResolvConf,
 		}, generator.config.GetFullLocalAssetFilename(utils.K8sKubeletConfig), true, false); error != nil {
 			return error
 		}

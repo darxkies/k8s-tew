@@ -415,15 +415,11 @@ func (config *InternalConfig) registerServers() {
 		"config":                       config.GetTemplateAssetFilename(utils.K8sKubeletConfig),
 		"container-runtime":            "remote",
 		"container-runtime-endpoint":   "unix://" + config.GetTemplateAssetFilename(utils.ContainerdSock),
-		"fail-swap-on":                 "false",
-		"feature-gates":                "KubeletPluginsWatcher=true,CSIBlockVolume=true,BlockVolume=true",
 		"image-pull-progress-deadline": "2m",
 		"kubeconfig":                   config.GetTemplateAssetFilename(utils.KubeconfigKubelet),
 		"network-plugin":               "cni",
 		"register-node":                "true",
-		"resolv-conf":                  "{{.Config.ResolvConf}}",
 		"root-dir":                     config.GetTemplateAssetDirectory(utils.DirectoryKubeletData),
-		"read-only-port":               "10255",
 		"v":                            "0",
 	})
 }

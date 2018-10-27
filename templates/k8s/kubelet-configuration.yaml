@@ -18,3 +18,10 @@ runtimeRequestTimeout: "15m"
 tlsCertFile: "{{.CertificateFilename}}"
 tlsPrivateKeyFile: "{{.KeyFilename}}"
 staticPodPath: "{{.StaticPodPath}}"
+failSwapOn: false
+featureGates: 
+  KubeletPluginsWatcher: true
+  CSIBlockVolume: true
+  BlockVolume: true
+resolvConf: "{{.ResolvConf}}"
+readOnlyPort: 10255

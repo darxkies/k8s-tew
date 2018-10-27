@@ -19,7 +19,7 @@ require (
 	github.com/fatih/motion v0.0.0-20180408211639-218875ebe238 // indirect
 	github.com/fsnotify/fsnotify v1.4.7 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
-	github.com/gobuffalo/packr v1.13.7
+	github.com/gobuffalo/packr v1.14.0
 	github.com/gogo/protobuf v1.1.1 // indirect
 	github.com/google/btree v0.0.0-20180813153112-4030bb1f1f0c // indirect
 	github.com/google/gofuzz v0.0.0-20170612174753-24818f796faf // indirect
@@ -39,6 +39,7 @@ require (
 	github.com/klauspost/asmfmt v0.0.0-20171230121622-022c51c61cbd // indirect
 	github.com/koron/iferr v0.0.0-20180615142939-bb332a3b1d91 // indirect
 	github.com/kr/pty v1.1.3 // indirect
+	github.com/kubernetes/kubelet v0.0.0-20181004125208-6bdea48c7878 // indirect
 	github.com/magiconair/properties v1.8.0 // indirect
 	github.com/markbates/grift v1.0.1 // indirect
 	github.com/mattn/go-colorable v0.0.9 // indirect
@@ -70,7 +71,6 @@ require (
 	github.com/ugorji/go/codec v0.0.0-20180927125128-99ea80c8b19a // indirect
 	github.com/xiang90/probing v0.0.0-20160813154853-07dd2e8dfe18 // indirect
 	golang.org/x/crypto v0.0.0-20180808211826-de0752318171
-	golang.org/x/net v0.0.0-20181023162649-9b4f9f5ad519 // indirect
 	golang.org/x/time v0.0.0-20180412165947-fbb02b2291d2 // indirect
 	golang.org/x/tools v0.0.0-20181004163742-59602fdee893 // indirect
 	google.golang.org/grpc v1.15.0 // indirect
