@@ -16,7 +16,7 @@ func init() {
 }
 
 func GetTemplate(name string) string {
-	content, error := templatesBox.MustString(name)
+	content, error := templatesBox.FindString(name)
 
 	if error != nil {
 		log.WithFields(log.Fields{"name": name, "error": error}).Panic("Template failure")
