@@ -2,14 +2,14 @@ package utils
 
 // Versions
 const VersionConfig = "2.1.0"
-const VersionK8s = "1.12.1"
+const VersionK8s = "1.12.2"
 const VersionEtcd = "3.3.9"
-const VersionContainerd = "1.1.4"
+const VersionContainerd = "1.2.0"
 const VersionRunc = "1.0.0-rc5"
 const VersionCrictl = "1.12.0"
-const VersionGobetween = "0.6.0"
+const VersionGobetween = "0.6.1"
 const VersionHelm = "2.11.0"
-const VersionArk = "gcr.io/heptio-images/ark:v0.9.7"
+const VersionArk = "gcr.io/heptio-images/ark:v0.9.9"
 const VersionMinioServer = "docker.io/minio/minio:RELEASE.2018-08-18T03-49-57Z"
 const VersionMinioClient = "docker.io/minio/mc:RELEASE.2018-08-18T02-13-04Z"
 const VersionPause = "k8s.gcr.io/pause:3.1"
