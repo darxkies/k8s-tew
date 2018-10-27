@@ -12,6 +12,6 @@ watch-and-update-documentation:
 	(cd docs && reflex -r '\.rst' -R "^_build" make clean html)
 
 clean:
-	rm -Rf bin vendor
+	sudo rm -Rf bin vendor
 
 .PHONY: build clean

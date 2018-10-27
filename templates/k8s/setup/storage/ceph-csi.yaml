@@ -193,6 +193,7 @@ spec:
     spec:
       serviceAccount: csi-nodeplugin
       hostNetwork: true
+      hostPID: true
       containers:
         - name: driver-registrar
           image: {{.CSIDriverRegistrarImage}}
@@ -226,7 +227,10 @@ spec:
             - "--endpoint=$(CSI_ENDPOINT)"
             - "--v=5"
             - "--drivername=csi-rbdplugin"
+            - "--containerized=true"     
           env:
+            - name: HOST_ROOTFS
+              value: "/rootfs"
             - name: NODE_ID
               valueFrom:
                 fieldRef:
@@ -242,6 +246,8 @@ spec:
               mountPropagation: "Bidirectional"
             - mountPath: /dev
               name: host-dev
+            - mountPath: /rootfs
+              name: host-rootfs   
             - mountPath: /sys
               name: host-sys
             - mountPath: /lib/modules
@@ -267,6 +273,9 @@ spec:
         - name: host-dev
           hostPath:
             path: /dev
+        - name: host-rootfs
+          hostPath:
+            path: /       
         - name: host-sys
           hostPath:
             path: /sys
