@@ -68,6 +68,8 @@ func NewDeployment(_config *config.InternalConfig, identityFile string, pullImag
 
 	deployment.images = []Image{
 		{Name: deployment.config.Config.Versions.Pause, Features: config.Features{}},
+		{Name: deployment.config.Config.Versions.Etcd, Features: config.Features{}},
+		{Name: deployment.config.Config.Versions.K8S, Features: config.Features{}},
 		{Name: deployment.config.Config.Versions.CalicoCNI, Features: config.Features{}},
 		{Name: deployment.config.Config.Versions.CalicoNode, Features: config.Features{}},
 		{Name: deployment.config.Config.Versions.CalicoTypha, Features: config.Features{}},
@@ -282,11 +284,11 @@ func (deployment *Deployment) setup() error {
 		return nil
 	}
 
-	if error := deployment.runConfigureTaints(); error != nil {
+	if error := deployment.runPullImages(); error != nil {
 		return error
 	}
 
-	if error := deployment.runPullImages(); error != nil {
+	if error := deployment.runConfigureTaints(); error != nil {
 		return error
 	}
 

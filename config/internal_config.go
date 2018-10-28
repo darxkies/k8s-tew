@@ -139,7 +139,7 @@ func (config *InternalConfig) registerAssetDirectories() {
 	config.addAssetDirectory(utils.DirectoryK8sKubeConfig, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryK8sConfig), utils.SubdirectoryKubeconfig), false)
 	config.addAssetDirectory(utils.DirectoryK8sSecurityConfig, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryK8sConfig), utils.SubdirectorySecurity), false)
 	config.addAssetDirectory(utils.DirectoryK8sSetupConfig, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryK8sConfig), utils.SubdirectorySetup), false)
-	config.addAssetDirectory(utils.DirectoryK8sManifests, Labels{utils.NodeWorker}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryK8sConfig), utils.SubdirectoryManifests), false)
+	config.addAssetDirectory(utils.DirectoryK8sManifests, Labels{utils.NodeController, utils.NodeWorker}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryK8sConfig), utils.SubdirectoryManifests), false)
 
 	// Binaries
 	config.addAssetDirectory(utils.DirectoryBinaries, Labels{}, path.Join(utils.SubdirectoryOptional, utils.SubdirectoryK8sTew, utils.SubdirectoryBinary), false)
@@ -195,22 +195,15 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.BinaryCrictl, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryCriBinaries)
 
 	// Etcd Binaries
-	config.addAssetFile(utils.BinaryEtcd, Labels{utils.NodeController}, "", utils.DirectoryEtcdBinaries)
 	config.addAssetFile(utils.BinaryEtcdctl, Labels{utils.NodeController}, "", utils.DirectoryEtcdBinaries)
 
 	// K8S Binaries
 	config.addAssetFile(utils.BinaryKubectl, Labels{utils.NodeController}, "", utils.DirectoryK8sBinaries)
-	config.addAssetFile(utils.BinaryKubeApiserver, Labels{utils.NodeController}, "", utils.DirectoryK8sBinaries)
-	config.addAssetFile(utils.BinaryKubeControllerManager, Labels{utils.NodeController}, "", utils.DirectoryK8sBinaries)
-	config.addAssetFile(utils.BinaryKubeScheduler, Labels{utils.NodeController}, "", utils.DirectoryK8sBinaries)
 	config.addAssetFile(utils.BinaryKubeProxy, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryK8sBinaries)
 	config.addAssetFile(utils.BinaryKubelet, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryK8sBinaries)
 
 	// Helm Binary
 	config.addAssetFile(utils.BinaryHelm, Labels{}, "", utils.DirectoryK8sBinaries)
-
-	// Gobetween Binary
-	config.addAssetFile(utils.BinaryGobetween, Labels{utils.NodeController}, "", utils.DirectoryGobetweenBinaries)
 
 	// Ark Binaries
 	config.addAssetFile(utils.BinaryArk, Labels{}, "", utils.DirectoryArkBinaries)
@@ -288,6 +281,13 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.K8sKubeSchedulerConfig, Labels{utils.NodeController}, "", utils.DirectoryK8sConfig)
 	config.addAssetFile(utils.K8sKubeletConfig, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryK8sConfig)
 
+	// Manifests
+	config.addAssetFile(utils.ManifestGobetween, Labels{utils.NodeController}, "", utils.DirectoryK8sManifests)
+	config.addAssetFile(utils.ManifestEtcd, Labels{utils.NodeController}, "", utils.DirectoryK8sManifests)
+	config.addAssetFile(utils.ManifestKubeApiserver, Labels{utils.NodeController}, "", utils.DirectoryK8sManifests)
+	config.addAssetFile(utils.ManifestKubeControllerManager, Labels{utils.NodeController}, "", utils.DirectoryK8sManifests)
+	config.addAssetFile(utils.ManifestKubeScheduler, Labels{utils.NodeController}, "", utils.DirectoryK8sManifests)
+
 	// Profile
 	config.addAssetFile(utils.K8sTewProfile, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryProfile)
 
@@ -313,95 +313,8 @@ func (config *InternalConfig) registerAssetFiles() {
 
 func (config *InternalConfig) registerServers() {
 	// Servers
-	config.addServer("etcd", Labels{utils.NodeController}, config.GetTemplateAssetFilename(utils.BinaryEtcd), map[string]string{
-		"name":                        "{{.Name}}",
-		"cert-file":                   config.GetTemplateAssetFilename(utils.PemKubernetes),
-		"key-file":                    config.GetTemplateAssetFilename(utils.PemKubernetesKey),
-		"peer-cert-file":              config.GetTemplateAssetFilename(utils.PemKubernetes),
-		"peer-key-file":               config.GetTemplateAssetFilename(utils.PemKubernetesKey),
-		"trusted-ca-file":             config.GetTemplateAssetFilename(utils.PemCa),
-		"peer-trusted-ca-file":        config.GetTemplateAssetFilename(utils.PemCa),
-		"peer-client-cert-auth":       "",
-		"client-cert-auth":            "",
-		"initial-advertise-peer-urls": "https://{{.Node.IP}}:2380",
-		"listen-peer-urls":            "https://{{.Node.IP}}:2380",
-		"listen-client-urls":          "https://{{.Node.IP}}:2379",
-		"advertise-client-urls":       "https://{{.Node.IP}}:2379",
-		"initial-cluster-token":       "etcd-cluster",
-		"initial-cluster":             "{{etcd_cluster}}",
-		"initial-cluster-state":       "new",
-		"data-dir":                    config.GetTemplateAssetDirectory(utils.DirectoryEtcdData),
-	})
-
 	config.addServer("containerd", Labels{utils.NodeController, utils.NodeWorker}, config.GetTemplateAssetFilename(utils.BinaryContainerd), map[string]string{
 		"config": config.GetTemplateAssetFilename(utils.ContainerdConfig),
-	})
-
-	config.addServer("gobetween", Labels{utils.NodeController}, config.GetTemplateAssetFilename(utils.BinaryGobetween), map[string]string{
-		"config": config.GetTemplateAssetFilename(utils.GobetweenConfig),
-	})
-
-	config.addServer("kube-apiserver", Labels{utils.NodeController}, config.GetTemplateAssetFilename(utils.BinaryKubeApiserver), map[string]string{
-		"allow-privileged":                        "true",
-		"advertise-address":                       "{{.Node.IP}}",
-		"apiserver-count":                         "{{controllers_count}}",
-		"audit-log-maxage":                        "30",
-		"audit-log-maxbackup":                     "3",
-		"audit-log-maxsize":                       "100",
-		"audit-log-path":                          path.Join(config.GetTemplateAssetDirectory(utils.DirectoryLogging), utils.AuditLog),
-		"authorization-mode":                      "Node,RBAC",
-		"bind-address":                            "0.0.0.0",
-		"secure-port":                             "{{.Config.APIServerPort}}",
-		"client-ca-file":                          config.GetTemplateAssetFilename(utils.PemCa),
-		"enable-admission-plugins":                "Initializers,NamespaceLifecycle,NodeRestriction,LimitRanger,ServiceAccount,DefaultStorageClass,ResourceQuota",
-		"enable-aggregator-routing":               "true",
-		"enable-swagger-ui":                       "true",
-		"etcd-cafile":                             config.GetTemplateAssetFilename(utils.PemCa),
-		"etcd-certfile":                           config.GetTemplateAssetFilename(utils.PemKubernetes),
-		"etcd-keyfile":                            config.GetTemplateAssetFilename(utils.PemKubernetesKey),
-		"etcd-servers":                            "{{etcd_servers}}",
-		"event-ttl":                               "1h",
-		"experimental-encryption-provider-config": config.GetTemplateAssetFilename(utils.EncryptionConfig),
-		"feature-gates":                           "KubeletPluginsWatcher=true,CSIBlockVolume=true,BlockVolume=true",
-		"kubelet-certificate-authority":           config.GetTemplateAssetFilename(utils.PemCa),
-		"kubelet-client-certificate":              config.GetTemplateAssetFilename(utils.PemKubernetes),
-		"kubelet-client-key":                      config.GetTemplateAssetFilename(utils.PemKubernetesKey),
-		"kubelet-https":                           "true",
-		"proxy-client-cert-file":                  config.GetTemplateAssetFilename(utils.PemAggregator),
-		"proxy-client-key-file":                   config.GetTemplateAssetFilename(utils.PemAggregatorKey),
-		"runtime-config":                          "api/all",
-		"service-account-key-file":                config.GetTemplateAssetFilename(utils.PemServiceAccount),
-		"service-cluster-ip-range":                "{{.Config.ClusterIPRange}}",
-		"service-node-port-range":                 "30000-32767",
-		"tls-cert-file":                           config.GetTemplateAssetFilename(utils.PemKubernetes),
-		"tls-private-key-file":                    config.GetTemplateAssetFilename(utils.PemKubernetesKey),
-		"requestheader-client-ca-file":            config.GetTemplateAssetFilename(utils.PemCa),
-		"requestheader-allowed-names":             config.GetAllowedCommonNames(),
-		"requestheader-extra-headers-prefix":      "X-Remote-Extra-",
-		"requestheader-group-headers":             "X-Remote-Group",
-		"requestheader-username-headers":          "X-Remote-User",
-		"v": "0",
-	})
-
-	config.addServer("kube-controller-manager", Labels{utils.NodeController}, config.GetTemplateAssetFilename(utils.BinaryKubeControllerManager), map[string]string{
-		"address":                          "0.0.0.0",
-		"allocate-node-cidrs":              "true",
-		"cluster-cidr":                     "{{.Config.ClusterCIDR}}",
-		"cluster-name":                     "kubernetes",
-		"cluster-signing-cert-file":        config.GetTemplateAssetFilename(utils.PemCa),
-		"cluster-signing-key-file":         config.GetTemplateAssetFilename(utils.PemCaKey),
-		"kubeconfig":                       config.GetTemplateAssetFilename(utils.KubeconfigControllerManager),
-		"leader-elect":                     "true",
-		"root-ca-file":                     config.GetTemplateAssetFilename(utils.PemCa),
-		"service-account-private-key-file": config.GetTemplateAssetFilename(utils.PemServiceAccountKey),
-		"service-cluster-ip-range":         "{{.Config.ClusterIPRange}}",
-		"use-service-account-credentials":  "true",
-		"v": "0",
-	})
-
-	config.addServer("kube-scheduler", Labels{utils.NodeController}, config.GetTemplateAssetFilename(utils.BinaryKubeScheduler), map[string]string{
-		"config": config.GetTemplateAssetFilename(utils.K8sKubeSchedulerConfig),
-		"v":      "0",
 	})
 
 	config.addServer("kube-proxy", Labels{utils.NodeController, utils.NodeWorker}, config.GetTemplateAssetFilename(utils.BinaryKubeProxy), map[string]string{
@@ -654,47 +567,59 @@ func (config *InternalConfig) GetETCDClientEndpoints() []string {
 	return result
 }
 
+func (config *InternalConfig) GetEtcdCluster() string {
+	result := ""
+
+	for name, node := range config.Config.Nodes {
+		if !node.IsController() {
+			continue
+		}
+
+		if len(result) > 0 {
+			result += ","
+		}
+
+		result += fmt.Sprintf("%s=https://%s:2380", name, node.IP)
+	}
+
+	return result
+}
+
+func (config *InternalConfig) GetEtcdServers() string {
+	result := ""
+
+	for _, endpoint := range config.GetETCDClientEndpoints() {
+		if len(result) > 0 {
+			result += ","
+		}
+
+		result += endpoint
+	}
+
+	return result
+}
+
+func (config *InternalConfig) GetControllersCount() string {
+	count := 0
+	for _, node := range config.Config.Nodes {
+		if node.IsController() {
+			count++
+		}
+	}
+
+	return fmt.Sprintf("%d", count)
+}
+
 func (config *InternalConfig) ApplyTemplate(label string, value string) (string, error) {
 	var functions = template.FuncMap{
 		"controllers_count": func() string {
-			count := 0
-			for _, node := range config.Config.Nodes {
-				if node.IsController() {
-					count++
-				}
-			}
-
-			return fmt.Sprintf("%d", count)
+			return config.GetControllersCount()
 		},
 		"etcd_servers": func() string {
-			result := ""
-
-			for _, endpoint := range config.GetETCDClientEndpoints() {
-				if len(result) > 0 {
-					result += ","
-				}
-
-				result += endpoint
-			}
-
-			return result
+			return config.GetEtcdServers()
 		},
 		"etcd_cluster": func() string {
-			result := ""
-
-			for name, node := range config.Config.Nodes {
-				if !node.IsController() {
-					continue
-				}
-
-				if len(result) > 0 {
-					result += ","
-				}
-
-				result += fmt.Sprintf("%s=https://%s:2380", name, node.IP)
-			}
-
-			return result
+			return config.GetEtcdCluster()
 		},
 		"asset_file": func(name string) string {
 			return config.GetFullTargetAssetFilename(name)

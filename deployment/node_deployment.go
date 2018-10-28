@@ -47,6 +47,9 @@ func (deployment *NodeDeployment) Steps() (result int) {
 	// Upload files
 	result += len(deployment.config.Config.Assets.Files)
 
+	// Cleanup workers
+	result++
+
 	// Start service
 	result++
 
@@ -224,6 +227,17 @@ func (deployment *NodeDeployment) UploadFiles(forceUpload bool) (_error error) {
 	if errors := utils.RunParallelTasks(tasks, deployment.parallel); len(errors) > 0 {
 		return errors[0]
 	}
+
+	// Remove controller manifests
+	if !deployment.node.IsController() {
+		_, _error = deployment.Execute("cleanup-worker", fmt.Sprintf("rm -Rf %s %s %s %s %s", deployment.config.GetFullTargetAssetFilename(utils.ManifestGobetween), deployment.config.GetFullTargetAssetFilename(utils.ManifestEtcd), deployment.config.GetFullTargetAssetFilename(utils.ManifestKubeApiserver), deployment.config.GetFullTargetAssetFilename(utils.ManifestKubeControllerManager), deployment.config.GetFullTargetAssetFilename(utils.ManifestKubeScheduler)))
+
+		if _error != nil {
+			return _error
+		}
+	}
+
+	utils.IncreaseProgressStep()
 
 	if len(files) > 0 {
 		// Registrate and start service

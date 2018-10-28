@@ -1,0 +1,67 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: kube-system
+  name: kube-controller-manager
+spec:
+  hostNetwork: true
+  containers:
+  - name: kube-controller-manager
+    image: {{.KubernetesImage}}
+    command:
+    - /hyperkube
+    - controller-manager
+    - --address=0.0.0.0
+    - --allocate-node-cidrs=true
+    - --cluster-cidr={{.ClusterCIDR}}
+    - --cluster-name=kubernetes
+    - --cluster-signing-cert-file={{.PemCA}}
+    - --cluster-signing-key-file={{.PemCAKey}}
+    - --kubeconfig={{.Kubeconfig}}
+    - --leader-elect=true
+    - --root-ca-file={{.PemCA}}
+    - --service-account-private-key-file={{.PemServiceAccountKey}}
+    - --service-cluster-ip-range={{.ClusterIPRange}}
+    - --use-service-account-credentials=true
+    livenessProbe:
+      failureThreshold: 8
+      httpGet:
+        scheme: HTTP
+        host: 127.0.0.1
+        port: 10252
+        path: /healthz
+      initialDelaySeconds: 15
+      timeoutSeconds: 15
+    resources:
+      requests:
+        cpu: 200m
+    volumeMounts:
+    - name: pem-ca
+      mountPath: {{.PemCA}}
+      readOnly: true
+    - name: pem-ca-key
+      mountPath: {{.PemCAKey}}
+      readOnly: true
+    - name: pem-service-account-key
+      mountPath: {{.PemServiceAccountKey}}
+      readOnly: true
+    - name: kubeconfig
+      mountPath: {{.Kubeconfig}}
+      readOnly: true
+  volumes:
+  - name: pem-ca
+    hostPath:
+      type: File
+      path: {{.PemCA}}
+  - name: pem-ca-key
+    hostPath:
+      type: File
+      path: {{.PemCAKey}}
+  - name: pem-service-account-key
+    hostPath:
+      type: File
+      path: {{.PemServiceAccountKey}}
+  - name: kubeconfig
+    hostPath:
+      type: File
+      path: {{.Kubeconfig}}

@@ -2,6 +2,7 @@ package generate
 
 import (
 	"fmt"
+	"path"
 
 	"github.com/darxkies/k8s-tew/config"
 
@@ -110,6 +111,16 @@ func NewGenerator(config *config.InternalConfig) *Generator {
 		generator.generateBashCompletionArk,
 		// Generate Bash Completion for CriCtl
 		generator.generateBashCompletionCriCtl,
+		// Generate gobetween manifest
+		generator.generateManifestGobetween,
+		// Generate etcd manifest
+		generator.generateManifestEtcd,
+		// Generate kube-apiserver manifest
+		generator.generateManifestKubeApiserver,
+		// Generate kube-controller-manager manifest
+		generator.generateManifestKubeControllerManager,
+		// Generate kube-scheduler manifest
+		generator.generateManifestKubeScheduler,
 	}
 
 	return generator
@@ -279,6 +290,168 @@ func (generator *Generator) generateKubeletConfig() error {
 			StaticPodPath:       generator.config.GetFullTargetAssetDirectory(utils.DirectoryK8sManifests),
 			ResolvConf:          generator.config.Config.ResolvConf,
 		}, generator.config.GetFullLocalAssetFilename(utils.K8sKubeletConfig), true, false); error != nil {
+			return error
+		}
+	}
+
+	return nil
+}
+
+func (generator *Generator) generateManifestGobetween() error {
+	for nodeName, node := range generator.config.Config.Nodes {
+		generator.config.SetNode(nodeName, node)
+
+		if !node.IsController() {
+			continue
+		}
+
+		if error := utils.ApplyTemplateAndSave("manifest-gobetween", utils.TemplateManifestGobetween, struct {
+			GobetweenImage string
+			Config         string
+		}{
+			GobetweenImage: generator.config.Config.Versions.Gobetween,
+			Config:         generator.config.GetFullTargetAssetFilename(utils.GobetweenConfig),
+		}, generator.config.GetFullLocalAssetFilename(utils.ManifestGobetween), true, false); error != nil {
+			return error
+		}
+	}
+
+	return nil
+}
+
+func (generator *Generator) generateManifestEtcd() error {
+	for nodeName, node := range generator.config.Config.Nodes {
+		generator.config.SetNode(nodeName, node)
+
+		if !node.IsController() {
+			continue
+		}
+
+		if error := utils.ApplyTemplateAndSave("manifest-etcd", utils.TemplateManifestEtcd, struct {
+			EtcdImage         string
+			Name              string
+			PemCA             string
+			PemKubernetes     string
+			PemKubernetesKey  string
+			NodeIP            string
+			EtcdDataDirectory string
+			EtcdCluster       string
+		}{
+			EtcdImage:         generator.config.Config.Versions.Etcd,
+			Name:              nodeName,
+			PemCA:             generator.config.GetFullTargetAssetFilename(utils.PemCa),
+			PemKubernetes:     generator.config.GetFullTargetAssetFilename(utils.PemKubernetes),
+			PemKubernetesKey:  generator.config.GetFullTargetAssetFilename(utils.PemKubernetesKey),
+			NodeIP:            node.IP,
+			EtcdDataDirectory: generator.config.GetFullTargetAssetDirectory(utils.DirectoryEtcdData),
+			EtcdCluster:       generator.config.GetEtcdCluster(),
+		}, generator.config.GetFullLocalAssetFilename(utils.ManifestEtcd), true, false); error != nil {
+			return error
+		}
+	}
+
+	return nil
+}
+
+func (generator *Generator) generateManifestKubeApiserver() error {
+	for nodeName, node := range generator.config.Config.Nodes {
+		generator.config.SetNode(nodeName, node)
+
+		if !node.IsController() {
+			continue
+		}
+
+		if error := utils.ApplyTemplateAndSave("manifest-kube-apiserver", utils.TemplateManifestKubeApiserver, struct {
+			KubernetesImage   string
+			ControllersCount  string
+			AuditLog          string
+			EtcdServers       string
+			PemCA             string
+			PemKubernetes     string
+			PemKubernetesKey  string
+			PemAggregator     string
+			PemAggregatorKey  string
+			PemServiceAccount string
+			EncryptionConfig  string
+			NodeIP            string
+			APIServerPort     uint16
+			ClusterIPRange    string
+		}{
+			KubernetesImage:   generator.config.Config.Versions.K8S,
+			ControllersCount:  generator.config.GetControllersCount(),
+			AuditLog:          path.Join(generator.config.GetFullTargetAssetDirectory(utils.DirectoryLogging), utils.AuditLog),
+			EtcdServers:       generator.config.GetEtcdServers(),
+			PemCA:             generator.config.GetFullTargetAssetFilename(utils.PemCa),
+			PemKubernetes:     generator.config.GetFullTargetAssetFilename(utils.PemKubernetes),
+			PemKubernetesKey:  generator.config.GetFullTargetAssetFilename(utils.PemKubernetesKey),
+			PemAggregator:     generator.config.GetFullTargetAssetFilename(utils.PemAggregator),
+			PemAggregatorKey:  generator.config.GetFullTargetAssetFilename(utils.PemAggregatorKey),
+			PemServiceAccount: generator.config.GetFullTargetAssetFilename(utils.PemServiceAccount),
+			EncryptionConfig:  generator.config.GetFullTargetAssetFilename(utils.EncryptionConfig),
+			NodeIP:            node.IP,
+			APIServerPort:     generator.config.Config.APIServerPort,
+			ClusterIPRange:    generator.config.Config.ClusterIPRange,
+		}, generator.config.GetFullLocalAssetFilename(utils.ManifestKubeApiserver), true, false); error != nil {
+			return error
+		}
+	}
+
+	return nil
+}
+
+func (generator *Generator) generateManifestKubeControllerManager() error {
+	for nodeName, node := range generator.config.Config.Nodes {
+		generator.config.SetNode(nodeName, node)
+
+		if !node.IsController() {
+			continue
+		}
+
+		if error := utils.ApplyTemplateAndSave("manifest-kube-controller-manager", utils.TemplateManifestKubeControllerManager, struct {
+			KubernetesImage      string
+			ClusterCIDR          string
+			ClusterIPRange       string
+			PemCA                string
+			PemCAKey             string
+			Kubeconfig           string
+			PemKubernetes        string
+			PemKubernetesKey     string
+			PemServiceAccountKey string
+		}{
+			KubernetesImage:      generator.config.Config.Versions.K8S,
+			ClusterCIDR:          generator.config.Config.ClusterCIDR,
+			ClusterIPRange:       generator.config.Config.ClusterIPRange,
+			PemCA:                generator.config.GetFullTargetAssetFilename(utils.PemCa),
+			PemCAKey:             generator.config.GetFullTargetAssetFilename(utils.PemCaKey),
+			Kubeconfig:           generator.config.GetFullTargetAssetFilename(utils.KubeconfigControllerManager),
+			PemKubernetes:        generator.config.GetFullTargetAssetFilename(utils.PemKubernetes),
+			PemKubernetesKey:     generator.config.GetFullTargetAssetFilename(utils.PemKubernetesKey),
+			PemServiceAccountKey: generator.config.GetFullTargetAssetFilename(utils.PemServiceAccountKey),
+		}, generator.config.GetFullLocalAssetFilename(utils.ManifestKubeControllerManager), true, false); error != nil {
+			return error
+		}
+	}
+
+	return nil
+}
+
+func (generator *Generator) generateManifestKubeScheduler() error {
+	for nodeName, node := range generator.config.Config.Nodes {
+		generator.config.SetNode(nodeName, node)
+
+		if !node.IsController() {
+			continue
+		}
+
+		if error := utils.ApplyTemplateAndSave("manifest-kube-scheduler", utils.TemplateManifestKubeScheduler, struct {
+			KubernetesImage         string
+			KubeSchedulerConfig     string
+			KubeSchedulerKubeconfig string
+		}{
+			KubernetesImage:         generator.config.Config.Versions.K8S,
+			KubeSchedulerConfig:     generator.config.GetFullTargetAssetFilename(utils.K8sKubeSchedulerConfig),
+			KubeSchedulerKubeconfig: generator.config.GetFullTargetAssetFilename(utils.KubeconfigScheduler),
+		}, generator.config.GetFullLocalAssetFilename(utils.ManifestKubeScheduler), true, false); error != nil {
 			return error
 		}
 	}

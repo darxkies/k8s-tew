@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: kube-system
+  name: gobetween
+spec:
+  hostNetwork: true
+  containers:
+  - name: gobetween
+    image: {{.GobetweenImage}}
+    command:
+    - /usr/bin/gobetween
+    - -c
+    - {{.Config}}
+    resources:
+      requests:
+        cpu: 100m
+    volumeMounts:
+    - name: config
+      mountPath: {{.Config}}
+      readOnly: true
+  volumes:
+  - name: config
+    hostPath:
+      type: File
+      path: {{.Config}}

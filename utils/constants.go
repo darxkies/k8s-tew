@@ -2,12 +2,12 @@ package utils
 
 // Versions
 const VersionConfig = "2.1.0"
-const VersionK8s = "1.12.2"
-const VersionEtcd = "3.3.9"
+const VersionK8s = "k8s.gcr.io/hyperkube:v1.12.2"
+const VersionEtcd = "quay.io/coreos/etcd:v3.3.9"
 const VersionContainerd = "1.2.0"
 const VersionRunc = "1.0.0-rc5"
 const VersionCrictl = "1.12.0"
-const VersionGobetween = "0.6.1"
+const VersionGobetween = "docker.io/yyyar/gobetween:0.6.1"
 const VersionHelm = "2.11.0"
 const VersionArk = "gcr.io/heptio-images/ark:v0.9.9"
 const VersionMinioServer = "docker.io/minio/minio:RELEASE.2018-08-18T03-49-57Z"
@@ -83,10 +83,10 @@ const PortCerebro uint16 = 30990
 const PortWordpress uint16 = 30100
 
 // URLs
-const K8sBaseName = "kubernetes-server-linux-amd64"
-const K8sDownloadUrl = "https://storage.googleapis.com/kubernetes-release/release/v{{.Versions.K8S}}/{{.Filename}}.tar.gz"
-const EtcdBaseName = "etcd-v{{.Versions.Etcd}}-linux-amd64"
-const EtcdDownloadUrl = "https://github.com/coreos/etcd/releases/download/v{{.Versions.Etcd}}/{{.Filename}}.tar.gz"
+const K8sBaseName = "kubernetes-node-linux-amd64"
+const K8sDownloadUrl = "https://storage.googleapis.com/kubernetes-release/release/{{.Versions.K8S | image_tag}}/{{.Filename}}.tar.gz"
+const EtcdBaseName = "etcd-{{.Versions.Etcd | image_tag}}-linux-amd64"
+const EtcdDownloadUrl = "https://github.com/coreos/etcd/releases/download/{{.Versions.Etcd | image_tag}}/{{.Filename}}.tar.gz"
 const CniBaseName = "cni-plugins-amd64-v{{.Versions.CNI}}"
 const CniDownloadUrl = "https://github.com/containernetworking/plugins/releases/download/v{{.Versions.CNI}}/{{.Filename}}.tgz"
 const ContainerdBaseName = "containerd-{{.Versions.Containerd}}.linux-amd64"
@@ -255,6 +255,13 @@ const KubeconfigScheduler = "scheduler.kubeconfig"
 const KubeconfigProxy = "proxy.kubeconfig"
 const KubeconfigKubelet = "kubelet-{{.Name}}.kubeconfig"
 
+// Manifests
+const ManifestEtcd = "etcd-{{.Name}}.yaml"
+const ManifestKubeApiserver = "kube-apiserver-{{.Name}}.yaml"
+const ManifestKubeControllerManager = "kube-controller-manager-{{.Name}}.yaml"
+const ManifestKubeScheduler = "kube-scheduler-{{.Name}}.yaml"
+const ManifestGobetween = "gobetween-{{.Name}}.yaml"
+
 // Security
 const EncryptionConfig = "encryption-config.yaml"
 
@@ -392,6 +399,11 @@ const TemplateKubePrometheusKubernetesResourceRequestsDashboardSetup = "k8s/setu
 const TemplateKubePrometheusKubernetesClusterHealthDashboardSetup = "k8s/setup/monitoring/kube-prometheus-kubernetes-cluster-health-dashboard.yaml"
 const TemplateKubePrometheusNodesDashboardSetup = "k8s/setup/monitoring/kube-prometheus-nodes-dashboard.yaml"
 const TemplateWordpressSetup = "k8s/setup/miscellaneous/wordpress.yaml"
+const TemplateManifestEtcd = "k8s/manifests/etcd.yaml"
+const TemplateManifestKubeApiserver = "k8s/manifests/kube-apiserver.yaml"
+const TemplateManifestKubeControllerManager = "k8s/manifests/kube-controller-manager.yaml"
+const TemplateManifestKubeScheduler = "k8s/manifests/kube-scheduler.yaml"
+const TemplateManifestGobetween = "k8s/manifests/gobetween.yaml"
 
 const ControllerOnlyTaintKey = "node-role.kubernetes.io/master"
 const ConcurrentSshConnectionsLimit = 10
