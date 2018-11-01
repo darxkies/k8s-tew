@@ -372,10 +372,6 @@ func (downloader Downloader) downloadKubernetesBinaries() error {
 
 	compressedFiles := []CompressedFile{
 		{
-			SourceFile: path.Join(kubernetesServerBin, utils.BinaryKubeProxy),
-			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.BinaryKubeProxy),
-		},
-		{
 			SourceFile: path.Join(kubernetesServerBin, utils.BinaryKubelet),
 			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.BinaryKubelet),
 		},

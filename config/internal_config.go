@@ -199,7 +199,6 @@ func (config *InternalConfig) registerAssetFiles() {
 
 	// K8S Binaries
 	config.addAssetFile(utils.BinaryKubectl, Labels{utils.NodeController}, "", utils.DirectoryK8sBinaries)
-	config.addAssetFile(utils.BinaryKubeProxy, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryK8sBinaries)
 	config.addAssetFile(utils.BinaryKubelet, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryK8sBinaries)
 
 	// Helm Binary
@@ -287,6 +286,7 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.ManifestKubeApiserver, Labels{utils.NodeController}, "", utils.DirectoryK8sManifests)
 	config.addAssetFile(utils.ManifestKubeControllerManager, Labels{utils.NodeController}, "", utils.DirectoryK8sManifests)
 	config.addAssetFile(utils.ManifestKubeScheduler, Labels{utils.NodeController}, "", utils.DirectoryK8sManifests)
+	config.addAssetFile(utils.ManifestKubeProxy, Labels{utils.NodeController}, "", utils.DirectoryK8sManifests)
 
 	// Profile
 	config.addAssetFile(utils.K8sTewProfile, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryProfile)
@@ -315,13 +315,6 @@ func (config *InternalConfig) registerServers() {
 	// Servers
 	config.addServer("containerd", Labels{utils.NodeController, utils.NodeWorker}, config.GetTemplateAssetFilename(utils.BinaryContainerd), map[string]string{
 		"config": config.GetTemplateAssetFilename(utils.ContainerdConfig),
-	})
-
-	config.addServer("kube-proxy", Labels{utils.NodeController, utils.NodeWorker}, config.GetTemplateAssetFilename(utils.BinaryKubeProxy), map[string]string{
-		"cluster-cidr": "{{.Config.ClusterCIDR}}",
-		"kubeconfig":   config.GetTemplateAssetFilename(utils.KubeconfigProxy),
-		"proxy-mode":   "iptables",
-		"v":            "0",
 	})
 
 	config.addServer("kubelet", Labels{utils.NodeController, utils.NodeWorker}, config.GetTemplateAssetFilename(utils.BinaryKubelet), map[string]string{

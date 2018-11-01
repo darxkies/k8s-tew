@@ -121,6 +121,8 @@ func NewGenerator(config *config.InternalConfig) *Generator {
 		generator.generateManifestKubeControllerManager,
 		// Generate kube-scheduler manifest
 		generator.generateManifestKubeScheduler,
+		// Generate kube-proxy manifest
+		generator.generateManifestKubeProxy,
 	}
 
 	return generator
@@ -452,6 +454,30 @@ func (generator *Generator) generateManifestKubeScheduler() error {
 			KubeSchedulerConfig:     generator.config.GetFullTargetAssetFilename(utils.K8sKubeSchedulerConfig),
 			KubeSchedulerKubeconfig: generator.config.GetFullTargetAssetFilename(utils.KubeconfigScheduler),
 		}, generator.config.GetFullLocalAssetFilename(utils.ManifestKubeScheduler), true, false); error != nil {
+			return error
+		}
+	}
+
+	return nil
+}
+
+func (generator *Generator) generateManifestKubeProxy() error {
+	for nodeName, node := range generator.config.Config.Nodes {
+		generator.config.SetNode(nodeName, node)
+
+		if !node.IsController() {
+			continue
+		}
+
+		if error := utils.ApplyTemplateAndSave("manifest-kube-proxy", utils.TemplateManifestKubeProxy, struct {
+			KubernetesImage     string
+			ClusterCIDR         string
+			KubeProxyKubeconfig string
+		}{
+			KubernetesImage:     generator.config.Config.Versions.K8S,
+			ClusterCIDR:         generator.config.Config.ClusterCIDR,
+			KubeProxyKubeconfig: generator.config.GetFullTargetAssetFilename(utils.KubeconfigProxy),
+		}, generator.config.GetFullLocalAssetFilename(utils.ManifestKubeProxy), true, false); error != nil {
 			return error
 		}
 	}
