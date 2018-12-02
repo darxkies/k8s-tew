@@ -10,6 +10,8 @@ metadata:
   namespace: networking
 data:
   typha_service_name: "none"
+  calico_backend: "bird"
+  veth_mtu: "1440"
   cni_network_config: |-
     {
       "name": "k8s-pod-network",
@@ -73,7 +75,10 @@ spec:
         k8s-app: calico-typha
       annotations:
         scheduler.alpha.kubernetes.io/critical-pod: ''
+        cluster-autoscaler.kubernetes.io/safe-to-evict: 'true'
     spec:
+      nodeSelector:
+        beta.kubernetes.io/os: linux
       hostNetwork: true
       tolerations:
         - key: CriticalAddonsOnly
@@ -104,16 +109,33 @@ spec:
           - name: TYPHA_PROMETHEUSMETRICSPORT
             value: "9093"
         livenessProbe:
-          httpGet:
-            path: /liveness
-            port: 9098
+          exec:
+            command:
+            - calico-typha
+            - check
+            - liveness
           periodSeconds: 30
           initialDelaySeconds: 30
         readinessProbe:
-          httpGet:
-            path: /readiness
-            port: 9098
+          exec:
+            command:
+            - calico-typha
+            - check
+            - readiness
           periodSeconds: 10
+---
+kind: PodDisruptionBudget
+apiVersion: policy/v1beta1
+metadata:
+  name: calico-typha
+  namespace: kube-system
+  labels:
+    k8s-app: calico-typha
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      k8s-app: calico-typha
 ---
 kind: DaemonSet
 apiVersion: extensions/v1beta1
@@ -137,6 +159,8 @@ spec:
       annotations:
         scheduler.alpha.kubernetes.io/critical-pod: ''
     spec:
+      nodeSelector:
+        beta.kubernetes.io/os: linux
       hostNetwork: true
       tolerations:
         - effect: NoSchedule
@@ -151,40 +175,48 @@ spec:
         - name: calico-node
           image: {{.CalicoNodeImage}}
           env:
-            - name: DATASTORE_TYPE
-              value: "kubernetes"
-            - name: FELIX_LOGSEVERITYSCREEN
-              value: "info"
-            - name: CLUSTER_TYPE
-              value: "k8s,bgp"
             - name: CALICO_DISABLE_FILE_LOGGING
-              value: "true"
-            - name: FELIX_DEFAULTENDPOINTTOHOSTACTION
-              value: "ACCEPT"
-            - name: FELIX_IPV6SUPPORT
-              value: "false"
-            - name: FELIX_IPINIPMTU
-              value: "1440"
-            - name: WAIT_FOR_DATASTORE
               value: "true"
             - name: CALICO_IPV4POOL_CIDR
               value: "{{.ClusterCIDR}}"
             - name: CALICO_IPV4POOL_IPIP
               value: "Always"
-            - name: FELIX_IPINIPENABLED
+            - name: CALICO_NETWORKING_BACKEND
+              valueFrom:
+                configMapKeyRef:
+                  name: calico-config
+                  key: calico_backend
+            - name: CLUSTER_TYPE
+              value: "k8s,bgp"
+            - name: DATASTORE_TYPE
+              value: "kubernetes"
+            - name: FELIX_DEFAULTENDPOINTTOHOSTACTION
+              value: "ACCEPT"
+            - name: FELIX_HEALTHENABLED
               value: "true"
+            - name: FELIX_IPV6SUPPORT
+              value: "false"
+            - name: FELIX_IPINIPMTU
+              value: "1440"
+            - name: FELIX_IPINIPENABLED
+              valueFrom:
+                configMapKeyRef:
+                  name: calico-config
+                  key: veth_mtu
+            - name: FELIX_LOGSEVERITYSCREEN
+              value: "info"
             - name: FELIX_TYPHAK8SSERVICENAME
               valueFrom:
                 configMapKeyRef:
                   name: calico-config
                   key: typha_service_name
+            - name: IP
+              value: "autodetect"
             - name: NODENAME
               valueFrom:
                 fieldRef:
                   fieldPath: spec.nodeName
-            - name: IP
-              value: "autodetect"
-            - name: FELIX_HEALTHENABLED
+            - name: WAIT_FOR_DATASTORE
               value: "true"
           securityContext:
             privileged: true
@@ -195,18 +227,24 @@ spec:
             httpGet:
               path: /liveness
               port: 9099
+              host: localhost
             periodSeconds: 10
             initialDelaySeconds: 10
             failureThreshold: 6
           readinessProbe:
-            httpGet:
-              path: /readiness
-              port: 9099
+            exec:
+              command:
+              - /bin/calico-node
+              - -bird-ready
+              - -felix-ready
             periodSeconds: 10
           volumeMounts:
             - mountPath: /lib/modules
               name: lib-modules
               readOnly: true
+            - mountPath: /run/xtables.lock
+              name: xtables-lock
+              readOnly: false
             - mountPath: /var/run/calico
               name: var-run-calico
               readOnly: false
@@ -230,6 +268,11 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: spec.nodeName
+            - name: CNI_MTU
+              valueFrom:
+                configMapKeyRef:
+                  name: calico-config
+                  key: veth_mtu
           volumeMounts:
             - mountPath: /host/opt/cni/bin
               name: cni-bin-dir
@@ -245,6 +288,10 @@ spec:
         - name: var-lib-calico
           hostPath:
             path: /var/lib/calico
+        - name: xtables-lock
+          hostPath:
+            path: /run/xtables.lock
+            type: FileOrCreate
         - name: cni-bin-dir
           hostPath:
             path: {{.CNIBinariesDirectory}}
@@ -383,6 +430,7 @@ rules:
   - apiGroups: [""]
     resources:
       - namespaces
+      - serviceaccounts
     verbs:
       - get
       - list
@@ -391,7 +439,7 @@ rules:
     resources:
       - pods/status
     verbs:
-      - update
+      - patch
   - apiGroups: [""]
     resources:
       - pods
@@ -399,7 +447,6 @@ rules:
       - get
       - list
       - watch
-      - patch
   - apiGroups: [""]
     resources:
       - services

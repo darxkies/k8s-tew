@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/darxkies/k8s-tew/utils"
+	"github.com/pkg/errors"
 
 	"github.com/darxkies/k8s-tew/config"
 
@@ -94,6 +95,8 @@ func (servers *Servers) addVIPManager(enabled bool, virtualIP, virtualIPInterfac
 }
 
 func (servers *Servers) extractEmbeddedFiles() error {
+	log.Debug("Extracting embedded files")
+
 	return utils.GetEmbeddedFiles(func(filename string, in io.ReadCloser) error {
 		log.WithFields(log.Fields{"filename": filename}).Info("Extracting embedded file")
 
@@ -129,7 +132,7 @@ func (servers *Servers) extractEmbeddedFiles() error {
 func (servers *Servers) Run(commandRetries uint) error {
 	// Make sure the embedded dependencies are in place before the servers are started
 	if error := servers.extractEmbeddedFiles(); error != nil {
-		return error
+		return errors.Wrap(error, "extracting embedded files failed")
 	}
 
 	pathEnvironment := os.Getenv("PATH")
@@ -148,7 +151,7 @@ func (servers *Servers) Run(commandRetries uint) error {
 		server, error := NewServerWrapper(*servers.config, serverConfig.Name, serverConfig, pathEnvironment)
 
 		if error != nil {
-			return error
+			return errors.Wrapf(error, "server wrapper for '%s' failed", serverConfig.Name)
 		}
 
 		servers.add(server)

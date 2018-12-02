@@ -6,7 +6,7 @@ services:
 - docker
 
 go:
-- 1.11.1
+- 1.11.2
 
 install: true
 

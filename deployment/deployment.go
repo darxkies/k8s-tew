@@ -236,7 +236,15 @@ func (deployment *Deployment) runPullImages() error {
 					return nil
 				}
 
-				return nodeDeployment.pullImage(image.Name)
+				var _error error
+
+				for i := uint(0); i < deployment.commandRetries; i++ {
+					if _error = nodeDeployment.pullImage(image.Name); _error == nil {
+						return nil
+					}
+				}
+
+				return _error
 			})
 		}
 
