@@ -465,10 +465,6 @@ func (generator *Generator) generateManifestKubeProxy() error {
 	for nodeName, node := range generator.config.Config.Nodes {
 		generator.config.SetNode(nodeName, node)
 
-		if !node.IsController() {
-			continue
-		}
-
 		if error := utils.ApplyTemplateAndSave("manifest-kube-proxy", utils.TemplateManifestKubeProxy, struct {
 			KubernetesImage     string
 			ClusterCIDR         string
