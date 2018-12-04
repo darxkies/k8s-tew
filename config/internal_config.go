@@ -286,8 +286,7 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.ManifestKubeApiserver, Labels{utils.NodeController}, "", utils.DirectoryK8sManifests)
 	config.addAssetFile(utils.ManifestKubeControllerManager, Labels{utils.NodeController}, "", utils.DirectoryK8sManifests)
 	config.addAssetFile(utils.ManifestKubeScheduler, Labels{utils.NodeController}, "", utils.DirectoryK8sManifests)
-	config.addAssetFile(utils.ManifestKubeProxy, Labels{utils.NodeController}, "", utils.DirectoryK8sManifests)
-
+	config.addAssetFile(utils.ManifestKubeProxy, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryK8sManifests)
 	// Profile
 	config.addAssetFile(utils.K8sTewProfile, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryProfile)
 
