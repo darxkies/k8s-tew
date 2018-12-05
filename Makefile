@@ -7,6 +7,7 @@ compile:
 	docker run --rm -v $$(pwd):/go/src/$(PACKAGE) $(BUILD_IMAGE)
 
 build-binaries:
+	mkdir -p embedded
 	CGO_ENABLED=0 go install -ldflags '-s -w' ${PACKAGE}/cmd/freezer
 	packr
 	CGO_ENABLED=0 go build -ldflags "-X ${PACKAGE}/version.Version=${VERSION} -s -w" -o k8s-tew ${PACKAGE}/cmd/k8s-tew 
