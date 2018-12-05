@@ -6,3 +6,4 @@ embedded
 bin
 vendor
 .env
+k8s-tew
