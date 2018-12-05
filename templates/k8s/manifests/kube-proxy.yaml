@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: kube-system
+  name: kube-proxy
+spec:
+  hostNetwork: true
+  containers:
+  - name: kube-proxy
+    image: {{.KubernetesImage}}
+    command:
+    - /proxy
+    - --cluster-cidr={{.ClusterCIDR}}
+    - --kubeconfig={{.KubeProxyKubeconfig}}
+    - --proxy-mode=iptables
+    securityContext:
+        privileged: true
+    livenessProbe:
+      failureThreshold: 8
+      httpGet:
+        scheme: HTTP
+        host: 127.0.0.1
+        port: 10249
+        path: /healthz
+      initialDelaySeconds: 15
+      timeoutSeconds: 15
+    resources:
+      requests:
+        cpu: 200m
+    volumeMounts:
+    - name: kube-proxy-kubeconfig
+      mountPath: {{.KubeProxyKubeconfig}}
+      readOnly: true
+  volumes:
+  - name: kube-proxy-kubeconfig
+    hostPath:
+      type: File
+      path: {{.KubeProxyKubeconfig}}
