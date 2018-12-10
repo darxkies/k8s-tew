@@ -1,6 +1,6 @@
 <p align="center"><img src="logo.svg" width="360"></p>
 
-<p align="center"><a href="https://github.com/cncf/k8s-conformance/tree/master/v1.10/k8s-tew"><img src="conformance/certified-kubernetes-1.10-color.svg" width="120"></a><a href="https://github.com/cncf/k8s-conformance/tree/master/v1.11/k8s-tew"><img src="conformance/certified-kubernetes-1.11-color.svg" width="120"></a><a href="https://github.com/cncf/k8s-conformance/tree/master/v1.12/k8s-tew"><img src="conformance/certified-kubernetes-1.12-color.svg" width="120"></a><a href="https://github.com/cncf/k8s-conformance/tree/master/v1.13/k8s-tew"><img src="conformance/certified-kubernetes-1.13-color.svg" width="120"></a><</p>
+<p align="center"><a href="https://github.com/cncf/k8s-conformance/tree/master/v1.10/k8s-tew"><img src="conformance/certified-kubernetes-1.10-color.svg" width="120"></a><a href="https://github.com/cncf/k8s-conformance/tree/master/v1.11/k8s-tew"><img src="conformance/certified-kubernetes-1.11-color.svg" width="120"></a><a href="https://github.com/cncf/k8s-conformance/tree/master/v1.12/k8s-tew"><img src="conformance/certified-kubernetes-1.12-color.svg" width="120"></a><a href="https://github.com/cncf/k8s-conformance/tree/master/v1.13/k8s-tew"><img src="conformance/certified-kubernetes-1.13-color.svg" width="120"></a></p>
 
 # Kubernetes - The Easier Way (k8s-tew)
 
