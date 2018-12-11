@@ -404,4 +404,5 @@ const TemplateManifestKubeProxy = "k8s/manifests/kube-proxy.yaml"
 const TemplateManifestGobetween = "k8s/manifests/gobetween.yaml"
 
 const ControllerOnlyTaintKey = "node-role.kubernetes.io/master"
+const StorageOnlyTaintKey = "node-role.kubernetes.io/storage"
 const ConcurrentSshConnectionsLimit = 10

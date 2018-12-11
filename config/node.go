@@ -34,6 +34,20 @@ func (node *Node) IsWorker() bool {
 	return false
 }
 
+func (node *Node) IsStorage() bool {
+	for _, label := range node.Labels {
+		if label == utils.NodeStorage {
+			return true
+		}
+	}
+
+	return false
+}
+
 func (node *Node) IsControllerOnly() bool {
 	return node.IsController() && !node.IsWorker()
+}
+
+func (node *Node) IsStorageOnly() bool {
+	return !node.IsController() && node.IsWorker() && node.IsStorage()
 }

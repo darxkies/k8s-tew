@@ -353,11 +353,11 @@ func (deployment *NodeDeployment) configureTaint() error {
 
 	changed := false
 
-	if deployment.node.IsControllerOnly() {
+	addLabel := func(label string) {
 		found := false
 
 		for _, taint := range node.Spec.Taints {
-			if taint.Key == utils.ControllerOnlyTaintKey {
+			if taint.Key == label {
 				found = true
 
 				break
@@ -365,19 +365,19 @@ func (deployment *NodeDeployment) configureTaint() error {
 		}
 
 		if !found {
-			node.Spec.Taints = append(node.Spec.Taints, v1.Taint{Key: utils.ControllerOnlyTaintKey, Value: "true", Effect: v1.TaintEffectNoSchedule})
+			node.Spec.Taints = append(node.Spec.Taints, v1.Taint{Key: label, Value: "true", Effect: v1.TaintEffectNoSchedule})
 
 			changed = true
 		}
 
-		// Make e2e compliance test suit happy
-		node.Labels[utils.ControllerOnlyTaintKey] = "true"
+		node.Labels[label] = "true"
+	}
 
-	} else {
+	removeLabel := func(label string) {
 		taints := []v1.Taint{}
 
 		for _, taint := range node.Spec.Taints {
-			if taint.Key == utils.ControllerOnlyTaintKey {
+			if taint.Key == label {
 				changed = true
 
 				continue
@@ -388,8 +388,21 @@ func (deployment *NodeDeployment) configureTaint() error {
 
 		node.Spec.Taints = taints
 
-		// Make e2e compliance test suit happy and remove the label
-		delete(node.Labels, utils.ControllerOnlyTaintKey)
+		delete(node.Labels, label)
+	}
+
+	if deployment.node.IsControllerOnly() {
+		addLabel(utils.ControllerOnlyTaintKey)
+
+	} else {
+		removeLabel(utils.ControllerOnlyTaintKey)
+	}
+
+	if deployment.node.IsStorageOnly() {
+		addLabel(utils.StorageOnlyTaintKey)
+
+	} else {
+		removeLabel(utils.StorageOnlyTaintKey)
 	}
 
 	if !changed {
