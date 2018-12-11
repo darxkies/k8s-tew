@@ -34,5 +34,5 @@ To compile it from source you will need a Go (version 1.11+) environment, Git, M
     git clone https://github.com/darxkies/k8s-tew.git
     cd k8s-tew
     make
-    sudo mv $GOPATH/bin/k8s-tew /usr/local/bin
+    sudo mv k8s-tew /usr/local/bin
 
