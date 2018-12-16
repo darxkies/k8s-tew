@@ -231,14 +231,14 @@ func (deployment *NodeDeployment) UploadFiles(forceUpload bool) (_error error) {
 	cleanupFiles := []string{}
 
 	// Remove controller manifests on controllers
-	if deployment.node.IsController() {
+	if deployment.node.IsControllerOnly() {
 		if len(deployment.config.Config.ControllerVirtualIP) == 0 || len(deployment.config.Config.ControllerVirtualIPInterface) == 0 {
 			cleanupFiles = append(cleanupFiles, deployment.config.GetFullTargetAssetFilename(utils.ManifestControllerVirtualIP))
 		}
 	}
 
 	// Remove controller manifests on workers
-	if deployment.node.IsWorker() {
+	if deployment.node.IsWorkerOnly() {
 		cleanupFiles = append(cleanupFiles, deployment.config.GetFullTargetAssetFilename(utils.ManifestControllerVirtualIP))
 		cleanupFiles = append(cleanupFiles, deployment.config.GetFullTargetAssetFilename(utils.ManifestGobetween))
 		cleanupFiles = append(cleanupFiles, deployment.config.GetFullTargetAssetFilename(utils.ManifestEtcd))
@@ -336,6 +336,12 @@ func (deployment *NodeDeployment) UploadFile(from, to string) error {
 
 	filename := path.Base(to)
 
+	if !utils.FileExists(from) {
+		log.WithFields(log.Fields{"name": filename, "node": deployment.name, "_target": deployment.node.IP, "_source-filename": from, "_destination-filename": to}).Info("Skipping")
+
+		return nil
+	}
+
 	log.WithFields(log.Fields{"name": filename, "node": deployment.name, "_target": deployment.node.IP, "_source-filename": from, "_destination-filename": to}).Info("Deploying")
 
 	session, error := deployment.getSession()
@@ -427,6 +433,13 @@ func (deployment *NodeDeployment) configureTaint() error {
 		node.Spec.Taints = taints
 
 		removeLabel(label)
+	}
+
+	if deployment.node.IsControllerAndWorker() {
+		addLabel(utils.ControllerOnlyTaintKey)
+
+	} else {
+		removeLabel(utils.ControllerOnlyTaintKey)
 	}
 
 	if deployment.node.IsControllerOnly() {

@@ -191,20 +191,6 @@ spec:
           mountPath: /etc/ceph
         - name: ceph-data
           mountPath: /var/lib/ceph
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: node-role.kubernetes.io/master
-                operator: In
-                values:
-                - 'true'
-      tolerations:
-      - effect: NoSchedule
-        key: node-role.kubernetes.io/master
-        operator: Equal
-        value: 'true'
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -250,20 +236,6 @@ spec:
           tcpSocket:
             port: 8080
           timeoutSeconds: 5
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: node-role.kubernetes.io/master
-                operator: In
-                values:
-                - 'true'
-      tolerations:
-      - effect: NoSchedule
-        key: node-role.kubernetes.io/master
-        operator: Equal
-        value: 'true'
 ---
 apiVersion: batch/v1
 kind: Job

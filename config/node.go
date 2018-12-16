@@ -55,3 +55,7 @@ func (node *Node) IsStorageOnly() bool {
 func (node *Node) IsWorkerOnly() bool {
 	return !node.IsController() && node.IsWorker() && !node.IsStorage()
 }
+
+func (node *Node) IsControllerAndWorker() bool {
+	return node.IsController() && node.IsWorker()
+}
