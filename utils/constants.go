@@ -2,13 +2,14 @@ package utils
 
 // Versions
 const VersionConfig = "2.2.0"
-const VersionK8s = "k8s.gcr.io/hyperkube:v1.13.0"
+const VersionK8s = "k8s.gcr.io/hyperkube:v1.13.1"
 const VersionEtcd = "quay.io/coreos/etcd:v3.3.9"
 const VersionContainerd = "1.2.1"
 const VersionRunc = "1.0.0-rc6"
-const VersionCrictl = "1.12.0"
-const VersionGobetween = "docker.io/yyyar/gobetween:0.6.1"
+const VersionCrictl = "1.13.0"
 const VersionHelm = "2.12.0"
+const VersionGobetween = "docker.io/yyyar/gobetween:0.6.1"
+const VersionVirtualIP = "docker.io/darxkies/virtual-ip:0.1.4"
 const VersionArk = "gcr.io/heptio-images/ark:v0.9.9"
 const VersionMinioServer = "docker.io/minio/minio:RELEASE.2018-08-18T03-49-57Z"
 const VersionMinioClient = "docker.io/minio/mc:RELEASE.2018-08-18T02-13-04Z"
@@ -258,6 +259,8 @@ const ManifestKubeControllerManager = "kube-controller-manager-{{.Name}}.yaml"
 const ManifestKubeScheduler = "kube-scheduler-{{.Name}}.yaml"
 const ManifestKubeProxy = "kube-proxy-{{.Name}}.yaml"
 const ManifestGobetween = "gobetween-{{.Name}}.yaml"
+const ManifestControllerVirtualIP = "controller-virtual-ip-{{.Name}}.yaml"
+const ManifestWorkerVirtualIP = "worker-virtual-ip-{{.Name}}.yaml"
 
 // Security
 const EncryptionConfig = "encryption-config.yaml"
@@ -402,7 +405,9 @@ const TemplateManifestKubeControllerManager = "k8s/manifests/kube-controller-man
 const TemplateManifestKubeScheduler = "k8s/manifests/kube-scheduler.yaml"
 const TemplateManifestKubeProxy = "k8s/manifests/kube-proxy.yaml"
 const TemplateManifestGobetween = "k8s/manifests/gobetween.yaml"
+const TemplateManifestVirtualIP = "k8s/manifests/virtual-ip.yaml"
 
 const ControllerOnlyTaintKey = "node-role.kubernetes.io/master"
+const WorkerOnlyTaintKey = "node-role.kubernetes.io/worker"
 const StorageOnlyTaintKey = "node-role.kubernetes.io/storage"
 const ConcurrentSshConnectionsLimit = 10

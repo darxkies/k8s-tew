@@ -68,6 +68,8 @@ func NewDeployment(_config *config.InternalConfig, identityFile string, pullImag
 
 	deployment.images = []Image{
 		{Name: deployment.config.Config.Versions.Pause, Features: config.Features{}},
+		{Name: deployment.config.Config.Versions.Gobetween, Features: config.Features{}},
+		{Name: deployment.config.Config.Versions.VirtualIP, Features: config.Features{}},
 		{Name: deployment.config.Config.Versions.Etcd, Features: config.Features{}},
 		{Name: deployment.config.Config.Versions.K8S, Features: config.Features{}},
 		{Name: deployment.config.Config.Versions.CalicoCNI, Features: config.Features{}},

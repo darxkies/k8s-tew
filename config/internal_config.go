@@ -281,6 +281,8 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.K8sKubeletConfig, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryK8sConfig)
 
 	// Manifests
+	config.addAssetFile(utils.ManifestControllerVirtualIP, Labels{utils.NodeController}, "", utils.DirectoryK8sManifests)
+	config.addAssetFile(utils.ManifestWorkerVirtualIP, Labels{utils.NodeWorker}, "", utils.DirectoryK8sManifests)
 	config.addAssetFile(utils.ManifestGobetween, Labels{utils.NodeController}, "", utils.DirectoryK8sManifests)
 	config.addAssetFile(utils.ManifestEtcd, Labels{utils.NodeController}, "", utils.DirectoryK8sManifests)
 	config.addAssetFile(utils.ManifestKubeApiserver, Labels{utils.NodeController}, "", utils.DirectoryK8sManifests)

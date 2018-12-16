@@ -10,6 +10,7 @@ type Versions struct {
 	Runc                       string `yaml:"runc"`
 	CriCtl                     string `yaml:"crictl"`
 	Gobetween                  string `yaml:"gobetween"`
+	VirtualIP                  string `yaml:"virtual-ip"`
 	Ark                        string `yaml:"ark"`
 	MinioServer                string `yaml:"minio-server"`
 	MinioClient                string `yaml:"minio-client"`
@@ -59,6 +60,7 @@ func NewVersions() Versions {
 		Runc:                       utils.VersionRunc,
 		CriCtl:                     utils.VersionCrictl,
 		Gobetween:                  utils.VersionGobetween,
+		VirtualIP:                  utils.VersionVirtualIP,
 		Ark:                        utils.VersionArk,
 		MinioServer:                utils.VersionMinioServer,
 		MinioClient:                utils.VersionMinioClient,

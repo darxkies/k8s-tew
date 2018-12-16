@@ -228,9 +228,31 @@ func (deployment *NodeDeployment) UploadFiles(forceUpload bool) (_error error) {
 		return errors[0]
 	}
 
-	// Remove controller manifests
-	if !deployment.node.IsController() {
-		_, _error = deployment.Execute("cleanup-worker", fmt.Sprintf("rm -Rf %s %s %s %s %s", deployment.config.GetFullTargetAssetFilename(utils.ManifestGobetween), deployment.config.GetFullTargetAssetFilename(utils.ManifestEtcd), deployment.config.GetFullTargetAssetFilename(utils.ManifestKubeApiserver), deployment.config.GetFullTargetAssetFilename(utils.ManifestKubeControllerManager), deployment.config.GetFullTargetAssetFilename(utils.ManifestKubeScheduler)))
+	cleanupFiles := []string{}
+
+	// Remove controller manifests on controllers
+	if deployment.node.IsController() {
+		if len(deployment.config.Config.ControllerVirtualIP) == 0 || len(deployment.config.Config.ControllerVirtualIPInterface) == 0 {
+			cleanupFiles = append(cleanupFiles, deployment.config.GetFullTargetAssetFilename(utils.ManifestControllerVirtualIP))
+		}
+	}
+
+	// Remove controller manifests on workers
+	if deployment.node.IsWorker() {
+		cleanupFiles = append(cleanupFiles, deployment.config.GetFullTargetAssetFilename(utils.ManifestControllerVirtualIP))
+		cleanupFiles = append(cleanupFiles, deployment.config.GetFullTargetAssetFilename(utils.ManifestGobetween))
+		cleanupFiles = append(cleanupFiles, deployment.config.GetFullTargetAssetFilename(utils.ManifestEtcd))
+		cleanupFiles = append(cleanupFiles, deployment.config.GetFullTargetAssetFilename(utils.ManifestKubeApiserver))
+		cleanupFiles = append(cleanupFiles, deployment.config.GetFullTargetAssetFilename(utils.ManifestKubeControllerManager))
+		cleanupFiles = append(cleanupFiles, deployment.config.GetFullTargetAssetFilename(utils.ManifestKubeScheduler))
+
+		if len(deployment.config.Config.WorkerVirtualIP) == 0 || len(deployment.config.Config.WorkerVirtualIPInterface) == 0 {
+			cleanupFiles = append(cleanupFiles, deployment.config.GetFullTargetAssetFilename(utils.ManifestWorkerVirtualIP))
+		}
+	}
+
+	if len(cleanupFiles) > 0 {
+		_, _error = deployment.Execute("cleanup-files", fmt.Sprintf("rm -Rf %s", strings.Join(cleanupFiles, " ")))
 
 		if _error != nil {
 			return _error
@@ -354,6 +376,22 @@ func (deployment *NodeDeployment) configureTaint() error {
 	changed := false
 
 	addLabel := func(label string) {
+		if _, ok := node.Labels[label]; !ok {
+			changed = true
+		}
+
+		node.Labels[label] = "true"
+	}
+
+	removeLabel := func(label string) {
+		if _, ok := node.Labels[label]; ok {
+			changed = true
+		}
+
+		delete(node.Labels, label)
+	}
+
+	addTaint := func(label string) {
 		found := false
 
 		for _, taint := range node.Spec.Taints {
@@ -370,10 +408,10 @@ func (deployment *NodeDeployment) configureTaint() error {
 			changed = true
 		}
 
-		node.Labels[label] = "true"
+		addLabel(label)
 	}
 
-	removeLabel := func(label string) {
+	removeTaint := func(label string) {
 		taints := []v1.Taint{}
 
 		for _, taint := range node.Spec.Taints {
@@ -388,21 +426,28 @@ func (deployment *NodeDeployment) configureTaint() error {
 
 		node.Spec.Taints = taints
 
-		delete(node.Labels, label)
+		removeLabel(label)
 	}
 
 	if deployment.node.IsControllerOnly() {
-		addLabel(utils.ControllerOnlyTaintKey)
+		addTaint(utils.ControllerOnlyTaintKey)
 
 	} else {
-		removeLabel(utils.ControllerOnlyTaintKey)
+		removeTaint(utils.ControllerOnlyTaintKey)
 	}
 
 	if deployment.node.IsStorageOnly() {
-		addLabel(utils.StorageOnlyTaintKey)
+		addTaint(utils.StorageOnlyTaintKey)
 
 	} else {
-		removeLabel(utils.StorageOnlyTaintKey)
+		removeTaint(utils.StorageOnlyTaintKey)
+	}
+
+	if deployment.node.IsWorkerOnly() {
+		addLabel(utils.WorkerOnlyTaintKey)
+
+	} else {
+		removeLabel(utils.WorkerOnlyTaintKey)
 	}
 
 	if !changed {

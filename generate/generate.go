@@ -113,6 +113,10 @@ func NewGenerator(config *config.InternalConfig) *Generator {
 		generator.generateBashCompletionCriCtl,
 		// Generate gobetween manifest
 		generator.generateManifestGobetween,
+		// Generate controller virtual-ip manifest
+		generator.generateManifestControllerVirtualIP,
+		// Generate worker virtual-ip manifest
+		generator.generateManifestWorkerVirtualIP,
 		// Generate etcd manifest
 		generator.generateManifestEtcd,
 		// Generate kube-apiserver manifest
@@ -314,6 +318,104 @@ func (generator *Generator) generateManifestGobetween() error {
 			GobetweenImage: generator.config.Config.Versions.Gobetween,
 			Config:         generator.config.GetFullTargetAssetFilename(utils.GobetweenConfig),
 		}, generator.config.GetFullLocalAssetFilename(utils.ManifestGobetween), true, false); error != nil {
+			return error
+		}
+	}
+
+	return nil
+}
+
+func (generator *Generator) generateManifestControllerVirtualIP() error {
+	if len(generator.config.Config.ControllerVirtualIPInterface) == 0 || len(generator.config.Config.ControllerVirtualIP) == 0 {
+		return nil
+	}
+
+	peers := ""
+
+	for nodeName, node := range generator.config.Config.Nodes {
+		if !node.IsController() {
+			continue
+		}
+		if len(peers) > 0 {
+			peers += ","
+		}
+
+		peers += fmt.Sprintf("%s=%s:%d", nodeName, node.IP, generator.config.Config.VIPRaftControllerPort)
+	}
+
+	for nodeName, node := range generator.config.Config.Nodes {
+		generator.config.SetNode(nodeName, node)
+
+		if !node.IsController() {
+			continue
+		}
+
+		if error := utils.ApplyTemplateAndSave("manifest-controller-virtual-ip", utils.TemplateManifestVirtualIP, struct {
+			VirtualIPImage string
+			Type           string
+			ID             string
+			Bind           string
+			VirtualIP      string
+			Interface      string
+			Peers          string
+		}{
+			VirtualIPImage: generator.config.Config.Versions.VirtualIP,
+			Type:           "controller",
+			ID:             nodeName,
+			Bind:           fmt.Sprintf("%s:%d", node.IP, generator.config.Config.VIPRaftControllerPort),
+			VirtualIP:      generator.config.Config.ControllerVirtualIP,
+			Interface:      generator.config.Config.ControllerVirtualIPInterface,
+			Peers:          peers,
+		}, generator.config.GetFullLocalAssetFilename(utils.ManifestControllerVirtualIP), true, false); error != nil {
+			return error
+		}
+	}
+
+	return nil
+}
+
+func (generator *Generator) generateManifestWorkerVirtualIP() error {
+	if len(generator.config.Config.WorkerVirtualIPInterface) == 0 || len(generator.config.Config.WorkerVirtualIP) == 0 {
+		return nil
+	}
+
+	peers := ""
+
+	for nodeName, node := range generator.config.Config.Nodes {
+		if !node.IsWorker() {
+			continue
+		}
+		if len(peers) > 0 {
+			peers += ","
+		}
+
+		peers += fmt.Sprintf("%s=%s:%d", nodeName, node.IP, generator.config.Config.VIPRaftWorkerPort)
+	}
+
+	for nodeName, node := range generator.config.Config.Nodes {
+		generator.config.SetNode(nodeName, node)
+
+		if !node.IsWorker() {
+			continue
+		}
+
+		if error := utils.ApplyTemplateAndSave("manifest-worker-virtual-ip", utils.TemplateManifestVirtualIP, struct {
+			VirtualIPImage string
+			Type           string
+			ID             string
+			Bind           string
+			VirtualIP      string
+			Interface      string
+			Peers          string
+		}{
+			VirtualIPImage: generator.config.Config.Versions.VirtualIP,
+			Type:           "worker",
+			ID:             nodeName,
+			Bind:           fmt.Sprintf("%s:%d", node.IP, generator.config.Config.VIPRaftWorkerPort),
+			VirtualIP:      generator.config.Config.WorkerVirtualIP,
+			Interface:      generator.config.Config.WorkerVirtualIPInterface,
+			Peers:          peers,
+		}, generator.config.GetFullLocalAssetFilename(utils.ManifestWorkerVirtualIP), true, false); error != nil {
 			return error
 		}
 	}

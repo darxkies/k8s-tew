@@ -195,6 +195,10 @@ func init() {
 		_config.Config.Versions.Gobetween = value
 	})
 
+	addStringOption("version-virtual-ip", utils.VersionVirtualIP, "Virtual-IP version", func(value string) {
+		_config.Config.Versions.VirtualIP = value
+	})
+
 	addStringOption("version-ark", utils.VersionArk, "Ark version", func(value string) {
 		_config.Config.Versions.Ark = value
 	})

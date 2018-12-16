@@ -66,34 +66,6 @@ func (servers *Servers) Steps() int {
 	return len(servers.config.Config.Servers) + len(servers.config.Config.Commands) + 1
 }
 
-func (servers *Servers) addVIPManager(enabled bool, virtualIP, virtualIPInterface, nodeName, nodeIP, nodeRole string, raftPort uint16) {
-	if !enabled {
-		return
-	}
-
-	if len(virtualIP) == 0 {
-		return
-	}
-
-	if len(virtualIPInterface) == 0 {
-		return
-	}
-
-	peers := Peers{}
-
-	for nodeName, node := range servers.config.Config.Nodes {
-		if !node.Labels.HasLabels(config.Labels{nodeRole}) {
-			continue
-		}
-
-		peers[nodeName] = fmt.Sprintf("%s:%d", node.IP, raftPort)
-	}
-
-	logger := Logger{}
-
-	servers.add(NewVIPManager(nodeRole, nodeName, fmt.Sprintf("%s:%d", nodeIP, raftPort), virtualIP, peers, logger, virtualIPInterface))
-}
-
 func (servers *Servers) extractEmbeddedFiles() error {
 	log.Debug("Extracting embedded files")
 
@@ -156,10 +128,6 @@ func (servers *Servers) Run(commandRetries uint) error {
 
 		servers.add(server)
 	}
-
-	// Add Controllers/Workers VIP servers
-	servers.addVIPManager(servers.config.Node.IsController(), servers.config.Config.ControllerVirtualIP, servers.config.Config.ControllerVirtualIPInterface, servers.config.Name, servers.config.Node.IP, utils.NodeController, servers.config.Config.VIPRaftControllerPort)
-	servers.addVIPManager(servers.config.Node.IsWorker(), servers.config.Config.WorkerVirtualIP, servers.config.Config.WorkerVirtualIPInterface, servers.config.Name, servers.config.Node.IP, utils.NodeWorker, servers.config.Config.VIPRaftWorkerPort)
 
 	// Start servers
 	for _, server := range servers.servers {
