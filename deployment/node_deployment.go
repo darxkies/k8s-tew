@@ -311,6 +311,27 @@ func (deployment *NodeDeployment) pullImage(image string) error {
 	return nil
 }
 
+func (deployment *NodeDeployment) importImage(image string, filename string) error {
+	deployment.sshLimiter.Lock()
+	defer deployment.sshLimiter.Unlock()
+
+	tokens := strings.Split(image, ":")
+
+	// Remove tag
+	if len(tokens) == 2 {
+		image = tokens[0]
+	}
+
+	ctr := deployment.config.GetFullTargetAssetFilename(utils.BinaryCtr)
+	command := fmt.Sprintf("CONTAINERD_NAMESPACE=k8s.io %s i import --base-name %s %s", ctr, image, filename)
+
+	if _, error := deployment.Execute(fmt.Sprintf("import-image-%s", image), command); error != nil {
+		return fmt.Errorf("Failed to import image %s (%s)", image, error.Error())
+	}
+
+	return nil
+}
+
 func (deployment *NodeDeployment) Execute(name, command string) (string, error) {
 	log.WithFields(log.Fields{"name": name, "node": deployment.name, "_target": deployment.node.IP, "_command": command}).Info("Executing remote command")
 

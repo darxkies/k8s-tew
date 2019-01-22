@@ -9,11 +9,15 @@ import (
 	"net/http"
 	"os"
 	"path"
+	"path/filepath"
 	"time"
 
 	"github.com/cavaliercoder/grab"
 	"github.com/darxkies/k8s-tew/config"
+	"github.com/darxkies/k8s-tew/pkg/container/image/converter"
 	"github.com/darxkies/k8s-tew/utils"
+	"github.com/pkg/errors"
+	log "github.com/sirupsen/logrus"
 )
 
 type CompressedFile struct {
@@ -40,6 +44,7 @@ func NewDownloader(config *config.InternalConfig, forceDownload bool, parallel b
 	downloader.addTask(downloader.downloadRuncBinary)
 	downloader.addTask(downloader.downloadCriCtlBinary)
 	downloader.addTask(downloader.downloadArkBinaries)
+	downloader.addTask(downloader.downloadImages)
 
 	return downloader
 }
@@ -53,7 +58,13 @@ func (downloader *Downloader) addTask(task utils.Task) {
 }
 
 func (downloader Downloader) Steps() int {
-	return len(downloader.downloaderSteps)
+	// -1 for downloadImages
+	result := len(downloader.downloaderSteps)
+
+	// Images to download
+	result += len(downloader.config.Config.Versions.GetImages())
+
+	return result
 }
 
 func (downloader Downloader) getURL(url, filename string) (string, error) {
@@ -153,13 +164,13 @@ func (downloader Downloader) extractTGZ(filename string, targetDirectory string)
 
 	// Create directory
 	if error := utils.CreateDirectoryIfMissing(targetDirectory); error != nil {
-		return error
+		return errors.Wrapf(error, "could not create directory '%s'", targetDirectory)
 	}
 
 	// Open compressed file
 	file, error := os.Open(filename)
 	if error != nil {
-		return error
+		return errors.Wrapf(error, "could not open file '%s'", filename)
 	}
 
 	// Defer file close operation
@@ -168,7 +179,7 @@ func (downloader Downloader) extractTGZ(filename string, targetDirectory string)
 	// Open gzip reader
 	gzipReader, error := gzip.NewReader(file)
 	if error != nil {
-		return error
+		return errors.Wrapf(error, "could not create gzip reader for '%s'", filename)
 	}
 
 	// Open tar reader
@@ -185,7 +196,7 @@ func (downloader Downloader) extractTGZ(filename string, targetDirectory string)
 
 		// Exit if any other error occurred
 		if error != nil {
-			return error
+			return errors.Wrapf(error, "could not get tar header from '%s'", filename)
 		}
 
 		fullName := path.Join(targetDirectory, header.Name)
@@ -193,21 +204,26 @@ func (downloader Downloader) extractTGZ(filename string, targetDirectory string)
 		switch header.Typeflag {
 		case tar.TypeDir:
 			if error := utils.CreateDirectoryIfMissing(fullName); error != nil {
-				return error
+				return errors.Wrapf(error, "could not create directory '%s'", fullName)
 			}
 
 		case tar.TypeReg:
+			if error := utils.CreateDirectoryIfMissing(filepath.Dir(fullName)); error != nil {
+				return errors.Wrapf(error, "could not create directory '%s'", fullName)
+			}
+
 			outputFile, error := os.OpenFile(fullName, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0555)
 
 			if error != nil {
-				return error
+				return errors.Wrapf(error, "could not open file '%s'", fullName)
 			}
 
 			defer outputFile.Close()
 
 			if _, error := io.Copy(outputFile, tarReader); error != nil {
-				return error
+				return errors.Wrapf(error, "could not write to file '%s'", fullName)
 			}
+
 		default:
 		}
 	}
@@ -236,12 +252,12 @@ func (downloader Downloader) downloadAndExtractTGZFiles(urlTemplate, baseName st
 	// Build base name including the version number
 	baseName, error := downloader.getURL(baseName, "")
 	if error != nil {
-		return error
+		return errors.Wrapf(error, "could not get url '%s'", baseName)
 	}
 
 	url, error := downloader.getURL(urlTemplate, baseName)
 	if error != nil {
-		return error
+		return errors.Wrapf(error, "could not get url '%s'", baseName)
 	}
 
 	// All files exist, print skip message and bail out
@@ -260,7 +276,7 @@ func (downloader Downloader) downloadAndExtractTGZFiles(urlTemplate, baseName st
 
 	// Download file
 	if error = downloader.downloadFile(url, temporaryFile); error != nil {
-		return error
+		return errors.Wrapf(error, "could not download file '%s'", url)
 	}
 
 	// Make sure the file is deleted once done
@@ -273,7 +289,7 @@ func (downloader Downloader) downloadAndExtractTGZFiles(urlTemplate, baseName st
 
 	// Extrace files
 	if error := downloader.extractTGZ(temporaryFile, temporaryExtractedDirectory); error != nil {
-		return error
+		return errors.Wrapf(error, "could not extract tgz '%s' to '%s'", temporaryFile, temporaryExtractedDirectory)
 	}
 
 	// Make sure the temporary directory is removed once done
@@ -283,8 +299,10 @@ func (downloader Downloader) downloadAndExtractTGZFiles(urlTemplate, baseName st
 
 	// Move files from temporary directory to target directory
 	for _, compressedFile := range files {
-		if error := os.Rename(path.Join(temporaryExtractedDirectory, compressedFile.SourceFile), compressedFile.TargetFile); error != nil {
-			return error
+		sourceFilename := path.Join(temporaryExtractedDirectory, compressedFile.SourceFile)
+
+		if error := os.Rename(sourceFilename, compressedFile.TargetFile); error != nil {
+			return errors.Wrapf(error, "could not rename '%s' to '%s'", sourceFilename, compressedFile.TargetFile)
 		}
 
 		utils.LogFilename("Installed", compressedFile.TargetFile)
@@ -423,6 +441,34 @@ func (downloader Downloader) downloadArkBinaries() error {
 	}
 
 	return downloader.downloadAndExtractTGZFiles(utils.ArkDownloadUrl, utils.ArkBaseName, compressedFiles)
+}
+
+func (downloader Downloader) downloadImages() error {
+
+	for _, image := range downloader.config.Config.Versions.GetImages() {
+		imageFilename := downloader.config.GetFullLocalAssetFilename(image.GetImageFilename())
+
+		if utils.FileExists(imageFilename) {
+			log.WithFields(log.Fields{"image": image.Name, "_filename": imageFilename}).Info("Skipped downloading")
+
+			utils.IncreaseProgressStep()
+
+			continue
+		}
+
+		error := converter.PullImage(image.Name, imageFilename, false)
+		if error != nil {
+			return error
+		}
+
+		log.WithFields(log.Fields{"name": image.Name, "_filename": imageFilename}).Info("Downloaded image")
+
+		utils.IncreaseProgressStep()
+	}
+
+	utils.IncreaseProgressStep()
+
+	return nil
 }
 
 func (downloader Downloader) createLocalDirectories() error {

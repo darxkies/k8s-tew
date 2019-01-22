@@ -8,6 +8,7 @@ type Versions struct {
 	Helm                       string `yaml:"helm"`
 	Containerd                 string `yaml:"containerd"`
 	Runc                       string `yaml:"runc"`
+	Img                        string `yaml:"img"`
 	CriCtl                     string `yaml:"crictl"`
 	Gobetween                  string `yaml:"gobetween"`
 	VirtualIP                  string `yaml:"virtual-ip"`
@@ -99,5 +100,52 @@ func NewVersions() Versions {
 		CSICephFSPlugin:            utils.VersionCsiCephFsPlugin,
 		WordPress:                  utils.VersionWordpress,
 		MySQL:                      utils.VersionMysql,
+	}
+}
+
+func (versions Versions) GetImages() []Image {
+	return []Image{
+		{Name: versions.Pause, Features: Features{}},
+		{Name: versions.Gobetween, Features: Features{}},
+		{Name: versions.VirtualIP, Features: Features{}},
+		{Name: versions.Etcd, Features: Features{}},
+		{Name: versions.K8S, Features: Features{}},
+		{Name: versions.CalicoCNI, Features: Features{}},
+		{Name: versions.CalicoNode, Features: Features{}},
+		{Name: versions.CalicoTypha, Features: Features{}},
+		{Name: versions.CoreDNS, Features: Features{}},
+		{Name: versions.MinioServer, Features: Features{utils.FeatureBackup, utils.FeatureStorage}},
+		{Name: versions.MinioClient, Features: Features{utils.FeatureBackup, utils.FeatureStorage}},
+		{Name: versions.Ark, Features: Features{utils.FeatureBackup, utils.FeatureStorage}},
+		{Name: versions.Ceph, Features: Features{utils.FeatureStorage}},
+		{Name: versions.CSIAttacher, Features: Features{utils.FeatureStorage}},
+		{Name: versions.CSIProvisioner, Features: Features{utils.FeatureStorage}},
+		{Name: versions.CSIDriverRegistrar, Features: Features{utils.FeatureStorage}},
+		{Name: versions.CSICephRBDPlugin, Features: Features{utils.FeatureStorage}},
+		{Name: versions.CSICephFSPlugin, Features: Features{utils.FeatureStorage}},
+		{Name: versions.FluentBit, Features: Features{utils.FeatureLogging, utils.FeatureStorage}},
+		{Name: versions.Elasticsearch, Features: Features{utils.FeatureLogging, utils.FeatureStorage}},
+		{Name: versions.ElasticsearchCron, Features: Features{utils.FeatureLogging, utils.FeatureStorage}},
+		{Name: versions.ElasticsearchOperator, Features: Features{utils.FeatureLogging, utils.FeatureStorage}},
+		{Name: versions.Kibana, Features: Features{utils.FeatureLogging, utils.FeatureStorage}},
+		{Name: versions.Cerebro, Features: Features{utils.FeatureLogging, utils.FeatureStorage}},
+		{Name: versions.Heapster, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
+		{Name: versions.AddonResizer, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
+		{Name: versions.MetricsServer, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
+		{Name: versions.KubernetesDashboard, Features: Features{}},
+		{Name: versions.PrometheusOperator, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
+		{Name: versions.PrometheusConfigReloader, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
+		{Name: versions.ConfigMapReload, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
+		{Name: versions.KubeStateMetrics, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
+		{Name: versions.Grafana, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
+		{Name: versions.GrafanaWatcher, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
+		{Name: versions.Prometheus, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
+		{Name: versions.PrometheusNodeExporter, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
+		{Name: versions.PrometheusAlertManager, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
+		{Name: versions.CertManagerController, Features: Features{utils.FeatureIngress, utils.FeatureStorage}},
+		{Name: versions.NginxIngressDefaultBackend, Features: Features{utils.FeatureIngress, utils.FeatureStorage}},
+		{Name: versions.NginxIngressController, Features: Features{utils.FeatureIngress, utils.FeatureStorage}},
+		{Name: versions.MySQL, Features: Features{utils.FeatureShowcase, utils.FeatureStorage}},
+		{Name: versions.WordPress, Features: Features{utils.FeatureShowcase, utils.FeatureStorage}},
 	}
 }

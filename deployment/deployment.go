@@ -9,11 +9,6 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-type Image struct {
-	Name     string
-	Features config.Features
-}
-
 type Deployment struct {
 	config            *config.InternalConfig
 	identityFile      string
@@ -23,7 +18,7 @@ type Deployment struct {
 	forceUpload       bool
 	commandRetries    uint
 	nodes             map[string]*NodeDeployment
-	images            []Image
+	images            config.Images
 	parallel          bool
 }
 
@@ -66,50 +61,7 @@ func NewDeployment(_config *config.InternalConfig, identityFile string, pullImag
 
 	deployment := &Deployment{config: _config, identityFile: identityFile, pullImages: pullImages, forceUpload: forceUpload, parallel: parallel, commandRetries: commandRetries, nodes: nodes, skipSetup: skipSetup, skipSetupFeatures: skipSetupFeatures}
 
-	deployment.images = []Image{
-		{Name: deployment.config.Config.Versions.Pause, Features: config.Features{}},
-		{Name: deployment.config.Config.Versions.Gobetween, Features: config.Features{}},
-		{Name: deployment.config.Config.Versions.VirtualIP, Features: config.Features{}},
-		{Name: deployment.config.Config.Versions.Etcd, Features: config.Features{}},
-		{Name: deployment.config.Config.Versions.K8S, Features: config.Features{}},
-		{Name: deployment.config.Config.Versions.CalicoCNI, Features: config.Features{}},
-		{Name: deployment.config.Config.Versions.CalicoNode, Features: config.Features{}},
-		{Name: deployment.config.Config.Versions.CalicoTypha, Features: config.Features{}},
-		{Name: deployment.config.Config.Versions.CoreDNS, Features: config.Features{}},
-		{Name: deployment.config.Config.Versions.MinioServer, Features: config.Features{utils.FeatureBackup, utils.FeatureStorage}},
-		{Name: deployment.config.Config.Versions.MinioClient, Features: config.Features{utils.FeatureBackup, utils.FeatureStorage}},
-		{Name: deployment.config.Config.Versions.Ark, Features: config.Features{utils.FeatureBackup, utils.FeatureStorage}},
-		{Name: deployment.config.Config.Versions.Ceph, Features: config.Features{utils.FeatureStorage}},
-		{Name: deployment.config.Config.Versions.CSIAttacher, Features: config.Features{utils.FeatureStorage}},
-		{Name: deployment.config.Config.Versions.CSIProvisioner, Features: config.Features{utils.FeatureStorage}},
-		{Name: deployment.config.Config.Versions.CSIDriverRegistrar, Features: config.Features{utils.FeatureStorage}},
-		{Name: deployment.config.Config.Versions.CSICephRBDPlugin, Features: config.Features{utils.FeatureStorage}},
-		{Name: deployment.config.Config.Versions.CSICephFSPlugin, Features: config.Features{utils.FeatureStorage}},
-		{Name: deployment.config.Config.Versions.FluentBit, Features: config.Features{utils.FeatureLogging, utils.FeatureStorage}},
-		{Name: deployment.config.Config.Versions.Elasticsearch, Features: config.Features{utils.FeatureLogging, utils.FeatureStorage}},
-		{Name: deployment.config.Config.Versions.ElasticsearchCron, Features: config.Features{utils.FeatureLogging, utils.FeatureStorage}},
-		{Name: deployment.config.Config.Versions.ElasticsearchOperator, Features: config.Features{utils.FeatureLogging, utils.FeatureStorage}},
-		{Name: deployment.config.Config.Versions.Kibana, Features: config.Features{utils.FeatureLogging, utils.FeatureStorage}},
-		{Name: deployment.config.Config.Versions.Cerebro, Features: config.Features{utils.FeatureLogging, utils.FeatureStorage}},
-		{Name: deployment.config.Config.Versions.Heapster, Features: config.Features{utils.FeatureMonitoring, utils.FeatureStorage}},
-		{Name: deployment.config.Config.Versions.AddonResizer, Features: config.Features{utils.FeatureMonitoring, utils.FeatureStorage}},
-		{Name: deployment.config.Config.Versions.MetricsServer, Features: config.Features{utils.FeatureMonitoring, utils.FeatureStorage}},
-		{Name: deployment.config.Config.Versions.KubernetesDashboard, Features: config.Features{}},
-		{Name: deployment.config.Config.Versions.PrometheusOperator, Features: config.Features{utils.FeatureMonitoring, utils.FeatureStorage}},
-		{Name: deployment.config.Config.Versions.PrometheusConfigReloader, Features: config.Features{utils.FeatureMonitoring, utils.FeatureStorage}},
-		{Name: deployment.config.Config.Versions.ConfigMapReload, Features: config.Features{utils.FeatureMonitoring, utils.FeatureStorage}},
-		{Name: deployment.config.Config.Versions.KubeStateMetrics, Features: config.Features{utils.FeatureMonitoring, utils.FeatureStorage}},
-		{Name: deployment.config.Config.Versions.Grafana, Features: config.Features{utils.FeatureMonitoring, utils.FeatureStorage}},
-		{Name: deployment.config.Config.Versions.GrafanaWatcher, Features: config.Features{utils.FeatureMonitoring, utils.FeatureStorage}},
-		{Name: deployment.config.Config.Versions.Prometheus, Features: config.Features{utils.FeatureMonitoring, utils.FeatureStorage}},
-		{Name: deployment.config.Config.Versions.PrometheusNodeExporter, Features: config.Features{utils.FeatureMonitoring, utils.FeatureStorage}},
-		{Name: deployment.config.Config.Versions.PrometheusAlertManager, Features: config.Features{utils.FeatureMonitoring, utils.FeatureStorage}},
-		{Name: deployment.config.Config.Versions.CertManagerController, Features: config.Features{utils.FeatureIngress, utils.FeatureStorage}},
-		{Name: deployment.config.Config.Versions.NginxIngressDefaultBackend, Features: config.Features{utils.FeatureIngress, utils.FeatureStorage}},
-		{Name: deployment.config.Config.Versions.NginxIngressController, Features: config.Features{utils.FeatureIngress, utils.FeatureStorage}},
-		{Name: deployment.config.Config.Versions.MySQL, Features: config.Features{utils.FeatureShowcase, utils.FeatureStorage}},
-		{Name: deployment.config.Config.Versions.WordPress, Features: config.Features{utils.FeatureShowcase, utils.FeatureStorage}},
-	}
+	deployment.images = deployment.config.Config.Versions.GetImages()
 
 	return deployment
 }
@@ -127,9 +79,12 @@ func (deployment *Deployment) Steps() int {
 		result += len(deployment.config.Config.Nodes)
 
 		if deployment.pullImages {
-			// Taint commands
+			// Pull images
 			result += len(deployment.config.Config.Nodes) * len(deployment.images)
 		}
+
+		// Import images
+		result += len(deployment.config.Config.Nodes) * len(deployment.images)
 
 		// Run Commands
 		result += len(deployment.config.Config.Nodes) * len(deployment.config.Config.Commands)
@@ -258,6 +213,46 @@ func (deployment *Deployment) runPullImages() error {
 	return nil
 }
 
+func (deployment *Deployment) runImportImages() error {
+	sortedNodeKeys := deployment.config.GetSortedNodeKeys()
+
+	for _, nodeName := range sortedNodeKeys {
+		nodeDeployment := deployment.nodes[nodeName]
+
+		deployment.config.SetNode(nodeName, nodeDeployment.node)
+
+		tasks := utils.Tasks{}
+
+		for _, image := range deployment.images {
+			image := image
+
+			tasks = append(tasks, func() error {
+				defer utils.IncreaseProgressStep()
+
+				if image.Features.HasFeatures(deployment.skipSetupFeatures) {
+					return nil
+				}
+
+				var _error error
+
+				for i := uint(0); i < deployment.commandRetries; i++ {
+					if _error = nodeDeployment.importImage(image.Name, deployment.config.GetFullTargetAssetFilename(image.GetImageFilename())); _error == nil {
+						return nil
+					}
+				}
+
+				return _error
+			})
+		}
+
+		if errors := utils.RunParallelTasks(tasks, deployment.parallel); len(errors) > 0 {
+			return errors[0]
+		}
+	}
+
+	return nil
+}
+
 // Run bootstrapper commands
 func (deployment *Deployment) runBoostrapperCommands() error {
 	for _, command := range deployment.config.Config.Commands {
@@ -295,6 +290,10 @@ func (deployment *Deployment) setup() error {
 	}
 
 	if error := deployment.runPullImages(); error != nil {
+		return error
+	}
+
+	if error := deployment.runImportImages(); error != nil {
 		return error
 	}
 
