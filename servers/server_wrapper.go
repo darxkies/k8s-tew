@@ -1,6 +1,7 @@
 package servers
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"os/exec"
@@ -22,6 +23,10 @@ type ServerWrapper struct {
 	command         []string
 	logger          config.LoggerConfig
 	pathEnvironment string
+	started         bool
+	context         context.Context
+	cancel          context.CancelFunc
+	done            chan bool
 }
 
 func NewServerWrapper(_config config.InternalConfig, name string, serverConfig config.ServerConfig, pathEnvironment string) (Server, error) {
@@ -58,6 +63,10 @@ func NewServerWrapper(_config config.InternalConfig, name string, serverConfig c
 }
 
 func (server *ServerWrapper) Start() error {
+	if server.started {
+		return fmt.Errorf("%s already started", server.name)
+	}
+
 	server.stop = false
 
 	if server.logger.Enabled {
@@ -70,9 +79,14 @@ func (server *ServerWrapper) Start() error {
 
 	log.WithFields(log.Fields{"name": server.Name(), "_command": strings.Join(server.command, " ")}).Info("Starting server")
 
+	server.context, server.cancel = context.WithCancel(context.Background())
+	server.done = make(chan bool, 1)
+
+	server.started = true
+
 	go func() {
 		for !server.stop {
-			command := exec.Command(server.command[0], server.command[1:]...)
+			command := exec.CommandContext(server.context, server.command[0], server.command[1:]...)
 			command.SysProcAttr = &syscall.SysProcAttr{
 				Setpgid: true,
 				Pgid:    0,
@@ -105,19 +119,31 @@ func (server *ServerWrapper) Start() error {
 
 			error = command.Run()
 
-			time.Sleep(time.Second)
-
 			if !server.stop {
+				time.Sleep(time.Second)
+
 				log.WithFields(log.Fields{"name": server.name, "error": error, "_command": strings.Join(server.command, " ")}).Error("Restarting server")
 			}
 		}
+
+		close(server.done)
 	}()
 
 	return nil
 }
 
 func (server *ServerWrapper) Stop() {
+	if !server.started {
+		return
+	}
+
 	server.stop = true
+
+	server.cancel()
+
+	<-server.done
+
+	log.WithFields(log.Fields{"name": server.name, "_command": strings.Join(server.command, " ")}).Info("Stopped server")
 }
 
 func (server *ServerWrapper) Name() string {

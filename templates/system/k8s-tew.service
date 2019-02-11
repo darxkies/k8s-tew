@@ -2,12 +2,13 @@
 Description={{.ProjectTitle}}
 
 [Service]
-ExecStart={{.Command}} run --base-directory={{.BaseDirectory}} --hide-progress
+ExecStart={{.Command}} run --base-directory={{.BaseDirectory}} --hide-progress --kill-containers=false
 Restart=on-failure
 KillSignal=SIGINT
 KillMode=process
 RestartSec=5
 LimitNOFILE=1000000
+Delegate=yes
 
 [Install]
 WantedBy=multi-user.target

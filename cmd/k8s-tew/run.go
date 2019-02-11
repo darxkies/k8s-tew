@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 
+	"github.com/darxkies/k8s-tew/pkg/container"
 	"github.com/darxkies/k8s-tew/servers"
 	"github.com/darxkies/k8s-tew/utils"
 	"github.com/spf13/cobra"
@@ -10,7 +11,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-var killTimeout uint
+var killContainers bool
 
 var runCmd = &cobra.Command{
 	Use:   "run",
@@ -35,7 +36,7 @@ var runCmd = &cobra.Command{
 			os.Exit(-1)
 		}
 
-		serversContainer := servers.NewServers(_config, killTimeout)
+		serversContainer := servers.NewServers(_config)
 
 		utils.SetProgressSteps(serversContainer.Steps())
 
@@ -46,11 +47,15 @@ var runCmd = &cobra.Command{
 
 			os.Exit(-1)
 		}
+
+		if killContainers {
+			container.KillContainers(_config)
+		}
 	},
 }
 
 func init() {
 	runCmd.Flags().UintVarP(&commandRetries, "command-retries", "r", 300, "The count of command retries")
-	runCmd.Flags().UintVar(&killTimeout, "kill-timeout", 10, "Kill timeout for child processes")
+	runCmd.Flags().BoolVarP(&killContainers, "kill-containers", "k", true, "Kill containers when shutting down")
 	RootCmd.AddCommand(runCmd)
 }

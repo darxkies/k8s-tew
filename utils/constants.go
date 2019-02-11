@@ -2,15 +2,15 @@ package utils
 
 // Versions
 const VersionConfig = "2.2.0"
-const VersionK8s = "k8s.gcr.io/hyperkube:v1.13.2"
+const VersionK8s = "k8s.gcr.io/hyperkube:v1.13.3"
 const VersionEtcd = "quay.io/coreos/etcd:v3.3.9"
-const VersionContainerd = "1.2.2"
+const VersionContainerd = "1.2.3"
 const VersionRunc = "1.0.0-rc6"
 const VersionCrictl = "1.13.0"
 const VersionHelm = "2.12.2"
 const VersionGobetween = "docker.io/yyyar/gobetween:0.6.1"
 const VersionVirtualIP = "docker.io/darxkies/virtual-ip:0.1.4"
-const VersionArk = "gcr.io/heptio-images/ark:v0.10.1"
+const VersionArk = "gcr.io/heptio-images/ark:v0.9.11"
 const VersionMinioServer = "docker.io/minio/minio:RELEASE.2018-08-18T03-49-57Z"
 const VersionMinioClient = "docker.io/minio/mc:RELEASE.2018-08-18T02-13-04Z"
 const VersionPause = "k8s.gcr.io/pause:3.1"
@@ -209,6 +209,8 @@ const DirectoryHostBinaries = "host-binaries"
 const DirectoryCephRbdPlugin = "ceph-rbd-plugin"
 const DirectoryCephFsPlugin = "ceph-fs-plugin"
 const DirectoryKubeletPlugins = "kubelet-plugins"
+const DirectoryVarRun = "var-run"
+const DirectoryRun = "run"
 
 // Binaries
 const BinaryK8sTew = "k8s-tew"
