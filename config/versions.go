@@ -8,7 +8,6 @@ type Versions struct {
 	Helm                       string `yaml:"helm"`
 	Containerd                 string `yaml:"containerd"`
 	Runc                       string `yaml:"runc"`
-	Img                        string `yaml:"img"`
 	CriCtl                     string `yaml:"crictl"`
 	Gobetween                  string `yaml:"gobetween"`
 	VirtualIP                  string `yaml:"virtual-ip"`
