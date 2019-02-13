@@ -143,6 +143,10 @@ func init() {
 		_config.Config.CalicoTyphaIP = value
 	})
 
+	addStringOption("metallb-addresses", utils.MetalLBAddresses, "Comma separated MetalLB address ranges and CIDR (e.g 192.168.0.16/28,192.168.0.75-192.168.0.100)", func(value string) {
+		_config.Config.MetalLBAddresses = value
+	})
+
 	addStringOption("resolv-conf", utils.ResolvConf, "Custom resolv.conf", func(value string) {
 		_config.Config.ResolvConf = value
 	})
@@ -253,6 +257,14 @@ func init() {
 
 	addStringOption("version-calico-cni", utils.VersionCalicoCni, "Calico CNI version", func(value string) {
 		_config.Config.Versions.CalicoCNI = value
+	})
+
+	addStringOption("version-metallb-controller", utils.VersionMetalLBController, "MetalLB Controller version", func(value string) {
+		_config.Config.Versions.MetalLBController = value
+	})
+
+	addStringOption("version-metallb-speaker", utils.VersionMetalLBSpeaker, "MetalLB Speaker version", func(value string) {
+		_config.Config.Versions.MetalLBSpeaker = value
 	})
 
 	addStringOption("version-ceph", utils.VersionCeph, "Ceph version", func(value string) {

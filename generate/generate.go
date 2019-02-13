@@ -3,6 +3,7 @@ package generate
 import (
 	"fmt"
 	"path"
+	"strings"
 
 	"github.com/darxkies/k8s-tew/config"
 
@@ -29,6 +30,8 @@ func NewGenerator(config *config.InternalConfig) *Generator {
 		generator.generateGobetweenConfig,
 		// Generate calico setup
 		generator.generateCalicoSetup,
+		// Generate metallb setup
+		generator.generateMetalLBSetup,
 		// Generate scheduler config
 		generator.generateKubeSchedulerConfig,
 		// Generate kubelet config
@@ -188,6 +191,20 @@ func (generator *Generator) generateCalicoSetup() error {
 		CalicoNodeImage:      generator.config.Config.Versions.CalicoNode,
 		CalicoCNIImage:       generator.config.Config.Versions.CalicoCNI,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sCalicoSetup), true, false)
+}
+
+func (generator *Generator) generateMetalLBSetup() error {
+	addresses := strings.Split(generator.config.Config.MetalLBAddresses, ",")
+
+	return utils.ApplyTemplateAndSave("metallb-setup", utils.TemplateMetalLBSetup, struct {
+		MetalLBControllerImage string
+		MetalLBSpeakerImage    string
+		MetalLBAddresses       []string
+	}{
+		MetalLBControllerImage: generator.config.Config.Versions.MetalLBController,
+		MetalLBSpeakerImage:    generator.config.Config.Versions.MetalLBSpeaker,
+		MetalLBAddresses:       addresses,
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sMetalLBSetup), true, false)
 }
 
 func (generator *Generator) generateK8SKubeletConfigFile() error {

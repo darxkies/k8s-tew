@@ -233,15 +233,9 @@ func (deployment *Deployment) runImportImages() error {
 					return nil
 				}
 
-				var _error error
+				_ = nodeDeployment.importImage(image.Name, deployment.config.GetFullTargetAssetFilename(image.GetImageFilename()))
 
-				for i := uint(0); i < deployment.commandRetries; i++ {
-					if _error = nodeDeployment.importImage(image.Name, deployment.config.GetFullTargetAssetFilename(image.GetImageFilename())); _error == nil {
-						return nil
-					}
-				}
-
-				return _error
+				return nil
 			})
 		}
 

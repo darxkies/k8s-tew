@@ -25,6 +25,8 @@ type Versions struct {
 	CalicoTypha                string `yaml:"calico-typha"`
 	CalicoNode                 string `yaml:"calico-node"`
 	CalicoCNI                  string `yaml:"calico-cni"`
+	MetalLBController          string `yaml:"metallb-controller"`
+	MetalLBSpeaker             string `yaml:"metallb-speaker"`
 	Ceph                       string `yaml:"ceph"`
 	Heapster                   string `yaml:"heapster"`
 	AddonResizer               string `yaml:"addon-resizer"`
@@ -75,6 +77,8 @@ func NewVersions() Versions {
 		CalicoTypha:                utils.VersionCalicoTypha,
 		CalicoNode:                 utils.VersionCalicoNode,
 		CalicoCNI:                  utils.VersionCalicoCni,
+		MetalLBController:          utils.VersionMetalLBController,
+		MetalLBSpeaker:             utils.VersionMetalLBSpeaker,
 		Ceph:                       utils.VersionCeph,
 		Heapster:                   utils.VersionHeapster,
 		AddonResizer:               utils.VersionAddonResizer,
@@ -112,6 +116,8 @@ func (versions Versions) GetImages() []Image {
 		{Name: versions.CalicoCNI, Features: Features{}},
 		{Name: versions.CalicoNode, Features: Features{}},
 		{Name: versions.CalicoTypha, Features: Features{}},
+		{Name: versions.MetalLBController, Features: Features{}},
+		{Name: versions.MetalLBSpeaker, Features: Features{}},
 		{Name: versions.CoreDNS, Features: Features{}},
 		{Name: versions.MinioServer, Features: Features{utils.FeatureBackup, utils.FeatureStorage}},
 		{Name: versions.MinioClient, Features: Features{utils.FeatureBackup, utils.FeatureStorage}},

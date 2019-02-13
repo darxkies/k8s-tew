@@ -1,0 +1,234 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  namespace: networking
+  name: metallb-controller
+  labels:
+    app: metallb
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  namespace: networking
+  name: metallb-speaker
+  labels:
+    app: metallb
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: networking:metallb-controller
+  labels:
+    app: metallb
+rules:
+- apiGroups: [""]
+  resources: ["services"]
+  verbs: ["get", "list", "watch", "update"]
+- apiGroups: [""]
+  resources: ["services/status"]
+  verbs: ["update"]
+- apiGroups: [""]
+  resources: ["events"]
+  verbs: ["create", "patch"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: networking:metallb-speaker
+  labels:
+    app: metallb
+rules:
+- apiGroups: [""]
+  resources: ["services", "endpoints", "nodes"]
+  verbs: ["get", "list", "watch"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: networking
+  name: config-watcher
+  labels:
+    app: metallb
+rules:
+- apiGroups: [""]
+  resources: ["configmaps"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: [""]
+  resources: ["events"]
+  verbs: ["create"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: networking:metallb-controller
+  labels:
+    app: metallb
+subjects:
+- kind: ServiceAccount
+  name: metallb-controller
+  namespace: networking
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: networking:metallb-controller
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: networking:metallb-speaker
+  labels:
+    app: metallb
+subjects:
+- kind: ServiceAccount
+  name: metallb-speaker
+  namespace: networking
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: networking:metallb-speaker
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  namespace: networking
+  name: config-watcher
+  labels:
+    app: metallb
+subjects:
+- kind: ServiceAccount
+  name: metallb-controller
+- kind: ServiceAccount
+  name: metallb-speaker
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: config-watcher
+
+---
+apiVersion: apps/v1beta2
+kind: DaemonSet
+metadata:
+  namespace: networking
+  name: metallb-speaker
+  labels:
+    app: metallb
+    component: speaker
+spec:
+  selector:
+    matchLabels:
+      app: metallb
+      component: speaker
+  template:
+    metadata:
+      labels:
+        app: metallb
+        component: speaker
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "7472"
+    spec:
+      serviceAccountName: metallb-speaker
+      terminationGracePeriodSeconds: 0
+      hostNetwork: true
+      containers:
+      - name: speaker
+        image: {{.MetalLBSpeakerImage}} 
+        imagePullPolicy: IfNotPresent
+        args:
+        - --port=7472
+        - --config=metallb-config
+        env:
+        - name: METALLB_NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        ports:
+        - name: monitoring
+          containerPort: 7472
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100Mi
+          
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - all
+            add:
+            - net_raw
+
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  namespace: networking
+  name: metallb-controller
+  labels:
+    app: metallb
+    component: controller
+spec:
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: metallb
+      component: controller
+  template:
+    metadata:
+      labels:
+        app: metallb
+        component: controller
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "7472"
+    spec:
+      serviceAccountName: metallb-controller
+      terminationGracePeriodSeconds: 0
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534 # nobody
+      containers:
+      - name: controller
+        image: {{.MetalLBControllerImage}}
+        imagePullPolicy: IfNotPresent
+        args:
+        - --port=7472
+        - --config=metallb-config
+        ports:
+        - name: monitoring
+          containerPort: 7472
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100Mi
+          
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - all
+          readOnlyRootFilesystem: true
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: networking
+  name: metallb-config
+data:
+  config: |
+    address-pools:
+    - name: k8s-tew-ip-space
+      protocol: layer2
+      addresses:
+      {{- range .MetalLBAddresses }}
+      - {{ . }}
+      {{- end }}

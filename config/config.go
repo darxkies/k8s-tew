@@ -26,6 +26,7 @@ type Config struct {
 	ClusterDNSIP                 string      `yaml:"cluster-dns-ip"`
 	ClusterCIDR                  string      `yaml:"cluster-cidr"`
 	CalicoTyphaIP                string      `yaml:"calico-typha-ip"`
+	MetalLBAddresses             string      `yaml:"metallb-addresses"`
 	ResolvConf                   string      `yaml:"resolv-conf"`
 	DeploymentDirectory          string      `yaml:"deployment-directory,omitempty"`
 	RSASize                      uint16      `yaml:"rsa-size"`
@@ -56,6 +57,7 @@ func NewConfig() *Config {
 	config.ClusterDNSIP = utils.ClusterDnsIp
 	config.ClusterCIDR = utils.ClusterCidr
 	config.CalicoTyphaIP = utils.CalicoTyphaIp
+	config.MetalLBAddresses = utils.MetalLBAddresses
 	config.ResolvConf = utils.ResolvConf
 	config.DeploymentDirectory = utils.DeploymentDirectory
 	config.RSASize = utils.RsaSize
