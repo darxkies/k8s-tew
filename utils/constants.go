@@ -4,7 +4,7 @@ package utils
 const VersionConfig = "2.2.0"
 const VersionK8s = "k8s.gcr.io/hyperkube:v1.13.3"
 const VersionEtcd = "quay.io/coreos/etcd:v3.3.9"
-const VersionContainerd = "1.2.3"
+const VersionContainerd = "1.2.4"
 const VersionRunc = "1.0.0-rc6"
 const VersionCrictl = "1.13.0"
 const VersionHelm = "2.12.2"
