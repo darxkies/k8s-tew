@@ -167,6 +167,7 @@ func (config *InternalConfig) registerAssetDirectories() {
 	config.addAssetDirectory(utils.DirectoryTemporary, Labels{}, path.Join(utils.SubdirectoryTemporary), false)
 	config.addAssetDirectory(utils.DirectoryBashCompletion, Labels{}, path.Join(utils.SubdirectoryConfig, utils.SubdirectoryBashCompletion), false)
 	config.addAssetDirectory(utils.DirectoryKubeletPlugins, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryKubeletData), utils.SubdirectoryPlugins), true)
+	config.addAssetDirectory(utils.DirectoryKubeletPluginsRegistry, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryKubeletData), utils.SubdirectoryPluginsRegistry), false)
 	config.addAssetDirectory(utils.DirectoryImages, Labels{utils.NodeController, utils.NodeWorker}, path.Join(utils.SubdirectoryVariable, utils.SubdirectoryK8sTew, utils.SubdirectoryImages), false)
 	config.addAssetDirectory(utils.DirectoryRun, Labels{utils.NodeController, utils.NodeWorker}, path.Join(utils.SubdirectoryRun, utils.SubdirectoryK8sTew), false)
 	config.addAssetDirectory(utils.DirectoryVarRun, Labels{utils.NodeController, utils.NodeWorker}, path.Join(utils.SubdirectoryVariable, utils.SubdirectoryRun, utils.SubdirectoryK8sTew), false)
@@ -179,8 +180,6 @@ func (config *InternalConfig) registerAssetDirectories() {
 	config.addAssetDirectory(utils.DirectoryCephBootstrapRbd, Labels{utils.NodeWorker}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryCephData), utils.DirectoryCephBootstrapRbd), false)
 	config.addAssetDirectory(utils.DirectoryCephBootstrapRgw, Labels{utils.NodeWorker}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryCephData), utils.DirectoryCephBootstrapRgw), false)
 	config.addAssetDirectory(utils.DirectoryCephBootstrapRgw, Labels{utils.NodeWorker}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryCephData), utils.DirectoryCephBootstrapRgw), false)
-	config.addAssetDirectory(utils.DirectoryCephFsPlugin, Labels{utils.NodeWorker}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryKubeletPlugins), utils.SubdirectoryCsiCephfsPlugin), true)
-	config.addAssetDirectory(utils.DirectoryCephRbdPlugin, Labels{utils.NodeWorker}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryKubeletPlugins), utils.SubdirectoryCsiRbdPlugin), true)
 }
 
 func (config *InternalConfig) registerAssetFiles() {

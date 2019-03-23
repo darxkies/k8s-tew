@@ -54,6 +54,7 @@ type Versions struct {
 	CSIDriverRegistrar         string `yaml:"csi-driver-registrar"`
 	CSICephRBDPlugin           string `yaml:"csi-ceph-rbd-plugin"`
 	CSICephFSPlugin            string `yaml:"csi-ceph-fs-plugin"`
+	CSICephSnapshotter         string `yaml:"csi-ceph-snapshotter"`
 	WordPress                  string `yaml:"wordpress"`
 	MySQL                      string `yaml:"mysql"`
 }
@@ -107,6 +108,7 @@ func NewVersions() Versions {
 		CSIDriverRegistrar:         utils.VersionCsiDriverRegistrar,
 		CSICephRBDPlugin:           utils.VersionCsiCephRbdPlugin,
 		CSICephFSPlugin:            utils.VersionCsiCephFsPlugin,
+		CSICephSnapshotter:         utils.VersionCsiCephSnapshotter,
 		WordPress:                  utils.VersionWordpress,
 		MySQL:                      utils.VersionMysql,
 	}
@@ -136,6 +138,7 @@ func (versions Versions) GetImages() []Image {
 		{Name: versions.CSIDriverRegistrar, Features: Features{utils.FeatureStorage}},
 		{Name: versions.CSICephRBDPlugin, Features: Features{utils.FeatureStorage}},
 		{Name: versions.CSICephFSPlugin, Features: Features{utils.FeatureStorage}},
+		{Name: versions.CSICephSnapshotter, Features: Features{utils.FeatureStorage}},
 		{Name: versions.FluentBit, Features: Features{utils.FeatureLogging, utils.FeatureStorage}},
 		{Name: versions.Elasticsearch, Features: Features{utils.FeatureLogging, utils.FeatureStorage}},
 		{Name: versions.ElasticsearchCron, Features: Features{utils.FeatureLogging, utils.FeatureStorage}},

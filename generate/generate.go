@@ -797,31 +797,33 @@ func (generator *Generator) generateCephSetup() error {
 
 func (generator *Generator) generateCephCSI() error {
 	return utils.ApplyTemplateAndSave("ceph-csi", utils.TemplateCephCsi, struct {
-		PodsDirectory           string
-		PluginsDirectory        string
-		CephFSPluginDirectory   string
-		CephRBDPluginDirectory  string
-		CephRBDPoolName         string
-		CephFSPoolName          string
-		StorageControllers      []config.NodeData
-		CSIAttacherImage        string
-		CSIProvisionerImage     string
-		CSIDriverRegistrarImage string
-		CSICephRBDPluginImage   string
-		CSICephFSPluginImage    string
+		KubeletDirectory         string
+		PluginsDirectory         string
+		PluginsRegistryDirectory string
+		PodsDirectory            string
+		CephRBDPoolName          string
+		CephFSPoolName           string
+		StorageControllers       []config.NodeData
+		CSIAttacherImage         string
+		CSIProvisionerImage      string
+		CSIDriverRegistrarImage  string
+		CSICephRBDPluginImage    string
+		CSICephFSPluginImage     string
+		CSICephSnapshotterImage  string
 	}{
-		PodsDirectory:           generator.config.GetFullTargetAssetDirectory(utils.DirectoryPodsData),
-		PluginsDirectory:        generator.config.GetFullTargetAssetDirectory(utils.DirectoryKubeletPlugins),
-		CephFSPluginDirectory:   generator.config.GetFullTargetAssetDirectory(utils.DirectoryCephFsPlugin),
-		CephRBDPluginDirectory:  generator.config.GetFullTargetAssetDirectory(utils.DirectoryCephRbdPlugin),
-		CephRBDPoolName:         utils.CephRbdPoolName,
-		CephFSPoolName:          utils.CephFsPoolName,
-		StorageControllers:      generator.config.GetStorageControllers(),
-		CSIAttacherImage:        generator.config.Config.Versions.CSIAttacher,
-		CSIProvisionerImage:     generator.config.Config.Versions.CSIProvisioner,
-		CSIDriverRegistrarImage: generator.config.Config.Versions.CSIDriverRegistrar,
-		CSICephRBDPluginImage:   generator.config.Config.Versions.CSICephRBDPlugin,
-		CSICephFSPluginImage:    generator.config.Config.Versions.CSICephFSPlugin,
+		KubeletDirectory:         generator.config.GetFullTargetAssetDirectory(utils.DirectoryKubeletData),
+		PluginsDirectory:         generator.config.GetFullTargetAssetDirectory(utils.DirectoryKubeletPlugins),
+		PluginsRegistryDirectory: generator.config.GetFullTargetAssetDirectory(utils.DirectoryKubeletPluginsRegistry),
+		PodsDirectory:            generator.config.GetFullTargetAssetDirectory(utils.DirectoryPodsData),
+		CephRBDPoolName:          utils.CephRbdPoolName,
+		CephFSPoolName:           utils.CephFsPoolName,
+		StorageControllers:       generator.config.GetStorageControllers(),
+		CSIAttacherImage:         generator.config.Config.Versions.CSIAttacher,
+		CSIProvisionerImage:      generator.config.Config.Versions.CSIProvisioner,
+		CSIDriverRegistrarImage:  generator.config.Config.Versions.CSIDriverRegistrar,
+		CSICephRBDPluginImage:    generator.config.Config.Versions.CSICephRBDPlugin,
+		CSICephFSPluginImage:     generator.config.Config.Versions.CSICephFSPlugin,
+		CSICephSnapshotterImage:  generator.config.Config.Versions.CSICephSnapshotter,
 	}, generator.config.GetFullLocalAssetFilename(utils.CephCsi), true, false)
 }
 

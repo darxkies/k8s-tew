@@ -359,6 +359,10 @@ func init() {
 		_config.Config.Versions.CSICephFSPlugin = value
 	})
 
+	addStringOption("version-csi-ceph-snapshotter", utils.VersionCsiCephSnapshotter, "CSI Ceph Snapshotter version", func(value string) {
+		_config.Config.Versions.CSICephSnapshotter = value
+	})
+
 	addStringOption("version-wordpress", utils.VersionWordpress, "WordPress version", func(value string) {
 		_config.Config.Versions.WordPress = value
 	})
