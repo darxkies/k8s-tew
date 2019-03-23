@@ -14,15 +14,15 @@ type Deployment struct {
 	identityFile      string
 	skipSetup         bool
 	skipSetupFeatures config.Features
-	pullImages        bool
 	forceUpload       bool
 	commandRetries    uint
 	nodes             map[string]*NodeDeployment
 	images            config.Images
 	parallel          bool
+	importImages      bool
 }
 
-func NewDeployment(_config *config.InternalConfig, identityFile string, pullImages bool, forceUpload bool, parallel bool, commandRetries uint, skipSetup, skipStorageSetup, skipMonitoringSetup, skipLoggingSetup, skipBackupSetup, skipShowcaseSetup, skipIngressSetup, skipPackagingSetup bool) *Deployment {
+func NewDeployment(_config *config.InternalConfig, identityFile string, importImages, forceUpload bool, parallel bool, commandRetries uint, skipSetup, skipStorageSetup, skipMonitoringSetup, skipLoggingSetup, skipBackupSetup, skipShowcaseSetup, skipIngressSetup, skipPackagingSetup bool) *Deployment {
 	nodes := map[string]*NodeDeployment{}
 
 	for nodeName, node := range _config.Config.Nodes {
@@ -59,7 +59,7 @@ func NewDeployment(_config *config.InternalConfig, identityFile string, pullImag
 		skipSetupFeatures = append(skipSetupFeatures, utils.FeaturePackaging)
 	}
 
-	deployment := &Deployment{config: _config, identityFile: identityFile, pullImages: pullImages, forceUpload: forceUpload, parallel: parallel, commandRetries: commandRetries, nodes: nodes, skipSetup: skipSetup, skipSetupFeatures: skipSetupFeatures}
+	deployment := &Deployment{config: _config, identityFile: identityFile, importImages: importImages, forceUpload: forceUpload, parallel: parallel, commandRetries: commandRetries, nodes: nodes, skipSetup: skipSetup, skipSetupFeatures: skipSetupFeatures}
 
 	deployment.images = deployment.config.Config.Versions.GetImages()
 
@@ -78,13 +78,10 @@ func (deployment *Deployment) Steps() int {
 		// Taint commands
 		result += len(deployment.config.Config.Nodes)
 
-		if deployment.pullImages {
-			// Pull images
+		if deployment.importImages {
+			// Import images
 			result += len(deployment.config.Config.Nodes) * len(deployment.images)
 		}
-
-		// Import images
-		result += len(deployment.config.Config.Nodes) * len(deployment.images)
 
 		// Run Commands
 		result += len(deployment.config.Config.Nodes) * len(deployment.config.Config.Commands)
@@ -169,51 +166,11 @@ func (deployment *Deployment) runConfigureTaints() error {
 	return nil
 }
 
-func (deployment *Deployment) runPullImages() error {
-	if !deployment.pullImages {
+func (deployment *Deployment) runImportImages() error {
+	if !deployment.importImages {
 		return nil
 	}
 
-	sortedNodeKeys := deployment.config.GetSortedNodeKeys()
-
-	for _, nodeName := range sortedNodeKeys {
-		nodeDeployment := deployment.nodes[nodeName]
-
-		deployment.config.SetNode(nodeName, nodeDeployment.node)
-
-		tasks := utils.Tasks{}
-
-		for _, image := range deployment.images {
-			image := image
-
-			tasks = append(tasks, func() error {
-				defer utils.IncreaseProgressStep()
-
-				if image.Features.HasFeatures(deployment.skipSetupFeatures) {
-					return nil
-				}
-
-				var _error error
-
-				for i := uint(0); i < deployment.commandRetries; i++ {
-					if _error = nodeDeployment.pullImage(image.Name); _error == nil {
-						return nil
-					}
-				}
-
-				return _error
-			})
-		}
-
-		if errors := utils.RunParallelTasks(tasks, deployment.parallel); len(errors) > 0 {
-			return errors[0]
-		}
-	}
-
-	return nil
-}
-
-func (deployment *Deployment) runImportImages() error {
 	sortedNodeKeys := deployment.config.GetSortedNodeKeys()
 
 	for _, nodeName := range sortedNodeKeys {
@@ -281,10 +238,6 @@ func (deployment *Deployment) runBoostrapperCommands() error {
 func (deployment *Deployment) setup() error {
 	if deployment.skipSetup {
 		return nil
-	}
-
-	if error := deployment.runPullImages(); error != nil {
-		return error
 	}
 
 	if error := deployment.runImportImages(); error != nil {

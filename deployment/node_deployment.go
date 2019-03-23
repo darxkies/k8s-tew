@@ -323,7 +323,7 @@ func (deployment *NodeDeployment) importImage(image string, filename string) err
 	}
 
 	ctr := deployment.config.GetFullTargetAssetFilename(utils.BinaryCtr)
-	command := fmt.Sprintf("CONTAINERD_NAMESPACE=k8s.io %s i import --base-name %s %s", ctr, image, filename)
+	command := fmt.Sprintf("CONTAINERD_NAMESPACE=k8s.io %s i import --digests --base-name %s %s", ctr, image, filename)
 
 	if _, error := deployment.Execute(fmt.Sprintf("import-image-%s", image), command); error != nil {
 		return fmt.Errorf("Failed to import image %s (%s)", image, error.Error())

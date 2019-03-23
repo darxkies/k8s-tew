@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: logging
+
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -11,6 +12,7 @@ metadata:
   labels:
     app: elasticsearch-operator
     release: elasticsearch-operator
+
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -44,6 +46,7 @@ rules:
 - apiGroups: ["enterprises.upmc.com"]
   resources: ["elasticsearchclusters"]
   verbs: ["*"]
+
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -61,6 +64,7 @@ subjects:
 - kind: ServiceAccount
   name: elasticsearch-operator
   namespace: logging
+
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -81,6 +85,15 @@ spec:
       containers:
       - name: elasticsearch-operator
         image: "{{.ElasticsearchOperatorImage}}"
+        imagePullPolicy: IfNotPresent
+        args:
+        - /usr/local/bin/elasticsearch-operator
+        - -initDaemonsetNamespace
+        - logging
+        - -busybox-image
+        - {{.BusyboxImage}}
+        - -baseImage
+        - {{.ElasticsearchImage}}
         env:
         - name: NAMESPACE
           valueFrom:

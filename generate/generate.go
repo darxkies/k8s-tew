@@ -940,8 +940,12 @@ func (generator *Generator) generateCoreDNSSetup() error {
 func (generator *Generator) generateElasticSearchOperatorSetup() error {
 	return utils.ApplyTemplateAndSave("elasticsearch-operator", utils.TemplateElasticsearchOperatorSetup, struct {
 		ElasticsearchOperatorImage string
+		ElasticsearchImage         string
+		BusyboxImage               string
 	}{
 		ElasticsearchOperatorImage: generator.config.Config.Versions.ElasticsearchOperator,
+		ElasticsearchImage:         generator.config.Config.Versions.Elasticsearch,
+		BusyboxImage:               generator.config.Config.Versions.Busybox,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sElasticsearchOperatorSetup), true, false)
 }
 

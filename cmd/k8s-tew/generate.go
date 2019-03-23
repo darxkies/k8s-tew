@@ -13,6 +13,7 @@ import (
 
 var forceDownload bool
 var parallel bool
+var pullImages bool
 
 var generateCmd = &cobra.Command{
 	Use:   "generate",
@@ -26,7 +27,7 @@ var generateCmd = &cobra.Command{
 			os.Exit(-1)
 		}
 
-		downloader := download.NewDownloader(_config, forceDownload, parallel)
+		downloader := download.NewDownloader(_config, forceDownload, parallel, pullImages)
 		generator := generate.NewGenerator(_config)
 
 		utils.SetProgressSteps(2 + downloader.Steps() + generator.Steps() + 1)
@@ -71,5 +72,6 @@ func init() {
 	generateCmd.Flags().UintVarP(&commandRetries, "command-retries", "r", 300, "The count of command retries during the setup")
 	generateCmd.Flags().BoolVar(&forceDownload, "force-download", false, "Force downloading all binary dependencies from the internet")
 	generateCmd.Flags().BoolVar(&parallel, "parallel", false, "Download binary dependencies in parallel")
+	generateCmd.Flags().BoolVar(&pullImages, "pull-images", false, "Pull and convert images to OCI to be deployed later on")
 	RootCmd.AddCommand(generateCmd)
 }

@@ -30,9 +30,10 @@ type Downloader struct {
 	downloaderSteps utils.Tasks
 	forceDownload   bool
 	parallel        bool
+	pullImages      bool
 }
 
-func NewDownloader(config *config.InternalConfig, forceDownload bool, parallel bool) Downloader {
+func NewDownloader(config *config.InternalConfig, forceDownload bool, parallel bool, pullImages bool) Downloader {
 	downloader := Downloader{config: config, forceDownload: forceDownload, parallel: parallel}
 
 	downloader.downloaderSteps = utils.Tasks{}
@@ -44,7 +45,10 @@ func NewDownloader(config *config.InternalConfig, forceDownload bool, parallel b
 	downloader.addTask(downloader.downloadRuncBinary)
 	downloader.addTask(downloader.downloadCriCtlBinary)
 	downloader.addTask(downloader.downloadArkBinaries)
-	downloader.addTask(downloader.downloadImages)
+
+	if pullImages {
+		downloader.addTask(downloader.downloadImages)
+	}
 
 	return downloader
 }
@@ -58,11 +62,12 @@ func (downloader *Downloader) addTask(task utils.Task) {
 }
 
 func (downloader Downloader) Steps() int {
-	// -1 for downloadImages
 	result := len(downloader.downloaderSteps)
 
-	// Images to download
-	result += len(downloader.config.Config.Versions.GetImages())
+	if downloader.pullImages {
+		// Images to download
+		result += len(downloader.config.Config.Versions.GetImages())
+	}
 
 	return result
 }
@@ -444,7 +449,6 @@ func (downloader Downloader) downloadArkBinaries() error {
 }
 
 func (downloader Downloader) downloadImages() error {
-
 	for _, image := range downloader.config.Config.Versions.GetImages() {
 		imageFilename := downloader.config.GetFullLocalAssetFilename(image.GetImageFilename())
 

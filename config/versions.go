@@ -1,6 +1,10 @@
 package config
 
-import "github.com/darxkies/k8s-tew/utils"
+import (
+	"fmt"
+
+	"github.com/darxkies/k8s-tew/utils"
+)
 
 type Versions struct {
 	Etcd                       string `yaml:"etcd"`
@@ -11,6 +15,7 @@ type Versions struct {
 	CriCtl                     string `yaml:"crictl"`
 	Gobetween                  string `yaml:"gobetween"`
 	VirtualIP                  string `yaml:"virtual-ip"`
+	Busybox                    string `yaml:"busybox"`
 	Ark                        string `yaml:"ark"`
 	MinioServer                string `yaml:"minio-server"`
 	MinioClient                string `yaml:"minio-client"`
@@ -63,6 +68,7 @@ func NewVersions() Versions {
 		CriCtl:                     utils.VersionCrictl,
 		Gobetween:                  utils.VersionGobetween,
 		VirtualIP:                  utils.VersionVirtualIP,
+		Busybox:                    utils.VersionBusybox,
 		Ark:                        utils.VersionArk,
 		MinioServer:                utils.VersionMinioServer,
 		MinioClient:                utils.VersionMinioClient,
@@ -108,6 +114,7 @@ func NewVersions() Versions {
 
 func (versions Versions) GetImages() []Image {
 	return []Image{
+		{Name: fmt.Sprintf(utils.VersionTiller, versions.Helm), Features: Features{}},
 		{Name: versions.Pause, Features: Features{}},
 		{Name: versions.Gobetween, Features: Features{}},
 		{Name: versions.VirtualIP, Features: Features{}},
@@ -119,6 +126,7 @@ func (versions Versions) GetImages() []Image {
 		{Name: versions.MetalLBController, Features: Features{}},
 		{Name: versions.MetalLBSpeaker, Features: Features{}},
 		{Name: versions.CoreDNS, Features: Features{}},
+		{Name: versions.Busybox, Features: Features{}},
 		{Name: versions.MinioServer, Features: Features{utils.FeatureBackup, utils.FeatureStorage}},
 		{Name: versions.MinioClient, Features: Features{utils.FeatureBackup, utils.FeatureStorage}},
 		{Name: versions.Ark, Features: Features{utils.FeatureBackup, utils.FeatureStorage}},

@@ -203,6 +203,10 @@ func init() {
 		_config.Config.Versions.VirtualIP = value
 	})
 
+	addStringOption("version-busybox", utils.VersionBusybox, "Busybox version", func(value string) {
+		_config.Config.Versions.Busybox = value
+	})
+
 	addStringOption("version-ark", utils.VersionArk, "Ark version", func(value string) {
 		_config.Config.Versions.Ark = value
 	})

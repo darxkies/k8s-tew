@@ -7,10 +7,13 @@ metadata:
     app: elasticsearch
     release: elasticsearch
 spec:
+  imagePullPolicy: IfNotPresent
   kibana:
     image: {{.KibanaImage}}
+    imagePullPolicy: IfNotPresent
   cerebro:
     image: {{.CerebroImage}}
+    imagePullPolicy: IfNotPresent
   elastic-search-image: "{{.ElasticsearchImage}}"
   client-node-replicas: 1
   master-node-replicas: 1
