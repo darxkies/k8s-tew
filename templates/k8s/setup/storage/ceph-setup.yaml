@@ -220,7 +220,7 @@ spec:
         image: {{$.CephImage}}
         args: ["rgw"]
         ports:
-        - containerPort: 8080
+        - containerPort: 7480
           name: rgw
         volumeMounts:
         - name: ceph-config
@@ -229,12 +229,12 @@ spec:
           mountPath: /var/lib/ceph
         livenessProbe:
           tcpSocket:
-            port: 8080
+            port: 7480
           initialDelaySeconds: 60
           timeoutSeconds: 5
         readinessProbe:
           tcpSocket:
-            port: 8080
+            port: 7480
           timeoutSeconds: 5
 ---
 apiVersion: batch/v1
@@ -280,7 +280,7 @@ metadata:
 spec:
     type: NodePort
     ports:
-    - port: 8080
+    - port: 7480
       protocol: TCP
       nodePort: {{.CephRadosGatewayPort}}
     selector:
