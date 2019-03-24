@@ -263,6 +263,10 @@ func init() {
 		_config.Config.Versions.CalicoCNI = value
 	})
 
+	addStringOption("version-calico-kube-controllers", utils.VersionCalicoKubeControllers, "Calico Kube Controllers  version", func(value string) {
+		_config.Config.Versions.CalicoKubeControllers = value
+	})
+
 	addStringOption("version-metallb-controller", utils.VersionMetalLBController, "MetalLB Controller version", func(value string) {
 		_config.Config.Versions.MetalLBController = value
 	})

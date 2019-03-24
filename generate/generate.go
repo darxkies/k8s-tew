@@ -175,21 +175,23 @@ func (generator *Generator) generateGobetweenConfig() error {
 
 func (generator *Generator) generateCalicoSetup() error {
 	return utils.ApplyTemplateAndSave("calico-setup", utils.TemplateCalicoSetup, struct {
-		CalicoTyphaIP        string
-		ClusterCIDR          string
-		CNIConfigDirectory   string
-		CNIBinariesDirectory string
-		CalicoTyphaImage     string
-		CalicoNodeImage      string
-		CalicoCNIImage       string
+		CalicoTyphaIP              string
+		ClusterCIDR                string
+		CNIConfigDirectory         string
+		CNIBinariesDirectory       string
+		CalicoTyphaImage           string
+		CalicoNodeImage            string
+		CalicoCNIImage             string
+		CalicoKubeControllersImage string
 	}{
-		CalicoTyphaIP:        generator.config.Config.CalicoTyphaIP,
-		ClusterCIDR:          generator.config.Config.ClusterCIDR,
-		CNIConfigDirectory:   generator.config.GetFullTargetAssetDirectory(utils.DirectoryCniConfig),
-		CNIBinariesDirectory: generator.config.GetFullTargetAssetDirectory(utils.DirectoryCniBinaries),
-		CalicoTyphaImage:     generator.config.Config.Versions.CalicoTypha,
-		CalicoNodeImage:      generator.config.Config.Versions.CalicoNode,
-		CalicoCNIImage:       generator.config.Config.Versions.CalicoCNI,
+		CalicoTyphaIP:              generator.config.Config.CalicoTyphaIP,
+		ClusterCIDR:                generator.config.Config.ClusterCIDR,
+		CNIConfigDirectory:         generator.config.GetFullTargetAssetDirectory(utils.DirectoryCniConfig),
+		CNIBinariesDirectory:       generator.config.GetFullTargetAssetDirectory(utils.DirectoryCniBinaries),
+		CalicoTyphaImage:           generator.config.Config.Versions.CalicoTypha,
+		CalicoNodeImage:            generator.config.Config.Versions.CalicoNode,
+		CalicoCNIImage:             generator.config.Config.Versions.CalicoCNI,
+		CalicoKubeControllersImage: generator.config.Config.Versions.CalicoKubeControllers,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sCalicoSetup), true, false)
 }
 

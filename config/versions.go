@@ -30,6 +30,7 @@ type Versions struct {
 	CalicoTypha                string `yaml:"calico-typha"`
 	CalicoNode                 string `yaml:"calico-node"`
 	CalicoCNI                  string `yaml:"calico-cni"`
+	CalicoKubeControllers      string `yaml:"calico-kube-controllers"`
 	MetalLBController          string `yaml:"metallb-controller"`
 	MetalLBSpeaker             string `yaml:"metallb-speaker"`
 	Ceph                       string `yaml:"ceph"`
@@ -84,6 +85,7 @@ func NewVersions() Versions {
 		CalicoTypha:                utils.VersionCalicoTypha,
 		CalicoNode:                 utils.VersionCalicoNode,
 		CalicoCNI:                  utils.VersionCalicoCni,
+		CalicoKubeControllers:      utils.VersionCalicoKubeControllers,
 		MetalLBController:          utils.VersionMetalLBController,
 		MetalLBSpeaker:             utils.VersionMetalLBSpeaker,
 		Ceph:                       utils.VersionCeph,
@@ -125,6 +127,7 @@ func (versions Versions) GetImages() []Image {
 		{Name: versions.CalicoCNI, Features: Features{}},
 		{Name: versions.CalicoNode, Features: Features{}},
 		{Name: versions.CalicoTypha, Features: Features{}},
+		{Name: versions.CalicoKubeControllers, Features: Features{}},
 		{Name: versions.MetalLBController, Features: Features{}},
 		{Name: versions.MetalLBSpeaker, Features: Features{}},
 		{Name: versions.CoreDNS, Features: Features{}},
