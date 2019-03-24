@@ -8,41 +8,28 @@ kind: ServiceAccount
 metadata:
   namespace: monitoring
   name: metrics-server
-  labels:
-    app: metrics-server
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: system:metrics-server
-  labels:
-    app: metrics-server
 rules:
-  - apiGroups:
-    - ""
-    resources:
-      - pods
-      - nodes
-      - namespaces
-    verbs:
-      - get
-      - list
-      - watch
-  - apiGroups:
-    - ""
-    resources:
-    - nodes/stats
-    verbs:
-    - get
-    - create
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  - nodes
+  - nodes/stats
+  verbs:
+  - get
+  - list
+  - watch
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: metrics-server:system:auth-delegator
-  namespace: kube-system
-  labels:
-    app: metrics-server
+  namespace: monitoring
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -56,8 +43,6 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: system:metrics-server
-  labels:
-    app: metrics-server
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -67,13 +52,24 @@ subjects:
     name: metrics-server
     namespace: monitoring
 ---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: system:aggregated-metrics-reader
+  labels:
+    rbac.authorization.k8s.io/aggregate-to-view: "true"
+    rbac.authorization.k8s.io/aggregate-to-edit: "true"
+    rbac.authorization.k8s.io/aggregate-to-admin: "true"
+rules:
+- apiGroups: ["metrics.k8s.io"]
+  resources: ["pods"]
+  verbs: ["get", "list", "watch"]
+---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: RoleBinding
 metadata:
   name: metrics-server-auth-reader
   namespace: kube-system
-  labels:
-    app: metrics-server
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -89,46 +85,49 @@ metadata:
   namespace: monitoring
   name: metrics-server
   labels:
-    app: metrics-server
+    kubernetes.io/name: "Metrics-server"
 spec:
+  selector:
+    app: metrics-server
   ports:
     - port: 443
       protocol: TCP
       targetPort: 443
-  selector:
-    app: metrics-server
 ---
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
   namespace: monitoring
   name: metrics-server
-  labels:
-    app: metrics-server
 spec:
   selector:
     matchLabels:
       app: metrics-server
   template:
     metadata:
+      name: metrics-server
       labels:
         app: metrics-server
     spec:
       serviceAccountName: metrics-server
+      volumes:
+      - name: tmp-dir
+        emptyDir: {}
       containers:
-        - name: metrics-server
-          image: "{{.MetricsServerImage}}"
-          command:
-            - /metrics-server
-            - "--source=kubernetes.summary_api:''"
+      - name: metrics-server
+        image: {{.MetricsServerImage}}
+        args:
+        - --kubelet-preferred-address-types=InternalIP
+        - --kubelet-insecure-tls
+        volumeMounts:
+        - name: tmp-dir
+          mountPath: /tmp
 ---
 apiVersion: apiregistration.k8s.io/v1beta1
 kind: APIService
 metadata:
   namespace: monitoring
   name: v1beta1.metrics.k8s.io
-  labels:
-    app: metrics-server
 spec:
   service:
     namespace: monitoring
