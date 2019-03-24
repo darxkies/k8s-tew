@@ -16,7 +16,7 @@ type Versions struct {
 	Gobetween                  string `yaml:"gobetween"`
 	VirtualIP                  string `yaml:"virtual-ip"`
 	Busybox                    string `yaml:"busybox"`
-	Ark                        string `yaml:"ark"`
+	Velero                     string `yaml:"velero"`
 	MinioServer                string `yaml:"minio-server"`
 	MinioClient                string `yaml:"minio-client"`
 	Pause                      string `yaml:"pause"`
@@ -71,7 +71,7 @@ func NewVersions() Versions {
 		Gobetween:                  utils.VersionGobetween,
 		VirtualIP:                  utils.VersionVirtualIP,
 		Busybox:                    utils.VersionBusybox,
-		Ark:                        utils.VersionArk,
+		Velero:                     utils.VersionVelero,
 		MinioServer:                utils.VersionMinioServer,
 		MinioClient:                utils.VersionMinioClient,
 		Pause:                      utils.VersionPause,
@@ -134,7 +134,7 @@ func (versions Versions) GetImages() []Image {
 		{Name: versions.Busybox, Features: Features{}},
 		{Name: versions.MinioServer, Features: Features{utils.FeatureBackup, utils.FeatureStorage}},
 		{Name: versions.MinioClient, Features: Features{utils.FeatureBackup, utils.FeatureStorage}},
-		{Name: versions.Ark, Features: Features{utils.FeatureBackup, utils.FeatureStorage}},
+		{Name: versions.Velero, Features: Features{utils.FeatureBackup, utils.FeatureStorage}},
 		{Name: versions.Ceph, Features: Features{utils.FeatureStorage}},
 		{Name: versions.CSIAttacher, Features: Features{utils.FeatureStorage}},
 		{Name: versions.CSIProvisioner, Features: Features{utils.FeatureStorage}},

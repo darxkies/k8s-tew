@@ -46,8 +46,6 @@ spec:
       labels:
         app: wordpress
         tier: mysql
-      annotations:
-        backup.ark.heptio.com/backup-volumes: mysql-persistent-storage
     spec:
       containers:
       - image: {{.MySQLImage}}
@@ -81,8 +79,6 @@ spec:
       labels:
         app: wordpress
         tier: frontend
-      annotations:
-        backup.ark.heptio.com/backup-volumes: wordpress-persistent-storage
     spec:
       containers:
       - image: {{.WordPressImage}}

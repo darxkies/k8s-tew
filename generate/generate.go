@@ -66,8 +66,8 @@ func NewGenerator(config *config.InternalConfig) *Generator {
 		generator.generateElasticSearchOperatorSetup,
 		// Generate ElasticSearch/Fluent-Bit/Kibana setup file
 		generator.generateEFKSetup,
-		// Generate ark setup file
-		generator.generateARKSetup,
+		// Generate velero setup file
+		generator.generateVeleroSetup,
 		// Generate heapster setup file
 		generator.generateHeapsterSetup,
 		// Generate kubernetes dashboard setup file
@@ -110,8 +110,8 @@ func NewGenerator(config *config.InternalConfig) *Generator {
 		generator.generateBashCompletionKubectl,
 		// Generate Bash Completion for Helm
 		generator.generateBashCompletionHelm,
-		// Generate Bash Completion for Ark
-		generator.generateBashCompletionArk,
+		// Generate Bash Completion for Velero
+		generator.generateBashCompletionVelero,
 		// Generate Bash Completion for CriCtl
 		generator.generateBashCompletionCriCtl,
 		// Generate gobetween manifest
@@ -969,20 +969,20 @@ func (generator *Generator) generateEFKSetup() error {
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sEfkSetup), true, false)
 }
 
-func (generator *Generator) generateARKSetup() error {
-	return utils.ApplyTemplateAndSave("ark-setup", utils.TemplateArkSetup, struct {
-		ArkImage         string
+func (generator *Generator) generateVeleroSetup() error {
+	return utils.ApplyTemplateAndSave("velero-setup", utils.TemplateVeleroSetup, struct {
+		VeleroImage      string
 		MinioServerImage string
 		MinioClientImage string
 		PodsDirectory    string
 		MinioPort        uint16
 	}{
-		ArkImage:         generator.config.Config.Versions.Ark,
+		VeleroImage:      generator.config.Config.Versions.Velero,
 		MinioServerImage: generator.config.Config.Versions.MinioServer,
 		MinioClientImage: generator.config.Config.Versions.MinioClient,
 		PodsDirectory:    generator.config.GetFullTargetAssetDirectory(utils.DirectoryPodsData),
 		MinioPort:        utils.PortMinio,
-	}, generator.config.GetFullLocalAssetFilename(utils.K8sArkSetup), true, false)
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sVeleroSetup), true, false)
 }
 
 func (generator *Generator) generateHeapsterSetup() error {
@@ -1144,8 +1144,8 @@ func (generator *Generator) generateBashCompletionHelm() error {
 	return generator.generateBashCompletion(utils.BinaryHelm, utils.BashCompletionHelm)
 }
 
-func (generator *Generator) generateBashCompletionArk() error {
-	return generator.generateBashCompletion(utils.BinaryArk, utils.BashCompletionArk)
+func (generator *Generator) generateBashCompletionVelero() error {
+	return generator.generateBashCompletion(utils.BinaryVelero, utils.BashCompletionVelero)
 }
 
 func (generator *Generator) generateBashCompletionCriCtl() error {

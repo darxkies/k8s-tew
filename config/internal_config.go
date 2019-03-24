@@ -148,7 +148,7 @@ func (config *InternalConfig) registerAssetDirectories() {
 	config.addAssetDirectory(utils.DirectoryCriBinaries, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryBinaries), utils.SubdirectoryCri), false)
 	config.addAssetDirectory(utils.DirectoryCniBinaries, Labels{utils.NodeController, utils.NodeWorker}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryBinaries), utils.SubdirectoryCni), false)
 	config.addAssetDirectory(utils.DirectoryGobetweenBinaries, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryBinaries), utils.SubdirectoryLoadBalancer), false)
-	config.addAssetDirectory(utils.DirectoryArkBinaries, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryBinaries), utils.SubdirectoryArk), false)
+	config.addAssetDirectory(utils.DirectoryVeleroBinaries, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryBinaries), utils.SubdirectoryVelero), false)
 	config.addAssetDirectory(utils.DirectoryHostBinaries, Labels{utils.NodeController, utils.NodeWorker}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryBinaries), utils.SubdirectoryHost), false)
 
 	// Misc
@@ -206,8 +206,8 @@ func (config *InternalConfig) registerAssetFiles() {
 	// Helm Binary
 	config.addAssetFile(utils.BinaryHelm, Labels{}, "", utils.DirectoryK8sBinaries)
 
-	// Ark Binaries
-	config.addAssetFile(utils.BinaryArk, Labels{}, "", utils.DirectoryArkBinaries)
+	// Velero Binaries
+	config.addAssetFile(utils.BinaryVelero, Labels{}, "", utils.DirectoryVeleroBinaries)
 
 	// Certificates
 	config.addAssetFile(utils.PemCa, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryCertificates)
@@ -259,7 +259,7 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.K8sCorednsSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sElasticsearchOperatorSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sEfkSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
-	config.addAssetFile(utils.K8sArkSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.K8sVeleroSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sHeapsterSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sKubernetesDashboardSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sCertManagerSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
@@ -312,7 +312,7 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.BashCompletionKubectl, Labels{utils.NodeController}, "", utils.DirectoryBashCompletion)
 	config.addAssetFile(utils.BashCompletionCrictl, Labels{utils.NodeController}, "", utils.DirectoryBashCompletion)
 	config.addAssetFile(utils.BashCompletionHelm, Labels{}, "", utils.DirectoryBashCompletion)
-	config.addAssetFile(utils.BashCompletionArk, Labels{}, "", utils.DirectoryBashCompletion)
+	config.addAssetFile(utils.BashCompletionVelero, Labels{}, "", utils.DirectoryBashCompletion)
 
 	// Images
 	for _, image := range config.Config.Versions.GetImages() {
@@ -384,7 +384,7 @@ func (config *InternalConfig) registerCommands() {
 	config.addCommand("efk-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureLogging, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sEfkSetup)))
 	config.addCommand("patch-kibana-service", Labels{utils.NodeBootstrapper}, Features{utils.FeatureLogging, utils.FeatureStorage}, OS{}, fmt.Sprintf(`%s get svc kibana-elasticsearch-cluster -n logging --output=jsonpath={.spec..nodePort} | grep %d || %s patch service kibana-elasticsearch-cluster -n logging -p '{"spec":{"type":"NodePort","ports":[{"port":80,"nodePort":%d}]}}'`, kubectlCommand, utils.PortKibana, kubectlCommand, utils.PortKibana))
 	config.addCommand("patch-cerebro-service", Labels{utils.NodeBootstrapper}, Features{utils.FeatureLogging, utils.FeatureStorage}, OS{}, fmt.Sprintf(`%s get svc cerebro-elasticsearch-cluster -n logging --output=jsonpath={.spec..nodePort} | grep %d || %s patch service cerebro-elasticsearch-cluster -n logging -p '{"spec":{"type":"NodePort","ports":[{"port":80,"nodePort":%d}]}}'`, kubectlCommand, utils.PortCerebro, kubectlCommand, utils.PortCerebro))
-	config.addCommand("ark-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureBackup, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sArkSetup)))
+	config.addCommand("velero-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureBackup, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sVeleroSetup)))
 	config.addCommand("wordpress-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureShowcase, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.WordpressSetup)))
 }
 

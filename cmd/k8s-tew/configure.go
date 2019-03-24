@@ -207,8 +207,8 @@ func init() {
 		_config.Config.Versions.Busybox = value
 	})
 
-	addStringOption("version-ark", utils.VersionArk, "Ark version", func(value string) {
-		_config.Config.Versions.Ark = value
+	addStringOption("version-velero", utils.VersionVelero, "Velero version", func(value string) {
+		_config.Config.Versions.Velero = value
 	})
 
 	addStringOption("version-minio-server", utils.VersionMinioServer, "Minio server version", func(value string) {

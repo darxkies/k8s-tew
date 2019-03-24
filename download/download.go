@@ -44,7 +44,7 @@ func NewDownloader(config *config.InternalConfig, forceDownload bool, parallel b
 	downloader.addTask(downloader.downloadContainerdBinaries)
 	downloader.addTask(downloader.downloadRuncBinary)
 	downloader.addTask(downloader.downloadCriCtlBinary)
-	downloader.addTask(downloader.downloadArkBinaries)
+	downloader.addTask(downloader.downloadVeleroBinaries)
 
 	if pullImages {
 		downloader.addTask(downloader.downloadImages)
@@ -437,15 +437,15 @@ func (downloader Downloader) downloadCriCtlBinary() error {
 	return downloader.downloadAndExtractTGZFiles(utils.CrictlDownloadUrl, utils.CrictlBaseName, compressedFiles)
 }
 
-func (downloader Downloader) downloadArkBinaries() error {
+func (downloader Downloader) downloadVeleroBinaries() error {
 	compressedFiles := []CompressedFile{
 		{
-			SourceFile: utils.BinaryArk,
-			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.BinaryArk),
+			SourceFile: utils.BinaryVelero,
+			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.BinaryVelero),
 		},
 	}
 
-	return downloader.downloadAndExtractTGZFiles(utils.ArkDownloadUrl, utils.ArkBaseName, compressedFiles)
+	return downloader.downloadAndExtractTGZFiles(utils.VeleroDownloadUrl, utils.VeleroBaseName, compressedFiles)
 }
 
 func (downloader Downloader) downloadImages() error {
