@@ -18,6 +18,6 @@ COPY go.mod go.sum ${WORKING_DIRECTORY}
 
 RUN go mod download
 
-RUN go get -u github.com/gobuffalo/packr/...
+RUN go get github.com/gobuffalo/packr/...
 
 CMD ["make", "build-binaries"]
