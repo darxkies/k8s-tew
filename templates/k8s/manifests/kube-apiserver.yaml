@@ -20,7 +20,7 @@ spec:
     - --authorization-mode=Node,RBAC
     - --bind-address=0.0.0.0
     - --client-ca-file={{.PemCA}}
-    - --enable-admission-plugins=Initializers,NamespaceLifecycle,NodeRestriction,LimitRanger,ServiceAccount,DefaultStorageClass,ResourceQuota
+    - --enable-admission-plugins=NamespaceLifecycle,NodeRestriction,LimitRanger,ServiceAccount,DefaultStorageClass,ResourceQuota
     - --enable-aggregator-routing=true
     - --enable-swagger-ui=true
     - --etcd-cafile={{.PemCA}}
