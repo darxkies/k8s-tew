@@ -9,7 +9,7 @@ The following snippet will create a cluster on the host computer or in a virtual
     sudo su -
 
     # Download Binary
-    wget https://github.com/darxkies/k8s-tew/releases/download/2.1.0/k8s-tew
+    wget https://github.com/darxkies/k8s-tew/releases/download/2.2.4/k8s-tew
     chmod a+x k8s-tew
 
     # Everything is installed relative to the root directory
