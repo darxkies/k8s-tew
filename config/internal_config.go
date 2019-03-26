@@ -344,8 +344,8 @@ func (config *InternalConfig) registerCommands() {
 	helmCommand := fmt.Sprintf("KUBECONFIG=%s HELM_HOME=%s %s", config.GetFullLocalAssetFilename(utils.KubeconfigAdmin), config.GetFullLocalAssetDirectory(utils.DirectoryHelmData), config.GetFullLocalAssetFilename(utils.BinaryHelm))
 
 	// Dependencies
-	config.addCommand("setup-ubuntu", Labels{utils.NodeController, utils.NodeWorker}, Features{}, OS{utils.OsUbuntu}, "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y apt-transport-https bash-completion")
-	config.addCommand("setup-centos", Labels{utils.NodeController, utils.NodeWorker}, Features{}, OS{utils.OsCentos}, "systemctl disable firewalld && systemctl stop firewalld && yum install -y bash-completion libseccomp && sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux && (setenforce 0 || true)")
+	config.addCommand("setup-ubuntu", Labels{utils.NodeController, utils.NodeWorker}, Features{}, OS{utils.OsUbuntu}, "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y apt-transport-https bash-completion socat")
+	config.addCommand("setup-centos", Labels{utils.NodeController, utils.NodeWorker}, Features{}, OS{utils.OsCentos}, "systemctl disable firewalld && systemctl stop firewalld && yum install -y socat bash-completion libseccomp && sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux && (setenforce 0 || true)")
 	config.addCommand("swapoff", Labels{utils.NodeController, utils.NodeWorker}, Features{}, OS{}, "swapoff -a")
 	config.addCommand("load-overlay", Labels{utils.NodeController, utils.NodeWorker}, Features{}, OS{}, "modprobe overlay")
 	config.addCommand("load-btrfs", Labels{utils.NodeController, utils.NodeWorker}, Features{}, OS{}, "modprobe btrfs")
