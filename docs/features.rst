@@ -9,7 +9,8 @@ Features
 * Metrics: `metering-metrics <https://github.com/kubernetes-incubator/metrics-server>`_ and `Heapster <https://github.com/kubernetes/heapster>`_
 * Monitoring: `Prometheus <https://prometheus.io/>`_ and `Grafana <https://grafana.com/>`_
 * Logging: `Fluent-Bit <https://fluentbit.io/>`_, `Elasticsearch <https://www.elastic.co/>`_, `Kibana <https://www.elastic.co/products/kibana>`_ and `Cerebro <https://github.com/lmenezes/cerebro>`_
-* Backups: `Ark <https://github.com/heptio/ark>`_, `Restic <https://restic.net/>`_ and `Minio <https://www.minio.io/>`_
+* Backups: `Velero <https://github.com/heptio/velero>`_, `Restic <https://restic.net/>`_ and `Minio <https://www.minio.io/>`_
+* Cluster Load Balancing: `MetalLB <https://metallb.universe.tf>`_
 * Controller Load Balancing: `gobetween <http://gobetween.io/>`_
 * Package Manager: `Helm <https://helm.sh/>`_
 * Dashboard: `Kubernetes Dashboard <https://github.com/kubernetes/dashboard>`_
@@ -25,6 +26,7 @@ Features
 * Runs locally
 * Nodes management from the command line
 * Downloads all the used binaries (kubernetes, calico, ceph...) from the Internet
+* Pull Images, Convert them to OCI and import them on the cluster for offline installations
 * Uses systemd to install itself as a service on the remote machine
 * Installs `WordPress <https://wordpress.com>`_ and `MySQL <https://www.mysql.com>`_ to test drive the installation
 
