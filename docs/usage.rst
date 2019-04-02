@@ -69,45 +69,50 @@ After the initialization step the parameters of the cluster should be be adapted
       --ingress-domain string                          Ingress domain name (default "k8s-tew.net")
       --kubernetes-dashboard-port uint16               Kubernetes Dashboard Port (default 32443)
       --load-balancer-port uint16                      Load Balancer Port (default 32443)
+      --metallb-addresses string                       Comma separated MetalLB address ranges and CIDR (e.g 192.168.0.16/28,192.168.0.75-192.168.0.100) (default "192.168.0.16/28")
       --public-network string                          Public Network (default "192.168.100.0/24")
       --resolv-conf string                             Custom resolv.conf (default "/etc/resolv.conf")
       --rsa-key-size uint16                            RSA Key Size (default 2048)
       --version-addon-resizer string                   Addon-Resizer version (default "k8s.gcr.io/addon-resizer:1.7")
-      --version-ark string                             Ark version (default "gcr.io/heptio-images/ark:v0.9.7")
-      --version-calico-cni string                      Calico CNI version (default "quay.io/calico/cni:v3.1.3")
-      --version-calico-node string                     Calico Node version (default "quay.io/calico/node:v3.1.3")
-      --version-calico-typha string                    Calico Typha version (default "quay.io/calico/typha:v0.7.4")
-      --version-ceph string                            Ceph version (default "docker.io/ceph/daemon:v3.0.7-stable-3.0-mimic-centos-7-x86_64")
-      --version-cerebro string                         Cerebro version (default "docker.io/upmcenterprises/cerebro:0.6.8")
+      --version-busybox string                         Busybox version (default "docker.io/library/busybox:1.30.1")
+      --version-calico-cni string                      Calico CNI version (default "quay.io/calico/cni:v3.6.0")
+      --version-calico-kube-controllers string         Calico Kube Controllers  version (default "quay.io/calico/kube-controllers:v3.6.0")
+      --version-calico-node string                     Calico Node version (default "quay.io/calico/node:v3.6.0")
+      --version-calico-typha string                    Calico Typha version (default "quay.io/calico/typha:v3.6.0")
+      --version-ceph string                            Ceph version (default "docker.io/ceph/daemon:v3.2.1-stable-3.2-mimic-centos-7-x86_64")
+      --version-cerebro string                         Cerebro version (default "docker.io/upmcenterprises/cerebro:0.7.2")
       --version-cert-manager-controller string         Cert Manager Controller version (default "quay.io/jetstack/cert-manager-controller:v0.4.1")
       --version-configmap-reload string                ConfigMap Reload version (default "quay.io/coreos/configmap-reload:v0.0.1")
-      --version-containerd string                      Containerd version (default "1.1.4")
-      --version-coredns string                         CoreDNS version (default "docker.io/coredns/coredns:1.2.0")
-      --version-crictl string                          CriCtl version (default "1.12.0")
-      --version-csi-attacher string                    CSI Attacher version (default "quay.io/k8scsi/csi-attacher:v0.3.0")
-      --version-csi-ceph-fs-plugin string              CSI Ceph FS Plugin version (default "quay.io/cephcsi/cephfsplugin:v0.3.0")
-      --version-csi-ceph-rbd-plugin string             CSI Ceph RBD Plugin version (default "quay.io/cephcsi/rbdplugin:v0.3.0")
-      --version-csi-driver-registrar string            CSI Driver Registrar version (default "quay.io/k8scsi/driver-registrar:v0.3.0")
-      --version-csi-provisioner string                 CSI Provisioner version (default "quay.io/k8scsi/csi-provisioner:v0.3.0")
+      --version-containerd string                      Containerd version (default "1.2.5")
+      --version-coredns string                         CoreDNS version (default "docker.io/coredns/coredns:1.4.0")
+      --version-crictl string                          CriCtl version (default "1.14.0")
+      --version-csi-attacher string                    CSI Attacher version (default "quay.io/k8scsi/csi-attacher:v1.0.1")
+      --version-csi-ceph-fs-plugin string              CSI Ceph FS Plugin version (default "quay.io/cephcsi/cephfsplugin:v1.0.0")
+      --version-csi-ceph-rbd-plugin string             CSI Ceph RBD Plugin version (default "quay.io/cephcsi/rbdplugin:v1.0.0")
+      --version-csi-ceph-snapshotter string            CSI Ceph Snapshotter version (default "quay.io/k8scsi/csi-snapshotter:v1.0.1")
+      --version-csi-driver-registrar string            CSI Driver Registrar version (default "quay.io/k8scsi/csi-node-driver-registrar:v1.0.2")
+      --version-csi-provisioner string                 CSI Provisioner version (default "quay.io/k8scsi/csi-provisioner:v1.0.1")
       --version-elasticsearch string                   Elasticsearch version (default "docker.io/upmcenterprises/docker-elasticsearch-kubernetes:6.1.3_0")
-      --version-elasticsearch-cron string              Elasticsearch Cron version (default "docker.io/upmcenterprises/elasticsearch-cron:0.0.3")
-      --version-elasticsearch-operator string          Elasticsearch Operator version (default "docker.io/upmcenterprises/elasticsearch-operator:0.0.12")
-      --version-etcd string                            Etcd version (default "3.3.9")
+      --version-elasticsearch-cron string              Elasticsearch Cron version (default "docker.io/upmcenterprises/elasticsearch-cron:0.1.0")
+      --version-elasticsearch-operator string          Elasticsearch Operator version (default "docker.io/upmcenterprises/elasticsearch-operator:0.3.0")
+      --version-etcd string                            Etcd version (default "quay.io/coreos/etcd:v3.3.12")
       --version-fluent-bit string                      Fluent-Bit version (default "docker.io/fluent/fluent-bit:0.13.0")
-      --version-gobetween string                       Gobetween version (default "0.6.0")
+      --version-gobetween string                       Gobetween version (default "docker.io/yyyar/gobetween:0.6.1")
       --version-grafana string                         Grafana version (default "docker.io/grafana/grafana:5.0.0")
       --version-grafana-watcher string                 Grafana Watcher version (default "quay.io/coreos/grafana-watcher:v0.0.8")
       --version-heapster string                        Heapster version (default "k8s.gcr.io/heapster:v1.3.0")
-      --version-helm string                            Helm version (default "2.11.0")
-      --version-k8s string                             Kubernetes version (default "1.12.1")
+      --version-helm string                            Helm version (default "2.13.1")
+      --version-k8s string                             Kubernetes version (default "k8s.gcr.io/hyperkube:v1.14.0")
       --version-kibana string                          Kibana version (default "docker.elastic.co/kibana/kibana-oss:6.1.3")
       --version-kube-state-metrics string              Kube State Metrics version (default "gcr.io/google_containers/kube-state-metrics:v1.2.0")
-      --version-kubernetes-dashboard string            Kubernetes Dashboard version (default "k8s.gcr.io/kubernetes-dashboard-amd64:v1.10.0")
-      --version-metrics-server string                  Metrics Server version (default "gcr.io/google_containers/metrics-server-amd64:v0.2.1")
-      --version-minio-client string                    Minio client version (default "docker.io/minio/mc:RELEASE.2018-08-18T02-13-04Z")
-      --version-minio-server string                    Minio server version (default "docker.io/minio/minio:RELEASE.2018-08-18T03-49-57Z")
+      --version-kubernetes-dashboard string            Kubernetes Dashboard version (default "k8s.gcr.io/kubernetes-dashboard-amd64:v1.10.1")
+      --version-metallb-controller string              MetalLB Controller version (default "docker.io/metallb/controller:v0.7.3")
+      --version-metallb-speaker string                 MetalLB Speaker version (default "docker.io/metallb/speaker:v0.7.3")
+      --version-metrics-server string                  Metrics Server version (default "k8s.gcr.io/metrics-server-amd64:v0.3.1")
+      --version-minio-client string                    Minio client version (default "docker.io/minio/mc:RELEASE.2019-03-20T21-29-03Z")
+      --version-minio-server string                    Minio server version (default "docker.io/minio/minio:RELEASE.2019-03-20T22-38-47Z")
       --version-mysql string                           MySQL version (default "docker.io/library/mysql:5.6")
-      --version-nginx-ingress-controller string        Nginx Ingress Controller version (default "quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.18.0")
+      --version-nginx-ingress-controller string        Nginx Ingress Controller version (default "quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.23.0")
       --version-nginx-ingress-default-backend string   Nginx Ingress Default Backend version (default "k8s.gcr.io/defaultbackend:1.4")
       --version-pause string                           Pause version (default "k8s.gcr.io/pause:3.1")
       --version-prometheus string                      Prometheus version (default "quay.io/prometheus/prometheus:v2.2.1")
@@ -115,7 +120,9 @@ After the initialization step the parameters of the cluster should be be adapted
       --version-prometheus-config-reloader string      Prometheus Config Reloader version (default "quay.io/coreos/prometheus-config-reloader:v0.20.0")
       --version-prometheus-node-exporter string        Prometheus Node Exporter version (default "quay.io/prometheus/node-exporter:v0.15.2")
       --version-prometheus-operator string             Prometheus Operator version (default "quay.io/coreos/prometheus-operator:v0.20.0")
-      --version-runc string                            Runc version (default "1.0.0-rc5")
+      --version-runc string                            Runc version (default "1.0.0-rc6")
+      --version-velero string                          Velero version (default "gcr.io/heptio-images/velero:v0.11.0")
+      --version-virtual-ip string                      Virtual-IP version (default "docker.io/darxkies/virtual-ip:0.1.4")
       --version-wordpress string                       WordPress version (default "docker.io/library/wordpress:4.8-apache")
       --vip-raft-controller-port uint16                VIP Raft Controller Port (default 16277)
       --vip-raft-worker-port uint16                    VIP Raft Worker Port (default 16728)
@@ -198,6 +205,7 @@ The arguments:
   -r, --command-retries uint   The count of command retries during the setup (default 300)
   --force-download         Force downloading all binary dependencies from the internet
   --parallel               Download binary dependencies in parallel
+  --pull-images            Pull and convert images to OCI to be deployed later on
 
 Run
 ^^^
@@ -226,8 +234,8 @@ The arguments:
   -r, --command-retries uint    The count of command retries during the setup (default 300)
       --force-upload            Files are uploaded without checking if they are already installed
   -i, --identity-file string    SSH identity file (default "/home/darxkies/.ssh/id_rsa")
+      --import-images           Install images
       --parallel                Run steps in parallel
-      --pull-images             Pull images
       --skip-backup-setup       Skip backup setup
       --skip-ingress-setup      Skip ingress setup
       --skip-logging-setup      Skip logging setup
@@ -363,5 +371,4 @@ Ceph Dashboard gives an overview of the storage status.
 - Address: https://[worker-ip]:30700
 - Username: admin
 - Password: changeme
-
 
