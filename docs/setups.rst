@@ -21,7 +21,7 @@ The Vagrantfile can be configured using the environment variables:
 Usage
 ^^^^^
 
-The directory called :file:`setup` contains sub-directories for various cluster setup configurations:
+The directory called :file:`setup` (`https://github.com/darxkies/k8s-tew/tree/2.3.0/setup <https://github.com/darxkies/k8s-tew/tree/2.3.0/setup>`_) contains sub-directories for various cluster setup configurations:
 
 - local - it starts a single-node cluster locally without using any kind of virtualization. This kind of setup needs root rights. It is meant for local development where it might be important to fire the cluster up and shut it down fast. If you want it to start automatically, take a look at the quickstart section.
 - ubuntu-single-node - Ubuntu 18.04 single-node cluster. It needs about 8GB Ram.
