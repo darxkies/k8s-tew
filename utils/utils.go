@@ -6,8 +6,8 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	"encoding/binary"
-	"errors"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"os"
 	"os/exec"
@@ -16,6 +16,7 @@ import (
 	"text/template"
 	"time"
 
+	"github.com/pkg/errors"
 	oslib "github.com/redpois0n/goslib"
 	log "github.com/sirupsen/logrus"
 )
@@ -272,4 +273,34 @@ func HasOS(os []string) bool {
 	}
 
 	return false
+}
+
+// MoveFile copies a files and then removes the original
+func MoveFile(sourceFilename, targetFilename string) error {
+	{
+		sourceHandle, error := os.Open(sourceFilename)
+		if error != nil {
+			return errors.Wrapf(error, "Could not open source source file %s", sourceFilename)
+		}
+
+		defer sourceHandle.Close()
+
+		targetHandle, error := os.OpenFile(targetFilename, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0555)
+		if error != nil {
+			return errors.Wrapf(error, "Could not open target file %s", targetFilename)
+		}
+
+		defer targetHandle.Close()
+
+		_, error = io.Copy(targetHandle, sourceHandle)
+		if error != nil {
+			return errors.Wrapf(error, "Could not write to target file %s", targetFilename)
+		}
+	}
+
+	if error := os.Remove(sourceFilename); error != nil {
+		return errors.Wrapf(error, "Could not remove source file %s", sourceFilename)
+	}
+
+	return nil
 }

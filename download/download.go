@@ -20,11 +20,13 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+// CompressedFile contains the source name and target name of the a compressed file
 type CompressedFile struct {
 	SourceFile string
 	TargetFile string
 }
 
+// Downloader contains data to download dependencies
 type Downloader struct {
 	config          *config.InternalConfig
 	downloaderSteps utils.Tasks
@@ -33,6 +35,7 @@ type Downloader struct {
 	pullImages      bool
 }
 
+// NewDownloader creates a new instance of the downloader
 func NewDownloader(config *config.InternalConfig, forceDownload bool, parallel bool, pullImages bool) Downloader {
 	downloader := Downloader{config: config, forceDownload: forceDownload, parallel: parallel}
 
@@ -61,6 +64,7 @@ func (downloader *Downloader) addTask(task utils.Task) {
 	})
 }
 
+// Steps returns the name of steps to be performed for the progress
 func (downloader Downloader) Steps() int {
 	result := len(downloader.downloaderSteps)
 
@@ -149,7 +153,7 @@ func (downloader Downloader) downloadExecutable(urlTemplate, remoteFilename, fil
 	}
 
 	// Move target temporary file to target file
-	if error := os.Rename(temporaryFilename, filename); error != nil {
+	if error := utils.MoveFile(temporaryFilename, filename); error != nil {
 		return error
 	}
 
@@ -306,7 +310,7 @@ func (downloader Downloader) downloadAndExtractTGZFiles(urlTemplate, baseName st
 	for _, compressedFile := range files {
 		sourceFilename := path.Join(temporaryExtractedDirectory, compressedFile.SourceFile)
 
-		if error := os.Rename(sourceFilename, compressedFile.TargetFile); error != nil {
+		if error := utils.MoveFile(sourceFilename, compressedFile.TargetFile); error != nil {
 			return errors.Wrapf(error, "could not rename '%s' to '%s'", sourceFilename, compressedFile.TargetFile)
 		}
 
@@ -491,6 +495,7 @@ func (downloader Downloader) createLocalDirectories() error {
 	return nil
 }
 
+// DownloadBinaries downloads all required binaries
 func (downloader Downloader) DownloadBinaries() error {
 	if error := downloader.createLocalDirectories(); error != nil {
 		return error
