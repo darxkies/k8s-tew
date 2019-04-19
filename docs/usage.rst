@@ -232,18 +232,18 @@ The deployment is executed with the command:
 The arguments:
 
   -r, --command-retries uint    The count of command retries during the setup (default 300)
-      --force-upload            Files are uploaded without checking if they are already installed
+  --force-upload            Files are uploaded without checking if they are already installed
   -i, --identity-file string    SSH identity file (default "/home/darxkies/.ssh/id_rsa")
-      --import-images           Install images
-      --parallel                Run steps in parallel
-      --skip-backup-setup       Skip backup setup
-      --skip-ingress-setup      Skip ingress setup
-      --skip-logging-setup      Skip logging setup
-      --skip-monitoring-setup   Skip monitoring setup
-      --skip-packaging-setup    Skip packaging setup
-      --skip-setup              Skip setup steps
-      --skip-showcase-setup     Skip showcase setup
-      --skip-storage-setup      Skip storage setup and all other feature setup steps
+  --import-images           Install images
+  --parallel                Run steps in parallel
+  --skip-backup-setup       Skip backup setup
+  --skip-ingress-setup      Skip ingress setup
+  --skip-logging-setup      Skip logging setup
+  --skip-monitoring-setup   Skip monitoring setup
+  --skip-packaging-setup    Skip packaging setup
+  --skip-setup              Skip setup steps
+  --skip-showcase-setup     Skip showcase setup
+  --skip-storage-setup      Skip storage setup and all other feature setup steps
 
 The files are copied using scp and the ssh private key :file:`$HOME/.ssh/id_rsa`. In case the file :file:`$HOME/.ssh/id_rsa` does not exist it should be generated using the command :file:`ssh-keygen`. If another private key should be used, it can be specified using the command line argument :file:`-i`.
 
