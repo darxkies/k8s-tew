@@ -24,7 +24,7 @@ data:
           "nodename": "__KUBERNETES_NODE_NAME__",
           "mtu": 1500,
           "ipam": {
-            "type": "host-local",
+            "type": "calico-ipam",
             "subnet": "usePodCidr"
           },
           "policy": {
