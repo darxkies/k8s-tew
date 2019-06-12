@@ -17,8 +17,8 @@ import (
 	"time"
 
 	"github.com/pkg/errors"
-	oslib "github.com/redpois0n/goslib"
 	log "github.com/sirupsen/logrus"
+	oslib "github.com/wille/osutil"
 )
 
 const commandTimeout = 60 // In seconds

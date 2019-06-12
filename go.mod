@@ -34,7 +34,6 @@ require (
 	github.com/peterbourgon/diskv v2.0.1+incompatible // indirect
 	github.com/pkg/errors v0.8.1
 	github.com/prometheus/client_golang v0.9.2 // indirect
-	github.com/redpois0n/goslib v0.0.0-20170201145358-31d6236edf03
 	github.com/saibing/bingo v0.0.0-20190305053906-43cf0205459d // indirect
 	github.com/satori/go.uuid v1.2.0
 	github.com/sirupsen/logrus v1.4.0
@@ -46,6 +45,7 @@ require (
 	github.com/spf13/viper v1.2.1
 	github.com/stamblerre/gocode v0.0.0-20190213022308-8cc90faaf476 // indirect
 	github.com/tmc/scp v0.0.0-20170824174625-f7b48647feef
+	github.com/wille/osutil v0.0.0-20190526221756-e91b8656e290
 	golang.org/x/crypto v0.0.0-20190404164418-38d8ce5564a5
 	golang.org/x/net v0.0.0-20190404232315-eb5bcb51f2a3 // indirect
 	golang.org/x/oauth2 v0.0.0-20181128211412-28207608b838 // indirect
