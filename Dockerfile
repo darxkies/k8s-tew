@@ -1,4 +1,4 @@
-ARG GO_VERSION=1.12.4
+ARG GO_VERSION=1.12.5
 
 FROM golang:${GO_VERSION}-alpine AS builder
 
@@ -16,8 +16,8 @@ WORKDIR ${WORKING_DIRECTORY}
 
 COPY go.mod go.sum ${WORKING_DIRECTORY}
 
-RUN go mod download
+#RUN go mod download
 
-RUN go get github.com/gobuffalo/packr/...
+RUN go install vendor/github.com/gobuffalo/packr
 
 CMD ["make", "build-binaries"]

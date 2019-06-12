@@ -9,7 +9,8 @@ spec:
   - name: kube-scheduler
     image: {{.KubernetesImage}}
     command:
-    - /scheduler
+    - /hyperkube
+    - kube-scheduler
     - --config={{.KubeSchedulerConfig}}
     livenessProbe:
       failureThreshold: 8

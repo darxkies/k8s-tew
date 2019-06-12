@@ -9,7 +9,8 @@ spec:
   - name: kube-proxy
     image: {{.KubernetesImage}}
     command:
-    - /proxy
+    - /hyperkube
+    - kube-proxy
     - --cluster-cidr={{.ClusterCIDR}}
     - --kubeconfig={{.KubeProxyKubeconfig}}
     - --proxy-mode=iptables

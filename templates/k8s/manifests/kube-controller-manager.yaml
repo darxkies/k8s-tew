@@ -9,7 +9,8 @@ spec:
   - name: kube-controller-manager
     image: {{.KubernetesImage}}
     command:
-    - /controller-manager
+    - /hyperkube
+    - kube-controller-manager
     - --address=0.0.0.0
     - --allocate-node-cidrs=true
     - --cluster-cidr={{.ClusterCIDR}}

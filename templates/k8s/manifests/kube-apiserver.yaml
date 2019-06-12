@@ -9,7 +9,8 @@ spec:
   - name: kube-apiserver
     image: {{.KubernetesImage}}
     command:
-    - /apiserver
+    - /hyperkube
+    - kube-apiserver
     - --advertise-address={{.NodeIP}}
     - --allow-privileged=true
     - --apiserver-count={{.ControllersCount}}
