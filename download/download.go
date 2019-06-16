@@ -464,6 +464,8 @@ func (downloader Downloader) downloadImages() error {
 			continue
 		}
 
+		log.WithFields(log.Fields{"name": image.Name, "_filename": imageFilename}).Info("Downloading image")
+
 		error := converter.PullImage(image.Name, imageFilename, false)
 		if error != nil {
 			return error
