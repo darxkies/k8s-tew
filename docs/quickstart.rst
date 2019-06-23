@@ -9,7 +9,7 @@ The following snippet will create a cluster on the host computer or in a virtual
     sudo su -
 
     # Download Binary
-    wget https://github.com/darxkies/k8s-tew/releases/download/2.3.3/k8s-tew
+    wget https://github.com/darxkies/k8s-tew/releases/download/2.3.4/k8s-tew
     chmod a+x k8s-tew
 
     # Everything is installed relative to the root directory
@@ -40,5 +40,5 @@ The following snippet will create a cluster on the host computer or in a virtual
     watch -n 1 kubectl get pods --all-namespaces
 
 .. note:: You will need at least 20GB HDD, 8GB RAM and 4 CPU Cores.
-.. note:: To use k8s-tew with Vagrant take a look at `https://github.com/darxkies/k8s-tew/tree/2.3.3/setup <https://github.com/darxkies/k8s-tew/tree/2.3.3/setup>`_.
+.. note:: To use k8s-tew with Vagrant take a look at `https://github.com/darxkies/k8s-tew/tree/2.3.4/setup <https://github.com/darxkies/k8s-tew/tree/2.3.4/setup>`_.
 
