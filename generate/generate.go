@@ -305,6 +305,7 @@ func (generator *Generator) generateKubeletConfig() error {
 			PODCIDR             string
 			StaticPodPath       string
 			ResolvConf          string
+			MaxPods             uint16
 		}{
 			CA:                  generator.config.GetFullTargetAssetFilename(utils.PemCa),
 			CertificateFilename: generator.config.GetFullTargetAssetFilename(utils.PemKubelet),
@@ -314,6 +315,7 @@ func (generator *Generator) generateKubeletConfig() error {
 			PODCIDR:             generator.config.Config.ClusterCIDR,
 			StaticPodPath:       generator.config.GetFullTargetAssetDirectory(utils.DirectoryK8sManifests),
 			ResolvConf:          generator.config.Config.ResolvConf,
+			MaxPods:             generator.config.Config.MaxPods,
 		}, generator.config.GetFullLocalAssetFilename(utils.K8sKubeletConfig), true, false); error != nil {
 			return error
 		}

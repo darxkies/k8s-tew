@@ -79,6 +79,10 @@ func init() {
 		_config.Config.RSASize = value
 	})
 
+	addUint16Option("max-pods", utils.MaxPods, "MaxPods", func(value uint16) {
+		_config.Config.MaxPods = value
+	})
+
 	addUint16Option("ca-certificate-validity-period", utils.CaValidityPeriod, "CA Certificate Validity Period", func(value uint16) {
 		_config.Config.CAValidityPeriod = uint(value)
 	})

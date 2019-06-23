@@ -2,9 +2,9 @@ package utils
 
 // Versions
 const VersionConfig = "2.3.0"
-const VersionK8s = "k8s.gcr.io/hyperkube:v1.14.1"
+const VersionK8s = "k8s.gcr.io/hyperkube:v1.15.0"
 const VersionEtcd = "quay.io/coreos/etcd:v3.3.12"
-const VersionContainerd = "1.2.6"
+const VersionContainerd = "1.2.7"
 const VersionRunc = "1.0.0-rc8"
 const VersionCrictl = "1.14.0"
 const VersionHelm = "2.13.1"
@@ -58,6 +58,7 @@ const VersionTiller = "gcr.io/kubernetes-helm/tiller:v%s"
 // Settings
 const ProjectTitle = "Kubernetes - The Easier Way"
 const ClusterName = "k8s-tew"
+const MaxPods = 110
 const RsaSize = 2048
 const CaValidityPeriod = 20
 const ClientValidityPeriod = 15

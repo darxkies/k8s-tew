@@ -29,6 +29,7 @@ type Config struct {
 	MetalLBAddresses             string      `yaml:"metallb-addresses"`
 	ResolvConf                   string      `yaml:"resolv-conf"`
 	DeploymentDirectory          string      `yaml:"deployment-directory,omitempty"`
+	MaxPods                      uint16      `yaml:"max-pods"`
 	RSASize                      uint16      `yaml:"rsa-size"`
 	CAValidityPeriod             uint        `yaml:"ca-validity-period"`
 	ClientValidityPeriod         uint        `yaml:"client-validity-period"`
@@ -60,6 +61,7 @@ func NewConfig() *Config {
 	config.MetalLBAddresses = utils.MetalLBAddresses
 	config.ResolvConf = utils.ResolvConf
 	config.DeploymentDirectory = utils.DeploymentDirectory
+	config.MaxPods = utils.MaxPods
 	config.RSASize = utils.RsaSize
 	config.CAValidityPeriod = utils.CaValidityPeriod
 	config.ClientValidityPeriod = utils.ClientValidityPeriod
