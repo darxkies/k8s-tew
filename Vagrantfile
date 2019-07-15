@@ -69,33 +69,6 @@ if ENV["OS"]
 end
 
 ############################################################
-# Summary
-############################################################
-
-puts
-puts "####################################################"
-
-puts "SSH Public Key: #{$ssh_public_key_filename}"
-puts "OS: #{$os}"
-
-if $single_node 
-  puts "Setup: Single Node"
-  puts "Single Node RAM: #{$single_node_ram}"
-  puts "Single Node CPUs: #{$single_node_cpus}"
-else
-  puts "Setup: Multi Node"
-  puts "Controllers Count: #{$controllers_count}"
-  puts "Controllers RAM: #{$controllers_ram}"
-  puts "Controllers CPUs: #{$controllers_cpus}"
-  puts "Workers Count: #{$workers_count}"
-  puts "Workers RAM: #{$workers_ram}"
-  puts "Workers CPUs: #{$workers_cpus}"
-end
-
-puts "####################################################"
-puts
-
-############################################################
 # Setup
 ############################################################
 
@@ -116,6 +89,34 @@ end
 if ENV["IP_PREFIX"]
     $ip_prefix = ENV["IP_PREFIX"]
 end
+
+############################################################
+# Summary
+############################################################
+
+puts
+puts "####################################################"
+
+puts "SSH Public Key: #{$ssh_public_key_filename}"
+puts "OS: #{$os}"
+puts "IP Prefix: #{$ip_prefix}"
+
+if $single_node 
+  puts "Setup: Single Node"
+  puts "Single Node RAM: #{$single_node_ram}"
+  puts "Single Node CPUs: #{$single_node_cpus}"
+else
+  puts "Setup: Multi Node"
+  puts "Controllers Count: #{$controllers_count}"
+  puts "Controllers RAM: #{$controllers_ram}"
+  puts "Controllers CPUs: #{$controllers_cpus}"
+  puts "Workers Count: #{$workers_count}"
+  puts "Workers RAM: #{$workers_ram}"
+  puts "Workers CPUs: #{$workers_cpus}"
+end
+
+puts "####################################################"
+puts
 
 ############################################################
 # Routines
