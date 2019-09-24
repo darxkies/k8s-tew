@@ -217,6 +217,8 @@ func (downloader Downloader) extractTGZ(filename string, targetDirectory string)
 			}
 
 		case tar.TypeReg:
+			log.WithFields(log.Fields{"filename": filepath.Dir(fullName)}).Debug("Extracting")
+
 			if error := utils.CreateDirectoryIfMissing(filepath.Dir(fullName)); error != nil {
 				return errors.Wrapf(error, "could not create directory '%s'", fullName)
 			}
@@ -442,9 +444,15 @@ func (downloader Downloader) downloadCriCtlBinary() error {
 }
 
 func (downloader Downloader) downloadVeleroBinaries() error {
+	// Build base name including the version number
+	baseName, error := downloader.getURL(utils.VeleroBaseName, "")
+	if error != nil {
+		return error
+	}
+
 	compressedFiles := []CompressedFile{
 		{
-			SourceFile: utils.BinaryVelero,
+			SourceFile: path.Join(baseName, utils.BinaryVelero),
 			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.BinaryVelero),
 		},
 	}

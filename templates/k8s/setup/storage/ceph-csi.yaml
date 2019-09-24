@@ -108,11 +108,16 @@ spec:
 
 ---
 kind: StatefulSet
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 metadata:
   namespace: storage
   name: csi-cephfsplugin-attacher
+  labels:
+    app: csi-cephfsplugin-attacher
 spec:
+  selector:
+    matchLabels:
+      app: csi-cephfsplugin-attacher
   serviceName: "csi-cephfsplugin-attacher"
   replicas: 1
   template:
@@ -157,12 +162,17 @@ spec:
 
 ---
 kind: StatefulSet
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 metadata:
   namespace: storage
   name: csi-cephfsplugin-provisioner
   namespace: storage
+  labels:
+    app: csi-cephfsplugin-provisioner
 spec:
+  selector:
+    matchLabels:
+      app: csi-cephfsplugin-provisioner
   serviceName: "csi-cephfsplugin-provisioner"
   replicas: 1
   template:
@@ -235,7 +245,7 @@ spec:
 
 ---
 kind: DaemonSet
-apiVersion: apps/v1beta2
+apiVersion: apps/v1
 metadata:
   namespace: storage
   name: csi-cephfsplugin
@@ -646,11 +656,16 @@ spec:
 
 ---
 kind: StatefulSet
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 metadata:
   namespace: storage
   name: csi-rbdplugin-attacher
+  labels:
+    app: csi-rbdplugin-attacher
 spec:
+  selector:
+    matchLabels:
+      app: csi-rbdplugin-attacher
   serviceName: "csi-rbdplugin-attacher"
   replicas: 1
   template:
@@ -695,11 +710,16 @@ spec:
 
 ---
 kind: StatefulSet
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 metadata:
   namespace: storage
   name: csi-rbdplugin-provisioner
+  labels:
+    app: csi-rbdplugin-provisioner
 spec:
+  selector:
+    matchLabels:
+      app: csi-rbdplugin-provisioner
   serviceName: "csi-rbdplugin-provisioner"
   replicas: 1
   template:
@@ -795,7 +815,7 @@ spec:
 
 ---
 kind: DaemonSet
-apiVersion: apps/v1beta2
+apiVersion: apps/v1
 metadata:
   namespace: storage
   name: csi-rbdplugin

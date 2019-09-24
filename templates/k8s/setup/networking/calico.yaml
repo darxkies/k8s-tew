@@ -416,7 +416,7 @@ subjects:
   namespace: networking
 ---
 kind: DaemonSet
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 metadata:
   name: calico-node
   namespace: networking
@@ -607,7 +607,7 @@ metadata:
   name: calico-node
   namespace: networking
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: calico-kube-controllers
@@ -617,6 +617,9 @@ metadata:
   annotations:
     scheduler.alpha.kubernetes.io/critical-pod: ''
 spec:
+  selector:
+    matchLabels:
+      k8s-app: calico-kube-controllers
   replicas: 1
   strategy:
     type: Recreate
@@ -672,7 +675,7 @@ spec:
   selector:
     k8s-app: calico-typha
 ---
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: calico-typha
@@ -680,6 +683,9 @@ metadata:
   labels:
     k8s-app: calico-typha
 spec:
+  selector:
+    matchLabels:
+      k8s-app: calico-typha
   replicas: 0
   revisionHistoryLimit: 2
   template:

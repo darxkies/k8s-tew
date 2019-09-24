@@ -136,7 +136,7 @@ data:
         Time_Key    time
         Time_Format %b %d %H:%M:%S
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: fluent-bit

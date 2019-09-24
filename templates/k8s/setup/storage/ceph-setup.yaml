@@ -1,10 +1,15 @@
 {{range $index, $node := .StorageControllers}}---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: storage
   name: ceph-mon-{{$node.Name}}
+  labels:
+    app: ceph-mon-{{$node.Name}}
 spec:
+  selector:
+    matchLabels:
+      app: ceph-mon-{{$node.Name}}
   replicas: 1
   strategy:
     type: Recreate
@@ -43,12 +48,17 @@ spec:
         - name: ceph-data
           mountPath: /var/lib/ceph
 {{end}}{{range $index, $node := .StorageNodes}}---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: storage
   name: ceph-mds-{{$node.Name}}
+  labels:
+    app: ceph-mds-{{$node.Name}}
 spec:
+  selector:
+    matchLabels:
+      app: ceph-mds-{{$node.Name}}
   replicas: 1
   strategy:
     type: Recreate
@@ -106,12 +116,17 @@ spec:
             port: 6800
           timeoutSeconds: 5
 {{end}}{{range $index, $node := .StorageNodes}}---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: storage
   name: ceph-osd-{{$node.Name}}
+  labels:
+    app: ceph-osd-{{$node.Name}}
 spec:
+  selector:
+    matchLabels:
+      app: ceph-osd-{{$node.Name}}
   replicas: 1
   strategy:
     type: Recreate
@@ -156,12 +171,17 @@ spec:
         - name: ceph-dev
           mountPath: /dev
 {{end}}---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: storage
   name: ceph-mgr
+  labels:
+    app: ceph-mgr
 spec:
+  selector:
+    matchLabels:
+      app: ceph-mgr
   replicas: 1
   strategy:
     type: Recreate
@@ -192,12 +212,17 @@ spec:
         - name: ceph-data
           mountPath: /var/lib/ceph
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: storage
   name: ceph-rgw
+  labels:
+    app: ceph-rgw
 spec:
+  selector:
+    matchLabels:
+      app: ceph-rgw
   replicas: 1
   strategy:
     type: Recreate

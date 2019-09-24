@@ -112,7 +112,7 @@ roleRef:
   name: config-watcher
 
 ---
-apiVersion: apps/v1beta2
+apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   namespace: networking
@@ -167,7 +167,7 @@ spec:
             - net_raw
 
 ---
-apiVersion: apps/v1beta2
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: networking

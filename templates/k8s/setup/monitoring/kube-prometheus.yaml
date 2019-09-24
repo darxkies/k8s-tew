@@ -489,7 +489,7 @@ spec:
     app: prometheus
     prometheus: kube-prometheus
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   namespace: monitoring
@@ -543,7 +543,7 @@ spec:
           path: /sys
         name: sys
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: monitoring
@@ -614,7 +614,7 @@ spec:
               memory: 30Mi
       serviceAccountName: kube-prometheus-exporter-kube-state
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: monitoring
@@ -768,7 +768,7 @@ spec:
               app: alertmanager
               alertmanager: kube-prometheus
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: PodSecurityPolicy
 metadata:
   namespace: monitoring
@@ -803,7 +803,7 @@ spec:
         max: 65535
   readOnlyRootFilesystem: false
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: PodSecurityPolicy
 metadata:
   namespace: monitoring
@@ -838,7 +838,7 @@ spec:
         max: 65535
   readOnlyRootFilesystem: false
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: PodSecurityPolicy
 metadata:
   namespace: monitoring
@@ -877,7 +877,7 @@ spec:
         max: 65535
   readOnlyRootFilesystem: false
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: PodSecurityPolicy
 metadata:
   namespace: monitoring
@@ -916,7 +916,7 @@ spec:
         max: 65535
   readOnlyRootFilesystem: false
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: PodSecurityPolicy
 metadata:
   namespace: monitoring

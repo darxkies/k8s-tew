@@ -75,7 +75,7 @@ spec:
   selector:
     app: heapster-heapster
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: kube-system

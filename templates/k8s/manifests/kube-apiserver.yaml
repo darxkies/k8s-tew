@@ -29,8 +29,8 @@ spec:
     - --etcd-keyfile={{.PemKubernetesKey}}
     - --etcd-servers={{.EtcdServers}}
     - --event-ttl=1h
-    - --experimental-encryption-provider-config={{.EncryptionConfig}}
-    - --feature-gates=KubeletPluginsWatcher=true,CSIBlockVolume=true,BlockVolume=true
+    - --encryption-provider-config={{.EncryptionConfig}}
+    - --feature-gates=CSIBlockVolume=true,BlockVolume=true,VolumeSnapshotDataSource=true
     - --kubelet-certificate-authority={{.PemCA}}
     - --kubelet-client-certificate={{.PemKubernetes}}
     - --kubelet-client-key={{.PemKubernetesKey}}

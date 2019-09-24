@@ -11,7 +11,7 @@ spec:
     command:
     - /hyperkube
     - kube-controller-manager
-    - --address=0.0.0.0
+    - --bind-address=0.0.0.0
     - --allocate-node-cidrs=true
     - --cluster-cidr={{.ClusterCIDR}}
     - --cluster-name=kubernetes

@@ -20,7 +20,6 @@ tlsPrivateKeyFile: "{{.KeyFilename}}"
 staticPodPath: "{{.StaticPodPath}}"
 failSwapOn: false
 featureGates: 
-  KubeletPluginsWatcher: true
   CSIBlockVolume: true
   BlockVolume: true
 resolvConf: "{{.ResolvConf}}"
