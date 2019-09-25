@@ -262,6 +262,7 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.K8sVeleroSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sHeapsterSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sKubernetesDashboardSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.K8sHelmSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sCertManagerSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sNginxIngressSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sMetricsServerSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
@@ -341,7 +342,7 @@ func (config *InternalConfig) registerServers() {
 
 func (config *InternalConfig) registerCommands() {
 	kubectlCommand := fmt.Sprintf("%s --request-timeout 30s --kubeconfig %s", config.GetFullLocalAssetFilename(utils.BinaryKubectl), config.GetFullLocalAssetFilename(utils.KubeconfigAdmin))
-	helmCommand := fmt.Sprintf("KUBECONFIG=%s HELM_HOME=%s %s", config.GetFullLocalAssetFilename(utils.KubeconfigAdmin), config.GetFullLocalAssetDirectory(utils.DirectoryHelmData), config.GetFullLocalAssetFilename(utils.BinaryHelm))
+	//helmCommand := fmt.Sprintf("KUBECONFIG=%s HELM_HOME=%s %s", config.GetFullLocalAssetFilename(utils.KubeconfigAdmin), config.GetFullLocalAssetDirectory(utils.DirectoryHelmData), config.GetFullLocalAssetFilename(utils.BinaryHelm))
 
 	// Dependencies
 	config.addCommand("setup-ubuntu", Labels{utils.NodeController, utils.NodeWorker}, Features{}, OS{utils.OsUbuntu}, "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y apt-transport-https bash-completion socat")
@@ -358,10 +359,11 @@ func (config *InternalConfig) registerCommands() {
 	config.addCommand("metallb-setup", Labels{utils.NodeBootstrapper}, Features{}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sMetalLBSetup)))
 	config.addCommand("coredns-setup", Labels{utils.NodeBootstrapper}, Features{}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sCorednsSetup)))
 	config.addCommand("helm-user-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeaturePackaging}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sHelmUserSetup)))
+	config.addCommand("helm-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeaturePackaging}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sHelmSetup)))
 	config.addCommand("ceph-secrets", Labels{utils.NodeBootstrapper}, Features{utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.CephSecrets)))
 	config.addCommand("ceph-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.CephSetup)))
 	config.addCommand("ceph-csi", Labels{utils.NodeBootstrapper}, Features{utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.CephCsi)))
-	config.addCommand("helm-init", Labels{utils.NodeBootstrapper}, Features{utils.FeaturePackaging}, OS{}, fmt.Sprintf("%s init --service-account %s --upgrade", helmCommand, utils.HelmServiceAccount))
+	//config.addCommand("helm-init", Labels{utils.NodeBootstrapper}, Features{utils.FeaturePackaging}, OS{}, fmt.Sprintf("%s init --service-account %s --upgrade", helmCommand, utils.HelmServiceAccount))
 	config.addCommand("kubernetes-dashboard-setup", Labels{utils.NodeBootstrapper}, Features{}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sKubernetesDashboardSetup)))
 	config.addCommand("cert-manager-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureIngress}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sCertManagerSetup)))
 	config.addCommand("nginx-ingress-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureIngress}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sNginxIngressSetup)))

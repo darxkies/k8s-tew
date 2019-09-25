@@ -114,6 +114,9 @@ metadata:
   labels:
     app: kubernetes-dashboard
 spec:
+  selector:
+    matchLabels:
+      app: kubernetes-dashboard
   replicas: 1
   strategy:
     rollingUpdate:

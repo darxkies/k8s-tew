@@ -233,9 +233,11 @@ metadata:
     app: nginx-ingress
     component: "controller"
 spec:
+  selector:
+    matchLabels:
+      app: nginx-ingress
+      component: "controller"
   revisionHistoryLimit: 10
-  updateStrategy:
-    {}
   minReadySeconds: 0
   template:
     metadata:
@@ -312,6 +314,10 @@ metadata:
     app: nginx-ingress
     component: "default-backend"
 spec:
+  selector:
+    matchLabels:
+      app: nginx-ingress
+      component: "default-backend"
   replicas: 1
   revisionHistoryLimit: 10
   template:

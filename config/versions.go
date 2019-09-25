@@ -1,8 +1,6 @@
 package config
 
 import (
-	"fmt"
-
 	"github.com/darxkies/k8s-tew/utils"
 )
 
@@ -118,7 +116,6 @@ func NewVersions() Versions {
 
 func (versions Versions) GetImages() []Image {
 	return []Image{
-		{Name: fmt.Sprintf(utils.VersionTiller, versions.Helm), Features: Features{}},
 		{Name: versions.Pause, Features: Features{}},
 		{Name: versions.Gobetween, Features: Features{}},
 		{Name: versions.VirtualIP, Features: Features{}},
@@ -151,7 +148,8 @@ func (versions Versions) GetImages() []Image {
 		{Name: versions.Heapster, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
 		{Name: versions.AddonResizer, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
 		{Name: versions.MetricsServer, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
-		{Name: versions.KubernetesDashboard, Features: Features{}},
+		{Name: versions.KubernetesDashboard, Features: Features{utils.FeaturePackaging}},
+		{Name: versions.Helm, Features: Features{utils.FeaturePackaging}},
 		{Name: versions.PrometheusOperator, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
 		{Name: versions.PrometheusConfigReloader, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
 		{Name: versions.ConfigMapReload, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},

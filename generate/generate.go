@@ -42,6 +42,8 @@ func NewGenerator(config *config.InternalConfig) *Generator {
 		generator.generateK8SAdminUserConfigFile,
 		// Generate helm user configuration
 		generator.generateK8SHelmUserConfigFile,
+		// Generate Helm  setup file
+		generator.generateHelmSetup,
 		// Generate containerd config
 		generator.generateContainerdConfig,
 		// Generate kubernetes security file
@@ -941,6 +943,14 @@ func (generator *Generator) generateCoreDNSSetup() error {
 		ClusterDNSIP:  generator.config.Config.ClusterDNSIP,
 		CoreDNSImage:  generator.config.Config.Versions.CoreDNS,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sCorednsSetup), true, false)
+}
+
+func (generator *Generator) generateHelmSetup() error {
+	return utils.ApplyTemplateAndSave("helm", utils.TemplateHelmSetup, struct {
+		TillerImage string
+	}{
+		TillerImage: generator.config.Config.Versions.Helm,
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sHelmSetup), true, false)
 }
 
 func (generator *Generator) generateElasticSearchOperatorSetup() error {

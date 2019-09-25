@@ -83,7 +83,7 @@ subjects:
     namespace: networking
     kind: ServiceAccount
 ---
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: networking

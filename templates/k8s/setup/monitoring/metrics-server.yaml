@@ -94,11 +94,13 @@ spec:
       protocol: TCP
       targetPort: 443
 ---
-apiVersion: apps/v1beta2
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: monitoring
   name: metrics-server
+  labels:
+    app: metrics-server
 spec:
   selector:
     matchLabels:

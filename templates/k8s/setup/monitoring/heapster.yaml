@@ -80,7 +80,12 @@ kind: Deployment
 metadata:
   namespace: kube-system
   name: heapster-heapster
+  labels:
+    app: heapster-heapster
 spec:
+  selector:
+    matchLabels:
+      app: heapster-heapster
   replicas: 1
   template:
     metadata:
