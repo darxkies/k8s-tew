@@ -622,7 +622,7 @@ func (generator *Generator) generateCertificates() error {
 	}
 
 	// Collect dns names and ip addresses
-	kubernetesDNSNames := []string{"kubernetes", "kubenetes.default", "kubenetes.default.svc", "kubenetes.default.svc.cluster.local", "localhost"}
+	kubernetesDNSNames := []string{"kubernetes", "kubernetes.default", "kubernetes.default.svc", "kubernetes.default.svc.cluster.local", "localhost"}
 	kubernetesIPAddresses := []string{"127.0.0.1", "10.32.0.1"}
 
 	if len(generator.config.Config.ControllerVirtualIP) > 0 {
