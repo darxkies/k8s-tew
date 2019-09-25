@@ -144,6 +144,9 @@ metadata:
   labels:
     app: efk-fluent-bit
 spec:
+  selector:
+    matchLabels:
+      app: efk-fluent-bit
   updateStrategy:
     type: RollingUpdate
   template:

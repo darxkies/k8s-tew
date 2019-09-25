@@ -66,7 +66,7 @@ subjects:
   namespace: logging
 
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: elasticsearch-operator
@@ -75,6 +75,10 @@ metadata:
     app: elasticsearch-operator
     release: elasticsearch-operator
 spec:
+  selector:
+    matchLabels:
+      name: elasticsearch-operator
+      release: elasticsearch-operator
   replicas: 1
   template:
     metadata:

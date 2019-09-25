@@ -108,7 +108,7 @@ subjects:
     namespace: monitoring
     name: prometheus-operator
 ---
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: monitoring
@@ -116,6 +116,9 @@ metadata:
   labels:
     app: prometheus-operator
 spec:
+  selector:
+    matchLabels:
+      app: prometheus-operator
   replicas: 1
   template:
     metadata:
@@ -135,7 +138,7 @@ spec:
               name: http
       serviceAccountName: prometheus-operator
 ---
-apiVersion: apps/v1
+apiVersion: policy/v1beta1
 kind: PodSecurityPolicy
 metadata:
   name: prometheus-operator

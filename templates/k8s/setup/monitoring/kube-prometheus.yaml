@@ -498,6 +498,10 @@ metadata:
     app: exporter-node
     component: node-exporter
 spec:
+  selector:
+    matchLabels:
+      app: kube-prometheus-exporter-node
+      component: node-exporter
   template:
     metadata:
       labels:
@@ -552,6 +556,10 @@ metadata:
     app: exporter-kube-state
     component: kube-state
 spec:
+  selector:
+    matchLabels:
+      app: exporter-kube-state
+      component: kube-state
   replicas: 1
   revisionHistoryLimit: 10
   strategy:
@@ -622,6 +630,9 @@ metadata:
   labels:
     app: kube-prometheus-grafana
 spec:
+  selector:
+    matchLabels:
+      app: kube-prometheus-grafana
   replicas: 1
   template:
     metadata:
@@ -768,7 +779,7 @@ spec:
               app: alertmanager
               alertmanager: kube-prometheus
 ---
-apiVersion: apps/v1
+apiVersion: policy/v1beta1
 kind: PodSecurityPolicy
 metadata:
   namespace: monitoring
@@ -803,7 +814,7 @@ spec:
         max: 65535
   readOnlyRootFilesystem: false
 ---
-apiVersion: apps/v1
+apiVersion: policy/v1beta1
 kind: PodSecurityPolicy
 metadata:
   namespace: monitoring
@@ -838,7 +849,7 @@ spec:
         max: 65535
   readOnlyRootFilesystem: false
 ---
-apiVersion: apps/v1
+apiVersion: policy/v1beta1
 kind: PodSecurityPolicy
 metadata:
   namespace: monitoring
@@ -877,7 +888,7 @@ spec:
         max: 65535
   readOnlyRootFilesystem: false
 ---
-apiVersion: apps/v1
+apiVersion: policy/v1beta1
 kind: PodSecurityPolicy
 metadata:
   namespace: monitoring
@@ -916,7 +927,7 @@ spec:
         max: 65535
   readOnlyRootFilesystem: false
 ---
-apiVersion: apps/v1
+apiVersion: policy/v1beta1
 kind: PodSecurityPolicy
 metadata:
   namespace: monitoring
