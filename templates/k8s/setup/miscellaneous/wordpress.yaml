@@ -31,7 +31,7 @@ spec:
     requests:
       storage: 2Gi
 ---
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mysql
@@ -39,6 +39,10 @@ metadata:
   labels:
     app: wordpress
 spec:
+  selector:
+    matchLabels:
+      app: wordpress
+      tier: mysql
   strategy:
     type: Recreate
   template:
@@ -72,6 +76,9 @@ metadata:
   labels:
     app: wordpress
 spec:
+  selector:
+    matchLabels:
+      app: wordpress
   strategy:
     type: Recreate
   template:
@@ -130,7 +137,7 @@ spec:
     tier: frontend
   type: NodePort
 ---
-apiVersion: apps/v1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: wordpress

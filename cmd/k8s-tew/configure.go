@@ -111,6 +111,10 @@ func init() {
 		_config.Config.KubernetesDashboardPort = value
 	})
 
+	addUint16Option("elasticsearch-size", utils.ElasticsearchSize, "Size of Elasticsearch Persistent Volume", func(value uint16) {
+		_config.Config.ElasticsearchSize = uint(value)
+	})
+
 	addStringOption("controller-virtual-ip", "", "Controller Virtual/Floating IP for the cluster", func(value string) {
 		_config.Config.ControllerVirtualIP = value
 	})
@@ -233,14 +237,6 @@ func init() {
 
 	addStringOption("version-elasticsearch", utils.VersionElasticsearch, "Elasticsearch version", func(value string) {
 		_config.Config.Versions.Elasticsearch = value
-	})
-
-	addStringOption("version-elasticsearch-cron", utils.VersionElasticsearchCron, "Elasticsearch Cron version", func(value string) {
-		_config.Config.Versions.ElasticsearchCron = value
-	})
-
-	addStringOption("version-elasticsearch-operator", utils.VersionElasticsearchOperator, "Elasticsearch Operator version", func(value string) {
-		_config.Config.Versions.ElasticsearchOperator = value
 	})
 
 	addStringOption("version-kibana", utils.VersionKibana, "Kibana version", func(value string) {

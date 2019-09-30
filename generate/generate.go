@@ -64,8 +64,6 @@ func NewGenerator(config *config.InternalConfig) *Generator {
 		generator.generateLetsEncryptClusterIssuer,
 		// Generate CoreDNS setup file
 		generator.generateCoreDNSSetup,
-		// Generate ElasticSearch Operator setup file
-		generator.generateElasticSearchOperatorSetup,
 		// Generate ElasticSearch/Fluent-Bit/Kibana setup file
 		generator.generateEFKSetup,
 		// Generate velero setup file
@@ -953,31 +951,25 @@ func (generator *Generator) generateHelmSetup() error {
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sHelmSetup), true, false)
 }
 
-func (generator *Generator) generateElasticSearchOperatorSetup() error {
-	return utils.ApplyTemplateAndSave("elasticsearch-operator", utils.TemplateElasticsearchOperatorSetup, struct {
-		ElasticsearchOperatorImage string
-		ElasticsearchImage         string
-		BusyboxImage               string
-	}{
-		ElasticsearchOperatorImage: generator.config.Config.Versions.ElasticsearchOperator,
-		ElasticsearchImage:         generator.config.Config.Versions.Elasticsearch,
-		BusyboxImage:               generator.config.Config.Versions.Busybox,
-	}, generator.config.GetFullLocalAssetFilename(utils.K8sElasticsearchOperatorSetup), true, false)
-}
-
 func (generator *Generator) generateEFKSetup() error {
 	return utils.ApplyTemplateAndSave("efk", utils.TemplateEfkSetup, struct {
-		ElasticsearchImage     string
-		ElasticsearchCronImage string
-		KibanaImage            string
-		CerebroImage           string
-		FluentBitImage         string
+		ElasticsearchImage string
+		KibanaImage        string
+		CerebroImage       string
+		FluentBitImage     string
+		BusyboxImage       string
+		KibanaPort         string
+		CerebroPort        string
+		ElasticsearchSize  string
 	}{
-		ElasticsearchImage:     generator.config.Config.Versions.Elasticsearch,
-		ElasticsearchCronImage: generator.config.Config.Versions.ElasticsearchCron,
-		KibanaImage:            generator.config.Config.Versions.Kibana,
-		CerebroImage:           generator.config.Config.Versions.Cerebro,
-		FluentBitImage:         generator.config.Config.Versions.FluentBit,
+		ElasticsearchImage: generator.config.Config.Versions.Elasticsearch,
+		KibanaImage:        generator.config.Config.Versions.Kibana,
+		CerebroImage:       generator.config.Config.Versions.Cerebro,
+		FluentBitImage:     generator.config.Config.Versions.FluentBit,
+		BusyboxImage:       generator.config.Config.Versions.Busybox,
+		KibanaPort:         fmt.Sprintf("%d", utils.PortKibana),
+		CerebroPort:        fmt.Sprintf("%d", utils.PortCerebro),
+		ElasticsearchSize:  fmt.Sprintf("%d", generator.config.Config.ElasticsearchSize),
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sEfkSetup), true, false)
 }
 

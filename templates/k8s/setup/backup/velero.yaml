@@ -203,7 +203,7 @@ spec:
     requests:
       storage: 2Gi
 ---
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: backup
@@ -211,6 +211,9 @@ metadata:
   labels:
     component: minio
 spec:
+  selector:
+    matchLabels:
+      component: minio
   strategy:
     type: Recreate
   template:
@@ -317,12 +320,15 @@ spec:
     s3ForcePathStyle: "true"
     s3Url: http://minio.backup.svc:9000
 ---
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: backup
   name: velero
 spec:
+  selector:
+    matchLabels:
+      component: velero
   replicas: 1
   template:
     metadata:
@@ -343,6 +349,8 @@ spec:
               containerPort: 8085
           command:
             - /velero
+            - --namespace
+            - backup
           args:
             - server
           volumeMounts:

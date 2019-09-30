@@ -20,8 +20,6 @@ type Versions struct {
 	Pause                      string `yaml:"pause"`
 	CoreDNS                    string `yaml:"core-dns"`
 	Elasticsearch              string `yaml:"elasticsearch"`
-	ElasticsearchCron          string `yaml:"elasticsearch-cron"`
-	ElasticsearchOperator      string `yaml:"elasticsearch-operator"`
 	Kibana                     string `yaml:"kibana"`
 	Cerebro                    string `yaml:"cerebro"`
 	FluentBit                  string `yaml:"fluent-bit"`
@@ -75,8 +73,6 @@ func NewVersions() Versions {
 		Pause:                      utils.VersionPause,
 		CoreDNS:                    utils.VersionCoredns,
 		Elasticsearch:              utils.VersionElasticsearch,
-		ElasticsearchCron:          utils.VersionElasticsearchCron,
-		ElasticsearchOperator:      utils.VersionElasticsearchOperator,
 		Kibana:                     utils.VersionKibana,
 		Cerebro:                    utils.VersionCerebro,
 		FluentBit:                  utils.VersionFluentBit,
@@ -141,8 +137,6 @@ func (versions Versions) GetImages() []Image {
 		{Name: versions.CSICephSnapshotter, Features: Features{utils.FeatureStorage}},
 		{Name: versions.FluentBit, Features: Features{utils.FeatureLogging, utils.FeatureStorage}},
 		{Name: versions.Elasticsearch, Features: Features{utils.FeatureLogging, utils.FeatureStorage}},
-		{Name: versions.ElasticsearchCron, Features: Features{utils.FeatureLogging, utils.FeatureStorage}},
-		{Name: versions.ElasticsearchOperator, Features: Features{utils.FeatureLogging, utils.FeatureStorage}},
 		{Name: versions.Kibana, Features: Features{utils.FeatureLogging, utils.FeatureStorage}},
 		{Name: versions.Cerebro, Features: Features{utils.FeatureLogging, utils.FeatureStorage}},
 		{Name: versions.Heapster, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},

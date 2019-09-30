@@ -33,6 +33,7 @@ type Config struct {
 	RSASize                      uint16      `yaml:"rsa-size"`
 	CAValidityPeriod             uint        `yaml:"ca-validity-period"`
 	ClientValidityPeriod         uint        `yaml:"client-validity-period"`
+	ElasticsearchSize            uint        `yaml:"elasticsearch-size"`
 	Versions                     Versions    `yaml:"versions"`
 	Assets                       AssetConfig `yaml:"assets,omitempty"`
 	Nodes                        Nodes       `yaml:"nodes"`
@@ -65,6 +66,7 @@ func NewConfig() *Config {
 	config.RSASize = utils.RsaSize
 	config.CAValidityPeriod = utils.CaValidityPeriod
 	config.ClientValidityPeriod = utils.ClientValidityPeriod
+	config.ElasticsearchSize = utils.ElasticsearchSize
 	config.Versions = NewVersions()
 	config.Assets = AssetConfig{Directories: map[string]*AssetDirectory{}, Files: map[string]*AssetFile{}}
 	config.Nodes = Nodes{}
