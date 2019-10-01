@@ -223,7 +223,7 @@ func (downloader Downloader) extractTGZ(filename string, targetDirectory string)
 				return errors.Wrapf(error, "could not create directory '%s'", fullName)
 			}
 
-			outputFile, error := os.OpenFile(fullName, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0555)
+			outputFile, error := os.OpenFile(fullName, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0755)
 
 			if error != nil {
 				return errors.Wrapf(error, "could not open file '%s'", fullName)
@@ -422,6 +422,14 @@ func (downloader Downloader) downloadContainerdBinaries() error {
 		{
 			SourceFile: path.Join("bin", utils.BinaryContainerdShim),
 			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.BinaryContainerdShim),
+		},
+		{
+			SourceFile: path.Join("bin", utils.BinaryContainerdShimRuncV1),
+			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.BinaryContainerdShimRuncV1),
+		},
+		{
+			SourceFile: path.Join("bin", utils.BinaryContainerdShimRuncV2),
+			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.BinaryContainerdShimRuncV2),
 		},
 		{
 			SourceFile: path.Join("bin", utils.BinaryCtr),

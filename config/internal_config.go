@@ -192,6 +192,8 @@ func (config *InternalConfig) registerAssetFiles() {
 	// ContainerD Binaries
 	config.addAssetFile(utils.BinaryContainerd, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryCriBinaries)
 	config.addAssetFile(utils.BinaryContainerdShim, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryCriBinaries)
+	config.addAssetFile(utils.BinaryContainerdShimRuncV1, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryCriBinaries)
+	config.addAssetFile(utils.BinaryContainerdShimRuncV2, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryCriBinaries)
 	config.addAssetFile(utils.BinaryCtr, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryCriBinaries)
 	config.addAssetFile(utils.BinaryRunc, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryCriBinaries)
 	config.addAssetFile(utils.BinaryCrictl, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryCriBinaries)
