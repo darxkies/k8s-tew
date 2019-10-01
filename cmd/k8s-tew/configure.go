@@ -115,6 +115,10 @@ func init() {
 		_config.Config.ElasticsearchSize = uint(value)
 	})
 
+	addUint16Option("elasticsearch-count", utils.ElasticsearchCount, "Number of Elasticsearch Servers", func(value uint16) {
+		_config.Config.ElasticsearchCount = uint(value)
+	})
+
 	addStringOption("controller-virtual-ip", "", "Controller Virtual/Floating IP for the cluster", func(value string) {
 		_config.Config.ControllerVirtualIP = value
 	})

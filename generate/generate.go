@@ -952,24 +952,34 @@ func (generator *Generator) generateHelmSetup() error {
 }
 
 func (generator *Generator) generateEFKSetup() error {
+	counts := []string{}
+
+	for i := uint(0); i < generator.config.Config.ElasticsearchCount; i++ {
+		counts = append(counts, fmt.Sprintf("%d", i))
+	}
+
 	return utils.ApplyTemplateAndSave("efk", utils.TemplateEfkSetup, struct {
-		ElasticsearchImage string
-		KibanaImage        string
-		CerebroImage       string
-		FluentBitImage     string
-		BusyboxImage       string
-		KibanaPort         string
-		CerebroPort        string
-		ElasticsearchSize  string
+		ElasticsearchImage  string
+		KibanaImage         string
+		CerebroImage        string
+		FluentBitImage      string
+		BusyboxImage        string
+		KibanaPort          string
+		CerebroPort         string
+		ElasticsearchSize   string
+		ElasticsearchCount  string
+		ElasticsearchCounts []string
 	}{
-		ElasticsearchImage: generator.config.Config.Versions.Elasticsearch,
-		KibanaImage:        generator.config.Config.Versions.Kibana,
-		CerebroImage:       generator.config.Config.Versions.Cerebro,
-		FluentBitImage:     generator.config.Config.Versions.FluentBit,
-		BusyboxImage:       generator.config.Config.Versions.Busybox,
-		KibanaPort:         fmt.Sprintf("%d", utils.PortKibana),
-		CerebroPort:        fmt.Sprintf("%d", utils.PortCerebro),
-		ElasticsearchSize:  fmt.Sprintf("%d", generator.config.Config.ElasticsearchSize),
+		ElasticsearchImage:  generator.config.Config.Versions.Elasticsearch,
+		KibanaImage:         generator.config.Config.Versions.Kibana,
+		CerebroImage:        generator.config.Config.Versions.Cerebro,
+		FluentBitImage:      generator.config.Config.Versions.FluentBit,
+		BusyboxImage:        generator.config.Config.Versions.Busybox,
+		KibanaPort:          fmt.Sprintf("%d", utils.PortKibana),
+		CerebroPort:         fmt.Sprintf("%d", utils.PortCerebro),
+		ElasticsearchSize:   fmt.Sprintf("%d", generator.config.Config.ElasticsearchSize),
+		ElasticsearchCount:  fmt.Sprintf("%d", generator.config.Config.ElasticsearchCount),
+		ElasticsearchCounts: counts,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sEfkSetup), true, false)
 }
 

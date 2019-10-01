@@ -34,6 +34,7 @@ type Config struct {
 	CAValidityPeriod             uint        `yaml:"ca-validity-period"`
 	ClientValidityPeriod         uint        `yaml:"client-validity-period"`
 	ElasticsearchSize            uint        `yaml:"elasticsearch-size"`
+	ElasticsearchCount           uint        `yaml:"elasticsearch-count"`
 	Versions                     Versions    `yaml:"versions"`
 	Assets                       AssetConfig `yaml:"assets,omitempty"`
 	Nodes                        Nodes       `yaml:"nodes"`
@@ -67,6 +68,7 @@ func NewConfig() *Config {
 	config.CAValidityPeriod = utils.CaValidityPeriod
 	config.ClientValidityPeriod = utils.ClientValidityPeriod
 	config.ElasticsearchSize = utils.ElasticsearchSize
+	config.ElasticsearchCount = utils.ElasticsearchCount
 	config.Versions = NewVersions()
 	config.Assets = AssetConfig{Directories: map[string]*AssetDirectory{}, Files: map[string]*AssetFile{}}
 	config.Nodes = Nodes{}

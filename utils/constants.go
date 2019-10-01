@@ -60,6 +60,7 @@ const RsaSize = 2048
 const CaValidityPeriod = 20
 const ClientValidityPeriod = 15
 const ElasticsearchSize = 10
+const ElasticsearchCount = 1
 const BaseDirectory = "assets"
 const ClusterDomain = "cluster.local"
 const ClusterIpRange = "10.32.0.0/24"
