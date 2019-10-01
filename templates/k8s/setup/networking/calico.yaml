@@ -15,14 +15,14 @@ data:
   cni_network_config: |-
     {
       "name": "k8s-pod-network",
-      "cniVersion": "0.3.0",
+      "cniVersion": "0.3.1",
       "plugins": [
         {
           "type": "calico",
           "log_level": "info",
           "datastore_type": "kubernetes",
           "nodename": "__KUBERNETES_NODE_NAME__",
-          "mtu": 1500,
+          "mtu": __CNI_MTU__,
           "ipam": {
             "type": "calico-ipam",
             "subnet": "usePodCidr"
@@ -339,8 +339,10 @@ rules:
       - globalnetworkpolicies
       - globalnetworksets
       - networkpolicies
+      - networksets
       - clusterinformations
       - hostendpoints
+      - blockaffinities
     verbs:
       - get
       - list
@@ -418,8 +420,8 @@ subjects:
 kind: DaemonSet
 apiVersion: apps/v1
 metadata:
-  name: calico-node
   namespace: networking
+  name: calico-node
   labels:
     k8s-app: calico-node
 spec:
@@ -516,6 +518,8 @@ spec:
               value: "k8s,bgp"
             - name: DATASTORE_TYPE
               value: "kubernetes"
+            - name: WAIT_FOR_DATASTORE
+              value: "true"
             - name: FELIX_DEFAULTENDPOINTTOHOSTACTION
               value: "ACCEPT"
             - name: FELIX_HEALTHENABLED
@@ -550,10 +554,10 @@ spec:
             requests:
               cpu: 250m
           livenessProbe:
-            httpGet:
-              path: /liveness
-              port: 9099
-              host: localhost
+            exec:
+              command:
+              - /bin/calico-node
+              - -felix-live
             periodSeconds: 10
             initialDelaySeconds: 10
             failureThreshold: 6
@@ -561,8 +565,8 @@ spec:
             exec:
               command:
               - /bin/calico-node
-              - -bird-ready
               - -felix-ready
+              - -bird-ready
             periodSeconds: 10
           volumeMounts:
             - mountPath: /lib/modules
@@ -577,6 +581,8 @@ spec:
             - mountPath: /var/lib/calico
               name: var-lib-calico
               readOnly: false
+            - name: policysync
+              mountPath: /var/run/nodeagent
       volumes:
         - name: lib-modules
           hostPath:
@@ -600,6 +606,10 @@ spec:
         - name: host-local-net-dir
           hostPath:
             path: /var/lib/cni/networks
+        - name: policysync
+          hostPath:
+            type: DirectoryOrCreate
+            path: /var/run/nodeagent
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -629,6 +639,8 @@ spec:
       namespace: networking
       labels:
         k8s-app: calico-kube-controllers
+      annotations:
+        scheduler.alpha.kubernetes.io/critical-pod: ''
     spec:
       nodeSelector:
         beta.kubernetes.io/os: linux
