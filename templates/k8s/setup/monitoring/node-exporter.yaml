@@ -1,0 +1,60 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  namespace: monitoring
+  name: node-exporter
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  namespace: monitoring
+  name: node-exporter
+  labels:
+    k8s-app: node-exporter
+spec:
+  selector:
+    matchLabels: 
+      k8s-app: node-exporter
+  updateStrategy:
+    type: OnDelete
+  template:
+    metadata:
+      labels:
+        k8s-app: node-exporter
+    spec:
+      serviceAccountName: node-exporter
+      containers:
+        - name: node-exporter
+          image: quay.io/prometheus/node-exporter:v0.17.0
+          imagePullPolicy: Always
+          args:
+            - --path.procfs=/host/proc
+            - --path.sysfs=/host/sys
+          ports:
+            - name: metrics
+              containerPort: 9100
+              hostPort: 9100
+          volumeMounts:
+            - name: proc
+              mountPath: /host/proc
+              readOnly:  true
+            - name: sys
+              mountPath: /host/sys
+              readOnly: true
+          resources:
+            limits:
+              cpu: 10m
+              memory: 50Mi
+            requests:
+              cpu: 10m
+              memory: 50Mi
+      hostNetwork: true
+      hostPID: true
+      volumes:
+        - name: proc
+          hostPath:
+            path: /proc
+        - name: sys
+          hostPath:
+            path: /sys

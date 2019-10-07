@@ -311,10 +311,6 @@ func init() {
 		_config.Config.Versions.MetricsServer = value
 	})
 
-	addStringOption("version-prometheus-operator", utils.VersionPrometheusOperator, "Prometheus Operator version", func(value string) {
-		_config.Config.Versions.PrometheusOperator = value
-	})
-
 	addStringOption("version-prometheus-config-reloader", utils.VersionPrometheusConfigReloader, "Prometheus Config Reloader version", func(value string) {
 		_config.Config.Versions.PrometheusConfigReloader = value
 	})

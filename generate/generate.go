@@ -78,30 +78,16 @@ func NewGenerator(config *config.InternalConfig) *Generator {
 		generator.generateNginxIngressSetup,
 		// Generate metrics server setup file
 		generator.generateMetricsServerSetup,
-		// Generate prometheus operator setup file
-		generator.generatePrometheusOperatorSetup,
-		// Generate kube prometheus setup file
-		generator.generateKubePrometheusSetup,
-		// Generate kube prometheus dashboard setup file
-		generator.generateKubePrometheusDatasourceSetup,
-		// Generate kube prometheus dashboard setup file
-		generator.generateKubePrometheusKubernetesClusterStatusDashboardSetup,
-		// Generate kube prometheus dashboard setup file
-		generator.generateKubePrometheusPodsDashboardSetup,
-		// Generate kube prometheus dashboard setup file
-		generator.generateKubePrometheusDeploymentDashboardSetup,
-		// Generate kube prometheus dashboard setup file
-		generator.generateKubePrometheusKubernetesControlPlaneStatusDashboardSetup,
-		// Generate kube prometheus dashboard setup file
-		generator.generateKubePrometheusStatefulsetDashboardSetup,
-		// Generate kube prometheus dashboard setup file
-		generator.generateKubePrometheusKubernetesCapacityPlanningDashboardSetup,
-		// Generate kube prometheus dashboard setup file
-		generator.generateKubePrometheusKubernetesResourceRequestsDashboardSetup,
-		// Generate kube prometheus dashboard setup file
-		generator.generateKubePrometheusKubernetesClusterHealthDashboardSetup,
-		// Generate kube prometheus dashboard setup file
-		generator.generateKubePrometheusNodesDashboardSetup,
+		// Generate prometheus setup file
+		generator.generatePrometheusSetup,
+		// Generate kube state metrics setup file
+		generator.generateKubeStateMetricsSetup,
+		// Generate node exporter setup file
+		generator.generateNodeExporterSetup,
+		// Generate grafana setup file
+		generator.generateGrafanaSetup,
+		// Generate alert manager setup file
+		generator.generateAlertManagerSetup,
 		// Generate wordpress setup file
 		generator.generateWordpressSetup,
 		// Generate Bash Completion for K8S-TEW
@@ -1047,18 +1033,7 @@ func (generator *Generator) generateMetricsServerSetup() error {
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sMetricsServerSetup), true, false)
 }
 
-func (generator *Generator) generatePrometheusOperatorSetup() error {
-	return utils.ApplyTemplateAndSave("prometheus-operator", utils.TemplatePrometheusOperatorSetup, struct {
-		PrometheusOperatorImage       string
-		PrometheusConfigReloaderImage string
-		ConfigMapReloadImage          string
-	}{
-		PrometheusOperatorImage:       generator.config.Config.Versions.PrometheusOperator,
-		PrometheusConfigReloaderImage: generator.config.Config.Versions.PrometheusConfigReloader,
-		ConfigMapReloadImage:          generator.config.Config.Versions.ConfigMapReload,
-	}, generator.config.GetFullLocalAssetFilename(utils.K8sPrometheusOperatorSetup), true, false)
-}
-
+/*
 func (generator *Generator) generateKubePrometheusSetup() error {
 	return utils.ApplyTemplateAndSave("kube-prometheus", utils.TemplateKubePrometheusSetup, struct {
 		AddonResizerImage           string
@@ -1080,45 +1055,48 @@ func (generator *Generator) generateKubePrometheusSetup() error {
 		GrafanaPort:                 utils.PortGrafana,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sKubePrometheusSetup), true, true)
 }
+*/
 
-func (generator *Generator) generateKubePrometheusDatasourceSetup() error {
-	return utils.ApplyTemplateAndSave("kube-prometheus-datasource", utils.TemplateKubePrometheusDatasourceSetup, struct{}{}, generator.config.GetFullLocalAssetFilename(utils.K8sKubePrometheusDatasourceSetup), true, true)
+func (generator *Generator) generatePrometheusSetup() error {
+	return utils.ApplyTemplateAndSave("prometheus", utils.TemplatePrometheusSetup, struct {
+		PrometheusImage string
+	}{
+		PrometheusImage: generator.config.Config.Versions.Prometheus,
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sPrometheusSetup), true, true)
 }
 
-func (generator *Generator) generateKubePrometheusKubernetesClusterStatusDashboardSetup() error {
-	return utils.ApplyTemplateAndSave("kube-prometheus-kubernetes-cluster-status-dashboard", utils.TemplateKubePrometheusKubernetesClusterStatusDashboardSetup, struct{}{}, generator.config.GetFullLocalAssetFilename(utils.K8sKubePrometheusKubernetesClusterStatusDashboardSetup), true, true)
+func (generator *Generator) generateNodeExporterSetup() error {
+	return utils.ApplyTemplateAndSave("node-exporter", utils.TemplateNodeExporterSetup, struct {
+		PrometheusImage string
+	}{
+		PrometheusImage: generator.config.Config.Versions.Prometheus,
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sNodeExporterSetup), true, true)
 }
 
-func (generator *Generator) generateKubePrometheusPodsDashboardSetup() error {
-	return utils.ApplyTemplateAndSave("kube-prometheus-pods-dashboard", utils.TemplateKubePrometheusPodsDashboardSetup, struct{}{}, generator.config.GetFullLocalAssetFilename(utils.K8sKubePrometheusPodsDashboardSetup), true, true)
+func (generator *Generator) generateKubeStateMetricsSetup() error {
+	return utils.ApplyTemplateAndSave("kube-state-metrics", utils.TemplateKubeStateMetricsSetup, struct {
+		PrometheusImage string
+	}{
+		PrometheusImage: generator.config.Config.Versions.Prometheus,
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sKubeStateMetricsSetup), true, true)
 }
 
-func (generator *Generator) generateKubePrometheusDeploymentDashboardSetup() error {
-	return utils.ApplyTemplateAndSave("kube-prometheus-deployment-dashboard", utils.TemplateKubePrometheusDeploymentDashboardSetup, struct{}{}, generator.config.GetFullLocalAssetFilename(utils.K8sKubePrometheusDeploymentDashboardSetup), true, true)
+func (generator *Generator) generateGrafanaSetup() error {
+	return utils.ApplyTemplateAndSave("grafana", utils.TemplateGrafanaSetup, struct {
+		PrometheusImage string
+		GrafanaPort     uint16
+	}{
+		PrometheusImage: generator.config.Config.Versions.Prometheus,
+		GrafanaPort:     utils.PortGrafana,
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sGrafanaSetup), true, true)
 }
 
-func (generator *Generator) generateKubePrometheusKubernetesControlPlaneStatusDashboardSetup() error {
-	return utils.ApplyTemplateAndSave("kube-prometheus-kuberntes-control-plane-status-dashboard", utils.TemplateKubePrometheusKubernetesControlPlaneStatusDashboardSetup, struct{}{}, generator.config.GetFullLocalAssetFilename(utils.K8sKubePrometheusKubernetesControlPlaneStatusDashboardSetup), true, true)
-}
-
-func (generator *Generator) generateKubePrometheusStatefulsetDashboardSetup() error {
-	return utils.ApplyTemplateAndSave("kube-prometheus-stateful-dashboard", utils.TemplateKubePrometheusStatefulsetDashboardSetup, struct{}{}, generator.config.GetFullLocalAssetFilename(utils.K8sKubePrometheusStatefulsetDashboardSetup), true, true)
-}
-
-func (generator *Generator) generateKubePrometheusKubernetesCapacityPlanningDashboardSetup() error {
-	return utils.ApplyTemplateAndSave("kube-prometheus-kubernetes-capacity-planning-dashboard", utils.TemplateKubePrometheusKubernetesCapacityPlanningDashboardSetup, struct{}{}, generator.config.GetFullLocalAssetFilename(utils.K8sKubePrometheusKubernetesCapacityPlanningDashboardSetup), true, true)
-}
-
-func (generator *Generator) generateKubePrometheusKubernetesResourceRequestsDashboardSetup() error {
-	return utils.ApplyTemplateAndSave("kube-prometheus-kubernetes-resource-requests-dashboard", utils.TemplateKubePrometheusKubernetesResourceRequestsDashboardSetup, struct{}{}, generator.config.GetFullLocalAssetFilename(utils.K8sKubePrometheusKubernetesResourceRequestsDashboardSetup), true, true)
-}
-
-func (generator *Generator) generateKubePrometheusKubernetesClusterHealthDashboardSetup() error {
-	return utils.ApplyTemplateAndSave("kube-prometheus-kubernetes-cluster-health-dashboard", utils.TemplateKubePrometheusKubernetesClusterHealthDashboardSetup, struct{}{}, generator.config.GetFullLocalAssetFilename(utils.K8sKubePrometheusKubernetesClusterHealthDashboardSetup), true, true)
-}
-
-func (generator *Generator) generateKubePrometheusNodesDashboardSetup() error {
-	return utils.ApplyTemplateAndSave("kube-prometheus-nodes-dashboard", utils.TemplateKubePrometheusNodesDashboardSetup, struct{}{}, generator.config.GetFullLocalAssetFilename(utils.K8sKubePrometheusNodesDashboardSetup), true, true)
+func (generator *Generator) generateAlertManagerSetup() error {
+	return utils.ApplyTemplateAndSave("alert-manager", utils.TemplateAlertManagerSetup, struct {
+		PrometheusImage string
+	}{
+		PrometheusImage: generator.config.Config.Versions.Prometheus,
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sAlertManagerSetup), true, true)
 }
 
 func (generator *Generator) generateWordpressSetup() error {
