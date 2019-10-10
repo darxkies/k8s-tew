@@ -84,6 +84,14 @@ spec:
         k8s-app: alert-manager
     spec:
       serviceAccountName: alert-manager
+      initContainers:
+          - name: "init-chmod-data"
+            image: {{ .BusyboxImage }}
+            imagePullPolicy: "IfNotPresent"
+            command: ["chmod", "777", "/data"]
+            volumeMounts:
+            - name: alert-manager-data
+              mountPath: "/data"
       containers:
         - name: alert-manager
           image: {{ .AlertManagerImage }}
@@ -120,7 +128,6 @@ spec:
               mountPath: /etc/config
             - name: alert-manager-data
               mountPath: "/data"
-              subPath: ""
           resources:
             limits:
               cpu: 10m

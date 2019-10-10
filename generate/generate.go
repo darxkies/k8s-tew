@@ -938,7 +938,7 @@ func (generator *Generator) generateHelmSetup() error {
 func (generator *Generator) generateEFKSetup() error {
 	counts := []string{}
 
-	for i := uint(0); i < generator.config.Config.ElasticsearchCount; i++ {
+	for i := uint16(0); i < generator.config.Config.ElasticsearchCount; i++ {
 		counts = append(counts, fmt.Sprintf("%d", i))
 	}
 
@@ -950,8 +950,8 @@ func (generator *Generator) generateEFKSetup() error {
 		BusyboxImage        string
 		KibanaPort          string
 		CerebroPort         string
-		ElasticsearchSize   string
-		ElasticsearchCount  string
+		ElasticsearchSize   uint16
+		ElasticsearchCount  uint16
 		ElasticsearchCounts []string
 	}{
 		ElasticsearchImage:  generator.config.Config.Versions.Elasticsearch,
@@ -961,8 +961,8 @@ func (generator *Generator) generateEFKSetup() error {
 		BusyboxImage:        generator.config.Config.Versions.Busybox,
 		KibanaPort:          fmt.Sprintf("%d", utils.PortKibana),
 		CerebroPort:         fmt.Sprintf("%d", utils.PortCerebro),
-		ElasticsearchSize:   fmt.Sprintf("%d", generator.config.Config.ElasticsearchSize),
-		ElasticsearchCount:  fmt.Sprintf("%d", generator.config.Config.ElasticsearchCount),
+		ElasticsearchSize:   generator.config.Config.ElasticsearchSize,
+		ElasticsearchCount:  generator.config.Config.ElasticsearchCount,
 		ElasticsearchCounts: counts,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sEfkSetup), true, false)
 }
@@ -974,12 +974,14 @@ func (generator *Generator) generateVeleroSetup() error {
 		MinioClientImage string
 		PodsDirectory    string
 		MinioPort        uint16
+		MinioSize        uint16
 	}{
 		VeleroImage:      generator.config.Config.Versions.Velero,
 		MinioServerImage: generator.config.Config.Versions.MinioServer,
 		MinioClientImage: generator.config.Config.Versions.MinioClient,
 		PodsDirectory:    generator.config.GetFullTargetAssetDirectory(utils.DirectoryPodsData),
 		MinioPort:        utils.PortMinio,
+		MinioSize:        generator.config.Config.MinioSize,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sVeleroSetup), true, false)
 }
 
@@ -988,10 +990,12 @@ func (generator *Generator) generateKubernetesDashboardSetup() error {
 		ClusterName              string
 		KubernetesDashboardPort  uint16
 		KubernetesDashboardImage string
+		MetricsScraperImage      string
 	}{
 		ClusterName:              generator.config.Config.ClusterName,
 		KubernetesDashboardPort:  generator.config.Config.KubernetesDashboardPort,
 		KubernetesDashboardImage: generator.config.Config.Versions.KubernetesDashboard,
+		MetricsScraperImage:      generator.config.Config.Versions.MetricsScraper,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sKubernetesDashboardSetup), true, false)
 }
 
@@ -1021,35 +1025,15 @@ func (generator *Generator) generateMetricsServerSetup() error {
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sMetricsServerSetup), true, false)
 }
 
-/*
-func (generator *Generator) generateKubePrometheusSetup() error {
-	return utils.ApplyTemplateAndSave("kube-prometheus", utils.TemplateKubePrometheusSetup, struct {
-		AddonResizerImage           string
-		KubeStateMetricsImage       string
-		GrafanaImage                string
-		GrafanaWatcherImage         string
-		PrometheusImage             string
-		PrometheusNodeExporterImage string
-		PrometheusAlertManagerImage string
-		GrafanaPort                 uint16
-	}{
-		AddonResizerImage:           generator.config.Config.Versions.AddonResizer,
-		KubeStateMetricsImage:       generator.config.Config.Versions.KubeStateMetrics,
-		GrafanaImage:                generator.config.Config.Versions.Grafana,
-		GrafanaWatcherImage:         generator.config.Config.Versions.GrafanaWatcher,
-		PrometheusImage:             generator.config.Config.Versions.Prometheus,
-		PrometheusNodeExporterImage: generator.config.Config.Versions.PrometheusNodeExporter,
-		PrometheusAlertManagerImage: generator.config.Config.Versions.PrometheusAlertManager,
-		GrafanaPort:                 utils.PortGrafana,
-	}, generator.config.GetFullLocalAssetFilename(utils.K8sKubePrometheusSetup), true, true)
-}
-*/
-
 func (generator *Generator) generatePrometheusSetup() error {
 	return utils.ApplyTemplateAndSave("prometheus", utils.TemplatePrometheusSetup, struct {
 		PrometheusImage string
+		PrometheusSize  uint16
+		BusyboxImage    string
 	}{
 		PrometheusImage: generator.config.Config.Versions.Prometheus,
+		PrometheusSize:  generator.config.Config.PrometheusSize,
+		BusyboxImage:    generator.config.Config.Versions.Busybox,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sPrometheusSetup), true, true)
 }
 
@@ -1064,40 +1048,46 @@ func (generator *Generator) generateNodeExporterSetup() error {
 func (generator *Generator) generateKubeStateMetricsSetup() error {
 	return utils.ApplyTemplateAndSave("kube-state-metrics", utils.TemplateKubeStateMetricsSetup, struct {
 		KubeStateMetricsImage string
-		KubeStateMetricsCount string
+		KubeStateMetricsCount uint16
 	}{
 		KubeStateMetricsImage: generator.config.Config.Versions.KubeStateMetrics,
-		KubeStateMetricsCount: fmt.Sprintf("%d", generator.config.Config.KubeStateMetricsCount),
+		KubeStateMetricsCount: generator.config.Config.KubeStateMetricsCount,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sKubeStateMetricsSetup), true, false)
 }
 
 func (generator *Generator) generateGrafanaSetup() error {
 	return utils.ApplyTemplateAndSave("grafana", utils.TemplateGrafanaSetup, struct {
-		PrometheusImage string
-		GrafanaPort     uint16
+		GrafanaImage string
+		GrafanaPort  uint16
+		GrafanaSize  uint16
+		BusyboxImage string
 	}{
-		PrometheusImage: generator.config.Config.Versions.Prometheus,
-		GrafanaPort:     utils.PortGrafana,
+		GrafanaImage: generator.config.Config.Versions.Grafana,
+		GrafanaPort:  utils.PortGrafana,
+		GrafanaSize:  generator.config.Config.GrafanaSize,
+		BusyboxImage: generator.config.Config.Versions.Busybox,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sGrafanaSetup), true, true)
 }
 
 func (generator *Generator) generateAlertManagerSetup() error {
 	counts := []string{}
 
-	for i := uint(0); i < generator.config.Config.AlertManagerCount; i++ {
+	for i := uint16(0); i < generator.config.Config.AlertManagerCount; i++ {
 		counts = append(counts, fmt.Sprintf("%d", i))
 	}
 
 	return utils.ApplyTemplateAndSave("alert-manager", utils.TemplateAlertManagerSetup, struct {
 		AlertManagerImage  string
-		AlertManagerCount  string
+		AlertManagerCount  uint16
 		AlertManagerCounts []string
-		AlertManagerSize   string
+		AlertManagerSize   uint16
+		BusyboxImage       string
 	}{
 		AlertManagerImage:  generator.config.Config.Versions.AlertManager,
-		AlertManagerCount:  fmt.Sprintf("%d", generator.config.Config.AlertManagerCount),
+		AlertManagerCount:  generator.config.Config.AlertManagerCount,
 		AlertManagerCounts: counts,
-		AlertManagerSize:   fmt.Sprintf("%d", generator.config.Config.AlertManagerSize),
+		AlertManagerSize:   generator.config.Config.AlertManagerSize,
+		BusyboxImage:       generator.config.Config.Versions.Busybox,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sAlertManagerSetup), true, false)
 }
 

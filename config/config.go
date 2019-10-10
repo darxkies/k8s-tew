@@ -33,11 +33,14 @@ type Config struct {
 	RSASize                      uint16      `yaml:"rsa-size"`
 	CAValidityPeriod             uint        `yaml:"ca-validity-period"`
 	ClientValidityPeriod         uint        `yaml:"client-validity-period"`
-	ElasticsearchCount           uint        `yaml:"elasticsearch-count"`
-	ElasticsearchSize            uint        `yaml:"elasticsearch-size"`
-	AlertManagerCount            uint        `yaml:"alert-manager-count"`
-	AlertManagerSize             uint        `yaml:"alert-manager-size"`
-	KubeStateMetricsCount        uint        `yaml:"kube-state-metrics-count"`
+	GrafanaSize                  uint16      `yaml:"grafana-size"`
+	PrometheusSize               uint16      `yaml:"prometheus-size"`
+	MinioSize                    uint16      `yaml:"minio-size"`
+	ElasticsearchCount           uint16      `yaml:"elasticsearch-count"`
+	ElasticsearchSize            uint16      `yaml:"elasticsearch-size"`
+	AlertManagerCount            uint16      `yaml:"alert-manager-count"`
+	AlertManagerSize             uint16      `yaml:"alert-manager-size"`
+	KubeStateMetricsCount        uint16      `yaml:"kube-state-metrics-count"`
 	Versions                     Versions    `yaml:"versions"`
 	Assets                       AssetConfig `yaml:"assets,omitempty"`
 	Nodes                        Nodes       `yaml:"nodes"`
@@ -70,6 +73,9 @@ func NewConfig() *Config {
 	config.RSASize = utils.RsaSize
 	config.CAValidityPeriod = utils.CaValidityPeriod
 	config.ClientValidityPeriod = utils.ClientValidityPeriod
+	config.GrafanaSize = utils.GrafanaSize
+	config.PrometheusSize = utils.PrometheusSize
+	config.MinioSize = utils.MinioSize
 	config.ElasticsearchCount = utils.ElasticsearchCount
 	config.ElasticsearchSize = utils.ElasticsearchSize
 	config.AlertManagerCount = utils.AlertManagerCount

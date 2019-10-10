@@ -111,24 +111,36 @@ func init() {
 		_config.Config.KubernetesDashboardPort = value
 	})
 
+	addUint16Option("grafana-size", utils.GrafanaSize, "Size of Grafana Persistent Volume", func(value uint16) {
+		_config.Config.GrafanaSize = uint16(value)
+	})
+
+	addUint16Option("prometheus-size", utils.PrometheusSize, "Size of Prometheus Persistent Volume", func(value uint16) {
+		_config.Config.PrometheusSize = uint16(value)
+	})
+
+	addUint16Option("minio-size", utils.MinioSize, "Size of Minio Persistent Volume", func(value uint16) {
+		_config.Config.MinioSize = uint16(value)
+	})
+
 	addUint16Option("elasticsearch-count", utils.ElasticsearchCount, "Number of Elasticsearch Servers", func(value uint16) {
-		_config.Config.ElasticsearchCount = uint(value)
+		_config.Config.ElasticsearchCount = uint16(value)
 	})
 
 	addUint16Option("elasticsearch-size", utils.ElasticsearchSize, "Size of Elasticsearch Persistent Volume", func(value uint16) {
-		_config.Config.ElasticsearchSize = uint(value)
+		_config.Config.ElasticsearchSize = uint16(value)
 	})
 
 	addUint16Option("alert-manager-count", utils.AlertManagerCount, "Number of Alert Manager Servers", func(value uint16) {
-		_config.Config.AlertManagerCount = uint(value)
+		_config.Config.AlertManagerCount = uint16(value)
 	})
 
 	addUint16Option("alert-manager-size", utils.AlertManagerSize, "Size of Alert Manager Persistent Volume", func(value uint16) {
-		_config.Config.AlertManagerSize = uint(value)
+		_config.Config.AlertManagerSize = uint16(value)
 	})
 
 	addUint16Option("kube-state-metrics-count", utils.KubeStateMetricsCount, "Number of Kube State Metrics Servers", func(value uint16) {
-		_config.Config.KubeStateMetricsCount = uint(value)
+		_config.Config.KubeStateMetricsCount = uint16(value)
 	})
 
 	addStringOption("controller-virtual-ip", "", "Controller Virtual/Floating IP for the cluster", func(value string) {
@@ -329,10 +341,6 @@ func init() {
 
 	addStringOption("version-grafana", utils.VersionGrafana, "Grafana version", func(value string) {
 		_config.Config.Versions.Grafana = value
-	})
-
-	addStringOption("version-grafana-watcher", utils.VersionGrafanaWatcher, "Grafana Watcher version", func(value string) {
-		_config.Config.Versions.GrafanaWatcher = value
 	})
 
 	addStringOption("version-node-exporter", utils.VersionNodeExporter, "Node Exporter version", func(value string) {

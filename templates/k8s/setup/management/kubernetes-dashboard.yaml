@@ -227,7 +227,7 @@ spec:
     spec:
       containers:
         - name: dashboard-metrics-scraper
-          image: 
+          image: {{ .MetricsScraperImage }}
           ports:
             - containerPort: 8000
               protocol: TCP

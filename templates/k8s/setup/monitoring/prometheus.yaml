@@ -77,16 +77,15 @@ spec:
       serviceAccountName: prometheus
       initContainers:
       - name: "init-chown-data"
-        image: debian:9
+        image: [[ .BusyboxImage ]]
         imagePullPolicy: Always
         command: ["chown", "-R", "65534:65534", "/data"]
         volumeMounts:
         - name: prometheus-data
           mountPath: /data
-          subPath: ""
       containers:
         - name: prometheus-server
-          image: quay.io/prometheus/prometheus:v2.11.1
+          image: [[ .PrometheusImage ]]
           imagePullPolicy: "IfNotPresent"
           args:
             - --config.file=/etc/config/prometheus.yaml
@@ -143,7 +142,7 @@ spec:
         - ReadWriteOnce
       resources:
         requests:
-          storage: "2Gi"
+          storage: "[[ .PrometheusSize ]]Gi"
 ---
 apiVersion: v1
 kind: ConfigMap

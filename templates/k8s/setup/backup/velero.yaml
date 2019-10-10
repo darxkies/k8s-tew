@@ -201,7 +201,7 @@ spec:
   - ReadWriteOnce
   resources:
     requests:
-      storage: 2Gi
+      storage: {{ .MinioSize }}Gi
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -229,7 +229,7 @@ spec:
         emptyDir: {}
       containers:
       - name: minio
-        image: {{.MinioServerImage}}
+        image: {{ .MinioServerImage }}
         args:
         - server
         - /storage
@@ -261,7 +261,7 @@ spec:
     - port: 9000
       targetPort: 9000
       protocol: TCP
-      nodePort: {{.MinioPort}}
+      nodePort: {{ .MinioPort }}
   selector:
     component: minio
 
@@ -297,7 +297,7 @@ spec:
         emptyDir: {}
       containers:
       - name: mc
-        image: {{.MinioClientImage}}
+        image: {{ .MinioClientImage }}
         command:
         - /bin/sh
         - -c
@@ -343,7 +343,7 @@ spec:
       serviceAccountName: velero
       containers:
         - name: velero
-          image: {{.VeleroImage}}
+          image: {{ .VeleroImage }}
           ports:
             - name: metrics
               containerPort: 8085
@@ -397,12 +397,12 @@ spec:
             secretName: cloud-credentials
         - name: host-pods
           hostPath:
-            path: {{.PodsDirectory}}
+            path: {{ .PodsDirectory }}
         - name: scratch
           emptyDir: {}
       containers:
         - name: velero
-          image: {{.VeleroImage}}
+          image: {{ .VeleroImage }}
           command:
             - /velero
           args:

@@ -113,7 +113,7 @@ spec:
       serviceAccountName: grafana
       initContainers:
           - name: "init-chmod-data"
-            image: debian:9
+            image: [[ .BusyboxImage ]]
             imagePullPolicy: "IfNotPresent"
             command: ["chmod", "777", "/var/lib/grafana"]
             volumeMounts:
@@ -121,7 +121,7 @@ spec:
               mountPath: "/var/lib/grafana"
       containers:
         - name: grafana
-          image: grafana/grafana:6.0.1
+          image: [[ .GrafanaImage ]]
           imagePullPolicy: Always
           volumeMounts:
             - name: config
@@ -192,7 +192,7 @@ spec:
         - ReadWriteOnce
       resources:
         requests:
-          storage: "2Gi"
+          storage: "[[ .GrafanaSize ]]Gi"
 ---
 apiVersion: v1
 kind: ConfigMap
