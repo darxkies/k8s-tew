@@ -70,7 +70,7 @@ metadata:
     k8s-app: alert-manager
 spec:
   serviceName: "alert-manager-operated"
-  replicas: 1
+  replicas: {{ .AlertManagerCount }} 
   podManagementPolicy: OrderedReady
   updateStrategy:
     type: RollingUpdate
@@ -86,7 +86,7 @@ spec:
       serviceAccountName: alert-manager
       containers:
         - name: alert-manager
-          image: quay.io/prometheus/alertmanager:v0.16.0
+          image: {{ .AlertManagerImage }}
           imagePullPolicy: Always
           args:
             - --config.file=/etc/config/alert-manager.yml
@@ -94,8 +94,9 @@ spec:
             - --web.listen-address=:9093
             - --web.route-prefix=/
             - --cluster.listen-address=$(POD_IP):6783
-            - --cluster.peer=alert-manager-0.alert-manager-operated.monitoring.svc:6783
-            - --cluster.peer=alert-manager-1.alert-manager-operated.monitoring.svc:6783
+            {{ range $index, $element := .AlertManagerCounts -}}
+            - --cluster.peer=alert-manager-{{ $element }}.alert-manager-operated.monitoring.svc:6783
+            {{ end -}}
             - --log.level=debug
           env:
           - name: POD_IP
@@ -149,4 +150,4 @@ spec:
         - ReadWriteOnce
       resources:
         requests:
-          storage: "2Gi"
+          storage: "{{ .AlertManagerSize }}Gi"

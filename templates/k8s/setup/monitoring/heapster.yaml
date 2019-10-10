@@ -86,7 +86,7 @@ spec:
   selector:
     matchLabels:
       app: heapster-heapster
-  replicas: 1
+  replicas: {{ .HeapsterCount }}
   template:
     metadata:
       labels:
@@ -95,7 +95,7 @@ spec:
       serviceAccountName: heapster-heapster
       containers:
       - name: heapster
-        image: "{{.HeapsterImage}}"
+        image: "{{ .HeapsterImage }}"
         ports:
         - containerPort: 8082
         livenessProbe:
@@ -114,31 +114,3 @@ spec:
         command:
           - "/heapster"
           - "--source=kubernetes.summary_api:''"
-      - name: heapster-nanny
-        image: "{{.AddonResizerImage}}"
-        resources:
-            limits:
-              cpu: 50m
-              memory: 90Mi
-            requests:
-              cpu: 50m
-              memory: 90Mi
-        env:
-          - name: MY_POD_NAME
-            valueFrom:
-              fieldRef:
-                fieldPath: metadata.name
-          - name: MY_POD_NAMESPACE
-            valueFrom:
-              fieldRef:
-                fieldPath: metadata.namespace
-        command:
-          - "/pod_nanny"
-          - "--deployment=heapster-heapster"
-          - "--container=heapster"
-          - "--cpu=150m"
-          - "--extra-cpu=10m"
-          - "--memory=200Mi"
-          - "--extra-memory=6Mi"
-          - "--threshold=5"
-          - "--poll-period=300000"

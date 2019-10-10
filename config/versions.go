@@ -30,22 +30,20 @@ type Versions struct {
 	MetalLBController          string `yaml:"metallb-controller"`
 	MetalLBSpeaker             string `yaml:"metallb-speaker"`
 	Ceph                       string `yaml:"ceph"`
-	Heapster                   string `yaml:"heapster"`
-	AddonResizer               string `yaml:"addon-resizer"`
 	KubernetesDashboard        string `yaml:"kubernetes-dashboard"`
 	CertManagerController      string `yaml:"cert-manager-controller"`
 	NginxIngressController     string `yaml:"nginx-ingress-controller"`
 	NginxIngressDefaultBackend string `yaml:"nginx-ingress-default-backend"`
+	MetricsScraper             string `yaml:"metrics-scraper"`
 	MetricsServer              string `yaml:"metrics-server"`
-	PrometheusOperator         string `yaml:"prometheus-operator"`
 	PrometheusConfigReloader   string `yaml:"prometheus-config-reloader"`
 	ConfigMapReload            string `yaml:"configmap-reload"`
 	KubeStateMetrics           string `yaml:"kube-state-metrics"`
 	Grafana                    string `yaml:"grafana"`
 	GrafanaWatcher             string `yaml:"grafana-watcher"`
 	Prometheus                 string `yaml:"prometheus"`
-	PrometheusNodeExporter     string `yaml:"prometheus-node-exporter"`
-	PrometheusAlertManager     string `yaml:"prometheus-alert-manager"`
+	NodeExporter               string `yaml:"node-exporter"`
+	AlertManager               string `yaml:"alert-manager"`
 	CSIAttacher                string `yaml:"csi-attacher"`
 	CSIProvisioner             string `yaml:"csi-provisioner"`
 	CSIDriverRegistrar         string `yaml:"csi-driver-registrar"`
@@ -83,12 +81,11 @@ func NewVersions() Versions {
 		MetalLBController:          utils.VersionMetalLBController,
 		MetalLBSpeaker:             utils.VersionMetalLBSpeaker,
 		Ceph:                       utils.VersionCeph,
-		Heapster:                   utils.VersionHeapster,
-		AddonResizer:               utils.VersionAddonResizer,
 		KubernetesDashboard:        utils.VersionKubernetesDashboard,
 		CertManagerController:      utils.VersionCertManagerController,
 		NginxIngressController:     utils.VersionNginxIngressController,
 		NginxIngressDefaultBackend: utils.VersionNginxIngressDefaultBackend,
+		MetricsScraper:             utils.VersionMetricsScraper,
 		MetricsServer:              utils.VersionMetricsServer,
 		PrometheusConfigReloader:   utils.VersionPrometheusConfigReloader,
 		ConfigMapReload:            utils.VersionConfigmapReload,
@@ -96,8 +93,8 @@ func NewVersions() Versions {
 		Grafana:                    utils.VersionGrafana,
 		GrafanaWatcher:             utils.VersionGrafanaWatcher,
 		Prometheus:                 utils.VersionPrometheus,
-		PrometheusNodeExporter:     utils.VersionPrometheusNodeExporter,
-		PrometheusAlertManager:     utils.VersionPrometheusAlertManager,
+		NodeExporter:               utils.VersionNodeExporter,
+		AlertManager:               utils.VersionAlertManager,
 		CSIAttacher:                utils.VersionCsiAttacher,
 		CSIProvisioner:             utils.VersionCsiProvisioner,
 		CSIDriverRegistrar:         utils.VersionCsiDriverRegistrar,
@@ -138,8 +135,7 @@ func (versions Versions) GetImages() []Image {
 		{Name: versions.Elasticsearch, Features: Features{utils.FeatureLogging, utils.FeatureStorage}},
 		{Name: versions.Kibana, Features: Features{utils.FeatureLogging, utils.FeatureStorage}},
 		{Name: versions.Cerebro, Features: Features{utils.FeatureLogging, utils.FeatureStorage}},
-		{Name: versions.Heapster, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
-		{Name: versions.AddonResizer, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
+		{Name: versions.MetricsScraper, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
 		{Name: versions.MetricsServer, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
 		{Name: versions.KubernetesDashboard, Features: Features{utils.FeaturePackaging}},
 		{Name: versions.Helm, Features: Features{utils.FeaturePackaging}},
@@ -149,8 +145,8 @@ func (versions Versions) GetImages() []Image {
 		{Name: versions.Grafana, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
 		{Name: versions.GrafanaWatcher, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
 		{Name: versions.Prometheus, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
-		{Name: versions.PrometheusNodeExporter, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
-		{Name: versions.PrometheusAlertManager, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
+		{Name: versions.NodeExporter, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
+		{Name: versions.AlertManager, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
 		{Name: versions.CertManagerController, Features: Features{utils.FeatureIngress, utils.FeatureStorage}},
 		{Name: versions.NginxIngressDefaultBackend, Features: Features{utils.FeatureIngress, utils.FeatureStorage}},
 		{Name: versions.NginxIngressController, Features: Features{utils.FeatureIngress, utils.FeatureStorage}},

@@ -10,7 +10,8 @@ kind: ClusterRole
 metadata:
   name: kube-state-metrics
 rules:
-- apiGroups: [""]
+- apiGroups:
+  - ""
   resources:
   - configmaps
   - secrets
@@ -24,26 +25,88 @@ rules:
   - persistentvolumes
   - namespaces
   - endpoints
-  verbs: ["list", "watch"]
-- apiGroups: ["extensions"]
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - extensions
   resources:
   - daemonsets
   - deployments
   - replicasets
-  verbs: ["list", "watch"]
-- apiGroups: ["apps"]
+  - ingresses
+  verbs:
+  - get
+  - update
+  - list
+  - watch
+- apiGroups:
+  - apps
   resources:
   - statefulsets
-  verbs: ["list", "watch"]
-- apiGroups: ["batch"]
+  - daemonsets
+  - deployments
+  - replicasets
+  verbs:
+  - list
+  - watch
+- apiGroups:
+  - batch
   resources:
   - cronjobs
   - jobs
-  verbs: ["list", "watch"]
-- apiGroups: ["autoscaling"]
+  verbs:
+  - list
+  - watch
+- apiGroups:
+  - autoscaling
   resources:
   - horizontalpodautoscalers
-  verbs: ["list", "watch"]
+  verbs:
+  - list
+  - watch
+- apiGroups:
+  - authentication.k8s.io
+  resources:
+  - tokenreviews
+  verbs:
+  - create
+- apiGroups:
+  - authorization.k8s.io
+  resources:
+  - subjectaccessreviews
+  verbs:
+  - create
+- apiGroups:
+  - policy
+  resources:
+  - poddisruptionbudgets
+  verbs:
+  - list
+  - watch
+- apiGroups:
+  - certificates.k8s.io
+  resources:
+  - certificatesigningrequests
+  verbs:
+  - list
+  - watch
+- apiGroups:
+  - storage.k8s.io
+  resources:
+  - storageclasses
+  verbs:
+  - list
+  - watch
+- apiGroups:
+  - admissionregistration.k8s.io
+  resources:
+  - mutatingwebhookconfigurations
+  - validatingwebhookconfigurations
+  verbs:
+  - list
+  - watch
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -69,7 +132,7 @@ spec:
   selector:
     matchLabels:
       k8s-app: kube-state-metrics
-  replicas: 1
+  replicas: {{ .KubeStateMetricsCount }}
   template:
     metadata:
       labels:
@@ -78,7 +141,7 @@ spec:
       serviceAccountName: kube-state-metrics
       containers:
       - name: kube-state-metrics
-        image: quay.io/coreos/kube-state-metrics:v1.5.0
+        image: {{ .KubeStateMetricsImage }} 
         imagePullPolicy: Always
         ports:
         - name: http-metrics
@@ -91,33 +154,6 @@ spec:
             port: 8080
           initialDelaySeconds: 5
           timeoutSeconds: 5
-      - name: addon-resizer
-        image: k8s.gcr.io/addon-resizer:1.7
-        resources:
-          limits:
-            cpu: 100m
-            memory: 30Mi
-          requests:
-            cpu: 100m
-            memory: 30Mi
-        env:
-          - name: MY_POD_NAME
-            valueFrom:
-              fieldRef:
-                fieldPath: metadata.name
-          - name: MY_POD_NAMESPACE
-            valueFrom:
-              fieldRef:
-                fieldPath: metadata.namespace
-        command:
-          - /pod_nanny
-          - --container=kube-state-metrics
-          - --cpu=100m
-          - --extra-cpu=1m
-          - --memory=100Mi
-          - --extra-memory=2Mi
-          - --threshold=5
-          - --deployment=kube-state-metrics
 ---
 apiVersion: v1
 kind: Service

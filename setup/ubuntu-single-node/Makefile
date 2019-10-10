@@ -34,3 +34,9 @@ forward-80:
 
 forward-443:
 	sudo socat -d -v TCP-LISTEN:443,fork TCP:$(IP_PREFIX).50:443
+
+forward-grafana-30900:
+	sudo socat -d -v TCP-LISTEN:30900,fork TCP:$(IP_PREFIX).50:30900
+
+forward-dashboard-32443:
+	sudo socat -d -v TCP-LISTEN:32443,fork TCP:$(IP_PREFIX).50:32443

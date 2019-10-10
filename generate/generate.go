@@ -68,8 +68,6 @@ func NewGenerator(config *config.InternalConfig) *Generator {
 		generator.generateEFKSetup,
 		// Generate velero setup file
 		generator.generateVeleroSetup,
-		// Generate heapster setup file
-		generator.generateHeapsterSetup,
 		// Generate kubernetes dashboard setup file
 		generator.generateKubernetesDashboardSetup,
 		// Generate cert-manager setup file
@@ -985,16 +983,6 @@ func (generator *Generator) generateVeleroSetup() error {
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sVeleroSetup), true, false)
 }
 
-func (generator *Generator) generateHeapsterSetup() error {
-	return utils.ApplyTemplateAndSave("heapster", utils.TemplateHeapsterSetup, struct {
-		HeapsterImage     string
-		AddonResizerImage string
-	}{
-		HeapsterImage:     generator.config.Config.Versions.Heapster,
-		AddonResizerImage: generator.config.Config.Versions.AddonResizer,
-	}, generator.config.GetFullLocalAssetFilename(utils.K8sHeapsterSetup), true, false)
-}
-
 func (generator *Generator) generateKubernetesDashboardSetup() error {
 	return utils.ApplyTemplateAndSave("kubernetes-dashboard", utils.TemplateKubernetesDashboardSetup, struct {
 		ClusterName              string
@@ -1070,15 +1058,17 @@ func (generator *Generator) generateNodeExporterSetup() error {
 		PrometheusImage string
 	}{
 		PrometheusImage: generator.config.Config.Versions.Prometheus,
-	}, generator.config.GetFullLocalAssetFilename(utils.K8sNodeExporterSetup), true, true)
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sNodeExporterSetup), true, false)
 }
 
 func (generator *Generator) generateKubeStateMetricsSetup() error {
 	return utils.ApplyTemplateAndSave("kube-state-metrics", utils.TemplateKubeStateMetricsSetup, struct {
-		PrometheusImage string
+		KubeStateMetricsImage string
+		KubeStateMetricsCount string
 	}{
-		PrometheusImage: generator.config.Config.Versions.Prometheus,
-	}, generator.config.GetFullLocalAssetFilename(utils.K8sKubeStateMetricsSetup), true, true)
+		KubeStateMetricsImage: generator.config.Config.Versions.KubeStateMetrics,
+		KubeStateMetricsCount: fmt.Sprintf("%d", generator.config.Config.KubeStateMetricsCount),
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sKubeStateMetricsSetup), true, false)
 }
 
 func (generator *Generator) generateGrafanaSetup() error {
@@ -1092,11 +1082,23 @@ func (generator *Generator) generateGrafanaSetup() error {
 }
 
 func (generator *Generator) generateAlertManagerSetup() error {
+	counts := []string{}
+
+	for i := uint(0); i < generator.config.Config.AlertManagerCount; i++ {
+		counts = append(counts, fmt.Sprintf("%d", i))
+	}
+
 	return utils.ApplyTemplateAndSave("alert-manager", utils.TemplateAlertManagerSetup, struct {
-		PrometheusImage string
+		AlertManagerImage  string
+		AlertManagerCount  string
+		AlertManagerCounts []string
+		AlertManagerSize   string
 	}{
-		PrometheusImage: generator.config.Config.Versions.Prometheus,
-	}, generator.config.GetFullLocalAssetFilename(utils.K8sAlertManagerSetup), true, true)
+		AlertManagerImage:  generator.config.Config.Versions.AlertManager,
+		AlertManagerCount:  fmt.Sprintf("%d", generator.config.Config.AlertManagerCount),
+		AlertManagerCounts: counts,
+		AlertManagerSize:   fmt.Sprintf("%d", generator.config.Config.AlertManagerSize),
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sAlertManagerSetup), true, false)
 }
 
 func (generator *Generator) generateWordpressSetup() error {

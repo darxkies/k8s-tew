@@ -1,10 +1,40 @@
+---
 apiVersion: v1
 kind: Secret
 metadata:
   namespace: kube-system
   name: kubernetes-dashboard
   labels:
-    app: kubernetes-dashboard
+    k8s-app: kubernetes-dashboard
+type: Opaque
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  namespace: kube-system
+  name: kubernetes-dashboard-certs
+  labels:
+    k8s-app: kubernetes-dashboard
+type: Opaque
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  namespace: kube-system
+  name: kubernetes-dashboard-csrf
+  labels:
+    k8s-app: kubernetes-dashboard
+type: Opaque
+data:
+  csrf: ""
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  namespace: kube-system
+  name: kubernetes-dashboard-key-holder
+  labels:
+    k8s-app: kubernetes-dashboard
 type: Opaque
 ---
 apiVersion: v1
@@ -23,56 +53,33 @@ metadata:
   labels:
     app: kubernetes-dashboard
 rules:
-- apiGroups:
-    - ""
-  resources:
-    - secrets
-  verbs:
-    - create
-- apiGroups:
-    - ""
-  resources:
-    - configmaps
-  verbs:
-    - create
-- apiGroups:
-    - ""
-  resources:
-    - secrets
-  resourceNames:
-    - kubernetes-dashboard-key-holder
-    - kubernetes-dashboard
-  verbs:
-    - get
-    - update
-    - delete
-- apiGroups:
-    - ""
-  resources:
-    - configmaps
-  resourceNames:
-    - kubernetes-dashboard-settings
-  verbs:
-    - get
-    - update
-- apiGroups:
-    - ""
-  resources:
-    - services
-  resourceNames:
-    - heapster
-  verbs:
-    - proxy
-- apiGroups:
-    - ""
-  resources:
-    - services/proxy
-  resourceNames:
-    - heapster
-    - "http:heapster:"
-    - "https:heapster:"
-  verbs:
-    - get
+  - apiGroups: [""]
+    resources: ["secrets"]
+    resourceNames: ["kubernetes-dashboard-key-holder", "kubernetes-dashboard-certs", "kubernetes-dashboard-csrf"]
+    verbs: ["get", "update", "delete"]
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    resourceNames: ["kubernetes-dashboard-settings"]
+    verbs: ["get", "update"]
+  - apiGroups: [""]
+    resources: ["services"]
+    resourceNames: ["heapster", "dashboard-metrics-scraper"]
+    verbs: ["proxy"]
+  - apiGroups: [""]
+    resources: ["services/proxy"]
+    resourceNames: ["heapster", "http:heapster:", "https:heapster:", "dashboard-metrics-scraper", "http:dashboard-metrics-scraper"]
+    verbs: ["get"]
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: kubernetes-dashboard
+  labels:
+    k8s-app: kubernetes-dashboard
+rules:
+  - apiGroups: ["metrics.k8s.io"]
+    resources: ["pods", "nodes"]
+    verbs: ["get", "list", "watch"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: RoleBinding
@@ -84,6 +91,20 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
+  name: kubernetes-dashboard
+subjects:
+  - kind: ServiceAccount
+    namespace: kube-system
+    name: kubernetes-dashboard
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  namespace: kube-system
+  name: kubernetes-dashboard
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
   name: kubernetes-dashboard
 subjects:
   - kind: ServiceAccount
@@ -171,3 +192,56 @@ metadata:
   name: kubernetes-dashboard-settings
 data:
   _global: '{"clusterName":"{{.ClusterName}}","itemsPerPage":50,"autoRefreshTimeInterval":5}'
+---
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: kube-system
+  name: dashboard-metrics-scraper
+  labels:
+    k8s-app: dashboard-metrics-scraper
+spec:
+  ports:
+    - port: 8000
+      targetPort: 8000
+  selector:
+    k8s-app: dashboard-metrics-scraper
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  namespace: kube-system
+  name: dashboard-metrics-scraper
+  labels:
+    k8s-app: dashboard-metrics-scraper
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      k8s-app: dashboard-metrics-scraper
+  template:
+    metadata:
+      labels:
+        k8s-app: dashboard-metrics-scraper
+    spec:
+      containers:
+        - name: dashboard-metrics-scraper
+          image: 
+          ports:
+            - containerPort: 8000
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              scheme: HTTP
+              path: /
+              port: 8000
+            initialDelaySeconds: 30
+            timeoutSeconds: 30
+          volumeMounts:
+          - mountPath: /tmp
+            name: tmp-volume
+      serviceAccountName: kubernetes-dashboard
+      volumes:
+        - name: tmp-volume
+          emptyDir: {}

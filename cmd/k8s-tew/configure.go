@@ -111,12 +111,24 @@ func init() {
 		_config.Config.KubernetesDashboardPort = value
 	})
 
+	addUint16Option("elasticsearch-count", utils.ElasticsearchCount, "Number of Elasticsearch Servers", func(value uint16) {
+		_config.Config.ElasticsearchCount = uint(value)
+	})
+
 	addUint16Option("elasticsearch-size", utils.ElasticsearchSize, "Size of Elasticsearch Persistent Volume", func(value uint16) {
 		_config.Config.ElasticsearchSize = uint(value)
 	})
 
-	addUint16Option("elasticsearch-count", utils.ElasticsearchCount, "Number of Elasticsearch Servers", func(value uint16) {
-		_config.Config.ElasticsearchCount = uint(value)
+	addUint16Option("alert-manager-count", utils.AlertManagerCount, "Number of Alert Manager Servers", func(value uint16) {
+		_config.Config.AlertManagerCount = uint(value)
+	})
+
+	addUint16Option("alert-manager-size", utils.AlertManagerSize, "Size of Alert Manager Persistent Volume", func(value uint16) {
+		_config.Config.AlertManagerSize = uint(value)
+	})
+
+	addUint16Option("kube-state-metrics-count", utils.KubeStateMetricsCount, "Number of Kube State Metrics Servers", func(value uint16) {
+		_config.Config.KubeStateMetricsCount = uint(value)
 	})
 
 	addStringOption("controller-virtual-ip", "", "Controller Virtual/Floating IP for the cluster", func(value string) {
@@ -283,14 +295,6 @@ func init() {
 		_config.Config.Versions.Ceph = value
 	})
 
-	addStringOption("version-heapster", utils.VersionHeapster, "Heapster version", func(value string) {
-		_config.Config.Versions.Heapster = value
-	})
-
-	addStringOption("version-addon-resizer", utils.VersionAddonResizer, "Addon-Resizer version", func(value string) {
-		_config.Config.Versions.AddonResizer = value
-	})
-
 	addStringOption("version-kubernetes-dashboard", utils.VersionKubernetesDashboard, "Kubernetes Dashboard version", func(value string) {
 		_config.Config.Versions.KubernetesDashboard = value
 	})
@@ -331,12 +335,12 @@ func init() {
 		_config.Config.Versions.GrafanaWatcher = value
 	})
 
-	addStringOption("version-prometheus-node-exporter", utils.VersionPrometheusNodeExporter, "Prometheus Node Exporter version", func(value string) {
-		_config.Config.Versions.PrometheusNodeExporter = value
+	addStringOption("version-node-exporter", utils.VersionNodeExporter, "Node Exporter version", func(value string) {
+		_config.Config.Versions.NodeExporter = value
 	})
 
-	addStringOption("version-prometheus-alert-manager", utils.VersionPrometheusAlertManager, "Prometheus Alert Manager version", func(value string) {
-		_config.Config.Versions.PrometheusAlertManager = value
+	addStringOption("version-alert-manager", utils.VersionAlertManager, "Alert Manager version", func(value string) {
+		_config.Config.Versions.AlertManager = value
 	})
 
 	addStringOption("version-prometheus", utils.VersionPrometheus, "Prometheus version", func(value string) {
