@@ -327,14 +327,6 @@ func init() {
 		_config.Config.Versions.MetricsServer = value
 	})
 
-	addStringOption("version-prometheus-config-reloader", utils.VersionPrometheusConfigReloader, "Prometheus Config Reloader version", func(value string) {
-		_config.Config.Versions.PrometheusConfigReloader = value
-	})
-
-	addStringOption("version-configmap-reload", utils.VersionConfigmapReload, "ConfigMap Reload version", func(value string) {
-		_config.Config.Versions.ConfigMapReload = value
-	})
-
 	addStringOption("version-kube-state-metrics", utils.VersionKubeStateMetrics, "Kube State Metrics version", func(value string) {
 		_config.Config.Versions.KubeStateMetrics = value
 	})

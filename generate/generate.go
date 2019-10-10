@@ -1039,9 +1039,9 @@ func (generator *Generator) generatePrometheusSetup() error {
 
 func (generator *Generator) generateNodeExporterSetup() error {
 	return utils.ApplyTemplateAndSave("node-exporter", utils.TemplateNodeExporterSetup, struct {
-		PrometheusImage string
+		NodeExporterImage string
 	}{
-		PrometheusImage: generator.config.Config.Versions.Prometheus,
+		NodeExporterImage: generator.config.Config.Versions.NodeExporter,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sNodeExporterSetup), true, false)
 }
 

@@ -80,6 +80,7 @@ func NewConfig() *Config {
 	config.ElasticsearchSize = utils.ElasticsearchSize
 	config.AlertManagerCount = utils.AlertManagerCount
 	config.AlertManagerSize = utils.AlertManagerSize
+	config.KubeStateMetricsCount = utils.KubeStateMetricsCount
 	config.Versions = NewVersions()
 	config.Assets = AssetConfig{Directories: map[string]*AssetDirectory{}, Files: map[string]*AssetFile{}}
 	config.Nodes = Nodes{}

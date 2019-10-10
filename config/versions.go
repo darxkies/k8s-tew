@@ -36,7 +36,6 @@ type Versions struct {
 	NginxIngressDefaultBackend string `yaml:"nginx-ingress-default-backend"`
 	MetricsScraper             string `yaml:"metrics-scraper"`
 	MetricsServer              string `yaml:"metrics-server"`
-	PrometheusConfigReloader   string `yaml:"prometheus-config-reloader"`
 	ConfigMapReload            string `yaml:"configmap-reload"`
 	KubeStateMetrics           string `yaml:"kube-state-metrics"`
 	Grafana                    string `yaml:"grafana"`
@@ -86,8 +85,6 @@ func NewVersions() Versions {
 		NginxIngressDefaultBackend: utils.VersionNginxIngressDefaultBackend,
 		MetricsScraper:             utils.VersionMetricsScraper,
 		MetricsServer:              utils.VersionMetricsServer,
-		PrometheusConfigReloader:   utils.VersionPrometheusConfigReloader,
-		ConfigMapReload:            utils.VersionConfigmapReload,
 		KubeStateMetrics:           utils.VersionKubeStateMetrics,
 		Grafana:                    utils.VersionGrafana,
 		Prometheus:                 utils.VersionPrometheus,
@@ -137,8 +134,6 @@ func (versions Versions) GetImages() []Image {
 		{Name: versions.MetricsServer, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
 		{Name: versions.KubernetesDashboard, Features: Features{utils.FeaturePackaging}},
 		{Name: versions.Helm, Features: Features{utils.FeaturePackaging}},
-		{Name: versions.PrometheusConfigReloader, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
-		{Name: versions.ConfigMapReload, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
 		{Name: versions.KubeStateMetrics, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
 		{Name: versions.Grafana, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
 		{Name: versions.Prometheus, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
