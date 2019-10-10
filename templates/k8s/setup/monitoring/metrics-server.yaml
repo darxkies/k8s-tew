@@ -117,7 +117,7 @@ spec:
         emptyDir: {}
       containers:
       - name: metrics-server
-        image: {{.MetricsServerImage}}
+        image: {{ .MetricsServerImage }}
         args:
         - --kubelet-preferred-address-types=InternalIP
         - --kubelet-insecure-tls

@@ -26,7 +26,7 @@ spec:
       serviceAccountName: node-exporter
       containers:
         - name: node-exporter
-          image: quay.io/prometheus/node-exporter:v0.17.0
+          image: {{ .NodeExporterImage }} 
           imagePullPolicy: Always
           args:
             - --path.procfs=/host/proc

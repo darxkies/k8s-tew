@@ -40,7 +40,6 @@ type Versions struct {
 	ConfigMapReload            string `yaml:"configmap-reload"`
 	KubeStateMetrics           string `yaml:"kube-state-metrics"`
 	Grafana                    string `yaml:"grafana"`
-	GrafanaWatcher             string `yaml:"grafana-watcher"`
 	Prometheus                 string `yaml:"prometheus"`
 	NodeExporter               string `yaml:"node-exporter"`
 	AlertManager               string `yaml:"alert-manager"`
