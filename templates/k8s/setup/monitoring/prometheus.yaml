@@ -336,7 +336,7 @@ data:
         target_label: instance
         replacement: $1
         action: replace
-    - job_name: alertmanager
+    - job_name: alert-manager
       honor_timestamps: true
       scrape_interval: 15s
       scrape_timeout: 10s
@@ -357,15 +357,9 @@ data:
         action: replace
       - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_label_k8s_app]
         separator: ;
-        regex: monitoring;alertmanager
+        regex: monitoring;alert-manager
         replacement: $1
         action: keep
-      - source_labels: [__meta_kubernetes_namespace]
-        separator: ;
-        regex: (.*)
-        target_label: namespace
-        replacement: $1
-        action: replace
       - source_labels: [__meta_kubernetes_pod]
         separator: ;
         regex: (.*)
