@@ -267,6 +267,57 @@ data:
         target_label: __metrics_path__
         replacement: /metrics
         action: replace
+    - job_name: kubelet
+      honor_timestamps: true
+      scrape_interval: 15s
+      scrape_timeout: 10s
+      metrics_path: /metrics
+      scheme: https
+      bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+      tls_config:
+        ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        insecure_skip_verify: true
+      kubernetes_sd_configs:
+      - role: node
+      relabel_configs:
+      - separator: ;
+        regex: __meta_kubernetes_node_label_(.+)
+        replacement: $1
+        action: labelmap
+      - source_labels: [__address__]
+        separator: ;
+        regex: ([^:]+)(?::\d+)?
+        target_label: __address__
+        replacement: $1:10250
+        action: replace
+    - job_name: kube-proxy
+      honor_timestamps: true
+      scrape_interval: 15s
+      scrape_timeout: 10s
+      metrics_path: /metrics
+      scheme: http
+      bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+      tls_config:
+        ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        insecure_skip_verify: true
+      kubernetes_sd_configs:
+      - role: node
+      relabel_configs:
+      - separator: ;
+        regex: __meta_kubernetes_node_label_(.+)
+        replacement: $1
+        action: labelmap
+      - source_labels: [__address__]
+        separator: ;
+        regex: ([^:]+)(?::\d+)?
+        target_label: __address__
+        replacement: $1:10249
+        action: replace
+      - separator: ;
+        regex: (.*)
+        target_label: __metrics_path__
+        replacement: /metrics
+        action: replace
     - job_name: kubernetes-service-endpoints
       honor_timestamps: true
       scrape_interval: 15s
@@ -506,29 +557,6 @@ data:
         regex: monitoring;kube-state-metrics
         replacement: $1
         action: keep
-    - job_name: kubelet
-      honor_timestamps: true
-      scrape_interval: 15s
-      scrape_timeout: 10s
-      metrics_path: /metrics
-      scheme: https
-      bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
-      tls_config:
-        ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
-        insecure_skip_verify: true
-      kubernetes_sd_configs:
-      - role: node
-      relabel_configs:
-      - separator: ;
-        regex: __meta_kubernetes_node_label_(.+)
-        replacement: $1
-        action: labelmap
-      - source_labels: [__address__]
-        separator: ;
-        regex: ([^:]+)(?::\d+)?
-        target_label: __address__
-        replacement: $1:10250
-        action: replace
     - job_name: node-exporter
       honor_timestamps: true
       scrape_interval: 15s

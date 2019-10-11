@@ -14,6 +14,8 @@ spec:
     - --cluster-cidr={{.ClusterCIDR}}
     - --kubeconfig={{.KubeProxyKubeconfig}}
     - --proxy-mode=iptables
+    - --metrics-bind-address=0.0.0.0
+    - --metrics-port=10249
     securityContext:
         privileged: true
     livenessProbe:
