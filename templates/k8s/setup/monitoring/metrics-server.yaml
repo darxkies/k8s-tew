@@ -121,6 +121,7 @@ spec:
         args:
         - --kubelet-preferred-address-types=InternalIP
         - --kubelet-insecure-tls
+        - --v=10
         volumeMounts:
         - name: tmp-dir
           mountPath: /tmp
