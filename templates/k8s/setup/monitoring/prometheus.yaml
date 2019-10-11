@@ -226,13 +226,13 @@ data:
         target_label: namespace
         replacement: $1
         action: replace
-      - source_labels: [__meta_kubernetes_pod_name]
+      - source_labels: [__meta_kubernetes_pod]
         separator: ;
         regex: (.*)
         target_label: pod
         replacement: $1
         action: replace
-      - source_labels: [__meta_kubernetes_pod_name]
+      - source_labels: [__meta_kubernetes_pod]
         separator: ;
         regex: (.*)
         target_label: instance
@@ -282,7 +282,7 @@ data:
         target_label: namespace
         replacement: $1
         action: replace
-      - source_labels: [__meta_kubernetes_pod_name]
+      - source_labels: [__meta_kubernetes_pod]
         separator: ;
         regex: (.*)
         target_label: pod
@@ -324,13 +324,13 @@ data:
         target_label: namespace
         replacement: $1
         action: replace
-      - source_labels: [__meta_kubernetes_pod_name]
+      - source_labels: [__meta_kubernetes_pod]
         separator: ;
         regex: (.*)
         target_label: pod
         replacement: $1
         action: replace
-      - source_labels: [__meta_kubernetes_pod_name]
+      - source_labels: [__meta_kubernetes_pod]
         separator: ;
         regex: (.*)
         target_label: instance
@@ -366,7 +366,7 @@ data:
         target_label: namespace
         replacement: $1
         action: replace
-      - source_labels: [__meta_kubernetes_pod_name]
+      - source_labels: [__meta_kubernetes_pod]
         separator: ;
         regex: (.*)
         target_label: pod
@@ -411,7 +411,7 @@ data:
         regex: ^$
         replacement: $1
         action: drop
-    - job_name: apiserver
+    - job_name: kube-apiserver
       honor_timestamps: true
       scrape_interval: 15s
       scrape_timeout: 10s
@@ -430,7 +430,7 @@ data:
         action: labelmap
       - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_name]
         separator: ;
-        regex: kube-system;kubernetes
+        regex: default;kubernetes
         replacement: $1
         action: keep
       - source_labels: [__meta_kubernetes_endpoint_port_name]
@@ -509,7 +509,7 @@ data:
         target_label: namespace
         replacement: $1
         action: replace
-      - source_labels: [__meta_kubernetes_pod_name]
+      - source_labels: [__meta_kubernetes_pod]
         separator: ;
         regex: (.*)
         target_label: pod
@@ -551,13 +551,13 @@ data:
         target_label: namespace
         replacement: $1
         action: replace
-      - source_labels: [__meta_kubernetes_pod_name]
+      - source_labels: [__meta_kubernetes_pod]
         separator: ;
         regex: (.*)
         target_label: pod
         replacement: $1
         action: replace
-      - source_labels: [__meta_kubernetes_pod_name]
+      - source_labels: [__meta_kubernetes_pod]
         separator: ;
         regex: (.*)
         target_label: instance
