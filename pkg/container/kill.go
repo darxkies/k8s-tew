@@ -11,6 +11,8 @@ import (
 	"strings"
 	"syscall"
 
+	"github.com/docker/docker/pkg/mount"
+
 	"github.com/darxkies/k8s-tew/config"
 	"github.com/darxkies/k8s-tew/utils"
 	log "github.com/sirupsen/logrus"
@@ -303,7 +305,7 @@ func Exists(path string) bool {
 
 func Unmount(path string) error {
 	if Exists(path) {
-		return syscall.Unmount(path, syscall.MNT_DETACH)
+		return mount.Unmount(path)
 	}
 
 	return nil
