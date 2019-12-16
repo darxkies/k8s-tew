@@ -27,16 +27,24 @@ var initializeCmd = &cobra.Command{
 
 		utils.ShowProgress()
 
-		if !force {
+		if force {
+			log.Info("Forcing initialization")
+
+			oldConfig := config.NewInternalConfig(getBaseDirectory())
+
+			// Extract Cluster ID from old configuration and pass it to the new configuration
+			if error := oldConfig.Load(); error == nil {
+				_config.Config.ClusterID = oldConfig.Config.ClusterID
+			}
+
+			utils.IncreaseProgressStep()
+
+		} else {
 			if error := _config.Load(); error == nil {
 				log.WithFields(log.Fields{"error": "already initialized"}).Error("Initialize failed")
 
 				os.Exit(-1)
 			}
-		} else {
-			log.Info("Forcing initialization")
-
-			utils.IncreaseProgressStep()
 		}
 
 		if error := _config.Save(); error != nil {
