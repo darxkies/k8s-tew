@@ -312,7 +312,7 @@ metadata:
   name: default
   namespace: backup
 spec:
-  provider: aws
+  provider: velero.io/aws
   objectStorage:
     bucket: velero
   config:
@@ -341,6 +341,12 @@ spec:
     spec:
       restartPolicy: Always
       serviceAccountName: velero
+      initContainers:
+        - name: velero-plugin-for-aws
+          image: {{ .VeleroPluginAWSImage }}
+          volumeMounts:
+            - name: plugins
+              mountPath: /target
       containers:
         - name: velero
           image: {{ .VeleroImage }}

@@ -949,19 +949,21 @@ func (generator *Generator) generateEFKSetup() error {
 
 func (generator *Generator) generateVeleroSetup() error {
 	return utils.ApplyTemplateAndSave("velero-setup", utils.TemplateVeleroSetup, struct {
-		VeleroImage      string
-		MinioServerImage string
-		MinioClientImage string
-		PodsDirectory    string
-		MinioPort        uint16
-		MinioSize        uint16
+		VeleroImage          string
+		VeleroPluginAWSImage string
+		MinioServerImage     string
+		MinioClientImage     string
+		PodsDirectory        string
+		MinioPort            uint16
+		MinioSize            uint16
 	}{
-		VeleroImage:      generator.config.Config.Versions.Velero,
-		MinioServerImage: generator.config.Config.Versions.MinioServer,
-		MinioClientImage: generator.config.Config.Versions.MinioClient,
-		PodsDirectory:    generator.config.GetFullTargetAssetDirectory(utils.DirectoryPodsData),
-		MinioPort:        utils.PortMinio,
-		MinioSize:        generator.config.Config.MinioSize,
+		VeleroImage:          generator.config.Config.Versions.Velero,
+		VeleroPluginAWSImage: generator.config.Config.Versions.VeleroPluginAWS,
+		MinioServerImage:     generator.config.Config.Versions.MinioServer,
+		MinioClientImage:     generator.config.Config.Versions.MinioClient,
+		PodsDirectory:        generator.config.GetFullTargetAssetDirectory(utils.DirectoryPodsData),
+		MinioPort:            utils.PortMinio,
+		MinioSize:            generator.config.Config.MinioSize,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sVeleroSetup), true, false)
 }
 

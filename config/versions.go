@@ -15,6 +15,7 @@ type Versions struct {
 	VirtualIP                  string `yaml:"virtual-ip"`
 	Busybox                    string `yaml:"busybox"`
 	Velero                     string `yaml:"velero"`
+	VeleroPluginAWS            string `yaml:"velero-plugin-aws"`
 	MinioServer                string `yaml:"minio-server"`
 	MinioClient                string `yaml:"minio-client"`
 	Pause                      string `yaml:"pause"`
@@ -64,6 +65,7 @@ func NewVersions() Versions {
 		VirtualIP:                  utils.VersionVirtualIP,
 		Busybox:                    utils.VersionBusybox,
 		Velero:                     utils.VersionVelero,
+		VeleroPluginAWS:            utils.VersionVeleroPluginAWS,
 		MinioServer:                utils.VersionMinioServer,
 		MinioClient:                utils.VersionMinioClient,
 		Pause:                      utils.VersionPause,
@@ -119,6 +121,7 @@ func (versions Versions) GetImages() []Image {
 		{Name: versions.MinioServer, Features: Features{utils.FeatureBackup, utils.FeatureStorage}},
 		{Name: versions.MinioClient, Features: Features{utils.FeatureBackup, utils.FeatureStorage}},
 		{Name: versions.Velero, Features: Features{utils.FeatureBackup, utils.FeatureStorage}},
+		{Name: versions.VeleroPluginAWS, Features: Features{utils.FeatureBackup, utils.FeatureStorage}},
 		{Name: versions.Ceph, Features: Features{utils.FeatureStorage}},
 		{Name: versions.CSIAttacher, Features: Features{utils.FeatureStorage}},
 		{Name: versions.CSIProvisioner, Features: Features{utils.FeatureStorage}},

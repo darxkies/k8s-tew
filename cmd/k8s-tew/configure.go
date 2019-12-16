@@ -247,6 +247,10 @@ func init() {
 		_config.Config.Versions.Velero = value
 	})
 
+	addStringOption("version-velero-plugin-aws", utils.VersionVeleroPluginAWS, "Velero Plugin AWS version", func(value string) {
+		_config.Config.Versions.VeleroPluginAWS = value
+	})
+
 	addStringOption("version-minio-server", utils.VersionMinioServer, "Minio server version", func(value string) {
 		_config.Config.Versions.MinioServer = value
 	})
