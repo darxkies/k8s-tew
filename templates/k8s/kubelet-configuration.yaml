@@ -22,6 +22,7 @@ failSwapOn: false
 featureGates: 
   CSIBlockVolume: true
   BlockVolume: true
+  VolumeSnapshotDataSource: true
 resolvConf: "{{.ResolvConf}}"
 readOnlyPort: 10255
 maxPods: {{.MaxPods}}

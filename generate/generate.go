@@ -785,6 +785,7 @@ func (generator *Generator) generateCephSetup() error {
 
 func (generator *Generator) generateCephCSI() error {
 	return utils.ApplyTemplateAndSave("ceph-csi", utils.TemplateCephCsi, struct {
+		ClusterID                string
 		KubeletDirectory         string
 		PluginsDirectory         string
 		PluginsRegistryDirectory string
@@ -795,10 +796,11 @@ func (generator *Generator) generateCephCSI() error {
 		CSIAttacherImage         string
 		CSIProvisionerImage      string
 		CSIDriverRegistrarImage  string
-		CSICephRBDPluginImage    string
-		CSICephFSPluginImage     string
-		CSICephSnapshotterImage  string
+		CSISnapshotterImage      string
+		CSIResizerImage          string
+		CSICephPluginImage       string
 	}{
+		ClusterID:                generator.config.Config.ClusterID,
 		KubeletDirectory:         generator.config.GetFullTargetAssetDirectory(utils.DirectoryKubeletData),
 		PluginsDirectory:         generator.config.GetFullTargetAssetDirectory(utils.DirectoryKubeletPlugins),
 		PluginsRegistryDirectory: generator.config.GetFullTargetAssetDirectory(utils.DirectoryKubeletPluginsRegistry),
@@ -809,9 +811,9 @@ func (generator *Generator) generateCephCSI() error {
 		CSIAttacherImage:         generator.config.Config.Versions.CSIAttacher,
 		CSIProvisionerImage:      generator.config.Config.Versions.CSIProvisioner,
 		CSIDriverRegistrarImage:  generator.config.Config.Versions.CSIDriverRegistrar,
-		CSICephRBDPluginImage:    generator.config.Config.Versions.CSICephRBDPlugin,
-		CSICephFSPluginImage:     generator.config.Config.Versions.CSICephFSPlugin,
-		CSICephSnapshotterImage:  generator.config.Config.Versions.CSICephSnapshotter,
+		CSISnapshotterImage:      generator.config.Config.Versions.CSISnapshotter,
+		CSIResizerImage:          generator.config.Config.Versions.CSIResizer,
+		CSICephPluginImage:       generator.config.Config.Versions.CSICephPlugin,
 	}, generator.config.GetFullLocalAssetFilename(utils.CephCsi), true, false)
 }
 

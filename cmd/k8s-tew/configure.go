@@ -355,20 +355,20 @@ func init() {
 		_config.Config.Versions.CSIProvisioner = value
 	})
 
+	addStringOption("version-csi-resizer", utils.VersionCsiResizer, "CSI Resizer version", func(value string) {
+		_config.Config.Versions.CSIResizer = value
+	})
+
 	addStringOption("version-csi-driver-registrar", utils.VersionCsiDriverRegistrar, "CSI Driver Registrar version", func(value string) {
 		_config.Config.Versions.CSIDriverRegistrar = value
 	})
 
-	addStringOption("version-csi-ceph-rbd-plugin", utils.VersionCsiCephRbdPlugin, "CSI Ceph RBD Plugin version", func(value string) {
-		_config.Config.Versions.CSICephRBDPlugin = value
+	addStringOption("version-csi-ceph-plugin", utils.VersionCsiCephPlugin, "CSI Ceph Plugin version", func(value string) {
+		_config.Config.Versions.CSICephPlugin = value
 	})
 
-	addStringOption("version-csi-ceph-fs-plugin", utils.VersionCsiCephFsPlugin, "CSI Ceph FS Plugin version", func(value string) {
-		_config.Config.Versions.CSICephFSPlugin = value
-	})
-
-	addStringOption("version-csi-ceph-snapshotter", utils.VersionCsiCephSnapshotter, "CSI Ceph Snapshotter version", func(value string) {
-		_config.Config.Versions.CSICephSnapshotter = value
+	addStringOption("version-csi-snapshotter", utils.VersionCsiSnapshotter, "CSI Snapshotter version", func(value string) {
+		_config.Config.Versions.CSISnapshotter = value
 	})
 
 	addStringOption("version-wordpress", utils.VersionWordpress, "WordPress version", func(value string) {

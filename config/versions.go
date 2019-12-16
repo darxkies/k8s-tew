@@ -45,9 +45,9 @@ type Versions struct {
 	CSIAttacher                string `yaml:"csi-attacher"`
 	CSIProvisioner             string `yaml:"csi-provisioner"`
 	CSIDriverRegistrar         string `yaml:"csi-driver-registrar"`
-	CSICephRBDPlugin           string `yaml:"csi-ceph-rbd-plugin"`
-	CSICephFSPlugin            string `yaml:"csi-ceph-fs-plugin"`
-	CSICephSnapshotter         string `yaml:"csi-ceph-snapshotter"`
+	CSISnapshotter             string `yaml:"csi-snapshotter"`
+	CSIResizer                 string `yaml:"csi-resizer"`
+	CSICephPlugin              string `yaml:"csi-ceph-plugin"`
 	WordPress                  string `yaml:"wordpress"`
 	MySQL                      string `yaml:"mysql"`
 }
@@ -93,9 +93,9 @@ func NewVersions() Versions {
 		CSIAttacher:                utils.VersionCsiAttacher,
 		CSIProvisioner:             utils.VersionCsiProvisioner,
 		CSIDriverRegistrar:         utils.VersionCsiDriverRegistrar,
-		CSICephRBDPlugin:           utils.VersionCsiCephRbdPlugin,
-		CSICephFSPlugin:            utils.VersionCsiCephFsPlugin,
-		CSICephSnapshotter:         utils.VersionCsiCephSnapshotter,
+		CSICephPlugin:              utils.VersionCsiCephPlugin,
+		CSISnapshotter:             utils.VersionCsiSnapshotter,
+		CSIResizer:                 utils.VersionCsiResizer,
 		WordPress:                  utils.VersionWordpress,
 		MySQL:                      utils.VersionMysql,
 	}
@@ -123,9 +123,9 @@ func (versions Versions) GetImages() []Image {
 		{Name: versions.CSIAttacher, Features: Features{utils.FeatureStorage}},
 		{Name: versions.CSIProvisioner, Features: Features{utils.FeatureStorage}},
 		{Name: versions.CSIDriverRegistrar, Features: Features{utils.FeatureStorage}},
-		{Name: versions.CSICephRBDPlugin, Features: Features{utils.FeatureStorage}},
-		{Name: versions.CSICephFSPlugin, Features: Features{utils.FeatureStorage}},
-		{Name: versions.CSICephSnapshotter, Features: Features{utils.FeatureStorage}},
+		{Name: versions.CSISnapshotter, Features: Features{utils.FeatureStorage}},
+		{Name: versions.CSIResizer, Features: Features{utils.FeatureStorage}},
+		{Name: versions.CSICephPlugin, Features: Features{utils.FeatureStorage}},
 		{Name: versions.FluentBit, Features: Features{utils.FeatureLogging, utils.FeatureStorage}},
 		{Name: versions.Elasticsearch, Features: Features{utils.FeatureLogging, utils.FeatureStorage}},
 		{Name: versions.Kibana, Features: Features{utils.FeatureLogging, utils.FeatureStorage}},
