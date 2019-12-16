@@ -133,7 +133,6 @@ func (versions Versions) GetImages() []Image {
 		{Name: versions.MetricsScraper, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
 		{Name: versions.MetricsServer, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
 		{Name: versions.KubernetesDashboard, Features: Features{utils.FeaturePackaging}},
-		{Name: versions.Helm, Features: Features{utils.FeaturePackaging}},
 		{Name: versions.KubeStateMetrics, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
 		{Name: versions.Grafana, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
 		{Name: versions.Prometheus, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
