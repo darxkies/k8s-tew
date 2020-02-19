@@ -10,6 +10,7 @@ deploy:
 	k8s-tew initialize -f
 	k8s-tew configure --public-network=$(IP_PREFIX).0/24
 	k8s-tew configure --resolv-conf=/run/systemd/resolve/resolv.conf 
+	k8s-tew configure --metallb-addresses=$(IP_PREFIX).50/32
 	k8s-tew node-add -n single-node -i $(IP_PREFIX).50 -x 0 -l controller,worker
 	k8s-tew generate 
 	k8s-tew deploy

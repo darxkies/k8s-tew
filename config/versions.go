@@ -33,6 +33,8 @@ type Versions struct {
 	Ceph                       string `yaml:"ceph"`
 	KubernetesDashboard        string `yaml:"kubernetes-dashboard"`
 	CertManagerController      string `yaml:"cert-manager-controller"`
+	CertManagerCAInjector      string `yaml:"cert-manager-cainjector"`
+	CertManagerWebHook         string `yaml:"cert-manager-webhook"`
 	NginxIngressController     string `yaml:"nginx-ingress-controller"`
 	NginxIngressDefaultBackend string `yaml:"nginx-ingress-default-backend"`
 	MetricsScraper             string `yaml:"metrics-scraper"`
@@ -69,7 +71,7 @@ func NewVersions() Versions {
 		MinioServer:                utils.VersionMinioServer,
 		MinioClient:                utils.VersionMinioClient,
 		Pause:                      utils.VersionPause,
-		CoreDNS:                    utils.VersionCoredns,
+		CoreDNS:                    utils.VersionCoreDNS,
 		Elasticsearch:              utils.VersionElasticsearch,
 		Kibana:                     utils.VersionKibana,
 		Cerebro:                    utils.VersionCerebro,
@@ -83,6 +85,8 @@ func NewVersions() Versions {
 		Ceph:                       utils.VersionCeph,
 		KubernetesDashboard:        utils.VersionKubernetesDashboard,
 		CertManagerController:      utils.VersionCertManagerController,
+		CertManagerCAInjector:      utils.VersionCertManagerCAInjector,
+		CertManagerWebHook:         utils.VersionCertManagerWebHook,
 		NginxIngressController:     utils.VersionNginxIngressController,
 		NginxIngressDefaultBackend: utils.VersionNginxIngressDefaultBackend,
 		MetricsScraper:             utils.VersionMetricsScraper,
@@ -142,6 +146,8 @@ func (versions Versions) GetImages() []Image {
 		{Name: versions.NodeExporter, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
 		{Name: versions.AlertManager, Features: Features{utils.FeatureMonitoring, utils.FeatureStorage}},
 		{Name: versions.CertManagerController, Features: Features{utils.FeatureIngress, utils.FeatureStorage}},
+		{Name: versions.CertManagerCAInjector, Features: Features{utils.FeatureIngress, utils.FeatureStorage}},
+		{Name: versions.CertManagerWebHook, Features: Features{utils.FeatureIngress, utils.FeatureStorage}},
 		{Name: versions.NginxIngressDefaultBackend, Features: Features{utils.FeatureIngress, utils.FeatureStorage}},
 		{Name: versions.NginxIngressController, Features: Features{utils.FeatureIngress, utils.FeatureStorage}},
 		{Name: versions.MySQL, Features: Features{utils.FeatureShowcase, utils.FeatureStorage}},

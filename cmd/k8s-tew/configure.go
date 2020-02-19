@@ -263,7 +263,7 @@ func init() {
 		_config.Config.Versions.Pause = value
 	})
 
-	addStringOption("version-coredns", utils.VersionCoredns, "CoreDNS version", func(value string) {
+	addStringOption("version-coredns", utils.VersionCoreDNS, "CoreDNS version", func(value string) {
 		_config.Config.Versions.CoreDNS = value
 	})
 
@@ -317,6 +317,14 @@ func init() {
 
 	addStringOption("version-cert-manager-controller", utils.VersionCertManagerController, "Cert Manager Controller version", func(value string) {
 		_config.Config.Versions.CertManagerController = value
+	})
+
+	addStringOption("version-cert-manager-cainjector", utils.VersionCertManagerCAInjector, "Cert Manager CA Injector version", func(value string) {
+		_config.Config.Versions.CertManagerCAInjector = value
+	})
+
+	addStringOption("version-cert-manager-webhook", utils.VersionCertManagerWebHook, "Cert Manager Web Hook version", func(value string) {
+		_config.Config.Versions.CertManagerWebHook = value
 	})
 
 	addStringOption("version-nginx-ingress-controller", utils.VersionNginxIngressController, "Nginx Ingress Controller version", func(value string) {

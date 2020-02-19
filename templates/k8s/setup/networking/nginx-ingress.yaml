@@ -1,28 +1,51 @@
-apiVersion: v1
+---
 kind: ConfigMap
+apiVersion: v1
 metadata:
   namespace: networking
-  name: nginx-ingress-controller
+  name: nginx-configuration
   labels:
-    app: nginx-ingress
-    component: "controller"
-data:
-  enable-vts-status: "false"
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
+
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  namespace: networking
+  name: tcp-services
+  labels:
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
+
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  namespace: networking
+  name: udp-services
+  labels:
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
+
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   namespace: networking
-  name: nginx-ingress
+  name: nginx-ingress-serviceaccount
   labels:
-    app: nginx-ingress
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
+
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole
 metadata:
-  name: nginx-ingress
+  name: nginx-ingress-clusterrole
   labels:
-    app: nginx-ingress
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
 rules:
   - apiGroups:
       - ""
@@ -48,15 +71,6 @@ rules:
     verbs:
       - get
       - list
-      - update
-      - watch
-  - apiGroups:
-      - extensions
-    resources:
-      - ingresses
-    verbs:
-      - get
-      - list
       - watch
   - apiGroups:
       - ""
@@ -66,38 +80,38 @@ rules:
       - create
       - patch
   - apiGroups:
-      - extensions
+      - "extensions"
+      - "networking.k8s.io"
+    resources:
+      - ingresses
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - "extensions"
+      - "networking.k8s.io"
     resources:
       - ingresses/status
     verbs:
       - update
----
-apiVersion: rbac.authorization.k8s.io/v1beta1
-kind: ClusterRoleBinding
-metadata:
-  name: nginx-ingress
-  labels:
-    app: nginx-ingress
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: nginx-ingress
-subjects:
-  - kind: ServiceAccount
-    namespace: networking
-    name: nginx-ingress
+
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: Role
 metadata:
   namespace: networking
-  name: nginx-ingress
+  name: nginx-ingress-role
   labels:
-    app: nginx-ingress
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
 rules:
   - apiGroups:
       - ""
     resources:
+      - configmaps
+      - pods
+      - secrets
       - namespaces
     verbs:
       - get
@@ -105,42 +119,8 @@ rules:
       - ""
     resources:
       - configmaps
-      - pods
-      - secrets
-      - endpoints
-    verbs:
-      - get
-      - list
-      - watch
-  - apiGroups:
-      - ""
-    resources:
-      - services
-    verbs:
-      - get
-      - list
-      - update
-      - watch
-  - apiGroups:
-      - extensions
-    resources:
-      - ingresses
-    verbs:
-      - get
-      - list
-      - watch
-  - apiGroups:
-      - extensions
-    resources:
-      - ingresses/status
-    verbs:
-      - update
-  - apiGroups:
-      - ""
-    resources:
-      - configmaps
     resourceNames:
-      - ingress-controller-leader-nginx
+      - "ingress-controller-leader-nginx"
     verbs:
       - get
       - update
@@ -155,42 +135,141 @@ rules:
     resources:
       - endpoints
     verbs:
-      - create
       - get
-      - update
-  - apiGroups:
-      - ""
-    resources:
-      - events
-    verbs:
-      - create
-      - patch
+
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: RoleBinding
 metadata:
   namespace: networking
-  name: nginx-ingress
+  name: nginx-ingress-role-nisa-binding
   labels:
-    app: nginx-ingress
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: nginx-ingress
+  name: nginx-ingress-role
 subjects:
   - kind: ServiceAccount
     namespace: networking
-    name: nginx-ingress
+    name: nginx-ingress-serviceaccount
+
 ---
-apiVersion: v1
-kind: Service
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: nginx-ingress-clusterrole-nisa-binding
+  labels:
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: nginx-ingress-clusterrole
+subjects:
+  - kind: ServiceAccount
+    namespace: networking
+    name: nginx-ingress-serviceaccount
+
+---
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   namespace: networking
   name: nginx-ingress-controller
   labels:
-    app: nginx-ingress
-    component: "controller"
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
 spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ingress-nginx
+      app.kubernetes.io/part-of: ingress-nginx
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: ingress-nginx
+        app.kubernetes.io/part-of: ingress-nginx
+      annotations:
+        prometheus.io/port: "10254"
+        prometheus.io/scrape: "true"
+    spec:
+      terminationGracePeriodSeconds: 300
+      serviceAccountName: nginx-ingress-serviceaccount
+      containers:
+        - name: nginx-ingress-controller
+          image: "{{.NginxIngressControllerImage}}"
+          args:
+            - /nginx-ingress-controller
+            - --configmap=$(POD_NAMESPACE)/nginx-configuration
+            - --tcp-services-configmap=$(POD_NAMESPACE)/tcp-services
+            - --udp-services-configmap=$(POD_NAMESPACE)/udp-services
+            - --publish-service=$(POD_NAMESPACE)/ingress-nginx
+            - --annotations-prefix=nginx.ingress.kubernetes.io
+          securityContext:
+            allowPrivilegeEscalation: true
+            capabilities:
+              drop:
+                - ALL
+              add:
+                - NET_BIND_SERVICE
+            runAsUser: 33
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          ports:
+            - name: http
+              containerPort: 80
+            - name: https
+              containerPort: 443
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /healthz
+              port: 10254
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 10
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /healthz
+              port: 10254
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 10
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                  - /wait-shutdown
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: networking
+  name: ingress-nginx
+  labels:
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
+spec:
+  externalTrafficPolicy: Local
+  type: LoadBalancer
+  selector:
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
   ports:
     - name: http
       port: 80
@@ -200,10 +279,7 @@ spec:
       port: 443
       protocol: TCP
       targetPort: https
-  selector:
-    app: nginx-ingress
-    component: "controller"
-  type: "LoadBalancer"
+
 ---
 apiVersion: v1
 kind: Service
@@ -223,87 +299,7 @@ spec:
     app: nginx-ingress
     component: "default-backend"
   type: "ClusterIP"
----
-apiVersion: apps/v1
-kind: DaemonSet
-metadata:
-  namespace: networking
-  name: nginx-ingress-controller
-  labels:
-    app: nginx-ingress
-    component: "controller"
-spec:
-  selector:
-    matchLabels:
-      app: nginx-ingress
-      component: "controller"
-  revisionHistoryLimit: 10
-  minReadySeconds: 0
-  template:
-    metadata:
-      labels:
-        app: nginx-ingress
-        component: "controller"
-    spec:
-      dnsPolicy: ClusterFirst
-      containers:
-        - name: nginx-ingress-controller
-          image: "{{.NginxIngressControllerImage}}"
-          args:
-            - /nginx-ingress-controller
-            - --default-backend-service=networking/nginx-ingress-default-backend
-            - --election-id=ingress-controller-leader
-            - --ingress-class=nginx
-            - --configmap=networking/nginx-ingress-controller
-          securityContext:
-            capabilities:
-                drop:
-                - ALL
-                add:
-                - NET_BIND_SERVICE
-            # www-data -> 33
-            runAsUser: 33
-          env:
-            - name: POD_NAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.name
-            - name: POD_NAMESPACE
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.namespace
-          livenessProbe:
-            httpGet:
-              path: /healthz
-              port: 10254
-              scheme: HTTP
-            initialDelaySeconds: 10
-            periodSeconds: 10
-            timeoutSeconds: 1
-            successThreshold: 1
-            failureThreshold: 3
-          ports:
-            - name: http
-              containerPort: 80
-              protocol: TCP
-            - name: https
-              containerPort: 443
-              protocol: TCP
-          readinessProbe:
-            httpGet:
-              path: /healthz
-              port: 10254
-              scheme: HTTP
-            initialDelaySeconds: 10
-            periodSeconds: 10
-            timeoutSeconds: 1
-            successThreshold: 1
-            failureThreshold: 3
-          resources:
-            {}
-      hostNetwork: true
-      serviceAccountName: nginx-ingress
-      terminationGracePeriodSeconds: 60
+
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -341,6 +337,7 @@ spec:
               containerPort: 8080
               protocol: TCP
       terminationGracePeriodSeconds: 60
+
 ---
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
@@ -356,6 +353,7 @@ spec:
       app: nginx-ingress
       component: "controller"
   minAvailable: 1
+
 ---
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget

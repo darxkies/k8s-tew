@@ -984,8 +984,12 @@ func (generator *Generator) generateKubernetesDashboardSetup() error {
 func (generator *Generator) generateCertManagerSetup() error {
 	return utils.ApplyTemplateAndSave("cert-manager", utils.TemplateCertManagerSetup, struct {
 		CertManagerControllerImage string
+		CertManagerCAInjectorImage string
+		CertManagerWebHookImage    string
 	}{
 		CertManagerControllerImage: generator.config.Config.Versions.CertManagerController,
+		CertManagerCAInjectorImage: generator.config.Config.Versions.CertManagerCAInjector,
+		CertManagerWebHookImage:    generator.config.Config.Versions.CertManagerWebHook,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sCertManagerSetup), true, false)
 }
 
