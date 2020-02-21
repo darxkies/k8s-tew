@@ -42,7 +42,7 @@ spec:
     - --requestheader-extra-headers-prefix=X-Remote-Extra-
     - --requestheader-group-headers=X-Remote-Group
     - --requestheader-username-headers=X-Remote-User
-    - --runtime-config=api/all
+    - --runtime-config=api/all=true
     - --secure-port={{.APIServerPort}}
     - --service-account-key-file={{.PemServiceAccount}}
     - --service-cluster-ip-range={{.ClusterIPRange}}

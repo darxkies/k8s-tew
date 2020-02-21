@@ -90,6 +90,22 @@ if ENV["IP_PREFIX"]
     $ip_prefix = ENV["IP_PREFIX"]
 end
 
+if ENV["CONTROLLERS_RAM"]
+    $controllers_ram = ENV["CONTROLLERS_RAM"]
+end
+
+if ENV["WORKERS_RAM"]
+    $workers_ram = ENV["WORKERS_RAM"]
+end
+
+if ENV["CONTROLLERS_CPUS"]
+    $controllers_cpus = ENV["CONTROLLERS_CPUS"]
+end
+
+if ENV["WORKERS_CPUS"]
+    $workers_cpus = ENV["WORKERS_CPUS"]
+end
+
 ############################################################
 # Summary
 ############################################################
@@ -179,6 +195,7 @@ Vagrant.configure("2") do |config|
         vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
         vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
         vb.customize ["modifyvm", :id, "--nictype1", "virtio"]
+        vb.customize ["modifyvm", :id, "--ioapic", "on"]
     end
 
     config.vm.provision "shell" do |s|
