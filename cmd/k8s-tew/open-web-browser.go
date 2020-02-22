@@ -93,7 +93,7 @@ var openWebBrowserCmd = &cobra.Command{
 			os.Exit(-3)
 		}
 
-		if error := openWebBrowser(openKibana, "Kibana", "https", ip, utils.PortKibana); error != nil {
+		if error := openWebBrowser(openKibana, "Kibana", "http", ip, utils.PortKibana); error != nil {
 			log.WithFields(log.Fields{"error": error}).Error("Open Web Browser failed")
 
 			os.Exit(-3)
