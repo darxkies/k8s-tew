@@ -14,6 +14,10 @@ The Vagrantfile can be configured using the environment variables:
 - WORKERS - specifies the number of worker nodes. The default number is 2.
 - SSH_PUBLIC_KEY - if this environment variable is not set, then :file:`$HOME/.ssh/id_rsa` is used by default.
 - IP_PREFIX - this value is used to generate the IP addresses of the nodes. If not set 192.168.100 will be used. The single node has the IP address 192.168.100.50. The controllers start with the IP address 192.168.100.200 and the workers with 192.168.100.100.
+- CONTROLLERS_RAM - amount of RAM for one controller
+- WORKERS_RAM - amount of RAM for one worker
+- CONTROLLERS_CPUS - number of CPUs per controller
+- WORKERS_CPUS - number of CPUs per worker
 
 .. note:: The multi-node setup with the default settings needs about 20GB RAM for itself.
 
@@ -21,7 +25,7 @@ The Vagrantfile can be configured using the environment variables:
 Usage
 ^^^^^
 
-The directory called :file:`setup` (`https://github.com/darxkies/k8s-tew/tree/2.3.0/setup <https://github.com/darxkies/k8s-tew/tree/2.3.0/setup>`_) contains sub-directories for various cluster setup configurations:
+The directory called :file:`setup` (`https://github.com/darxkies/k8s-tew/tree/2.3.5/setup <https://github.com/darxkies/k8s-tew/tree/2.3.5/setup>`_) contains sub-directories for various cluster setup configurations:
 
 - local - it starts a single-node cluster locally without using any kind of virtualization. This kind of setup needs root rights. It is meant for local development where it might be important to fire the cluster up and shut it down fast. If you want it to start automatically, take a look at the quickstart section.
 - ubuntu-single-node - Ubuntu 18.04 single-node cluster. It needs about 8GB Ram.

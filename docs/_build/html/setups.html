@@ -184,6 +184,10 @@
 <li>WORKERS - specifies the number of worker nodes. The default number is 2.</li>
 <li>SSH_PUBLIC_KEY - if this environment variable is not set, then <code class="file docutils literal notranslate"><span class="pre">$HOME/.ssh/id_rsa</span></code> is used by default.</li>
 <li>IP_PREFIX - this value is used to generate the IP addresses of the nodes. If not set 192.168.100 will be used. The single node has the IP address 192.168.100.50. The controllers start with the IP address 192.168.100.200 and the workers with 192.168.100.100.</li>
+<li>CONTROLLERS_RAM - amount of RAM for one controller</li>
+<li>WORKERS_RAM - amount of RAM for one worker</li>
+<li>CONTROLLERS_CPUS - number of CPUs per controller</li>
+<li>WORKERS_CPUS - number of CPUs per worker</li>
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -191,7 +195,7 @@
 </div>
 <div class="section" id="usage">
 <h3>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h3>
-<p>The directory called <code class="file docutils literal notranslate"><span class="pre">setup</span></code> (<a class="reference external" href="https://github.com/darxkies/k8s-tew/tree/2.3.0/setup">https://github.com/darxkies/k8s-tew/tree/2.3.0/setup</a>) contains sub-directories for various cluster setup configurations:</p>
+<p>The directory called <code class="file docutils literal notranslate"><span class="pre">setup</span></code> (<a class="reference external" href="https://github.com/darxkies/k8s-tew/tree/2.3.5/setup">https://github.com/darxkies/k8s-tew/tree/2.3.5/setup</a>) contains sub-directories for various cluster setup configurations:</p>
 <ul class="simple">
 <li>local - it starts a single-node cluster locally without using any kind of virtualization. This kind of setup needs root rights. It is meant for local development where it might be important to fire the cluster up and shut it down fast. If you want it to start automatically, take a look at the quickstart section.</li>
 <li>ubuntu-single-node - Ubuntu 18.04 single-node cluster. It needs about 8GB Ram.</li>

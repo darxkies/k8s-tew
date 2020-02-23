@@ -238,6 +238,14 @@
 <col class="description" />
 <tbody valign="top">
 <tr><td class="option-group" colspan="2">
+<kbd><span class="option">--alert-manager-count <var>uint16</var></span></kbd></td>
+</tr>
+<tr><td>&#160;</td><td>Number of Alert Manager Servers (default 1)</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">--alert-manager-size <var>uint16</var></span></kbd></td>
+</tr>
+<tr><td>&#160;</td><td>Size of Alert Manager Persistent Volume (default 2)</td></tr>
+<tr><td class="option-group" colspan="2">
 <kbd><span class="option">--apiserver-port <var>uint16</var></span></kbd></td>
 </tr>
 <tr><td>&#160;</td><td>API Server Port (default 6443)</td></tr>
@@ -285,13 +293,32 @@
 <kbd><span class="option">--deployment-directory <var>string</var></span></kbd></td>
 </tr>
 <tr><td>&#160;</td><td>Deployment directory (default “/”)</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">--elasticsearch-count <var>uint16</var></span></kbd></td>
+</tr>
+<tr><td>&#160;</td><td>Number of Elasticsearch Servers (default 1)</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">--elasticsearch-size <var>uint16</var></span></kbd></td>
+</tr>
+<tr><td>&#160;</td><td>Size of Elasticsearch Persistent Volume (default 10)</td></tr>
 <tr><td class="option-group">
 <kbd><span class="option">--email <var>string</var></span></kbd></td>
 <td>Email address used for example for Let’s Encrypt (default “<a class="reference external" href="mailto:k8s-tew&#37;&#52;&#48;gmail&#46;com">k8s-tew<span>&#64;</span>gmail<span>&#46;</span>com</a>”)</td></tr>
 <tr><td class="option-group" colspan="2">
+<kbd><span class="option">--grafana-size <var>uint16</var></span></kbd></td>
+</tr>
+<tr><td>&#160;</td><td>Size of Grafana Persistent Volume (default 2)</td></tr>
+<tr><td class="option-group">
+<kbd><span class="option">--help</span></kbd></td>
+<td>help for configure</td></tr>
+<tr><td class="option-group" colspan="2">
 <kbd><span class="option">--ingress-domain <var>string</var></span></kbd></td>
 </tr>
 <tr><td>&#160;</td><td>Ingress domain name (default “k8s-tew.net”)</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">--kube-state-metrics-count <var>uint16</var></span></kbd></td>
+</tr>
+<tr><td>&#160;</td><td>Number of Kube State Metrics Servers (default 1)</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--kubernetes-dashboard-port <var>uint16</var></span></kbd></td>
 </tr>
@@ -301,9 +328,21 @@
 </tr>
 <tr><td>&#160;</td><td>Load Balancer Port (default 32443)</td></tr>
 <tr><td class="option-group" colspan="2">
+<kbd><span class="option">--max-pods <var>uint16</var></span></kbd></td>
+</tr>
+<tr><td>&#160;</td><td>MaxPods (default 110)</td></tr>
+<tr><td class="option-group" colspan="2">
 <kbd><span class="option">--metallb-addresses <var>string</var></span></kbd></td>
 </tr>
 <tr><td>&#160;</td><td>Comma separated MetalLB address ranges and CIDR (e.g 192.168.0.16/28,192.168.0.75-192.168.0.100) (default “192.168.0.16/28”)</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">--minio-size <var>uint16</var></span></kbd></td>
+</tr>
+<tr><td>&#160;</td><td>Size of Minio Persistent Volume (default 2)</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">--prometheus-size <var>uint16</var></span></kbd></td>
+</tr>
+<tr><td>&#160;</td><td>Size of Prometheus Persistent Volume (default 2)</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--public-network <var>string</var></span></kbd></td>
 </tr>
@@ -317,157 +356,145 @@
 </tr>
 <tr><td>&#160;</td><td>RSA Key Size (default 2048)</td></tr>
 <tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-addon-resizer <var>string</var></span></kbd></td>
+<kbd><span class="option">--version-alert-manager <var>string</var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>Addon-Resizer version (default “k8s.gcr.io/addon-resizer:1.7”)</td></tr>
+<tr><td>&#160;</td><td>Alert Manager version (default “quay.io/prometheus/alertmanager:v0.19.0”)</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--version-busybox <var>string</var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>Busybox version (default “docker.io/library/busybox:1.30.1”)</td></tr>
+<tr><td>&#160;</td><td>Busybox version (default “docker.io/library/busybox:1.31.1”)</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--version-calico-cni <var>string</var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>Calico CNI version (default “quay.io/calico/cni:v3.6.0”)</td></tr>
+<tr><td>&#160;</td><td>Calico CNI version (default “quay.io/calico/cni:v3.10.2”)</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--version-calico-kube-controllers <var>string</var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>Calico Kube Controllers  version (default “quay.io/calico/kube-controllers:v3.6.0”)</td></tr>
+<tr><td>&#160;</td><td>Calico Kube Controllers  version (default “quay.io/calico/kube-controllers:v3.10.2”)</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--version-calico-node <var>string</var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>Calico Node version (default “quay.io/calico/node:v3.6.0”)</td></tr>
+<tr><td>&#160;</td><td>Calico Node version (default “quay.io/calico/node:v3.10.2”)</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--version-calico-typha <var>string</var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>Calico Typha version (default “quay.io/calico/typha:v3.6.0”)</td></tr>
+<tr><td>&#160;</td><td>Calico Typha version (default “quay.io/calico/typha:v3.10.2”)</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--version-ceph <var>string</var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>Ceph version (default “docker.io/ceph/daemon:v3.2.1-stable-3.2-mimic-centos-7-x86_64”)</td></tr>
+<tr><td>&#160;</td><td>Ceph version (default “docker.io/ceph/daemon:v4.0.7-stable-4.0-nautilus-centos-7-x86_64”)</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--version-cerebro <var>string</var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>Cerebro version (default “docker.io/upmcenterprises/cerebro:0.7.2”)</td></tr>
+<tr><td>&#160;</td><td>Cerebro version (default “docker.io/lmenezes/cerebro:0.8.5”)</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">--version-cert-manager-cainjector <var>string</var></span></kbd></td>
+</tr>
+<tr><td>&#160;</td><td>Cert Manager CA Injector version (default “quay.io/jetstack/cert-manager-cainjector:v0.13.1”)</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--version-cert-manager-controller <var>string</var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>Cert Manager Controller version (default “quay.io/jetstack/cert-manager-controller:v0.4.1”)</td></tr>
+<tr><td>&#160;</td><td>Cert Manager Controller version (default “quay.io/jetstack/cert-manager-controller:v0.13.1”)</td></tr>
 <tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-configmap-reload <var>string</var></span></kbd></td>
+<kbd><span class="option">--version-cert-manager-webhook <var>string</var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>ConfigMap Reload version (default “quay.io/coreos/configmap-reload:v0.0.1”)</td></tr>
+<tr><td>&#160;</td><td>Cert Manager Web Hook version (default “quay.io/jetstack/cert-manager-webhook:v0.13.1”)</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--version-containerd <var>string</var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>Containerd version (default “1.2.5”)</td></tr>
+<tr><td>&#160;</td><td>Containerd version (default “1.3.3”)</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--version-coredns <var>string</var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>CoreDNS version (default “docker.io/coredns/coredns:1.4.0”)</td></tr>
+<tr><td>&#160;</td><td>CoreDNS version (default “docker.io/coredns/coredns:1.6.7”)</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--version-crictl <var>string</var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>CriCtl version (default “1.14.0”)</td></tr>
+<tr><td>&#160;</td><td>CriCtl version (default “1.16.1”)</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--version-csi-attacher <var>string</var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>CSI Attacher version (default “quay.io/k8scsi/csi-attacher:v1.0.1”)</td></tr>
+<tr><td>&#160;</td><td>CSI Attacher version (default “quay.io/k8scsi/csi-attacher:v1.2.0”)</td></tr>
 <tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-csi-ceph-fs-plugin <var>string</var></span></kbd></td>
+<kbd><span class="option">--version-csi-ceph-plugin <var>string</var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>CSI Ceph FS Plugin version (default “quay.io/cephcsi/cephfsplugin:v1.0.0”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-csi-ceph-rbd-plugin <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>CSI Ceph RBD Plugin version (default “quay.io/cephcsi/rbdplugin:v1.0.0”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-csi-ceph-snapshotter <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>CSI Ceph Snapshotter version (default “quay.io/k8scsi/csi-snapshotter:v1.0.1”)</td></tr>
+<tr><td>&#160;</td><td>CSI Ceph Plugin version (default “quay.io/cephcsi/cephcsi:v1.2.2”)</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--version-csi-driver-registrar <var>string</var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>CSI Driver Registrar version (default “quay.io/k8scsi/csi-node-driver-registrar:v1.0.2”)</td></tr>
+<tr><td>&#160;</td><td>CSI Driver Registrar version (default “quay.io/k8scsi/csi-node-driver-registrar:v1.1.0”)</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--version-csi-provisioner <var>string</var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>CSI Provisioner version (default “quay.io/k8scsi/csi-provisioner:v1.0.1”)</td></tr>
+<tr><td>&#160;</td><td>CSI Provisioner version (default “quay.io/k8scsi/csi-provisioner:v1.3.0”)</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">--version-csi-resizer <var>string</var></span></kbd></td>
+</tr>
+<tr><td>&#160;</td><td>CSI Resizer version (default “quay.io/k8scsi/csi-resizer:v0.3.0”)</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">--version-csi-snapshotter <var>string</var></span></kbd></td>
+</tr>
+<tr><td>&#160;</td><td>CSI Snapshotter version (default “quay.io/k8scsi/csi-snapshotter:v1.2.1”)</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--version-elasticsearch <var>string</var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>Elasticsearch version (default “docker.io/upmcenterprises/docker-elasticsearch-kubernetes:6.1.3_0”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-elasticsearch-cron <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Elasticsearch Cron version (default “docker.io/upmcenterprises/elasticsearch-cron:0.1.0”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-elasticsearch-operator <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Elasticsearch Operator version (default “docker.io/upmcenterprises/elasticsearch-operator:0.3.0”)</td></tr>
+<tr><td>&#160;</td><td>Elasticsearch version (default “docker.elastic.co/elasticsearch/elasticsearch:7.5.0”)</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--version-etcd <var>string</var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>Etcd version (default “quay.io/coreos/etcd:v3.3.12”)</td></tr>
+<tr><td>&#160;</td><td>Etcd version (default “quay.io/coreos/etcd:v3.4.3”)</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--version-fluent-bit <var>string</var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>Fluent-Bit version (default “docker.io/fluent/fluent-bit:0.13.0”)</td></tr>
+<tr><td>&#160;</td><td>Fluent-Bit version (default “docker.io/fluent/fluent-bit:1.3.4”)</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--version-gobetween <var>string</var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>Gobetween version (default “docker.io/yyyar/gobetween:0.6.1”)</td></tr>
+<tr><td>&#160;</td><td>Gobetween version (default “docker.io/yyyar/gobetween:0.7.0”)</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--version-grafana <var>string</var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>Grafana version (default “docker.io/grafana/grafana:5.0.0”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-grafana-watcher <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Grafana Watcher version (default “quay.io/coreos/grafana-watcher:v0.0.8”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-heapster <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Heapster version (default “k8s.gcr.io/heapster:v1.3.0”)</td></tr>
+<tr><td>&#160;</td><td>Grafana version (default “docker.io/grafana/grafana:6.0.1”)</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--version-helm <var>string</var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>Helm version (default “2.13.1”)</td></tr>
+<tr><td>&#160;</td><td>Helm version (default “3.1.0”)</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--version-k8s <var>string</var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>Kubernetes version (default “k8s.gcr.io/hyperkube:v1.14.0”)</td></tr>
+<tr><td>&#160;</td><td>Kubernetes version (default “k8s.gcr.io/hyperkube:v1.17.3”)</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--version-kibana <var>string</var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>Kibana version (default “docker.elastic.co/kibana/kibana-oss:6.1.3”)</td></tr>
+<tr><td>&#160;</td><td>Kibana version (default “docker.elastic.co/kibana/kibana-oss:7.5.0”)</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--version-kube-state-metrics <var>string</var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>Kube State Metrics version (default “gcr.io/google_containers/kube-state-metrics:v1.2.0”)</td></tr>
+<tr><td>&#160;</td><td>Kube State Metrics version (default “quay.io/coreos/kube-state-metrics:v1.8.0”)</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--version-kubernetes-dashboard <var>string</var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>Kubernetes Dashboard version (default “k8s.gcr.io/kubernetes-dashboard-amd64:v1.10.1”)</td></tr>
+<tr><td>&#160;</td><td>Kubernetes Dashboard version (default “docker.io/kubernetesui/dashboard:v2.0.0-rc5”)</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--version-metallb-controller <var>string</var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>MetalLB Controller version (default “docker.io/metallb/controller:v0.7.3”)</td></tr>
+<tr><td>&#160;</td><td>MetalLB Controller version (default “docker.io/metallb/controller:v0.8.3”)</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--version-metallb-speaker <var>string</var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>MetalLB Speaker version (default “docker.io/metallb/speaker:v0.7.3”)</td></tr>
+<tr><td>&#160;</td><td>MetalLB Speaker version (default “docker.io/metallb/speaker:v0.8.3”)</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--version-metrics-server <var>string</var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>Metrics Server version (default “k8s.gcr.io/metrics-server-amd64:v0.3.1”)</td></tr>
+<tr><td>&#160;</td><td>Metrics Server version (default “k8s.gcr.io/metrics-server-amd64:v0.3.5”)</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--version-minio-client <var>string</var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>Minio client version (default “docker.io/minio/mc:RELEASE.2019-03-20T21-29-03Z”)</td></tr>
+<tr><td>&#160;</td><td>Minio client version (default “docker.io/minio/mc:RELEASE.2019-10-09T22-54-57Z”)</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--version-minio-server <var>string</var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>Minio server version (default “docker.io/minio/minio:RELEASE.2019-03-20T22-38-47Z”)</td></tr>
+<tr><td>&#160;</td><td>Minio server version (default “docker.io/minio/minio:RELEASE.2019-10-12T01-39-57Z”)</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--version-mysql <var>string</var></span></kbd></td>
 </tr>
@@ -475,11 +502,15 @@
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--version-nginx-ingress-controller <var>string</var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>Nginx Ingress Controller version (default “quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.23.0”)</td></tr>
+<tr><td>&#160;</td><td>Nginx Ingress Controller version (default “quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.26.1”)</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--version-nginx-ingress-default-backend <var>string</var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>Nginx Ingress Default Backend version (default “k8s.gcr.io/defaultbackend:1.4”)</td></tr>
+<tr><td>&#160;</td><td>Nginx Ingress Default Backend version (default “k8s.gcr.io/defaultbackend-amd64:1.5”)</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">--version-node-exporter <var>string</var></span></kbd></td>
+</tr>
+<tr><td>&#160;</td><td>Node Exporter version (default “quay.io/prometheus/node-exporter:v0.18.1”)</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--version-pause <var>string</var></span></kbd></td>
 </tr>
@@ -487,31 +518,19 @@
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--version-prometheus <var>string</var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>Prometheus version (default “quay.io/prometheus/prometheus:v2.2.1”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-prometheus-alert-manager <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Prometheus Alert Manager version (default “quay.io/prometheus/alertmanager:v0.15.1”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-prometheus-config-reloader <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Prometheus Config Reloader version (default “quay.io/coreos/prometheus-config-reloader:v0.20.0”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-prometheus-node-exporter <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Prometheus Node Exporter version (default “quay.io/prometheus/node-exporter:v0.15.2”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-prometheus-operator <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Prometheus Operator version (default “quay.io/coreos/prometheus-operator:v0.20.0”)</td></tr>
+<tr><td>&#160;</td><td>Prometheus version (default “quay.io/prometheus/prometheus:v2.13.0”)</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--version-runc <var>string</var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>Runc version (default “1.0.0-rc6”)</td></tr>
+<tr><td>&#160;</td><td>Runc version (default “1.0.0-rc10”)</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--version-velero <var>string</var></span></kbd></td>
 </tr>
-<tr><td>&#160;</td><td>Velero version (default “gcr.io/heptio-images/velero:v0.11.0”)</td></tr>
+<tr><td>&#160;</td><td>Velero version (default “docker.io/velero/velero:v1.2.0”)</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">--version-velero-plugin-aws <var>string</var></span></kbd></td>
+</tr>
+<tr><td>&#160;</td><td>Velero Plugin AWS version (default “docker.io/velero/velero-plugin-for-aws:v1.0.0”)</td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd><span class="option">--version-virtual-ip <var>string</var></span></kbd></td>
 </tr>
@@ -873,7 +892,7 @@
 <h3>Kibana<a class="headerlink" href="#kibana" title="Permalink to this headline">¶</a></h3>
 <p>Kibana can be used to inspect the log messages of all pods in the cluster.</p>
 <ul class="simple">
-<li>Address: <a class="reference external" href="https://[worker-ip]:30980">https://[worker-ip]:30980</a></li>
+<li>Address: <a class="reference external" href="http://[worker-ip]:30980">http://[worker-ip]:30980</a></li>
 </ul>
 </div>
 <div class="section" id="cerebro">

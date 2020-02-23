@@ -29,7 +29,7 @@ create:
 	echo $(CLOUD_INIT) | multipass launch -n $(NAME) -c 4 -m 8G -d 40G --cloud-init - 18.04 
 
 start:
-	multipass stop $(NAME)
+	multipass start $(NAME)
 
 stop:
 	multipass stop $(NAME)
@@ -49,10 +49,10 @@ shell:
 	multipass shell $(NAME)
 
 forward-80:
-	sudo socat -d -v TCP-LISTEN:80,fork TCP:$(IP_PREFIX).50:80
+	sudo socat -d -v TCP-LISTEN:80,fork TCP:$(IP):80
 
 forward-443:
-	sudo socat -d -v TCP-LISTEN:443,fork TCP:$(IP_PREFIX).50:443
+	sudo socat -d -v TCP-LISTEN:443,fork TCP:$(IP):443
 
 k9s:
 	KUBECONFIG=assets/etc/k8s-tew/k8s/kubeconfig/admin.kubeconfig k9s
