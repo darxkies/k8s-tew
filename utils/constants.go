@@ -2,7 +2,7 @@ package utils
 
 // Versions
 const VersionConfig = "2.3.0"
-const VersionK8s = "k8s.gcr.io/hyperkube:v1.16.7"
+const VersionK8s = "k8s.gcr.io/hyperkube:v1.17.3"
 const VersionEtcd = "quay.io/coreos/etcd:v3.4.3"
 const VersionContainerd = "1.3.3"
 const VersionRunc = "1.0.0-rc10"
