@@ -198,8 +198,8 @@ func (generator *Generator) generateK8SAdminUserConfigFile() error {
 		Name      string
 		Namespace string
 	}{
-		Name:      "admin-user",
-		Namespace: "kube-system",
+		Name:      utils.AdminUserName,
+		Namespace: utils.AdminUserNamespace,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sAdminUserSetup), true, false)
 }
 

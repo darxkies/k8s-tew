@@ -12,14 +12,11 @@ import (
 	"strings"
 
 	"github.com/darxkies/k8s-tew/pkg/config"
+	"github.com/darxkies/k8s-tew/pkg/k8s"
 	"github.com/darxkies/k8s-tew/pkg/utils"
 	log "github.com/sirupsen/logrus"
 	"github.com/tmc/scp"
 	"golang.org/x/crypto/ssh"
-	v1 "k8s.io/api/core/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/client-go/kubernetes"
-	"k8s.io/client-go/tools/clientcmd"
 )
 
 type NodeDeployment struct {
@@ -380,115 +377,7 @@ func (deployment *NodeDeployment) UploadFile(from, to string) error {
 }
 
 func (deployment *NodeDeployment) configureTaint() error {
-	kubeconfig := deployment.config.GetFullLocalAssetFilename(utils.KubeconfigAdmin)
+	kubernetesClient := k8s.NewK8S(deployment.config)
 
-	// Configure connection
-	config, error := clientcmd.BuildConfigFromFlags("", kubeconfig)
-	if error != nil {
-		return error
-	}
-
-	// Create client
-	clientset, error := kubernetes.NewForConfig(config)
-	if error != nil {
-		return error
-	}
-
-	// Get Node
-	node, error := clientset.CoreV1().Nodes().Get(deployment.name, metav1.GetOptions{})
-	if error != nil {
-		return error
-	}
-
-	changed := false
-
-	addLabel := func(label string) {
-		if _, ok := node.Labels[label]; !ok {
-			changed = true
-		}
-
-		node.Labels[label] = "true"
-	}
-
-	removeLabel := func(label string) {
-		if _, ok := node.Labels[label]; ok {
-			changed = true
-		}
-
-		delete(node.Labels, label)
-	}
-
-	addTaint := func(label string) {
-		found := false
-
-		for _, taint := range node.Spec.Taints {
-			if taint.Key == label {
-				found = true
-
-				break
-			}
-		}
-
-		if !found {
-			node.Spec.Taints = append(node.Spec.Taints, v1.Taint{Key: label, Value: "true", Effect: v1.TaintEffectNoSchedule})
-
-			changed = true
-		}
-
-		addLabel(label)
-	}
-
-	removeTaint := func(label string) {
-		taints := []v1.Taint{}
-
-		for _, taint := range node.Spec.Taints {
-			if taint.Key == label {
-				changed = true
-
-				continue
-			}
-
-			taints = append(taints, taint)
-		}
-
-		node.Spec.Taints = taints
-
-		removeLabel(label)
-	}
-
-	if deployment.node.IsControllerAndWorker() {
-		addLabel(utils.ControllerOnlyTaintKey)
-
-	} else {
-		removeLabel(utils.ControllerOnlyTaintKey)
-	}
-
-	if deployment.node.IsControllerOnly() {
-		addTaint(utils.ControllerOnlyTaintKey)
-
-	} else {
-		removeTaint(utils.ControllerOnlyTaintKey)
-	}
-
-	if deployment.node.IsStorageOnly() {
-		addTaint(utils.StorageOnlyTaintKey)
-
-	} else {
-		removeTaint(utils.StorageOnlyTaintKey)
-	}
-
-	if deployment.node.IsWorkerOnly() {
-		addLabel(utils.WorkerOnlyTaintKey)
-
-	} else {
-		removeLabel(utils.WorkerOnlyTaintKey)
-	}
-
-	if !changed {
-		return nil
-	}
-
-	_, error = clientset.CoreV1().Nodes().Update(node)
-
-	return error
+	return kubernetesClient.TaintNode(deployment.name, deployment.node)
 }

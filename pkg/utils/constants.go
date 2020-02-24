@@ -79,6 +79,8 @@ const Email = "k8s-tew@gmail.com"
 const DeploymentDirectory = "/"
 const IngressDomain = "k8s-tew.net"
 const IngressSubdomainWordpress = "wordpress"
+const AdminUserName = "admin-user"
+const AdminUserNamespace = "kube-system"
 
 // Ports
 const PortVipRaftController uint16 = 16277

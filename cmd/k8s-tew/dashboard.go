@@ -5,6 +5,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/darxkies/k8s-tew/pkg/k8s"
 	"github.com/darxkies/k8s-tew/pkg/utils"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -23,17 +24,15 @@ var dashboardCmd = &cobra.Command{
 			os.Exit(-1)
 		}
 
-		kubectlCommand := fmt.Sprintf("%s --kubeconfig %s", _config.GetFullLocalAssetFilename(utils.BinaryKubectl), _config.GetFullLocalAssetFilename(utils.KubeconfigAdmin))
-		dashboardKeyCommand := fmt.Sprintf("%s -n kube-system describe secret $(%s -n kube-system get secret | grep admin-user | awk '{print $1}') | grep token: | awk '{print $2}'", kubectlCommand, kubectlCommand)
-
-		output, error := utils.RunCommandWithOutput(dashboardKeyCommand)
+		kubernetesClient := k8s.NewK8S(_config)
+		secret, error := kubernetesClient.GetSecretToken(utils.AdminUserNamespace, utils.AdminUserName)
 		if error != nil {
 			log.WithFields(log.Fields{"error": error}).Error("Failed retrieving token")
 
 			os.Exit(-2)
 		}
 
-		fmt.Printf("%s", output)
+		fmt.Printf("%s", secret)
 
 		if openBrowser {
 			fmt.Printf("\nOpening web browser...\n")
