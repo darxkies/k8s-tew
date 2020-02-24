@@ -54,6 +54,7 @@ require (
 	gopkg.in/fsnotify/fsnotify.v1 v1.4.7 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.2.2
+	honnef.co/go/tools v0.0.1-2019.2.3
 	k8s.io/api v0.0.0-20181130031204-d04500c8c3dd
 	k8s.io/apimachinery v0.0.0-20181130031032-af2f90f9922d
 	k8s.io/client-go v9.0.0+incompatible

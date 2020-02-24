@@ -1,6 +1,6 @@
 package config
 
-import "github.com/darxkies/k8s-tew/utils"
+import "github.com/darxkies/k8s-tew/pkg/utils"
 
 type Node struct {
 	IP     string `yaml:"ip"`

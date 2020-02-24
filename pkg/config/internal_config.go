@@ -12,7 +12,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/darxkies/k8s-tew/utils"
+	"github.com/darxkies/k8s-tew/pkg/utils"
 	log "github.com/sirupsen/logrus"
 	yaml "gopkg.in/yaml.v2"
 )

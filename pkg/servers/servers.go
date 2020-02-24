@@ -9,12 +9,11 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/darxkies/k8s-tew/utils"
 	"github.com/pkg/errors"
-
-	"github.com/darxkies/k8s-tew/config"
-
 	log "github.com/sirupsen/logrus"
+
+	"github.com/darxkies/k8s-tew/pkg/config"
+	"github.com/darxkies/k8s-tew/pkg/utils"
 )
 
 type Servers struct {

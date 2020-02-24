@@ -6,9 +6,9 @@ import (
 	"os"
 	"path"
 
-	"github.com/darxkies/k8s-tew/config"
-	"github.com/darxkies/k8s-tew/utils"
-	"github.com/darxkies/k8s-tew/version"
+	"github.com/darxkies/k8s-tew/pkg/config"
+	"github.com/darxkies/k8s-tew/pkg/utils"
+	"github.com/darxkies/k8s-tew/pkg/version"
 
 	log "github.com/sirupsen/logrus"
 

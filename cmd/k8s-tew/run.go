@@ -4,8 +4,8 @@ import (
 	"os"
 
 	"github.com/darxkies/k8s-tew/pkg/container"
-	"github.com/darxkies/k8s-tew/servers"
-	"github.com/darxkies/k8s-tew/utils"
+	"github.com/darxkies/k8s-tew/pkg/servers"
+	"github.com/darxkies/k8s-tew/pkg/utils"
 	"github.com/spf13/cobra"
 
 	log "github.com/sirupsen/logrus"

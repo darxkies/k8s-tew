@@ -10,10 +10,10 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/darxkies/k8s-tew/config"
-	"github.com/darxkies/k8s-tew/utils"
-
 	log "github.com/sirupsen/logrus"
+
+	"github.com/darxkies/k8s-tew/pkg/config"
+	"github.com/darxkies/k8s-tew/pkg/utils"
 )
 
 type ServerWrapper struct {

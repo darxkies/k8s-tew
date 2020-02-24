@@ -13,9 +13,9 @@ import (
 	"time"
 
 	"github.com/cavaliercoder/grab"
-	"github.com/darxkies/k8s-tew/config"
+	"github.com/darxkies/k8s-tew/pkg/config"
 	"github.com/darxkies/k8s-tew/pkg/container/image/converter"
-	"github.com/darxkies/k8s-tew/utils"
+	"github.com/darxkies/k8s-tew/pkg/utils"
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 )

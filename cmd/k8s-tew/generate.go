@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/darxkies/k8s-tew/download"
-	"github.com/darxkies/k8s-tew/generate"
-	"github.com/darxkies/k8s-tew/utils"
+	"github.com/darxkies/k8s-tew/pkg/download"
+	"github.com/darxkies/k8s-tew/pkg/generate"
+	"github.com/darxkies/k8s-tew/pkg/utils"
 
 	"os"
 

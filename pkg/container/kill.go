@@ -11,8 +11,8 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/darxkies/k8s-tew/config"
-	"github.com/darxkies/k8s-tew/utils"
+	"github.com/darxkies/k8s-tew/pkg/config"
+	"github.com/darxkies/k8s-tew/pkg/utils"
 	log "github.com/sirupsen/logrus"
 )
 

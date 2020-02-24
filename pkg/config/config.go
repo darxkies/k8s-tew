@@ -1,7 +1,7 @@
 package config
 
 import (
-	"github.com/darxkies/k8s-tew/utils"
+	"github.com/darxkies/k8s-tew/pkg/utils"
 	uuid "github.com/satori/go.uuid"
 )
 

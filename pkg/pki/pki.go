@@ -15,7 +15,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/darxkies/k8s-tew/utils"
+	"github.com/darxkies/k8s-tew/pkg/utils"
 )
 
 func GenerateEncryptionConfig() (string, error) {

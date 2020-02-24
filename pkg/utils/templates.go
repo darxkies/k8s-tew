@@ -11,8 +11,8 @@ var templatesBox packr.Box
 var embeddedBox packr.Box
 
 func init() {
-	templatesBox = packr.NewBox("../templates")
-	embeddedBox = packr.NewBox("../embedded")
+	templatesBox = packr.NewBox("../../templates")
+	embeddedBox = packr.NewBox("../../embedded")
 }
 
 func GetTemplate(name string) string {
