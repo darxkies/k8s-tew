@@ -6,10 +6,12 @@ import (
 
 	"github.com/darxkies/k8s-tew/pkg/config"
 	"github.com/darxkies/k8s-tew/pkg/utils"
+
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
+	_ "k8s.io/kubernetes/pkg/kubectl"
 )
 
 type K8S struct {
@@ -159,4 +161,8 @@ func (k8s *K8S) GetSecretToken(namespace, name string) (string, error) {
 	}
 
 	return "", fmt.Errorf("No token with prefix '%s' found", name)
+}
+
+func (k8s *K8S) Apply(manifest string) error {
+	return nil
 }

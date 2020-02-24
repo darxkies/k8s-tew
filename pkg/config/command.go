@@ -3,7 +3,7 @@ package config
 type Command struct {
 	Name     string   `yaml:"name"`
 	Command  string   `yaml:"command,omitempty"`
-	Manifest string   `yaml:"command,omitempty"`
+	Manifest string   `yaml:"manifest,omitempty"`
 	Labels   Labels   `yaml:"labels,omitempty"`
 	Features Features `yaml:"features,omitempty"`
 	OS       OS       `yaml:"os,omitempty"`

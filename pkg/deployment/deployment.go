@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/darxkies/k8s-tew/pkg/config"
+	"github.com/darxkies/k8s-tew/pkg/k8s"
 	"github.com/darxkies/k8s-tew/pkg/utils"
 
 	log "github.com/sirupsen/logrus"
@@ -106,6 +107,32 @@ func (deployment *Deployment) Deploy() error {
 	}
 
 	return deployment.setup()
+}
+
+func (deployment *Deployment) applyManifest(name, manifest string) error {
+	var error error
+
+	log.WithFields(log.Fields{"name": name, "_manifest": manifest}).Info("Applying manifest")
+
+	kubernetesClient := k8s.NewK8S(deployment.config)
+
+	for retries := uint(0); retries < deployment.commandRetries; retries++ {
+		if error = kubernetesClient.Apply(manifest); error == nil {
+			break
+		}
+
+		log.WithFields(log.Fields{"name": name, "manifest": manifest, "error": error}).Debug("Manifest failed")
+
+		time.Sleep(time.Second)
+	}
+
+	if error != nil {
+		log.WithFields(log.Fields{"name": name, "manifest": manifest, "error": error}).Error("Manifest failed")
+
+		return error
+	}
+
+	return nil
 }
 
 func (deployment *Deployment) runCommand(name, command string) error {
@@ -219,13 +246,19 @@ func (deployment *Deployment) runBoostrapperCommands() error {
 			continue
 		}
 
-		newCommand, error := deployment.config.ApplyTemplate(command.Name, command.Command)
-		if error != nil {
-			return error
-		}
+		if len(command.Manifest) > 0 {
+			if error := deployment.applyManifest(command.Name, command.Manifest); error != nil {
+				return error
+			}
+		} else {
+			newCommand, error := deployment.config.ApplyTemplate(command.Name, command.Command)
+			if error != nil {
+				return error
+			}
 
-		if error := deployment.runCommand(command.Name, newCommand); error != nil {
-			return error
+			if error := deployment.runCommand(command.Name, newCommand); error != nil {
+				return error
+			}
 		}
 
 		utils.IncreaseProgressStep()
