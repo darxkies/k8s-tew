@@ -334,8 +334,6 @@ func (config *InternalConfig) registerServers() {
 }
 
 func (config *InternalConfig) registerCommands() {
-	kubectlCommand := fmt.Sprintf("%s --request-timeout 30s --kubeconfig %s", config.GetFullLocalAssetFilename(utils.BinaryKubectl), config.GetFullLocalAssetFilename(utils.KubeconfigAdmin))
-
 	// Dependencies
 	config.addCommand("setup-ubuntu", Labels{utils.NodeController, utils.NodeWorker}, Features{}, OS{utils.OsUbuntu}, "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y apt-transport-https bash-completion socat")
 	config.addCommand("setup-centos", Labels{utils.NodeController, utils.NodeWorker}, Features{}, OS{utils.OsCentos}, "systemctl disable firewalld && systemctl stop firewalld && yum install -y socat bash-completion libseccomp && sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux && (setenforce 0 || true)")
@@ -345,27 +343,27 @@ func (config *InternalConfig) registerCommands() {
 	config.addCommand("load-br_netfilter", Labels{utils.NodeController, utils.NodeWorker}, Features{}, OS{}, "modprobe br_netfilter")
 	config.addCommand("enable-br_netfilter", Labels{utils.NodeController, utils.NodeWorker}, Features{}, OS{}, "echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables")
 	config.addCommand("enable-net-forwarding", Labels{utils.NodeController, utils.NodeWorker}, Features{}, OS{}, "sysctl net.ipv4.conf.all.forwarding=1")
-	config.addCommand("kubelet-setup", Labels{utils.NodeBootstrapper}, Features{}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sKubeletSetup)))
-	config.addCommand("admin-user-setup", Labels{utils.NodeBootstrapper}, Features{}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sAdminUserSetup)))
-	config.addCommand("calico-setup", Labels{utils.NodeBootstrapper}, Features{}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sCalicoSetup)))
-	config.addCommand("metallb-setup", Labels{utils.NodeBootstrapper}, Features{}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sMetalLBSetup)))
-	config.addCommand("coredns-setup", Labels{utils.NodeBootstrapper}, Features{}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sCorednsSetup)))
-	config.addCommand("ceph-secrets", Labels{utils.NodeBootstrapper}, Features{utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.CephSecrets)))
-	config.addCommand("ceph-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.CephSetup)))
-	config.addCommand("ceph-csi", Labels{utils.NodeBootstrapper}, Features{utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.CephCsi)))
-	config.addCommand("kubernetes-dashboard-setup", Labels{utils.NodeBootstrapper}, Features{}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sKubernetesDashboardSetup)))
-	config.addCommand("cert-manager-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureIngress}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sCertManagerSetup)))
-	config.addCommand("nginx-ingress-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureIngress}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sNginxIngressSetup)))
-	config.addCommand("letsencrypt-cluster-issuer-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureIngress}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.LetsencryptClusterIssuer)))
-	config.addCommand("metrics-server-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sMetricsServerSetup)))
-	config.addCommand("prometheus-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sPrometheusSetup)))
-	config.addCommand("node-exporter-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sNodeExporterSetup)))
-	config.addCommand("alert-manager-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sAlertManagerSetup)))
-	config.addCommand("kube-state-metrics-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sKubeStateMetricsSetup)))
-	config.addCommand("grafana-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sGrafanaSetup)))
-	config.addCommand("efk-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureLogging, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sEfkSetup)))
-	config.addCommand("velero-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureBackup, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.K8sVeleroSetup)))
-	config.addCommand("wordpress-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureShowcase, utils.FeatureStorage}, OS{}, fmt.Sprintf("%s apply -f %s", kubectlCommand, config.GetFullLocalAssetFilename(utils.WordpressSetup)))
+	config.addManifest("kubelet-setup", Labels{utils.NodeBootstrapper}, Features{}, OS{}, config.GetFullLocalAssetFilename(utils.K8sKubeletSetup))
+	config.addManifest("admin-user-setup", Labels{utils.NodeBootstrapper}, Features{}, OS{}, config.GetFullLocalAssetFilename(utils.K8sAdminUserSetup))
+	config.addManifest("calico-setup", Labels{utils.NodeBootstrapper}, Features{}, OS{}, config.GetFullLocalAssetFilename(utils.K8sCalicoSetup))
+	config.addManifest("metallb-setup", Labels{utils.NodeBootstrapper}, Features{}, OS{}, config.GetFullLocalAssetFilename(utils.K8sMetalLBSetup))
+	config.addManifest("coredns-setup", Labels{utils.NodeBootstrapper}, Features{}, OS{}, config.GetFullLocalAssetFilename(utils.K8sCorednsSetup))
+	config.addManifest("ceph-secrets", Labels{utils.NodeBootstrapper}, Features{utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.CephSecrets))
+	config.addManifest("ceph-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.CephSetup))
+	config.addManifest("ceph-csi", Labels{utils.NodeBootstrapper}, Features{utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.CephCsi))
+	config.addManifest("kubernetes-dashboard-setup", Labels{utils.NodeBootstrapper}, Features{}, OS{}, config.GetFullLocalAssetFilename(utils.K8sKubernetesDashboardSetup))
+	config.addManifest("cert-manager-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureIngress}, OS{}, config.GetFullLocalAssetFilename(utils.K8sCertManagerSetup))
+	config.addManifest("nginx-ingress-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureIngress}, OS{}, config.GetFullLocalAssetFilename(utils.K8sNginxIngressSetup))
+	config.addManifest("letsencrypt-cluster-issuer-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureIngress}, OS{}, config.GetFullLocalAssetFilename(utils.LetsencryptClusterIssuer))
+	config.addManifest("metrics-server-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sMetricsServerSetup))
+	config.addManifest("prometheus-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sPrometheusSetup))
+	config.addManifest("node-exporter-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sNodeExporterSetup))
+	config.addManifest("alert-manager-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sAlertManagerSetup))
+	config.addManifest("kube-state-metrics-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sKubeStateMetricsSetup))
+	config.addManifest("grafana-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sGrafanaSetup))
+	config.addManifest("efk-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureLogging, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sEfkSetup))
+	config.addManifest("velero-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureBackup, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sVeleroSetup))
+	config.addManifest("wordpress-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureShowcase, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.WordpressSetup))
 }
 
 func (config *InternalConfig) Generate() {
@@ -395,6 +393,17 @@ func (config *InternalConfig) addCommand(name string, labels Labels, features Fe
 	}
 
 	config.Config.Commands = append(config.Config.Commands, NewCommand(name, labels, features, os, command))
+}
+
+func (config *InternalConfig) addManifest(name string, labels Labels, features Features, os OS, manifest string) {
+	// Do not add if already in the list
+	for _, command := range config.Config.Commands {
+		if command.Name == name {
+			return
+		}
+	}
+
+	config.Config.Commands = append(config.Config.Commands, NewManifest(name, labels, features, os, manifest))
 }
 
 func (config *InternalConfig) addAssetFile(name string, labels Labels, filename, directory string) {

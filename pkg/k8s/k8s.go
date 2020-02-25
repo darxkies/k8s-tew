@@ -1,16 +1,28 @@
 package k8s
 
 import (
+	"encoding/json"
 	"fmt"
 	"strings"
 
 	"github.com/darxkies/k8s-tew/pkg/config"
 	"github.com/darxkies/k8s-tew/pkg/utils"
+	jsonpatch "github.com/evanphx/json-patch"
+
+	"github.com/pkg/errors"
+
+	log "github.com/sirupsen/logrus"
 
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/cli-runtime/pkg/genericclioptions"
+	"k8s.io/cli-runtime/pkg/resource"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
+	cmdutil "k8s.io/kubectl/pkg/cmd/util"
 )
 
 type K8S struct {
@@ -27,11 +39,16 @@ func (k8s *K8S) getClient() (*kubernetes.Clientset, error) {
 	// Configure connection
 	config, error := clientcmd.BuildConfigFromFlags("", kubeconfig)
 	if error != nil {
-		return nil, error
+		return nil, errors.Wrap(error, "Could not get Kubernetes config from flags")
 	}
 
 	// Create client
-	return kubernetes.NewForConfig(config)
+	result, error := kubernetes.NewForConfig(config)
+	if error != nil {
+		return nil, errors.Wrap(error, "Could not get Kubernetes config")
+	}
+
+	return result, nil
 }
 
 func (k8s *K8S) TaintNode(name string, nodeData *config.Node) error {
@@ -44,7 +61,7 @@ func (k8s *K8S) TaintNode(name string, nodeData *config.Node) error {
 	// Get Node
 	node, error := clientset.CoreV1().Nodes().Get(name, metav1.GetOptions{})
 	if error != nil {
-		return error
+		return errors.Wrapf(error, "Could not get Kubernetes node '%s'", name)
 	}
 
 	changed := false
@@ -137,7 +154,11 @@ func (k8s *K8S) TaintNode(name string, nodeData *config.Node) error {
 
 	_, error = clientset.CoreV1().Nodes().Update(node)
 
-	return error
+	if error != nil {
+		return errors.Wrapf(error, "Could not update node '%s'", name)
+	}
+
+	return nil
 }
 
 func (k8s *K8S) GetSecretToken(namespace, name string) (string, error) {
@@ -148,7 +169,7 @@ func (k8s *K8S) GetSecretToken(namespace, name string) (string, error) {
 
 	secrets, error := clientset.CoreV1().Secrets(namespace).List(metav1.ListOptions{})
 	if error != nil {
-		return "", error
+		return "", errors.Wrapf(error, "Could not list secrets for namespace '%s'", namespace)
 	}
 
 	for _, secret := range secrets.Items {
@@ -163,5 +184,108 @@ func (k8s *K8S) GetSecretToken(namespace, name string) (string, error) {
 }
 
 func (k8s *K8S) Apply(manifest string) error {
-	return nil
+	kubeConfig := k8s.config.GetFullLocalAssetFilename(utils.KubeconfigAdmin)
+
+	getter := genericclioptions.NewConfigFlags(true)
+
+	getter.KubeConfig = &kubeConfig
+
+	factory := cmdutil.NewFactory(getter)
+
+	schema, error := factory.Validator(false)
+	if error != nil {
+		return errors.Wrapf(error, "Could not generate validator for '%s'", manifest)
+	}
+
+	filenameOptions := &resource.FilenameOptions{Recursive: true, Filenames: []string{manifest}}
+
+	resources := factory.NewBuilder().
+		ContinueOnError().
+		Unstructured().
+		Schema(schema).
+		DefaultNamespace().
+		FilenameParam(false, filenameOptions).
+		Flatten().
+		Do()
+
+	if error := resources.Err(); error != nil {
+		return errors.Wrapf(error, "Could not get manifest resources for '%s'", manifest)
+	}
+
+	infos, error := resources.Infos()
+	if error != nil {
+		error = errors.Wrapf(error, "Could not decode manifest '%s'", manifest)
+	}
+	count := len(infos)
+
+	for i, info := range infos {
+		var object runtime.Object
+
+		kind := info.Mapping.GroupVersionKind.Kind
+
+		data, error := runtime.Encode(unstructured.UnstructuredJSONScheme, info.Object)
+		if error != nil {
+			return errors.Wrapf(error, "Could not encode '%s/%s/%s'", info.Namespace, kind, info.Name)
+		}
+
+		force := true
+
+		options := metav1.PatchOptions{
+			Force:        &force,
+			FieldManager: "kubectl",
+		}
+
+		helper := resource.NewHelper(info.Client, info.Mapping)
+		object, error = helper.Patch(
+			info.Namespace,
+			info.Name,
+			types.ApplyPatchType,
+			data,
+			&options,
+		)
+		if error == nil {
+			log.WithFields(log.Fields{"namespace": info.Namespace, "object": info.Name, "kind": kind, "index": i, "count": count}).Debug("Object updated")
+
+		} else {
+			existingObject, error := resource.NewHelper(info.Client, info.Mapping).Get(info.Namespace, info.Name, true)
+			if error != nil {
+				object, error = resource.NewHelper(info.Client, info.Mapping).Create(info.Namespace, true, info.Object, nil)
+				if error != nil {
+					return errors.Wrapf(error, "Could not create '%s/%s'", info.Namespace, info.Name)
+				}
+
+				log.WithFields(log.Fields{"namespace": info.Namespace, "object": info.Name, "kind": kind, "index": i, "count": count}).Debug("Object created")
+
+			} else {
+				existingJson, error := json.Marshal(existingObject)
+				if error != nil {
+					return errors.Wrapf(error, "Could not marshal existing '%s/%s'", info.Namespace, info.Name)
+				}
+
+				targetJson, error := json.Marshal(info.Object)
+				if error != nil {
+					return errors.Wrapf(error, "Could not marshal target '%s/%s'", info.Namespace, info.Name)
+				}
+
+				patch, error := jsonpatch.CreateMergePatch(existingJson, targetJson)
+				if error != nil {
+					return errors.Wrapf(error, "Could not create patch '%s/%s'", info.Namespace, info.Name)
+				}
+
+				object, error = resource.NewHelper(info.Client, info.Mapping).Patch(info.Namespace, info.Name, types.MergePatchType, patch, nil)
+				if error != nil {
+					return errors.Wrapf(error, "Could not patch '%s/%s'", info.Namespace, info.Name)
+				}
+
+				log.WithFields(log.Fields{"namespace": info.Namespace, "object": info.Name, "kind": kind, "index": i, "count": count}).Debug("Object patched")
+			}
+		}
+
+		if error := info.Refresh(object, true); error != nil {
+			return errors.Wrapf(error, "Could not refresh '%s/%s'", info.Namespace, info.Name)
+		}
+
+	}
+
+	return error
 }

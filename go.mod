@@ -8,6 +8,8 @@ require (
 	github.com/briandowns/spinner v0.0.0-20181029155426-195c31b675a7
 	github.com/cavaliercoder/grab v2.0.0+incompatible
 	github.com/cespare/reflex v0.2.0 // indirect
+	github.com/davecgh/go-spew v1.1.1
+	github.com/evanphx/json-patch v4.2.0+incompatible
 	github.com/go-kit/kit v0.9.0 // indirect
 	github.com/gobuffalo/events v1.1.8 // indirect
 	github.com/gobuffalo/packr v1.24.0
@@ -53,8 +55,9 @@ require (
 	gopkg.in/yaml.v2 v2.2.8
 	k8s.io/api v0.17.3
 	k8s.io/apimachinery v0.17.3
+	k8s.io/cli-runtime v0.17.3
 	k8s.io/client-go v0.17.3
-	k8s.io/kubectl v0.17.3 // indirect
+	k8s.io/kubectl v0.17.3
 )
 
 go 1.13
