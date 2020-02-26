@@ -78,7 +78,7 @@ spec:
       initContainers:
       - name: "init-chown-data"
         image: [[ .BusyboxImage ]]
-        imagePullPolicy: Always
+        imagePullPolicy: "IfNotPresent"
         command: ["chown", "-R", "65534:65534", "/data"]
         volumeMounts:
         - name: prometheus-data

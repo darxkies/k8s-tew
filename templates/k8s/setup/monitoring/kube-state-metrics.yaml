@@ -142,7 +142,7 @@ spec:
       containers:
       - name: kube-state-metrics
         image: {{ .KubeStateMetricsImage }} 
-        imagePullPolicy: Always
+        imagePullPolicy: "IfNotPresent"
         ports:
         - name: http-metrics
           containerPort: 8080

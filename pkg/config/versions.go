@@ -35,6 +35,7 @@ type Versions struct {
 	CertManagerController      string `yaml:"cert-manager-controller"`
 	CertManagerCAInjector      string `yaml:"cert-manager-cainjector"`
 	CertManagerWebHook         string `yaml:"cert-manager-webhook"`
+	CertManagerACMEResolver    string `yaml:"cert-manager-acmeresolver"`
 	NginxIngressController     string `yaml:"nginx-ingress-controller"`
 	NginxIngressDefaultBackend string `yaml:"nginx-ingress-default-backend"`
 	MetricsScraper             string `yaml:"metrics-scraper"`
@@ -87,6 +88,7 @@ func NewVersions() Versions {
 		CertManagerController:      utils.VersionCertManagerController,
 		CertManagerCAInjector:      utils.VersionCertManagerCAInjector,
 		CertManagerWebHook:         utils.VersionCertManagerWebHook,
+		CertManagerACMEResolver:    utils.VersionCertManagerACMEResolver,
 		NginxIngressController:     utils.VersionNginxIngressController,
 		NginxIngressDefaultBackend: utils.VersionNginxIngressDefaultBackend,
 		MetricsScraper:             utils.VersionMetricsScraper,
@@ -148,6 +150,7 @@ func (versions Versions) GetImages() []Image {
 		{Name: versions.CertManagerController, Features: Features{utils.FeatureIngress, utils.FeatureStorage}},
 		{Name: versions.CertManagerCAInjector, Features: Features{utils.FeatureIngress, utils.FeatureStorage}},
 		{Name: versions.CertManagerWebHook, Features: Features{utils.FeatureIngress, utils.FeatureStorage}},
+		{Name: versions.CertManagerACMEResolver, Features: Features{utils.FeatureIngress, utils.FeatureStorage}},
 		{Name: versions.NginxIngressDefaultBackend, Features: Features{utils.FeatureIngress, utils.FeatureStorage}},
 		{Name: versions.NginxIngressController, Features: Features{utils.FeatureIngress, utils.FeatureStorage}},
 		{Name: versions.MySQL, Features: Features{utils.FeatureShowcase, utils.FeatureStorage}},

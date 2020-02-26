@@ -7,11 +7,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"path"
 	"strings"
 	"time"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/darxkies/k8s-tew/pkg/container/image/manifest"
 	"github.com/darxkies/k8s-tew/pkg/container/image/storage"
@@ -55,6 +56,8 @@ func (converter *imageConverter) getToken() error {
 	httpClient := &http.Client{}
 
 	address := converter.getManifestAddress()
+
+	log.WithFields(log.Fields{"address": address, "image": converter.String()}).Debug("Image converter token")
 
 	response, body, error := goreq.New().SetClient(httpClient).
 		Get(address).
@@ -130,6 +133,8 @@ func (converter *imageConverter) getToken() error {
 
 	address = fmt.Sprintf("%s?service=%s&scope=%s", realm, service, scope)
 
+	log.WithFields(log.Fields{"address": address, "image": converter.String()}).Debug("Image converter token")
+
 	response, body, error = goreq.New().SetClient(httpClient).
 		SetBasicAuth("", "").
 		Get(address).
@@ -158,6 +163,8 @@ func (converter *imageConverter) getToken() error {
 
 	converter.token = converter.stripQuotes(string(*token))
 
+	log.WithFields(log.Fields{"token": string(converter.token), "image": converter.String()}).Debug("Image converter token")
+
 	return nil
 }
 
@@ -169,6 +176,8 @@ func (converter *imageConverter) getManifest() error {
 	httpClient := &http.Client{}
 
 	address := converter.getManifestAddress()
+
+	log.WithFields(log.Fields{"address": address, "image": converter.String()}).Debug("Image converter manifest")
 
 	request := goreq.New().SetClient(httpClient).
 		Get(address).
@@ -195,18 +204,18 @@ func (converter *imageConverter) getManifest() error {
 		return _error
 	}
 
+	log.WithFields(log.Fields{"schema-version": converter.manifest.SchemaVersion, "name": converter.manifest.Name, "tag": converter.manifest.Tag, "architecture": converter.manifest.Architecture, "image": converter.String()}).Debug("Image converter manifest")
+
 	return nil
 }
 
 func (converter *imageConverter) getBlob(layer *layer) error {
+	log.WithFields(log.Fields{"filename": layer.Filename, "image": converter.String()}).Debug("Image converter downloading blob")
+
 	if layer.BlobDigest == manifest.EmptyLayer {
 		layer.EmptyLayer = true
 
 		return nil
-	}
-
-	if converter.debug {
-		log.Printf("Creating blob %s", layer.Filename)
 	}
 
 	httpClient := &http.Client{}
@@ -264,18 +273,6 @@ func (converter *imageConverter) getBlob(layer *layer) error {
 	return nil
 }
 
-func (converter *imageConverter) getCMD() []string {
-	var result []string
-
-	for _, layer := range converter.layers {
-		if layer.History.Config.Cmd != nil {
-			result = layer.History.Config.Cmd
-		}
-	}
-
-	return result
-}
-
 func (converter *imageConverter) downloadLayers() error {
 	blobsDirectory := path.Join("blobs", "sha256")
 
@@ -291,11 +288,7 @@ func (converter *imageConverter) downloadLayers() error {
 }
 
 func (converter *imageConverter) process() error {
-	if converter.debug {
-		log.Printf("===================================")
-		log.Printf("Image: %s", converter.String())
-		log.Printf("===================================")
-	}
+	log.WithFields(log.Fields{"image": converter.String()}).Debug("Image converter")
 
 	if error := converter.getToken(); error != nil {
 		return error
@@ -325,6 +318,20 @@ func (converter *imageConverter) process() error {
 		layer.History = data
 		layer.MediaType = "application/vnd.docker.image.rootfs.diff.tar.gzip"
 
+		log.WithFields(log.Fields{"id": data.ID, "layer-parent": data.Parent, "docker-version": data.DockerVersion, "architecture": data.Architecture, "os": data.OS, "container": data.Container, "throwaway": data.Throwaway, "created": data.Created, "author": data.Author, "image": converter.String()}).Debug("Image converter layer")
+
+		if data.Config != nil {
+			data, _ := json.Marshal(data.Config)
+
+			log.WithFields(log.Fields{"config": string(data), "image": converter.String()}).Debug("Image converter layer config")
+		}
+
+		if data.ContainerConfig != nil {
+			data, _ := json.Marshal(data.ContainerConfig)
+
+			log.WithFields(log.Fields{"config": string(data), "image": converter.String()}).Debug("Image converter layer container config")
+		}
+
 		converter.layers = append(converter.layers, layer)
 	}
 
@@ -350,10 +357,8 @@ func (converter *imageConverter) process() error {
 		return error
 	}
 
-	if converter.debug {
-		log.Printf("Manifest: %s", hashManifest[7:])
-		log.Printf("ImageConfig: %s", hashImageConfig[7:])
-	}
+	log.WithFields(log.Fields{"manifest-blob": hashManifest[7:], "image": converter.String()}).Debug("Image converter")
+	log.WithFields(log.Fields{"image-config-blob": hashImageConfig[7:], "image": converter.String()}).Debug("Image converter")
 
 	return nil
 }
@@ -415,15 +420,32 @@ func (converter *imageConverter) writeOCIImageConfig() (hash string, size int, e
 	ociImageConfig.Config = ociv1.ImageConfig{}
 
 	if len(converter.layers) > 0 {
-		ociImageConfig.Config.Labels = converter.layers[len(converter.layers)-1].History.ContainerConfig.Labels
-		ociImageConfig.Config.Cmd = converter.getCMD()
-		ociImageConfig.Config.Entrypoint = converter.layers[len(converter.layers)-1].History.ContainerConfig.Entrypoint
-		ociImageConfig.Config.Env = converter.layers[len(converter.layers)-1].History.ContainerConfig.Env
-		ociImageConfig.Config.User = converter.layers[len(converter.layers)-1].History.ContainerConfig.User
-		ociImageConfig.Config.WorkingDir = converter.layers[len(converter.layers)-1].History.ContainerConfig.WorkingDir
-		ociImageConfig.Config.ExposedPorts = converter.layers[len(converter.layers)-1].History.ContainerConfig.ExposedPorts
-		ociImageConfig.Config.Volumes = converter.layers[len(converter.layers)-1].History.ContainerConfig.Volumes
+		for _, layer := range converter.layers {
+			if layer.History.Config == nil {
+				continue
+			}
+
+			if layer.History.Config.Cmd != nil {
+				ociImageConfig.Config.Cmd = layer.History.Config.Cmd
+			}
+
+			if layer.History.Config.Entrypoint != nil {
+				ociImageConfig.Config.Entrypoint = layer.History.Config.Entrypoint
+			}
+
+			ociImageConfig.Config.WorkingDir = layer.History.Config.WorkingDir
+			ociImageConfig.Config.Volumes = layer.History.Config.Volumes
+			ociImageConfig.Config.ExposedPorts = layer.History.Config.ExposedPorts
+			ociImageConfig.Config.Labels = layer.History.Config.Labels
+			ociImageConfig.Config.Entrypoint = layer.History.Config.Entrypoint
+			ociImageConfig.Config.Env = layer.History.Config.Env
+			ociImageConfig.Config.User = layer.History.Config.User
+		}
 	}
+
+	config, _ := json.Marshal(ociImageConfig.Config)
+
+	log.WithFields(log.Fields{"config": string(config), "image": converter.String()}).Debug("Image converter config")
 
 	ociImageConfig.RootFS.Type = "layers"
 	ociImageConfig.History = []ociv1.History{}

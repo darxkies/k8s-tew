@@ -95,7 +95,7 @@ spec:
       containers:
         - name: alert-manager
           image: {{ .AlertManagerImage }}
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           args:
             - --config.file=/etc/config/alert-manager.yml
             - --storage.path=/data
