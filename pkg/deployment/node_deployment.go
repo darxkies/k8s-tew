@@ -14,6 +14,7 @@ import (
 	"github.com/darxkies/k8s-tew/pkg/config"
 	"github.com/darxkies/k8s-tew/pkg/k8s"
 	"github.com/darxkies/k8s-tew/pkg/utils"
+	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 	"github.com/tmc/scp"
 	"golang.org/x/crypto/ssh"
@@ -94,6 +95,10 @@ func (deployment *NodeDeployment) createDirectories() error {
 		}
 
 		directories[deployment.config.GetFullTargetAssetDirectory(name)] = true
+	}
+
+	if len(directories) == 0 {
+		return nil
 	}
 
 	// Create remote directories
@@ -344,6 +349,10 @@ func (deployment *NodeDeployment) Execute(name, command string) (string, error) 
 	session.Stdout = &buffer
 
 	error = session.Run(command)
+
+	if error != nil {
+		error = errors.Wrapf(error, "Could not execute remote command '%s' on '%s'", command, deployment.name)
+	}
 
 	return buffer.String(), error
 }
