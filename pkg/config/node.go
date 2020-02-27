@@ -45,17 +45,13 @@ func (node *Node) IsStorage() bool {
 }
 
 func (node *Node) IsControllerOnly() bool {
-	return node.IsController() && !node.IsWorker()
+	return node.IsController() && !node.IsWorker() && !node.IsStorage()
 }
 
 func (node *Node) IsStorageOnly() bool {
-	return !node.IsController() && node.IsWorker() && node.IsStorage()
+	return !node.IsController() && !node.IsWorker() && node.IsStorage()
 }
 
 func (node *Node) IsWorkerOnly() bool {
 	return !node.IsController() && node.IsWorker() && !node.IsStorage()
-}
-
-func (node *Node) IsControllerAndWorker() bool {
-	return node.IsController() && node.IsWorker()
 }

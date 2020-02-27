@@ -98,8 +98,6 @@ func (k8s *K8S) TaintNode(name string, nodeData *config.Node) error {
 
 			changed = true
 		}
-
-		addLabel(label)
 	}
 
 	removeTaint := func(label string) {
@@ -116,36 +114,41 @@ func (k8s *K8S) TaintNode(name string, nodeData *config.Node) error {
 		}
 
 		node.Spec.Taints = taints
-
-		removeLabel(label)
-	}
-
-	if nodeData.IsControllerAndWorker() {
-		addLabel(utils.ControllerOnlyTaintKey)
-
-	} else {
-		removeLabel(utils.ControllerOnlyTaintKey)
 	}
 
 	if nodeData.IsControllerOnly() {
-		addTaint(utils.ControllerOnlyTaintKey)
+		addTaint(utils.NodeRoleController)
 
 	} else {
-		removeTaint(utils.ControllerOnlyTaintKey)
+		removeTaint(utils.NodeRoleController)
 	}
 
 	if nodeData.IsStorageOnly() {
-		addTaint(utils.StorageOnlyTaintKey)
+		addTaint(utils.NodeRoleStorage)
 
 	} else {
-		removeTaint(utils.StorageOnlyTaintKey)
+		removeTaint(utils.NodeRoleStorage)
 	}
 
-	if nodeData.IsWorkerOnly() {
-		addLabel(utils.WorkerOnlyTaintKey)
+	if nodeData.IsController() {
+		addLabel(utils.NodeRoleController)
 
 	} else {
-		removeLabel(utils.WorkerOnlyTaintKey)
+		removeLabel(utils.NodeRoleController)
+	}
+
+	if nodeData.IsWorker() {
+		addLabel(utils.NodeRoleWorker)
+
+	} else {
+		removeLabel(utils.NodeRoleWorker)
+	}
+
+	if nodeData.IsStorage() {
+		addLabel(utils.NodeRoleStorage)
+
+	} else {
+		removeLabel(utils.NodeRoleStorage)
 	}
 
 	if !changed {

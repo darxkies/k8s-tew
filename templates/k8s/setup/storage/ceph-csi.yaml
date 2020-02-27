@@ -255,6 +255,8 @@ spec:
       labels:
         app: csi-rbdplugin
     spec:
+      nodeSelector:
+        node-role.kubernetes.io/worker: "true"
       serviceAccount: rbd-csi-nodeplugin
       hostNetwork: true
       hostPID: true
@@ -446,6 +448,11 @@ spec:
       labels:
         app: csi-rbdplugin-provisioner
     spec:
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
+      nodeSelector:
+        node-role.kubernetes.io/storage: "true"
       serviceAccount: rbd-csi-provisioner
       containers:
         - name: csi-provisioner
@@ -750,6 +757,8 @@ spec:
       labels:
         app: csi-cephfsplugin
     spec:
+      nodeSelector:
+        node-role.kubernetes.io/worker: "true"
       serviceAccount: cephfs-csi-nodeplugin
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
@@ -949,6 +958,11 @@ spec:
       labels:
         app: csi-cephfsplugin-provisioner
     spec:
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
+      nodeSelector:
+        node-role.kubernetes.io/storage: "true"
       serviceAccount: cephfs-csi-provisioner
       containers:
         - name: csi-provisioner

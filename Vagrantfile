@@ -53,6 +53,14 @@ $workers_ram = 4096
 $workers_cpus = 4
 
 ############################################################
+# Storage
+############################################################
+
+$storage_count = 0
+$storage_ram = 4096
+$storage_cpus = 4
+
+############################################################
 # Environment variables
 ############################################################
 
@@ -78,6 +86,10 @@ else
   $box = "centos/7"
 end
 
+if ENV["IP_PREFIX"]
+    $ip_prefix = ENV["IP_PREFIX"]
+end
+
 if ENV["CONTROLLERS"]
     $controllers_count = Integer(ENV["CONTROLLERS"])
 end
@@ -86,8 +98,8 @@ if ENV["WORKERS"]
     $workers_count = Integer(ENV["WORKERS"])
 end
 
-if ENV["IP_PREFIX"]
-    $ip_prefix = ENV["IP_PREFIX"]
+if ENV["STORAGE"]
+    $storage_count = Integer(ENV["STORAGE"])
 end
 
 if ENV["CONTROLLERS_RAM"]
@@ -98,12 +110,20 @@ if ENV["WORKERS_RAM"]
     $workers_ram = ENV["WORKERS_RAM"]
 end
 
+if ENV["STORAGE_RAM"]
+    $storage_ram = ENV["STORAGE_RAM"]
+end
+
 if ENV["CONTROLLERS_CPUS"]
     $controllers_cpus = ENV["CONTROLLERS_CPUS"]
 end
 
 if ENV["WORKERS_CPUS"]
     $workers_cpus = ENV["WORKERS_CPUS"]
+end
+
+if ENV["STORAGE_CPUS"]
+    $storage_cpus = ENV["STORAGE_CPUS"]
 end
 
 ############################################################
@@ -129,6 +149,9 @@ else
   puts "Workers Count: #{$workers_count}"
   puts "Workers RAM: #{$workers_ram}"
   puts "Workers CPUs: #{$workers_cpus}"
+  puts "Storage Count: #{$storage_count}"
+  puts "Storage RAM: #{$storage_ram}"
+  puts "Storage CPUs: #{$storage_cpus}"
 end
 
 puts "####################################################"
@@ -154,6 +177,10 @@ def worker_name(index)
     return "worker" + index_padding(index)
 end
 
+def storage_name(index)
+    return "storage" + index_padding(index)
+end
+
 def single_node_ip()
     return $ip_prefix + ".50"
 end
@@ -164,6 +191,10 @@ end
 
 def worker_ip(index)
 	return $ip_prefix + ".1" + index_padding(index)
+end
+
+def storage_ip(index)
+	return $ip_prefix + "." + index_padding(50 + index)
 end
 
 def add_machine(config, ram, cpus, name, ip)
@@ -218,12 +249,20 @@ Vagrant.configure("2") do |config|
             add_hosts_entry(config, worker_name(j), worker_ip(j))
         end
 
+        (0..$storage_count - 1).each do |j|
+            add_hosts_entry(config, storage_name(j), storage_ip(j))
+        end
+
         (0..$controllers_count - 1).each do |i|
             add_machine(config, $controllers_ram, $controllers_cpus, controller_name(i), controller_ip(i))
         end
 
         (0..$workers_count - 1).each do |i|
             add_machine(config, $workers_ram, $workers_cpus, worker_name(i), worker_ip(i))
+        end
+
+        (0..$storage_count - 1).each do |i|
+            add_machine(config, $storage_ram, $storage_cpus, storage_name(i), storage_ip(i))
         end
     end
 end

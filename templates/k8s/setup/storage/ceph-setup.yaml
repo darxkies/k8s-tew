@@ -190,6 +190,11 @@ spec:
       labels:
         app: ceph-mgr
     spec:
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
+      nodeSelector:
+        node-role.kubernetes.io/storage: "true"
       hostNetwork: true
       volumes:
       - name: ceph-config
@@ -231,6 +236,11 @@ spec:
       labels:
         app: ceph-rgw
     spec:
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
+      nodeSelector:
+        node-role.kubernetes.io/storage: "true"
       volumes:
       - name: ceph-config
         hostPath:
@@ -272,6 +282,11 @@ spec:
     metadata:
       name: ceph-setup
     spec:
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
+      nodeSelector:
+        node-role.kubernetes.io/storage: "true"
       restartPolicy: OnFailure
       volumes:
       - name: ceph-config

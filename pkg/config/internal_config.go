@@ -131,7 +131,7 @@ func (config *InternalConfig) registerAssetDirectories() {
 	// Config
 	config.addAssetDirectory(utils.DirectoryConfig, Labels{}, config.getRelativeConfigDirectory(), false)
 	config.addAssetDirectory(utils.DirectoryCertificates, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryConfig), utils.SubdirectoryCertificates), false)
-	config.addAssetDirectory(utils.DirectoryCniConfig, Labels{utils.NodeController, utils.NodeWorker}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryConfig), utils.SubdirectoryCni), false)
+	config.addAssetDirectory(utils.DirectoryCniConfig, Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryConfig), utils.SubdirectoryCni), false)
 	config.addAssetDirectory(utils.DirectoryCriConfig, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryConfig), utils.SubdirectoryCri), false)
 
 	// K8S Config
@@ -139,17 +139,17 @@ func (config *InternalConfig) registerAssetDirectories() {
 	config.addAssetDirectory(utils.DirectoryK8sKubeConfig, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryK8sConfig), utils.SubdirectoryKubeconfig), false)
 	config.addAssetDirectory(utils.DirectoryK8sSecurityConfig, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryK8sConfig), utils.SubdirectorySecurity), false)
 	config.addAssetDirectory(utils.DirectoryK8sSetupConfig, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryK8sConfig), utils.SubdirectorySetup), false)
-	config.addAssetDirectory(utils.DirectoryK8sManifests, Labels{utils.NodeController, utils.NodeWorker}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryK8sConfig), utils.SubdirectoryManifests), false)
+	config.addAssetDirectory(utils.DirectoryK8sManifests, Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryK8sConfig), utils.SubdirectoryManifests), false)
 
 	// Binaries
 	config.addAssetDirectory(utils.DirectoryBinaries, Labels{}, path.Join(utils.SubdirectoryOptional, utils.SubdirectoryK8sTew, utils.SubdirectoryBinary), false)
 	config.addAssetDirectory(utils.DirectoryK8sBinaries, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryBinaries), utils.SubdirectoryK8s), false)
 	config.addAssetDirectory(utils.DirectoryEtcdBinaries, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryBinaries), utils.SubdirectoryEtcd), false)
 	config.addAssetDirectory(utils.DirectoryCriBinaries, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryBinaries), utils.SubdirectoryCri), false)
-	config.addAssetDirectory(utils.DirectoryCniBinaries, Labels{utils.NodeController, utils.NodeWorker}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryBinaries), utils.SubdirectoryCni), false)
+	config.addAssetDirectory(utils.DirectoryCniBinaries, Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryBinaries), utils.SubdirectoryCni), false)
 	config.addAssetDirectory(utils.DirectoryGobetweenBinaries, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryBinaries), utils.SubdirectoryLoadBalancer), false)
 	config.addAssetDirectory(utils.DirectoryVeleroBinaries, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryBinaries), utils.SubdirectoryVelero), false)
-	config.addAssetDirectory(utils.DirectoryHostBinaries, Labels{utils.NodeController, utils.NodeWorker}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryBinaries), utils.SubdirectoryHost), false)
+	config.addAssetDirectory(utils.DirectoryHostBinaries, Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryBinaries), utils.SubdirectoryHost), false)
 
 	// Misc
 	config.addAssetDirectory(utils.DirectoryGobetweenConfig, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryConfig), utils.SubdirectoryLoadBalancer), false)
@@ -168,42 +168,42 @@ func (config *InternalConfig) registerAssetDirectories() {
 	config.addAssetDirectory(utils.DirectoryBashCompletion, Labels{}, path.Join(utils.SubdirectoryConfig, utils.SubdirectoryBashCompletion), false)
 	config.addAssetDirectory(utils.DirectoryKubeletPlugins, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryKubeletData), utils.SubdirectoryPlugins), true)
 	config.addAssetDirectory(utils.DirectoryKubeletPluginsRegistry, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryKubeletData), utils.SubdirectoryPluginsRegistry), false)
-	config.addAssetDirectory(utils.DirectoryImages, Labels{utils.NodeController, utils.NodeWorker}, path.Join(utils.SubdirectoryVariable, utils.SubdirectoryK8sTew, utils.SubdirectoryImages), false)
-	config.addAssetDirectory(utils.DirectoryRun, Labels{utils.NodeController, utils.NodeWorker}, path.Join(utils.SubdirectoryRun, utils.SubdirectoryK8sTew), false)
-	config.addAssetDirectory(utils.DirectoryVarRun, Labels{utils.NodeController, utils.NodeWorker}, path.Join(utils.SubdirectoryVariable, utils.SubdirectoryRun, utils.SubdirectoryK8sTew), false)
+	config.addAssetDirectory(utils.DirectoryImages, Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, path.Join(utils.SubdirectoryVariable, utils.SubdirectoryK8sTew, utils.SubdirectoryImages), false)
+	config.addAssetDirectory(utils.DirectoryRun, Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, path.Join(utils.SubdirectoryRun, utils.SubdirectoryK8sTew), false)
+	config.addAssetDirectory(utils.DirectoryVarRun, Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, path.Join(utils.SubdirectoryVariable, utils.SubdirectoryRun, utils.SubdirectoryK8sTew), false)
 
 	// Ceph
-	config.addAssetDirectory(utils.DirectoryCephConfig, Labels{utils.NodeWorker}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryConfig), utils.SubdirectoryCeph), false)
-	config.addAssetDirectory(utils.DirectoryCephData, Labels{utils.NodeWorker}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryDynamicData), utils.SubdirectoryCeph), false)
-	config.addAssetDirectory(utils.DirectoryCephBootstrapMds, Labels{utils.NodeWorker}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryCephData), utils.DirectoryCephBootstrapMds), false)
-	config.addAssetDirectory(utils.DirectoryCephBootstrapOsd, Labels{utils.NodeWorker}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryCephData), utils.DirectoryCephBootstrapOsd), false)
-	config.addAssetDirectory(utils.DirectoryCephBootstrapRbd, Labels{utils.NodeWorker}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryCephData), utils.DirectoryCephBootstrapRbd), false)
-	config.addAssetDirectory(utils.DirectoryCephBootstrapRgw, Labels{utils.NodeWorker}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryCephData), utils.DirectoryCephBootstrapRgw), false)
-	config.addAssetDirectory(utils.DirectoryCephBootstrapRgw, Labels{utils.NodeWorker}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryCephData), utils.DirectoryCephBootstrapRgw), false)
+	config.addAssetDirectory(utils.DirectoryCephConfig, Labels{utils.NodeStorage}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryConfig), utils.SubdirectoryCeph), false)
+	config.addAssetDirectory(utils.DirectoryCephData, Labels{utils.NodeStorage}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryDynamicData), utils.SubdirectoryCeph), false)
+	config.addAssetDirectory(utils.DirectoryCephBootstrapMds, Labels{utils.NodeStorage}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryCephData), utils.DirectoryCephBootstrapMds), false)
+	config.addAssetDirectory(utils.DirectoryCephBootstrapOsd, Labels{utils.NodeStorage}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryCephData), utils.DirectoryCephBootstrapOsd), false)
+	config.addAssetDirectory(utils.DirectoryCephBootstrapRbd, Labels{utils.NodeStorage}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryCephData), utils.DirectoryCephBootstrapRbd), false)
+	config.addAssetDirectory(utils.DirectoryCephBootstrapRgw, Labels{utils.NodeStorage}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryCephData), utils.DirectoryCephBootstrapRgw), false)
+	config.addAssetDirectory(utils.DirectoryCephBootstrapRgw, Labels{utils.NodeStorage}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryCephData), utils.DirectoryCephBootstrapRgw), false)
 }
 
 func (config *InternalConfig) registerAssetFiles() {
 	// Config
-	config.addAssetFile(utils.ConfigFilename, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryConfig)
+	config.addAssetFile(utils.ConfigFilename, Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, "", utils.DirectoryConfig)
 
 	// Binaries
-	config.addAssetFile(utils.BinaryK8sTew, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryBinaries)
+	config.addAssetFile(utils.BinaryK8sTew, Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, "", utils.DirectoryBinaries)
 
 	// ContainerD Binaries
-	config.addAssetFile(utils.BinaryContainerd, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryCriBinaries)
-	config.addAssetFile(utils.BinaryContainerdShim, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryCriBinaries)
-	config.addAssetFile(utils.BinaryContainerdShimRuncV1, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryCriBinaries)
-	config.addAssetFile(utils.BinaryContainerdShimRuncV2, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryCriBinaries)
-	config.addAssetFile(utils.BinaryCtr, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryCriBinaries)
-	config.addAssetFile(utils.BinaryRunc, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryCriBinaries)
-	config.addAssetFile(utils.BinaryCrictl, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryCriBinaries)
+	config.addAssetFile(utils.BinaryContainerd, Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, "", utils.DirectoryCriBinaries)
+	config.addAssetFile(utils.BinaryContainerdShim, Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, "", utils.DirectoryCriBinaries)
+	config.addAssetFile(utils.BinaryContainerdShimRuncV1, Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, "", utils.DirectoryCriBinaries)
+	config.addAssetFile(utils.BinaryContainerdShimRuncV2, Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, "", utils.DirectoryCriBinaries)
+	config.addAssetFile(utils.BinaryCtr, Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, "", utils.DirectoryCriBinaries)
+	config.addAssetFile(utils.BinaryRunc, Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, "", utils.DirectoryCriBinaries)
+	config.addAssetFile(utils.BinaryCrictl, Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, "", utils.DirectoryCriBinaries)
 
 	// Etcd Binaries
 	config.addAssetFile(utils.BinaryEtcdctl, Labels{utils.NodeController}, "", utils.DirectoryEtcdBinaries)
 
 	// K8S Binaries
 	config.addAssetFile(utils.BinaryKubectl, Labels{utils.NodeController}, "", utils.DirectoryK8sBinaries)
-	config.addAssetFile(utils.BinaryKubelet, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryK8sBinaries)
+	config.addAssetFile(utils.BinaryKubelet, Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, "", utils.DirectoryK8sBinaries)
 
 	// Helm Binary
 	config.addAssetFile(utils.BinaryHelm, Labels{}, "", utils.DirectoryK8sBinaries)
@@ -212,7 +212,7 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.BinaryVelero, Labels{}, "", utils.DirectoryVeleroBinaries)
 
 	// Certificates
-	config.addAssetFile(utils.PemCa, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryCertificates)
+	config.addAssetFile(utils.PemCa, Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, "", utils.DirectoryCertificates)
 	config.addAssetFile(utils.PemCaKey, Labels{utils.NodeController}, "", utils.DirectoryCertificates)
 	config.addAssetFile(utils.PemKubernetes, Labels{utils.NodeController}, "", utils.DirectoryCertificates)
 	config.addAssetFile(utils.PemKubernetesKey, Labels{utils.NodeController}, "", utils.DirectoryCertificates)
@@ -226,8 +226,8 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.PemSchedulerKey, Labels{}, "", utils.DirectoryCertificates)
 	config.addAssetFile(utils.PemProxy, Labels{}, "", utils.DirectoryCertificates)
 	config.addAssetFile(utils.PemProxyKey, Labels{}, "", utils.DirectoryCertificates)
-	config.addAssetFile(utils.PemKubelet, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryCertificates)
-	config.addAssetFile(utils.PemKubeletKey, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryCertificates)
+	config.addAssetFile(utils.PemKubelet, Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, "", utils.DirectoryCertificates)
+	config.addAssetFile(utils.PemKubeletKey, Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, "", utils.DirectoryCertificates)
 	config.addAssetFile(utils.PemAggregator, Labels{utils.NodeController}, "", utils.DirectoryCertificates)
 	config.addAssetFile(utils.PemAggregatorKey, Labels{utils.NodeController}, "", utils.DirectoryCertificates)
 
@@ -235,18 +235,18 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.KubeconfigAdmin, Labels{}, "", utils.DirectoryK8sKubeConfig)
 	config.addAssetFile(utils.KubeconfigControllerManager, Labels{utils.NodeController}, "", utils.DirectoryK8sKubeConfig)
 	config.addAssetFile(utils.KubeconfigScheduler, Labels{utils.NodeController}, "", utils.DirectoryK8sKubeConfig)
-	config.addAssetFile(utils.KubeconfigProxy, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryK8sKubeConfig)
-	config.addAssetFile(utils.KubeconfigKubelet, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryK8sKubeConfig)
+	config.addAssetFile(utils.KubeconfigProxy, Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, "", utils.DirectoryK8sKubeConfig)
+	config.addAssetFile(utils.KubeconfigKubelet, Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, "", utils.DirectoryK8sKubeConfig)
 
 	// Security
 	config.addAssetFile(utils.EncryptionConfig, Labels{utils.NodeController}, "", utils.DirectoryK8sSecurityConfig)
 
 	// CRI
-	config.addAssetFile(utils.ContainerdConfig, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryCriConfig)
+	config.addAssetFile(utils.ContainerdConfig, Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, "", utils.DirectoryCriConfig)
 	config.addAssetFile(utils.ContainerdSock, Labels{}, "", utils.DirectoryAbsoluteContainerdState)
 
 	// Service
-	config.addAssetFile(utils.ServiceConfig, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryService)
+	config.addAssetFile(utils.ServiceConfig, Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, "", utils.DirectoryService)
 
 	// K8S Setup
 	config.addAssetFile(utils.K8sKubeletSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
@@ -275,7 +275,7 @@ func (config *InternalConfig) registerAssetFiles() {
 
 	// K8S Config
 	config.addAssetFile(utils.K8sKubeSchedulerConfig, Labels{utils.NodeController}, "", utils.DirectoryK8sConfig)
-	config.addAssetFile(utils.K8sKubeletConfig, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryK8sConfig)
+	config.addAssetFile(utils.K8sKubeletConfig, Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, "", utils.DirectoryK8sConfig)
 
 	// Manifests
 	config.addAssetFile(utils.ManifestControllerVirtualIP, Labels{utils.NodeController}, "", utils.DirectoryK8sManifests)
@@ -285,24 +285,25 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.ManifestKubeApiserver, Labels{utils.NodeController}, "", utils.DirectoryK8sManifests)
 	config.addAssetFile(utils.ManifestKubeControllerManager, Labels{utils.NodeController}, "", utils.DirectoryK8sManifests)
 	config.addAssetFile(utils.ManifestKubeScheduler, Labels{utils.NodeController}, "", utils.DirectoryK8sManifests)
-	config.addAssetFile(utils.ManifestKubeProxy, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryK8sManifests)
+	config.addAssetFile(utils.ManifestKubeProxy, Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, "", utils.DirectoryK8sManifests)
+
 	// Profile
-	config.addAssetFile(utils.K8sTewProfile, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryProfile)
+	config.addAssetFile(utils.K8sTewProfile, Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, "", utils.DirectoryProfile)
 
 	// Gobetween
 	config.addAssetFile(utils.GobetweenConfig, Labels{utils.NodeController}, "", utils.DirectoryGobetweenConfig)
 
 	// Ceph
-	config.addAssetFile(utils.CephConfig, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryCephConfig)
-	config.addAssetFile(utils.CephClientAdminKeyring, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryCephConfig)
-	config.addAssetFile(utils.CephMonitorKeyring, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryCephConfig)
-	config.addAssetFile(utils.CephBootstrapMdsKeyring, Labels{utils.NodeController, utils.NodeWorker}, utils.CephKeyring, utils.DirectoryCephBootstrapMds)
-	config.addAssetFile(utils.CephBootstrapOsdKeyring, Labels{utils.NodeController, utils.NodeWorker}, utils.CephKeyring, utils.DirectoryCephBootstrapOsd)
-	config.addAssetFile(utils.CephBootstrapRbdKeyring, Labels{utils.NodeController, utils.NodeWorker}, utils.CephKeyring, utils.DirectoryCephBootstrapRbd)
-	config.addAssetFile(utils.CephBootstrapRgwKeyring, Labels{utils.NodeController, utils.NodeWorker}, utils.CephKeyring, utils.DirectoryCephBootstrapRgw)
+	config.addAssetFile(utils.CephConfig, Labels{utils.NodeStorage}, "", utils.DirectoryCephConfig)
+	config.addAssetFile(utils.CephClientAdminKeyring, Labels{utils.NodeStorage}, "", utils.DirectoryCephConfig)
+	config.addAssetFile(utils.CephMonitorKeyring, Labels{utils.NodeStorage}, "", utils.DirectoryCephConfig)
+	config.addAssetFile(utils.CephBootstrapMdsKeyring, Labels{utils.NodeStorage}, utils.CephKeyring, utils.DirectoryCephBootstrapMds)
+	config.addAssetFile(utils.CephBootstrapOsdKeyring, Labels{utils.NodeStorage}, utils.CephKeyring, utils.DirectoryCephBootstrapOsd)
+	config.addAssetFile(utils.CephBootstrapRbdKeyring, Labels{utils.NodeStorage}, utils.CephKeyring, utils.DirectoryCephBootstrapRbd)
+	config.addAssetFile(utils.CephBootstrapRgwKeyring, Labels{utils.NodeStorage}, utils.CephKeyring, utils.DirectoryCephBootstrapRgw)
 
 	// Bash Completion
-	config.addAssetFile(utils.BashCompletionK8sTew, Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryBashCompletion)
+	config.addAssetFile(utils.BashCompletionK8sTew, Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, "", utils.DirectoryBashCompletion)
 	config.addAssetFile(utils.BashCompletionKubectl, Labels{utils.NodeController}, "", utils.DirectoryBashCompletion)
 	config.addAssetFile(utils.BashCompletionCrictl, Labels{utils.NodeController}, "", utils.DirectoryBashCompletion)
 	config.addAssetFile(utils.BashCompletionHelm, Labels{}, "", utils.DirectoryBashCompletion)
@@ -310,17 +311,17 @@ func (config *InternalConfig) registerAssetFiles() {
 
 	// Images
 	for _, image := range config.Config.Versions.GetImages() {
-		config.addAssetFile(image.GetImageFilename(), Labels{utils.NodeController, utils.NodeWorker}, "", utils.DirectoryImages)
+		config.addAssetFile(image.GetImageFilename(), Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, "", utils.DirectoryImages)
 	}
 }
 
 func (config *InternalConfig) registerServers() {
 	// Servers
-	config.addServer("containerd", Labels{utils.NodeController, utils.NodeWorker}, config.GetTemplateAssetFilename(utils.BinaryContainerd), map[string]string{
+	config.addServer("containerd", Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, config.GetTemplateAssetFilename(utils.BinaryContainerd), map[string]string{
 		"config": config.GetTemplateAssetFilename(utils.ContainerdConfig),
 	})
 
-	config.addServer("kubelet", Labels{utils.NodeController, utils.NodeWorker}, config.GetTemplateAssetFilename(utils.BinaryKubelet), map[string]string{
+	config.addServer("kubelet", Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, config.GetTemplateAssetFilename(utils.BinaryKubelet), map[string]string{
 		"config":                       config.GetTemplateAssetFilename(utils.K8sKubeletConfig),
 		"container-runtime":            "remote",
 		"container-runtime-endpoint":   "unix://" + config.GetTemplateAssetFilename(utils.ContainerdSock),
@@ -335,14 +336,14 @@ func (config *InternalConfig) registerServers() {
 
 func (config *InternalConfig) registerCommands() {
 	// Dependencies
-	config.addCommand("setup-ubuntu", Labels{utils.NodeController, utils.NodeWorker}, Features{}, OS{utils.OsUbuntu}, "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y apt-transport-https bash-completion socat")
-	config.addCommand("setup-centos", Labels{utils.NodeController, utils.NodeWorker}, Features{}, OS{utils.OsCentos}, "systemctl disable firewalld && systemctl stop firewalld && yum install -y socat bash-completion libseccomp && sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux && (setenforce 0 || true)")
-	config.addCommand("swapoff", Labels{utils.NodeController, utils.NodeWorker}, Features{}, OS{}, "swapoff -a")
-	config.addCommand("load-overlay", Labels{utils.NodeController, utils.NodeWorker}, Features{}, OS{}, "modprobe overlay")
-	config.addCommand("load-btrfs", Labels{utils.NodeController, utils.NodeWorker}, Features{}, OS{}, "modprobe btrfs")
-	config.addCommand("load-br_netfilter", Labels{utils.NodeController, utils.NodeWorker}, Features{}, OS{}, "modprobe br_netfilter")
-	config.addCommand("enable-br_netfilter", Labels{utils.NodeController, utils.NodeWorker}, Features{}, OS{}, "echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables")
-	config.addCommand("enable-net-forwarding", Labels{utils.NodeController, utils.NodeWorker}, Features{}, OS{}, "sysctl net.ipv4.conf.all.forwarding=1")
+	config.addCommand("setup-ubuntu", Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, Features{}, OS{utils.OsUbuntu}, "apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y apt-transport-https bash-completion socat")
+	config.addCommand("setup-centos", Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, Features{}, OS{utils.OsCentos}, "systemctl disable firewalld && systemctl stop firewalld && yum install -y socat bash-completion libseccomp && sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux && (setenforce 0 || true)")
+	config.addCommand("swapoff", Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, Features{}, OS{}, "swapoff -a")
+	config.addCommand("load-overlay", Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, Features{}, OS{}, "modprobe overlay")
+	config.addCommand("load-btrfs", Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, Features{}, OS{}, "modprobe btrfs")
+	config.addCommand("load-br_netfilter", Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, Features{}, OS{}, "modprobe br_netfilter")
+	config.addCommand("enable-br_netfilter", Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, Features{}, OS{}, "echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables")
+	config.addCommand("enable-net-forwarding", Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, Features{}, OS{}, "sysctl net.ipv4.conf.all.forwarding=1")
 	config.addManifest("kubelet-setup", Labels{utils.NodeBootstrapper}, Features{}, OS{}, config.GetFullLocalAssetFilename(utils.K8sKubeletSetup))
 	config.addManifest("admin-user-setup", Labels{utils.NodeBootstrapper}, Features{}, OS{}, config.GetFullLocalAssetFilename(utils.K8sAdminUserSetup))
 	config.addManifest("calico-setup", Labels{utils.NodeBootstrapper}, Features{}, OS{}, config.GetFullLocalAssetFilename(utils.K8sCalicoSetup))
@@ -722,11 +723,11 @@ func (config *InternalConfig) getLabeledOrAllNodes(label string) []NodeData {
 }
 
 func (config *InternalConfig) GetStorageControllers() []NodeData {
-	return config.getLabeledOrAllNodes(utils.NodeController)
+	return config.getLabeledOrAllNodes(utils.NodeStorage)
 }
 
 func (config *InternalConfig) GetStorageNodes() []NodeData {
-	return config.getLabeledOrAllNodes(utils.NodeWorker)
+	return config.getLabeledOrAllNodes(utils.NodeStorage)
 }
 
 func (config *InternalConfig) GetAllowedCommonNames() string {
