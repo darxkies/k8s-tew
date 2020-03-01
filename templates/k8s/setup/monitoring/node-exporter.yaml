@@ -24,6 +24,11 @@ spec:
         k8s-app: node-exporter
     spec:
       serviceAccountName: node-exporter
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
+        - effect: NoExecute
+          operator: Exists
       containers:
         - name: node-exporter
           image: {{ .NodeExporterImage }} 

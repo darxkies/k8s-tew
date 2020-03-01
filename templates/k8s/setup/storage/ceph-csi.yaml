@@ -255,8 +255,9 @@ spec:
       labels:
         app: csi-rbdplugin
     spec:
-      nodeSelector:
-        node-role.kubernetes.io/worker: "true"
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
       serviceAccount: rbd-csi-nodeplugin
       hostNetwork: true
       hostPID: true
@@ -757,8 +758,9 @@ spec:
       labels:
         app: csi-cephfsplugin
     spec:
-      nodeSelector:
-        node-role.kubernetes.io/worker: "true"
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
       serviceAccount: cephfs-csi-nodeplugin
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet

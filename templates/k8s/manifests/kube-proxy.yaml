@@ -34,8 +34,15 @@ spec:
     - name: kube-proxy-kubeconfig
       mountPath: {{.KubeProxyKubeconfig}}
       readOnly: true
+    - name: lib-modules
+      mountPath: /lib/modules
+      readOnly: true
   volumes:
   - name: kube-proxy-kubeconfig
     hostPath:
       type: File
       path: {{.KubeProxyKubeconfig}}
+  - name: lib-modules
+    hostPath:
+      type: Directory
+      path: /lib/modules

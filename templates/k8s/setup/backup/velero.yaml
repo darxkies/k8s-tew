@@ -394,6 +394,11 @@ spec:
       labels:
         name: restic
     spec:
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
+        - effect: NoExecute
+          operator: Exists
       serviceAccountName: velero
       securityContext:
         runAsUser: 0
