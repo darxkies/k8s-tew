@@ -26,13 +26,13 @@ html_theme_path = guzzle_sphinx_theme.html_theme_path()
 # -- Project information -----------------------------------------------------
 
 project = u'k8s-tew'
-copyright = u'2018, Mircea-Cristian Racasan'
+copyright = u'2020, Mircea-Cristian Racasan'
 author = u'Mircea-Cristian Racasan'
 
 html_logo = '../logo.svg'
 
 # The short X.Y version
-version = u'2.1.0'
+version = u'2.4.0'
 # The full version, including alpha/beta/rc tags
 release = u''
 
