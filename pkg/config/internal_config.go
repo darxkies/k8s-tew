@@ -270,6 +270,7 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.K8sNodeExporterSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sGrafanaSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sAlertManagerSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.K8sGrafanaSecrets, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.WordpressSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
 
 	// K8S Config
@@ -353,6 +354,7 @@ func (config *InternalConfig) registerCommands() {
 	config.addManifest("node-exporter-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sNodeExporterSetup))
 	config.addManifest("alert-manager-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sAlertManagerSetup))
 	config.addManifest("kube-state-metrics-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sKubeStateMetricsSetup))
+	config.addManifest("grafana-secrets", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sGrafanaSecrets))
 	config.addManifest("grafana-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sGrafanaSetup))
 	config.addManifest("efk-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureLogging, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sEfkSetup))
 	config.addManifest("velero-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureBackup, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sVeleroSetup))

@@ -39,6 +39,7 @@ require (
 	github.com/saibing/bingo v0.0.0-20190305053906-43cf0205459d // indirect
 	github.com/samuel/go-zookeeper v0.0.0-20190923202752-2cc03de413da // indirect
 	github.com/satori/go.uuid v1.2.0
+	github.com/sethvargo/go-password v0.1.3
 	github.com/sirupsen/logrus v1.4.2
 	github.com/smallnest/goreq v0.0.0-20180727030113-2e3372c80388
 	github.com/sourcegraph/ctxvfs v0.0.0-20180418081416-2b65f1b1ea81 // indirect

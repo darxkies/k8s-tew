@@ -63,18 +63,6 @@ data:
       type: file
 ---
 apiVersion: v1
-kind: Secret
-metadata:
-  namespace: monitoring
-  name: grafana
-  labels:
-    k8s-app: grafana
-type: Opaque
-data:
-  admin-user: "YWRtaW4="
-  admin-password: "Y2hhbmdlbWU="
----
-apiVersion: v1
 kind: Service
 metadata:
   namespace: monitoring
@@ -146,12 +134,12 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: grafana
-                  key: admin-user
+                  key: username
             - name: GF_SECURITY_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: grafana
-                  key: admin-password
+                  key: password
           livenessProbe:
             httpGet:
               path: /api/health

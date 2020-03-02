@@ -308,6 +308,7 @@ const K8sKubeStateMetricsSetup = "kube-state-metrics-setup.yaml"
 const K8sNodeExporterSetup = "node-exporter-setup.yaml"
 const K8sGrafanaSetup = "grafana.yaml"
 const K8sAlertManagerSetup = "alert-manager.yaml"
+const K8sGrafanaSecrets = "grafana-secrets.yaml"
 const WordpressSetup = "wordpress-setup.yaml"
 
 // Gobetween Config
@@ -370,6 +371,7 @@ const TemplateKubeSchedulerConfiguration = "k8s/kube-scheduler-configuration.yam
 const TemplateKubeletConfiguration = "k8s/kubelet-configuration.yaml"
 const TemplateEncryptionConfig = "k8s/encryption-config.yaml"
 const TemplateKubeconfig = "k8s/kubeconfig.yaml"
+const TemplateSecret = "k8s/secret.yaml"
 const TemplateServiceAccount = "k8s/service-account.yaml"
 const TemplateKubeletSetup = "k8s/setup/kubelet-setup.yaml"
 const TemplateCephClientKeyring = "ceph/client.keyring"

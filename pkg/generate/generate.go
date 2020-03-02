@@ -1,14 +1,18 @@
 package generate
 
 import (
+	"encoding/base64"
 	"fmt"
 	"path"
 	"strings"
 
 	"github.com/darxkies/k8s-tew/pkg/config"
+	"github.com/pkg/errors"
 
 	"github.com/darxkies/k8s-tew/pkg/pki"
 	"github.com/darxkies/k8s-tew/pkg/utils"
+
+	"github.com/sethvargo/go-password/password"
 )
 
 type Generator struct {
@@ -77,6 +81,8 @@ func NewGenerator(config *config.InternalConfig) *Generator {
 		generator.generateKubeStateMetricsSetup,
 		// Generate node exporter setup file
 		generator.generateNodeExporterSetup,
+		// Generate grafana secrets file
+		generator.generateGrafanaSecrets,
 		// Generate grafana setup file
 		generator.generateGrafanaSetup,
 		// Generate alert manager setup file
@@ -1030,6 +1036,23 @@ func (generator *Generator) generateKubeStateMetricsSetup() error {
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sKubeStateMetricsSetup), true, false)
 }
 
+func (generator *Generator) generateGrafanaSecrets() error {
+	password, error := generator.generatePassword()
+	if error != nil {
+		return error
+	}
+
+	return utils.ApplyTemplateAndSave("grafana-secrets", utils.TemplateSecret, struct {
+		Namespace  string
+		SecretName string
+		Password   string
+	}{
+		Namespace:  utils.FeatureMonitoring,
+		SecretName: "grafana",
+		Password:   password,
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sGrafanaSecrets), false, false)
+}
+
 func (generator *Generator) generateGrafanaSetup() error {
 	return utils.ApplyTemplateAndSave("grafana", utils.TemplateGrafanaSetup, struct {
 		GrafanaImage string
@@ -1090,4 +1113,15 @@ func (generator *Generator) GenerateFiles() error {
 	}
 
 	return nil
+}
+
+func (generator *Generator) generatePassword() (string, error) {
+	result, error := password.Generate(16, 8, 8, false, false)
+	if error != nil {
+		return result, errors.Wrap(error, "Could not generate secret")
+	}
+
+	result = base64.StdEncoding.EncodeToString([]byte(result))
+
+	return result, nil
 }
