@@ -175,7 +175,6 @@ const SubdirectoryCephBootstrapOsd = "bootstrap-osd"
 const SubdirectoryCephBootstrapRbd = "bootstrap-rbd"
 const SubdirectoryCephBootstrapRgw = "bootstrap-rgw"
 const SubdirectoryVelero = "velero"
-const SubdirectoryBashCompletion = "bash_completion.d"
 const SubdirectoryHost = "host"
 const SubdirectoryPlugins = "plugins"
 const SubdirectoryCsiCephfsPlugin = "csi-cephfsplugin"
@@ -219,7 +218,6 @@ const DirectoryCephBootstrapOsd = "bootstrap-osd"
 const DirectoryCephBootstrapRbd = "bootstrap-rbd"
 const DirectoryCephBootstrapRgw = "bootstrap-rgw"
 const DirectoryVeleroBinaries = "velero"
-const DirectoryBashCompletion = "bash-completion"
 const DirectoryHostBinaries = "host-binaries"
 const DirectoryKubeletPlugins = "kubelet-plugins"
 const DirectoryKubeletPluginsRegistry = "kubelet-plugins-registry"
@@ -317,13 +315,6 @@ const GobetweenConfig = "config.toml"
 
 // Profile
 const K8sTewProfile = "k8s-tew.sh"
-
-// Bash Completion
-const BashCompletionK8sTew = "k8s-tew.bash-completion"
-const BashCompletionKubectl = "kubectl.bash-completion"
-const BashCompletionHelm = "helm.bash-completion"
-const BashCompletionVelero = "velero.bash-completion"
-const BashCompletionCrictl = "crictl.bash-completion"
 
 // Logging
 const AuditLog = "audit.log"

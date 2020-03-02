@@ -9,7 +9,6 @@ import (
 
 	"github.com/darxkies/k8s-tew/pkg/pki"
 	"github.com/darxkies/k8s-tew/pkg/utils"
-	log "github.com/sirupsen/logrus"
 )
 
 type Generator struct {
@@ -84,16 +83,6 @@ func NewGenerator(config *config.InternalConfig) *Generator {
 		generator.generateAlertManagerSetup,
 		// Generate wordpress setup file
 		generator.generateWordpressSetup,
-		// Generate Bash Completion for K8S-TEW
-		generator.generateBashCompletionK8STEW,
-		// Generate Bash Completion for Kubectl
-		generator.generateBashCompletionKubectl,
-		// Generate Bash Completion for Helm
-		generator.generateBashCompletionHelm,
-		// Generate Bash Completion for Velero
-		generator.generateBashCompletionVelero,
-		// Generate Bash Completion for CriCtl
-		generator.generateBashCompletionCriCtl,
 		// Generate gobetween manifest
 		generator.generateManifestGobetween,
 		// Generate controller virtual-ip manifest
@@ -1089,37 +1078,6 @@ func (generator *Generator) generateWordpressSetup() error {
 		WordPressImage:         generator.config.Config.Versions.WordPress,
 		WordPressPort:          utils.PortWordpress,
 	}, generator.config.GetFullLocalAssetFilename(utils.WordpressSetup), true, false)
-}
-
-func (generator *Generator) generateBashCompletion(binaryName, bashCompletionFilename string) error {
-	binary := generator.config.GetFullLocalAssetFilename(binaryName)
-	bashCompletionFullFilename := generator.config.GetFullLocalAssetFilename(bashCompletionFilename)
-
-	command := fmt.Sprintf("%s completion bash > %s", binary, bashCompletionFullFilename)
-
-	log.WithFields(log.Fields{"name": bashCompletionFilename}).Info("Generated")
-
-	return utils.RunCommand(command)
-}
-
-func (generator *Generator) generateBashCompletionK8STEW() error {
-	return generator.generateBashCompletion(utils.BinaryK8sTew, utils.BashCompletionK8sTew)
-}
-
-func (generator *Generator) generateBashCompletionKubectl() error {
-	return generator.generateBashCompletion(utils.BinaryKubectl, utils.BashCompletionKubectl)
-}
-
-func (generator *Generator) generateBashCompletionHelm() error {
-	return generator.generateBashCompletion(utils.BinaryHelm, utils.BashCompletionHelm)
-}
-
-func (generator *Generator) generateBashCompletionVelero() error {
-	return generator.generateBashCompletion(utils.BinaryVelero, utils.BashCompletionVelero)
-}
-
-func (generator *Generator) generateBashCompletionCriCtl() error {
-	return generator.generateBashCompletion(utils.BinaryCrictl, utils.BashCompletionCrictl)
 }
 
 func (generator *Generator) GenerateFiles() error {

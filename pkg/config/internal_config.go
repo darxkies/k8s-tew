@@ -165,7 +165,6 @@ func (config *InternalConfig) registerAssetDirectories() {
 	config.addAssetDirectory(utils.DirectoryProfile, Labels{}, path.Join(utils.SubdirectoryConfig, utils.SubdirectoryProfileD), false)
 	config.addAssetDirectory(utils.DirectoryHelmData, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryDynamicData), utils.SubdirectoryHelm), false)
 	config.addAssetDirectory(utils.DirectoryTemporary, Labels{}, path.Join(utils.SubdirectoryTemporary), false)
-	config.addAssetDirectory(utils.DirectoryBashCompletion, Labels{}, path.Join(utils.SubdirectoryConfig, utils.SubdirectoryBashCompletion), false)
 	config.addAssetDirectory(utils.DirectoryKubeletPlugins, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryKubeletData), utils.SubdirectoryPlugins), true)
 	config.addAssetDirectory(utils.DirectoryKubeletPluginsRegistry, Labels{}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryKubeletData), utils.SubdirectoryPluginsRegistry), false)
 	config.addAssetDirectory(utils.DirectoryImages, Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, path.Join(utils.SubdirectoryVariable, utils.SubdirectoryK8sTew, utils.SubdirectoryImages), false)
@@ -301,13 +300,6 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.CephBootstrapOsdKeyring, Labels{utils.NodeStorage}, utils.CephKeyring, utils.DirectoryCephBootstrapOsd)
 	config.addAssetFile(utils.CephBootstrapRbdKeyring, Labels{utils.NodeStorage}, utils.CephKeyring, utils.DirectoryCephBootstrapRbd)
 	config.addAssetFile(utils.CephBootstrapRgwKeyring, Labels{utils.NodeStorage}, utils.CephKeyring, utils.DirectoryCephBootstrapRgw)
-
-	// Bash Completion
-	config.addAssetFile(utils.BashCompletionK8sTew, Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, "", utils.DirectoryBashCompletion)
-	config.addAssetFile(utils.BashCompletionKubectl, Labels{utils.NodeController}, "", utils.DirectoryBashCompletion)
-	config.addAssetFile(utils.BashCompletionCrictl, Labels{utils.NodeController}, "", utils.DirectoryBashCompletion)
-	config.addAssetFile(utils.BashCompletionHelm, Labels{}, "", utils.DirectoryBashCompletion)
-	config.addAssetFile(utils.BashCompletionVelero, Labels{}, "", utils.DirectoryBashCompletion)
 
 	// Images
 	for _, image := range config.Config.Versions.GetImages() {

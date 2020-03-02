@@ -364,7 +364,7 @@ func (deployment *NodeDeployment) UploadFile(from, to string) error {
 	filename := path.Base(to)
 
 	if !utils.FileExists(from) {
-		log.WithFields(log.Fields{"name": filename, "node": deployment.name, "_target": deployment.node.IP, "_source-filename": from, "_destination-filename": to}).Info("Skipping")
+		log.WithFields(log.Fields{"name": filename, "node": deployment.name, "_target": deployment.node.IP, "_source-filename": from, "_destination-filename": to}).Debug("Skipping")
 
 		return nil
 	}
