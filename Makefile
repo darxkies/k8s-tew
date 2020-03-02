@@ -3,8 +3,8 @@ VERSION = $(shell git describe --tags)
 PACKAGE = github.com/darxkies/k8s-tew
 
 compile:
-	docker build -t $(BUILD_IMAGE) .
-	docker run --rm -v $$(pwd):/go/src/$(PACKAGE) $(BUILD_IMAGE)
+	docker build --ulimit memlock=-1:-1 -t $(BUILD_IMAGE) .
+	docker run --rm --ulimit memlock=-1:-1 -v $$(pwd):/go/src/$(PACKAGE) $(BUILD_IMAGE)
 
 build-binaries:
 	mkdir -p embedded
