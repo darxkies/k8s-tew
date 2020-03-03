@@ -292,3 +292,31 @@ func (k8s *K8S) Apply(manifest string) error {
 
 	return error
 }
+
+func (k8s *K8S) GetCredentials(namespace, name string) (username string, password string, error error) {
+	clientset, error := k8s.getClient()
+	if error != nil {
+		return "", "", error
+	}
+
+	secrets, error := clientset.CoreV1().Secrets(namespace).Get(name, metav1.GetOptions{})
+	if error != nil {
+		return "", "", errors.Wrapf(error, "Could not list secrets for namespace '%s'", namespace)
+	}
+
+	data, ok := secrets.Data["username"]
+	if !ok {
+		return "", "", fmt.Errorf("Could not get username for %s/%s", namespace, name)
+	}
+
+	username = string(data)
+
+	data, ok = secrets.Data["password"]
+	if !ok {
+		return "", "", fmt.Errorf("Could not get password for %s/%s", namespace, name)
+	}
+
+	password = string(data)
+
+	return username, password, nil
+}

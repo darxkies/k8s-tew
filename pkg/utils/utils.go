@@ -196,7 +196,7 @@ func ApplyTemplateAndSave(label, templateName string, data interface{}, filename
 	content := GetTemplate(templateName)
 
 	if FileExists(filename) && !force {
-		LogFilename("Skipped", filename)
+		LogDebugFilename("Skipped", filename)
 
 		return nil
 	}

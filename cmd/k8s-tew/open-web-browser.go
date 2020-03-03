@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/darxkies/k8s-tew/pkg/k8s"
 	"github.com/darxkies/k8s-tew/pkg/utils"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -109,6 +110,18 @@ var openWebBrowserCmd = &cobra.Command{
 			log.WithFields(log.Fields{"error": error}).Error("Open Web Browser failed")
 
 			os.Exit(-3)
+		}
+
+		kubernetesClient := k8s.NewK8S(_config)
+
+		username, password, error := kubernetesClient.GetCredentials(utils.FeatureMonitoring, utils.GrafanaCredentials)
+		if error == nil {
+			log.WithFields(log.Fields{"username": username, "password": password}).Info("Grafana Credentials")
+		}
+
+		username, password, error = kubernetesClient.GetCredentials(utils.FeatureBackup, utils.MinioCredentials)
+		if error == nil {
+			log.WithFields(log.Fields{"username": username, "password": password}).Info("Minio Credentials")
 		}
 
 	},

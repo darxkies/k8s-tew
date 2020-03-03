@@ -236,9 +236,15 @@ spec:
         - --config-dir=/config
         env:
         - name: MINIO_ACCESS_KEY
-          value: "minio"
+          valueFrom:
+            secretKeyRef:
+              name: minio-credentials
+              key: username
         - name: MINIO_SECRET_KEY
-          value: "changeme"
+          valueFrom:
+            secretKeyRef:
+              name: minio-credentials
+              key: password
         ports:
         - containerPort: 9000
         volumeMounts:
@@ -266,19 +272,6 @@ spec:
     component: minio
 
 ---
-apiVersion: v1
-kind: Secret
-metadata:
-  namespace: backup
-  name: cloud-credentials
-  labels:
-    component: minio
-stringData:
-  cloud: |
-    [default]
-    aws_access_key_id = minio
-    aws_secret_access_key = changeme
----
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -301,10 +294,21 @@ spec:
         command:
         - /bin/sh
         - -c
-        - "mc --config-dir=/config config host add velero http://minio:9000 minio changeme && mc --config-dir=/config mb -p velero/velero && mc --config-dir=/config mb -p velero/restic"
+        - "mc --config-dir=/config config host add velero http://minio:9000 $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY && mc --config-dir=/config mb -p velero/velero && mc --config-dir=/config mb -p velero/restic"
         volumeMounts:
         - name: config
           mountPath: "/config"
+        env:
+          - name: AWS_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: minio-credentials
+                key: username
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: minio-credentials
+                key: password
 ---
 apiVersion: velero.io/v1
 kind: BackupStorageLocation
@@ -360,21 +364,24 @@ spec:
           args:
             - server
           volumeMounts:
-            - name: cloud-credentials
-              mountPath: /credentials
             - name: plugins
               mountPath: /plugins
             - name: scratch
               mountPath: /scratch
           env:
-            - name: AWS_SHARED_CREDENTIALS_FILE
-              value: /credentials/cloud
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: minio-credentials
+                  key: username
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: minio-credentials
+                  key: password
             - name: VELERO_SCRATCH_DIR
               value: /scratch
       volumes:
-        - name: cloud-credentials
-          secret:
-            secretName: cloud-credentials
         - name: plugins
           emptyDir: {}
         - name: scratch
@@ -403,9 +410,6 @@ spec:
       securityContext:
         runAsUser: 0
       volumes:
-        - name: cloud-credentials
-          secret:
-            secretName: cloud-credentials
         - name: host-pods
           hostPath:
             path: {{ .PodsDirectory }}
@@ -420,14 +424,22 @@ spec:
             - restic
             - server
           volumeMounts:
-            - name: cloud-credentials
-              mountPath: /credentials
             - name: host-pods
               mountPath: /host_pods
               mountPropagation: HostToContainer
             - name: scratch
               mountPath: /scratch
           env:
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: minio-credentials
+                  key: username
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: minio-credentials
+                  key: password
             - name: NODE_NAME
               valueFrom:
                 fieldRef:
@@ -436,7 +448,5 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
-            - name: AWS_SHARED_CREDENTIALS_FILE
-              value: /credentials/cloud
             - name: VELERO_SCRATCH_DIR
               value: /scratch

@@ -64,6 +64,12 @@ func LogFilename(message, filename string) {
 	log.WithFields(log.Fields{"name": name, "_filename": filename}).Info(message)
 }
 
+func LogDebugFilename(message, filename string) {
+	name := path.Base(filename)
+
+	log.WithFields(log.Fields{"name": name, "_filename": filename}).Debug(message)
+}
+
 func LogURL(message, url string) {
 	name := path.Base(url)
 

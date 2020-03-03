@@ -173,8 +173,8 @@ func createAndSaveCertificate(signer *CertificateAndPrivateKey, template *x509.C
 
 func GenerateCA(rsaSize uint16, validityPeriod uint, commonName, organization, certificateFilename, privateKeyFilename string) error {
 	if utils.FileExists(certificateFilename) && utils.FileExists(privateKeyFilename) {
-		utils.LogFilename("Skipped", certificateFilename)
-		utils.LogFilename("Skipped", privateKeyFilename)
+		utils.LogDebugFilename("Skipped", certificateFilename)
+		utils.LogDebugFilename("Skipped", privateKeyFilename)
 
 		return nil
 	}
@@ -194,8 +194,8 @@ func GenerateCA(rsaSize uint16, validityPeriod uint, commonName, organization, c
 
 func GenerateClient(signer *CertificateAndPrivateKey, rsaSize uint16, validityPeriod uint, commonName, organization string, dnsNames []string, ipAddresses []string, certificateFilename, privateKeyFilename string, force bool) error {
 	if utils.FileExists(certificateFilename) && utils.FileExists(privateKeyFilename) && !force {
-		utils.LogFilename("Skipped", certificateFilename)
-		utils.LogFilename("Skipped", privateKeyFilename)
+		utils.LogDebugFilename("Skipped", certificateFilename)
+		utils.LogDebugFilename("Skipped", privateKeyFilename)
 
 		return nil
 	}

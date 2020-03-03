@@ -65,6 +65,8 @@ func NewGenerator(config *config.InternalConfig) *Generator {
 		generator.generateCoreDNSSetup,
 		// Generate ElasticSearch/Fluent-Bit/Kibana setup file
 		generator.generateEFKSetup,
+		// Generate minio secrets file
+		generator.generateMinioCredentials,
 		// Generate velero setup file
 		generator.generateVeleroSetup,
 		// Generate kubernetes dashboard setup file
@@ -82,7 +84,7 @@ func NewGenerator(config *config.InternalConfig) *Generator {
 		// Generate node exporter setup file
 		generator.generateNodeExporterSetup,
 		// Generate grafana secrets file
-		generator.generateGrafanaSecrets,
+		generator.generateGrafanaCredentials,
 		// Generate grafana setup file
 		generator.generateGrafanaSetup,
 		// Generate alert manager setup file
@@ -202,7 +204,7 @@ func (generator *Generator) generateEncryptionFile() error {
 	fullEncryptionConfigFilename := generator.config.GetFullLocalAssetFilename(utils.EncryptionConfig)
 
 	if utils.FileExists(fullEncryptionConfigFilename) {
-		utils.LogFilename("skipped", fullEncryptionConfigFilename)
+		utils.LogDebugFilename("skipped", fullEncryptionConfigFilename)
 
 		return nil
 	}
@@ -942,6 +944,23 @@ func (generator *Generator) generateEFKSetup() error {
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sEfkSetup), true, false)
 }
 
+func (generator *Generator) generateMinioCredentials() error {
+	password, error := generator.generatePassword()
+	if error != nil {
+		return error
+	}
+
+	return utils.ApplyTemplateAndSave(utils.MinioCredentials, utils.TemplateCredentials, struct {
+		Namespace  string
+		SecretName string
+		Password   string
+	}{
+		Namespace:  utils.FeatureBackup,
+		SecretName: utils.MinioCredentials,
+		Password:   password,
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sMinioCredentials), false, false)
+}
+
 func (generator *Generator) generateVeleroSetup() error {
 	return utils.ApplyTemplateAndSave("velero-setup", utils.TemplateVeleroSetup, struct {
 		VeleroImage          string
@@ -1036,21 +1055,21 @@ func (generator *Generator) generateKubeStateMetricsSetup() error {
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sKubeStateMetricsSetup), true, false)
 }
 
-func (generator *Generator) generateGrafanaSecrets() error {
+func (generator *Generator) generateGrafanaCredentials() error {
 	password, error := generator.generatePassword()
 	if error != nil {
 		return error
 	}
 
-	return utils.ApplyTemplateAndSave("grafana-secrets", utils.TemplateSecret, struct {
+	return utils.ApplyTemplateAndSave(utils.GrafanaCredentials, utils.TemplateCredentials, struct {
 		Namespace  string
 		SecretName string
 		Password   string
 	}{
 		Namespace:  utils.FeatureMonitoring,
-		SecretName: "grafana",
+		SecretName: utils.GrafanaCredentials,
 		Password:   password,
-	}, generator.config.GetFullLocalAssetFilename(utils.K8sGrafanaSecrets), false, false)
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sGrafanaCredentials), false, false)
 }
 
 func (generator *Generator) generateGrafanaSetup() error {
@@ -1116,7 +1135,7 @@ func (generator *Generator) GenerateFiles() error {
 }
 
 func (generator *Generator) generatePassword() (string, error) {
-	result, error := password.Generate(16, 8, 8, false, false)
+	result, error := password.Generate(12, 6, 0, false, false)
 	if error != nil {
 		return result, errors.Wrap(error, "Could not generate secret")
 	}

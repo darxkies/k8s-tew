@@ -465,7 +465,7 @@ func (downloader Downloader) downloadImages() error {
 		imageFilename := downloader.config.GetFullLocalAssetFilename(image.GetImageFilename())
 
 		if utils.FileExists(imageFilename) {
-			log.WithFields(log.Fields{"image": image.Name, "_filename": imageFilename}).Info("Skipped downloading")
+			log.WithFields(log.Fields{"image": image.Name, "_filename": imageFilename}).Debug("Skipped downloading")
 
 			utils.IncreaseProgressStep()
 

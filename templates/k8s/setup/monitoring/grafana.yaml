@@ -133,12 +133,12 @@ spec:
             - name: GF_SECURITY_ADMIN_USER
               valueFrom:
                 secretKeyRef:
-                  name: grafana
+                  name: grafana-credentials
                   key: username
             - name: GF_SECURITY_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: grafana
+                  name: grafana-credentials
                   key: password
           livenessProbe:
             httpGet:

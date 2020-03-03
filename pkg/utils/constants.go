@@ -306,7 +306,8 @@ const K8sKubeStateMetricsSetup = "kube-state-metrics-setup.yaml"
 const K8sNodeExporterSetup = "node-exporter-setup.yaml"
 const K8sGrafanaSetup = "grafana.yaml"
 const K8sAlertManagerSetup = "alert-manager.yaml"
-const K8sGrafanaSecrets = "grafana-secrets.yaml"
+const K8sGrafanaCredentials = "grafana-credentials.yaml"
+const K8sMinioCredentials = "minio-credentials.yaml"
 const WordpressSetup = "wordpress-setup.yaml"
 
 // Gobetween Config
@@ -369,7 +370,7 @@ const TemplateKubeSchedulerConfiguration = "k8s/kube-scheduler-configuration.yam
 const TemplateKubeletConfiguration = "k8s/kubelet-configuration.yaml"
 const TemplateEncryptionConfig = "k8s/encryption-config.yaml"
 const TemplateKubeconfig = "k8s/kubeconfig.yaml"
-const TemplateSecret = "k8s/secret.yaml"
+const TemplateCredentials = "k8s/credentials.yaml"
 const TemplateServiceAccount = "k8s/service-account.yaml"
 const TemplateKubeletSetup = "k8s/setup/kubelet-setup.yaml"
 const TemplateCephClientKeyring = "ceph/client.keyring"
@@ -407,4 +408,8 @@ const TemplateManifestVirtualIP = "k8s/manifests/virtual-ip.yaml"
 const NodeRoleController = "node-role.kubernetes.io/master"
 const NodeRoleWorker = "node-role.kubernetes.io/worker"
 const NodeRoleStorage = "node-role.kubernetes.io/storage"
+
 const ConcurrentSshConnectionsLimit = 10
+
+const GrafanaCredentials = "grafana-credentials"
+const MinioCredentials = "minio-credentials"
