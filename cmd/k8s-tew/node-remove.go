@@ -22,6 +22,8 @@ func removeNode() error {
 		return error
 	}
 
+	log.WithFields(log.Fields{"name": removeNodeName}).Info("Node removed")
+
 	if error := _config.Save(); error != nil {
 		return error
 	}

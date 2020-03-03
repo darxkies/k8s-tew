@@ -310,7 +310,7 @@ func Unmount(path string) error {
 }
 
 func KillContainers(_config *config.InternalConfig) {
-	containerdShimBinary := _config.GetFullLocalAssetFilename(utils.BinaryContainerdShim)
+	containerdShimBinary := _config.GetFullLocalAssetFilename(utils.BinaryContainerdShimRuncV2)
 
 	workdirPrefix := _config.GetFullLocalAssetDirectory(utils.DirectoryDynamicData)
 	mountPrefixes := []string{

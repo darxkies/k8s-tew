@@ -420,14 +420,6 @@ func (downloader Downloader) downloadContainerdBinaries() error {
 			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.BinaryContainerd),
 		},
 		{
-			SourceFile: path.Join("bin", utils.BinaryContainerdShim),
-			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.BinaryContainerdShim),
-		},
-		{
-			SourceFile: path.Join("bin", utils.BinaryContainerdShimRuncV1),
-			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.BinaryContainerdShimRuncV1),
-		},
-		{
 			SourceFile: path.Join("bin", utils.BinaryContainerdShimRuncV2),
 			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.BinaryContainerdShimRuncV2),
 		},

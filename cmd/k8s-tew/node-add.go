@@ -35,7 +35,7 @@ func addNode() error {
 	}
 
 	if nodeSelf {
-		log.Println("Adding self as node")
+		log.Debug("Adding self as node")
 
 		// Get ip of the node
 		nodeIP, error = utils.RunCommandWithOutput("ip route get 8.8.8.8 | cut -d ' ' -f 7")
@@ -76,6 +76,8 @@ func addNode() error {
 	if _, error = _config.AddNode(nodeName, nodeIP, nodeIndex, labels); error != nil {
 		return error
 	}
+
+	log.WithFields(log.Fields{"name": nodeName, "ip": nodeIP, "index": nodeIndex, "labels": labels}).Info("Node added")
 
 	if error := _config.Save(); error != nil {
 		return error
