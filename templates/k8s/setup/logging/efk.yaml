@@ -59,7 +59,7 @@ data:
         Parser           docker
         Tag              kube.*
         Refresh_Interval 5
-        Mem_Buf_Limit    5MB
+        Mem_Buf_Limit    50MB
         Skip_Long_Lines  On
     [INPUT]
         Name             tail
@@ -67,7 +67,7 @@ data:
         Parser           syslog
         Tag              k8s-tew.*
         Refresh_Interval 5
-        Mem_Buf_Limit    5MB
+        Mem_Buf_Limit    50MB
         Skip_Long_Lines  On
     [FILTER]
         Name                kubernetes
@@ -75,7 +75,7 @@ data:
         Kube_URL            https://kubernetes.default.svc:443
         Kube_CA_File        /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
         Kube_Token_File     /var/run/secrets/kubernetes.io/serviceaccount/token
-        tls.verify 0
+        tls.verify off
         tls.debug 1
     [OUTPUT]
         Name  es
@@ -87,9 +87,15 @@ data:
         Type  flb_type
         Logstash_Prefix kubernetes_cluster
         tls off
-        tls.verify 0
+        tls.verify off
         tls.debug 1
   parsers.conf: |-
+    [PARSER]
+        Name        syslog
+        Format      regex
+        Regex       ^\<(?<pri>[0-9]+)\>(?<time>[^ ]* {1,2}[^ ]* [^ ]*) (?<host>[^ ]*) (?<ident>[a-zA-Z0-9_\/\.\-]*)(?:\[(?<pid>[0-9]+)\])?(?:[^\:]*\:)? *(?<message>.*)$
+        Time_Key    time
+        Time_Format %b %d %H:%M:%S
     [PARSER]
         Name        docker
         Format      json
@@ -97,12 +103,6 @@ data:
         Time_Format %Y-%m-%dT%H:%M:%S.%L
         Time_Keep   On
 
-    [PARSER]
-        Name        syslog
-        Format      regex
-        Regex       ^\<(?<pri>[0-9]+)\>(?<time>[^ ]* {1,2}[^ ]* [^ ]*) (?<host>[^ ]*) (?<ident>[a-zA-Z0-9_\/\.\-]*)(?:\[(?<pid>[0-9]+)\])?(?:[^\:]*\:)? *(?<message>.*)$
-        Time_Key    time
-        Time_Format %b %d %H:%M:%S
 ---
 apiVersion: apps/v1
 kind: DaemonSet

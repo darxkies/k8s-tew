@@ -1,6 +1,5 @@
 apiVersion: kubelet.config.k8s.io/v1beta1
 kind: KubeletConfiguration
-allowPrivileged: true
 authentication:
   anonymous:
     enabled: false
@@ -20,8 +19,6 @@ tlsPrivateKeyFile: "{{.KeyFilename}}"
 staticPodPath: "{{.StaticPodPath}}"
 failSwapOn: false
 featureGates: 
-  CSIBlockVolume: true
-  BlockVolume: true
   VolumeSnapshotDataSource: true
 resolvConf: "{{.ResolvConf}}"
 readOnlyPort: 10255
