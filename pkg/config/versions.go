@@ -24,6 +24,7 @@ type Versions struct {
 	Kibana                     string `yaml:"kibana"`
 	Cerebro                    string `yaml:"cerebro"`
 	FluentBit                  string `yaml:"fluent-bit"`
+	CalicoPod2Daemon           string `yaml:"calico-pod2daemon"`
 	CalicoTypha                string `yaml:"calico-typha"`
 	CalicoNode                 string `yaml:"calico-node"`
 	CalicoCNI                  string `yaml:"calico-cni"`
@@ -77,6 +78,7 @@ func NewVersions() Versions {
 		Kibana:                     utils.VersionKibana,
 		Cerebro:                    utils.VersionCerebro,
 		FluentBit:                  utils.VersionFluentBit,
+		CalicoPod2Daemon:           utils.VersionCalicoPod2Daemon,
 		CalicoTypha:                utils.VersionCalicoTypha,
 		CalicoNode:                 utils.VersionCalicoNode,
 		CalicoCNI:                  utils.VersionCalicoCni,
@@ -118,6 +120,7 @@ func (versions Versions) GetImages() []Image {
 		{Name: versions.K8S, Features: Features{}},
 		{Name: versions.CalicoCNI, Features: Features{}},
 		{Name: versions.CalicoNode, Features: Features{}},
+		{Name: versions.CalicoPod2Daemon, Features: Features{}},
 		{Name: versions.CalicoTypha, Features: Features{}},
 		{Name: versions.CalicoKubeControllers, Features: Features{}},
 		{Name: versions.MetalLBController, Features: Features{}},

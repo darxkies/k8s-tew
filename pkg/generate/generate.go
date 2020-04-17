@@ -156,6 +156,10 @@ func (generator *Generator) generateCalicoSetup() error {
 		ClusterCIDR                string
 		CNIConfigDirectory         string
 		CNIBinariesDirectory       string
+		DynamicDataDirectory       string
+		VarRunDirectory            string
+		KubeletPluginsDirectory    string
+		CalicoPod2DaemonImage      string
 		CalicoTyphaImage           string
 		CalicoNodeImage            string
 		CalicoCNIImage             string
@@ -165,6 +169,10 @@ func (generator *Generator) generateCalicoSetup() error {
 		ClusterCIDR:                generator.config.Config.ClusterCIDR,
 		CNIConfigDirectory:         generator.config.GetFullTargetAssetDirectory(utils.DirectoryCniConfig),
 		CNIBinariesDirectory:       generator.config.GetFullTargetAssetDirectory(utils.DirectoryCniBinaries),
+		DynamicDataDirectory:       generator.config.GetFullTargetAssetDirectory(utils.DirectoryDynamicData),
+		VarRunDirectory:            generator.config.GetFullTargetAssetDirectory(utils.DirectoryVarRun),
+		KubeletPluginsDirectory:    generator.config.GetFullTargetAssetDirectory(utils.DirectoryKubeletPlugins),
+		CalicoPod2DaemonImage:      generator.config.Config.Versions.CalicoPod2Daemon,
 		CalicoTyphaImage:           generator.config.Config.Versions.CalicoTypha,
 		CalicoNodeImage:            generator.config.Config.Versions.CalicoNode,
 		CalicoCNIImage:             generator.config.Config.Versions.CalicoCNI,

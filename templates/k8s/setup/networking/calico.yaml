@@ -24,6 +24,7 @@ data:
           "datastore_type": "kubernetes",
           "nodename": "__KUBERNETES_NODE_NAME__",
           "mtu": __CNI_MTU__,
+          "nodename_file_optional": true,
           "ipam": {
             "type": "calico-ipam",
             "subnet": "usePodCidr"
@@ -628,7 +629,7 @@ spec:
           securityContext:
             privileged: true
         - name: flexvol-driver
-          image: calico/pod2daemon-flexvol:v3.13.2
+          image: {{.CalicoPod2DaemonImage}}
           volumeMounts:
           - name: flexvol-driver-host
             mountPath: /host/driver
@@ -723,10 +724,10 @@ spec:
             path: /lib/modules
         - name: var-run-calico
           hostPath:
-            path: /var/run/calico
+            path: {{.VarRunDirectory}}/calico
         - name: var-lib-calico
           hostPath:
-            path: /var/lib/calico
+            path: {{.DynamicDataDirectory}}/calico
         - name: xtables-lock
           hostPath:
             path: /run/xtables.lock
@@ -739,15 +740,16 @@ spec:
             path: {{.CNIConfigDirectory}}
         - name: host-local-net-dir
           hostPath:
-            path: /var/lib/cni/networks
+            path: {{.DynamicDataDirectory}}/cni/networks
         - name: policysync
           hostPath:
             type: DirectoryOrCreate
             path: /var/run/nodeagent
+            path: {{.VarRunDirectory}}/nodeagent
         - name: flexvol-driver-host
           hostPath:
             type: DirectoryOrCreate
-            path: /usr/libexec/kubernetes/kubelet-plugins/volume/exec/nodeagent~uds
+            path: {{.KubeletPluginsDirectory}}/volume/exec/nodeagent~uds
 
 ---
 apiVersion: v1
