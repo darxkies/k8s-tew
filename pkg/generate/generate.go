@@ -35,6 +35,8 @@ func NewGenerator(config *config.InternalConfig) *Generator {
 		generator.generateCalicoSetup,
 		// Generate metallb setup
 		generator.generateMetalLBSetup,
+		// Generate proxy config
+		generator.generateKubeProxyConfig,
 		// Generate scheduler config
 		generator.generateKubeSchedulerConfig,
 		// Generate kubelet config
@@ -257,6 +259,16 @@ func (generator *Generator) generateContainerdConfig() error {
 	}
 
 	return nil
+}
+
+func (generator *Generator) generateKubeProxyConfig() error {
+	return utils.ApplyTemplateAndSave("kube-proxy-config", utils.TemplateKubeProxyConfiguration, struct {
+		KubeConfig  string
+		ClusterCIDR string
+	}{
+		KubeConfig:  generator.config.GetFullTargetAssetFilename(utils.KubeconfigProxy),
+		ClusterCIDR: generator.config.Config.ClusterCIDR,
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sKubeProxyConfig), true, false)
 }
 
 func (generator *Generator) generateKubeSchedulerConfig() error {
@@ -567,10 +579,12 @@ func (generator *Generator) generateManifestKubeProxy() error {
 			KubernetesImage     string
 			ClusterCIDR         string
 			KubeProxyKubeconfig string
+			KubeProxyConfig     string
 		}{
 			KubernetesImage:     generator.config.Config.Versions.K8S,
 			ClusterCIDR:         generator.config.Config.ClusterCIDR,
 			KubeProxyKubeconfig: generator.config.GetFullTargetAssetFilename(utils.KubeconfigProxy),
+			KubeProxyConfig:     generator.config.GetFullTargetAssetFilename(utils.K8sKubeProxyConfig),
 		}, generator.config.GetFullLocalAssetFilename(utils.ManifestKubeProxy), true, false); error != nil {
 			return error
 		}

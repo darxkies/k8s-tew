@@ -11,11 +11,7 @@ spec:
     command:
     - /hyperkube
     - kube-proxy
-    - --cluster-cidr={{.ClusterCIDR}}
-    - --kubeconfig={{.KubeProxyKubeconfig}}
-    - --proxy-mode=iptables
-    - --metrics-bind-address=0.0.0.0
-    - --metrics-port=10249
+    - --config={{.KubeProxyConfig}}
     securityContext:
         privileged: true
     livenessProbe:
@@ -31,6 +27,9 @@ spec:
       requests:
         cpu: 200m
     volumeMounts:
+    - name: kube-proxy-config
+      mountPath: {{.KubeProxyConfig}}
+      readOnly: true
     - name: kube-proxy-kubeconfig
       mountPath: {{.KubeProxyKubeconfig}}
       readOnly: true
@@ -38,6 +37,10 @@ spec:
       mountPath: /lib/modules
       readOnly: true
   volumes:
+  - name: kube-proxy-config
+    hostPath:
+      type: File
+      path: {{.KubeProxyConfig}}
   - name: kube-proxy-kubeconfig
     hostPath:
       type: File

@@ -273,6 +273,7 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.WordpressSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
 
 	// K8S Config
+	config.addAssetFile(utils.K8sKubeProxyConfig, Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, "", utils.DirectoryK8sConfig)
 	config.addAssetFile(utils.K8sKubeSchedulerConfig, Labels{utils.NodeController}, "", utils.DirectoryK8sConfig)
 	config.addAssetFile(utils.K8sKubeletConfig, Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, "", utils.DirectoryK8sConfig)
 
