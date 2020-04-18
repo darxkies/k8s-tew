@@ -10,6 +10,7 @@ metadata:
     app: fluent-bit
   name: fluent-bit
   namespace: logging
+
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole

@@ -2,8 +2,8 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-    namespace: storage
-    name: ceph-csi-config
+  namespace: storage
+  name: ceph-csi-config
 data:
   config.json: |-
     [
@@ -14,59 +14,54 @@ data:
     ]
 
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: storage
+  name: ceph-csi-encryption-kms-config
+data:
+
+---
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-    namespace: storage
-    name: csi-rbd
-    annotations:
-      storageclass.kubernetes.io/is-default-class: "true"
+  namespace: storage
+  name: csi-rbd
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "true"
 provisioner: rbd.csi.ceph.com
 reclaimPolicy: Delete
 parameters:
-    clusterID: {{.ClusterID}}
-    pool: {{.CephRBDPoolName}}
-    imageFormat: "2"
-    imageFeatures: layering
-    csi.storage.k8s.io/provisioner-secret-name: csi-rbd-secret
-    csi.storage.k8s.io/provisioner-secret-namespace: storage
-    csi.storage.k8s.io/node-stage-secret-name: csi-rbd-secret
-    csi.storage.k8s.io/node-stage-secret-namespace: storage
-    allowVolumeExpansion: "true"
-
----
-apiVersion: snapshot.storage.k8s.io/v1alpha1
-kind: VolumeSnapshotClass
-metadata:
-    namespace: storage
-    name: csi-rbdplugin-snapclass
-snapshotter: rbd.csi.ceph.com
-parameters:
-    clusterID: {{.ClusterID}}
-    pool: {{.CephRBDPoolName}}
-    csi.storage.k8s.io/snapshotter-secret-name: csi-rbd-secret
-    csi.storage.k8s.io/snapshotter-secret-namespace: storage
+  clusterID: {{.ClusterID}}
+  pool: {{.CephRBDPoolName}}
+  imageFormat: "2"
+  imageFeatures: layering
+  csi.storage.k8s.io/provisioner-secret-name: csi-rbd-secret
+  csi.storage.k8s.io/provisioner-secret-namespace: storage
+  csi.storage.k8s.io/node-stage-secret-name: csi-rbd-secret
+  csi.storage.k8s.io/node-stage-secret-namespace: storage
+  allowVolumeExpansion: "true"
 
 ---
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-    namespace: storage
-    name: csi-cephfs
+  namespace: storage
+  name: csi-cephfs
 provisioner: cephfs.csi.ceph.com
 reclaimPolicy: Delete
 parameters:
-    clusterID: {{.ClusterID}}
-    pool: {{.CephFSPoolName}}
-    mounter: kernel
-    provisionVolume: "true"
-    csi.storage.k8s.io/provisioner-secret-name: csi-cephfs-secret
-    csi.storage.k8s.io/provisioner-secret-namespace: storage
-    csi.storage.k8s.io/controller-expand-secret-name: csi-cephfs-secret
-    csi.storage.k8s.io/controller-expand-secret-namespace: storage
-    csi.storage.k8s.io/node-stage-secret-name: csi-cephfs-secret
-    csi.storage.k8s.io/node-stage-secret-namespace: storage
-    allowVolumeExpansion: "true"
+  clusterID: {{.ClusterID}}
+  pool: {{.CephFSPoolName}}
+  mounter: kernel
+  provisionVolume: "true"
+  csi.storage.k8s.io/provisioner-secret-name: csi-cephfs-secret
+  csi.storage.k8s.io/provisioner-secret-namespace: storage
+  csi.storage.k8s.io/controller-expand-secret-name: csi-cephfs-secret
+  csi.storage.k8s.io/controller-expand-secret-namespace: storage
+  csi.storage.k8s.io/node-stage-secret-name: csi-cephfs-secret
+  csi.storage.k8s.io/node-stage-secret-namespace: storage
+  allowVolumeExpansion: "true"
 
 ---
 apiVersion: v1
@@ -95,24 +90,8 @@ metadata:
     rbac.rbd.csi.ceph.com/aggregate-to-rbd-csi-nodeplugin: "true"
 rules:
   - apiGroups: [""]
-    resources: ["secrets"]
-    verbs: ["get", "list"]
-  - apiGroups: [""]
     resources: ["nodes"]
-    verbs: ["get", "list", "update"]
-  - apiGroups: [""]
-    resources: ["namespaces"]
-    verbs: ["get", "list"]
-  - apiGroups: [""]
-    resources: ["persistentvolumes"]
-    verbs: ["get", "list", "watch", "update"]
-  - apiGroups: ["storage.k8s.io"]
-    resources: ["volumeattachments"]
-    verbs: ["get", "list", "watch", "update"]
-  - apiGroups: [""]
-    resources: ["configmaps"]
-    verbs: ["get", "list"]
-
+    verbs: ["get"]
 ---
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
@@ -163,7 +142,7 @@ rules:
     verbs: ["list", "watch", "create", "update", "patch"]
   - apiGroups: [""]
     resources: ["persistentvolumes"]
-    verbs: ["get", "list", "watch", "create", "update", "delete"]
+    verbs: ["get", "list", "watch", "create", "update", "delete", "patch"]
   - apiGroups: [""]
     resources: ["persistentvolumeclaims"]
     verbs: ["get", "list", "watch", "update"]
@@ -182,15 +161,18 @@ rules:
   - apiGroups: ["apiextensions.k8s.io"]
     resources: ["customresourcedefinitions"]
     verbs: ["create", "list", "watch", "delete", "get", "update"]
-  - apiGroups: ["csi.storage.k8s.io"]
-    resources: ["csinodeinfos"]
-    verbs: ["get", "list", "watch"]
   - apiGroups: ["storage.k8s.io"]
     resources: ["volumeattachments"]
-    verbs: ["get", "list", "watch", "update"]
+    verbs: ["get", "list", "watch", "update", "patch"]
+  - apiGroups: ["storage.k8s.io"]
+    resources: ["csinodes"]
+    verbs: ["get", "list", "watch"]
   - apiGroups: ["snapshot.storage.k8s.io"]
     resources: ["volumesnapshots/status"]
     verbs: ["update"]
+  - apiGroups: [""]
+    resources: ["persistentvolumeclaims/status"]
+    verbs: ["update", "patch"]
 
 ---
 kind: ClusterRoleBinding
@@ -213,9 +195,6 @@ metadata:
   namespace: storage
   name: rbd-external-provisioner-cfg
 rules:
-  - apiGroups: [""]
-    resources: ["endpoints"]
-    verbs: ["get", "watch", "list", "delete", "update", "create"]
   - apiGroups: [""]
     resources: ["configmaps"]
     verbs: ["get", "list", "watch", "create", "delete"]
@@ -248,8 +227,6 @@ spec:
   selector:
     matchLabels:
       app: csi-rbdplugin
-  updateStrategy:
-    type: OnDelete
   template:
     metadata:
       labels:
@@ -264,6 +241,8 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: driver-registrar
+          securityContext:
+            privileged: true
           image: {{.CSIDriverRegistrarImage}}
           args:
             - "--v=5"
@@ -301,9 +280,6 @@ spec:
             - "--endpoint=$(CSI_ENDPOINT)"
             - "--v=5"
             - "--drivername=rbd.csi.ceph.com"
-            - "--metricsport=8090"
-            - "--metricspath=/metrics"
-            - "--enablegrpcmetrics=false"
           env:
             - name: POD_IP
               valueFrom:
@@ -313,6 +289,10 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: spec.nodeName
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
             - name: CSI_ENDPOINT
               value: unix:///csi/csi.sock
           imagePullPolicy: "IfNotPresent"
@@ -323,11 +303,15 @@ spec:
               name: host-dev
             - mountPath: /sys
               name: host-sys
+            - mountPath: /run/mount
+              name: host-mount
             - mountPath: /lib/modules
               name: lib-modules
               readOnly: true
             - name: ceph-csi-config
               mountPath: /etc/ceph-csi-config/
+            - name: ceph-csi-encryption-kms-config
+              mountPath: /etc/ceph-csi-encryption-kms-config/
             - name: plugin-dir
               mountPath: {{.PluginsDirectory}}
               mountPropagation: "Bidirectional"
@@ -337,6 +321,8 @@ spec:
             - name: keys-tmp-dir
               mountPath: /tmp/csi/keys
         - name: liveness-prometheus
+          securityContext:
+            privileged: true
           image: {{.CSICephPluginImage}}
           args:
             - "--type=liveness"
@@ -379,12 +365,18 @@ spec:
         - name: host-sys
           hostPath:
             path: /sys
+        - name: host-mount
+          hostPath:
+            path: /run/mount
         - name: lib-modules
           hostPath:
             path: /lib/modules
         - name: ceph-csi-config
           configMap:
             name: ceph-csi-config
+        - name: ceph-csi-encryption-kms-config
+          configMap:
+            name: ceph-csi-encryption-kms-config
         - name: keys-tmp-dir
           emptyDir: {
             medium: "Memory"
@@ -404,10 +396,6 @@ spec:
       port: 8080
       protocol: TCP
       targetPort: 8680
-    - name: grpc-metrics
-      port: 8090
-      protocol: TCP
-      targetPort: 8090
   selector:
     app: csi-rbdplugin
 
@@ -427,10 +415,6 @@ spec:
       port: 8080
       protocol: TCP
       targetPort: 8680
-    - name: grpc-metrics
-      port: 8090
-      protocol: TCP
-      targetPort: 8090
 
 ---
 kind: Deployment
@@ -464,6 +448,7 @@ spec:
             - "--retry-interval-start=500ms"
             - "--enable-leader-election=true"
             - "--leader-election-type=leases"
+            - "--feature-gates=Topology=true"
           env:
             - name: ADDRESS
               value: unix:///csi/csi-provisioner.sock
@@ -493,7 +478,6 @@ spec:
             - "--v=5"
             - "--csi-address=$(ADDRESS)"
             - "--leader-election=true"
-            - "--leader-election-type=leases"
           env:
             - name: ADDRESS
               value: /csi/csi-provisioner.sock
@@ -501,6 +485,21 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
+          imagePullPolicy: "IfNotPresent"
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /csi
+        - name: csi-resizer
+          image: quay.io/k8scsi/csi-resizer:v0.5.0
+          image: {{.CSIResizerImage}}
+          args:
+            - "--csi-address=$(ADDRESS)"
+            - "--v=5"
+            - "--csiTimeout=150s"
+            - "--leader-election"
+          env:
+            - name: ADDRESS
+              value: unix:///csi/csi-provisioner.sock
           imagePullPolicy: "IfNotPresent"
           volumeMounts:
             - name: socket-dir
@@ -520,9 +519,6 @@ spec:
             - "--v=5"
             - "--drivername=rbd.csi.ceph.com"
             - "--pidlimit=-1"
-            - "--metricsport=8090"
-            - "--metricspath=/metrics"
-            - "--enablegrpcmetrics=false"
           env:
             - name: POD_IP
               valueFrom:
@@ -547,6 +543,8 @@ spec:
               readOnly: true
             - name: ceph-csi-config
               mountPath: /etc/ceph-csi-config/
+            - name: ceph-csi-encryption-kms-config
+              mountPath: /etc/ceph-csi-encryption-kms-config/
             - name: keys-tmp-dir
               mountPath: /tmp/csi/keys
         - name: liveness-prometheus
@@ -580,12 +578,15 @@ spec:
           hostPath:
             path: /lib/modules
         - name: socket-dir
-          hostPath:
-            path: {{.PluginsDirectory}}/rbd.csi.ceph.com
-            type: DirectoryOrCreate
+          emptyDir: {
+            medium: "Memory"
+          }
         - name: ceph-csi-config
           configMap:
             name: ceph-csi-config
+        - name: ceph-csi-encryption-kms-config
+          configMap:
+            name: ceph-csi-encryption-kms-config
         - name: keys-tmp-dir
           emptyDir: {
             medium: "Memory"
@@ -616,21 +617,8 @@ metadata:
     rbac.cephfs.csi.ceph.com/aggregate-to-cephfs-csi-nodeplugin: "true"
 rules:
   - apiGroups: [""]
-    resources: ["configmaps"]
-    verbs: ["get", "list"]
-  - apiGroups: [""]
     resources: ["nodes"]
-    verbs: ["get", "list", "update"]
-  - apiGroups: [""]
-    resources: ["namespaces"]
-    verbs: ["get", "list"]
-  - apiGroups: [""]
-    resources: ["persistentvolumes"]
-    verbs: ["get", "list", "watch", "update"]
-  - apiGroups: ["storage.k8s.io"]
-    resources: ["volumeattachments"]
-    verbs: ["get", "list", "watch", "update"]
-
+    verbs: ["get"]
 ---
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
@@ -673,7 +661,7 @@ metadata:
 rules:
   - apiGroups: [""]
     resources: ["nodes"]
-    verbs: ["get", "list", "watch"]
+    verbs: ["get", "list", watch"]
   - apiGroups: [""]
     resources: ["secrets"]
     verbs: ["get", "list"]
@@ -682,19 +670,22 @@ rules:
     verbs: ["list", "watch", "create", "update", "patch"]
   - apiGroups: [""]
     resources: ["persistentvolumes"]
-    verbs: ["get", "list", "watch", "create", "delete"]
+    verbs: ["get", "list", "watch", "create", "delete", "patch"]
   - apiGroups: [""]
     resources: ["persistentvolumeclaims"]
     verbs: ["get", "list", "watch", "update"]
   - apiGroups: ["storage.k8s.io"]
     resources: ["storageclasses"]
     verbs: ["get", "list", "watch"]
-  - apiGroups: ["csi.storage.k8s.io"]
-    resources: ["csinodeinfos"]
-    verbs: ["get", "list", "watch"]
   - apiGroups: ["storage.k8s.io"]
     resources: ["volumeattachments"]
-    verbs: ["get", "list", "watch", "update"]
+    verbs: ["get", "list", "watch", "update", "patch"]
+  - apiGroups: [""]
+    resources: ["persistentvolumeclaims/status"]
+    verbs: ["update", "patch"]
+  - apiGroups: ["storage.k8s.io"]
+    resources: ["csinodes"]
+    verbs: ["get", "list", "watch"]
 
 ---
 kind: ClusterRoleBinding
@@ -717,9 +708,6 @@ metadata:
   namespace: storage
   name: cephfs-external-provisioner-cfg
 rules:
-  - apiGroups: [""]
-    resources: ["endpoints"]
-    verbs: ["get", "watch", "list", "delete", "update", "create"]
   - apiGroups: [""]
     resources: ["configmaps"]
     verbs: ["get", "list", "create", "delete"]
@@ -765,6 +753,8 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: driver-registrar
+          securityContext:
+            privileged: true
           image: {{.CSIDriverRegistrarImage}}
           args:
             - "--v=5"
@@ -803,10 +793,6 @@ spec:
             - "--v=5"
             - "--drivername=cephfs.csi.ceph.com"
             - "--metadatastorage=k8s_configmap"
-            - "--mountcachedir=/mount-cache-dir"
-            - "--metricsport=8090"
-            - "--metricspath=/metrics"
-            - "--enablegrpcmetrics=false"
           env:
             - name: POD_IP
               valueFrom:
@@ -824,8 +810,6 @@ spec:
               value: unix:///csi/csi.sock
           imagePullPolicy: "IfNotPresent"
           volumeMounts:
-            - name: mount-cache-dir
-              mountPath: /mount-cache-dir
             - name: socket-dir
               mountPath: /csi
             - name: mountpoint-dir
@@ -841,11 +825,15 @@ spec:
               readOnly: true
             - name: host-dev
               mountPath: /dev
+            - name: host-mount
+              mountPath: /run/mount
             - name: ceph-csi-config
               mountPath: /etc/ceph-csi-config/
             - name: keys-tmp-dir
               mountPath: /tmp/csi/keys
         - name: liveness-prometheus
+          securityContext:
+            privileged: true
           image: {{.CSICephPluginImage}}
           args:
             - "--type=liveness"
@@ -866,8 +854,6 @@ spec:
               mountPath: /csi
           imagePullPolicy: "IfNotPresent"
       volumes:
-        - name: mount-cache-dir
-          emptyDir: {}
         - name: socket-dir
           hostPath:
             path: {{.PluginsDirectory}}/cephfs.csi.ceph.com/
@@ -893,6 +879,9 @@ spec:
         - name: host-dev
           hostPath:
             path: /dev
+        - name: host-mount
+          hostPath:
+            path: /run/mount
         - name: ceph-csi-config
           configMap:
             name: ceph-csi-config
@@ -914,10 +903,6 @@ spec:
       port: 8080
       protocol: TCP
       targetPort: 8681
-    - name: grpc-metrics
-      port: 8090
-      protocol: TCP
-      targetPort: 8091
   selector:
     app: csi-cephfsplugin
 
@@ -937,10 +922,6 @@ spec:
       port: 8080
       protocol: TCP
       targetPort: 8681
-    - name: grpc-metrics
-      port: 8090
-      protocol: TCP
-      targetPort: 8091
 
 ---
 kind: Deployment
@@ -958,11 +939,6 @@ spec:
       labels:
         app: csi-cephfsplugin-provisioner
     spec:
-      tolerations:
-        - effect: NoSchedule
-          operator: Exists
-      nodeSelector:
-        node-role.kubernetes.io/storage: "true"
       serviceAccount: cephfs-csi-provisioner
       containers:
         - name: csi-provisioner
@@ -974,6 +950,21 @@ spec:
             - "--enable-leader-election=true"
             - "--leader-election-type=leases"
             - "--retry-interval-start=500ms"
+            - "--feature-gates=Topology=true"
+          env:
+            - name: ADDRESS
+              value: unix:///csi/csi-provisioner.sock
+          imagePullPolicy: "IfNotPresent"
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /csi
+        - name: csi-resizer
+          image: quay.io/k8scsi/csi-resizer:v0.5.0
+          args:
+            - "--csi-address=$(ADDRESS)"
+            - "--v=5"
+            - "--csiTimeout=150s"
+            - "--leader-election"
           env:
             - name: ADDRESS
               value: unix:///csi/csi-provisioner.sock
@@ -987,7 +978,6 @@ spec:
             - "--v=5"
             - "--csi-address=$(ADDRESS)"
             - "--leader-election=true"
-            - "--leader-election-type=leases"
           env:
             - name: ADDRESS
               value: /csi/csi-provisioner.sock
@@ -1010,9 +1000,6 @@ spec:
             - "--drivername=cephfs.csi.ceph.com"
             - "--metadatastorage=k8s_configmap"
             - "--pidlimit=-1"
-            - "--metricsport=8091"
-            - "--metricspath=/metrics"
-            - "--enablegrpcmetrics=false"
           env:
             - name: POD_IP
               valueFrom:
@@ -1065,9 +1052,9 @@ spec:
           imagePullPolicy: "IfNotPresent"
       volumes:
         - name: socket-dir
-          hostPath:
-            path: {{.PluginsDirectory}}/cephfs.csi.ceph.com
-            type: DirectoryOrCreate
+          emptyDir: {
+            medium: "Memory"
+          }
         - name: host-sys
           hostPath:
             path: /sys
@@ -1084,3 +1071,279 @@ spec:
           emptyDir: {
             medium: "Memory"
           }
+
+---
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: rbd-csi-nodeplugin-psp
+spec:
+  allowPrivilegeEscalation: true
+  allowedCapabilities:
+    - 'SYS_ADMIN'
+  fsGroup:
+    rule: RunAsAny
+  privileged: true
+  hostNetwork: true
+  hostPID: true
+  runAsUser:
+    rule: RunAsAny
+  seLinux:
+    rule: RunAsAny
+  supplementalGroups:
+    rule: RunAsAny
+  volumes:
+    - 'configMap'
+    - 'emptyDir'
+    - 'projected'
+    - 'secret'
+    - 'downwardAPI'
+    - 'hostPath'
+  allowedHostPaths:
+    - pathPrefix: '/dev'
+      readOnly: false
+    - pathPrefix: '/run/mount'
+      readOnly: false
+    - pathPrefix: '/sys'
+      readOnly: false
+    - pathPrefix: '/lib/modules'
+      readOnly: true
+    - pathPrefix: '/var/lib/kubelet/pods'
+      readOnly: false
+    - pathPrefix: '/var/lib/kubelet/plugins/rbd.csi.ceph.com'
+      readOnly: false
+    - pathPrefix: '/var/lib/kubelet/plugins_registry'
+      readOnly: false
+    - pathPrefix: '/var/lib/kubelet/plugins'
+      readOnly: false
+
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: storage
+  name: rbd-csi-nodeplugin-psp
+rules:
+  - apiGroups: ['policy']
+    resources: ['podsecuritypolicies']
+    verbs: ['use']
+    resourceNames: ['rbd-csi-nodeplugin-psp']
+
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: storage
+  name: rbd-csi-nodeplugin-psp
+subjects:
+  - kind: ServiceAccount
+    name: rbd-csi-nodeplugin
+    namespace: storage
+roleRef:
+  kind: Role
+  name: rbd-csi-nodeplugin-psp
+  apiGroup: rbac.authorization.k8s.io
+
+---
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: rbd-csi-provisioner-psp
+spec:
+  allowPrivilegeEscalation: true
+  allowedCapabilities:
+    - 'SYS_ADMIN'
+  fsGroup:
+    rule: RunAsAny
+  privileged: true
+  runAsUser:
+    rule: RunAsAny
+  seLinux:
+    rule: RunAsAny
+  supplementalGroups:
+    rule: RunAsAny
+  volumes:
+    - 'configMap'
+    - 'emptyDir'
+    - 'projected'
+    - 'secret'
+    - 'downwardAPI'
+    - 'hostPath'
+  allowedHostPaths:
+    - pathPrefix: '/dev'
+      readOnly: false
+    - pathPrefix: '/sys'
+      readOnly: false
+    - pathPrefix: '/lib/modules'
+      readOnly: true
+
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: storage
+  name: rbd-csi-provisioner-psp
+rules:
+  - apiGroups: ['policy']
+    resources: ['podsecuritypolicies']
+    verbs: ['use']
+    resourceNames: ['rbd-csi-provisioner-psp']
+
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: storage
+  name: rbd-csi-provisioner-psp
+subjects:
+  - kind: ServiceAccount
+    name: rbd-csi-provisioner
+    namespace: storage
+roleRef:
+  kind: Role
+  name: rbd-csi-provisioner-psp
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: cephfs-csi-nodeplugin-psp
+spec:
+  allowPrivilegeEscalation: true
+  allowedCapabilities:
+    - 'SYS_ADMIN'
+  fsGroup:
+    rule: RunAsAny
+  privileged: true
+  hostNetwork: true
+  hostPID: true
+  runAsUser:
+    rule: RunAsAny
+  seLinux:
+    rule: RunAsAny
+  supplementalGroups:
+    rule: RunAsAny
+  volumes:
+    - 'configMap'
+    - 'emptyDir'
+    - 'projected'
+    - 'secret'
+    - 'downwardAPI'
+    - 'hostPath'
+  allowedHostPaths:
+    - pathPrefix: '/dev'
+      readOnly: false
+    - pathPrefix: '/run/mount'
+      readOnly: false
+    - pathPrefix: '/sys'
+      readOnly: false
+    - pathPrefix: '/lib/modules'
+      readOnly: true
+    - pathPrefix: '/var/lib/kubelet/pods'
+      readOnly: false
+    - pathPrefix: '/var/lib/kubelet/plugins/cephfs.csi.ceph.com'
+      readOnly: false
+    - pathPrefix: '/var/lib/kubelet/plugins_registry'
+      readOnly: false
+    - pathPrefix: '/var/lib/kubelet/plugins'
+      readOnly: false
+
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: storage
+  name: cephfs-csi-nodeplugin-psp
+rules:
+  - apiGroups: ['policy']
+    resources: ['podsecuritypolicies']
+    verbs: ['use']
+    resourceNames: ['cephfs-csi-nodeplugin-psp']
+
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: storage
+  name: cephfs-csi-nodeplugin-psp
+subjects:
+  - kind: ServiceAccount
+    name: cephfs-csi-nodeplugin
+    namespace: storage
+roleRef:
+  kind: Role
+  name: cephfs-csi-nodeplugin-psp
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: cephfs-csi-provisioner-psp
+spec:
+  allowPrivilegeEscalation: true
+  allowedCapabilities:
+    - 'SYS_ADMIN'
+  fsGroup:
+    rule: RunAsAny
+  privileged: true
+  runAsUser:
+    rule: RunAsAny
+  seLinux:
+    rule: RunAsAny
+  supplementalGroups:
+    rule: RunAsAny
+  volumes:
+    - 'configMap'
+    - 'emptyDir'
+    - 'projected'
+    - 'secret'
+    - 'downwardAPI'
+    - 'hostPath'
+  allowedHostPaths:
+    - pathPrefix: '/dev'
+      readOnly: false
+    - pathPrefix: '/sys'
+      readOnly: false
+    - pathPrefix: '/lib/modules'
+      readOnly: true
+
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: storage
+  name: cephfs-csi-provisioner-psp
+rules:
+  - apiGroups: ['policy']
+    resources: ['podsecuritypolicies']
+    verbs: ['use']
+    resourceNames: ['cephfs-csi-provisioner-psp']
+
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: storage
+  name: cephfs-csi-provisioner-psp
+subjects:
+  - kind: ServiceAccount
+    name: cephfs-csi-provisioner
+    namespace: storage
+roleRef:
+  kind: Role
+  name: cephfs-csi-provisioner-psp
+  apiGroup: rbac.authorization.k8s.io
+
+---
+apiVersion: snapshot.storage.k8s.io/v1alpha1
+kind: VolumeSnapshotClass
+metadata:
+  namespace: storage
+  name: csi-rbdplugin-snapclass
+snapshotter: rbd.csi.ceph.com
+parameters:
+  clusterID: {{.ClusterID}}
+  pool: {{.CephRBDPoolName}}
+  csi.storage.k8s.io/snapshotter-secret-name: csi-rbd-secret
+  csi.storage.k8s.io/snapshotter-secret-namespace: storage
+
