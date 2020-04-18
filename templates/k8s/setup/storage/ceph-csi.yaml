@@ -71,15 +71,15 @@ parameters:
 ---
 apiVersion: v1
 kind: ServiceAccount
-metadata:   
-    namespace: storage
-    name: rbd-csi-nodeplugin
+metadata:
+  namespace: storage
+  name: rbd-csi-nodeplugin
 
 ---
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-    name: rbd-csi-nodeplugin
+  name: rbd-csi-nodeplugin
 aggregationRule:
   clusterRoleSelectors:
     - matchLabels:
@@ -90,9 +90,9 @@ rules: []
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-    name: rbd-csi-nodeplugin-rules
-    labels:
-        rbac.rbd.csi.ceph.com/aggregate-to-rbd-csi-nodeplugin: "true"
+  name: rbd-csi-nodeplugin-rules
+  labels:
+    rbac.rbd.csi.ceph.com/aggregate-to-rbd-csi-nodeplugin: "true"
 rules:
   - apiGroups: [""]
     resources: ["secrets"]
@@ -117,7 +117,7 @@ rules:
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-    name: rbd-csi-nodeplugin
+  name: rbd-csi-nodeplugin
 subjects:
   - kind: ServiceAccount
     name: rbd-csi-nodeplugin
@@ -131,14 +131,14 @@ roleRef:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-    namespace: storage
-    name: rbd-csi-provisioner
+  namespace: storage
+  name: rbd-csi-provisioner
 
 ---
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-    name: rbd-external-provisioner-runner
+  name: rbd-external-provisioner-runner
 aggregationRule:
   clusterRoleSelectors:
     - matchLabels:
@@ -148,9 +148,9 @@ rules: []
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-    name: rbd-external-provisioner-runner-rules
-    labels:
-        rbac.rbd.csi.ceph.com/aggregate-to-rbd-external-provisioner-runner: "true"
+  name: rbd-external-provisioner-runner-rules
+  labels:
+    rbac.rbd.csi.ceph.com/aggregate-to-rbd-external-provisioner-runner: "true"
 rules:
   - apiGroups: [""]
     resources: ["nodes"]
@@ -196,7 +196,7 @@ rules:
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-    name: rbd-csi-provisioner-role
+  name: rbd-csi-provisioner-role
 subjects:
   - kind: ServiceAccount
     name: rbd-csi-provisioner
@@ -210,8 +210,8 @@ roleRef:
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-    namespace: storage
-    name: rbd-external-provisioner-cfg
+  namespace: storage
+  name: rbd-external-provisioner-cfg
 rules:
   - apiGroups: [""]
     resources: ["endpoints"]
@@ -227,8 +227,8 @@ rules:
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-    namespace: storage
-    name: rbd-csi-provisioner-role-cfg
+  namespace: storage
+  name: rbd-csi-provisioner-role-cfg
 subjects:
   - kind: ServiceAccount
     name: rbd-csi-provisioner
@@ -242,8 +242,8 @@ roleRef:
 kind: DaemonSet
 apiVersion: apps/v1
 metadata:
-    namespace: storage
-    name: csi-rbdplugin
+  namespace: storage
+  name: csi-rbdplugin
 spec:
   selector:
     matchLabels:
@@ -293,7 +293,6 @@ spec:
             capabilities:
               add: ["SYS_ADMIN"]
             allowPrivilegeEscalation: true
-          # for stable functionality replace canary with latest release version
           image: {{.CSICephPluginImage}}
           args:
             - "--nodeid=$(NODE_ID)"
@@ -395,10 +394,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-    namespace: storage
-    name: csi-metrics-rbdplugin
-    labels:
-        app: csi-metrics
+  namespace: storage
+  name: csi-metrics-rbdplugin
+  labels:
+    app: csi-metrics
 spec:
   ports:
     - name: http-metrics
@@ -416,10 +415,10 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-    namespace: storage
-    name: csi-rbdplugin-provisioner
-    labels:
-        app: csi-metrics
+  namespace: storage
+  name: csi-rbdplugin-provisioner
+  labels:
+    app: csi-metrics
 spec:
   selector:
     app: csi-rbdplugin-provisioner
@@ -437,8 +436,8 @@ spec:
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-    namespace: storage
-    name: csi-rbdplugin-provisioner
+  namespace: storage
+  name: csi-rbdplugin-provisioner
 spec:
   replicas: 3
   selector:
@@ -478,7 +477,7 @@ spec:
             - "--csi-address=$(ADDRESS)"
             - "--v=5"
             - "--timeout=150s"
-            - "leader-election=true"
+            - "--leader-election=true"
           env:
             - name: ADDRESS
               value: unix:///csi/csi-provisioner.sock
@@ -494,6 +493,7 @@ spec:
             - "--v=5"
             - "--csi-address=$(ADDRESS)"
             - "--leader-election=true"
+            - "--leader-election-type=leases"
           env:
             - name: ADDRESS
               value: /csi/csi-provisioner.sock
@@ -594,14 +594,14 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-    namespace: storage
-    name: cephfs-csi-nodeplugin
+  namespace: storage
+  name: cephfs-csi-nodeplugin
 
 ---
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-    name: cephfs-csi-nodeplugin
+  name: cephfs-csi-nodeplugin
 aggregationRule:
   clusterRoleSelectors:
     - matchLabels:
@@ -611,9 +611,9 @@ rules: []
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-    name: cephfs-csi-nodeplugin-rules
-    labels:
-        rbac.cephfs.csi.ceph.com/aggregate-to-cephfs-csi-nodeplugin: "true"
+  name: cephfs-csi-nodeplugin-rules
+  labels:
+    rbac.cephfs.csi.ceph.com/aggregate-to-cephfs-csi-nodeplugin: "true"
 rules:
   - apiGroups: [""]
     resources: ["configmaps"]
@@ -649,8 +649,8 @@ roleRef:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-    namespace: storage
-    name: cephfs-csi-provisioner
+  namespace: storage
+  name: cephfs-csi-provisioner
 
 ---
 kind: ClusterRole
@@ -714,8 +714,8 @@ roleRef:
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-    namespace: storage
-    name: cephfs-external-provisioner-cfg
+  namespace: storage
+  name: cephfs-external-provisioner-cfg
 rules:
   - apiGroups: [""]
     resources: ["endpoints"]
@@ -731,8 +731,8 @@ rules:
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-    namespace: storage
-    name: cephfs-csi-provisioner-role-cfg
+  namespace: storage
+  name: cephfs-csi-provisioner-role-cfg
 subjects:
   - kind: ServiceAccount
     name: cephfs-csi-provisioner
@@ -746,8 +746,8 @@ roleRef:
 kind: DaemonSet
 apiVersion: apps/v1
 metadata:
-    namespace: storage
-    name: csi-cephfsplugin
+  namespace: storage
+  name: csi-cephfsplugin
 spec:
   selector:
     matchLabels:
@@ -901,14 +901,13 @@ spec:
             medium: "Memory"
           }
 ---
-# This is a service to expose the liveness and grpc metrics
 apiVersion: v1
 kind: Service
 metadata:
-    namespace: storage
-    name: csi-metrics-cephfsplugin
-    labels:
-        app: csi-metrics
+  namespace: storage
+  name: csi-metrics-cephfsplugin
+  labels:
+    app: csi-metrics
 spec:
   ports:
     - name: http-metrics
@@ -926,10 +925,10 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-    namespace: storage
-    name: csi-cephfsplugin-provisioner
-    labels:
-        app: csi-metrics
+  namespace: storage
+  name: csi-cephfsplugin-provisioner
+  labels:
+    app: csi-metrics
 spec:
   selector:
     app: csi-cephfsplugin-provisioner
@@ -947,8 +946,8 @@ spec:
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-    namespace: storage
-    name: csi-cephfsplugin-provisioner
+  namespace: storage
+  name: csi-cephfsplugin-provisioner
 spec:
   selector:
     matchLabels:
@@ -987,7 +986,7 @@ spec:
           args:
             - "--v=5"
             - "--csi-address=$(ADDRESS)"
-            - "leader-election=true"
+            - "--leader-election=true"
             - "--leader-election-type=leases"
           env:
             - name: ADDRESS
