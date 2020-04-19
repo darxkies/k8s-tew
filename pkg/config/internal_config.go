@@ -270,6 +270,7 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.K8sAlertManagerSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sGrafanaCredentials, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sMinioCredentials, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.K8sCephManagerCredentials, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.WordpressSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
 
 	// K8S Config
@@ -343,6 +344,7 @@ func (config *InternalConfig) registerCommands() {
 	config.addManifest("metallb-setup", Labels{utils.NodeBootstrapper}, Features{}, OS{}, config.GetFullLocalAssetFilename(utils.K8sMetalLBSetup))
 	config.addManifest("coredns-setup", Labels{utils.NodeBootstrapper}, Features{}, OS{}, config.GetFullLocalAssetFilename(utils.K8sCorednsSetup))
 	config.addManifest("ceph-secrets", Labels{utils.NodeBootstrapper}, Features{utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.CephSecrets))
+	config.addManifest("ceph-manager-credentials", Labels{utils.NodeBootstrapper}, Features{utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sCephManagerCredentials))
 	config.addManifest("ceph-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.CephSetup))
 	config.addManifest("ceph-csi", Labels{utils.NodeBootstrapper}, Features{utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.CephCsi))
 	config.addManifest("kubernetes-dashboard-setup", Labels{utils.NodeBootstrapper}, Features{}, OS{}, config.GetFullLocalAssetFilename(utils.K8sKubernetesDashboardSetup))

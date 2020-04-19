@@ -303,12 +303,23 @@ spec:
         command:
         - /bin/sh
         - -c
-        - "ceph mgr module enable dashboard && ceph dashboard create-self-signed-cert && ceph dashboard set-login-credentials admin changeme && ceph mgr module disable dashboard && ceph mgr module enable dashboard && ceph osd pool create {{.CephRBDPoolName}} 256 256 && ceph osd pool application enable {{.CephRBDPoolName}} rbd"
+        - "ceph mgr module enable dashboard && ceph dashboard create-self-signed-cert && ceph dashboard set-login-credentials $CEPH_MANAGER_USERNAME $CEPH_MANAGER_PASSWORD && ceph mgr module disable dashboard && ceph mgr module enable dashboard && ceph osd pool create {{.CephRBDPoolName}} 256 256 && ceph osd pool application enable {{.CephRBDPoolName}} rbd"
         volumeMounts:
         - name: ceph-config
           mountPath: /etc/ceph
         - name: ceph-data
           mountPath: /var/lib/ceph
+        env:
+          - name: CEPH_MANAGER_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: ceph-manager-credentials
+                key: username
+          - name: CEPH_MANAGER_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: ceph-manager-credentials
+                key: password
 ---
 apiVersion: v1
 kind: Service

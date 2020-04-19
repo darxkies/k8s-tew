@@ -44,3 +44,12 @@ forward-grafana-30900:
 
 forward-dashboard-32443:
 	sudo socat -d -v TCP-LISTEN:32443,fork TCP:$(IP_PREFIX).50:32443
+
+forward-ceph-manager-30700:
+	sudo socat -d -v TCP-LISTEN:30700,fork TCP:$(IP_PREFIX).50:30700
+
+forward-kibana-30980:
+	sudo socat -d -v TCP-LISTEN:30980,fork TCP:$(IP_PREFIX).50:30980
+
+forward-cerebro-30990:
+	sudo socat -d -v TCP-LISTEN:30990,fork TCP:$(IP_PREFIX).50:30990

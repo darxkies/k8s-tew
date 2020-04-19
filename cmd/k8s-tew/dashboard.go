@@ -1,9 +1,9 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"os"
-	"time"
 
 	"github.com/darxkies/k8s-tew/pkg/k8s"
 	"github.com/darxkies/k8s-tew/pkg/utils"
@@ -11,33 +11,24 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var openBrowser bool
+var quiet bool
+var openWebBrowser bool
 
-var dashboardCmd = &cobra.Command{
-	Use:   "dashboard",
-	Short: "Retrieves and shows the dashboard token",
-	Long:  "Retrieves and shows the dashboard token",
-	Run: func(cmd *cobra.Command, args []string) {
-		if error := bootstrap(false); error != nil {
-			log.WithFields(log.Fields{"error": error}).Error("Failed initializing")
+type getData func(kubernetesClient *k8s.K8S, ip string) (string, string, string, error)
 
-			os.Exit(-1)
-		}
+func addCommand(subCommandName, description string, getData getData) *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   subCommandName,
+		Short: description,
+		Long:  description,
+		Run: func(cmd *cobra.Command, args []string) {
+			if error := bootstrap(false); error != nil {
+				log.WithFields(log.Fields{"error": error}).Error("Failed initializing")
 
-		kubernetesClient := k8s.NewK8S(_config)
-		secret, error := kubernetesClient.GetSecretToken(utils.AdminUserNamespace, utils.AdminUserName)
-		if error != nil {
-			log.WithFields(log.Fields{"error": error}).Error("Failed retrieving token")
+				os.Exit(-1)
+			}
 
-			os.Exit(-2)
-		}
-
-		fmt.Printf("%s", secret)
-
-		if openBrowser {
-			fmt.Printf("\nOpening web browser...\n")
-
-			time.Sleep(3 * time.Second)
+			kubernetesClient := k8s.NewK8S(_config)
 
 			ip, error := _config.GetWorkerIP()
 			if error != nil {
@@ -46,19 +37,104 @@ var dashboardCmd = &cobra.Command{
 				os.Exit(-3)
 			}
 
-			url := utils.GetURL("https", ip, _config.Config.KubernetesDashboardPort)
+			url, username, password, error := getData(kubernetesClient, ip)
 
-			if error := utils.OpenWebBrowser("Kubernetes Dashboard", url); error != nil {
-				log.WithFields(log.Fields{"error": error}).Error("Failed to open the web browser")
+			if quiet {
+				fmt.Printf("%s", password)
 
-				os.Exit(-4)
+			} else {
+				fields := log.Fields{"url": url}
+
+				if len(username) > 0 {
+					fields["username"] = username
+				}
+
+				if len(password) > 0 {
+					fields["password"] = password
+				}
+
+				log.WithFields(fields).Info(subCommandName)
 			}
 
-		}
+			if error := utils.OpenWebBrowser(subCommandName, url); error != nil {
+				log.WithFields(log.Fields{"error": error}).Error("Open Web Browser failed")
+
+				os.Exit(-3)
+			}
+		},
+	}
+
+	cmd.Flags().BoolVarP(&quiet, "quiet", "q", false, "Display only password/secret")
+	cmd.Flags().BoolVarP(&openWebBrowser, "open-web-browser", "o", false, "Open web browser")
+
+	return cmd
+}
+
+var dashboardCmd = &cobra.Command{
+	Use:   "dashboard",
+	Short: "Display credentials of various dashboards",
+	Long:  "Display credentials of various dashboards",
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return errors.New("Missing sub-command")
 	},
 }
 
 func init() {
-	dashboardCmd.Flags().BoolVarP(&openBrowser, "open-browser", "o", false, "Open the web browser with a delay of 3 seconds")
+	dashboardCmd.AddCommand(addCommand("kubernetes", "Display Kuberenetes Dashboard website related information", func(kubernetesClient *k8s.K8S, ip string) (string, string, string, error) {
+		secret, error := kubernetesClient.GetSecretToken(utils.AdminUserNamespace, utils.AdminUserName)
+		if error != nil {
+			return "", "", "", error
+		}
+
+		return utils.GetURL("https", ip, _config.Config.KubernetesDashboardPort), "", secret, nil
+	}))
+
+	dashboardCmd.AddCommand(addCommand("wordpress-ingress", "Display WordPress Ingress website related information", func(kubernetesClient *k8s.K8S, ip string) (string, string, string, error) {
+		return fmt.Sprintf("https://%s.%s", utils.IngressSubdomainWordpress, _config.Config.IngressDomain), "", "", nil
+	}))
+
+	dashboardCmd.AddCommand(addCommand("ceph-manager", "Display Ceph Manager website related information", func(kubernetesClient *k8s.K8S, ip string) (string, string, string, error) {
+		username, password, error := kubernetesClient.GetCredentials(utils.FeatureStorage, utils.CephManagerCredentials)
+		if error != nil {
+			return "", "", "", error
+		}
+
+		return utils.GetURL("https", ip, utils.PortCephManager), username, password, nil
+	}))
+
+	dashboardCmd.AddCommand(addCommand("ceph-rados-gateway", "Display Ceph Rados Gateway website related information", func(kubernetesClient *k8s.K8S, ip string) (string, string, string, error) {
+		return utils.GetURL("http", ip, utils.PortCephRadosGateway), "", "", nil
+	}))
+
+	dashboardCmd.AddCommand(addCommand("minio", "Display Minio website related information", func(kubernetesClient *k8s.K8S, ip string) (string, string, string, error) {
+		username, password, error := kubernetesClient.GetCredentials(utils.FeatureBackup, utils.MinioCredentials)
+		if error != nil {
+			return "", "", "", error
+		}
+
+		return utils.GetURL("http", ip, utils.PortMinio), username, password, nil
+	}))
+
+	dashboardCmd.AddCommand(addCommand("grafana", "Display Grafana website related information", func(kubernetesClient *k8s.K8S, ip string) (string, string, string, error) {
+		username, password, error := kubernetesClient.GetCredentials(utils.FeatureMonitoring, utils.GrafanaCredentials)
+		if error != nil {
+			return "", "", "", error
+		}
+
+		return utils.GetURL("http", ip, utils.PortGrafana), username, password, nil
+	}))
+
+	dashboardCmd.AddCommand(addCommand("wordpress-nodeport", "Display WordPress Nodeport website related information", func(kubernetesClient *k8s.K8S, ip string) (string, string, string, error) {
+		return utils.GetURL("http", ip, utils.PortWordpress), "", "", nil
+	}))
+
+	dashboardCmd.AddCommand(addCommand("kibana", "Display Kibana website related information", func(kubernetesClient *k8s.K8S, ip string) (string, string, string, error) {
+		return utils.GetURL("http", ip, utils.PortKibana), "", "", nil
+	}))
+
+	dashboardCmd.AddCommand(addCommand("cerebro", "Display Cerebro website related information", func(kubernetesClient *k8s.K8S, ip string) (string, string, string, error) {
+		return utils.GetURL("http", ip, utils.PortCerebro), "", "", nil
+	}))
+
 	RootCmd.AddCommand(dashboardCmd)
 }

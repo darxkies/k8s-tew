@@ -55,6 +55,8 @@ func NewGenerator(config *config.InternalConfig) *Generator {
 		generator.generateKubeConfigs,
 		// Generate Ceph Config
 		generator.generateCephConfig,
+		// Generate Ceph Manager secrets file
+		generator.generateCephManagerCredentials,
 		// Generate Ceph Config
 		generator.generateCephSetup,
 		// Generate Ceph CSI
@@ -981,6 +983,23 @@ func (generator *Generator) generateMinioCredentials() error {
 		SecretName: utils.MinioCredentials,
 		Password:   password,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sMinioCredentials), false, false)
+}
+
+func (generator *Generator) generateCephManagerCredentials() error {
+	password, error := generator.generatePassword()
+	if error != nil {
+		return error
+	}
+
+	return utils.ApplyTemplateAndSave(utils.CephManagerCredentials, utils.TemplateCredentials, struct {
+		Namespace  string
+		SecretName string
+		Password   string
+	}{
+		Namespace:  utils.FeatureStorage,
+		SecretName: utils.CephManagerCredentials,
+		Password:   password,
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sCephManagerCredentials), false, false)
 }
 
 func (generator *Generator) generateVeleroSetup() error {

@@ -13,8 +13,11 @@ import (
 
 var environmentCmd = &cobra.Command{
 	Use:   "environment",
-	Short: "Displays environment variables",
-	Long:  "Displays environment variables",
+	Short: "Set environment variables",
+	Long: `To set the environment variables run
+	
+	. <(k8s-tew environment)
+	`,
 	Run: func(cmd *cobra.Command, args []string) {
 		// Load config and check the rights
 		if error := bootstrap(false); error != nil {

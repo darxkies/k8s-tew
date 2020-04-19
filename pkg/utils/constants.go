@@ -310,6 +310,7 @@ const K8sGrafanaSetup = "grafana.yaml"
 const K8sAlertManagerSetup = "alert-manager.yaml"
 const K8sGrafanaCredentials = "grafana-credentials.yaml"
 const K8sMinioCredentials = "minio-credentials.yaml"
+const K8sCephManagerCredentials = "ceph-manager-credentials.yaml"
 const WordpressSetup = "wordpress-setup.yaml"
 
 // Gobetween Config
@@ -416,3 +417,4 @@ const ConcurrentSshConnectionsLimit = 10
 
 const GrafanaCredentials = "grafana-credentials"
 const MinioCredentials = "minio-credentials"
+const CephManagerCredentials = "ceph-manager-credentials"
