@@ -190,6 +190,9 @@ func (deployment *Deployment) runConfigureTaints() error {
 
 	}
 
+	// Wait for labels and taints to be propagated
+	time.Sleep(3 * time.Second)
+
 	return nil
 }
 

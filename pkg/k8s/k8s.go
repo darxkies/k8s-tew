@@ -155,7 +155,7 @@ func (k8s *K8S) TaintNode(name string, nodeData *config.Node) error {
 		return nil
 	}
 
-	_, error = clientset.CoreV1().Nodes().Update(node)
+	node, error = clientset.CoreV1().Nodes().Update(node)
 
 	if error != nil {
 		return errors.Wrapf(error, "Could not update node '%s'", name)
