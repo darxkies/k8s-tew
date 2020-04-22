@@ -357,6 +357,17 @@ func (deployment *NodeDeployment) Execute(name, command string) (string, error) 
 	return buffer.String(), error
 }
 
+func (deployment *NodeDeployment) execute(command string) error {
+	session, error := deployment.getSession()
+	if error != nil {
+		return error
+	}
+
+	defer session.Close()
+
+	return session.Run(command)
+}
+
 func (deployment *NodeDeployment) UploadFile(from, to string) error {
 	deployment.sshLimiter.Lock()
 	defer deployment.sshLimiter.Unlock()
@@ -369,7 +380,20 @@ func (deployment *NodeDeployment) UploadFile(from, to string) error {
 		return nil
 	}
 
-	log.WithFields(log.Fields{"name": filename, "node": deployment.name, "_target": deployment.node.IP, "_source-filename": from, "_destination-filename": to}).Info("Deploying")
+	executable := false
+
+	info, error := os.Stat(from)
+	if error == nil {
+		executable = strings.Contains(info.Mode().String(), "x")
+	}
+
+	if executable {
+		command := fmt.Sprintf("rm %s", to)
+
+		_ = deployment.execute(command)
+	}
+
+	log.WithFields(log.Fields{"name": filename, "node": deployment.name, "_target": deployment.node.IP, "_source-filename": from, "_destination-filename": to, "_executable": executable}).Info("Deploying")
 
 	session, error := deployment.getSession()
 	if error != nil {
