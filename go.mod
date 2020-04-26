@@ -105,5 +105,7 @@ require (
 	k8s.io/apiserver v0.18.2 // indirect
 	k8s.io/cli-runtime v0.18.2
 	k8s.io/client-go v0.18.2
+	k8s.io/cri-api v0.18.2
 	k8s.io/kubectl v0.18.2
+	k8s.io/kubernetes v1.13.0
 )

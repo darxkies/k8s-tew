@@ -286,6 +286,7 @@ const EncryptionConfig = "encryption-config.yaml"
 const ContainerdConfig = "config-{{.Name}}.toml"
 const ContainerdSock = "containerd.sock"
 const ContainerdKubernetesNamespace = "k8s.io"
+const ContainerdServerName = "containerd"
 
 // K8S Config
 const K8sKubeletSetup = "kubelet-setup.yaml"

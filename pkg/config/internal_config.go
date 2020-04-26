@@ -311,7 +311,7 @@ func (config *InternalConfig) registerAssetFiles() {
 
 func (config *InternalConfig) registerServers() {
 	// Servers
-	config.addServer("containerd", Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, config.GetTemplateAssetFilename(utils.BinaryContainerd), map[string]string{
+	config.addServer(utils.ContainerdServerName, Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, config.GetTemplateAssetFilename(utils.BinaryContainerd), map[string]string{
 		"config": config.GetTemplateAssetFilename(utils.ContainerdConfig),
 	})
 

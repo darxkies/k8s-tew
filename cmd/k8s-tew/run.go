@@ -42,15 +42,17 @@ var runCmd = &cobra.Command{
 
 		utils.ShowProgress()
 
-		if error := serversContainer.Run(commandRetries); error != nil {
+		if error := serversContainer.Run(commandRetries, func() {
+			if killContainers {
+				container.KillContainers(_config)
+			}
+
+		}); error != nil {
 			log.WithFields(log.Fields{"error": error}).Error("Failed to run")
 
 			os.Exit(-1)
 		}
 
-		if killContainers {
-			container.KillContainers(_config)
-		}
 	},
 }
 

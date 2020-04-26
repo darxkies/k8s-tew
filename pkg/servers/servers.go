@@ -99,7 +99,7 @@ func (servers *Servers) extractEmbeddedFiles() error {
 	})
 }
 
-func (servers *Servers) Run(commandRetries uint) error {
+func (servers *Servers) Run(commandRetries uint, cleanup func()) error {
 	// Make sure the embedded dependencies are in place before the servers are started
 	if error := servers.extractEmbeddedFiles(); error != nil {
 		return errors.Wrap(error, "extracting embedded files failed")
@@ -141,6 +141,22 @@ func (servers *Servers) Run(commandRetries uint) error {
 	// Register servers' stop
 	defer func() {
 		for _, server := range servers.servers {
+			if server.Name() == utils.ContainerdServerName {
+				continue
+			}
+
+			log.WithFields(log.Fields{"name": server.Name()}).Info("Stopping server")
+
+			server.Stop()
+		}
+
+		cleanup()
+
+		for _, server := range servers.servers {
+			if server.Name() != utils.ContainerdServerName {
+				continue
+			}
+
 			log.WithFields(log.Fields{"name": server.Name()}).Info("Stopping server")
 
 			server.Stop()

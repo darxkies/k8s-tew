@@ -1,20 +1,24 @@
 package container
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net"
 	"os"
 	"path/filepath"
 	"sort"
 	"strconv"
 	"strings"
-	"syscall"
+	"time"
 
-	"github.com/containerd/containerd"
 	"github.com/darxkies/k8s-tew/pkg/config"
-	"github.com/darxkies/k8s-tew/pkg/utils"
+	"github.com/davecgh/go-spew/spew"
 	log "github.com/sirupsen/logrus"
+	"golang.org/x/sys/unix"
+	"google.golang.org/grpc"
+	cri "k8s.io/cri-api/pkg/apis/runtime/v1alpha2"
 )
 
 type Container struct {
@@ -311,86 +315,227 @@ func Exists(path string) bool {
 
 func Unmount(path string) error {
 	if Exists(path) {
-		return syscall.Unmount(path, syscall.MNT_DETACH)
+		return unix.Unmount(path, 0)
 	}
 
 	return nil
 }
 
 func KillContainers(_config *config.InternalConfig) {
+	/*
+		// TODO
+		containerdSocketFilename := "/run/containerd/containerd.sock"
 
-	containerdSocketFilename := "/run/containerd/containerd.sock"
+		client, error := containerd.New(containerdSocketFilename, containerd.WithDefaultNamespace(utils.ContainerdKubernetesNamespace))
+		defer client.Close()
 
-	client, error := containerd.New(containerdSocketFilename)
-	defer client.Close()
+		if error != nil {
+			log.WithFields(log.Fields{"error": error, "containerd-socket-filename": containerdSocketFilename}).Debug("Containerd connection failed")
 
-	if error != nil {
-		log.WithFields(log.Fields{"error": error, "containerd-socket-filename": containerdSocketFilename}).Debug("Containerd connection failed")
-	}
-
-	containerdShimBinary := _config.GetFullLocalAssetFilename(utils.BinaryContainerdShimRuncV2)
-
-	workdirPrefix := _config.GetFullLocalAssetDirectory(utils.DirectoryDynamicData)
-	mountPrefixes := []string{
-		workdirPrefix,
-		_config.GetFullLocalAssetDirectory(utils.DirectoryRun),
-		_config.GetFullLocalAssetDirectory(utils.DirectoryVarRun),
-		_config.GetFullLocalAssetDirectory(utils.DirectoryKubeletData),
-	}
-
-	processParentMap := getProcessParentMap()
-	mounts := getMounts(mountPrefixes)
-	pvPaths := mounts.getPV()
-	containers := getContainerdShim(containerdShimBinary, workdirPrefix, pvPaths, processParentMap)
-
-	containers.Dump()
-	mounts.Dump()
-
-	for _, mount := range *mounts {
-		log.WithFields(log.Fields{"path": mount.Destination}).Debug("Unmounting path")
-
-		if error := Unmount(mount.Destination); error != nil {
-			log.WithFields(log.Fields{"error": error, "path": mount.Destination}).Debug("Unmount failed")
-		}
-	}
-
-	for _, container := range *containers {
-		log.WithFields(log.Fields{"container-id": container.containerID}).Debug("Killing container")
-
-		for _, pid := range container.processIDs {
-			log.WithFields(log.Fields{"container-id": container.containerID, "pid": pid}).Debug("Killing process")
-
-			syscall.Kill(pid, syscall.SIGKILL)
+			return
 		}
 
-		for {
-			found := false
+		taskService := client.TaskService()
+
+		context := context.Background()
+
+		response, error := taskService.List(context, &tasks.ListTasksRequest{})
+		if error != nil {
+			log.WithFields(log.Fields{"error": error, "containerd-socket-filename": containerdSocketFilename}).Debug("Containerd tasks list failed")
+
+			return
+		}
+
+		for _, task := range response.Tasks {
+			fmt.Println(task)
+
+			killRequest := &tasks.KillRequest{All: true, ContainerID: task.ID, Signal: uint32(syscall.SIGKILL)}
+
+			_, error := taskService.Kill(context, killRequest)
+			if error != nil {
+				log.WithFields(log.Fields{"error": error, "task-id": task.ID}).Debug("Containerd task kill failed")
+			}
+		}
+	*/
+
+	// TODO
+	address := "/run/containerd/containerd.sock"
+
+	dialer := func(address string, timeout time.Duration) (net.Conn, error) {
+		return net.DialTimeout("unix", address, timeout)
+	}
+
+	connection, _error := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock(), grpc.WithTimeout(5*time.Second), grpc.WithDialer(dialer))
+	if _error != nil {
+		log.WithFields(log.Fields{"error": _error, "address": address}).Debug("CRI dial failed")
+
+		return
+	}
+
+	runtimeClient := cri.NewRuntimeServiceClient(connection)
+
+	filter := &cri.PodSandboxFilter{}
+
+	stateValue := &cri.PodSandboxStateValue{}
+	stateValue.State = cri.PodSandboxState_SANDBOX_READY
+	filter.State = stateValue
+
+	request := &cri.ListPodSandboxRequest{Filter: filter}
+
+	response, _error := runtimeClient.ListPodSandbox(context.Background(), request)
+	if _error != nil {
+		log.WithFields(log.Fields{"error": _error}).Debug("CRI pods list failed")
+
+		return
+	}
+
+	// TODO dashboard does not get killed properly
+	getRemovalPriority := func(namespace string, name string) int {
+		if namespace == "kube-system" {
+			return 3
+		}
+
+		if namespace == "networking" {
+			return 2
+		}
+
+		if namespace == "storage" {
+			return 1
+		}
+
+		return 0
+	}
+
+	items := response.GetItems()
+
+	sort.Slice(items, func(i, j int) bool {
+		iRemovalPriority := getRemovalPriority(items[i].Metadata.Namespace, items[i].Metadata.Name)
+		jRemovalPriority := getRemovalPriority(items[j].Metadata.Namespace, items[j].Metadata.Name)
+
+		if iRemovalPriority == jRemovalPriority {
+			return items[i].Metadata.Name < items[j].Metadata.Name
+		}
+
+		return iRemovalPriority < jRemovalPriority
+	})
+
+	spew.Config.Indent = "\t"
+	spew.Config.DisableMethods = true
+	spew.Config.DisablePointerMethods = true
+	spew.Config.DisablePointerAddresses = true
+
+	for _, entry := range items {
+		containers, _error := runtimeClient.ListContainers(context.Background(), &cri.ListContainersRequest{Filter: &cri.ContainerFilter{PodSandboxId: entry.Id}})
+		if _error != nil {
+			log.WithFields(log.Fields{"error": _error, "id": entry.Id, "namespace": entry.Metadata.Namespace, "name": entry.Metadata.Name}).Debug("CRI containers list failed")
+
+			continue
+		}
+
+		unmounts := []string{}
+
+		for _, container := range containers.Containers {
+			containerStatus, _error := runtimeClient.ContainerStatus(context.Background(), &cri.ContainerStatusRequest{ContainerId: container.Id, Verbose: true})
+			if _error != nil {
+				log.WithFields(log.Fields{"error": _error, "id": entry.Id, "namespace": entry.Metadata.Namespace, "name": entry.Metadata.Name, "container-id": container.Id}).Debug("CRI container status failed")
+
+				continue
+			}
+
+			for _, unmount := range containerStatus.Status.Mounts {
+				if strings.Contains(unmount.HostPath, "volumes/kubernetes.io~") {
+					unmounts = append(unmounts, unmount.HostPath)
+				}
+
+			}
+		}
+
+		_, _error = runtimeClient.StopPodSandbox(context.Background(), &cri.StopPodSandboxRequest{PodSandboxId: entry.Id})
+		if _error != nil {
+			log.WithFields(log.Fields{"error": _error, "id": entry.Id, "namespace": entry.Metadata.Namespace, "name": entry.Metadata.Name}).Debug("CRI pod stop failed")
+
+			continue
+		}
+
+		_, _error = runtimeClient.RemovePodSandbox(context.Background(), &cri.RemovePodSandboxRequest{PodSandboxId: entry.Id})
+		if _error != nil {
+			log.WithFields(log.Fields{"error": _error, "id": entry.Id, "namespace": entry.Metadata.Namespace, "name": entry.Metadata.Name}).Debug("CRI pod remove failed")
+
+			continue
+		}
+
+		for _, unmount := range unmounts {
+			_ = Unmount(unmount)
+		}
+
+		log.WithFields(log.Fields{"id": entry.Id, "namespace": entry.Metadata.Namespace, "name": entry.Metadata.Name}).Debug("CRI pod removed")
+	}
+
+	/*
+		containerdShimBinary := _config.GetFullLocalAssetFilename(utils.BinaryContainerdShimRuncV2)
+
+		workdirPrefix := _config.GetFullLocalAssetDirectory(utils.DirectoryDynamicData)
+		mountPrefixes := []string{
+			workdirPrefix,
+			_config.GetFullLocalAssetDirectory(utils.DirectoryRun),
+			_config.GetFullLocalAssetDirectory(utils.DirectoryVarRun),
+			_config.GetFullLocalAssetDirectory(utils.DirectoryKubeletData),
+		}
+
+		processParentMap := getProcessParentMap()
+		mounts := getMounts(mountPrefixes)
+		pvPaths := mounts.getPV()
+		containers := getContainerdShim(containerdShimBinary, workdirPrefix, pvPaths, processParentMap)
+
+		containers.Dump()
+		mounts.Dump()
+
+		for _, mount := range *mounts {
+			log.WithFields(log.Fields{"path": mount.Destination}).Debug("Unmounting path")
+
+			if error := Unmount(mount.Destination); error != nil {
+				log.WithFields(log.Fields{"error": error, "path": mount.Destination}).Debug("Unmount failed")
+			}
+		}
+
+		for _, container := range *containers {
+			log.WithFields(log.Fields{"container-id": container.containerID}).Debug("Killing container")
 
 			for _, pid := range container.processIDs {
-				if Exists(fmt.Sprintf("/proc/%d", pid)) {
-					found = true
+				log.WithFields(log.Fields{"container-id": container.containerID, "pid": pid}).Debug("Killing process")
 
+				syscall.Kill(pid, syscall.SIGKILL)
+			}
+
+			for {
+				found := false
+
+				for _, pid := range container.processIDs {
+					if Exists(fmt.Sprintf("/proc/%d", pid)) {
+						found = true
+
+						break
+					}
+				}
+
+				if !found {
 					break
 				}
 			}
 
-			if !found {
-				break
-			}
-		}
+			for _, path := range container.bindMounts {
+				for _, pvPath := range pvPaths {
+					if pvPath != path {
+						continue
+					}
 
-		for _, path := range container.bindMounts {
-			for _, pvPath := range pvPaths {
-				if pvPath != path {
-					continue
-				}
+					log.WithFields(log.Fields{"container-id": container.containerID, "path": path}).Debug("Unmounting path")
 
-				log.WithFields(log.Fields{"container-id": container.containerID, "path": path}).Debug("Unmounting path")
-
-				if error := Unmount(path); error != nil {
-					log.WithFields(log.Fields{"error": error, "path": path}).Debug("Unmount failed")
+					if error := Unmount(path); error != nil {
+						log.WithFields(log.Fields{"error": error, "path": path}).Debug("Unmount failed")
+					}
 				}
 			}
 		}
-	}
+	*/
 }
