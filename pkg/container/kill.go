@@ -107,17 +107,24 @@ func getContainerdShim(containerdShimBinary, workdirPrefix string, pvPaths []str
 		}
 
 		containerID := ""
+		idFound := false
+
 		for _, parameter := range tokens[1:] {
-			if strings.HasPrefix(parameter, workdirPrefix) {
-				workdirTokens := strings.Split(parameter, "/")
-				containerID = workdirTokens[len(workdirTokens)-1]
+			if parameter == "-id" {
+				idFound = true
+
+				continue
+			}
+
+			if idFound {
+				containerID = parameter
 
 				break
 			}
 		}
 
 		if len(containerID) == 0 {
-			log.WithFields(log.Fields{"error": error, "cmdline": cmdline}).Debug("ContainerD-Shim container ID retrieval failed")
+			log.WithFields(log.Fields{"cmdline": cmdline, "_tokens": tokens}).Debug("ContainerD-Shim container ID retrieval failed")
 
 			continue
 		}
@@ -147,7 +154,7 @@ func (container *Container) inProcessIDs(pid int) bool {
 }
 
 func (container *Container) collectBindMounts(pvPaths []string) {
-	filename := fmt.Sprintf("/run/k8s-tew/containerd/io.containerd.runtime.v1.linux/k8s.io/%s/config.json", container.containerID)
+	filename := fmt.Sprintf("/run/k8s-tew/containerd/io.containerd.runtime.v2.task/k8s.io/%s/config.json", container.containerID)
 	bytes, error := ioutil.ReadFile(filename)
 	if error != nil {
 		log.WithFields(log.Fields{"error": error, "pid": container.processIDs[0], "container-id": container.containerID}).Debug("Collect bind mounts failed")
@@ -328,6 +335,14 @@ func KillContainers(_config *config.InternalConfig) {
 	containers.Dump()
 	mounts.Dump()
 
+	for _, mount := range *mounts {
+		log.WithFields(log.Fields{"path": mount.Destination}).Debug("Unmounting path")
+
+		if error := Unmount(mount.Destination); error != nil {
+			log.WithFields(log.Fields{"error": error, "path": mount.Destination}).Debug("Unmount failed")
+		}
+	}
+
 	for _, container := range *containers {
 		log.WithFields(log.Fields{"container-id": container.containerID}).Debug("Killing container")
 
@@ -365,14 +380,6 @@ func KillContainers(_config *config.InternalConfig) {
 					log.WithFields(log.Fields{"error": error, "path": path}).Debug("Unmount failed")
 				}
 			}
-		}
-	}
-
-	for _, mount := range *mounts {
-		log.WithFields(log.Fields{"path": mount.Destination}).Debug("Unmounting path")
-
-		if error := Unmount(mount.Destination); error != nil {
-			log.WithFields(log.Fields{"error": error, "path": mount.Destination}).Debug("Unmount failed")
 		}
 	}
 }
