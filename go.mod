@@ -2,6 +2,8 @@ module github.com/darxkies/k8s-tew
 
 go 1.14
 
+replace github.com/docker/distribution => github.com/docker/distribution v2.7.1-0.20190205005809-0d3efadf0154+incompatible
+
 require (
 	cloud.google.com/go v0.46.3 // indirect
 	github.com/Azure/go-autorest/autorest v0.9.1 // indirect
@@ -17,7 +19,7 @@ require (
 	github.com/containerd/btrfs v0.0.0-20200117014249-153935315f4a
 	github.com/containerd/cgroups v0.0.0-20200407151229-7fc7a507c04c
 	github.com/containerd/console v1.0.0
-	github.com/containerd/containerd v1.3.3
+	github.com/containerd/containerd v1.3.4
 	github.com/containerd/continuity v0.0.0-20200413184840-d3ef23f19fbb
 	github.com/containerd/cri v1.11.1
 	github.com/containerd/fifo v0.0.0-20200410184934-f15a3290365b
@@ -105,4 +107,3 @@ require (
 	k8s.io/client-go v0.18.2
 	k8s.io/kubectl v0.18.2
 )
-
