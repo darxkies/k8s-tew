@@ -1,6 +1,7 @@
 package k8s
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"strings"
@@ -58,8 +59,10 @@ func (k8s *K8S) TaintNode(name string, nodeData *config.Node) error {
 		return error
 	}
 
+	context := context.Background()
+
 	// Get Node
-	node, error := clientset.CoreV1().Nodes().Get(name, metav1.GetOptions{})
+	node, error := clientset.CoreV1().Nodes().Get(context, name, metav1.GetOptions{})
 	if error != nil {
 		return errors.Wrapf(error, "Could not get Kubernetes node '%s'", name)
 	}
@@ -155,7 +158,7 @@ func (k8s *K8S) TaintNode(name string, nodeData *config.Node) error {
 		return nil
 	}
 
-	node, error = clientset.CoreV1().Nodes().Update(node)
+	node, error = clientset.CoreV1().Nodes().Update(context, node, metav1.UpdateOptions{})
 
 	if error != nil {
 		return errors.Wrapf(error, "Could not update node '%s'", name)
@@ -170,7 +173,9 @@ func (k8s *K8S) GetSecretToken(namespace, name string) (string, error) {
 		return "", error
 	}
 
-	secrets, error := clientset.CoreV1().Secrets(namespace).List(metav1.ListOptions{})
+	context := context.Background()
+
+	secrets, error := clientset.CoreV1().Secrets(namespace).List(context, metav1.ListOptions{})
 	if error != nil {
 		return "", errors.Wrapf(error, "Could not list secrets for namespace '%s'", namespace)
 	}
@@ -252,7 +257,7 @@ func (k8s *K8S) Apply(manifest string) error {
 		} else {
 			existingObject, error := resource.NewHelper(info.Client, info.Mapping).Get(info.Namespace, info.Name, true)
 			if error != nil {
-				object, error = resource.NewHelper(info.Client, info.Mapping).Create(info.Namespace, true, info.Object, nil)
+				object, error = resource.NewHelper(info.Client, info.Mapping).Create(info.Namespace, true, info.Object)
 				if error != nil {
 					return errors.Wrapf(error, "Could not create '%s/%s'", info.Namespace, info.Name)
 				}
@@ -299,7 +304,9 @@ func (k8s *K8S) GetCredentials(namespace, name string) (username string, passwor
 		return "", "", error
 	}
 
-	secrets, error := clientset.CoreV1().Secrets(namespace).Get(name, metav1.GetOptions{})
+	context := context.Background()
+
+	secrets, error := clientset.CoreV1().Secrets(namespace).Get(context, name, metav1.GetOptions{})
 	if error != nil {
 		return "", "", errors.Wrapf(error, "Could not list secrets for namespace '%s'", namespace)
 	}

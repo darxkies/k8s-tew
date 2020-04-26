@@ -11,6 +11,7 @@ import (
 	"strings"
 	"syscall"
 
+	"github.com/containerd/containerd"
 	"github.com/darxkies/k8s-tew/pkg/config"
 	"github.com/darxkies/k8s-tew/pkg/utils"
 	log "github.com/sirupsen/logrus"
@@ -317,6 +318,16 @@ func Unmount(path string) error {
 }
 
 func KillContainers(_config *config.InternalConfig) {
+
+	containerdSocketFilename := "/run/containerd/containerd.sock"
+
+	client, error := containerd.New(containerdSocketFilename)
+	defer client.Close()
+
+	if error != nil {
+		log.WithFields(log.Fields{"error": error, "containerd-socket-filename": containerdSocketFilename}).Debug("Containerd connection failed")
+	}
+
 	containerdShimBinary := _config.GetFullLocalAssetFilename(utils.BinaryContainerdShimRuncV2)
 
 	workdirPrefix := _config.GetFullLocalAssetDirectory(utils.DirectoryDynamicData)
