@@ -414,6 +414,7 @@ const TemplateManifestVirtualIP = "k8s/manifests/virtual-ip.yaml"
 const NodeRoleController = "node-role.kubernetes.io/master"
 const NodeRoleWorker = "node-role.kubernetes.io/worker"
 const NodeRoleStorage = "node-role.kubernetes.io/storage"
+const NodeNotReady = "node.kubernetes.io/not-ready"
 
 const ConcurrentSshConnectionsLimit = 10
 

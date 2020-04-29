@@ -164,6 +164,34 @@ func (k8s *K8S) TaintNode(name string, nodeData *config.Node) error {
 		return errors.Wrapf(error, "Could not update node '%s'", name)
 	}
 
+	/*
+		for {
+			noSchedule := false
+
+			for _, taint := range node.Spec.Taints {
+				if taint.Key == utils.NodeNotReady && taint.Effect == v1.TaintEffectNoSchedule {
+					noSchedule = true
+
+					break
+				}
+			}
+
+			spew.Config.DisableMethods = true
+			spew.Dump(node)
+			spew.Dump(noSchedule)
+
+			if !noSchedule {
+				break
+			}
+
+			// Get Node
+			node, error = clientset.CoreV1().Nodes().Get(context, name, metav1.GetOptions{})
+			if error != nil {
+				return errors.Wrapf(error, "Could not get Kubernetes node '%s'", name)
+			}
+		}
+	*/
+
 	return nil
 }
 
