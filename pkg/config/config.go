@@ -30,6 +30,8 @@ type Config struct {
 	ResolvConf                   string      `yaml:"resolv-conf"`
 	DeploymentDirectory          string      `yaml:"deployment-directory,omitempty"`
 	MaxPods                      uint16      `yaml:"max-pods"`
+	SANIPAddresses               string      `yaml:"san-ip-addresses,omitempty"`
+	SANDNSNames                  string      `yaml:"san-dns-names,omitempty"`
 	RSASize                      uint16      `yaml:"rsa-size"`
 	CAValidityPeriod             uint        `yaml:"ca-validity-period"`
 	ClientValidityPeriod         uint        `yaml:"client-validity-period"`

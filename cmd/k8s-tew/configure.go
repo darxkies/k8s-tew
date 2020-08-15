@@ -79,6 +79,14 @@ func init() {
 		_config.Config.RSASize = value
 	})
 
+	addStringOption("san-ip-addresses", "", "SAN IP Addresses (comma separated)", func(value string) {
+		_config.Config.SANIPAddresses = value
+	})
+
+	addStringOption("san-dns-names", "", "SAN DNS Names (comma separated)", func(value string) {
+		_config.Config.SANDNSNames = value
+	})
+
 	addUint16Option("max-pods", utils.MaxPods, "MaxPods", func(value uint16) {
 		_config.Config.MaxPods = value
 	})

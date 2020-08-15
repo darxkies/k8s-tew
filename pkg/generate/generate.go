@@ -625,13 +625,35 @@ func (generator *Generator) generateCertificates() error {
 		kubernetesIPAddresses = append(kubernetesIPAddresses, node.IP)
 	}
 
+	// Merge a string array with an array encoded as a comma separated string and return the new list
+	mergeLists := func(oldList []string, values string) []string {
+		newList := oldList[:]
+
+		tokens := strings.Split(values, ",")
+
+		for _, token := range tokens {
+			token = strings.TrimSpace(token)
+
+			if len(token) == 0 {
+				continue
+			}
+
+			newList = append(newList, token)
+		}
+
+		return newList
+	}
+
+	apiServerDNSNames := mergeLists(kubernetesDNSNames[:], generator.config.Config.SANDNSNames)
+	apiServerIPAddresses := mergeLists(kubernetesIPAddresses[:], generator.config.Config.SANIPAddresses)
+
 	// Generate admin certificate
 	if error := pki.GenerateClient(generator.ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, utils.CnAdmin, "system:masters", []string{}, []string{}, generator.config.GetFullLocalAssetFilename(utils.PemAdmin), generator.config.GetFullLocalAssetFilename(utils.PemAdminKey), false); error != nil {
 		return error
 	}
 
 	// Generate kuberentes certificate
-	if error := pki.GenerateClient(generator.ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, "kubernetes", "Kubernetes", kubernetesDNSNames, kubernetesIPAddresses, generator.config.GetFullLocalAssetFilename(utils.PemKubernetes), generator.config.GetFullLocalAssetFilename(utils.PemKubernetesKey), true); error != nil {
+	if error := pki.GenerateClient(generator.ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, "kubernetes", "Kubernetes", apiServerDNSNames, apiServerIPAddresses, generator.config.GetFullLocalAssetFilename(utils.PemKubernetes), generator.config.GetFullLocalAssetFilename(utils.PemKubernetesKey), true); error != nil {
 		return error
 	}
 

@@ -10,7 +10,6 @@ require (
 	github.com/Microsoft/hcsshim v0.8.7
 	github.com/briandowns/spinner v0.0.0-20181029155426-195c31b675a7
 	github.com/cavaliercoder/grab v2.0.0+incompatible
-	github.com/cespare/reflex v0.3.0 // indirect
 	github.com/containerd/aufs v0.0.0-20200106064538-76944a95669d
 	github.com/containerd/btrfs v0.0.0-20200117014249-153935315f4a
 	github.com/containerd/cgroups v0.0.0-20200407151229-7fc7a507c04c
