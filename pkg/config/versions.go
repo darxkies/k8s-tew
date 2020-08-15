@@ -7,6 +7,10 @@ import (
 type Versions struct {
 	Etcd                       string `yaml:"etcd"`
 	K8S                        string `yaml:"kubernetes"`
+	KubeAPIServer              string `yaml:"kube-apiserver"`
+	KubeControllerManager      string `yaml:"kube-controller-manager"`
+	KubeScheduler              string `yaml:"kube-scheduler"`
+	KubeProxy                  string `yaml:"kube-proxy"`
 	Helm                       string `yaml:"helm"`
 	Containerd                 string `yaml:"containerd"`
 	Runc                       string `yaml:"runc"`
@@ -61,6 +65,10 @@ func NewVersions() Versions {
 	return Versions{
 		Etcd:                       utils.VersionEtcd,
 		K8S:                        utils.VersionK8s,
+		KubeAPIServer:              utils.VersionKubeAPIServer,
+		KubeControllerManager:      utils.VersionKubeControllerManager,
+		KubeScheduler:              utils.VersionKubeScheduler,
+		KubeProxy:                  utils.VersionKubeProxy,
 		Helm:                       utils.VersionHelm,
 		Containerd:                 utils.VersionContainerd,
 		Runc:                       utils.VersionRunc,
@@ -117,7 +125,10 @@ func (versions Versions) GetImages() []Image {
 		{Name: versions.Gobetween, Features: Features{}},
 		{Name: versions.VirtualIP, Features: Features{}},
 		{Name: versions.Etcd, Features: Features{}},
-		{Name: versions.K8S, Features: Features{}},
+		{Name: versions.KubeAPIServer, Features: Features{}},
+		{Name: versions.KubeControllerManager, Features: Features{}},
+		{Name: versions.KubeScheduler, Features: Features{}},
+		{Name: versions.KubeProxy, Features: Features{}},
 		{Name: versions.CalicoCNI, Features: Features{}},
 		{Name: versions.CalicoNode, Features: Features{}},
 		{Name: versions.CalicoPod2Daemon, Features: Features{}},

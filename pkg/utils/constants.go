@@ -2,7 +2,11 @@ package utils
 
 // Versions
 const VersionConfig = "2.4.0"
-const VersionK8s = "gcr.io/google_containers/hyperkube:v1.18.6"
+const VersionK8s = "v1.18.8"
+const VersionKubeAPIServer = "k8s.gcr.io/kube-apiserver:" + VersionK8s
+const VersionKubeControllerManager = "k8s.gcr.io/kube-controller-manager:" + VersionK8s
+const VersionKubeScheduler = "k8s.gcr.io/kube-scheduler:" + VersionK8s
+const VersionKubeProxy = "k8s.gcr.io/kube-proxy:" + VersionK8s
 const VersionEtcd = "quay.io/coreos/etcd:v3.4.7"
 const VersionContainerd = "1.3.7"
 const VersionRunc = "1.0.0-rc92"
@@ -100,7 +104,7 @@ const PortWordpress uint16 = 30100
 
 // URLs
 const K8sBaseName = "kubernetes-node-linux-amd64"
-const K8sDownloadUrl = "https://storage.googleapis.com/kubernetes-release/release/{{.Versions.K8S | image_tag}}/{{.Filename}}.tar.gz"
+const K8sDownloadUrl = "https://storage.googleapis.com/kubernetes-release/release/{{.Versions.K8S}}/{{.Filename}}.tar.gz"
 const EtcdBaseName = "etcd-{{.Versions.Etcd | image_tag}}-linux-amd64"
 const EtcdDownloadUrl = "https://github.com/coreos/etcd/releases/download/{{.Versions.Etcd | image_tag}}/{{.Filename}}.tar.gz"
 const CniBaseName = "cni-plugins-amd64-v{{.Versions.CNI}}"

@@ -1,4 +1,4 @@
-apiVersion: kubescheduler.config.k8s.io/v1alpha1
+apiVersion: kubescheduler.config.k8s.io/v1alpha2
 kind: KubeSchedulerConfiguration
 clientConnection:
   kubeconfig: "{{.KubeConfig}}"

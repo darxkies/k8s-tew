@@ -223,6 +223,22 @@ func init() {
 		_config.Config.Versions.K8S = value
 	})
 
+	addStringOption("version-kube-apiserver", utils.VersionKubeAPIServer, "Kubernetes API Server version", func(value string) {
+		_config.Config.Versions.KubeAPIServer = value
+	})
+
+	addStringOption("version-kube-controller-manager", utils.VersionKubeControllerManager, "Kubernetes Controller Manager", func(value string) {
+		_config.Config.Versions.KubeControllerManager = value
+	})
+
+	addStringOption("version-kube-scheduler", utils.VersionKubeScheduler, "Kubernetes Scheduler", func(value string) {
+		_config.Config.Versions.KubeScheduler = value
+	})
+
+	addStringOption("version-kube-proxy", utils.VersionKubeProxy, "Kubernetes Proxy version", func(value string) {
+		_config.Config.Versions.KubeProxy = value
+	})
+
 	addStringOption("version-helm", utils.VersionHelm, "Helm version", func(value string) {
 		_config.Config.Versions.Helm = value
 	})

@@ -9,7 +9,6 @@ spec:
   - name: kube-controller-manager
     image: {{.KubernetesImage}}
     command:
-    - /hyperkube
     - kube-controller-manager
     - --bind-address=0.0.0.0
     - --allocate-node-cidrs=true

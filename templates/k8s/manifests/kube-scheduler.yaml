@@ -9,7 +9,6 @@ spec:
   - name: kube-scheduler
     image: {{.KubernetesImage}}
     command:
-    - /hyperkube
     - kube-scheduler
     - --config={{.KubeSchedulerConfig}}
     livenessProbe:

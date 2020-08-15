@@ -491,7 +491,7 @@ func (generator *Generator) generateManifestKubeApiserver() error {
 			APIServerPort     uint16
 			ClusterIPRange    string
 		}{
-			KubernetesImage:   generator.config.Config.Versions.K8S,
+			KubernetesImage:   generator.config.Config.Versions.KubeAPIServer,
 			ControllersCount:  generator.config.GetControllersCount(),
 			AuditLog:          path.Join(generator.config.GetFullTargetAssetDirectory(utils.DirectoryLogging), utils.AuditLog),
 			EtcdServers:       generator.config.GetEtcdServers(),
@@ -532,7 +532,7 @@ func (generator *Generator) generateManifestKubeControllerManager() error {
 			PemKubernetesKey     string
 			PemServiceAccountKey string
 		}{
-			KubernetesImage:      generator.config.Config.Versions.K8S,
+			KubernetesImage:      generator.config.Config.Versions.KubeControllerManager,
 			ClusterCIDR:          generator.config.Config.ClusterCIDR,
 			ClusterIPRange:       generator.config.Config.ClusterIPRange,
 			PemCA:                generator.config.GetFullTargetAssetFilename(utils.PemCa),
@@ -562,7 +562,7 @@ func (generator *Generator) generateManifestKubeScheduler() error {
 			KubeSchedulerConfig     string
 			KubeSchedulerKubeconfig string
 		}{
-			KubernetesImage:         generator.config.Config.Versions.K8S,
+			KubernetesImage:         generator.config.Config.Versions.KubeScheduler,
 			KubeSchedulerConfig:     generator.config.GetFullTargetAssetFilename(utils.K8sKubeSchedulerConfig),
 			KubeSchedulerKubeconfig: generator.config.GetFullTargetAssetFilename(utils.KubeconfigScheduler),
 		}, generator.config.GetFullLocalAssetFilename(utils.ManifestKubeScheduler), true, false); error != nil {
@@ -583,7 +583,7 @@ func (generator *Generator) generateManifestKubeProxy() error {
 			KubeProxyKubeconfig string
 			KubeProxyConfig     string
 		}{
-			KubernetesImage:     generator.config.Config.Versions.K8S,
+			KubernetesImage:     generator.config.Config.Versions.KubeProxy,
 			ClusterCIDR:         generator.config.Config.ClusterCIDR,
 			KubeProxyKubeconfig: generator.config.GetFullTargetAssetFilename(utils.KubeconfigProxy),
 			KubeProxyConfig:     generator.config.GetFullTargetAssetFilename(utils.K8sKubeProxyConfig),
