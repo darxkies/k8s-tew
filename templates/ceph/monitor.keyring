@@ -22,5 +22,5 @@
         caps mon = "allow profile bootstrap-rgw"
 [client.k8s-tew]
         key = {{.ClientK8STEWKey | unescape}}
-		caps mon = "allow r"
-		caps osd = "allow rwx pool={{.CephPoolName}}"
+        caps mon = "allow r"
+        caps osd = "allow rwx pool={{.CephPoolName}}"

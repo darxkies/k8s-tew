@@ -6,6 +6,8 @@ import (
 	"path"
 	"strings"
 
+	"gopkg.in/ini.v1"
+
 	"github.com/darxkies/k8s-tew/pkg/config"
 	"github.com/pkg/errors"
 
@@ -847,17 +849,45 @@ func (generator *Generator) generateCephCSI() error {
 }
 
 func (generator *Generator) generateCephFiles() error {
-	if utils.FileExists(generator.config.GetFullLocalAssetFilename(utils.CephMonitorKeyring)) {
-		return nil
+	type CephKeys struct {
+		monitorKey                         string
+		clientAdminKey                     string
+		clientBootstrapMetadataServerKey   string
+		clientBootstrapObjectStorageKey    string
+		clientBootstrapRadosBlockDeviceKey string
+		clientBootstrapRadosGatewayKey     string
+		clientK8STEWKey                    string
 	}
 
-	monitorKey := utils.GenerateCephKey()
-	clientAdminKey := utils.GenerateCephKey()
-	clientBootstrapMetadataServerKey := utils.GenerateCephKey()
-	clientBootstrapObjectStorageKey := utils.GenerateCephKey()
-	clientBootstrapRadosBlockDeviceKey := utils.GenerateCephKey()
-	clientBootstrapRadosGatewayKey := utils.GenerateCephKey()
-	clientK8STEWKey := utils.GenerateCephKey()
+	cephKeys := CephKeys{}
+
+	cephMonitoringKeyringFilename := generator.config.GetFullLocalAssetFilename(utils.CephMonitorKeyring)
+
+	// Reload keys if already there
+	if utils.FileExists(cephMonitoringKeyringFilename) {
+		cfg, _error := ini.Load(cephMonitoringKeyringFilename)
+		if _error != nil {
+			return fmt.Errorf("Could not load Ceph Credentials from '%s' (%s)", cephMonitoringKeyringFilename, _error.Error())
+		}
+
+		cephKeys.monitorKey = cfg.Section("mon.").Key("key").String()
+		cephKeys.clientAdminKey = cfg.Section("client.admin").Key("key").String()
+		cephKeys.clientBootstrapMetadataServerKey = cfg.Section("client.bootstrap-mds").Key("key").String()
+		cephKeys.clientBootstrapObjectStorageKey = cfg.Section("client.bootstrap-osd").Key("key").String()
+		cephKeys.clientBootstrapRadosBlockDeviceKey = cfg.Section("client.bootstrap-rbd").Key("key").String()
+		cephKeys.clientBootstrapRadosGatewayKey = cfg.Section("client.bootstrap-rgw").Key("key").String()
+		cephKeys.clientK8STEWKey = cfg.Section("client.k8s-tew").Key("key").String()
+
+	} else {
+		// Generate new keys
+		cephKeys.monitorKey = utils.GenerateCephKey()
+		cephKeys.clientAdminKey = utils.GenerateCephKey()
+		cephKeys.clientBootstrapMetadataServerKey = utils.GenerateCephKey()
+		cephKeys.clientBootstrapObjectStorageKey = utils.GenerateCephKey()
+		cephKeys.clientBootstrapRadosBlockDeviceKey = utils.GenerateCephKey()
+		cephKeys.clientBootstrapRadosGatewayKey = utils.GenerateCephKey()
+		cephKeys.clientK8STEWKey = utils.GenerateCephKey()
+	}
 
 	if error := utils.ApplyTemplateAndSave("ceph-monitor-keyring", utils.TemplateCephMonitorKeyring, struct {
 		MonitorKey                         string
@@ -869,23 +899,23 @@ func (generator *Generator) generateCephFiles() error {
 		ClientK8STEWKey                    string
 		CephPoolName                       string
 	}{
-		MonitorKey:                         monitorKey,
-		ClientAdminKey:                     clientAdminKey,
-		ClientBootstrapMetadataServerKey:   clientBootstrapMetadataServerKey,
-		ClientBootstrapObjectStorageKey:    clientBootstrapObjectStorageKey,
-		ClientBootstrapRadosBlockDeviceKey: clientBootstrapRadosBlockDeviceKey,
-		ClientBootstrapRadosGatewayKey:     clientBootstrapRadosGatewayKey,
-		ClientK8STEWKey:                    clientK8STEWKey,
+		MonitorKey:                         cephKeys.monitorKey,
+		ClientAdminKey:                     cephKeys.clientAdminKey,
+		ClientBootstrapMetadataServerKey:   cephKeys.clientBootstrapMetadataServerKey,
+		ClientBootstrapObjectStorageKey:    cephKeys.clientBootstrapObjectStorageKey,
+		ClientBootstrapRadosBlockDeviceKey: cephKeys.clientBootstrapRadosBlockDeviceKey,
+		ClientBootstrapRadosGatewayKey:     cephKeys.clientBootstrapRadosGatewayKey,
+		ClientK8STEWKey:                    cephKeys.clientK8STEWKey,
 		CephPoolName:                       utils.CephRbdPoolName,
-	}, generator.config.GetFullLocalAssetFilename(utils.CephMonitorKeyring), false, false); error != nil {
+	}, cephMonitoringKeyringFilename, true, false); error != nil {
 		return error
 	}
 
 	if error := utils.ApplyTemplateAndSave("ceph-client-admin", utils.TemplateCephClientAdminKeyring, struct {
 		Key string
 	}{
-		Key: clientAdminKey,
-	}, generator.config.GetFullLocalAssetFilename(utils.CephClientAdminKeyring), false, false); error != nil {
+		Key: cephKeys.clientAdminKey,
+	}, generator.config.GetFullLocalAssetFilename(utils.CephClientAdminKeyring), true, false); error != nil {
 		return error
 	}
 
@@ -894,8 +924,8 @@ func (generator *Generator) generateCephFiles() error {
 		Key  string
 	}{
 		Name: "bootstrap-mds",
-		Key:  clientBootstrapMetadataServerKey,
-	}, generator.config.GetFullLocalAssetFilename(utils.CephBootstrapMdsKeyring), false, false); error != nil {
+		Key:  cephKeys.clientBootstrapMetadataServerKey,
+	}, generator.config.GetFullLocalAssetFilename(utils.CephBootstrapMdsKeyring), true, false); error != nil {
 		return error
 	}
 
@@ -904,8 +934,8 @@ func (generator *Generator) generateCephFiles() error {
 		Key  string
 	}{
 		Name: "bootstrap-osd",
-		Key:  clientBootstrapObjectStorageKey,
-	}, generator.config.GetFullLocalAssetFilename(utils.CephBootstrapOsdKeyring), false, false); error != nil {
+		Key:  cephKeys.clientBootstrapObjectStorageKey,
+	}, generator.config.GetFullLocalAssetFilename(utils.CephBootstrapOsdKeyring), true, false); error != nil {
 		return error
 	}
 
@@ -914,8 +944,8 @@ func (generator *Generator) generateCephFiles() error {
 		Key  string
 	}{
 		Name: "bootstrap-rbd",
-		Key:  clientBootstrapRadosBlockDeviceKey,
-	}, generator.config.GetFullLocalAssetFilename(utils.CephBootstrapRbdKeyring), false, false); error != nil {
+		Key:  cephKeys.clientBootstrapRadosBlockDeviceKey,
+	}, generator.config.GetFullLocalAssetFilename(utils.CephBootstrapRbdKeyring), true, false); error != nil {
 		return error
 	}
 
@@ -924,8 +954,8 @@ func (generator *Generator) generateCephFiles() error {
 		Key  string
 	}{
 		Name: "bootstrap-rgw",
-		Key:  clientBootstrapRadosGatewayKey,
-	}, generator.config.GetFullLocalAssetFilename(utils.CephBootstrapRgwKeyring), false, false); error != nil {
+		Key:  cephKeys.clientBootstrapRadosGatewayKey,
+	}, generator.config.GetFullLocalAssetFilename(utils.CephBootstrapRgwKeyring), true, false); error != nil {
 		return error
 	}
 
@@ -933,9 +963,9 @@ func (generator *Generator) generateCephFiles() error {
 		ClientAdminKey  string
 		ClientK8STEWKey string
 	}{
-		ClientAdminKey:  clientAdminKey,
-		ClientK8STEWKey: clientK8STEWKey,
-	}, generator.config.GetFullLocalAssetFilename(utils.CephSecrets), false, false)
+		ClientAdminKey:  cephKeys.clientAdminKey,
+		ClientK8STEWKey: cephKeys.clientK8STEWKey,
+	}, generator.config.GetFullLocalAssetFilename(utils.CephSecrets), true, false)
 }
 
 func (generator *Generator) generateLetsEncryptClusterIssuer() error {
