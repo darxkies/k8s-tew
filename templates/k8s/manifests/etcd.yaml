@@ -5,6 +5,16 @@ metadata:
   name: etcd
 spec:
   hostNetwork: true
+  initContainers:
+  - name: setup
+    image: {{.EtcdImage}}
+    command:
+    - chmod 
+    - go-rwx
+    - {{.EtcdDataDirectory}}
+    volumeMounts:
+    - name: etcd-data-directory
+      mountPath: {{.EtcdDataDirectory}}
   containers:
   - name: etcd
     image: {{.EtcdImage}}
