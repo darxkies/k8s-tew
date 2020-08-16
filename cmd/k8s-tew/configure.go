@@ -415,6 +415,10 @@ func init() {
 		_config.Config.Versions.CSISnapshotter = value
 	})
 
+	addStringOption("version-csi-snapshot-controller", utils.VersionCsiSnapshotController, "CSI Snapshot Controller  version", func(value string) {
+		_config.Config.Versions.CSISnapshotController = value
+	})
+
 	addStringOption("version-wordpress", utils.VersionWordpress, "WordPress version", func(value string) {
 		_config.Config.Versions.WordPress = value
 	})
