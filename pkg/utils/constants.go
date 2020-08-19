@@ -8,7 +8,7 @@ const VersionKubeControllerManager = "k8s.gcr.io/kube-controller-manager:" + Ver
 const VersionKubeScheduler = "k8s.gcr.io/kube-scheduler:" + VersionK8s
 const VersionKubeProxy = "k8s.gcr.io/kube-proxy:" + VersionK8s
 const VersionEtcd = "quay.io/coreos/etcd:v3.4.10"
-const VersionContainerd = "1.3.7"
+const VersionContainerd = "1.4.0"
 const VersionRunc = "1.0.0-rc92"
 const VersionCrictl = "1.18.0"
 const VersionHelm = "3.3.0"
@@ -22,6 +22,8 @@ const VersionCalicoTypha = "quay.io/calico/typha:v3.15.1"
 const VersionCalicoNode = "quay.io/calico/node:v3.15.1"
 const VersionCalicoCni = "quay.io/calico/cni:v3.15.1"
 const VersionCalicoKubeControllers = "quay.io/calico/kube-controllers:v3.15.1"
+
+//const VersionCeph = "docker.io/ceph/daemon:v5.0.2-stable-5.0-octopus-centos-8-x86_64"
 const VersionCeph = "docker.io/ceph/daemon:v4.0.12-stable-4.0-nautilus-centos-7-x86_64"
 const VersionCsiCephPlugin = "quay.io/cephcsi/cephcsi:v3.1.0"
 const VersionCsiAttacher = "quay.io/k8scsi/csi-attacher:v2.1.1"
