@@ -14,6 +14,7 @@ import (
 var identityFile string
 var commandRetries uint
 var skipSetup bool
+var skipUpload bool
 var skipStorageSetup bool
 var skipMonitoringSetup bool
 var skipLoggingSetup bool
@@ -35,7 +36,7 @@ var deployCmd = &cobra.Command{
 			os.Exit(-1)
 		}
 
-		_deployment := deployment.NewDeployment(_config, identityFile, importImages, forceUpload, parallel, commandRetries, skipSetup, skipStorageSetup, skipMonitoringSetup, skipLoggingSetup, skipBackupSetup, skipShowcaseSetup, skipIngressSetup, skipPackagingSetup)
+		_deployment := deployment.NewDeployment(_config, identityFile, importImages, forceUpload, parallel, commandRetries, skipSetup, skipUpload, skipStorageSetup, skipMonitoringSetup, skipLoggingSetup, skipBackupSetup, skipShowcaseSetup, skipIngressSetup, skipPackagingSetup)
 
 		utils.SetProgressSteps(_deployment.Steps() + 1)
 
@@ -57,6 +58,7 @@ func init() {
 	deployCmd.Flags().StringVarP(&identityFile, "identity-file", "i", path.Join(os.Getenv("HOME"), ".ssh/id_rsa"), "SSH identity file")
 	deployCmd.Flags().UintVarP(&commandRetries, "command-retries", "r", 300, "The count of command retries during the setup")
 	deployCmd.Flags().BoolVar(&skipSetup, "skip-setup", false, "Skip setup steps")
+	deployCmd.Flags().BoolVar(&skipUpload, "skip-upload", false, "Skip upload steps")
 	deployCmd.Flags().BoolVar(&skipStorageSetup, "skip-storage-setup", false, "Skip storage setup and all other feature setup steps")
 	deployCmd.Flags().BoolVar(&skipMonitoringSetup, "skip-monitoring-setup", false, "Skip monitoring setup")
 	deployCmd.Flags().BoolVar(&skipLoggingSetup, "skip-logging-setup", false, "Skip logging setup")

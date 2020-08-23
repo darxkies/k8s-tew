@@ -15,6 +15,7 @@ import (
 var nodeName string
 var nodeIP string
 var nodeIndex uint
+var nodeStorageIndex uint
 var nodeLabels string
 var nodeSelf bool
 
@@ -73,11 +74,11 @@ func addNode() error {
 		_config.Config.DeploymentDirectory = _config.BaseDirectory
 	}
 
-	if _, error = _config.AddNode(nodeName, nodeIP, nodeIndex, labels); error != nil {
+	if _, error = _config.AddNode(nodeName, nodeIP, nodeIndex, nodeStorageIndex, labels); error != nil {
 		return error
 	}
 
-	log.WithFields(log.Fields{"name": nodeName, "ip": nodeIP, "index": nodeIndex, "labels": labels}).Info("Node added")
+	log.WithFields(log.Fields{"name": nodeName, "ip": nodeIP, "index": nodeIndex, "storage-index": nodeStorageIndex, "labels": labels}).Info("Node added")
 
 	if error := _config.Save(); error != nil {
 		return error
@@ -103,7 +104,8 @@ func init() {
 	nodeAddCmd.Flags().StringVarP(&nodeName, "name", "n", "single-node", "The hostname of the node")
 	nodeAddCmd.Flags().StringVarP(&nodeIP, "ip", "i", "192.168.100.50", "IP of the node")
 	nodeAddCmd.Flags().UintVarP(&nodeIndex, "index", "x", 0, "The unique index of the node which should never be reused")
+	nodeAddCmd.Flags().UintVarP(&nodeStorageIndex, "storage-index", "r", 0, "The unique index of the storage node which should never be reused")
 	nodeAddCmd.Flags().StringVarP(&nodeLabels, "labels", "l", fmt.Sprintf("%s,%s", utils.NodeController, utils.NodeWorker), "The labels of the node which define the attributes of the node")
-	nodeAddCmd.Flags().BoolVarP(&nodeSelf, "self", "s", false, "Add this machine by infering the host's name & ip and by setting the labels controller,worker,bootstrapper - The public-network and the deployment-directory are also updated")
+	nodeAddCmd.Flags().BoolVarP(&nodeSelf, "self", "s", false, "Add this machine by inferring the host's name & IP and by setting the labels controller,worker,bootstrapper - The public-network and the deployment-directory are also updated")
 	RootCmd.AddCommand(nodeAddCmd)
 }

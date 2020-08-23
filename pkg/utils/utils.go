@@ -71,6 +71,26 @@ func FileExists(filename string) bool {
 }
 
 // RunCommandWithOutput execute a shell command and return its output
+func RunCommandWithConsoleOutput(command string) error {
+	log.WithFields(log.Fields{"command": command}).Debug("Command started")
+
+	cmd := exec.Command("sh", "-c", command)
+
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	if _error := cmd.Run(); _error != nil {
+		log.WithFields(log.Fields{"command": command, "error": _error}).Debug("Command failed")
+
+		return fmt.Errorf("Command '%s' failed with error '%s'", command, _error)
+	}
+
+	log.WithFields(log.Fields{"command": command}).Debug("Command ended")
+
+	return nil
+}
+
+// RunCommandWithOutput execute a shell command and return its output
 func RunCommandWithOutput(command string) (string, error) {
 	_context, cancel := context.WithTimeout(context.Background(), commandTimeout*time.Second)
 	defer cancel()

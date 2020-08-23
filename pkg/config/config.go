@@ -26,6 +26,7 @@ type Config struct {
 	ClusterDNSIP                 string      `yaml:"cluster-dns-ip"`
 	ClusterCIDR                  string      `yaml:"cluster-cidr"`
 	CalicoTyphaIP                string      `yaml:"calico-typha-ip"`
+	CephClusterName              string      `yaml:"ceph-cluster-name"`
 	MetalLBAddresses             string      `yaml:"metallb-addresses"`
 	ResolvConf                   string      `yaml:"resolv-conf"`
 	DeploymentDirectory          string      `yaml:"deployment-directory,omitempty"`
@@ -68,6 +69,7 @@ func NewConfig() *Config {
 	config.ClusterDNSIP = utils.ClusterDnsIp
 	config.ClusterCIDR = utils.ClusterCidr
 	config.CalicoTyphaIP = utils.CalicoTyphaIp
+	config.CephClusterName = utils.CephClusterName
 	config.MetalLBAddresses = utils.MetalLBAddresses
 	config.ResolvConf = utils.ResolvConf
 	config.DeploymentDirectory = utils.DeploymentDirectory

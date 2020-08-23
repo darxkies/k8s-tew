@@ -14,6 +14,7 @@ type Deployment struct {
 	config            *config.InternalConfig
 	identityFile      string
 	skipSetup         bool
+	skipUpload        bool
 	skipSetupFeatures config.Features
 	forceUpload       bool
 	commandRetries    uint
@@ -23,7 +24,7 @@ type Deployment struct {
 	importImages      bool
 }
 
-func NewDeployment(_config *config.InternalConfig, identityFile string, importImages, forceUpload bool, parallel bool, commandRetries uint, skipSetup, skipStorageSetup, skipMonitoringSetup, skipLoggingSetup, skipBackupSetup, skipShowcaseSetup, skipIngressSetup, skipPackagingSetup bool) *Deployment {
+func NewDeployment(_config *config.InternalConfig, identityFile string, importImages, forceUpload bool, parallel bool, commandRetries uint, skipSetup, skipUpload, skipStorageSetup, skipMonitoringSetup, skipLoggingSetup, skipBackupSetup, skipShowcaseSetup, skipIngressSetup, skipPackagingSetup bool) *Deployment {
 	nodes := map[string]*NodeDeployment{}
 
 	for nodeName, node := range _config.Config.Nodes {
@@ -60,7 +61,7 @@ func NewDeployment(_config *config.InternalConfig, identityFile string, importIm
 		skipSetupFeatures = append(skipSetupFeatures, utils.FeaturePackaging)
 	}
 
-	deployment := &Deployment{config: _config, identityFile: identityFile, importImages: importImages, forceUpload: forceUpload, parallel: parallel, commandRetries: commandRetries, nodes: nodes, skipSetup: skipSetup, skipSetupFeatures: skipSetupFeatures}
+	deployment := &Deployment{config: _config, identityFile: identityFile, importImages: importImages, forceUpload: forceUpload, parallel: parallel, commandRetries: commandRetries, nodes: nodes, skipSetup: skipSetup, skipUpload: skipUpload, skipSetupFeatures: skipSetupFeatures}
 
 	deployment.images = deployment.config.Config.Versions.GetImages()
 
@@ -71,8 +72,10 @@ func (deployment *Deployment) Steps() int {
 	result := 0
 
 	// Files deployment
-	for _, node := range deployment.nodes {
-		result += node.Steps()
+	if !deployment.skipUpload {
+		for _, node := range deployment.nodes {
+			result += node.Steps()
+		}
 	}
 
 	if !deployment.skipSetup {
@@ -96,13 +99,15 @@ func (deployment *Deployment) Steps() int {
 func (deployment *Deployment) Deploy() error {
 	sortedNodeKeys := deployment.config.GetSortedNodeKeys()
 
-	for _, nodeName := range sortedNodeKeys {
-		nodeDeployment := deployment.nodes[nodeName]
+	if !deployment.skipUpload {
+		for _, nodeName := range sortedNodeKeys {
+			nodeDeployment := deployment.nodes[nodeName]
 
-		deployment.config.SetNode(nodeName, nodeDeployment.node)
+			deployment.config.SetNode(nodeName, nodeDeployment.node)
 
-		if error := nodeDeployment.UploadFiles(deployment.forceUpload); error != nil {
-			return error
+			if error := nodeDeployment.UploadFiles(deployment.forceUpload); error != nil {
+				return error
+			}
 		}
 	}
 

@@ -187,6 +187,10 @@ func init() {
 		_config.Config.CalicoTyphaIP = value
 	})
 
+	addStringOption("ceph-cluster-name", utils.CephClusterName, "Ceph Cluster Name", func(value string) {
+		_config.Config.CephClusterName = value
+	})
+
 	addStringOption("metallb-addresses", utils.MetalLBAddresses, "Comma separated MetalLB address ranges and CIDR (e.g 192.168.0.16/28,192.168.0.75-192.168.0.100)", func(value string) {
 		_config.Config.MetalLBAddresses = value
 	})

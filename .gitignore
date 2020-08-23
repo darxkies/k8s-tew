@@ -6,6 +6,6 @@ embedded
 bin
 vendor
 .env
-k8s-tew
+/k8s-tew
 sandbox
 setup/docker/files

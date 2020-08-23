@@ -6,15 +6,13 @@ import (
 	"path"
 	"strings"
 
-	"gopkg.in/ini.v1"
-
-	"github.com/darxkies/k8s-tew/pkg/config"
 	"github.com/pkg/errors"
+	"github.com/sethvargo/go-password/password"
 
+	"github.com/darxkies/k8s-tew/pkg/ceph"
+	"github.com/darxkies/k8s-tew/pkg/config"
 	"github.com/darxkies/k8s-tew/pkg/pki"
 	"github.com/darxkies/k8s-tew/pkg/utils"
-
-	"github.com/sethvargo/go-password/password"
 )
 
 type Generator struct {
@@ -55,8 +53,6 @@ func NewGenerator(config *config.InternalConfig) *Generator {
 		generator.generateCertificates,
 		// Generate kubeconfig files
 		generator.generateKubeConfigs,
-		// Generate Ceph Config
-		generator.generateCephConfig,
 		// Generate Ceph Manager secrets file
 		generator.generateCephManagerCredentials,
 		// Generate Ceph Config
@@ -772,22 +768,6 @@ func (generator *Generator) generateKubeConfigs() error {
 	return nil
 }
 
-func (generator *Generator) generateCephConfig() error {
-	return utils.ApplyTemplateAndSave("ceph-config", utils.TemplateCephConfig, struct {
-		ClusterID          string
-		PublicNetwork      string
-		ClusterNetwork     string
-		StorageControllers []config.NodeData
-		StorageNodes       []config.NodeData
-	}{
-		ClusterID:          generator.config.Config.ClusterID,
-		PublicNetwork:      generator.config.Config.PublicNetwork,
-		ClusterNetwork:     generator.config.Config.PublicNetwork,
-		StorageControllers: generator.config.GetStorageControllers(),
-		StorageNodes:       generator.config.GetStorageNodes(),
-	}, generator.config.GetFullLocalAssetFilename(utils.CephConfig), true, false)
-}
-
 func (generator *Generator) generateCephSetup() error {
 	return utils.ApplyTemplateAndSave("ceph-setup", utils.TemplateCephSetup, struct {
 		CephRBDPoolName      string
@@ -800,6 +780,8 @@ func (generator *Generator) generateCephSetup() error {
 		CephImage            string
 		CephManagerPort      uint16
 		CephRadosGatewayPort uint16
+		K8sTewBinary         string
+		K8sTewConfig         string
 	}{
 		CephRBDPoolName:      utils.CephRbdPoolName,
 		CephFSPoolName:       utils.CephFsPoolName,
@@ -811,6 +793,8 @@ func (generator *Generator) generateCephSetup() error {
 		CephImage:            generator.config.Config.Versions.Ceph,
 		CephManagerPort:      utils.PortCephManager,
 		CephRadosGatewayPort: utils.PortCephRadosGateway,
+		K8sTewBinary:         generator.config.GetFullTargetAssetFilename(utils.BinaryK8sTew),
+		K8sTewConfig:         generator.config.GetFullTargetAssetFilename(utils.ConfigFilename),
 	}, generator.config.GetFullLocalAssetFilename(utils.CephSetup), true, false)
 }
 
@@ -851,123 +835,14 @@ func (generator *Generator) generateCephCSI() error {
 }
 
 func (generator *Generator) generateCephFiles() error {
-	type CephKeys struct {
-		monitorKey                         string
-		clientAdminKey                     string
-		clientBootstrapMetadataServerKey   string
-		clientBootstrapObjectStorageKey    string
-		clientBootstrapRadosBlockDeviceKey string
-		clientBootstrapRadosGatewayKey     string
-		clientK8STEWKey                    string
+	ceph := ceph.NewCeph(generator.config, ceph.CephBinariesPath, ceph.CephConfigPath, ceph.CephDataPath)
+
+	cephData, _error := ceph.Setup()
+	if _error != nil {
+		return _error
 	}
 
-	cephKeys := CephKeys{}
-
-	cephMonitoringKeyringFilename := generator.config.GetFullLocalAssetFilename(utils.CephMonitorKeyring)
-
-	// Reload keys if already there
-	if utils.FileExists(cephMonitoringKeyringFilename) {
-		cfg, _error := ini.Load(cephMonitoringKeyringFilename)
-		if _error != nil {
-			return fmt.Errorf("Could not load Ceph Credentials from '%s' (%s)", cephMonitoringKeyringFilename, _error.Error())
-		}
-
-		cephKeys.monitorKey = cfg.Section("mon.").Key("key").String()
-		cephKeys.clientAdminKey = cfg.Section("client.admin").Key("key").String()
-		cephKeys.clientBootstrapMetadataServerKey = cfg.Section("client.bootstrap-mds").Key("key").String()
-		cephKeys.clientBootstrapObjectStorageKey = cfg.Section("client.bootstrap-osd").Key("key").String()
-		cephKeys.clientBootstrapRadosBlockDeviceKey = cfg.Section("client.bootstrap-rbd").Key("key").String()
-		cephKeys.clientBootstrapRadosGatewayKey = cfg.Section("client.bootstrap-rgw").Key("key").String()
-		cephKeys.clientK8STEWKey = cfg.Section("client.k8s-tew").Key("key").String()
-
-	} else {
-		// Generate new keys
-		cephKeys.monitorKey = utils.GenerateCephKey()
-		cephKeys.clientAdminKey = utils.GenerateCephKey()
-		cephKeys.clientBootstrapMetadataServerKey = utils.GenerateCephKey()
-		cephKeys.clientBootstrapObjectStorageKey = utils.GenerateCephKey()
-		cephKeys.clientBootstrapRadosBlockDeviceKey = utils.GenerateCephKey()
-		cephKeys.clientBootstrapRadosGatewayKey = utils.GenerateCephKey()
-		cephKeys.clientK8STEWKey = utils.GenerateCephKey()
-	}
-
-	if error := utils.ApplyTemplateAndSave("ceph-monitor-keyring", utils.TemplateCephMonitorKeyring, struct {
-		MonitorKey                         string
-		ClientAdminKey                     string
-		ClientBootstrapMetadataServerKey   string
-		ClientBootstrapObjectStorageKey    string
-		ClientBootstrapRadosBlockDeviceKey string
-		ClientBootstrapRadosGatewayKey     string
-		ClientK8STEWKey                    string
-		CephPoolName                       string
-	}{
-		MonitorKey:                         cephKeys.monitorKey,
-		ClientAdminKey:                     cephKeys.clientAdminKey,
-		ClientBootstrapMetadataServerKey:   cephKeys.clientBootstrapMetadataServerKey,
-		ClientBootstrapObjectStorageKey:    cephKeys.clientBootstrapObjectStorageKey,
-		ClientBootstrapRadosBlockDeviceKey: cephKeys.clientBootstrapRadosBlockDeviceKey,
-		ClientBootstrapRadosGatewayKey:     cephKeys.clientBootstrapRadosGatewayKey,
-		ClientK8STEWKey:                    cephKeys.clientK8STEWKey,
-		CephPoolName:                       utils.CephRbdPoolName,
-	}, cephMonitoringKeyringFilename, true, false); error != nil {
-		return error
-	}
-
-	if error := utils.ApplyTemplateAndSave("ceph-client-admin", utils.TemplateCephClientAdminKeyring, struct {
-		Key string
-	}{
-		Key: cephKeys.clientAdminKey,
-	}, generator.config.GetFullLocalAssetFilename(utils.CephClientAdminKeyring), true, false); error != nil {
-		return error
-	}
-
-	if error := utils.ApplyTemplateAndSave("ceph-bootstrap-mds-client-keyring", utils.TemplateCephClientKeyring, struct {
-		Name string
-		Key  string
-	}{
-		Name: "bootstrap-mds",
-		Key:  cephKeys.clientBootstrapMetadataServerKey,
-	}, generator.config.GetFullLocalAssetFilename(utils.CephBootstrapMdsKeyring), true, false); error != nil {
-		return error
-	}
-
-	if error := utils.ApplyTemplateAndSave("ceph-bootstrap-osd-client-keyring", utils.TemplateCephClientKeyring, struct {
-		Name string
-		Key  string
-	}{
-		Name: "bootstrap-osd",
-		Key:  cephKeys.clientBootstrapObjectStorageKey,
-	}, generator.config.GetFullLocalAssetFilename(utils.CephBootstrapOsdKeyring), true, false); error != nil {
-		return error
-	}
-
-	if error := utils.ApplyTemplateAndSave("ceph-bootstrap-rbd-client-keyring", utils.TemplateCephClientKeyring, struct {
-		Name string
-		Key  string
-	}{
-		Name: "bootstrap-rbd",
-		Key:  cephKeys.clientBootstrapRadosBlockDeviceKey,
-	}, generator.config.GetFullLocalAssetFilename(utils.CephBootstrapRbdKeyring), true, false); error != nil {
-		return error
-	}
-
-	if error := utils.ApplyTemplateAndSave("ceph-bootstrap-rgw-client-keyring", utils.TemplateCephClientKeyring, struct {
-		Name string
-		Key  string
-	}{
-		Name: "bootstrap-rgw",
-		Key:  cephKeys.clientBootstrapRadosGatewayKey,
-	}, generator.config.GetFullLocalAssetFilename(utils.CephBootstrapRgwKeyring), true, false); error != nil {
-		return error
-	}
-
-	return utils.ApplyTemplateAndSave("ceph-secrets", utils.TemplateCephSecrets, struct {
-		ClientAdminKey  string
-		ClientK8STEWKey string
-	}{
-		ClientAdminKey:  cephKeys.clientAdminKey,
-		ClientK8STEWKey: cephKeys.clientK8STEWKey,
-	}, generator.config.GetFullLocalAssetFilename(utils.CephSecrets), true, false)
+	return utils.ApplyTemplateAndSave("ceph-secrets", utils.TemplateCephSecrets, cephData, generator.config.GetFullLocalAssetFilename(utils.CephSecrets), true, false)
 }
 
 func (generator *Generator) generateLetsEncryptClusterIssuer() error {

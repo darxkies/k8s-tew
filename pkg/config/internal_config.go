@@ -529,7 +529,7 @@ func (config *InternalConfig) RemoveNode(name string) error {
 	return nil
 }
 
-func (config *InternalConfig) AddNode(name string, ip string, index uint, labels []string) (*Node, error) {
+func (config *InternalConfig) AddNode(name string, ip string, index uint, storageIndex uint, labels []string) (*Node, error) {
 	name = strings.Trim(name, " \n")
 
 	if len(name) == 0 {
@@ -540,7 +540,7 @@ func (config *InternalConfig) AddNode(name string, ip string, index uint, labels
 		return nil, errors.New("invalid or wrong ip format")
 	}
 
-	config.Config.Nodes[name] = NewNode(ip, index, labels)
+	config.Config.Nodes[name] = NewNode(ip, index, storageIndex, labels)
 
 	return config.Config.Nodes[name], nil
 }
@@ -687,9 +687,10 @@ func (config *InternalConfig) GetKubeAPIServerAddresses() []string {
 }
 
 type NodeData struct {
-	Index uint
-	Name  string
-	IP    string
+	Index        uint
+	StorageIndex uint
+	Name         string
+	IP           string
 }
 
 func (config *InternalConfig) getLabeledOrAllNodes(label string) []NodeData {
@@ -698,7 +699,7 @@ func (config *InternalConfig) getLabeledOrAllNodes(label string) []NodeData {
 	// Add only labeled nodes
 	for nodeName, node := range config.Config.Nodes {
 		if node.Labels.HasLabels(Labels{label}) && node.Labels.HasLabels(Labels{utils.NodeStorage}) {
-			result = append(result, NodeData{Index: node.Index, Name: nodeName, IP: node.IP})
+			result = append(result, NodeData{Index: node.Index, StorageIndex: node.Index, Name: nodeName, IP: node.IP})
 		}
 	}
 
