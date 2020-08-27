@@ -58,6 +58,7 @@ spec:
         - mgr
         - --id
         - {{$node.Name}}
+        - --debug
         env:
         - name: K8S_TEW_BASE_DIRECTORY
           value: "/"
@@ -70,6 +71,15 @@ spec:
           mountPath: /k8s-tew
         - name: k8s-tew-config
           mountPath: /etc/k8s-tew/config.yaml
+        livenessProbe:
+          tcpSocket:
+            port: 6800
+          initialDelaySeconds: 60
+          timeoutSeconds: 5
+        readinessProbe:
+          tcpSocket:
+            port: 6800
+          timeoutSeconds: 5
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -128,6 +138,7 @@ spec:
         - mon
         - --id
         - {{$node.Name}}
+        - --debug
         env:
         - name: K8S_TEW_BASE_DIRECTORY
           value: "/"
@@ -140,6 +151,15 @@ spec:
           mountPath: /k8s-tew
         - name: k8s-tew-config
           mountPath: /etc/k8s-tew/config.yaml
+        livenessProbe:
+          tcpSocket:
+            port: 6789
+          initialDelaySeconds: 60
+          timeoutSeconds: 5
+        readinessProbe:
+          tcpSocket:
+            port: 6789
+          timeoutSeconds: 5
 {{end}}{{range $index, $node := .StorageNodes}}---
 apiVersion: apps/v1
 kind: Deployment
@@ -202,6 +222,7 @@ spec:
         - mds
         - --id
         - {{$node.Name}}
+        - --debug
         ports:
         - containerPort: 6800
         env:
@@ -284,6 +305,7 @@ spec:
         - rgw
         - --id
         - {{$node.Name}}
+        - --debug
         ports:
         - containerPort: 7480
           name: rgw
@@ -299,6 +321,15 @@ spec:
           mountPath: /k8s-tew
         - name: k8s-tew-config
           mountPath: /etc/k8s-tew/config.yaml
+        livenessProbe:
+          tcpSocket:
+            port: 7480
+          initialDelaySeconds: 60
+          timeoutSeconds: 5
+        readinessProbe:
+          tcpSocket:
+            port: 7480
+          timeoutSeconds: 5
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -361,6 +392,7 @@ spec:
         - osd
         - --id
         - "{{$node.StorageIndex}}"
+        - --debug
         securityContext:
           privileged: true
         env:
@@ -377,6 +409,15 @@ spec:
           mountPath: /k8s-tew
         - name: k8s-tew-config
           mountPath: /etc/k8s-tew/config.yaml
+        livenessProbe:
+          tcpSocket:
+            port: 6800
+          initialDelaySeconds: 60
+          timeoutSeconds: 5
+        readinessProbe:
+          tcpSocket:
+            port: 6800
+          timeoutSeconds: 5
 {{end}}---
 apiVersion: batch/v1
 kind: Job

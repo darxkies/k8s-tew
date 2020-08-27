@@ -177,22 +177,14 @@ func (ceph *Ceph) RunMgr(id string) error {
 
 		log.WithFields(log.Fields{"keyring": keyring}).Info("Generating keyring")
 
-		if _error := utils.RunCommandWithConsoleOutput(fmt.Sprintf("%s --cluster %s auth get-or-create mgr.\"%s\" mon 'allow profile mgr' osd 'allow *' mds 'allow *' -o \"%s\"", cephBinary, ceph.config.Config.CephClusterName, id, keyring)); _error != nil {
-			return _error
-		}
-
-		if _error := ceph.updateKeyringRights(keyring); _error != nil {
-			return _error
-		}
-
-		if _error := ceph.updateDirectoryOwnership(directory); _error != nil {
+		if _error := utils.RunCommandWithConsoleOutput(fmt.Sprintf("%s auth get-or-create mgr.%s mon 'allow profile mgr' osd 'allow *' mds 'allow *' -o %s", cephBinary, id, keyring)); _error != nil {
 			return _error
 		}
 	}
 
 	log.WithFields(log.Fields{"keyring": keyring, "id": id}).Info("Starting mgr")
 
-	if _error := utils.RunCommandWithConsoleOutput(fmt.Sprintf("%s --cluster %s --setuser ceph --setgroup ceph -f -i \"%s\"", cephMgrBinary, ceph.config.Config.CephClusterName, id)); _error != nil {
+	if _error := utils.RunCommandWithConsoleOutput(fmt.Sprintf("%s -f -i %s", cephMgrBinary, id)); _error != nil {
 		return _error
 	}
 
@@ -203,8 +195,8 @@ func (ceph *Ceph) RunMon(id string) error {
 	cephMonBinary := ceph.getCephMonBinary()
 	directory := ceph.getMonDirectory(id)
 	keyring := ceph.getKeyring(directory)
-	bootstrapKeyring := path.Join(ceph.configPath, utils.CephMonitorKeyring)
-	monCommand := fmt.Sprintf("%s --cluster %s --setuser ceph --setgroup ceph -i %s", cephMonBinary, ceph.config.Config.CephClusterName, id)
+	bootstrapKeyring := ceph.getCephMonitoringKeyring()
+	monCommand := fmt.Sprintf("%s -i %s", cephMonBinary, id)
 
 	if !utils.FileExists(keyring) {
 		if _error := ceph.createDirectory(directory); _error != nil {
@@ -214,10 +206,6 @@ func (ceph *Ceph) RunMon(id string) error {
 		log.WithFields(log.Fields{"directory": directory}).Info("Generating mon")
 
 		if _error := utils.RunCommandWithConsoleOutput(fmt.Sprintf("%s --mkfs --keyring %s", monCommand, bootstrapKeyring)); _error != nil {
-			return _error
-		}
-
-		if _error := ceph.updateDirectoryOwnership(directory); _error != nil {
 			return _error
 		}
 	}
@@ -244,22 +232,14 @@ func (ceph *Ceph) RunMds(id string) error {
 
 		log.WithFields(log.Fields{"keyring": keyring}).Info("Generating keyring")
 
-		if _error := utils.RunCommandWithConsoleOutput(fmt.Sprintf("%s --cluster %s auth get-or-create mds.\"%s\" osd 'allow rwx' mds 'allow' mon 'allow profile mds' -o \"%s\"", cephBinary, ceph.config.Config.CephClusterName, id, keyring)); _error != nil {
-			return _error
-		}
-
-		if _error := ceph.updateKeyringRights(keyring); _error != nil {
-			return _error
-		}
-
-		if _error := ceph.updateDirectoryOwnership(directory); _error != nil {
+		if _error := utils.RunCommandWithConsoleOutput(fmt.Sprintf("%s auth get-or-create mds.%s osd 'allow rwx' mds 'allow' mon 'allow profile mds' -o %s", cephBinary, id, keyring)); _error != nil {
 			return _error
 		}
 	}
 
 	log.WithFields(log.Fields{"keyring": keyring, "id": id}).Info("Starting mds")
 
-	if _error := utils.RunCommandWithConsoleOutput(fmt.Sprintf("%s --cluster %s --setuser ceph --setgroup ceph -f -i \"%s\"", cephMdsBinary, ceph.config.Config.CephClusterName, id)); _error != nil {
+	if _error := utils.RunCommandWithConsoleOutput(fmt.Sprintf("%s -f -i %s", cephMdsBinary, id)); _error != nil {
 		return _error
 	}
 
@@ -272,8 +252,8 @@ func (ceph *Ceph) RunOsd(id string) error {
 	cephAuthtoolBinary := ceph.getCephAuthtoolBinary()
 	directory := ceph.getOsdDirectory(id)
 	keyring := ceph.getKeyring(directory)
-	bootstrapKeyring := path.Join(ceph.configPath, utils.CephMonitorKeyring)
-	osdCommand := fmt.Sprintf("%s --cluster %s --setuser ceph --setgroup ceph -i %s", cephOsdBinary, ceph.config.Config.CephClusterName, id)
+	bootstrapKeyring := ceph.getCephMonitoringKeyring()
+	osdCommand := fmt.Sprintf("%s -i %s", cephOsdBinary, id)
 
 	if !utils.FileExists(keyring) {
 		if _error := ceph.createDirectory(directory); _error != nil {
@@ -297,7 +277,7 @@ func (ceph *Ceph) RunOsd(id string) error {
 			return errors.Wrapf(_error, "Could not write to file '%s'", file.Name())
 		}
 
-		if _error := utils.RunCommandWithConsoleOutput(fmt.Sprintf("%s --cluster %s osd new %s %s -i %s -n client.bootstrap-osd -k %s", cephBinary, ceph.config.Config.CephClusterName, uniqueID, id, file.Name(), bootstrapKeyring)); _error != nil {
+		if _error := utils.RunCommandWithConsoleOutput(fmt.Sprintf("%s osd new %s %s -i %s -n client.bootstrap-osd -k %s", cephBinary, uniqueID, id, file.Name(), bootstrapKeyring)); _error != nil {
 			return _error
 		}
 
@@ -305,15 +285,7 @@ func (ceph *Ceph) RunOsd(id string) error {
 			return _error
 		}
 
-		if _error := ceph.updateKeyringRights(keyring); _error != nil {
-			return _error
-		}
-
 		if _error := utils.RunCommandWithConsoleOutput(fmt.Sprintf("%s --mkfs --mkjournal --osd-uuid %s", osdCommand, uniqueID)); _error != nil {
-			return _error
-		}
-
-		if _error := ceph.updateDirectoryOwnership(directory); _error != nil {
 			return _error
 		}
 	}
@@ -332,61 +304,71 @@ func (ceph *Ceph) RunRgw(id string) error {
 	cephRgwBinary := ceph.getCephRgwBinary()
 	directory := ceph.getRgwDirectory(id)
 	keyring := ceph.getKeyring(directory)
-	bootstrapKeyring := path.Join(ceph.configPath, utils.CephMonitorKeyring)
+	bootstrapKeyring := ceph.getCephMonitoringKeyring()
 
 	if !utils.FileExists(keyring) {
 		if _error := ceph.createDirectory(directory); _error != nil {
 			return _error
 		}
 
-		if _error := utils.RunCommandWithConsoleOutput(fmt.Sprintf("%s --cluster %s --name client.bootstrap-rgw --keyring %s auth get-or-create client.rgw.%s osd 'allow rwx' mon 'allow rw' -o %s", cephBinary, ceph.config.Config.CephClusterName, bootstrapKeyring, id, keyring)); _error != nil {
-			return _error
-		}
+		log.WithFields(log.Fields{"keyring": keyring}).Info("Generating keyring")
 
-		if _error := ceph.updateKeyringRights(keyring); _error != nil {
-			return _error
-		}
-
-		if _error := ceph.updateDirectoryOwnership(directory); _error != nil {
+		if _error := utils.RunCommandWithConsoleOutput(fmt.Sprintf("%s --name client.bootstrap-rgw --keyring %s auth get-or-create client.rgw.%s osd 'allow rwx' mon 'allow rw' -o %s", cephBinary, bootstrapKeyring, id, keyring)); _error != nil {
 			return _error
 		}
 	}
 
 	log.WithFields(log.Fields{"id": id}).Info("Starting rgw")
 
-	if _error := utils.RunCommandWithConsoleOutput(fmt.Sprintf("%s --cluster %s --setuser ceph --setgroup ceph -n client.rgw.%s -k %s -f", cephRgwBinary, ceph.config.Config.CephClusterName, id, keyring)); _error != nil {
+	if _error := utils.RunCommandWithConsoleOutput(fmt.Sprintf("%s -n client.rgw.%s -k %s -f", cephRgwBinary, id, keyring)); _error != nil {
 		return _error
 	}
 
 	return nil
 }
 
+func (ceph *Ceph) getClusterBinary(binary string) string {
+	return fmt.Sprintf("%s --cluster %s", binary, ceph.config.Config.CephClusterName)
+}
+
+func (ceph *Ceph) getConfigBinary(binary string) string {
+	return fmt.Sprintf("%s --conf %s", binary, ceph.getCephConfig())
+}
+
+func (ceph *Ceph) getUserGroupBinary(binary string) string {
+	return fmt.Sprintf("%s --setuser ceph --setgroup ceph", binary)
+}
+
+func (ceph *Ceph) getClientAdminBinary(binary string) string {
+	return fmt.Sprintf("%s --keyring %s -n client.admin", binary, ceph.getCephClientAdminKeyring())
+}
+
 func (ceph *Ceph) getCephBinary() string {
-	return ceph.getBinary("ceph")
+	return ceph.getClientAdminBinary(ceph.getUserGroupBinary(ceph.getClusterBinary(ceph.getConfigBinary(ceph.getBinary("ceph")))))
 }
 
 func (ceph *Ceph) getCephMgrBinary() string {
-	return ceph.getBinary("ceph-mgr")
+	return ceph.getUserGroupBinary(ceph.getClusterBinary(ceph.getConfigBinary(ceph.getBinary("ceph-mgr"))))
 }
 
 func (ceph *Ceph) getCephMonBinary() string {
-	return ceph.getBinary("ceph-mon")
+	return ceph.getUserGroupBinary(ceph.getClusterBinary(ceph.getConfigBinary(ceph.getBinary("ceph-mon"))))
 }
 
 func (ceph *Ceph) getCephMdsBinary() string {
-	return ceph.getBinary("ceph-mds")
+	return ceph.getUserGroupBinary(ceph.getClusterBinary(ceph.getConfigBinary(ceph.getBinary("ceph-mds"))))
 }
 
 func (ceph *Ceph) getCephOsdBinary() string {
-	return ceph.getBinary("ceph-osd")
+	return ceph.getUserGroupBinary(ceph.getClusterBinary(ceph.getConfigBinary(ceph.getBinary("ceph-osd"))))
 }
 
 func (ceph *Ceph) getCephRgwBinary() string {
-	return ceph.getBinary("radosgw")
+	return ceph.getUserGroupBinary(ceph.getClusterBinary(ceph.getConfigBinary(ceph.getBinary("radosgw"))))
 }
 
 func (ceph *Ceph) getCephAuthtoolBinary() string {
-	return ceph.getBinary("ceph-authtool")
+	return ceph.getUserGroupBinary(ceph.getClusterBinary(ceph.getConfigBinary(ceph.getBinary("ceph-authtool"))))
 }
 
 func (ceph *Ceph) getBinary(binary string) string {
@@ -402,9 +384,7 @@ func (ceph *Ceph) getJournal(directory string) string {
 }
 
 func (ceph *Ceph) getServiceDirectory(_type, id string) string {
-	directory := path.Join(ceph.dataPath, _type, fmt.Sprintf("%s-%s", ceph.config.Config.CephClusterName, id))
-
-	return directory
+	return path.Join(ceph.dataPath, _type, fmt.Sprintf("%s-%s", ceph.config.Config.CephClusterName, id))
 }
 
 func (ceph *Ceph) getMgrDirectory(id string) string {
@@ -427,32 +407,28 @@ func (ceph *Ceph) getRgwDirectory(id string) string {
 	return ceph.getServiceDirectory("rgw", id)
 }
 
-func (ceph *Ceph) updateDirectoryOwnership(directory string) error {
-	log.WithFields(log.Fields{"directory": ceph.dataPath}).Info("Updating ownership")
+func (ceph *Ceph) getCephMonitoringKeyring() string {
+	return path.Join(ceph.configPath, utils.CephMonitorKeyring)
+}
 
-	if _error := utils.RunCommandWithConsoleOutput(fmt.Sprintf("/bin/chown -R ceph:ceph \"%s\"", directory)); _error != nil {
-		return _error
-	}
+func (ceph *Ceph) getCephClientAdminKeyring() string {
+	return path.Join(ceph.configPath, utils.CephClientAdminKeyring)
+}
 
-	return nil
+func (ceph *Ceph) getCephConfig() string {
+	return path.Join(ceph.configPath, utils.CephConfig)
 }
 
 func (ceph *Ceph) createDirectory(directory string) error {
+	log.WithFields(log.Fields{"directory": directory}).Info("Creating directory")
+
 	if _error := utils.CreateDirectoryIfMissing(directory); _error != nil {
 		return _error
 	}
 
-	return ceph.updateDirectoryOwnership(directory)
-}
+	log.WithFields(log.Fields{"directory": directory}).Info("Updating ownership")
 
-func (ceph *Ceph) updateKeyringRights(keyring string) error {
-	log.WithFields(log.Fields{"keyring": keyring}).Info("Changed rights")
-
-	if _error := utils.RunCommandWithConsoleOutput(fmt.Sprintf("/bin/chmod 600 \"%s\"", keyring)); _error != nil {
-		return _error
-	}
-
-	if _error := utils.RunCommandWithConsoleOutput(fmt.Sprintf("/bin/chown ceph:ceph \"%s\"", keyring)); _error != nil {
+	if _error := utils.RunCommandWithConsoleOutput(fmt.Sprintf("/bin/chown -R ceph:ceph %s", directory)); _error != nil {
 		return _error
 	}
 
