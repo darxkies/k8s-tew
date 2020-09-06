@@ -15,6 +15,7 @@ type Deployment struct {
 	identityFile      string
 	skipSetup         bool
 	skipUpload        bool
+	skipRestart       bool
 	skipSetupFeatures config.Features
 	forceUpload       bool
 	commandRetries    uint
@@ -24,7 +25,7 @@ type Deployment struct {
 	importImages      bool
 }
 
-func NewDeployment(_config *config.InternalConfig, identityFile string, importImages, forceUpload bool, parallel bool, commandRetries uint, skipSetup, skipUpload, skipStorageSetup, skipMonitoringSetup, skipLoggingSetup, skipBackupSetup, skipShowcaseSetup, skipIngressSetup, skipPackagingSetup bool) *Deployment {
+func NewDeployment(_config *config.InternalConfig, identityFile string, importImages, forceUpload bool, parallel bool, commandRetries uint, skipSetup, skipUpload, skipRestart, skipStorageSetup, skipMonitoringSetup, skipLoggingSetup, skipBackupSetup, skipShowcaseSetup, skipIngressSetup, skipPackagingSetup bool) *Deployment {
 	nodes := map[string]*NodeDeployment{}
 
 	for nodeName, node := range _config.Config.Nodes {
@@ -61,7 +62,7 @@ func NewDeployment(_config *config.InternalConfig, identityFile string, importIm
 		skipSetupFeatures = append(skipSetupFeatures, utils.FeaturePackaging)
 	}
 
-	deployment := &Deployment{config: _config, identityFile: identityFile, importImages: importImages, forceUpload: forceUpload, parallel: parallel, commandRetries: commandRetries, nodes: nodes, skipSetup: skipSetup, skipUpload: skipUpload, skipSetupFeatures: skipSetupFeatures}
+	deployment := &Deployment{config: _config, identityFile: identityFile, importImages: importImages, forceUpload: forceUpload, parallel: parallel, commandRetries: commandRetries, nodes: nodes, skipSetup: skipSetup, skipUpload: skipUpload, skipRestart: skipRestart, skipSetupFeatures: skipSetupFeatures}
 
 	deployment.images = deployment.config.Config.Versions.GetImages()
 
@@ -74,7 +75,7 @@ func (deployment *Deployment) Steps() int {
 	// Files deployment
 	if !deployment.skipUpload {
 		for _, node := range deployment.nodes {
-			result += node.Steps()
+			result += node.Steps(deployment.skipRestart)
 		}
 	}
 
@@ -105,7 +106,7 @@ func (deployment *Deployment) Deploy() error {
 
 			deployment.config.SetNode(nodeName, nodeDeployment.node)
 
-			if error := nodeDeployment.UploadFiles(deployment.forceUpload); error != nil {
+			if error := nodeDeployment.UploadFiles(deployment.forceUpload, deployment.skipRestart); error != nil {
 				return error
 			}
 		}

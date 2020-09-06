@@ -529,20 +529,53 @@ func (config *InternalConfig) RemoveNode(name string) error {
 	return nil
 }
 
-func (config *InternalConfig) AddNode(name string, ip string, index uint, storageIndex uint, labels []string) (*Node, error) {
-	name = strings.Trim(name, " \n")
-
-	if len(name) == 0 {
-		return nil, errors.New("empty node name")
+func (config *InternalConfig) hasIndex(index uint) bool {
+	for _, node := range config.Config.Nodes {
+		if node.Index == index {
+			return true
+		}
 	}
 
+	return false
+}
+
+func (config *InternalConfig) hasStorageIndex(index uint) bool {
+	for _, node := range config.Config.Nodes {
+		if node.StorageIndex == index {
+			return true
+		}
+	}
+
+	return false
+}
+
+func (config *InternalConfig) AddNode(name string, ip string, index uint, storageIndex uint, labels []string) (*Node, string, error) {
+	// Remove spaces
+	name = strings.Trim(name, " \n")
+
+	// Validate name
+	if len(name) == 0 {
+		return nil, "", errors.New("empty node name")
+	}
+
+	// Check IP
 	if net.ParseIP(ip) == nil {
-		return nil, errors.New("invalid or wrong ip format")
+		return nil, "", errors.New("invalid or wrong IP format")
+	}
+
+	// Find a free slot if not available
+	for config.hasIndex(index) {
+		index++
+	}
+
+	// Find a free slot if not available
+	for config.hasStorageIndex(storageIndex) {
+		storageIndex++
 	}
 
 	config.Config.Nodes[name] = NewNode(ip, index, storageIndex, labels)
 
-	return config.Config.Nodes[name], nil
+	return config.Config.Nodes[name], name, nil
 }
 
 func (config *InternalConfig) GetETCDClientEndpoints() []string {
@@ -699,15 +732,15 @@ func (config *InternalConfig) getLabeledOrAllNodes(label string) []NodeData {
 	// Add only labeled nodes
 	for nodeName, node := range config.Config.Nodes {
 		if node.Labels.HasLabels(Labels{label}) && node.Labels.HasLabels(Labels{utils.NodeStorage}) {
-			result = append(result, NodeData{Index: node.Index, StorageIndex: node.Index, Name: nodeName, IP: node.IP})
+			result = append(result, NodeData{Index: node.Index, StorageIndex: node.StorageIndex, Name: nodeName, IP: node.IP})
 		}
 	}
 
-	// If no labeld nodes found get all nodes
+	// If no labeled nodes found get all nodes
 	if len(result) == 0 {
 		for nodeName, node := range config.Config.Nodes {
 			if node.Labels.HasLabels(Labels{label}) {
-				result = append(result, NodeData{Index: node.Index, Name: nodeName, IP: node.IP})
+				result = append(result, NodeData{Index: node.Index, StorageIndex: node.StorageIndex, Name: nodeName, IP: node.IP})
 			}
 		}
 	}

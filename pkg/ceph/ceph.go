@@ -1,8 +1,13 @@
 package ceph
 
 import (
+	"bytes"
+	"crypto/tls"
 	"fmt"
 	"io/ioutil"
+	"net/http"
+	"net/http/httputil"
+	"net/url"
 	"os"
 	"path"
 
@@ -29,6 +34,86 @@ type CephData struct {
 	ClientBootstrapRadosBlockDeviceKey string
 	ClientBootstrapRadosGatewayKey     string
 	ClientK8STEWKey                    string
+}
+
+type ProxyTransport struct {
+	http.RoundTripper
+}
+
+func (transport *ProxyTransport) RoundTrip(request *http.Request) (*http.Response, error) {
+	var buffer bytes.Buffer
+
+	redirectRequest := *request
+
+	if request.Body != nil {
+		buffer.ReadFrom(request.Body)
+
+		request.Body = ioutil.NopCloser(&buffer)
+
+		redirectRequest.Body = ioutil.NopCloser(bytes.NewReader(buffer.Bytes()))
+	}
+
+	dumpResponse := func(_request *http.Request, _response *http.Response) {
+		body, _ := httputil.DumpRequest(_request, false)
+
+		fmt.Println("==========================\nRequest", "[*]", _request.URL, "\n", string(body))
+
+		body, _ = httputil.DumpResponse(_response, false)
+
+		fmt.Println("--------------------------\nResponse", "[*]", _request.URL, "\n", string(body))
+	}
+
+	response, _error := transport.RoundTripper.RoundTrip(request)
+	if _error != nil {
+		return nil, errors.Wrapf(_error, "Round trip to '%s' failed", request.URL)
+	}
+
+	dumpResponse(request, response)
+
+	if response.StatusCode == http.StatusSeeOther {
+		location, _error := response.Location()
+		if _error != nil {
+			return nil, errors.Wrapf(_error, "Could not location from '%s'", request.URL)
+		}
+
+		redirectRequest.URL.Host = location.Host
+
+		response, _error = transport.RoundTripper.RoundTrip(&redirectRequest)
+		if _error != nil {
+			return nil, errors.Wrapf(_error, "Redirect to '%s' failed", redirectRequest.URL)
+		}
+
+		dumpResponse(&redirectRequest, response)
+	}
+
+	return response, nil
+}
+
+type Proxy struct {
+	publicAddress string
+	proxy         *httputil.ReverseProxy
+}
+
+func NewProxy(publicAddress string) *Proxy {
+	proxyAddress := &url.URL{
+		Scheme: "https",
+		Host:   fmt.Sprintf("%s:8443", publicAddress),
+	}
+
+	proxy := &Proxy{
+		publicAddress: publicAddress,
+		proxy:         httputil.NewSingleHostReverseProxy(proxyAddress),
+	}
+
+	proxy.proxy.Transport = &ProxyTransport{http.DefaultTransport}
+
+	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
+
+	return proxy
+}
+
+func (proxy *Proxy) ServeHTTP(response http.ResponseWriter, request *http.Request) {
+	proxy.proxy.ServeHTTP(response, request)
 }
 
 type Ceph struct {
@@ -164,26 +249,36 @@ func (ceph *Ceph) Setup() (*CephData, error) {
 	return cephData, nil
 }
 
-func (ceph *Ceph) RunMgr(id string) error {
+func (ceph *Ceph) RunMgr(id, publicAddress string) error {
 	cephBinary := ceph.getCephBinary()
-	cephMgrBinary := ceph.getCephMgrBinary()
+	cephMgrBinary := ceph.getPublicAddressBinary(ceph.getCephMgrBinary(), publicAddress)
 	directory := ceph.getMgrDirectory(id)
 	keyring := ceph.getKeyring(directory)
 
-	if !utils.FileExists(keyring) {
-		if _error := ceph.createDirectory(directory); _error != nil {
-			return _error
-		}
-
-		log.WithFields(log.Fields{"keyring": keyring}).Info("Generating keyring")
-
-		if _error := utils.RunCommandWithConsoleOutput(fmt.Sprintf("%s auth get-or-create mgr.%s mon 'allow profile mgr' osd 'allow *' mds 'allow *' -o %s", cephBinary, id, keyring)); _error != nil {
-			return _error
-		}
+	// Create directory
+	if _error := ceph.createDirectory(directory); _error != nil {
+		return _error
 	}
+
+	log.WithFields(log.Fields{"keyring": keyring}).Info("Generating keyring")
+
+	// Create or update keyring
+	if _error := utils.RunCommandWithConsoleOutput(fmt.Sprintf("%s auth get-or-create mgr.%s mon 'allow profile mgr' osd 'allow *' mds 'allow *' -o %s", cephBinary, id, keyring)); _error != nil {
+		return _error
+	}
+
+	// Start proxy
+	go func() {
+		address := ":28715"
+
+		log.Printf("Starting proxy at '%s'", address)
+
+		http.ListenAndServe(address, NewProxy(publicAddress))
+	}()
 
 	log.WithFields(log.Fields{"keyring": keyring, "id": id}).Info("Starting mgr")
 
+	// Start mgr
 	if _error := utils.RunCommandWithConsoleOutput(fmt.Sprintf("%s -f -i %s", cephMgrBinary, id)); _error != nil {
 		return _error
 	}
@@ -191,8 +286,8 @@ func (ceph *Ceph) RunMgr(id string) error {
 	return nil
 }
 
-func (ceph *Ceph) RunMon(id string) error {
-	cephMonBinary := ceph.getCephMonBinary()
+func (ceph *Ceph) RunMon(id, publicAddress string) error {
+	cephMonBinary := ceph.getPublicAddressBinary(ceph.getCephMonBinary(), publicAddress)
 	directory := ceph.getMonDirectory(id)
 	keyring := ceph.getKeyring(directory)
 	bootstrapKeyring := ceph.getCephMonitoringKeyring()
@@ -212,6 +307,7 @@ func (ceph *Ceph) RunMon(id string) error {
 
 	log.WithFields(log.Fields{"id": id}).Info("Starting mon")
 
+	// Start mon
 	if _error := utils.RunCommandWithConsoleOutput(fmt.Sprintf("%s -f", monCommand)); _error != nil {
 		return _error
 	}
@@ -219,26 +315,27 @@ func (ceph *Ceph) RunMon(id string) error {
 	return nil
 }
 
-func (ceph *Ceph) RunMds(id string) error {
+func (ceph *Ceph) RunMds(id, publicAddress string) error {
 	cephBinary := ceph.getCephBinary()
-	cephMdsBinary := ceph.getCephMdsBinary()
+	cephMdsBinary := ceph.getPublicAddressBinary(ceph.getCephMdsBinary(), publicAddress)
 	directory := ceph.getMdsDirectory(id)
 	keyring := ceph.getKeyring(directory)
 
-	if !utils.FileExists(keyring) {
-		if _error := ceph.createDirectory(directory); _error != nil {
-			return _error
-		}
+	// Create directory
+	if _error := ceph.createDirectory(directory); _error != nil {
+		return _error
+	}
 
-		log.WithFields(log.Fields{"keyring": keyring}).Info("Generating keyring")
+	log.WithFields(log.Fields{"keyring": keyring}).Info("Generating keyring")
 
-		if _error := utils.RunCommandWithConsoleOutput(fmt.Sprintf("%s auth get-or-create mds.%s osd 'allow rwx' mds 'allow' mon 'allow profile mds' -o %s", cephBinary, id, keyring)); _error != nil {
-			return _error
-		}
+	// Create or update keyring
+	if _error := utils.RunCommandWithConsoleOutput(fmt.Sprintf("%s auth get-or-create mds.%s osd 'allow rwx' mds 'allow' mon 'allow profile mds' -o %s", cephBinary, id, keyring)); _error != nil {
+		return _error
 	}
 
 	log.WithFields(log.Fields{"keyring": keyring, "id": id}).Info("Starting mds")
 
+	// Start mds
 	if _error := utils.RunCommandWithConsoleOutput(fmt.Sprintf("%s -f -i %s", cephMdsBinary, id)); _error != nil {
 		return _error
 	}
@@ -246,9 +343,9 @@ func (ceph *Ceph) RunMds(id string) error {
 	return nil
 }
 
-func (ceph *Ceph) RunOsd(id string) error {
+func (ceph *Ceph) RunOsd(id, publicAddress string) error {
 	cephBinary := ceph.getCephBinary()
-	cephOsdBinary := ceph.getCephOsdBinary()
+	cephOsdBinary := ceph.getPublicAddressBinary(ceph.getCephOsdBinary(), publicAddress)
 	cephAuthtoolBinary := ceph.getCephAuthtoolBinary()
 	directory := ceph.getOsdDirectory(id)
 	keyring := ceph.getKeyring(directory)
@@ -292,6 +389,7 @@ func (ceph *Ceph) RunOsd(id string) error {
 
 	log.WithFields(log.Fields{"keyring": keyring, "id": id}).Info("Starting osd")
 
+	// Start osd
 	if _error := utils.RunCommandWithConsoleOutput(fmt.Sprintf("%s -f", osdCommand)); _error != nil {
 		return _error
 	}
@@ -299,32 +397,41 @@ func (ceph *Ceph) RunOsd(id string) error {
 	return nil
 }
 
-func (ceph *Ceph) RunRgw(id string) error {
+func (ceph *Ceph) RunRgw(id, publicAddress string) error {
 	cephBinary := ceph.getCephBinary()
-	cephRgwBinary := ceph.getCephRgwBinary()
+	cephRgwBinary := ceph.getPublicAddressBinary(ceph.getCephRgwBinary(), publicAddress)
 	directory := ceph.getRgwDirectory(id)
 	keyring := ceph.getKeyring(directory)
 	bootstrapKeyring := ceph.getCephMonitoringKeyring()
 
-	if !utils.FileExists(keyring) {
-		if _error := ceph.createDirectory(directory); _error != nil {
-			return _error
-		}
+	// Create directory
+	if _error := ceph.createDirectory(directory); _error != nil {
+		return _error
+	}
 
-		log.WithFields(log.Fields{"keyring": keyring}).Info("Generating keyring")
+	log.WithFields(log.Fields{"keyring": keyring}).Info("Generating keyring")
 
-		if _error := utils.RunCommandWithConsoleOutput(fmt.Sprintf("%s --name client.bootstrap-rgw --keyring %s auth get-or-create client.rgw.%s osd 'allow rwx' mon 'allow rw' -o %s", cephBinary, bootstrapKeyring, id, keyring)); _error != nil {
-			return _error
-		}
+	// Create or update keyring
+	if _error := utils.RunCommandWithConsoleOutput(fmt.Sprintf("%s --name client.bootstrap-rgw --keyring %s auth get-or-create client.rgw.%s osd 'allow rwx' mon 'allow rw' -o %s", cephBinary, bootstrapKeyring, id, keyring)); _error != nil {
+		return _error
 	}
 
 	log.WithFields(log.Fields{"id": id}).Info("Starting rgw")
 
+	// Start rgw
 	if _error := utils.RunCommandWithConsoleOutput(fmt.Sprintf("%s -n client.rgw.%s -k %s -f", cephRgwBinary, id, keyring)); _error != nil {
 		return _error
 	}
 
 	return nil
+}
+
+func (ceph *Ceph) getPublicAddressBinary(binary, publicAddress string) string {
+	if len(publicAddress) > 0 {
+		binary = fmt.Sprintf("%s --public-addr %s", binary, publicAddress)
+	}
+
+	return binary
 }
 
 func (ceph *Ceph) getClusterBinary(binary string) string {

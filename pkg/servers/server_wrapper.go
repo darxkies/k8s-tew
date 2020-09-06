@@ -22,6 +22,7 @@ type ServerWrapper struct {
 	baseDirectory   string
 	command         []string
 	logger          config.LoggerConfig
+	environment     map[string]string
 	pathEnvironment string
 	started         bool
 	context         context.Context
@@ -38,7 +39,7 @@ func NewServerWrapper(_config config.InternalConfig, name string, serverConfig c
 		return nil, error
 	}
 
-	server := &ServerWrapper{name: name, baseDirectory: _config.BaseDirectory, command: []string{serverConfig.Command}, logger: serverConfig.Logger, pathEnvironment: pathEnvironment}
+	server := &ServerWrapper{name: name, baseDirectory: _config.BaseDirectory, command: []string{serverConfig.Command}, logger: serverConfig.Logger, pathEnvironment: pathEnvironment, environment: serverConfig.Environment}
 
 	server.logger.Filename, error = _config.ApplyTemplate("LoggingDirectory", server.logger.Filename)
 	if error != nil {
@@ -94,6 +95,12 @@ func (server *ServerWrapper) Start() error {
 
 			command.Env = os.Environ()
 			command.Env = append(command.Env, server.pathEnvironment)
+
+			for key, value := range server.environment {
+				command.Env = append(command.Env, fmt.Sprintf("%s=%s", key, value))
+			}
+
+			log.WithFields(log.Fields{"name": server.Name(), "environment": strings.Join(command.Env, " ")}).Info("Server environment")
 
 			var logFile *os.File
 			var error error

@@ -12,6 +12,7 @@ var cephBinariesPath string
 var cephConfigPath string
 var cephDataPath string
 var cephID string
+var cephPublicAddress string
 
 func getCeph() *ceph.Ceph {
 	return ceph.NewCeph(_config, cephBinariesPath, cephConfigPath, cephDataPath)
@@ -60,7 +61,7 @@ var cephMgrCmd = &cobra.Command{
 
 		ceph := getCeph()
 
-		if _error := ceph.RunMgr(cephID); _error != nil {
+		if _error := ceph.RunMgr(cephID, cephPublicAddress); _error != nil {
 			return _error
 		}
 
@@ -80,7 +81,7 @@ var cephMonCmd = &cobra.Command{
 
 		ceph := getCeph()
 
-		if _error := ceph.RunMon(cephID); _error != nil {
+		if _error := ceph.RunMon(cephID, cephPublicAddress); _error != nil {
 			return _error
 		}
 
@@ -100,7 +101,7 @@ var cephMdsCmd = &cobra.Command{
 
 		ceph := getCeph()
 
-		if _error := ceph.RunMds(cephID); _error != nil {
+		if _error := ceph.RunMds(cephID, cephPublicAddress); _error != nil {
 			return _error
 		}
 
@@ -120,7 +121,7 @@ var cephOsdCmd = &cobra.Command{
 
 		ceph := getCeph()
 
-		if _error := ceph.RunOsd(cephID); _error != nil {
+		if _error := ceph.RunOsd(cephID, cephPublicAddress); _error != nil {
 			return _error
 		}
 
@@ -140,7 +141,7 @@ var cephRgwCmd = &cobra.Command{
 
 		ceph := getCeph()
 
-		if _error := ceph.RunRgw(cephID); _error != nil {
+		if _error := ceph.RunRgw(cephID, cephPublicAddress); _error != nil {
 			return _error
 		}
 
@@ -150,10 +151,15 @@ var cephRgwCmd = &cobra.Command{
 
 func init() {
 	cephMgrCmd.Flags().StringVar(&cephID, "id", "", "id")
+	cephMgrCmd.Flags().StringVar(&cephPublicAddress, "ip", "", "ip")
 	cephMonCmd.Flags().StringVar(&cephID, "id", "", "id")
+	cephMonCmd.Flags().StringVar(&cephPublicAddress, "ip", "", "ip")
 	cephMdsCmd.Flags().StringVar(&cephID, "id", "", "id")
+	cephMdsCmd.Flags().StringVar(&cephPublicAddress, "ip", "", "ip")
 	cephOsdCmd.Flags().StringVar(&cephID, "id", "0", "id")
+	cephOsdCmd.Flags().StringVar(&cephPublicAddress, "ip", "", "ip")
 	cephRgwCmd.Flags().StringVar(&cephID, "id", "0", "id")
+	cephRgwCmd.Flags().StringVar(&cephPublicAddress, "ip", "", "ip")
 
 	cephCmd.AddCommand(cephInitializeCmd)
 	cephCmd.AddCommand(cephMgrCmd)

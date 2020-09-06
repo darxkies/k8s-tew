@@ -58,6 +58,8 @@ spec:
         - mgr
         - --id
         - {{$node.Name}}
+        - --ip
+        - {{$node.IP}}
         - --debug
         env:
         - name: K8S_TEW_BASE_DIRECTORY
@@ -73,12 +75,12 @@ spec:
           mountPath: /etc/k8s-tew/config.yaml
         livenessProbe:
           tcpSocket:
-            port: 6800
+            port: 8443
           initialDelaySeconds: 60
           timeoutSeconds: 5
         readinessProbe:
           tcpSocket:
-            port: 6800
+            port: 8443
           timeoutSeconds: 5
 ---
 apiVersion: apps/v1
@@ -274,6 +276,7 @@ spec:
         daemon: rgw
         instance: ceph-rgw-{{$node.Name}}
     spec:
+      hostNetwork: true
       nodeSelector:
         kubernetes.io/hostname: {{$node.Name}}
       tolerations:
@@ -386,6 +389,8 @@ spec:
       containers:
       - name: ceph-osd
         image: {{$.CephImage}}
+        securityContext:
+          privileged: true
         command: ["/k8s-tew"]
         args: 
         - ceph
@@ -393,8 +398,6 @@ spec:
         - --id
         - "{{$node.StorageIndex}}"
         - --debug
-        securityContext:
-          privileged: true
         env:
         - name: K8S_TEW_BASE_DIRECTORY
           value: "/"
@@ -509,7 +512,7 @@ metadata:
 spec:
     type: NodePort
     ports:
-    - port: 8443
+    - port: 28715
       protocol: TCP
       nodePort: {{.CephManagerPort}}
     selector:

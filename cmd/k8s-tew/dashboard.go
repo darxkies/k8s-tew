@@ -99,7 +99,7 @@ func init() {
 			return "", "", "", error
 		}
 
-		return utils.GetURL("https", ip, utils.PortCephManager), username, password, nil
+		return utils.GetURL("http", ip, utils.PortCephManager), username, password, nil
 	}))
 
 	dashboardCmd.AddCommand(addCommand("ceph-rados-gateway", "Display Ceph Rados Gateway website related information", func(kubernetesClient *k8s.K8S, ip string) (string, string, string, error) {

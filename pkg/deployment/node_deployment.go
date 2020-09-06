@@ -33,14 +33,16 @@ func NewNodeDeployment(identityFile string, name string, node *config.Node, conf
 	return &NodeDeployment{identityFile: identityFile, name: name, node: node, config: config, sshLimiter: utils.NewLimiter(utils.ConcurrentSshConnectionsLimit), parallel: parallel}
 }
 
-func (deployment *NodeDeployment) Steps() (result int) {
+func (deployment *NodeDeployment) Steps(skipRestart bool) (result int) {
 	result = 0
 
 	// Create Directories
 	result++
 
-	// Stop service
-	result++
+	if !skipRestart {
+		// Stop service
+		result++
+	}
 
 	// Upload files
 	result += len(deployment.config.Config.Assets.Files)
@@ -48,8 +50,10 @@ func (deployment *NodeDeployment) Steps() (result int) {
 	// Cleanup workers
 	result++
 
-	// Start service
-	result++
+	if !skipRestart {
+		// Start service
+		result++
+	}
 
 	return
 }
@@ -180,7 +184,7 @@ func (deployment *NodeDeployment) getChangedFiles() map[string]string {
 	return files
 }
 
-func (deployment *NodeDeployment) UploadFiles(forceUpload bool) (_error error) {
+func (deployment *NodeDeployment) UploadFiles(forceUpload bool, skipRestart bool) (_error error) {
 	if _error = deployment.createDirectories(); _error != nil {
 		return
 	}
@@ -193,7 +197,7 @@ func (deployment *NodeDeployment) UploadFiles(forceUpload bool) (_error error) {
 		files = deployment.getChangedFiles()
 	}
 
-	if len(files) > 0 {
+	if len(files) > 0 && skipRestart == false {
 		// Stop service
 		_, _ = deployment.Execute("stop-service", fmt.Sprintf("systemctl stop %s", utils.ServiceName))
 	}
@@ -263,7 +267,7 @@ func (deployment *NodeDeployment) UploadFiles(forceUpload bool) (_error error) {
 
 	utils.IncreaseProgressStep()
 
-	if len(files) > 0 {
+	if len(files) > 0 && skipRestart == false {
 		// Registrate and start service
 		_, _error = deployment.Execute("start-service", fmt.Sprintf("systemctl daemon-reload && systemctl enable %s && systemctl start %s", utils.ServiceName, utils.ServiceName))
 	}

@@ -14,11 +14,11 @@ deploy:
 	k8s-tew configure --worker-virtual-ip=$(IP_PREFIX).10 
 	k8s-tew configure --worker-virtual-ip-interface=eth1 
 	k8s-tew configure --public-network=$(IP_PREFIX).0/24
-	k8s-tew node-add -n controller00 -i $(IP_PREFIX).200 -x 0 -l controller
-	k8s-tew node-add -n controller01 -i $(IP_PREFIX).201 -x 1 -l controller
-	k8s-tew node-add -n controller02 -i $(IP_PREFIX).202 -x 2 -l controller
-	k8s-tew node-add -n worker00 -i $(IP_PREFIX).100 -x 3 -l worker,storage
-	k8s-tew node-add -n worker01 -i $(IP_PREFIX).101 -x 4 -l worker,storage
+	k8s-tew node-add -n controller00 -i $(IP_PREFIX).200 -l controller
+	k8s-tew node-add -n controller01 -i $(IP_PREFIX).201 -l controller
+	k8s-tew node-add -n controller02 -i $(IP_PREFIX).202 -l controller
+	k8s-tew node-add -n worker00 -i $(IP_PREFIX).100 -l worker,storage
+	k8s-tew node-add -n worker01 -i $(IP_PREFIX).101 -l worker,storage
 	k8s-tew generate 
 	k8s-tew deploy
 

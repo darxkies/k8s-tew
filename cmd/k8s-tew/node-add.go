@@ -47,9 +47,9 @@ func addNode() error {
 		// Parse the ip
 		nodeIP = strings.Trim(nodeIP, "\n")
 
-		// Throw error if the ip could not be retrieved
+		// Throw error if the IP could not be retrieved
 		if len(nodeIP) == 0 {
-			return errors.New("Could not find own ip")
+			return errors.New("Could not find own IP")
 		}
 
 		// Set name of the node
@@ -74,11 +74,12 @@ func addNode() error {
 		_config.Config.DeploymentDirectory = _config.BaseDirectory
 	}
 
-	if _, error = _config.AddNode(nodeName, nodeIP, nodeIndex, nodeStorageIndex, labels); error != nil {
+	node, nodeName, error := _config.AddNode(nodeName, nodeIP, nodeIndex, nodeStorageIndex, labels)
+	if error != nil {
 		return error
 	}
 
-	log.WithFields(log.Fields{"name": nodeName, "ip": nodeIP, "index": nodeIndex, "storage-index": nodeStorageIndex, "labels": labels}).Info("Node added")
+	log.WithFields(log.Fields{"name": nodeName, "ip": node.IP, "index": node.Index, "storage-index": node.StorageIndex, "labels": node.Labels}).Info("Node added")
 
 	if error := _config.Save(); error != nil {
 		return error
@@ -103,8 +104,8 @@ var nodeAddCmd = &cobra.Command{
 func init() {
 	nodeAddCmd.Flags().StringVarP(&nodeName, "name", "n", "single-node", "The hostname of the node")
 	nodeAddCmd.Flags().StringVarP(&nodeIP, "ip", "i", "192.168.100.50", "IP of the node")
-	nodeAddCmd.Flags().UintVarP(&nodeIndex, "index", "x", 0, "The unique index of the node which should never be reused")
-	nodeAddCmd.Flags().UintVarP(&nodeStorageIndex, "storage-index", "r", 0, "The unique index of the storage node which should never be reused")
+	nodeAddCmd.Flags().UintVarP(&nodeIndex, "index", "x", 0, "The unique index of the node which should never be reused; if it is already in use a new one is assigned")
+	nodeAddCmd.Flags().UintVarP(&nodeStorageIndex, "storage-index", "r", 0, "The unique index of the storage node which should never be reused; if it is already in use a new one is assigned")
 	nodeAddCmd.Flags().StringVarP(&nodeLabels, "labels", "l", fmt.Sprintf("%s,%s", utils.NodeController, utils.NodeWorker), "The labels of the node which define the attributes of the node")
 	nodeAddCmd.Flags().BoolVarP(&nodeSelf, "self", "s", false, "Add this machine by inferring the host's name & IP and by setting the labels controller,worker,bootstrapper - The public-network and the deployment-directory are also updated")
 	RootCmd.AddCommand(nodeAddCmd)
