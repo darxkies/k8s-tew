@@ -246,7 +246,6 @@ func (deployment *NodeDeployment) UploadFiles(forceUpload bool, skipRestart bool
 	// Remove controller manifests on workers
 	if deployment.node.IsWorkerOnly() {
 		cleanupFiles = append(cleanupFiles, deployment.config.GetFullTargetAssetFilename(utils.ManifestControllerVirtualIP))
-		cleanupFiles = append(cleanupFiles, deployment.config.GetFullTargetAssetFilename(utils.ManifestGobetween))
 		cleanupFiles = append(cleanupFiles, deployment.config.GetFullTargetAssetFilename(utils.ManifestEtcd))
 		cleanupFiles = append(cleanupFiles, deployment.config.GetFullTargetAssetFilename(utils.ManifestKubeApiserver))
 		cleanupFiles = append(cleanupFiles, deployment.config.GetFullTargetAssetFilename(utils.ManifestKubeControllerManager))

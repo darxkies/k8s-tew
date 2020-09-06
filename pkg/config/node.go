@@ -5,7 +5,7 @@ import "github.com/darxkies/k8s-tew/pkg/utils"
 type Node struct {
 	IP           string `yaml:"ip"`
 	Index        uint   `yaml:"index"`
-	StorageIndex uint   `yaml:"storage-index"`
+	StorageIndex uint   `yaml:"storage-index",omitempty`
 	Labels       Labels `yaml:"labels"`
 }
 

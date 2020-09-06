@@ -262,21 +262,37 @@ func (generator *Generator) generateContainerdConfig() error {
 }
 
 func (generator *Generator) generateKubeProxyConfig() error {
-	return utils.ApplyTemplateAndSave("kube-proxy-config", utils.TemplateKubeProxyConfiguration, struct {
-		KubeConfig  string
-		ClusterCIDR string
-	}{
-		KubeConfig:  generator.config.GetFullTargetAssetFilename(utils.KubeconfigProxy),
-		ClusterCIDR: generator.config.Config.ClusterCIDR,
-	}, generator.config.GetFullLocalAssetFilename(utils.K8sKubeProxyConfig), true, false)
+	for nodeName, node := range generator.config.Config.Nodes {
+		generator.config.SetNode(nodeName, node)
+
+		if _error := utils.ApplyTemplateAndSave("kube-proxy-config", utils.TemplateKubeProxyConfiguration, struct {
+			KubeConfig  string
+			ClusterCIDR string
+		}{
+			KubeConfig:  generator.config.GetFullTargetAssetFilename(utils.KubeconfigProxy),
+			ClusterCIDR: generator.config.Config.ClusterCIDR,
+		}, generator.config.GetFullLocalAssetFilename(utils.K8sKubeProxyConfig), true, false); _error != nil {
+			return _error
+		}
+	}
+
+	return nil
 }
 
 func (generator *Generator) generateKubeSchedulerConfig() error {
-	return utils.ApplyTemplateAndSave("kube-scheduler-config", utils.TemplateKubeSchedulerConfiguration, struct {
-		KubeConfig string
-	}{
-		KubeConfig: generator.config.GetFullTargetAssetFilename(utils.KubeconfigScheduler),
-	}, generator.config.GetFullLocalAssetFilename(utils.K8sKubeSchedulerConfig), true, false)
+	for nodeName, node := range generator.config.Config.Nodes {
+		generator.config.SetNode(nodeName, node)
+
+		if _error := utils.ApplyTemplateAndSave("kube-scheduler-config", utils.TemplateKubeSchedulerConfiguration, struct {
+			KubeConfig string
+		}{
+			KubeConfig: generator.config.GetFullTargetAssetFilename(utils.KubeconfigScheduler),
+		}, generator.config.GetFullLocalAssetFilename(utils.K8sKubeSchedulerConfig), true, false); _error != nil {
+			return _error
+		}
+	}
+
+	return nil
 }
 
 func (generator *Generator) generateKubeletConfig() error {
@@ -314,10 +330,6 @@ func (generator *Generator) generateKubeletConfig() error {
 func (generator *Generator) generateManifestGobetween() error {
 	for nodeName, node := range generator.config.Config.Nodes {
 		generator.config.SetNode(nodeName, node)
-
-		if !node.IsController() {
-			continue
-		}
 
 		if error := utils.ApplyTemplateAndSave("manifest-gobetween", utils.TemplateManifestGobetween, struct {
 			GobetweenImage string
@@ -733,32 +745,38 @@ func (generator *Generator) generateConfigKubeConfig(kubeConfigFilename, caFilen
 	}, kubeConfigFilename, true, false)
 }
 
+func (generator *Generator) getAPIServerAddress(ip string) string {
+	return fmt.Sprintf("%s:%d", ip, generator.config.Config.LoadBalancerPort)
+}
+
 func (generator *Generator) generateKubeConfigs() error {
 	apiServer, error := generator.config.GetAPIServerIP()
 	if error != nil {
 		return error
 	}
 
-	apiServer = fmt.Sprintf("%s:%d", apiServer, generator.config.Config.LoadBalancerPort)
+	apiServer = generator.getAPIServerAddress(apiServer)
 
 	if error := generator.generateConfigKubeConfig(generator.config.GetFullLocalAssetFilename(utils.KubeconfigAdmin), generator.ca.CertificateFilename, "admin", apiServer, generator.config.GetFullLocalAssetFilename(utils.PemAdmin), generator.config.GetFullLocalAssetFilename(utils.PemAdminKey), true); error != nil {
 		return error
 	}
 
-	if error := generator.generateConfigKubeConfig(generator.config.GetFullLocalAssetFilename(utils.KubeconfigControllerManager), generator.ca.CertificateFilename, "system:kube-controller-manager", apiServer, generator.config.GetFullLocalAssetFilename(utils.PemControllerManager), generator.config.GetFullLocalAssetFilename(utils.PemControllerManagerKey), true); error != nil {
-		return error
-	}
-
-	if error := generator.generateConfigKubeConfig(generator.config.GetFullLocalAssetFilename(utils.KubeconfigScheduler), generator.ca.CertificateFilename, "system:kube-scheduler", apiServer, generator.config.GetFullLocalAssetFilename(utils.PemScheduler), generator.config.GetFullLocalAssetFilename(utils.PemSchedulerKey), true); error != nil {
-		return error
-	}
-
-	if error := generator.generateConfigKubeConfig(generator.config.GetFullLocalAssetFilename(utils.KubeconfigProxy), generator.ca.CertificateFilename, "system:kube-proxy", apiServer, generator.config.GetFullLocalAssetFilename(utils.PemProxy), generator.config.GetFullLocalAssetFilename(utils.PemProxyKey), true); error != nil {
-		return error
-	}
-
 	for nodeName, node := range generator.config.Config.Nodes {
 		generator.config.SetNode(nodeName, node)
+
+		apiServer = generator.getAPIServerAddress(node.IP)
+
+		if error := generator.generateConfigKubeConfig(generator.config.GetFullLocalAssetFilename(utils.KubeconfigControllerManager), generator.ca.CertificateFilename, "system:kube-controller-manager", apiServer, generator.config.GetFullLocalAssetFilename(utils.PemControllerManager), generator.config.GetFullLocalAssetFilename(utils.PemControllerManagerKey), true); error != nil {
+			return error
+		}
+
+		if error := generator.generateConfigKubeConfig(generator.config.GetFullLocalAssetFilename(utils.KubeconfigScheduler), generator.ca.CertificateFilename, "system:kube-scheduler", apiServer, generator.config.GetFullLocalAssetFilename(utils.PemScheduler), generator.config.GetFullLocalAssetFilename(utils.PemSchedulerKey), true); error != nil {
+			return error
+		}
+
+		if error := generator.generateConfigKubeConfig(generator.config.GetFullLocalAssetFilename(utils.KubeconfigProxy), generator.ca.CertificateFilename, "system:kube-proxy", apiServer, generator.config.GetFullLocalAssetFilename(utils.PemProxy), generator.config.GetFullLocalAssetFilename(utils.PemProxyKey), true); error != nil {
+			return error
+		}
 
 		if error := generator.generateConfigKubeConfig(generator.config.GetFullLocalAssetFilename(utils.KubeconfigKubelet), generator.ca.CertificateFilename, fmt.Sprintf("system:node:%s", nodeName), apiServer, generator.config.GetFullLocalAssetFilename(utils.PemKubelet), generator.config.GetFullLocalAssetFilename(utils.PemKubeletKey), true); error != nil {
 			return error

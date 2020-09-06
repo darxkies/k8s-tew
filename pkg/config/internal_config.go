@@ -281,7 +281,7 @@ func (config *InternalConfig) registerAssetFiles() {
 	// Manifests
 	config.addAssetFile(utils.ManifestControllerVirtualIP, Labels{utils.NodeController}, "", utils.DirectoryK8sManifests)
 	config.addAssetFile(utils.ManifestWorkerVirtualIP, Labels{utils.NodeWorker}, "", utils.DirectoryK8sManifests)
-	config.addAssetFile(utils.ManifestGobetween, Labels{utils.NodeController}, "", utils.DirectoryK8sManifests)
+	config.addAssetFile(utils.ManifestGobetween, Labels{utils.NodeController, utils.NodeStorage, utils.NodeWorker}, "", utils.DirectoryK8sManifests)
 	config.addAssetFile(utils.ManifestEtcd, Labels{utils.NodeController}, "", utils.DirectoryK8sManifests)
 	config.addAssetFile(utils.ManifestKubeApiserver, Labels{utils.NodeController}, "", utils.DirectoryK8sManifests)
 	config.addAssetFile(utils.ManifestKubeControllerManager, Labels{utils.NodeController}, "", utils.DirectoryK8sManifests)
@@ -292,7 +292,7 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.K8sTewProfile, Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, "", utils.DirectoryProfile)
 
 	// Gobetween
-	config.addAssetFile(utils.GobetweenConfig, Labels{utils.NodeController}, "", utils.DirectoryGobetweenConfig)
+	config.addAssetFile(utils.GobetweenConfig, Labels{utils.NodeController, utils.NodeStorage, utils.NodeWorker}, "", utils.DirectoryGobetweenConfig)
 
 	// Ceph
 	config.addAssetFile(utils.CephConfig, Labels{utils.NodeStorage}, "", utils.DirectoryCephConfig)
@@ -541,7 +541,7 @@ func (config *InternalConfig) hasIndex(index uint) bool {
 
 func (config *InternalConfig) hasStorageIndex(index uint) bool {
 	for _, node := range config.Config.Nodes {
-		if node.StorageIndex == index {
+		if node.StorageIndex == index && node.Labels.HasLabels(Labels{utils.NodeStorage}) {
 			return true
 		}
 	}

@@ -270,9 +270,9 @@ const PemAggregatorKey = "aggregator-key.pem"
 
 // Kubeconfig
 const KubeconfigAdmin = "admin.kubeconfig"
-const KubeconfigControllerManager = "controller-manager.kubeconfig"
-const KubeconfigScheduler = "scheduler.kubeconfig"
-const KubeconfigProxy = "proxy.kubeconfig"
+const KubeconfigControllerManager = "controller-manager-{{.Name}}.kubeconfig"
+const KubeconfigScheduler = "scheduler-{{.Name}}.kubeconfig"
+const KubeconfigProxy = "proxy-{{.Name}}.kubeconfig"
 const KubeconfigKubelet = "kubelet-{{.Name}}.kubeconfig"
 
 // Manifests
@@ -298,8 +298,8 @@ const ContainerdServerName = "containerd"
 const K8sKubeletSetup = "kubelet-setup.yaml"
 const K8sAdminUserSetup = "admin-user-setup.yaml"
 const K8sHelmUserSetup = "helm-user-setup.yaml"
-const K8sKubeProxyConfig = "kube-proxy-config.yaml"
-const K8sKubeSchedulerConfig = "kube-scheduler-config.yaml"
+const K8sKubeProxyConfig = "kube-proxy-{{.Name}}-config.yaml"
+const K8sKubeSchedulerConfig = "kube-scheduler-{{.Name}}-config.yaml"
 const K8sKubeletConfig = "kubelet-{{.Name}}-config.yaml"
 const K8sCorednsSetup = "coredns-setup.yaml"
 const K8sCalicoSetup = "calico-setup.yaml"
