@@ -59,6 +59,7 @@ const VersionWordpress = "docker.io/library/wordpress:5.4-apache"
 
 // Settings
 const ProjectTitle = "Kubernetes - The Easier Way"
+const Username = "k8s-tew"
 const ClusterName = "k8s-tew"
 const MaxPods = 110
 const RsaSize = 2048
@@ -319,6 +320,7 @@ const K8sAlertManagerSetup = "alert-manager.yaml"
 const K8sGrafanaCredentials = "grafana-credentials.yaml"
 const K8sMinioCredentials = "minio-credentials.yaml"
 const K8sCephManagerCredentials = "ceph-manager-credentials.yaml"
+const K8sCephRadosGatewayCredentials = "ceph-rados-gateway-credentials.yaml"
 const WordpressSetup = "wordpress-setup.yaml"
 
 // Gobetween Config
@@ -427,3 +429,4 @@ const ConcurrentSshConnectionsLimit = 10
 const GrafanaCredentials = "grafana-credentials"
 const MinioCredentials = "minio-credentials"
 const CephManagerCredentials = "ceph-manager-credentials"
+const CephRadosGatewayCredentials = "ceph-rados-gateway-credentials"

@@ -13,6 +13,10 @@ var cephConfigPath string
 var cephDataPath string
 var cephID string
 var cephPublicAddress string
+var cephDashboardUsername string
+var cephDashboardPassword string
+var cephRadosgwUsername string
+var cephRadosgwPassword string
 
 func getCeph() *ceph.Ceph {
 	return ceph.NewCeph(_config, cephBinariesPath, cephConfigPath, cephDataPath)
@@ -149,6 +153,26 @@ var cephRgwCmd = &cobra.Command{
 	},
 }
 
+var cephSetupCmd = &cobra.Command{
+	Use:   "setup",
+	Short: "Setup Ceph cluster",
+	Long:  "Setup Ceph cluster",
+	RunE: func(cmd *cobra.Command, args []string) error {
+		// Load config and check the rights
+		if error := bootstrap(false); error != nil {
+			return error
+		}
+
+		ceph := getCeph()
+
+		if _error := ceph.RunSetup(cephDashboardUsername, cephDashboardPassword, cephRadosgwUsername, cephRadosgwPassword); _error != nil {
+			return _error
+		}
+
+		return nil
+	},
+}
+
 func init() {
 	cephMgrCmd.Flags().StringVar(&cephID, "id", "", "id")
 	cephMgrCmd.Flags().StringVar(&cephPublicAddress, "ip", "", "ip")
@@ -160,6 +184,10 @@ func init() {
 	cephOsdCmd.Flags().StringVar(&cephPublicAddress, "ip", "", "ip")
 	cephRgwCmd.Flags().StringVar(&cephID, "id", "0", "id")
 	cephRgwCmd.Flags().StringVar(&cephPublicAddress, "ip", "", "ip")
+	cephSetupCmd.Flags().StringVar(&cephDashboardUsername, "dashboard-username", "", "Dashboard username")
+	cephSetupCmd.Flags().StringVar(&cephDashboardPassword, "dashboard-password", "", "Dashboard password")
+	cephSetupCmd.Flags().StringVar(&cephRadosgwUsername, "radosgw-username", "", "Rados Gateway username")
+	cephSetupCmd.Flags().StringVar(&cephRadosgwPassword, "radosgw-password", "", "Rados Gateway password")
 
 	cephCmd.AddCommand(cephInitializeCmd)
 	cephCmd.AddCommand(cephMgrCmd)
@@ -167,6 +195,7 @@ func init() {
 	cephCmd.AddCommand(cephMdsCmd)
 	cephCmd.AddCommand(cephOsdCmd)
 	cephCmd.AddCommand(cephRgwCmd)
+	cephCmd.AddCommand(cephSetupCmd)
 
 	cephCmd.Flags().StringVar(&cephBinariesPath, "ceph-binaries-path", ceph.CephBinariesPath, "Location of Ceph binaries")
 	cephCmd.Flags().StringVar(&cephConfigPath, "ceph-config-path", ceph.CephConfigPath, "Location of Ceph config")

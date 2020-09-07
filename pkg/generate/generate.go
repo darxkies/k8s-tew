@@ -1,7 +1,6 @@
 package generate
 
 import (
-	"encoding/base64"
 	"fmt"
 	"path"
 	"strings"
@@ -55,6 +54,8 @@ func NewGenerator(config *config.InternalConfig) *Generator {
 		generator.generateKubeConfigs,
 		// Generate Ceph Manager secrets file
 		generator.generateCephManagerCredentials,
+		// Generate Ceph Rados Gateway  secrets file
+		generator.generateCephRadosGatewayCredentials,
 		// Generate Ceph Config
 		generator.generateCephSetup,
 		// Generate Ceph CSI
@@ -788,31 +789,35 @@ func (generator *Generator) generateKubeConfigs() error {
 
 func (generator *Generator) generateCephSetup() error {
 	return utils.ApplyTemplateAndSave("ceph-setup", utils.TemplateCephSetup, struct {
-		CephRBDPoolName      string
-		CephFSPoolName       string
-		PublicNetwork        string
-		StorageControllers   []config.NodeData
-		StorageNodes         []config.NodeData
-		CephConfigDirectory  string
-		CephDataDirectory    string
-		CephImage            string
-		CephManagerPort      uint16
-		CephRadosGatewayPort uint16
-		K8sTewBinary         string
-		K8sTewConfig         string
+		CephRBDPoolName             string
+		CephFSPoolName              string
+		PublicNetwork               string
+		StorageControllers          []config.NodeData
+		StorageNodes                []config.NodeData
+		CephConfigDirectory         string
+		CephDataDirectory           string
+		CephImage                   string
+		CephManagerPort             uint16
+		CephRadosGatewayPort        uint16
+		K8sTewBinary                string
+		K8sTewConfig                string
+		CephManagerCredentials      string
+		CephRadosGatewayCredentials string
 	}{
-		CephRBDPoolName:      utils.CephRbdPoolName,
-		CephFSPoolName:       utils.CephFsPoolName,
-		PublicNetwork:        generator.config.Config.PublicNetwork,
-		StorageControllers:   generator.config.GetStorageControllers(),
-		StorageNodes:         generator.config.GetStorageNodes(),
-		CephConfigDirectory:  generator.config.GetFullTargetAssetDirectory(utils.DirectoryCephConfig),
-		CephDataDirectory:    generator.config.GetFullTargetAssetDirectory(utils.DirectoryCephData),
-		CephImage:            generator.config.Config.Versions.Ceph,
-		CephManagerPort:      utils.PortCephManager,
-		CephRadosGatewayPort: utils.PortCephRadosGateway,
-		K8sTewBinary:         generator.config.GetFullTargetAssetFilename(utils.BinaryK8sTew),
-		K8sTewConfig:         generator.config.GetFullTargetAssetFilename(utils.ConfigFilename),
+		CephRBDPoolName:             utils.CephRbdPoolName,
+		CephFSPoolName:              utils.CephFsPoolName,
+		PublicNetwork:               generator.config.Config.PublicNetwork,
+		StorageControllers:          generator.config.GetStorageControllers(),
+		StorageNodes:                generator.config.GetStorageNodes(),
+		CephConfigDirectory:         generator.config.GetFullTargetAssetDirectory(utils.DirectoryCephConfig),
+		CephDataDirectory:           generator.config.GetFullTargetAssetDirectory(utils.DirectoryCephData),
+		CephImage:                   generator.config.Config.Versions.Ceph,
+		CephManagerPort:             utils.PortCephManager,
+		CephRadosGatewayPort:        utils.PortCephRadosGateway,
+		K8sTewBinary:                generator.config.GetFullTargetAssetFilename(utils.BinaryK8sTew),
+		K8sTewConfig:                generator.config.GetFullTargetAssetFilename(utils.ConfigFilename),
+		CephManagerCredentials:      utils.CephManagerCredentials,
+		CephRadosGatewayCredentials: utils.CephRadosGatewayCredentials,
 	}, generator.config.GetFullLocalAssetFilename(utils.CephSetup), true, false)
 }
 
@@ -924,10 +929,12 @@ func (generator *Generator) generateMinioCredentials() error {
 	return utils.ApplyTemplateAndSave(utils.MinioCredentials, utils.TemplateCredentials, struct {
 		Namespace  string
 		SecretName string
+		Username   string
 		Password   string
 	}{
 		Namespace:  utils.FeatureBackup,
 		SecretName: utils.MinioCredentials,
+		Username:   utils.Username,
 		Password:   password,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sMinioCredentials), false, false)
 }
@@ -941,12 +948,38 @@ func (generator *Generator) generateCephManagerCredentials() error {
 	return utils.ApplyTemplateAndSave(utils.CephManagerCredentials, utils.TemplateCredentials, struct {
 		Namespace  string
 		SecretName string
+		Username   string
 		Password   string
 	}{
 		Namespace:  utils.FeatureStorage,
 		SecretName: utils.CephManagerCredentials,
+		Username:   utils.Username,
 		Password:   password,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sCephManagerCredentials), false, false)
+}
+
+func (generator *Generator) generateCephRadosGatewayCredentials() error {
+	accessKey, error := password.Generate(20, 6, 0, false, true)
+	if error != nil {
+		return errors.Wrap(error, "Could not generate access key")
+	}
+
+	secretKey, error := password.Generate(40, 8, 0, false, true)
+	if error != nil {
+		return errors.Wrap(error, "Could not generate secret key")
+	}
+
+	return utils.ApplyTemplateAndSave(utils.CephRadosGatewayCredentials, utils.TemplateCredentials, struct {
+		Namespace  string
+		SecretName string
+		Username   string
+		Password   string
+	}{
+		Namespace:  utils.FeatureStorage,
+		SecretName: utils.CephRadosGatewayCredentials,
+		Username:   strings.ToUpper(accessKey),
+		Password:   secretKey,
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sCephRadosGatewayCredentials), false, false)
 }
 
 func (generator *Generator) generateVeleroSetup() error {
@@ -1052,10 +1085,12 @@ func (generator *Generator) generateGrafanaCredentials() error {
 	return utils.ApplyTemplateAndSave(utils.GrafanaCredentials, utils.TemplateCredentials, struct {
 		Namespace  string
 		SecretName string
+		Username   string
 		Password   string
 	}{
 		Namespace:  utils.FeatureMonitoring,
 		SecretName: utils.GrafanaCredentials,
+		Username:   utils.Username,
 		Password:   password,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sGrafanaCredentials), false, false)
 }
@@ -1123,12 +1158,10 @@ func (generator *Generator) GenerateFiles() error {
 }
 
 func (generator *Generator) generatePassword() (string, error) {
-	result, error := password.Generate(12, 6, 0, false, false)
+	result, error := password.Generate(12, 6, 0, false, true)
 	if error != nil {
 		return result, errors.Wrap(error, "Could not generate secret")
 	}
-
-	result = base64.StdEncoding.EncodeToString([]byte(result))
 
 	return result, nil
 }

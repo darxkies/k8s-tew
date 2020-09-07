@@ -426,6 +426,39 @@ func (ceph *Ceph) RunRgw(id, publicAddress string) error {
 	return nil
 }
 
+func (ceph *Ceph) RunSetup(dashboardUsername, dashboardPassword, radosgwUsername, radosgwPassword string) error {
+	cephBinary := ceph.getCephBinary()
+	radosgwAdminBinary := ceph.getRadosgwAdminBinary()
+
+	commands := []string{
+		fmt.Sprintf("%s mon enable-msgr2", cephBinary),
+		fmt.Sprintf("%s mgr module enable dashboard", cephBinary),
+		fmt.Sprintf("%s dashboard feature disable iscsi", cephBinary),
+		fmt.Sprintf("%s dashboard feature disable mirroring", cephBinary),
+		fmt.Sprintf("%s dashboard feature disable nfs", cephBinary),
+		fmt.Sprintf("%s dashboard create-self-signed-cert", cephBinary),
+		fmt.Sprintf("%s dashboard ac-user-create %s %s administrator", cephBinary, dashboardUsername, dashboardPassword),
+		fmt.Sprintf("%s user create --uid=%s --display-name=%s --system --access-key=%s --secret-key=%s", radosgwAdminBinary, utils.Username, utils.Username, radosgwUsername, radosgwPassword),
+		fmt.Sprintf("%s dashboard set-rgw-api-access-key %s", cephBinary, radosgwUsername),
+		fmt.Sprintf("%s dashboard set-rgw-api-secret-key %s", cephBinary, radosgwPassword),
+		fmt.Sprintf("%s mgr module disable dashboard", cephBinary),
+		fmt.Sprintf("%s mgr module enable dashboard", cephBinary),
+		fmt.Sprintf("%s osd pool create %s 256 256", cephBinary, utils.CephRbdPoolName),
+		fmt.Sprintf("%s osd pool application enable %s rbd", cephBinary, utils.CephRbdPoolName),
+		fmt.Sprintf("%s osd pool create %s 8", cephBinary, utils.CephFsPoolName),
+		fmt.Sprintf("%s osd pool create %s_metadata 8", cephBinary, utils.CephFsPoolName),
+		fmt.Sprintf("%s fs new cephfs %s_metadata %s", cephBinary, utils.CephFsPoolName, utils.CephFsPoolName),
+	}
+
+	for _, command := range commands {
+		if _error := utils.RunCommandWithConsoleOutput(command); _error != nil {
+			return errors.Wrapf(_error, "Could not execute command '%s'", command)
+		}
+	}
+
+	return nil
+}
+
 func (ceph *Ceph) getPublicAddressBinary(binary, publicAddress string) string {
 	if len(publicAddress) > 0 {
 		binary = fmt.Sprintf("%s --public-addr %s", binary, publicAddress)
@@ -448,6 +481,10 @@ func (ceph *Ceph) getUserGroupBinary(binary string) string {
 
 func (ceph *Ceph) getClientAdminBinary(binary string) string {
 	return fmt.Sprintf("%s --keyring %s -n client.admin", binary, ceph.getCephClientAdminKeyring())
+}
+
+func (ceph *Ceph) getRadosgwAdminBinary() string {
+	return ceph.getBinary("radosgw-admin")
 }
 
 func (ceph *Ceph) getCephBinary() string {

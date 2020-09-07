@@ -461,7 +461,7 @@ spec:
         command:
         - /bin/sh
         - -c
-        - "ceph mon enable-msgr2 && ceph mgr module enable dashboard && ceph dashboard create-self-signed-cert && ceph dashboard set-login-credentials $CEPH_MANAGER_USERNAME $CEPH_MANAGER_PASSWORD && ceph mgr module disable dashboard && ceph mgr module enable dashboard && ceph osd pool create {{.CephRBDPoolName}} 256 256 && ceph osd pool application enable {{.CephRBDPoolName}} rbd && ceph osd pool create {{$.CephFSPoolName}} 8 && ceph osd pool create {{$.CephFSPoolName}}_metadata 8 && ceph fs new cephfs {{$.CephFSPoolName}}_metadata {{$.CephFSPoolName}}"
+        - "/k8s-tew ceph setup --dashboard-username $CEPH_MANAGER_USERNAME --dashboard-password $CEPH_MANAGER_PASSWORD --radosgw-username $CEPH_RADOSGW_USERNAME --radosgw-password $CEPH_RADOSGW_PASSWORD"
         volumeMounts:
         - name: ceph-config
           mountPath: /etc/ceph
@@ -472,15 +472,28 @@ spec:
         - name: k8s-tew-config
           mountPath: /etc/k8s-tew/config.yaml
         env:
+          - name: K8S_TEW_BASE_DIRECTORY
+            value: "/"
           - name: CEPH_MANAGER_USERNAME
             valueFrom:
               secretKeyRef:
-                name: ceph-manager-credentials
+                name: {{$.CephManagerCredentials}}
                 key: username
           - name: CEPH_MANAGER_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: ceph-manager-credentials
+                name: {{$.CephManagerCredentials}}
+                key: password
+          - name: CEPH_RADOSGW_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: ceph-rados-gateway-credentials
+                name: {{$.CephRadosGatewayCredentials}}
+                key: username
+          - name: CEPH_RADOSGW_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{$.CephRadosGatewayCredentials}}
                 key: password
 ---
 apiVersion: v1

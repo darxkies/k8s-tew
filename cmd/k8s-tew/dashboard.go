@@ -103,7 +103,12 @@ func init() {
 	}))
 
 	dashboardCmd.AddCommand(addCommand("ceph-rados-gateway", "Display Ceph Rados Gateway website related information", func(kubernetesClient *k8s.K8S, ip string) (string, string, string, error) {
-		return utils.GetURL("http", ip, utils.PortCephRadosGateway), "", "", nil
+		username, password, error := kubernetesClient.GetCredentials(utils.FeatureStorage, utils.CephRadosGatewayCredentials)
+		if error != nil {
+			return "", "", "", error
+		}
+
+		return utils.GetURL("http", ip, utils.PortCephRadosGateway), username, password, nil
 	}))
 
 	dashboardCmd.AddCommand(addCommand("minio", "Display Minio website related information", func(kubernetesClient *k8s.K8S, ip string) (string, string, string, error) {
