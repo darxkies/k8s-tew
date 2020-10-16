@@ -70,6 +70,8 @@ func NewGenerator(config *config.InternalConfig) *Generator {
 		generator.generateEFKSetup,
 		// Generate minio secrets file
 		generator.generateMinioCredentials,
+		// Generate cerebro secrets file
+		generator.generateCerebroCredentials,
 		// Generate velero setup file
 		generator.generateVeleroSetup,
 		// Generate kubernetes dashboard setup file
@@ -929,14 +931,34 @@ func (generator *Generator) generateMinioCredentials() error {
 	return utils.ApplyTemplateAndSave(utils.MinioCredentials, utils.TemplateCredentials, struct {
 		Namespace  string
 		SecretName string
-		Username   string
-		Password   string
+		Data       map[string]string
 	}{
 		Namespace:  utils.FeatureBackup,
 		SecretName: utils.MinioCredentials,
-		Username:   utils.Username,
-		Password:   password,
+		Data:       map[string]string{utils.KeyUsername: utils.Username, utils.KeyPassword: password},
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sMinioCredentials), false, false)
+}
+
+func (generator *Generator) generateCerebroCredentials() error {
+	cerebroPassword, error := generator.generatePassword()
+	if error != nil {
+		return error
+	}
+
+	secret, error := password.Generate(32, 8, 0, false, true)
+	if error != nil {
+		return errors.Wrap(error, "Could not generate secret for Cerebro")
+	}
+
+	return utils.ApplyTemplateAndSave(utils.CerebroCredentials, utils.TemplateCredentials, struct {
+		Namespace  string
+		SecretName string
+		Data       map[string]string
+	}{
+		Namespace:  utils.FeatureLogging,
+		SecretName: utils.CerebroCredentials,
+		Data:       map[string]string{utils.KeyUsername: utils.Username, utils.KeyPassword: cerebroPassword, utils.KeySecret: secret},
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sCerebroCredentials), false, false)
 }
 
 func (generator *Generator) generateCephManagerCredentials() error {
@@ -948,13 +970,11 @@ func (generator *Generator) generateCephManagerCredentials() error {
 	return utils.ApplyTemplateAndSave(utils.CephManagerCredentials, utils.TemplateCredentials, struct {
 		Namespace  string
 		SecretName string
-		Username   string
-		Password   string
+		Data       map[string]string
 	}{
 		Namespace:  utils.FeatureStorage,
 		SecretName: utils.CephManagerCredentials,
-		Username:   utils.Username,
-		Password:   password,
+		Data:       map[string]string{utils.KeyUsername: utils.Username, utils.KeyPassword: password},
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sCephManagerCredentials), false, false)
 }
 
@@ -972,13 +992,11 @@ func (generator *Generator) generateCephRadosGatewayCredentials() error {
 	return utils.ApplyTemplateAndSave(utils.CephRadosGatewayCredentials, utils.TemplateCredentials, struct {
 		Namespace  string
 		SecretName string
-		Username   string
-		Password   string
+		Data       map[string]string
 	}{
 		Namespace:  utils.FeatureStorage,
 		SecretName: utils.CephRadosGatewayCredentials,
-		Username:   strings.ToUpper(accessKey),
-		Password:   secretKey,
+		Data:       map[string]string{utils.KeyUsername: strings.ToUpper(accessKey), utils.KeyPassword: secretKey},
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sCephRadosGatewayCredentials), false, false)
 }
 
@@ -1085,13 +1103,11 @@ func (generator *Generator) generateGrafanaCredentials() error {
 	return utils.ApplyTemplateAndSave(utils.GrafanaCredentials, utils.TemplateCredentials, struct {
 		Namespace  string
 		SecretName string
-		Username   string
-		Password   string
+		Data       map[string]string
 	}{
 		Namespace:  utils.FeatureMonitoring,
 		SecretName: utils.GrafanaCredentials,
-		Username:   utils.Username,
-		Password:   password,
+		Data:       map[string]string{utils.KeyUsername: utils.Username, utils.KeyPassword: password},
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sGrafanaCredentials), false, false)
 }
 

@@ -339,14 +339,14 @@ func (k8s *K8S) GetCredentials(namespace, name string) (username string, passwor
 		return "", "", errors.Wrapf(error, "Could not list secrets for namespace '%s'", namespace)
 	}
 
-	data, ok := secrets.Data["username"]
+	data, ok := secrets.Data[utils.KeyUsername]
 	if !ok {
 		return "", "", fmt.Errorf("Could not get username for %s/%s", namespace, name)
 	}
 
 	username = string(data)
 
-	data, ok = secrets.Data["password"]
+	data, ok = secrets.Data[utils.KeyPassword]
 	if !ok {
 		return "", "", fmt.Errorf("Could not get password for %s/%s", namespace, name)
 	}

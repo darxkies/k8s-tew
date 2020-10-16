@@ -270,6 +270,7 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.K8sAlertManagerSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sGrafanaCredentials, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sMinioCredentials, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.K8sCerebroCredentials, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sCephManagerCredentials, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sCephRadosGatewayCredentials, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.WordpressSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
@@ -362,6 +363,7 @@ func (config *InternalConfig) registerCommands() {
 	config.addManifest("grafana-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sGrafanaSetup))
 	config.addManifest("efk-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureLogging, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sEfkSetup))
 	config.addManifest("minio-credentials", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sMinioCredentials))
+	config.addManifest("cerebro-credentials", Labels{utils.NodeBootstrapper}, Features{utils.FeatureLogging, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sCerebroCredentials))
 	config.addManifest("velero-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureBackup, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sVeleroSetup))
 	config.addManifest("wordpress-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureShowcase, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.WordpressSetup))
 }
@@ -670,9 +672,11 @@ func (config *InternalConfig) ApplyTemplate(label string, value string) (string,
 }
 
 func (config *InternalConfig) GetAPIServerIP() (string, error) {
-	if len(config.Config.ControllerVirtualIP) > 0 {
-		return config.Config.ControllerVirtualIP, nil
-	}
+	/*
+		if len(config.Config.ControllerVirtualIP) > 0 {
+			return config.Config.ControllerVirtualIP, nil
+		}
+	*/
 
 	for _, node := range config.Config.Nodes {
 		if node.IsController() {

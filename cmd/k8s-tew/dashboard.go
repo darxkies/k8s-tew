@@ -138,7 +138,12 @@ func init() {
 	}))
 
 	dashboardCmd.AddCommand(addCommand("cerebro", "Display Cerebro website related information", func(kubernetesClient *k8s.K8S, ip string) (string, string, string, error) {
-		return utils.GetURL("http", ip, utils.PortCerebro), "", "", nil
+		username, password, error := kubernetesClient.GetCredentials(utils.FeatureLogging, utils.CerebroCredentials)
+		if error != nil {
+			return "", "", "", error
+		}
+
+		return utils.GetURL("http", ip, utils.PortCerebro), username, password, nil
 	}))
 
 	RootCmd.AddCommand(dashboardCmd)
