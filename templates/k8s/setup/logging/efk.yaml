@@ -91,8 +91,13 @@ data:
         Retry_Limit False
         Type  flb_type
         Logstash_Prefix kubernetes_cluster
-        tls off
-        tls.verify off
+        HTTP_User       ${ELASTICSEARCH_USERNAME}
+        HTTP_Passwd     ${ELASTICSEARCH_PASSWORD}
+        tls on
+        tls.verify on
+        tls.ca_file /ca.pem
+        tls.crt_file /elasticsearch.pem
+        tls.key_file /elasticsearch-key.pem
         tls.debug 1
   parsers.conf: |-
     [PARSER]
@@ -107,6 +112,52 @@ data:
         Time_Key    time
         Time_Format %Y-%m-%dT%H:%M:%S.%L
         Time_Keep   On
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: elasticsearch-config
+  namespace: logging
+  labels:
+    app: elasticsearch
+data:
+  elasticsearch.yml: |-
+    cluster.name: "k8s-tew"
+    network.host: 0.0.0.0
+    discovery.seed_hosts: "{{ range $index, $element := .ElasticsearchCounts }}{{ if $index }},{{ end }}elasticsearch-{{ $element }}.elasticsearch{{ end }}"
+    cluster.initial_master_nodes: "{{ range $index, $element := .ElasticsearchCounts }}{{ if $index }},{{ end }}elasticsearch-{{ $element }}{{ end }}"
+    xpack.license.self_generated.type: basic
+    xpack.security.enabled: true
+    xpack.security.transport.ssl.enabled: true
+    xpack.security.transport.ssl.verification_mode: "certificate"
+    xpack.security.transport.ssl.key: "/usr/share/elasticsearch/config/certs/elasticsearch-key.pem"
+    xpack.security.transport.ssl.certificate: "/usr/share/elasticsearch/config/certs/elasticsearch.pem"
+    xpack.security.transport.ssl.certificate_authorities: [ "/usr/share/elasticsearch/config/certs/ca.pem" ]
+    xpack.security.http.ssl.enabled: true
+    xpack.security.http.ssl.key: "/usr/share/elasticsearch/config/certs/elasticsearch-key.pem"
+    xpack.security.http.ssl.certificate: "/usr/share/elasticsearch/config/certs/elasticsearch.pem"
+    xpack.security.http.ssl.certificate_authorities: [ "/usr/share/elasticsearch/config/certs/ca.pem" ]
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kibana-config
+  namespace: logging
+  labels:
+    app: kibana
+data:
+  kibana.yml: |-
+    server.name: "kibana"
+    server.host: 0.0.0.0
+    xpack.reporting.capture.browser.chromium.disableSandbox: true
+    elasticsearch.hosts: [ "https://elasticsearch:9200" ]
+    server.ssl.enabled: true
+    server.ssl.key: "/usr/share/kibana/config/certs/elasticsearch-key.pem"
+    server.ssl.certificate: "/usr/share/kibana/config/certs/elasticsearch.pem"
+    elasticsearch.ssl.certificateAuthorities: [ "/usr/share/kibana/config/certs/ca.pem" ]
+    elasticsearch.ssl.verificationMode: "certificate"
 
 ---
 apiVersion: apps/v1
@@ -137,6 +188,17 @@ spec:
           requests:
             cpu: 100m
             memory: 300Mi
+        env:
+          - name: ELASTICSEARCH_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: elasticsearch-credentials
+                key: username
+          - name: ELASTICSEARCH_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: elasticsearch-credentials
+                key: password
         volumeMounts:
         - name: varlog
           mountPath: /var/log
@@ -148,6 +210,15 @@ spec:
         - name: config
           mountPath: /fluent-bit/etc/fluent-bit.conf
           subPath: fluent-bit.conf
+        - name: certificates
+          mountPath: /ca.pem
+          subPath: ca.pem
+        - name: certificates
+          mountPath: /elasticsearch.pem
+          subPath: elasticsearch.pem
+        - name: certificates
+          mountPath: /elasticsearch-key.pem
+          subPath: elasticsearch-key.pem
       terminationGracePeriodSeconds: 10
       tolerations:
         - effect: NoSchedule
@@ -155,6 +226,9 @@ spec:
         - effect: NoExecute
           operator: Exists
       volumes:
+      - name: certificates
+        configMap:
+          name: elasticsearch-certificates
       - name: varlog
         hostPath:
           path: /var/log
@@ -192,10 +266,22 @@ spec:
         app: cerebro
     spec:
       containers:
-      - command:
-        - bin/cerebro 
-        - -Dconfig.file=/usr/local/cerebro/cfg/application.conf
+      - name: cerebro
+        command:
+        - sh
+        - -c
+        - "openssl pkcs12 -export -in /elasticsearch.pem -inkey /elasticsearch-key.pem -CAfile /ca.pem -out /tmp/keystore.p12 -passout pass: && bin/cerebro -Dconfig.file=/usr/local/cerebro/cfg/application.conf"
         env:
+          - name: ELASTICSEARCH_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: elasticsearch-credentials
+                key: username
+          - name: ELASTICSEARCH_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: elasticsearch-credentials
+                key: password
           - name: APPLICATION_SECRET
             valueFrom:
               secretKeyRef:
@@ -211,37 +297,45 @@ spec:
               secretKeyRef:
                 name: cerebro-credentials
                 key: password
-        image: "{{.CerebroImage}}"
         imagePullPolicy: IfNotPresent
+        image: "{{.CerebroImage}}"
         livenessProbe:
           failureThreshold: 10
           httpGet:
             path: /#/connect
             port: 9000
-            scheme: HTTP
+            scheme: HTTPS
           initialDelaySeconds: 1
           periodSeconds: 10
           successThreshold: 1
           timeoutSeconds: 30
-        name: cerebro
-        ports:
-        - containerPort: 9000
-          name: http
-          protocol: TCP
         readinessProbe:
           failureThreshold: 10
           httpGet:
             path: /#/connect
             port: 9000
-            scheme: HTTP
+            scheme: HTTPS
           initialDelaySeconds: 1
           periodSeconds: 10
           successThreshold: 1
           timeoutSeconds: 30
+        ports:
+        - containerPort: 9000
+          name: https
+          protocol: TCP
         resources: {}
         volumeMounts:
         - mountPath: /usr/local/cerebro/cfg
           name: cerebro
+        - name: certificates
+          mountPath: /ca.pem
+          subPath: ca.pem
+        - name: certificates
+          mountPath: /elasticsearch.pem
+          subPath: elasticsearch.pem
+        - name: certificates
+          mountPath: /elasticsearch-key.pem
+          subPath: elasticsearch-key.pem
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
@@ -252,6 +346,9 @@ spec:
         configMap:
           defaultMode: 420
           name: cerebro
+      - name: certificates
+        configMap:
+          name: elasticsearch-certificates
         
 ---
 apiVersion: apps/v1
@@ -273,21 +370,48 @@ spec:
     type: RollingUpdate
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app: kibana
     spec:
       containers:
       - name: kibana
-        env:
-        - name: ELASTICSEARCH_URL
-          value: http://elasticsearch:9200
         image: "{{.KibanaImage}}"
         imagePullPolicy: IfNotPresent
+        env:
+          - name: ELASTICSEARCH_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: elasticsearch-credentials
+                key: username
+          - name: ELASTICSEARCH_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: elasticsearch-credentials
+                key: password
         ports:
         - containerPort: 5601
           name: http
           protocol: TCP
+        volumeMounts:
+        - name: certificates
+          mountPath: /usr/share/kibana/config/certs/ca.pem
+          subPath: ca.pem
+        - name: certificates
+          mountPath: /usr/share/kibana/config/certs/elasticsearch.pem
+          subPath: elasticsearch.pem
+        - name: certificates
+          mountPath: /usr/share/kibana/config/certs/elasticsearch-key.pem
+          subPath: elasticsearch-key.pem
+        - name: config
+          mountPath: /usr/share/kibana/config/kibana.yml
+          subPath: kibana.yml
+      volumes:
+        - name: certificates
+          configMap:
+            name: elasticsearch-certificates
+        - name: config
+          configMap:
+            name: kibana-config
 
 ---
 apiVersion: apps/v1
@@ -309,28 +433,25 @@ spec:
         app: elasticsearch
     spec:
       initContainers:
-      - name: fix-permissions
+      - name: setup
         image: "{{.BusyboxImage}}"
-        command: ["sh", "-c", "chown -R 1000:1000 /usr/share/elasticsearch/data"]
+        command: 
+        - sh
+        - -c
+        - chown -R 1000:1000 /usr/share/elasticsearch/data && sysctl -w vm.max_map_count=262144 && ulimit -n 65536
         securityContext:
           privileged: true
         volumeMounts:
         - name: data
           mountPath: /usr/share/elasticsearch/data
-      - name: increase-vm-max-map
-        image: "{{.BusyboxImage}}"
-        command: ["sysctl", "-w", "vm.max_map_count=262144"]
-        securityContext:
-          privileged: true
-      - name: increase-fd-ulimit
-        image: "{{.BusyboxImage}}"
-        command: ["sh", "-c", "ulimit -n 65536"]
-        securityContext:
-          privileged: true
       containers:
       - name: elasticsearch
         image: "{{.ElasticsearchImage}}"
         imagePullPolicy: IfNotPresent
+        command:
+        - sh
+        - -c
+        - bin/elasticsearch-users useradd $ELASTIC_USERNAME -p $ELASTIC_PASSWORD -r superuser && /tini -s -- /usr/local/bin/docker-entrypoint.sh eswrapper
         resources:
           limits:
             cpu: 1000m
@@ -339,19 +460,35 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /usr/share/elasticsearch/data
+        - name: config
+          mountPath: /usr/share/elasticsearch/config/elasticsearch.yml
+          subPath: elasticsearch.yml
+        - name: certificates
+          mountPath: /usr/share/elasticsearch/config/certs/ca.pem
+          subPath: ca.pem
+        - name: certificates
+          mountPath: /usr/share/elasticsearch/config/certs/elasticsearch.pem
+          subPath: elasticsearch.pem
+        - name: certificates
+          mountPath: /usr/share/elasticsearch/config/certs/elasticsearch-key.pem
+          subPath: elasticsearch-key.pem
         env:
-          - name: cluster.name
-            value: k8s-logs
           - name: node.name
             valueFrom:
               fieldRef:
                 fieldPath: metadata.name
-          - name: discovery.seed_hosts
-            value: "{{ range $index, $element := .ElasticsearchCounts }}{{ if $index }},{{ end }}elasticsearch-{{ $element }}.elasticsearch{{ end }}"
-          - name: cluster.initial_master_nodes
-            value: "{{ range $index, $element := .ElasticsearchCounts }}{{ if $index }},{{ end }}elasticsearch-{{ $element }}{{ end }}"
           - name: ES_JAVA_OPTS
             value: "-Xms512m -Xmx512m"
+          - name: ELASTIC_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: elasticsearch-credentials
+                key: username
+          - name: ELASTIC_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: elasticsearch-credentials
+                key: password
         ports:
         - containerPort: 9200
           name: rest
@@ -359,6 +496,13 @@ spec:
         - containerPort: 9300
           name: inter-node
           protocol: TCP
+      volumes:
+        - name: certificates
+          configMap:
+            name: elasticsearch-certificates
+        - name: config
+          configMap:
+            name: elasticsearch-config
   volumeClaimTemplates:
   - metadata:
       name: data
@@ -379,11 +523,30 @@ metadata:
   name: cerebro
 data:
   application.conf: |-
+    play {
+        server {
+            http {
+                port = "disabled"
+            }
+
+            https {
+                port = "9000"
+                keyStore = {
+                    type = "PKCS12"
+                    path = "/tmp/keystore.p12"
+                }
+            }
+        }
+    }
     secret = ${?APPLICATION_SECRET}
     hosts = [
         {
             name = "elasticsearch"
-            host = "http://elasticsearch:9200"
+            host = "https://elasticsearch:9200"
+            auth = {
+                username = ${?ELASTICSEARCH_USERNAME}
+                password = ${?ELASTICSEARCH_PASSWORD}
+            }
         }
     ] 
     auth = {
@@ -391,6 +554,13 @@ data:
         settings {
             username = ${?BASIC_AUTH_USER}
             password = ${?BASIC_AUTH_PWD}
+        }
+    }
+    play.ws.ssl {
+        trustManager = {
+            stores = [
+                { type = "PEM", path = "/ca.pem" }
+            ]
         }
     }
 
@@ -407,9 +577,9 @@ spec:
   selector:
     app: cerebro
   ports:
-  - name: http
+  - name: https
     nodePort: {{.CerebroPort}}
-    port: 80
+    port: 9000
     protocol: TCP
     targetPort: 9000
 
@@ -426,7 +596,7 @@ spec:
     app: kibana
   type: NodePort
   ports:
-  - name: http
+  - name: https
     nodePort: {{.KibanaPort}}
     port: 5601
     protocol: TCP

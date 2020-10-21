@@ -227,6 +227,8 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.PemKubeletKey, Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, "", utils.DirectoryCertificates)
 	config.addAssetFile(utils.PemAggregator, Labels{utils.NodeController}, "", utils.DirectoryCertificates)
 	config.addAssetFile(utils.PemAggregatorKey, Labels{utils.NodeController}, "", utils.DirectoryCertificates)
+	config.addAssetFile(utils.PemElasticsearch, Labels{}, "", utils.DirectoryCertificates)
+	config.addAssetFile(utils.PemElasticsearchKey, Labels{}, "", utils.DirectoryCertificates)
 
 	// Kubeconfig
 	config.addAssetFile(utils.KubeconfigAdmin, Labels{utils.NodeController}, "", utils.DirectoryK8sKubeConfig)
@@ -273,6 +275,8 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.K8sCerebroCredentials, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sCephManagerCredentials, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sCephRadosGatewayCredentials, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.K8sElasticsearchCredentials, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.K8sElasticsearchCertificates, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.WordpressSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
 
 	// K8S Config
@@ -361,6 +365,8 @@ func (config *InternalConfig) registerCommands() {
 	config.addManifest("kube-state-metrics-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sKubeStateMetricsSetup))
 	config.addManifest("grafana-credentials", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sGrafanaCredentials))
 	config.addManifest("grafana-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sGrafanaSetup))
+	config.addManifest("elasticsearch-certificates", Labels{utils.NodeBootstrapper}, Features{utils.FeatureLogging, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sElasticsearchCertificates))
+	config.addManifest("elasticsearch-credentials", Labels{utils.NodeBootstrapper}, Features{utils.FeatureLogging, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sElasticsearchCredentials))
 	config.addManifest("efk-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureLogging, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sEfkSetup))
 	config.addManifest("minio-credentials", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sMinioCredentials))
 	config.addManifest("cerebro-credentials", Labels{utils.NodeBootstrapper}, Features{utils.FeatureLogging, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sCerebroCredentials))

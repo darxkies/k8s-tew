@@ -2,13 +2,13 @@ package utils
 
 // Versions
 const VersionConfig = "2.4.0"
-const VersionK8s = "v1.18.8"
+const VersionK8s = "v1.18.10"
 const VersionKubeAPIServer = "k8s.gcr.io/kube-apiserver:" + VersionK8s
 const VersionKubeControllerManager = "k8s.gcr.io/kube-controller-manager:" + VersionK8s
 const VersionKubeScheduler = "k8s.gcr.io/kube-scheduler:" + VersionK8s
 const VersionKubeProxy = "k8s.gcr.io/kube-proxy:" + VersionK8s
 const VersionEtcd = "quay.io/coreos/etcd:v3.4.10"
-const VersionContainerd = "1.4.0"
+const VersionContainerd = "1.4.1"
 const VersionRunc = "1.0.0-rc92"
 const VersionCrictl = "1.18.0"
 const VersionHelm = "3.3.0"
@@ -36,8 +36,8 @@ const VersionMinioServer = "docker.io/minio/minio:RELEASE.2020-08-08T04-50-06Z"
 const VersionMinioClient = "docker.io/minio/mc:RELEASE.2020-08-08T02-33-58Z"
 const VersionMetalLBController = "docker.io/metallb/controller:v0.9.3"
 const VersionMetalLBSpeaker = "docker.io/metallb/speaker:v0.9.3"
-const VersionElasticsearch = "docker.elastic.co/elasticsearch/elasticsearch:7.6.2"
-const VersionKibana = "docker.elastic.co/kibana/kibana-oss:7.6.2"
+const VersionElasticsearch = "docker.elastic.co/elasticsearch/elasticsearch:7.9.2"
+const VersionKibana = "docker.elastic.co/kibana/kibana:7.9.2"
 const VersionCerebro = "docker.io/lmenezes/cerebro:0.9.2"
 const VersionFluentBit = "docker.io/fluent/fluent-bit:1.4.2"
 const VersionMetricsScraper = "docker.io/kubernetesui/metrics-scraper:v1.0.4"
@@ -271,6 +271,8 @@ const PemVirtualIp = "virtual-ip.pem"
 const PemVirtualIpKey = "virtual-ip-key.pem"
 const PemAggregator = "aggregator.pem"
 const PemAggregatorKey = "aggregator-key.pem"
+const PemElasticsearch = "elasticsearch.pem"
+const PemElasticsearchKey = "elasticsearch-key.pem"
 
 // Kubeconfig
 const KubeconfigAdmin = "admin.kubeconfig"
@@ -325,6 +327,8 @@ const K8sMinioCredentials = "minio-credentials.yaml"
 const K8sCerebroCredentials = "cerebro-credentials.yaml"
 const K8sCephManagerCredentials = "ceph-manager-credentials.yaml"
 const K8sCephRadosGatewayCredentials = "ceph-rados-gateway-credentials.yaml"
+const K8sElasticsearchCredentials = "elasticsearch-credentials.yaml"
+const K8sElasticsearchCertificates = "elasticsearch-certificates.yaml"
 const WordpressSetup = "wordpress-setup.yaml"
 
 // Gobetween Config
@@ -376,6 +380,7 @@ const CnSystemKubeControllerManager = "system:kube-controller-manager"
 const CnSystemKubeScheduler = "system:kube-scheduler"
 const CnSystemKubeProxy = "system:kube-proxy"
 const CnSystemNodePrefix = "system:node:%s"
+const CnElasticsearch = "elasticsearch"
 
 // Templates
 const TemplateContainerdToml = "k8s/cri/containerd.toml"
@@ -389,6 +394,7 @@ const TemplateKubeletConfiguration = "k8s/kubelet-configuration.yaml"
 const TemplateEncryptionConfig = "k8s/encryption-config.yaml"
 const TemplateKubeconfig = "k8s/kubeconfig.yaml"
 const TemplateCredentials = "k8s/credentials.yaml"
+const TemplateConfigMap = "k8s/config-map.yaml"
 const TemplateServiceAccount = "k8s/service-account.yaml"
 const TemplateKubeletSetup = "k8s/setup/kubelet-setup.yaml"
 const TemplateCephClientKeyring = "ceph/client.keyring"
@@ -435,3 +441,6 @@ const MinioCredentials = "minio-credentials"
 const CerebroCredentials = "cerebro-credentials"
 const CephManagerCredentials = "ceph-manager-credentials"
 const CephRadosGatewayCredentials = "ceph-rados-gateway-credentials"
+const ElasticsearchCredentials = "elasticsearch-credentials"
+
+const ElasticsearchCertificates = "elasticsearch-certificates"

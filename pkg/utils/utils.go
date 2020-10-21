@@ -164,6 +164,15 @@ func ApplyTemplate(label, content string, data interface{}, alternativeDelimiter
 	var result bytes.Buffer
 
 	var functions = template.FuncMap{
+		"file": func(value string) string {
+			result := ""
+
+			for _, line := range strings.Split(value, "\n") {
+				result += "    " + line + "\n"
+			}
+
+			return result
+		},
 		"unescape": func(value string) string {
 			return value
 		},
@@ -233,6 +242,17 @@ func ApplyTemplateAndSave(label, templateName string, data interface{}, filename
 	LogFilename("Generated", filename)
 
 	return nil
+}
+
+// ReadFile reads the content of a file
+func ReadFile(filename string) (string, error) {
+	content, error := ioutil.ReadFile(filename)
+
+	if error != nil {
+		return "", fmt.Errorf("Could not read file '%s' (%s)", filename, error.Error())
+	}
+
+	return string(content), nil
 }
 
 // GetBase64OfPEM reads the content of a PEM file and converts it to Base64

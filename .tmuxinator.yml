@@ -1,0 +1,20 @@
+name: k8s-tew
+on_project_start: export PATH=$(pwd):$PATH
+
+windows:
+  - editor:
+      layout: main-horizontal
+      panes:
+        - vim
+        - make watch-and-compile
+  - shell:
+  - sandbox-command:
+      - cd setup/sandbox/vbox-single
+  - sandbox-environment:
+      - cd setup/sandbox/vbox-single
+      - source <(k8s-tew environment)
+  - k9s:
+      - cd setup/sandbox/vbox-single
+      - source <(k8s-tew environment)
+      - k9s
+        

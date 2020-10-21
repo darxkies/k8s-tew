@@ -6,12 +6,12 @@ metadata:
 
 ---
 apiVersion: v1
-kind: Secret
+kind: ConfigMap
 metadata:
   namespace: {{.Namespace}}
-  name: {{.SecretName}}
-type: Opaque
+  name: {{.Name}}
 data:
   {{range $key, $value := .Data -}}
-  {{$key}}: "{{ $value | base64 }}"
+  {{$key}}: |
+{{ $value | file}}
   {{end}}

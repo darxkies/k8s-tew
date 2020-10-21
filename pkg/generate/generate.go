@@ -26,31 +26,31 @@ func NewGenerator(config *config.InternalConfig) *Generator {
 	generator.generatorSteps = []func() error{
 		// Generate profile file
 		generator.generateProfileFile,
-		// Generate systemd file
+		// Generate Systemd file
 		generator.generateServiceFile,
-		// Generate load balancer configuration
+		// Generate Load Balancer configuration
 		generator.generateGobetweenConfig,
-		// Generate calico setup
+		// Generate Calico setup
 		generator.generateCalicoSetup,
-		// Generate metallb setup
+		// Generate MetalLB setup
 		generator.generateMetalLBSetup,
-		// Generate proxy config
+		// Generate Proxy config
 		generator.generateKubeProxyConfig,
-		// Generate scheduler config
+		// Generate Scheduler config
 		generator.generateKubeSchedulerConfig,
-		// Generate kubelet config
+		// Generate Kubelet config
 		generator.generateKubeletConfig,
-		// Generate kubelet configuration
+		// Generate Kubelet configuration
 		generator.generateK8SKubeletConfigFile,
-		// Generate dashboard admin user configuration
+		// Generate Dashboard admin user configuration
 		generator.generateK8SAdminUserConfigFile,
-		// Generate containerd config
+		// Generate Containerd config
 		generator.generateContainerdConfig,
-		// Generate kubernetes security file
+		// Generate Kubernetes security file
 		generator.generateEncryptionFile,
-		// Generate kubeconfig files
+		// Generate Kubeconfig files
 		generator.generateCertificates,
-		// Generate kubeconfig files
+		// Generate Kubeconfig files
 		generator.generateKubeConfigs,
 		// Generate Ceph Manager secrets file
 		generator.generateCephManagerCredentials,
@@ -60,57 +60,61 @@ func NewGenerator(config *config.InternalConfig) *Generator {
 		generator.generateCephSetup,
 		// Generate Ceph CSI
 		generator.generateCephCSI,
-		// Generate ceph files
+		// Generate Ceph files
 		generator.generateCephFiles,
 		// Generate Let's Encrypt Cluster Issuer
 		generator.generateLetsEncryptClusterIssuer,
 		// Generate CoreDNS setup file
 		generator.generateCoreDNSSetup,
+		// Generate ElasticSearch credentials
+		generator.generateElasticsearchCredentials,
 		// Generate ElasticSearch/Fluent-Bit/Kibana setup file
 		generator.generateEFKSetup,
-		// Generate minio secrets file
+		// Generate Minio secrets file
 		generator.generateMinioCredentials,
-		// Generate cerebro secrets file
+		// Generate Cerebro secrets file
 		generator.generateCerebroCredentials,
-		// Generate velero setup file
+		// Generate Velero setup file
 		generator.generateVeleroSetup,
-		// Generate kubernetes dashboard setup file
+		// Generate Kubernetes dashboard setup file
 		generator.generateKubernetesDashboardSetup,
 		// Generate cert-manager setup file
 		generator.generateCertManagerSetup,
-		// Generate nginx ingress setup file
+		// Generate Nginx ingress setup file
 		generator.generateNginxIngressSetup,
 		// Generate metrics server setup file
 		generator.generateMetricsServerSetup,
-		// Generate prometheus setup file
+		// Generate Prometheus setup file
 		generator.generatePrometheusSetup,
-		// Generate kube state metrics setup file
+		// Generate Kube State Metrics setup file
 		generator.generateKubeStateMetricsSetup,
-		// Generate node exporter setup file
+		// Generate Node Exporter setup file
 		generator.generateNodeExporterSetup,
-		// Generate grafana secrets file
+		// Generate Elasticsearch config map file
+		generator.generateElasticsearchConfigMap,
+		// Generate Grafana secrets file
 		generator.generateGrafanaCredentials,
-		// Generate grafana setup file
+		// Generate Grafana setup file
 		generator.generateGrafanaSetup,
-		// Generate alert manager setup file
+		// Generate Alert Manager setup file
 		generator.generateAlertManagerSetup,
-		// Generate wordpress setup file
+		// Generate Wordpress setup file
 		generator.generateWordpressSetup,
-		// Generate gobetween manifest
+		// Generate Gobetween manifest
 		generator.generateManifestGobetween,
-		// Generate controller virtual-ip manifest
+		// Generate Controller Virtual-IP manifest
 		generator.generateManifestControllerVirtualIP,
-		// Generate worker virtual-ip manifest
+		// Generate Worker Virtual-IP manifest
 		generator.generateManifestWorkerVirtualIP,
-		// Generate etcd manifest
+		// Generate Etcd manifest
 		generator.generateManifestEtcd,
-		// Generate kube-apiserver manifest
+		// Generate Kube-Apiserver manifest
 		generator.generateManifestKubeApiserver,
-		// Generate kube-controller-manager manifest
+		// Generate Kube-Controller-Manager manifest
 		generator.generateManifestKubeControllerManager,
-		// Generate kube-scheduler manifest
+		// Generate Kube-Scheduler manifest
 		generator.generateManifestKubeScheduler,
-		// Generate kube-proxy manifest
+		// Generate Kube-Proxy manifest
 		generator.generateManifestKubeProxy,
 	}
 
@@ -665,7 +669,7 @@ func (generator *Generator) generateCertificates() error {
 		return error
 	}
 
-	// Generate kuberentes certificate
+	// Generate Kubernetes certificate
 	if error := pki.GenerateClient(generator.ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, "kubernetes", "Kubernetes", apiServerDNSNames, apiServerIPAddresses, generator.config.GetFullLocalAssetFilename(utils.PemKubernetes), generator.config.GetFullLocalAssetFilename(utils.PemKubernetesKey), true); error != nil {
 		return error
 	}
@@ -701,6 +705,11 @@ func (generator *Generator) generateCertificates() error {
 		if error := pki.GenerateClient(generator.ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, fmt.Sprintf(utils.CnSystemNodePrefix, nodeName), "system:nodes", []string{nodeName}, []string{node.IP}, generator.config.GetFullLocalAssetFilename(utils.PemKubelet), generator.config.GetFullLocalAssetFilename(utils.PemKubeletKey), false); error != nil {
 			return error
 		}
+	}
+
+	// Generate Elasticsearch certificate
+	if error := pki.GenerateClient(generator.ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, utils.CnElasticsearch, "elasticsearch", []string{}, []string{}, generator.config.GetFullLocalAssetFilename(utils.PemElasticsearch), generator.config.GetFullLocalAssetFilename(utils.PemElasticsearchKey), false); error != nil {
+		return error
 	}
 
 	return nil
@@ -888,6 +897,23 @@ func (generator *Generator) generateCoreDNSSetup() error {
 		ClusterDNSIP:  generator.config.Config.ClusterDNSIP,
 		CoreDNSImage:  generator.config.Config.Versions.CoreDNS,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sCorednsSetup), true, false)
+}
+
+func (generator *Generator) generateElasticsearchCredentials() error {
+	elasticsearchPassword, error := generator.generatePassword()
+	if error != nil {
+		return error
+	}
+
+	return utils.ApplyTemplateAndSave(utils.ElasticsearchCredentials, utils.TemplateCredentials, struct {
+		Namespace  string
+		SecretName string
+		Data       map[string]string
+	}{
+		Namespace:  utils.FeatureLogging,
+		SecretName: utils.ElasticsearchCredentials,
+		Data:       map[string]string{utils.KeyUsername: utils.Username, utils.KeyPassword: elasticsearchPassword},
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sElasticsearchCredentials), false, false)
 }
 
 func (generator *Generator) generateEFKSetup() error {
@@ -1092,6 +1118,35 @@ func (generator *Generator) generateKubeStateMetricsSetup() error {
 		KubeStateMetricsImage: generator.config.Config.Versions.KubeStateMetrics,
 		KubeStateMetricsCount: generator.config.Config.KubeStateMetricsCount,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sKubeStateMetricsSetup), true, false)
+}
+
+func (generator *Generator) generateElasticsearchConfigMap() error {
+	ca, error := utils.ReadFile(generator.config.GetFullLocalAssetFilename(utils.PemCa))
+	if error != nil {
+		return error
+	}
+
+	elasticsearch, error := utils.ReadFile(generator.config.GetFullLocalAssetFilename(utils.PemElasticsearch))
+	if error != nil {
+		return error
+	}
+
+	elasticsearchKey, error := utils.ReadFile(generator.config.GetFullLocalAssetFilename(utils.PemElasticsearchKey))
+	if error != nil {
+		return error
+	}
+
+	data := map[string]string{"ca.pem": ca, "elasticsearch.pem": elasticsearch, "elasticsearch-key.pem": elasticsearchKey}
+
+	return utils.ApplyTemplateAndSave(utils.ElasticsearchCertificates, utils.TemplateConfigMap, struct {
+		Namespace string
+		Name      string
+		Data      map[string]string
+	}{
+		Namespace: utils.FeatureLogging,
+		Name:      utils.ElasticsearchCertificates,
+		Data:      data,
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sElasticsearchCertificates), false, false)
 }
 
 func (generator *Generator) generateGrafanaCredentials() error {

@@ -32,8 +32,13 @@ require (
 	github.com/docker/go-metrics v0.0.1
 	github.com/docker/go-units v0.4.0
 	github.com/evanphx/json-patch v4.2.0+incompatible
-	github.com/gobuffalo/packd v0.0.0-20190315124812-a385830c7fc0 // indirect
-	github.com/gobuffalo/packr v1.24.0
+	github.com/gobuffalo/envy v1.9.0 // indirect
+	github.com/gobuffalo/genny v0.0.0-20190315121735-8b38fb089e88 // indirect
+	github.com/gobuffalo/gogen v0.0.0-20190315121717-8f38393713f5 // indirect
+	github.com/gobuffalo/mapi v1.0.1 // indirect
+	github.com/gobuffalo/packr v1.30.1
+	github.com/gobuffalo/packr/v2 v2.8.0 // indirect
+	github.com/gobuffalo/syncx v0.0.0-20190224160051-33c29581e754 // indirect
 	github.com/gogo/googleapis v1.3.2
 	github.com/gogo/protobuf v1.3.1
 	github.com/google/go-cmp v0.3.1
@@ -43,7 +48,8 @@ require (
 	github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0
 	github.com/hashicorp/go-multierror v1.0.0
 	github.com/imdario/mergo v0.3.6
-	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51 // indirect
+	github.com/karrick/godirwalk v1.16.1 // indirect
+	github.com/konsorten/go-windows-terminal-sequences v1.0.3 // indirect
 	github.com/mattn/go-colorable v0.1.1 // indirect
 	github.com/mattn/go-isatty v0.0.6 // indirect
 	github.com/moul/http2curl v1.0.0 // indirect
@@ -54,28 +60,25 @@ require (
 	github.com/opencontainers/selinux v1.5.1 // indirect
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/client_golang v1.1.0
-	github.com/rogpeppe/go-internal v1.3.0 // indirect
+	github.com/rogpeppe/go-internal v1.6.2 // indirect
 	github.com/satori/go.uuid v1.2.0
 	github.com/seccomp/libseccomp-golang v0.9.1 // indirect
 	github.com/sethvargo/go-password v0.1.3
-	github.com/sirupsen/logrus v1.4.2
+	github.com/sirupsen/logrus v1.7.0
 	github.com/smallnest/goreq v0.0.0-20180727030113-2e3372c80388
-	github.com/smartystreets/goconvey v1.6.4 // indirect
-	github.com/spf13/cobra v0.0.5
+	github.com/spf13/cobra v1.1.1
 	github.com/spf13/pflag v1.0.5
-	github.com/spf13/viper v1.3.2
+	github.com/spf13/viper v1.7.0
 	github.com/syndtr/gocapability v0.0.0-20180916011248-d98352740cb2
 	github.com/tchap/go-patricia v2.3.0+incompatible // indirect
 	github.com/tmc/scp v0.0.0-20170824174625-f7b48647feef
 	github.com/urfave/cli v1.22.4
 	github.com/wille/osutil v0.0.0-20190526221756-e91b8656e290
 	go.etcd.io/bbolt v1.3.4
-	golang.org/x/crypto v0.0.0-20200220183623-bac4c82f6975
-	golang.org/x/net v0.0.0-20191004110552-13f9640d40b9
-	golang.org/x/sync v0.0.0-20190911185100-cd5d95a43a6e
-	golang.org/x/sys v0.0.0-20200202164722-d101bd2416d5
-	google.golang.org/appengine v1.6.1 // indirect
-	google.golang.org/genproto v0.0.0-20190911173649-1774047e7e51 // indirect
+	golang.org/x/crypto v0.0.0-20201016220609-9e8e0b390897
+	golang.org/x/net v0.0.0-20200226121028-0de0cce0169b
+	golang.org/x/sync v0.0.0-20201008141435-b3e1573b7520
+	golang.org/x/sys v0.0.0-20201018230417-eeed37f84f13
 	google.golang.org/grpc v1.26.0
 	gopkg.in/ini.v1 v1.58.0
 	gopkg.in/yaml.v2 v2.2.8

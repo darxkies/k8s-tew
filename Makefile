@@ -12,8 +12,9 @@ build-binaries:
 	CGO_ENABLED=0 go build -ldflags "-X ${PACKAGE}/pkg/version.Version=${VERSION} -s -w" -o k8s-tew ${PACKAGE}/cmd/k8s-tew 
 
 watch-and-compile:
+	go get -u github.com/gobuffalo/packr/packr
 	go get github.com/cespare/reflex
-	reflex -r '\.go$$' -R '^vendor' -R '^pkg/utils/a_utils-packr\.go$$' make build-binaries
+	reflex -r '\.(go|yaml)$$' -R '^vendor' -R '^pkg/utils/a_utils-packr\.go$$' make build-binaries
 
 watch-and-update-documentation:
 	(cd docs && reflex -r '\.rst' -R "^_build" make clean html)

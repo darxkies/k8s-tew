@@ -134,7 +134,12 @@ func init() {
 	}))
 
 	dashboardCmd.AddCommand(addCommand("kibana", "Display Kibana website related information", func(kubernetesClient *k8s.K8S, ip string) (string, string, string, error) {
-		return utils.GetURL("http", ip, utils.PortKibana), "", "", nil
+		username, password, error := kubernetesClient.GetCredentials(utils.FeatureLogging, utils.ElasticsearchCredentials)
+		if error != nil {
+			return "", "", "", error
+		}
+
+		return utils.GetURL("https", ip, utils.PortKibana), username, password, nil
 	}))
 
 	dashboardCmd.AddCommand(addCommand("cerebro", "Display Cerebro website related information", func(kubernetesClient *k8s.K8S, ip string) (string, string, string, error) {
@@ -143,7 +148,7 @@ func init() {
 			return "", "", "", error
 		}
 
-		return utils.GetURL("http", ip, utils.PortCerebro), username, password, nil
+		return utils.GetURL("https", ip, utils.PortCerebro), username, password, nil
 	}))
 
 	RootCmd.AddCommand(dashboardCmd)
