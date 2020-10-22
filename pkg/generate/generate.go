@@ -72,6 +72,8 @@ func NewGenerator(config *config.InternalConfig) *Generator {
 		generator.generateEFKSetup,
 		// Generate Minio secrets file
 		generator.generateMinioCredentials,
+		// Generate Minio config map
+		generator.generateMinioConfigMap,
 		// Generate Cerebro secrets file
 		generator.generateCerebroCredentials,
 		// Generate Velero setup file
@@ -712,6 +714,11 @@ func (generator *Generator) generateCertificates() error {
 		return error
 	}
 
+	// Generate Minio certificate
+	if error := pki.GenerateClient(generator.ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, utils.CnMinio, "minio", []string{}, []string{}, generator.config.GetFullLocalAssetFilename(utils.PemMinio), generator.config.GetFullLocalAssetFilename(utils.PemMinioKey), false); error != nil {
+		return error
+	}
+
 	return nil
 }
 
@@ -1118,6 +1125,35 @@ func (generator *Generator) generateKubeStateMetricsSetup() error {
 		KubeStateMetricsImage: generator.config.Config.Versions.KubeStateMetrics,
 		KubeStateMetricsCount: generator.config.Config.KubeStateMetricsCount,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sKubeStateMetricsSetup), true, false)
+}
+
+func (generator *Generator) generateMinioConfigMap() error {
+	ca, error := utils.ReadFile(generator.config.GetFullLocalAssetFilename(utils.PemCa))
+	if error != nil {
+		return error
+	}
+
+	minio, error := utils.ReadFile(generator.config.GetFullLocalAssetFilename(utils.PemMinio))
+	if error != nil {
+		return error
+	}
+
+	minioKey, error := utils.ReadFile(generator.config.GetFullLocalAssetFilename(utils.PemMinioKey))
+	if error != nil {
+		return error
+	}
+
+	data := map[string]string{"ca.pem": ca, "minio.pem": minio, "minio-key.pem": minioKey}
+
+	return utils.ApplyTemplateAndSave(utils.MinioCertificates, utils.TemplateConfigMap, struct {
+		Namespace string
+		Name      string
+		Data      map[string]string
+	}{
+		Namespace: utils.FeatureBackup,
+		Name:      utils.MinioCertificates,
+		Data:      data,
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sMinioCertificates), false, false)
 }
 
 func (generator *Generator) generateElasticsearchConfigMap() error {

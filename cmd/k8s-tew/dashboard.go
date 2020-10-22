@@ -89,10 +89,6 @@ func init() {
 		return utils.GetURL("https", ip, _config.Config.KubernetesDashboardPort), "", secret, nil
 	}))
 
-	dashboardCmd.AddCommand(addCommand("wordpress-ingress", "Display WordPress Ingress website related information", func(kubernetesClient *k8s.K8S, ip string) (string, string, string, error) {
-		return fmt.Sprintf("https://%s.%s", utils.IngressSubdomainWordpress, _config.Config.IngressDomain), "", "", nil
-	}))
-
 	dashboardCmd.AddCommand(addCommand("ceph-manager", "Display Ceph Manager website related information", func(kubernetesClient *k8s.K8S, ip string) (string, string, string, error) {
 		username, password, error := kubernetesClient.GetCredentials(utils.FeatureStorage, utils.CephManagerCredentials)
 		if error != nil {
@@ -117,7 +113,7 @@ func init() {
 			return "", "", "", error
 		}
 
-		return utils.GetURL("http", ip, utils.PortMinio), username, password, nil
+		return utils.GetURL("https", ip, utils.PortMinio), username, password, nil
 	}))
 
 	dashboardCmd.AddCommand(addCommand("grafana", "Display Grafana website related information", func(kubernetesClient *k8s.K8S, ip string) (string, string, string, error) {
@@ -127,10 +123,6 @@ func init() {
 		}
 
 		return utils.GetURL("http", ip, utils.PortGrafana), username, password, nil
-	}))
-
-	dashboardCmd.AddCommand(addCommand("wordpress-nodeport", "Display WordPress Nodeport website related information", func(kubernetesClient *k8s.K8S, ip string) (string, string, string, error) {
-		return utils.GetURL("http", ip, utils.PortWordpress), "", "", nil
 	}))
 
 	dashboardCmd.AddCommand(addCommand("kibana", "Display Kibana website related information", func(kubernetesClient *k8s.K8S, ip string) (string, string, string, error) {
@@ -149,6 +141,14 @@ func init() {
 		}
 
 		return utils.GetURL("https", ip, utils.PortCerebro), username, password, nil
+	}))
+
+	dashboardCmd.AddCommand(addCommand("wordpress-nodeport", "Display WordPress Nodeport website related information", func(kubernetesClient *k8s.K8S, ip string) (string, string, string, error) {
+		return utils.GetURL("http", ip, utils.PortWordpress), "", "", nil
+	}))
+
+	dashboardCmd.AddCommand(addCommand("wordpress-ingress", "Display WordPress Ingress website related information", func(kubernetesClient *k8s.K8S, ip string) (string, string, string, error) {
+		return fmt.Sprintf("https://%s.%s", utils.IngressSubdomainWordpress, _config.Config.IngressDomain), "", "", nil
 	}))
 
 	RootCmd.AddCommand(dashboardCmd)

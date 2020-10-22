@@ -77,8 +77,8 @@ require (
 	go.etcd.io/bbolt v1.3.4
 	golang.org/x/crypto v0.0.0-20201016220609-9e8e0b390897
 	golang.org/x/net v0.0.0-20200226121028-0de0cce0169b
-	golang.org/x/sync v0.0.0-20201008141435-b3e1573b7520
-	golang.org/x/sys v0.0.0-20201018230417-eeed37f84f13
+	golang.org/x/sync v0.0.0-20201020160332-67f06af15bc9
+	golang.org/x/sys v0.0.0-20201020230747-6e5568b54d1a
 	google.golang.org/grpc v1.26.0
 	gopkg.in/ini.v1 v1.58.0
 	gopkg.in/yaml.v2 v2.2.8

@@ -182,8 +182,6 @@ func (deployment *Deployment) runConfigureTaints() error {
 			if _error = nodeDeployment.configureTaint(); _error == nil {
 				break
 			}
-
-			time.Sleep(time.Second)
 		}
 
 		utils.IncreaseProgressStep()

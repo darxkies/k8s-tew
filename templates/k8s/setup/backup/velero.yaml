@@ -161,11 +161,13 @@ spec:
   names:
     plural: serverstatusrequests
     kind: ServerStatusRequest
+
 ---
 apiVersion: v1
 kind: Namespace
 metadata:
   name: backup
+
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -225,8 +227,9 @@ spec:
       - name: storage
         persistentVolumeClaim:
           claimName: minio-storage
-      - name: config
-        emptyDir: {}
+      - name: certificates
+        configMap:
+          name: minio-certificates
       containers:
       - name: minio
         image: {{ .MinioServerImage }}
@@ -250,8 +253,15 @@ spec:
         volumeMounts:
         - name: storage
           mountPath: "/storage"
-        - name: config
-          mountPath: "/config"
+        - name: certificates
+          mountPath: /config/certs/CAs/public.crt
+          subPath: ca.pem
+        - name: certificates
+          mountPath: /config/certs/public.crt
+          subPath: minio.pem
+        - name: certificates
+          mountPath: /config/certs/private.key
+          subPath: minio-key.pem
 
 ---
 apiVersion: v1
@@ -286,18 +296,26 @@ spec:
     spec:
       restartPolicy: OnFailure
       volumes:
-      - name: config
-        emptyDir: {}
+      - name: certificates
+        configMap:
+          name: minio-certificates
       containers:
       - name: mc
         image: {{ .MinioClientImage }}
         command:
         - /bin/sh
         - -c
-        - "mc --config-dir=/config config host add velero http://minio:9000 $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY && mc --config-dir=/config mb -p velero/velero && mc --config-dir=/config mb -p velero/restic"
+        - "mc --config-dir=/config config host add velero https://minio:9000 $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY && mc --config-dir=/config mb -p velero/velero && mc --config-dir=/config mb -p velero/restic"
         volumeMounts:
-        - name: config
-          mountPath: "/config"
+        - name: certificates
+          mountPath: /config/certs/CAs/public.crt
+          subPath: ca.pem
+        - name: certificates
+          mountPath: /config/certs/public.crt
+          subPath: minio.pem
+        - name: certificates
+          mountPath: /config/certs/private.key
+          subPath: minio-key.pem
         env:
           - name: AWS_ACCESS_KEY_ID
             valueFrom:
@@ -309,6 +327,7 @@ spec:
               secretKeyRef:
                 name: minio-credentials
                 key: password
+
 ---
 apiVersion: velero.io/v1
 kind: BackupStorageLocation
@@ -322,7 +341,8 @@ spec:
   config:
     region: minio
     s3ForcePathStyle: "true"
-    s3Url: http://minio.backup.svc:9000
+    s3Url: https://minio:9000
+
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -368,6 +388,9 @@ spec:
               mountPath: /plugins
             - name: scratch
               mountPath: /scratch
+            - name: certificates
+              mountPath: /etc/ssl/certs/ca.pem
+              subPath: ca.pem
           env:
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
@@ -386,6 +409,10 @@ spec:
           emptyDir: {}
         - name: scratch
           emptyDir: {}
+        - name: certificates
+          configMap:
+            name: minio-certificates
+
 ---
 apiVersion: apps/v1
 kind: DaemonSet

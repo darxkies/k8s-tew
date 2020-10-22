@@ -229,6 +229,8 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.PemAggregatorKey, Labels{utils.NodeController}, "", utils.DirectoryCertificates)
 	config.addAssetFile(utils.PemElasticsearch, Labels{}, "", utils.DirectoryCertificates)
 	config.addAssetFile(utils.PemElasticsearchKey, Labels{}, "", utils.DirectoryCertificates)
+	config.addAssetFile(utils.PemMinio, Labels{}, "", utils.DirectoryCertificates)
+	config.addAssetFile(utils.PemMinioKey, Labels{}, "", utils.DirectoryCertificates)
 
 	// Kubeconfig
 	config.addAssetFile(utils.KubeconfigAdmin, Labels{utils.NodeController}, "", utils.DirectoryK8sKubeConfig)
@@ -272,6 +274,7 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.K8sAlertManagerSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sGrafanaCredentials, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sMinioCredentials, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.K8sMinioCertificates, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sCerebroCredentials, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sCephManagerCredentials, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sCephRadosGatewayCredentials, Labels{}, "", utils.DirectoryK8sSetupConfig)
@@ -370,6 +373,7 @@ func (config *InternalConfig) registerCommands() {
 	config.addManifest("efk-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureLogging, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sEfkSetup))
 	config.addManifest("minio-credentials", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sMinioCredentials))
 	config.addManifest("cerebro-credentials", Labels{utils.NodeBootstrapper}, Features{utils.FeatureLogging, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sCerebroCredentials))
+	config.addManifest("minio-certificates", Labels{utils.NodeBootstrapper}, Features{utils.FeatureBackup, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sMinioCertificates))
 	config.addManifest("velero-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureBackup, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sVeleroSetup))
 	config.addManifest("wordpress-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureShowcase, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.WordpressSetup))
 }
