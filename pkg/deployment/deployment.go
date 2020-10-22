@@ -182,6 +182,8 @@ func (deployment *Deployment) runConfigureTaints() error {
 			if _error = nodeDeployment.configureTaint(); _error == nil {
 				break
 			}
+
+			time.Sleep(time.Second)
 		}
 
 		utils.IncreaseProgressStep()
@@ -193,9 +195,6 @@ func (deployment *Deployment) runConfigureTaints() error {
 		}
 
 	}
-
-	// Wait for labels and taints to be propagated
-	time.Sleep(3 * time.Second)
 
 	return nil
 }

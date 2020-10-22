@@ -257,13 +257,12 @@ func ReadFile(filename string) (string, error) {
 
 // GetBase64OfPEM reads the content of a PEM file and converts it to Base64
 func GetBase64OfPEM(filename string) (string, error) {
-	content, error := ioutil.ReadFile(filename)
-
-	if error != nil {
-		return "", fmt.Errorf("Could not read file '%s' (%s)", filename, error.Error())
+	content, _error := ReadFile(filename)
+	if _error != nil {
+		return "", _error
 	}
 
-	return base64.StdEncoding.EncodeToString(content), nil
+	return base64.StdEncoding.EncodeToString([]byte(content)), nil
 }
 
 // GenerateCephKey returns a valid ceph key
