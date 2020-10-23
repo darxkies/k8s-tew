@@ -94,10 +94,10 @@ type Proxy struct {
 	proxy         *httputil.ReverseProxy
 }
 
-func NewProxy(publicAddress string) *Proxy {
+func NewProxy(scheme, publicAddress, port string) *Proxy {
 	proxyAddress := &url.URL{
-		Scheme: "https",
-		Host:   fmt.Sprintf("%s:8443", publicAddress),
+		Scheme: scheme,
+		Host:   fmt.Sprintf("%s:%s", publicAddress, port),
 	}
 
 	proxy := &Proxy{
@@ -110,6 +110,14 @@ func NewProxy(publicAddress string) *Proxy {
 	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 
 	return proxy
+}
+
+func RunProxy(proxyPort, sslCertificate, sslKey, scheme, publicAddress, targetPort string) {
+	address := fmt.Sprintf(":%s", proxyPort)
+
+	log.Printf("Starting proxy at '%s'", address)
+
+	http.ListenAndServeTLS(address, sslCertificate, sslKey, NewProxy(scheme, publicAddress, targetPort))
 }
 
 func (proxy *Proxy) ServeHTTP(response http.ResponseWriter, request *http.Request) {
@@ -249,7 +257,7 @@ func (ceph *Ceph) Setup() (*CephData, error) {
 	return cephData, nil
 }
 
-func (ceph *Ceph) RunMgr(id, publicAddress string) error {
+func (ceph *Ceph) RunMgr(id, publicAddress, sslCertificate, sslKey, proxyPort string) error {
 	cephBinary := ceph.getCephBinary()
 	cephMgrBinary := ceph.getPublicAddressBinary(ceph.getCephMgrBinary(), publicAddress)
 	directory := ceph.getMgrDirectory(id)
@@ -267,14 +275,8 @@ func (ceph *Ceph) RunMgr(id, publicAddress string) error {
 		return _error
 	}
 
-	// Start proxy
-	go func() {
-		address := ":28715"
-
-		log.Printf("Starting proxy at '%s'", address)
-
-		http.ListenAndServe(address, NewProxy(publicAddress))
-	}()
+	// Run proxy
+	go RunProxy(proxyPort, sslCertificate, sslKey, "https", publicAddress, "8443")
 
 	log.WithFields(log.Fields{"keyring": keyring, "id": id}).Info("Starting mgr")
 
@@ -397,7 +399,7 @@ func (ceph *Ceph) RunOsd(id, publicAddress string) error {
 	return nil
 }
 
-func (ceph *Ceph) RunRgw(id, publicAddress string) error {
+func (ceph *Ceph) RunRgw(id, publicAddress, sslCertificate, sslKey, proxyPort string) error {
 	cephBinary := ceph.getCephBinary()
 	cephRgwBinary := ceph.getPublicAddressBinary(ceph.getCephRgwBinary(), publicAddress)
 	directory := ceph.getRgwDirectory(id)
@@ -416,6 +418,9 @@ func (ceph *Ceph) RunRgw(id, publicAddress string) error {
 		return _error
 	}
 
+	// Run proxy
+	go RunProxy(proxyPort, sslCertificate, sslKey, "http", publicAddress, "7480")
+
 	log.WithFields(log.Fields{"id": id}).Info("Starting rgw")
 
 	// Start rgw
@@ -426,7 +431,7 @@ func (ceph *Ceph) RunRgw(id, publicAddress string) error {
 	return nil
 }
 
-func (ceph *Ceph) RunSetup(dashboardUsername, dashboardPassword, radosgwUsername, radosgwPassword string) error {
+func (ceph *Ceph) RunSetup(dashboardUsername, dashboardPassword, radosgwUsername, radosgwPassword, sslCertificate, sslKey string) error {
 	cephBinary := ceph.getCephBinary()
 	radosgwAdminBinary := ceph.getRadosgwAdminBinary()
 
@@ -436,7 +441,9 @@ func (ceph *Ceph) RunSetup(dashboardUsername, dashboardPassword, radosgwUsername
 		fmt.Sprintf("%s dashboard feature disable iscsi", cephBinary),
 		fmt.Sprintf("%s dashboard feature disable mirroring", cephBinary),
 		fmt.Sprintf("%s dashboard feature disable nfs", cephBinary),
-		fmt.Sprintf("%s dashboard create-self-signed-cert", cephBinary),
+		fmt.Sprintf("%s dashboard set-ssl-certificate -i %s", cephBinary, sslCertificate),
+		fmt.Sprintf("%s dashboard set-ssl-certificate-key -i %s", cephBinary, sslKey),
+		fmt.Sprintf("%s config set mgr mgr/dashboard/ssl true", cephBinary),
 		fmt.Sprintf("%s dashboard ac-user-create %s %s administrator", cephBinary, dashboardUsername, dashboardPassword),
 		fmt.Sprintf("%s user create --uid=%s --display-name=%s --system --access-key=%s --secret-key=%s", radosgwAdminBinary, utils.Username, utils.Username, radosgwUsername, radosgwPassword),
 		fmt.Sprintf("%s dashboard set-rgw-api-access-key %s", cephBinary, radosgwUsername),

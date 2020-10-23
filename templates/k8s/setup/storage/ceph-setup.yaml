@@ -47,6 +47,9 @@ spec:
         hostPath:
           path: {{$.K8sTewConfig}}
           type: File
+      - name: certificates
+        configMap:
+          name: ceph-certificates
       containers:
       - name: ceph-mgr
         image: {{$.CephImage}}
@@ -61,6 +64,12 @@ spec:
         - --ip
         - {{$node.IP}}
         - --debug
+        - --ssl-certificate 
+        - /etc/ssl/certs/ceph.pem 
+        - --ssl-key 
+        - /etc/ssl/certs/ceph-key.pem
+        - --proxy-port
+        - "28715"
         env:
         - name: K8S_TEW_BASE_DIRECTORY
           value: "/"
@@ -73,6 +82,15 @@ spec:
           mountPath: /k8s-tew
         - name: k8s-tew-config
           mountPath: /etc/k8s-tew/config.yaml
+        - name: certificates
+          mountPath: /etc/ssl/certs/ca.pem
+          subPath: ca.pem
+        - name: certificates
+          mountPath: /etc/ssl/certs/ceph.pem
+          subPath: ceph.pem
+        - name: certificates
+          mountPath: /etc/ssl/certs/ceph-key.pem
+          subPath: ceph-key.pem
         livenessProbe:
           tcpSocket:
             port: 8443
@@ -82,6 +100,7 @@ spec:
           tcpSocket:
             port: 8443
           timeoutSeconds: 5
+
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -299,6 +318,9 @@ spec:
         hostPath:
           path: {{$.K8sTewConfig}}
           type: File
+      - name: certificates
+        configMap:
+          name: ceph-certificates
       containers:
       - name: ceph-rgw
         image: {{$.CephImage}}
@@ -309,8 +331,14 @@ spec:
         - --id
         - {{$node.Name}}
         - --debug
+        - --ssl-certificate 
+        - /etc/ssl/certs/ceph.pem 
+        - --ssl-key 
+        - /etc/ssl/certs/ceph-key.pem
+        - --proxy-port
+        - "15728"
         ports:
-        - containerPort: 7480
+        - containerPort: 15728
           name: rgw
         env:
         - name: K8S_TEW_BASE_DIRECTORY
@@ -324,6 +352,15 @@ spec:
           mountPath: /k8s-tew
         - name: k8s-tew-config
           mountPath: /etc/k8s-tew/config.yaml
+        - name: certificates
+          mountPath: /etc/ssl/certs/ca.pem
+          subPath: ca.pem
+        - name: certificates
+          mountPath: /etc/ssl/certs/ceph.pem
+          subPath: ceph.pem
+        - name: certificates
+          mountPath: /etc/ssl/certs/ceph-key.pem
+          subPath: ceph-key.pem
         livenessProbe:
           tcpSocket:
             port: 7480
@@ -333,6 +370,7 @@ spec:
           tcpSocket:
             port: 7480
           timeoutSeconds: 5
+
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -455,13 +493,16 @@ spec:
         hostPath:
           path: {{$.K8sTewConfig}}
           type: File
+      - name: certificates
+        configMap:
+          name: ceph-certificates
       containers:
       - name: ceph
         image: {{$.CephImage}}
         command:
         - /bin/sh
         - -c
-        - "/k8s-tew ceph setup --dashboard-username $CEPH_MANAGER_USERNAME --dashboard-password $CEPH_MANAGER_PASSWORD --radosgw-username $CEPH_RADOSGW_USERNAME --radosgw-password $CEPH_RADOSGW_PASSWORD"
+        - "/k8s-tew ceph setup --dashboard-username $CEPH_MANAGER_USERNAME --dashboard-password $CEPH_MANAGER_PASSWORD --radosgw-username $CEPH_RADOSGW_USERNAME --radosgw-password $CEPH_RADOSGW_PASSWORD --ssl-certificate /etc/ssl/certs/ceph.pem --ssl-key /etc/ssl/certs/ceph-key.pem"
         volumeMounts:
         - name: ceph-config
           mountPath: /etc/ceph
@@ -471,6 +512,15 @@ spec:
           mountPath: /k8s-tew
         - name: k8s-tew-config
           mountPath: /etc/k8s-tew/config.yaml
+        - name: certificates
+          mountPath: /etc/ssl/certs/ca.pem
+          subPath: ca.pem
+        - name: certificates
+          mountPath: /etc/ssl/certs/ceph.pem
+          subPath: ceph.pem
+        - name: certificates
+          mountPath: /etc/ssl/certs/ceph-key.pem
+          subPath: ceph-key.pem
         env:
           - name: K8S_TEW_BASE_DIRECTORY
             value: "/"
@@ -495,6 +545,7 @@ spec:
               secretKeyRef:
                 name: {{$.CephRadosGatewayCredentials}}
                 key: password
+
 ---
 apiVersion: v1
 kind: Service
@@ -507,12 +558,13 @@ metadata:
 spec:
     type: NodePort
     ports:
-    - port: 7480
+    - port: 15728
       protocol: TCP
       nodePort: {{.CephRadosGatewayPort}}
     selector:
       app: ceph
       daemon: rgw
+
 ---
 apiVersion: v1
 kind: Service

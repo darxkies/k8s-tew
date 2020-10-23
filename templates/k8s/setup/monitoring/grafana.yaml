@@ -76,8 +76,8 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - name: http
-      port: 80
+    - name: https
+      port: 3000
       protocol: TCP
       targetPort: 3000
       nodePort: [[.GrafanaPort]]
@@ -136,9 +136,6 @@ spec:
               mountPath: /etc/ssl/certs/grafana-key.pem
               subPath: grafana-key.pem
           ports:
-            - name: service
-              containerPort: 80
-              protocol: TCP
             - name: grafana
               containerPort: 3000
               protocol: TCP

@@ -233,6 +233,8 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.PemMinioKey, Labels{}, "", utils.DirectoryCertificates)
 	config.addAssetFile(utils.PemGrafana, Labels{}, "", utils.DirectoryCertificates)
 	config.addAssetFile(utils.PemGrafanaKey, Labels{}, "", utils.DirectoryCertificates)
+	config.addAssetFile(utils.PemCeph, Labels{}, "", utils.DirectoryCertificates)
+	config.addAssetFile(utils.PemCephKey, Labels{}, "", utils.DirectoryCertificates)
 
 	// Kubeconfig
 	config.addAssetFile(utils.KubeconfigAdmin, Labels{utils.NodeController}, "", utils.DirectoryK8sKubeConfig)
@@ -280,6 +282,7 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.K8sMinioCertificates, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sCerebroCredentials, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sCephManagerCredentials, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.K8sCephCertificates, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sCephRadosGatewayCredentials, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sElasticsearchCredentials, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sElasticsearchCertificates, Labels{}, "", utils.DirectoryK8sSetupConfig)
@@ -356,6 +359,7 @@ func (config *InternalConfig) registerCommands() {
 	config.addManifest("metallb-setup", Labels{utils.NodeBootstrapper}, Features{}, OS{}, config.GetFullLocalAssetFilename(utils.K8sMetalLBSetup))
 	config.addManifest("coredns-setup", Labels{utils.NodeBootstrapper}, Features{}, OS{}, config.GetFullLocalAssetFilename(utils.K8sCorednsSetup))
 	config.addManifest("ceph-secrets", Labels{utils.NodeBootstrapper}, Features{utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.CephSecrets))
+	config.addManifest("ceph-certificates", Labels{utils.NodeBootstrapper}, Features{utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sCephCertificates))
 	config.addManifest("ceph-manager-credentials", Labels{utils.NodeBootstrapper}, Features{utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sCephManagerCredentials))
 	config.addManifest("ceph-rados-gateway-credentials", Labels{utils.NodeBootstrapper}, Features{utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sCephRadosGatewayCredentials))
 	config.addManifest("ceph-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.CephSetup))

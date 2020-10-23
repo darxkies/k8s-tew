@@ -54,6 +54,8 @@ func NewGenerator(config *config.InternalConfig) *Generator {
 		generator.generateKubeConfigs,
 		// Generate Ceph Manager secrets file
 		generator.generateCephManagerCredentials,
+		// Generate Ceph config map file
+		generator.generateCephConfigMap,
 		// Generate Ceph Rados Gateway  secrets file
 		generator.generateCephRadosGatewayCredentials,
 		// Generate Ceph Config
@@ -726,6 +728,11 @@ func (generator *Generator) generateCertificates() error {
 		return error
 	}
 
+	// Generate Ceph certificate
+	if error := pki.GenerateClient(generator.ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, utils.CnCeph, "ceph", []string{}, []string{"127.0.0.1"}, generator.config.GetFullLocalAssetFilename(utils.PemCeph), generator.config.GetFullLocalAssetFilename(utils.PemCephKey), false); error != nil {
+		return error
+	}
+
 	return nil
 }
 
@@ -1161,6 +1168,35 @@ func (generator *Generator) generateGrafanaConfigMap() error {
 		Name:      utils.GrafanaCertificates,
 		Data:      data,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sGrafanaCertificates), false, false)
+}
+
+func (generator *Generator) generateCephConfigMap() error {
+	ca, error := utils.ReadFile(generator.config.GetFullLocalAssetFilename(utils.PemCa))
+	if error != nil {
+		return error
+	}
+
+	ceph, error := utils.ReadFile(generator.config.GetFullLocalAssetFilename(utils.PemCeph))
+	if error != nil {
+		return error
+	}
+
+	cephKey, error := utils.ReadFile(generator.config.GetFullLocalAssetFilename(utils.PemCephKey))
+	if error != nil {
+		return error
+	}
+
+	data := map[string]string{"ca.pem": ca, "ceph.pem": ceph, "ceph-key.pem": cephKey}
+
+	return utils.ApplyTemplateAndSave(utils.CephCertificates, utils.TemplateConfigMap, struct {
+		Namespace string
+		Name      string
+		Data      map[string]string
+	}{
+		Namespace: utils.FeatureStorage,
+		Name:      utils.CephCertificates,
+		Data:      data,
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sCephCertificates), false, false)
 }
 
 func (generator *Generator) generateMinioConfigMap() error {
