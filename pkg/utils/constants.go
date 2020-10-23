@@ -275,6 +275,8 @@ const PemElasticsearch = "elasticsearch.pem"
 const PemElasticsearchKey = "elasticsearch-key.pem"
 const PemMinio = "minio.pem"
 const PemMinioKey = "minio-key.pem"
+const PemGrafana = "grafana.pem"
+const PemGrafanaKey = "grafana-key.pem"
 
 // Kubeconfig
 const KubeconfigAdmin = "admin.kubeconfig"
@@ -325,13 +327,14 @@ const K8sNodeExporterSetup = "node-exporter-setup.yaml"
 const K8sGrafanaSetup = "grafana.yaml"
 const K8sAlertManagerSetup = "alert-manager.yaml"
 const K8sGrafanaCredentials = "grafana-credentials.yaml"
+const K8sGrafanaCertificates = "grafana-certificates.yaml"
 const K8sMinioCredentials = "minio-credentials.yaml"
+const K8sMinioCertificates = "minio-certificates.yaml"
 const K8sCerebroCredentials = "cerebro-credentials.yaml"
 const K8sCephManagerCredentials = "ceph-manager-credentials.yaml"
 const K8sCephRadosGatewayCredentials = "ceph-rados-gateway-credentials.yaml"
 const K8sElasticsearchCredentials = "elasticsearch-credentials.yaml"
 const K8sElasticsearchCertificates = "elasticsearch-certificates.yaml"
-const K8sMinioCertificates = "minio-certificates.yaml"
 const WordpressSetup = "wordpress-setup.yaml"
 
 // Gobetween Config
@@ -385,6 +388,7 @@ const CnSystemKubeProxy = "system:kube-proxy"
 const CnSystemNodePrefix = "system:node:%s"
 const CnElasticsearch = "elasticsearch"
 const CnMinio = "minio"
+const CnGrafana = "grafana"
 
 // Templates
 const TemplateContainerdToml = "k8s/cri/containerd.toml"
@@ -449,3 +453,4 @@ const ElasticsearchCredentials = "elasticsearch-credentials"
 
 const ElasticsearchCertificates = "elasticsearch-certificates"
 const MinioCertificates = "minio-certificates"
+const GrafanaCertificates = "grafana-certificates"

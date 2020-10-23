@@ -122,7 +122,7 @@ func init() {
 			return "", "", "", error
 		}
 
-		return utils.GetURL("http", ip, utils.PortGrafana), username, password, nil
+		return utils.GetURL("https", ip, utils.PortGrafana), username, password, nil
 	}))
 
 	dashboardCmd.AddCommand(addCommand("kibana", "Display Kibana website related information", func(kubernetesClient *k8s.K8S, ip string) (string, string, string, error) {

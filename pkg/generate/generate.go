@@ -66,6 +66,8 @@ func NewGenerator(config *config.InternalConfig) *Generator {
 		generator.generateLetsEncryptClusterIssuer,
 		// Generate CoreDNS setup file
 		generator.generateCoreDNSSetup,
+		// Generate Elasticsearch config map file
+		generator.generateElasticsearchConfigMap,
 		// Generate ElasticSearch credentials
 		generator.generateElasticsearchCredentials,
 		// Generate ElasticSearch/Fluent-Bit/Kibana setup file
@@ -84,7 +86,7 @@ func NewGenerator(config *config.InternalConfig) *Generator {
 		generator.generateCertManagerSetup,
 		// Generate Nginx ingress setup file
 		generator.generateNginxIngressSetup,
-		// Generate metrics server setup file
+		// Generate Metrics Server setup file
 		generator.generateMetricsServerSetup,
 		// Generate Prometheus setup file
 		generator.generatePrometheusSetup,
@@ -92,8 +94,8 @@ func NewGenerator(config *config.InternalConfig) *Generator {
 		generator.generateKubeStateMetricsSetup,
 		// Generate Node Exporter setup file
 		generator.generateNodeExporterSetup,
-		// Generate Elasticsearch config map file
-		generator.generateElasticsearchConfigMap,
+		// Generate Grafana config map
+		generator.generateGrafanaConfigMap,
 		// Generate Grafana secrets file
 		generator.generateGrafanaCredentials,
 		// Generate Grafana setup file
@@ -719,6 +721,11 @@ func (generator *Generator) generateCertificates() error {
 		return error
 	}
 
+	// Generate Grafana certificate
+	if error := pki.GenerateClient(generator.ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, utils.CnGrafana, "grafana", []string{}, []string{}, generator.config.GetFullLocalAssetFilename(utils.PemGrafana), generator.config.GetFullLocalAssetFilename(utils.PemGrafanaKey), false); error != nil {
+		return error
+	}
+
 	return nil
 }
 
@@ -1125,6 +1132,35 @@ func (generator *Generator) generateKubeStateMetricsSetup() error {
 		KubeStateMetricsImage: generator.config.Config.Versions.KubeStateMetrics,
 		KubeStateMetricsCount: generator.config.Config.KubeStateMetricsCount,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sKubeStateMetricsSetup), true, false)
+}
+
+func (generator *Generator) generateGrafanaConfigMap() error {
+	ca, error := utils.ReadFile(generator.config.GetFullLocalAssetFilename(utils.PemCa))
+	if error != nil {
+		return error
+	}
+
+	grafana, error := utils.ReadFile(generator.config.GetFullLocalAssetFilename(utils.PemGrafana))
+	if error != nil {
+		return error
+	}
+
+	grafanaKey, error := utils.ReadFile(generator.config.GetFullLocalAssetFilename(utils.PemGrafanaKey))
+	if error != nil {
+		return error
+	}
+
+	data := map[string]string{"ca.pem": ca, "grafana.pem": grafana, "grafana-key.pem": grafanaKey}
+
+	return utils.ApplyTemplateAndSave(utils.GrafanaCertificates, utils.TemplateConfigMap, struct {
+		Namespace string
+		Name      string
+		Data      map[string]string
+	}{
+		Namespace: utils.FeatureMonitoring,
+		Name:      utils.GrafanaCertificates,
+		Data:      data,
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sGrafanaCertificates), false, false)
 }
 
 func (generator *Generator) generateMinioConfigMap() error {

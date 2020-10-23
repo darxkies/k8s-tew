@@ -23,6 +23,10 @@ data:
     data = /var/lib/grafana/data
     logs = /var/log/grafana
     plugins = /var/lib/grafana/plugins
+    [server]
+    protocol=https
+    cert_file=/etc/ssl/certs/grafana.pem
+    cert_key=/etc/ssl/certs/grafana-key.pem
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -122,6 +126,15 @@ spec:
               mountPath: "/etc/grafana/provisioning/dashboards/"
             - name: grafana-data
               mountPath: "/var/lib/grafana"
+            - name: certificates
+              mountPath: /etc/ssl/certs/ca.pem
+              subPath: ca.pem
+            - name: certificates
+              mountPath: /etc/ssl/certs/grafana.pem
+              subPath: grafana.pem
+            - name: certificates
+              mountPath: /etc/ssl/certs/grafana-key.pem
+              subPath: grafana-key.pem
           ports:
             - name: service
               containerPort: 80
@@ -144,10 +157,12 @@ spec:
             httpGet:
               path: /api/health
               port: 3000
+              scheme: HTTPS
           readinessProbe:
             httpGet:
               path: /api/health
               port: 3000
+              scheme: HTTPS
             initialDelaySeconds: 60
             timeoutSeconds: 30
             failureThreshold: 10
@@ -172,6 +187,9 @@ spec:
         - name: dashboards
           configMap:
             name: grafana-dashboards
+        - name: certificates
+          configMap:
+            name: grafana-certificates
   volumeClaimTemplates:
   - metadata:
       name: grafana-data
