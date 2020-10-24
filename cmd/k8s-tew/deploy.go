@@ -57,7 +57,7 @@ var deployCmd = &cobra.Command{
 
 func init() {
 	deployCmd.Flags().StringVarP(&identityFile, "identity-file", "i", path.Join(os.Getenv("HOME"), ".ssh/id_rsa"), "SSH identity file")
-	deployCmd.Flags().UintVarP(&commandRetries, "command-retries", "r", 300, "The count of command retries during the setup")
+	deployCmd.Flags().UintVarP(&commandRetries, "command-retries", "r", 1200, "The number of command retries during the setup")
 	deployCmd.Flags().BoolVar(&skipSetup, "skip-setup", false, "Skip setup steps")
 	deployCmd.Flags().BoolVar(&skipUpload, "skip-upload", false, "Skip upload steps")
 	deployCmd.Flags().BoolVar(&skipRestart, "skip-restart", false, "Skip restart steps")
