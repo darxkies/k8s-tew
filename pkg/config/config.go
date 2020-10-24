@@ -27,6 +27,8 @@ type Config struct {
 	ClusterCIDR                  string      `yaml:"cluster-cidr"`
 	CalicoTyphaIP                string      `yaml:"calico-typha-ip"`
 	CephClusterName              string      `yaml:"ceph-cluster-name"`
+	CephPlacementGroups          uint        `yaml:"ceph-placement-groups"`
+	CephExpectedNumberOfObjects  uint        `yaml:"ceph-expected-number-of-objects"`
 	MetalLBAddresses             string      `yaml:"metallb-addresses"`
 	ResolvConf                   string      `yaml:"resolv-conf"`
 	DeploymentDirectory          string      `yaml:"deployment-directory,omitempty"`
@@ -70,6 +72,8 @@ func NewConfig() *Config {
 	config.ClusterCIDR = utils.ClusterCidr
 	config.CalicoTyphaIP = utils.CalicoTyphaIp
 	config.CephClusterName = utils.CephClusterName
+	config.CephPlacementGroups = utils.CephPlacementGroups
+	config.CephExpectedNumberOfObjects = utils.CephExpectedNumberOfObjects
 	config.MetalLBAddresses = utils.MetalLBAddresses
 	config.ResolvConf = utils.ResolvConf
 	config.DeploymentDirectory = utils.DeploymentDirectory

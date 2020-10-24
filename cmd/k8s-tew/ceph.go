@@ -23,6 +23,8 @@ var cephRadosgwPassword string
 var cephSSLCertificate string
 var cephSSLKey string
 var cephProxyPort string
+var cephPlacementGroups uint
+var cephExpectedNumberOfObjects uint
 
 func getCeph() *ceph.Ceph {
 	return ceph.NewCeph(_config, cephBinariesPath, cephConfigPath, cephDataPath)
@@ -171,7 +173,7 @@ var cephSetupCmd = &cobra.Command{
 
 		ceph := getCeph()
 
-		if _error := ceph.RunSetup(cephDashboardUsername, cephDashboardPassword, cephRadosgwUsername, cephRadosgwPassword, cephSSLCertificate, cephSSLKey); _error != nil {
+		if _error := ceph.RunSetup(cephDashboardUsername, cephDashboardPassword, cephRadosgwUsername, cephRadosgwPassword, cephSSLCertificate, cephSSLKey, cephPlacementGroups, cephExpectedNumberOfObjects); _error != nil {
 			return _error
 		}
 
@@ -202,6 +204,8 @@ func init() {
 	cephSetupCmd.Flags().StringVar(&cephRadosgwPassword, "radosgw-password", "", "Rados Gateway password")
 	cephSetupCmd.Flags().StringVar(&cephSSLCertificate, "ssl-certificate", SSL_CERTIFICATE, "SSL Certificate")
 	cephSetupCmd.Flags().StringVar(&cephSSLKey, "ssl-key", SSL_KEY, "SSL Key")
+	cephSetupCmd.Flags().UintVar(&cephPlacementGroups, "placement-groups", 256, "The number of placement groups")
+	cephSetupCmd.Flags().UintVar(&cephExpectedNumberOfObjects, "expected-number-of-objects", 1000000, "The number of expected objects")
 
 	cephCmd.AddCommand(cephInitializeCmd)
 	cephCmd.AddCommand(cephMgrCmd)

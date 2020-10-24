@@ -49,6 +49,7 @@ var configureCmd = &cobra.Command{
 
 type stringSetter func(value string)
 type uint16Setter func(value uint16)
+type uintSetter func(value uint)
 
 var setterHandlers map[string]stringSetter
 
@@ -69,6 +70,20 @@ func addUint16Option(name string, value uint16, description string, handler uint
 		fmt.Printf("%d\n", _value)
 
 		handler(uint16(_value))
+	}
+}
+
+func addUintOption(name string, value uint, description string, handler uintSetter) {
+	configureCmd.Flags().Uint(name, value, description)
+
+	setterHandlers[name] = func(value string) {
+		fmt.Printf("%s\n", value)
+
+		_value, _ := strconv.ParseUint(value, 10, 64)
+
+		fmt.Printf("%d\n", _value)
+
+		handler(uint(_value))
 	}
 }
 
@@ -189,6 +204,14 @@ func init() {
 
 	addStringOption("ceph-cluster-name", utils.CephClusterName, "Ceph Cluster Name", func(value string) {
 		_config.Config.CephClusterName = value
+	})
+
+	addUintOption("ceph-placement-groups", utils.CephPlacementGroups, "Ceph Placement Groups", func(value uint) {
+		_config.Config.CephPlacementGroups = value
+	})
+
+	addUintOption("ceph-expected-number-of-objects", utils.CephExpectedNumberOfObjects, "Ceph Expected Number of Objects", func(value uint) {
+		_config.Config.CephExpectedNumberOfObjects = value
 	})
 
 	addStringOption("metallb-addresses", utils.MetalLBAddresses, "Comma separated MetalLB address ranges and CIDR (e.g 192.168.0.16/28,192.168.0.75-192.168.0.100)", func(value string) {

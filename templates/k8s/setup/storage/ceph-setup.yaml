@@ -502,7 +502,7 @@ spec:
         command:
         - /bin/sh
         - -c
-        - "/k8s-tew ceph setup --dashboard-username $CEPH_MANAGER_USERNAME --dashboard-password $CEPH_MANAGER_PASSWORD --radosgw-username $CEPH_RADOSGW_USERNAME --radosgw-password $CEPH_RADOSGW_PASSWORD --ssl-certificate /etc/ssl/certs/ceph.pem --ssl-key /etc/ssl/certs/ceph-key.pem"
+        - "/k8s-tew ceph setup --dashboard-username $CEPH_MANAGER_USERNAME --dashboard-password $CEPH_MANAGER_PASSWORD --radosgw-username $CEPH_RADOSGW_USERNAME --radosgw-password $CEPH_RADOSGW_PASSWORD --ssl-certificate /etc/ssl/certs/ceph.pem --ssl-key /etc/ssl/certs/ceph-key.pem --placement-groups {{.CephPlacementGroups}} --expected-number-of-objects {{.CephExpectedNumberOfObjects}}"
         volumeMounts:
         - name: ceph-config
           mountPath: /etc/ceph

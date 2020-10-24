@@ -431,7 +431,7 @@ func (ceph *Ceph) RunRgw(id, publicAddress, sslCertificate, sslKey, proxyPort st
 	return nil
 }
 
-func (ceph *Ceph) RunSetup(dashboardUsername, dashboardPassword, radosgwUsername, radosgwPassword, sslCertificate, sslKey string) error {
+func (ceph *Ceph) RunSetup(dashboardUsername, dashboardPassword, radosgwUsername, radosgwPassword, sslCertificate, sslKey string, placementGroups, expectedNumberOfObjects uint) error {
 	cephBinary := ceph.getCephBinary()
 	radosgwAdminBinary := ceph.getRadosgwAdminBinary()
 
@@ -450,7 +450,7 @@ func (ceph *Ceph) RunSetup(dashboardUsername, dashboardPassword, radosgwUsername
 		fmt.Sprintf("%s dashboard set-rgw-api-secret-key %s", cephBinary, radosgwPassword),
 		fmt.Sprintf("%s mgr module disable dashboard", cephBinary),
 		fmt.Sprintf("%s mgr module enable dashboard", cephBinary),
-		fmt.Sprintf("%s osd pool create %s 256 256", cephBinary, utils.CephRbdPoolName),
+		fmt.Sprintf("%s osd pool create %s %d %d replicated replicated_rule %d", cephBinary, utils.CephRbdPoolName, placementGroups, placementGroups, expectedNumberOfObjects),
 		fmt.Sprintf("%s osd pool application enable %s rbd", cephBinary, utils.CephRbdPoolName),
 		fmt.Sprintf("%s osd pool create %s 8", cephBinary, utils.CephFsPoolName),
 		fmt.Sprintf("%s osd pool create %s_metadata 8", cephBinary, utils.CephFsPoolName),

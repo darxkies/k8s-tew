@@ -835,6 +835,8 @@ func (generator *Generator) generateCephSetup() error {
 		K8sTewConfig                string
 		CephManagerCredentials      string
 		CephRadosGatewayCredentials string
+		CephPlacementGroups         uint
+		CephExpectedNumberOfObjects uint
 	}{
 		CephRBDPoolName:             utils.CephRbdPoolName,
 		CephFSPoolName:              utils.CephFsPoolName,
@@ -850,6 +852,8 @@ func (generator *Generator) generateCephSetup() error {
 		K8sTewConfig:                generator.config.GetFullTargetAssetFilename(utils.ConfigFilename),
 		CephManagerCredentials:      utils.CephManagerCredentials,
 		CephRadosGatewayCredentials: utils.CephRadosGatewayCredentials,
+		CephPlacementGroups:         generator.config.Config.CephPlacementGroups,
+		CephExpectedNumberOfObjects: generator.config.Config.CephExpectedNumberOfObjects,
 	}, generator.config.GetFullLocalAssetFilename(utils.CephSetup), true, false)
 }
 
