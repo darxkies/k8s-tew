@@ -1099,11 +1099,11 @@ func (generator *Generator) generateCertManagerSetup() error {
 
 func (generator *Generator) generateNginxIngressSetup() error {
 	return utils.ApplyTemplateAndSave("nginx-ingress", utils.TemplateNginxIngressSetup, struct {
-		NginxIngressControllerImage     string
-		NginxIngressDefaultBackendImage string
+		NginxIngressControllerImage  string
+		NginxIngressAdmissionWebhook string
 	}{
-		NginxIngressControllerImage:     generator.config.Config.Versions.NginxIngressController,
-		NginxIngressDefaultBackendImage: generator.config.Config.Versions.NginxIngressDefaultBackend,
+		NginxIngressControllerImage:  generator.config.Config.Versions.NginxIngressController,
+		NginxIngressAdmissionWebhook: generator.config.Config.Versions.NginxIngressAdmissionWebhook,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sNginxIngressSetup), true, false)
 }
 
