@@ -1,9 +1,104 @@
 ---
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: node-exporter
+  namespace: monitoring
+  labels:     
+    app: node-exporter
+spec:
+  privileged: false
+  volumes:
+    - 'configMap'
+    - 'emptyDir'
+    - 'projected'
+    - 'secret'
+    - 'downwardAPI'
+    - 'persistentVolumeClaim'
+    - 'hostPath'
+  hostNetwork: true
+  hostIPC: false
+  hostPID: true
+  hostPorts:
+    - min: 0
+      max: 65535
+  runAsUser:
+    rule: 'RunAsAny'
+  seLinux:
+    rule: 'RunAsAny'
+  supplementalGroups:
+    rule: 'MustRunAs'
+    ranges:
+      - min: 0
+        max: 65535
+  fsGroup:
+    rule: 'MustRunAs'
+    ranges:
+      - min: 0
+        max: 65535
+  readOnlyRootFilesystem: false
+
+---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   namespace: monitoring
   name: node-exporter
+  labels:
+    app: node-exporter
+imagePullSecrets:
+  []
+
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: node-exporter
+  labels:     
+    app: node-exporter
+rules:
+- apiGroups: ['extensions']
+  resources: ['podsecuritypolicies']
+  verbs:     ['use']
+  resourceNames:
+  - prometheus-node-exporter
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: node-exporter
+  labels:     
+    app: node-exporter
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: node-exporter
+subjects:
+  - kind: ServiceAccount
+    name: node-exporter
+    namespace: monitoring
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: node-exporter
+  namespace: monitoring
+  annotations:
+    prometheus.io/scrape: "true"
+  labels:     
+    app: node-exporter
+spec:
+  type: ClusterIP
+  ports:
+    - port: 9100
+      targetPort: 9100
+      protocol: TCP
+      name: metrics
+  selector:
+    app: node-exporter
+
 ---
 apiVersion: apps/v1
 kind: DaemonSet
@@ -11,35 +106,51 @@ metadata:
   namespace: monitoring
   name: node-exporter
   labels:
-    k8s-app: node-exporter
+    app: node-exporter
 spec:
   selector:
-    matchLabels: 
-      k8s-app: node-exporter
+    matchLabels:
+      app: node-exporter
   updateStrategy:
-    type: OnDelete
+    rollingUpdate:
+      maxUnavailable: 1
+    type: RollingUpdate
   template:
     metadata:
       labels:
-        k8s-app: node-exporter
+        app: node-exporter
     spec:
       serviceAccountName: node-exporter
-      tolerations:
-        - effect: NoSchedule
-          operator: Exists
-        - effect: NoExecute
-          operator: Exists
+      securityContext:
+        fsGroup: 65534
+        runAsGroup: 65534
+        runAsNonRoot: true
+        runAsUser: 65534
       containers:
         - name: node-exporter
           image: {{ .NodeExporterImage }} 
-          imagePullPolicy: "IfNotPresent"
+          imagePullPolicy: IfNotPresent
           args:
             - --path.procfs=/host/proc
             - --path.sysfs=/host/sys
+            - --web.listen-address=$(HOST_IP):9100
+          env:
+          - name: HOST_IP
+            value: 0.0.0.0
           ports:
             - name: metrics
               containerPort: 9100
-              hostPort: 9100
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 9100
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 9100
+          resources:
+            {}
           volumeMounts:
             - name: proc
               mountPath: /host/proc
@@ -47,15 +158,11 @@ spec:
             - name: sys
               mountPath: /host/sys
               readOnly: true
-          resources:
-            limits:
-              cpu: 10m
-              memory: 50Mi
-            requests:
-              cpu: 10m
-              memory: 50Mi
       hostNetwork: true
       hostPID: true
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
       volumes:
         - name: proc
           hostPath:

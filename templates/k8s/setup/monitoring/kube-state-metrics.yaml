@@ -4,10 +4,15 @@ kind: ServiceAccount
 metadata:
   namespace: monitoring
   name: kube-state-metrics
+  labels:
+    app.kubernetes.io/name: kube-state-metrics
+
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
+  labels:
+    app.kubernetes.io/name: kube-state-metrics
   name: kube-state-metrics
 rules:
 - apiGroups:
@@ -26,7 +31,6 @@ rules:
   - namespaces
   - endpoints
   verbs:
-  - get
   - list
   - watch
 - apiGroups:
@@ -37,8 +41,6 @@ rules:
   - replicasets
   - ingresses
   verbs:
-  - get
-  - update
   - list
   - watch
 - apiGroups:
@@ -96,6 +98,7 @@ rules:
   - storage.k8s.io
   resources:
   - storageclasses
+  - volumeattachments
   verbs:
   - list
   - watch
@@ -107,10 +110,28 @@ rules:
   verbs:
   - list
   - watch
+- apiGroups:
+  - networking.k8s.io
+  resources:
+  - networkpolicies
+  - ingresses
+  verbs:
+  - list
+  - watch
+- apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
+  verbs:
+  - list
+  - watch
+
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
+  labels:
+    app.kubernetes.io/name: kube-state-metrics
   name: kube-state-metrics
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -120,6 +141,7 @@ subjects:
 - kind: ServiceAccount
   namespace: monitoring
   name: kube-state-metrics
+
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -127,33 +149,44 @@ metadata:
   namespace: monitoring
   name: kube-state-metrics
   labels:
-    k8s-app: kube-state-metrics
+    app.kubernetes.io/name: kube-state-metrics
 spec:
   selector:
     matchLabels:
-      k8s-app: kube-state-metrics
+      app.kubernetes.io/name: kube-state-metrics
   replicas: {{ .KubeStateMetricsCount }}
   template:
     metadata:
       labels:
-        k8s-app: kube-state-metrics
+        app.kubernetes.io/name: kube-state-metrics
     spec:
       serviceAccountName: kube-state-metrics
       containers:
       - name: kube-state-metrics
         image: {{ .KubeStateMetricsImage }} 
-        imagePullPolicy: "IfNotPresent"
-        ports:
-        - name: http-metrics
-          containerPort: 8080
-        - name: telemetry
-          containerPort: 8081
-        readinessProbe:
+        livenessProbe:
           httpGet:
             path: /healthz
             port: 8080
           initialDelaySeconds: 5
           timeoutSeconds: 5
+        ports:
+        - containerPort: 8080
+          name: http-metrics
+        - containerPort: 8081
+          name: telemetry
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8081
+          initialDelaySeconds: 5
+          timeoutSeconds: 5
+        securityContext:
+          runAsUser: 65534
+      nodeSelector:
+        kubernetes.io/os: linux
+      serviceAccountName: kube-state-metrics
+
 ---
 apiVersion: v1
 kind: Service
@@ -161,16 +194,14 @@ metadata:
   namespace: monitoring
   name: kube-state-metrics
   labels:
-    k8s-app: kube-state-metrics
+    app.kubernetes.io/name: kube-state-metrics
 spec:
   ports:
   - name: http-metrics
     port: 8080
     targetPort: http-metrics
-    protocol: TCP
   - name: telemetry
     port: 8081
     targetPort: telemetry
-    protocol: TCP
   selector:
-    k8s-app: kube-state-metrics
+    app.kubernetes.io/name: kube-state-metrics

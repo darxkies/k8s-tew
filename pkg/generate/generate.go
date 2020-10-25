@@ -92,6 +92,10 @@ func NewGenerator(config *config.InternalConfig) *Generator {
 		generator.generateMetricsServerSetup,
 		// Generate Prometheus setup file
 		generator.generatePrometheusSetup,
+		// Generate Prometheus Alerts file
+		generator.generatePrometheusAlerts,
+		// Generate Prometheus Rules file
+		generator.generatePrometheusRules,
 		// Generate Kube State Metrics setup file
 		generator.generateKubeStateMetricsSetup,
 		// Generate Node Exporter setup file
@@ -102,6 +106,8 @@ func NewGenerator(config *config.InternalConfig) *Generator {
 		generator.generateGrafanaCredentials,
 		// Generate Grafana setup file
 		generator.generateGrafanaSetup,
+		// Generate Grafana Dashboards  file
+		generator.generateGrafanaDashboards,
 		// Generate Alert Manager setup file
 		generator.generateAlertManagerSetup,
 		// Generate Wordpress setup file
@@ -1127,6 +1133,16 @@ func (generator *Generator) generatePrometheusSetup() error {
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sPrometheusSetup), true, true)
 }
 
+func (generator *Generator) generatePrometheusAlerts() error {
+	return utils.ApplyTemplateAndSave("prometheus-alerts", utils.TemplatePrometheusAlerts, struct {
+	}{}, generator.config.GetFullLocalAssetFilename(utils.K8sPrometheusAlerts), true, true)
+}
+
+func (generator *Generator) generatePrometheusRules() error {
+	return utils.ApplyTemplateAndSave("prometheus-rules", utils.TemplatePrometheusRules, struct {
+	}{}, generator.config.GetFullLocalAssetFilename(utils.K8sPrometheusRules), true, true)
+}
+
 func (generator *Generator) generateNodeExporterSetup() error {
 	return utils.ApplyTemplateAndSave("node-exporter", utils.TemplateNodeExporterSetup, struct {
 		NodeExporterImage string
@@ -1290,6 +1306,11 @@ func (generator *Generator) generateGrafanaSetup() error {
 		GrafanaSize:  generator.config.Config.GrafanaSize,
 		BusyboxImage: generator.config.Config.Versions.Busybox,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sGrafanaSetup), true, true)
+}
+
+func (generator *Generator) generateGrafanaDashboards() error {
+	return utils.ApplyTemplateAndSave("grafana-dashboards", utils.TemplateGrafanaDashboards, struct {
+	}{}, generator.config.GetFullLocalAssetFilename(utils.K8sGrafanaDashboards), true, true)
 }
 
 func (generator *Generator) generateAlertManagerSetup() error {
