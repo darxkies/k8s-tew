@@ -587,7 +587,7 @@ data:
         target_label: __address__
         replacement: $1:9100
         action: replace
-      - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_pod_label_k8s_app]
+      - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_pod_label_app]
         separator: ;
         regex: monitoring;node-exporter
         replacement: $1
