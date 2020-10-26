@@ -438,6 +438,7 @@ func (ceph *Ceph) RunSetup(dashboardUsername, dashboardPassword, radosgwUsername
 	commands := []string{
 		fmt.Sprintf("%s mon enable-msgr2", cephBinary),
 		fmt.Sprintf("%s mgr module enable dashboard", cephBinary),
+		fmt.Sprintf("%s mgr module enable prometheus", cephBinary),
 		fmt.Sprintf("%s dashboard feature disable iscsi", cephBinary),
 		fmt.Sprintf("%s dashboard feature disable mirroring", cephBinary),
 		fmt.Sprintf("%s dashboard feature disable nfs", cephBinary),

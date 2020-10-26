@@ -571,6 +571,9 @@ kind: Service
 metadata:
     namespace: storage
     name: ceph-mgr
+    annotations:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "9283"
     labels:
       app: ceph
       daemon: mgr

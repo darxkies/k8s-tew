@@ -386,6 +386,9 @@ kind: Service
 metadata:
   namespace: storage
   name: csi-metrics-rbdplugin
+  annotations:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "8680"
   labels:
     app: csi-metrics
 spec:
@@ -403,6 +406,9 @@ apiVersion: v1
 metadata:
   namespace: storage
   name: csi-rbdplugin-provisioner
+  annotations:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "8680"
   labels:
     app: csi-metrics
 spec:
@@ -905,6 +911,9 @@ kind: Service
 metadata:
   namespace: storage
   name: csi-metrics-cephfsplugin
+  annotations:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "8681"
   labels:
     app: csi-metrics
 spec:
@@ -922,6 +931,9 @@ apiVersion: v1
 metadata:
   namespace: storage
   name: csi-cephfsplugin-provisioner
+  annotations:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "8681"
   labels:
     app: csi-metrics
 spec:
