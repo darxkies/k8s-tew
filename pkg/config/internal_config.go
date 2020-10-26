@@ -235,6 +235,8 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.PemGrafanaKey, Labels{}, "", utils.DirectoryCertificates)
 	config.addAssetFile(utils.PemCeph, Labels{}, "", utils.DirectoryCertificates)
 	config.addAssetFile(utils.PemCephKey, Labels{}, "", utils.DirectoryCertificates)
+	config.addAssetFile(utils.PemPrometheus, Labels{}, "", utils.DirectoryCertificates)
+	config.addAssetFile(utils.PemPrometheusKey, Labels{}, "", utils.DirectoryCertificates)
 
 	// Kubeconfig
 	config.addAssetFile(utils.KubeconfigAdmin, Labels{utils.NodeController}, "", utils.DirectoryK8sKubeConfig)
@@ -274,6 +276,7 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.K8sPrometheusSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sPrometheusRules, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sPrometheusAlerts, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.K8sPrometheusCertificates, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sKubeStateMetricsSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sNodeExporterSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sGrafanaSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
@@ -375,6 +378,7 @@ func (config *InternalConfig) registerCommands() {
 	config.addManifest("prometheus-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sPrometheusSetup))
 	config.addManifest("prometheus-alerts", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sPrometheusAlerts))
 	config.addManifest("prometheus-rules", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sPrometheusRules))
+	config.addManifest("prometheus-certificates", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sPrometheusCertificates))
 	config.addManifest("node-exporter-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sNodeExporterSetup))
 	config.addManifest("alert-manager-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sAlertManagerSetup))
 	config.addManifest("kube-state-metrics-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureMonitoring, utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.K8sKubeStateMetricsSetup))

@@ -54,8 +54,8 @@ func NewGenerator(config *config.InternalConfig) *Generator {
 		generator.generateKubeConfigs,
 		// Generate Ceph Manager secrets file
 		generator.generateCephManagerCredentials,
-		// Generate Ceph config map file
-		generator.generateCephConfigMap,
+		// Generate Ceph certificates config map file
+		generator.generateCephCertificatesConfigMap,
 		// Generate Ceph Rados Gateway  secrets file
 		generator.generateCephRadosGatewayCredentials,
 		// Generate Ceph Config
@@ -68,16 +68,16 @@ func NewGenerator(config *config.InternalConfig) *Generator {
 		generator.generateLetsEncryptClusterIssuer,
 		// Generate CoreDNS setup file
 		generator.generateCoreDNSSetup,
-		// Generate Elasticsearch config map file
-		generator.generateElasticsearchConfigMap,
+		// Generate Elasticsearch certificates config map file
+		generator.generateElasticsearchCertificatesConfigMap,
 		// Generate ElasticSearch credentials
 		generator.generateElasticsearchCredentials,
 		// Generate ElasticSearch/Fluent-Bit/Kibana setup file
 		generator.generateEFKSetup,
 		// Generate Minio secrets file
 		generator.generateMinioCredentials,
-		// Generate Minio config map
-		generator.generateMinioConfigMap,
+		// Generate Minio certificates config map
+		generator.generateMinioCertificatesConfigMap,
 		// Generate Cerebro secrets file
 		generator.generateCerebroCredentials,
 		// Generate Velero setup file
@@ -96,12 +96,14 @@ func NewGenerator(config *config.InternalConfig) *Generator {
 		generator.generatePrometheusAlerts,
 		// Generate Prometheus Rules file
 		generator.generatePrometheusRules,
+		// Generate Prometheus certificates config map file
+		generator.generatePrometheusCertificatesConfigMap,
 		// Generate Kube State Metrics setup file
 		generator.generateKubeStateMetricsSetup,
 		// Generate Node Exporter setup file
 		generator.generateNodeExporterSetup,
-		// Generate Grafana config map
-		generator.generateGrafanaConfigMap,
+		// Generate Grafana certificates config map file
+		generator.generateGrafanaCertificatesConfigMap,
 		// Generate Grafana secrets file
 		generator.generateGrafanaCredentials,
 		// Generate Grafana setup file
@@ -739,6 +741,11 @@ func (generator *Generator) generateCertificates() error {
 		return error
 	}
 
+	// Generate Prometheus certificate
+	if error := pki.GenerateClient(generator.ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, utils.CnPrometheus, "prometheus", []string{}, []string{}, generator.config.GetFullLocalAssetFilename(utils.PemPrometheus), generator.config.GetFullLocalAssetFilename(utils.PemPrometheusKey), false); error != nil {
+		return error
+	}
+
 	return nil
 }
 
@@ -1161,7 +1168,36 @@ func (generator *Generator) generateKubeStateMetricsSetup() error {
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sKubeStateMetricsSetup), true, false)
 }
 
-func (generator *Generator) generateGrafanaConfigMap() error {
+func (generator *Generator) generatePrometheusCertificatesConfigMap() error {
+	ca, error := utils.ReadFile(generator.config.GetFullLocalAssetFilename(utils.PemCa))
+	if error != nil {
+		return error
+	}
+
+	prometheus, error := utils.ReadFile(generator.config.GetFullLocalAssetFilename(utils.PemPrometheus))
+	if error != nil {
+		return error
+	}
+
+	prometheusKey, error := utils.ReadFile(generator.config.GetFullLocalAssetFilename(utils.PemPrometheusKey))
+	if error != nil {
+		return error
+	}
+
+	data := map[string]string{"ca.pem": ca, "prometheus.pem": prometheus, "prometheus-key.pem": prometheusKey}
+
+	return utils.ApplyTemplateAndSave(utils.PrometheusCertificates, utils.TemplateConfigMap, struct {
+		Namespace string
+		Name      string
+		Data      map[string]string
+	}{
+		Namespace: utils.FeatureMonitoring,
+		Name:      utils.PrometheusCertificates,
+		Data:      data,
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sPrometheusCertificates), false, false)
+}
+
+func (generator *Generator) generateGrafanaCertificatesConfigMap() error {
 	ca, error := utils.ReadFile(generator.config.GetFullLocalAssetFilename(utils.PemCa))
 	if error != nil {
 		return error
@@ -1190,7 +1226,7 @@ func (generator *Generator) generateGrafanaConfigMap() error {
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sGrafanaCertificates), false, false)
 }
 
-func (generator *Generator) generateCephConfigMap() error {
+func (generator *Generator) generateCephCertificatesConfigMap() error {
 	ca, error := utils.ReadFile(generator.config.GetFullLocalAssetFilename(utils.PemCa))
 	if error != nil {
 		return error
@@ -1219,7 +1255,7 @@ func (generator *Generator) generateCephConfigMap() error {
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sCephCertificates), false, false)
 }
 
-func (generator *Generator) generateMinioConfigMap() error {
+func (generator *Generator) generateMinioCertificatesConfigMap() error {
 	ca, error := utils.ReadFile(generator.config.GetFullLocalAssetFilename(utils.PemCa))
 	if error != nil {
 		return error
@@ -1248,7 +1284,7 @@ func (generator *Generator) generateMinioConfigMap() error {
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sMinioCertificates), false, false)
 }
 
-func (generator *Generator) generateElasticsearchConfigMap() error {
+func (generator *Generator) generateElasticsearchCertificatesConfigMap() error {
 	ca, error := utils.ReadFile(generator.config.GetFullLocalAssetFilename(utils.PemCa))
 	if error != nil {
 		return error

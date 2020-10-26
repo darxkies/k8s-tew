@@ -3,6 +3,9 @@ kind: Pod
 metadata:
   namespace: kube-system
   name: etcd
+  labels:
+    app.kubernetes.io/name: etcd
+    app.kubernetes.io/instance: {{.Name}}
 spec:
   hostNetwork: true
   initContainers:

@@ -3,6 +3,7 @@ kind: ServiceAccount
 metadata:
   namespace: monitoring
   name: prometheus
+
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole
@@ -22,6 +23,7 @@ rules:
   verbs: ["get"]
 - nonResourceURLs: ["/metrics", "/metrics/cadvisor"]
   verbs: ["get"]
+
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRoleBinding
@@ -35,6 +37,7 @@ subjects:
 - kind: ServiceAccount
   namespace: monitoring
   name: prometheus
+
 ---
 kind: Service
 apiVersion: v1
@@ -52,6 +55,7 @@ spec:
   sessionAffinity: ClientIP
   selector:
     k8s-app: prometheus
+
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -124,6 +128,15 @@ spec:
             - name: prometheus-data
               mountPath: /data
               subPath: ""
+            - name: certificates
+              mountPath: /etc/ssl/certs/ca.pem
+              subPath: ca.pem
+            - name: certificates
+              mountPath: /etc/ssl/certs/prometheus.pem
+              subPath: prometheus.pem
+            - name: certificates
+              mountPath: /etc/ssl/certs/prometheus-key.pem
+              subPath: prometheus-key.pem
       terminationGracePeriodSeconds: 300
       volumes:
         - name: config-volume
@@ -135,6 +148,9 @@ spec:
         - name: prometheus-alerts
           configMap:
             name: prometheus-alerts
+        - name: certificates
+          configMap:
+            name: prometheus-certificates
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -156,6 +172,7 @@ spec:
       resources:
         requests:
           storage: "[[ .PrometheusSize ]]Gi"
+
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -651,4 +668,26 @@ data:
         regex: (.*)
         target_label: instance
         replacement: $1
+        action: replace
+    - job_name: etcd
+      honor_timestamps: true
+      scrape_interval: 15s
+      scrape_timeout: 10s
+      metrics_path: /metrics
+      scheme: https
+      kubernetes_sd_configs:
+      - role: pod
+      tls_config:
+        ca_file: /etc/ssl/certs/ca.pem
+        cert_file: /etc/ssl/certs/prometheus.pem
+        key_file: /etc/ssl/certs/prometheus-key.pem
+      relabel_configs:
+      - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_pod_label_app_kubernetes_io_name]
+        regex: "kube-system;etcd"
+        action: keep
+      - source_labels: [__address__]
+        separator: ;
+        regex: ([^:]+)(?::\d+)?
+        target_label: __address__
+        replacement: $1:2379
         action: replace
