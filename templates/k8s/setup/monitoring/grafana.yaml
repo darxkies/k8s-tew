@@ -136,6 +136,9 @@ spec:
             - name: grafana-dashboard-etcd
               mountPath: "/var/lib/grafana/dashboards/etcd.json"
               subPath: etcd.json
+            - name: grafana-dashboard-ceph
+              mountPath: "/var/lib/grafana/dashboards/ceph.json"
+              subPath: ceph.json
             - name: grafana-dashboard-apiserver
               mountPath: "/var/lib/grafana/dashboards/apiserver.json"
               subPath: apiserver.json
@@ -242,6 +245,9 @@ spec:
         - name: grafana-dashboard-etcd
           configMap:
             name: grafana-dashboard-etcd
+        - name: grafana-dashboard-ceph
+          configMap:
+            name: grafana-dashboard-ceph
         - name: grafana-dashboard-apiserver
           configMap:
             name: grafana-dashboard-apiserver
