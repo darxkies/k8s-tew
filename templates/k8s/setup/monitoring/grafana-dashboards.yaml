@@ -51,7 +51,7 @@ data:
                       "rgba(237, 129, 40, 0.89)",
                       "#d44a3a"
                    ],
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "decimals": 3,
                    "description": "How many percent of requests (both read and write) in 30 days have been answered successfully and fast enough?",
                    "format": "percentunit",
@@ -129,7 +129,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "decimals": 3,
                    "description": "How much error budget is left looking at our 0.990% availability gurantees?",
                    "fill": 10,
@@ -231,7 +231,7 @@ data:
                       "rgba(237, 129, 40, 0.89)",
                       "#d44a3a"
                    ],
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "decimals": 3,
                    "description": "How many percent of read requests (LIST,GET) in 30 days have been answered successfully and fast enough?",
                    "format": "percentunit",
@@ -309,7 +309,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "description": "How many read requests (LIST,GET) per second do the apiservers get by code?",
                    "fill": 10,
                    "fillGradient": 0,
@@ -408,7 +408,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "description": "How many percent of read requests (LIST,GET) per second are returned with errors (5xx)?",
                    "fill": 1,
                    "fillGradient": 0,
@@ -490,7 +490,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "description": "How many seconds is the 99th percentile for reading (LIST|GET) a given resource?",
                    "fill": 1,
                    "fillGradient": 0,
@@ -589,7 +589,7 @@ data:
                       "rgba(237, 129, 40, 0.89)",
                       "#d44a3a"
                    ],
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "decimals": 3,
                    "description": "How many percent of write requests (POST|PUT|PATCH|DELETE) in 30 days have been answered successfully and fast enough?",
                    "format": "percentunit",
@@ -667,7 +667,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "description": "How many write requests (POST|PUT|PATCH|DELETE) per second do the apiservers get by code?",
                    "fill": 10,
                    "fillGradient": 0,
@@ -766,7 +766,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "description": "How many percent of write requests (POST|PUT|PATCH|DELETE) per second are returned with errors (5xx)?",
                    "fill": 1,
                    "fillGradient": 0,
@@ -848,7 +848,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "description": "How many seconds is the 99th percentile for writing (POST|PUT|PATCH|DELETE) a given resource?",
                    "fill": 1,
                    "fillGradient": 0,
@@ -943,7 +943,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -1024,7 +1024,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -1105,7 +1105,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -1199,7 +1199,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -1280,7 +1280,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -1361,7 +1361,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -1449,29 +1449,13 @@ data:
        ],
        "schemaVersion": 14,
        "style": "dark",
-       "tags": [
-          "kubernetes-mixin"
-       ],
+       "tags": [ ],
        "templating": {
           "list": [
              {
-                "current": {
-                   "text": "default",
-                   "value": "default"
-                },
-                "hide": 0,
-                "label": null,
-                "name": "datasource",
-                "options": [ ],
-                "query": "prometheus",
-                "refresh": 1,
-                "regex": "",
-                "type": "datasource"
-             },
-             {
                 "allValue": null,
                 "current": { },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "hide": 2,
                 "includeAll": false,
                 "label": "cluster",
@@ -1491,7 +1475,7 @@ data:
              {
                 "allValue": null,
                 "current": { },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "hide": 0,
                 "includeAll": true,
                 "label": null,
@@ -1579,7 +1563,7 @@ data:
                       "rgba(237, 129, 40, 0.89)",
                       "#d44a3a"
                    ],
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "format": "none",
                    "gauge": {
                       "maxValue": 100,
@@ -1655,7 +1639,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -1757,7 +1741,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -1872,7 +1856,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -1974,7 +1958,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -2068,7 +2052,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -2162,7 +2146,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -2243,7 +2227,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -2324,7 +2308,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -2412,29 +2396,13 @@ data:
        ],
        "schemaVersion": 14,
        "style": "dark",
-       "tags": [
-          "kubernetes-mixin"
-       ],
+       "tags": [ ],
        "templating": {
           "list": [
              {
-                "current": {
-                   "text": "default",
-                   "value": "default"
-                },
-                "hide": 0,
-                "label": null,
-                "name": "datasource",
-                "options": [ ],
-                "query": "prometheus",
-                "refresh": 1,
-                "regex": "",
-                "type": "datasource"
-             },
-             {
                 "allValue": null,
                 "current": { },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "hide": 0,
                 "includeAll": true,
                 "label": null,
@@ -2522,7 +2490,7 @@ data:
                       "rgba(237, 129, 40, 0.89)",
                       "#d44a3a"
                    ],
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "format": "none",
                    "gauge": {
                       "maxValue": 100,
@@ -2598,7 +2566,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -2692,7 +2660,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -2786,7 +2754,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -2880,7 +2848,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -2982,7 +2950,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -3076,7 +3044,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -3170,7 +3138,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -3251,7 +3219,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -3332,7 +3300,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -3420,29 +3388,13 @@ data:
        ],
        "schemaVersion": 14,
        "style": "dark",
-       "tags": [
-          "kubernetes-mixin"
-       ],
+       "tags": [ ],
        "templating": {
           "list": [
              {
-                "current": {
-                   "text": "default",
-                   "value": "default"
-                },
-                "hide": 0,
-                "label": null,
-                "name": "datasource",
-                "options": [ ],
-                "query": "prometheus",
-                "refresh": 1,
-                "regex": "",
-                "type": "datasource"
-             },
-             {
                 "allValue": null,
                 "current": { },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "hide": 0,
                 "includeAll": true,
                 "label": null,
@@ -3530,7 +3482,7 @@ data:
                       "rgba(237, 129, 40, 0.89)",
                       "#d44a3a"
                    ],
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "format": "none",
                    "gauge": {
                       "maxValue": 100,
@@ -3610,7 +3562,7 @@ data:
                       "rgba(237, 129, 40, 0.89)",
                       "#d44a3a"
                    ],
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "format": "none",
                    "gauge": {
                       "maxValue": 100,
@@ -3690,7 +3642,7 @@ data:
                       "rgba(237, 129, 40, 0.89)",
                       "#d44a3a"
                    ],
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "format": "none",
                    "gauge": {
                       "maxValue": 100,
@@ -3770,7 +3722,7 @@ data:
                       "rgba(237, 129, 40, 0.89)",
                       "#d44a3a"
                    ],
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "format": "none",
                    "gauge": {
                       "maxValue": 100,
@@ -3850,7 +3802,7 @@ data:
                       "rgba(237, 129, 40, 0.89)",
                       "#d44a3a"
                    ],
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "format": "none",
                    "gauge": {
                       "maxValue": 100,
@@ -3930,7 +3882,7 @@ data:
                       "rgba(237, 129, 40, 0.89)",
                       "#d44a3a"
                    ],
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "format": "none",
                    "gauge": {
                       "maxValue": 100,
@@ -4019,7 +3971,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -4100,7 +4052,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -4194,7 +4146,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -4288,7 +4240,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -4376,7 +4328,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -4477,7 +4429,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -4560,7 +4512,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -4656,7 +4608,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -4752,7 +4704,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -4833,7 +4785,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -4927,7 +4879,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "description": "Pod lifecycle event generator",
                    "fill": 1,
                    "fillGradient": 0,
@@ -5009,7 +4961,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -5103,7 +5055,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -5197,7 +5149,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -5312,7 +5264,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -5406,7 +5358,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -5487,7 +5439,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -5568,7 +5520,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -5656,29 +5608,13 @@ data:
        ],
        "schemaVersion": 14,
        "style": "dark",
-       "tags": [
-          "kubernetes-mixin"
-       ],
+       "tags": [ ],
        "templating": {
           "list": [
              {
-                "current": {
-                   "text": "default",
-                   "value": "default"
-                },
-                "hide": 0,
-                "label": null,
-                "name": "datasource",
-                "options": [ ],
-                "query": "prometheus",
-                "refresh": 1,
-                "regex": "",
-                "type": "datasource"
-             },
-             {
                 "allValue": null,
                 "current": { },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "hide": 2,
                 "includeAll": false,
                 "label": "cluster",
@@ -5698,7 +5634,7 @@ data:
              {
                 "allValue": null,
                 "current": { },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "hide": 0,
                 "includeAll": true,
                 "label": null,
@@ -5786,7 +5722,7 @@ data:
                       "rgba(237, 129, 40, 0.89)",
                       "#d44a3a"
                    ],
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "format": "none",
                    "gauge": {
                       "maxValue": 100,
@@ -5862,7 +5798,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -5943,7 +5879,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -6037,7 +5973,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -6118,7 +6054,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -6212,7 +6148,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -6314,7 +6250,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -6408,7 +6344,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -6502,7 +6438,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -6583,7 +6519,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -6664,7 +6600,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -6752,29 +6688,13 @@ data:
        ],
        "schemaVersion": 14,
        "style": "dark",
-       "tags": [
-          "kubernetes-mixin"
-       ],
+       "tags": [ ],
        "templating": {
           "list": [
              {
-                "current": {
-                   "text": "default",
-                   "value": "default"
-                },
-                "hide": 0,
-                "label": null,
-                "name": "datasource",
-                "options": [ ],
-                "query": "prometheus",
-                "refresh": 1,
-                "regex": "",
-                "type": "datasource"
-             },
-             {
                 "allValue": null,
                 "current": { },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "hide": 0,
                 "includeAll": true,
                 "label": null,
@@ -6855,7 +6775,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "format": "percentunit",
                    "id": 1,
@@ -6932,7 +6852,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "format": "percentunit",
                    "id": 2,
@@ -7008,7 +6928,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "format": "percentunit",
                    "id": 3,
@@ -7084,7 +7004,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "format": "percentunit",
                    "id": 4,
@@ -7160,7 +7080,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "format": "percentunit",
                    "id": 5,
@@ -7236,7 +7156,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "format": "percentunit",
                    "id": 6,
@@ -7324,7 +7244,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 7,
                    "legend": {
@@ -7412,7 +7332,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "id": 8,
                    "legend": {
@@ -7453,7 +7373,7 @@ data:
                          "link": true,
                          "linkTargetBlank": false,
                          "linkTooltip": "Drill down to pods",
-                         "linkUrl": "./d/85a562078cdf77779eaa1add43ccec1e/k8s-resources-namespace?var-datasource=$datasource&var-cluster=$cluster&var-namespace=$__cell_1",
+                         "linkUrl": "./d/85a562078cdf77779eaa1add43ccec1e/k8s-resources-namespace?var-datasource=prometheus&var-cluster=$cluster&var-namespace=$__cell_1",
                          "pattern": "Value #A",
                          "thresholds": [ ],
                          "type": "number",
@@ -7468,7 +7388,7 @@ data:
                          "link": true,
                          "linkTargetBlank": false,
                          "linkTooltip": "Drill down to workloads",
-                         "linkUrl": "./d/a87fb0d919ec0ea5f6543124e16c42a5/k8s-resources-workloads-namespace?var-datasource=$datasource&var-cluster=$cluster&var-namespace=$__cell_1",
+                         "linkUrl": "./d/a87fb0d919ec0ea5f6543124e16c42a5/k8s-resources-workloads-namespace?var-datasource=prometheus&var-cluster=$cluster&var-namespace=$__cell_1",
                          "pattern": "Value #B",
                          "thresholds": [ ],
                          "type": "number",
@@ -7558,7 +7478,7 @@ data:
                          "link": true,
                          "linkTargetBlank": false,
                          "linkTooltip": "Drill down to pods",
-                         "linkUrl": "./d/85a562078cdf77779eaa1add43ccec1e/k8s-resources-namespace?var-datasource=$datasource&var-cluster=$cluster&var-namespace=$__cell",
+                         "linkUrl": "./d/85a562078cdf77779eaa1add43ccec1e/k8s-resources-namespace?var-datasource=prometheus&var-cluster=$cluster&var-namespace=$__cell",
                          "pattern": "namespace",
                          "thresholds": [ ],
                          "type": "number",
@@ -7695,7 +7615,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 9,
                    "legend": {
@@ -7783,7 +7703,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "id": 10,
                    "legend": {
@@ -7824,7 +7744,7 @@ data:
                          "link": true,
                          "linkTargetBlank": false,
                          "linkTooltip": "Drill down to pods",
-                         "linkUrl": "./d/85a562078cdf77779eaa1add43ccec1e/k8s-resources-namespace?var-datasource=$datasource&var-cluster=$cluster&var-namespace=$__cell_1",
+                         "linkUrl": "./d/85a562078cdf77779eaa1add43ccec1e/k8s-resources-namespace?var-datasource=prometheus&var-cluster=$cluster&var-namespace=$__cell_1",
                          "pattern": "Value #A",
                          "thresholds": [ ],
                          "type": "number",
@@ -7839,7 +7759,7 @@ data:
                          "link": true,
                          "linkTargetBlank": false,
                          "linkTooltip": "Drill down to workloads",
-                         "linkUrl": "./d/a87fb0d919ec0ea5f6543124e16c42a5/k8s-resources-workloads-namespace?var-datasource=$datasource&var-cluster=$cluster&var-namespace=$__cell_1",
+                         "linkUrl": "./d/a87fb0d919ec0ea5f6543124e16c42a5/k8s-resources-workloads-namespace?var-datasource=prometheus&var-cluster=$cluster&var-namespace=$__cell_1",
                          "pattern": "Value #B",
                          "thresholds": [ ],
                          "type": "number",
@@ -7929,7 +7849,7 @@ data:
                          "link": true,
                          "linkTargetBlank": false,
                          "linkTooltip": "Drill down to pods",
-                         "linkUrl": "./d/85a562078cdf77779eaa1add43ccec1e/k8s-resources-namespace?var-datasource=$datasource&var-cluster=$cluster&var-namespace=$__cell",
+                         "linkUrl": "./d/85a562078cdf77779eaa1add43ccec1e/k8s-resources-namespace?var-datasource=prometheus&var-cluster=$cluster&var-namespace=$__cell",
                          "pattern": "namespace",
                          "thresholds": [ ],
                          "type": "number",
@@ -8066,7 +7986,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "id": 11,
                    "interval": "1m",
@@ -8198,7 +8118,7 @@ data:
                          "link": true,
                          "linkTargetBlank": false,
                          "linkTooltip": "Drill down to pods",
-                         "linkUrl": "./d/85a562078cdf77779eaa1add43ccec1e/k8s-resources-namespace?var-datasource=$datasource&var-cluster=$cluster&var-namespace=$__cell",
+                         "linkUrl": "./d/85a562078cdf77779eaa1add43ccec1e/k8s-resources-namespace?var-datasource=prometheus&var-cluster=$cluster&var-namespace=$__cell",
                          "pattern": "namespace",
                          "thresholds": [ ],
                          "type": "number",
@@ -8326,7 +8246,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 12,
                    "legend": {
@@ -8414,7 +8334,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 13,
                    "legend": {
@@ -8502,7 +8422,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 14,
                    "legend": {
@@ -8590,7 +8510,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 15,
                    "legend": {
@@ -8678,7 +8598,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 16,
                    "legend": {
@@ -8766,7 +8686,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 17,
                    "legend": {
@@ -8854,7 +8774,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 18,
                    "legend": {
@@ -8942,7 +8862,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 19,
                    "legend": {
@@ -9024,32 +8944,16 @@ data:
        ],
        "schemaVersion": 14,
        "style": "dark",
-       "tags": [
-          "kubernetes-mixin"
-       ],
+       "tags": [ ],
        "templating": {
           "list": [
-             {
-                "current": {
-                   "text": "default",
-                   "value": "default"
-                },
-                "hide": 0,
-                "label": null,
-                "name": "datasource",
-                "options": [ ],
-                "query": "prometheus",
-                "refresh": 1,
-                "regex": "",
-                "type": "datasource"
-             },
              {
                 "allValue": null,
                 "current": {
                    "text": "",
                    "value": ""
                 },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "hide": 2,
                 "includeAll": false,
                 "label": null,
@@ -9130,7 +9034,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 1,
                    "legend": {
@@ -9218,7 +9122,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "id": 2,
                    "legend": {
@@ -9453,7 +9357,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 3,
                    "legend": {
@@ -9541,7 +9445,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "id": 4,
                    "legend": {
@@ -9842,32 +9746,16 @@ data:
        ],
        "schemaVersion": 14,
        "style": "dark",
-       "tags": [
-          "kubernetes-mixin"
-       ],
+       "tags": [ ],
        "templating": {
           "list": [
-             {
-                "current": {
-                   "text": "default",
-                   "value": "default"
-                },
-                "hide": 0,
-                "label": null,
-                "name": "datasource",
-                "options": [ ],
-                "query": "prometheus",
-                "refresh": 1,
-                "regex": "",
-                "type": "datasource"
-             },
              {
                 "allValue": null,
                 "current": {
                    "text": "",
                    "value": ""
                 },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "hide": 2,
                 "includeAll": false,
                 "label": null,
@@ -9890,7 +9778,7 @@ data:
                    "text": "",
                    "value": ""
                 },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "hide": 0,
                 "includeAll": false,
                 "label": null,
@@ -9971,7 +9859,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "format": "percentunit",
                    "id": 1,
@@ -10047,7 +9935,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "format": "percentunit",
                    "id": 2,
@@ -10123,7 +10011,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "format": "percentunit",
                    "id": 3,
@@ -10199,7 +10087,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "format": "percentunit",
                    "id": 4,
@@ -10287,7 +10175,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 5,
                    "legend": {
@@ -10412,7 +10300,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "id": 6,
                    "legend": {
@@ -10528,7 +10416,7 @@ data:
                          "link": true,
                          "linkTargetBlank": false,
                          "linkTooltip": "Drill down",
-                         "linkUrl": "./d/6581e46e4e5c7ba40a07646395ef7b23/k8s-resources-pod?var-datasource=$datasource&var-cluster=$cluster&var-namespace=$namespace&var-pod=$__cell",
+                         "linkUrl": "./d/6581e46e4e5c7ba40a07646395ef7b23/k8s-resources-pod?var-datasource=prometheus&var-cluster=$cluster&var-namespace=$namespace&var-pod=$__cell",
                          "pattern": "pod",
                          "thresholds": [ ],
                          "type": "number",
@@ -10647,7 +10535,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 7,
                    "legend": {
@@ -10772,7 +10660,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "id": 8,
                    "legend": {
@@ -10933,7 +10821,7 @@ data:
                          "link": true,
                          "linkTargetBlank": false,
                          "linkTooltip": "Drill down",
-                         "linkUrl": "./d/6581e46e4e5c7ba40a07646395ef7b23/k8s-resources-pod?var-datasource=$datasource&var-cluster=$cluster&var-namespace=$namespace&var-pod=$__cell",
+                         "linkUrl": "./d/6581e46e4e5c7ba40a07646395ef7b23/k8s-resources-pod?var-datasource=prometheus&var-cluster=$cluster&var-namespace=$namespace&var-pod=$__cell",
                          "pattern": "pod",
                          "thresholds": [ ],
                          "type": "number",
@@ -11079,7 +10967,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "id": 9,
                    "interval": "1m",
@@ -11211,7 +11099,7 @@ data:
                          "link": true,
                          "linkTargetBlank": false,
                          "linkTooltip": "Drill down to pods",
-                         "linkUrl": "./d/6581e46e4e5c7ba40a07646395ef7b23/k8s-resources-pod?var-datasource=$datasource&var-cluster=$cluster&var-namespace=$namespace&var-pod=$__cell",
+                         "linkUrl": "./d/6581e46e4e5c7ba40a07646395ef7b23/k8s-resources-pod?var-datasource=prometheus&var-cluster=$cluster&var-namespace=$namespace&var-pod=$__cell",
                          "pattern": "pod",
                          "thresholds": [ ],
                          "type": "number",
@@ -11339,7 +11227,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 10,
                    "legend": {
@@ -11427,7 +11315,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 11,
                    "legend": {
@@ -11515,7 +11403,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 12,
                    "legend": {
@@ -11603,7 +11491,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 13,
                    "legend": {
@@ -11691,7 +11579,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 14,
                    "legend": {
@@ -11779,7 +11667,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 15,
                    "legend": {
@@ -11861,32 +11749,16 @@ data:
        ],
        "schemaVersion": 14,
        "style": "dark",
-       "tags": [
-          "kubernetes-mixin"
-       ],
+       "tags": [ ],
        "templating": {
           "list": [
-             {
-                "current": {
-                   "text": "default",
-                   "value": "default"
-                },
-                "hide": 0,
-                "label": null,
-                "name": "datasource",
-                "options": [ ],
-                "query": "prometheus",
-                "refresh": 1,
-                "regex": "",
-                "type": "datasource"
-             },
              {
                 "allValue": null,
                 "current": {
                    "text": "",
                    "value": ""
                 },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "hide": 2,
                 "includeAll": false,
                 "label": null,
@@ -11909,7 +11781,7 @@ data:
                    "text": "",
                    "value": ""
                 },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "hide": 0,
                 "includeAll": false,
                 "label": null,
@@ -11990,7 +11862,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 1,
                    "legend": {
@@ -12113,7 +11985,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 2,
                    "legend": {
@@ -12210,7 +12082,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "id": 3,
                    "legend": {
@@ -12445,7 +12317,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 4,
                    "legend": {
@@ -12570,7 +12442,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "id": 5,
                    "legend": {
@@ -12877,7 +12749,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 6,
                    "interval": "1m",
@@ -12966,7 +12838,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 7,
                    "interval": "1m",
@@ -13055,7 +12927,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 8,
                    "interval": "1m",
@@ -13144,7 +13016,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 9,
                    "interval": "1m",
@@ -13233,7 +13105,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 10,
                    "interval": "1m",
@@ -13322,7 +13194,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 11,
                    "interval": "1m",
@@ -13405,32 +13277,16 @@ data:
        ],
        "schemaVersion": 14,
        "style": "dark",
-       "tags": [
-          "kubernetes-mixin"
-       ],
+       "tags": [ ],
        "templating": {
           "list": [
-             {
-                "current": {
-                   "text": "default",
-                   "value": "default"
-                },
-                "hide": 0,
-                "label": null,
-                "name": "datasource",
-                "options": [ ],
-                "query": "prometheus",
-                "refresh": 1,
-                "regex": "",
-                "type": "datasource"
-             },
              {
                 "allValue": null,
                 "current": {
                    "text": "",
                    "value": ""
                 },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "hide": 2,
                 "includeAll": false,
                 "label": null,
@@ -13453,7 +13309,7 @@ data:
                    "text": "",
                    "value": ""
                 },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "hide": 0,
                 "includeAll": false,
                 "label": null,
@@ -13476,7 +13332,7 @@ data:
                    "text": "",
                    "value": ""
                 },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "hide": 0,
                 "includeAll": false,
                 "label": null,
@@ -13557,7 +13413,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 1,
                    "legend": {
@@ -13645,7 +13501,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "id": 2,
                    "legend": {
@@ -13761,7 +13617,7 @@ data:
                          "link": true,
                          "linkTargetBlank": false,
                          "linkTooltip": "Drill down",
-                         "linkUrl": "./d/6581e46e4e5c7ba40a07646395ef7b23/k8s-resources-pod?var-datasource=$datasource&var-cluster=$cluster&var-namespace=$namespace&var-pod=$__cell",
+                         "linkUrl": "./d/6581e46e4e5c7ba40a07646395ef7b23/k8s-resources-pod?var-datasource=prometheus&var-cluster=$cluster&var-namespace=$namespace&var-pod=$__cell",
                          "pattern": "pod",
                          "thresholds": [ ],
                          "type": "number",
@@ -13880,7 +13736,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 3,
                    "legend": {
@@ -13968,7 +13824,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "id": 4,
                    "legend": {
@@ -14084,7 +13940,7 @@ data:
                          "link": true,
                          "linkTargetBlank": false,
                          "linkTooltip": "Drill down",
-                         "linkUrl": "./d/6581e46e4e5c7ba40a07646395ef7b23/k8s-resources-pod?var-datasource=$datasource&var-cluster=$cluster&var-namespace=$namespace&var-pod=$__cell",
+                         "linkUrl": "./d/6581e46e4e5c7ba40a07646395ef7b23/k8s-resources-pod?var-datasource=prometheus&var-cluster=$cluster&var-namespace=$namespace&var-pod=$__cell",
                          "pattern": "pod",
                          "thresholds": [ ],
                          "type": "number",
@@ -14203,7 +14059,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "id": 5,
                    "interval": "1m",
@@ -14335,7 +14191,7 @@ data:
                          "link": true,
                          "linkTargetBlank": false,
                          "linkTooltip": "Drill down",
-                         "linkUrl": "./d/6581e46e4e5c7ba40a07646395ef7b23/k8s-resources-pod?var-datasource=$datasource&var-cluster=$cluster&var-namespace=$namespace&var-pod=$__cell",
+                         "linkUrl": "./d/6581e46e4e5c7ba40a07646395ef7b23/k8s-resources-pod?var-datasource=prometheus&var-cluster=$cluster&var-namespace=$namespace&var-pod=$__cell",
                          "pattern": "pod",
                          "thresholds": [ ],
                          "type": "number",
@@ -14463,7 +14319,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 6,
                    "legend": {
@@ -14551,7 +14407,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 7,
                    "legend": {
@@ -14639,7 +14495,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 8,
                    "legend": {
@@ -14727,7 +14583,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 9,
                    "legend": {
@@ -14815,7 +14671,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 10,
                    "legend": {
@@ -14903,7 +14759,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 11,
                    "legend": {
@@ -14991,7 +14847,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 12,
                    "legend": {
@@ -15079,7 +14935,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 13,
                    "legend": {
@@ -15161,32 +15017,16 @@ data:
        ],
        "schemaVersion": 14,
        "style": "dark",
-       "tags": [
-          "kubernetes-mixin"
-       ],
+       "tags": [ ],
        "templating": {
           "list": [
-             {
-                "current": {
-                   "text": "default",
-                   "value": "default"
-                },
-                "hide": 0,
-                "label": null,
-                "name": "datasource",
-                "options": [ ],
-                "query": "prometheus",
-                "refresh": 1,
-                "regex": "",
-                "type": "datasource"
-             },
              {
                 "allValue": null,
                 "current": {
                    "text": "",
                    "value": ""
                 },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "hide": 2,
                 "includeAll": false,
                 "label": null,
@@ -15209,7 +15049,7 @@ data:
                    "text": "",
                    "value": ""
                 },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "hide": 0,
                 "includeAll": false,
                 "label": null,
@@ -15232,7 +15072,7 @@ data:
                    "text": "",
                    "value": ""
                 },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "hide": 0,
                 "includeAll": false,
                 "label": null,
@@ -15255,7 +15095,7 @@ data:
                    "text": "",
                    "value": ""
                 },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "hide": 0,
                 "includeAll": false,
                 "label": null,
@@ -15336,7 +15176,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 1,
                    "legend": {
@@ -15461,7 +15301,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "id": 2,
                    "legend": {
@@ -15592,7 +15432,7 @@ data:
                          "link": true,
                          "linkTargetBlank": false,
                          "linkTooltip": "Drill down",
-                         "linkUrl": "./d/a164a7f0339f99e89cea5cb47e9be617/k8s-resources-workload?var-datasource=$datasource&var-cluster=$cluster&var-namespace=$namespace&var-workload=$__cell&var-type=$__cell_2",
+                         "linkUrl": "./d/a164a7f0339f99e89cea5cb47e9be617/k8s-resources-workload?var-datasource=prometheus&var-cluster=$cluster&var-namespace=$namespace&var-workload=$__cell&var-type=$__cell_2",
                          "pattern": "workload",
                          "thresholds": [ ],
                          "type": "number",
@@ -15735,7 +15575,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 3,
                    "legend": {
@@ -15860,7 +15700,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "id": 4,
                    "legend": {
@@ -15991,7 +15831,7 @@ data:
                          "link": true,
                          "linkTargetBlank": false,
                          "linkTooltip": "Drill down",
-                         "linkUrl": "./d/a164a7f0339f99e89cea5cb47e9be617/k8s-resources-workload?var-datasource=$datasource&var-cluster=$cluster&var-namespace=$namespace&var-workload=$__cell&var-type=$__cell_2",
+                         "linkUrl": "./d/a164a7f0339f99e89cea5cb47e9be617/k8s-resources-workload?var-datasource=prometheus&var-cluster=$cluster&var-namespace=$namespace&var-workload=$__cell&var-type=$__cell_2",
                          "pattern": "workload",
                          "thresholds": [ ],
                          "type": "number",
@@ -16134,7 +15974,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "id": 5,
                    "interval": "1m",
@@ -16266,7 +16106,7 @@ data:
                          "link": true,
                          "linkTargetBlank": false,
                          "linkTooltip": "Drill down to pods",
-                         "linkUrl": "./d/a164a7f0339f99e89cea5cb47e9be617/k8s-resources-workload?var-datasource=$datasource&var-cluster=$cluster&var-namespace=$namespace&var-workload=$__cell&var-type=$type",
+                         "linkUrl": "./d/a164a7f0339f99e89cea5cb47e9be617/k8s-resources-workload?var-datasource=prometheus&var-cluster=$cluster&var-namespace=$namespace&var-workload=$__cell&var-type=$type",
                          "pattern": "workload",
                          "thresholds": [ ],
                          "type": "number",
@@ -16409,7 +16249,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 6,
                    "legend": {
@@ -16497,7 +16337,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 7,
                    "legend": {
@@ -16585,7 +16425,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 8,
                    "legend": {
@@ -16673,7 +16513,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 9,
                    "legend": {
@@ -16761,7 +16601,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 10,
                    "legend": {
@@ -16849,7 +16689,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 11,
                    "legend": {
@@ -16937,7 +16777,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 12,
                    "legend": {
@@ -17025,7 +16865,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 10,
                    "id": 13,
                    "legend": {
@@ -17107,25 +16947,9 @@ data:
        ],
        "schemaVersion": 14,
        "style": "dark",
-       "tags": [
-          "kubernetes-mixin"
-       ],
+       "tags": [ ],
        "templating": {
           "list": [
-             {
-                "current": {
-                   "text": "default",
-                   "value": "default"
-                },
-                "hide": 0,
-                "label": null,
-                "name": "datasource",
-                "options": [ ],
-                "query": "prometheus",
-                "refresh": 1,
-                "regex": "",
-                "type": "datasource"
-             },
              {
                 "allValue": null,
                 "auto": false,
@@ -17135,7 +16959,7 @@ data:
                    "text": "deployment",
                    "value": "deployment"
                 },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "definition": "label_values(namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\".+\"}, workload_type)",
                 "hide": 0,
                 "includeAll": false,
@@ -17160,7 +16984,7 @@ data:
                    "text": "",
                    "value": ""
                 },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "hide": 2,
                 "includeAll": false,
                 "label": null,
@@ -17183,7 +17007,7 @@ data:
                    "text": "",
                    "value": ""
                 },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "hide": 0,
                 "includeAll": false,
                 "label": null,
@@ -17295,7 +17119,7 @@ data:
                 "rgba(237, 129, 40, 0.89)",
                 "#d44a3a"
              ],
-             "datasource": "$datasource",
+             "datasource": "prometheus",
              "decimals": 0,
              "format": "time_series",
              "gauge": {
@@ -17416,7 +17240,7 @@ data:
                 "rgba(237, 129, 40, 0.89)",
                 "#d44a3a"
              ],
-             "datasource": "$datasource",
+             "datasource": "prometheus",
              "decimals": 0,
              "format": "time_series",
              "gauge": {
@@ -17563,7 +17387,7 @@ data:
                    "value": "pod"
                 }
              ],
-             "datasource": "$datasource",
+             "datasource": "prometheus",
              "fill": 1,
              "fontSize": "100%",
              "gridPos": {
@@ -17786,7 +17610,7 @@ data:
              "bars": false,
              "dashLength": 10,
              "dashes": false,
-             "datasource": "$datasource",
+             "datasource": "prometheus",
              "fill": 2,
              "fillGradient": 0,
              "gridPos": {
@@ -17877,7 +17701,7 @@ data:
              "bars": false,
              "dashLength": 10,
              "dashes": false,
-             "datasource": "$datasource",
+             "datasource": "prometheus",
              "fill": 2,
              "fillGradient": 0,
              "gridPos": {
@@ -17979,7 +17803,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 2,
                    "fillGradient": 0,
                    "gridPos": {
@@ -18070,7 +17894,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 2,
                    "fillGradient": 0,
                    "gridPos": {
@@ -18181,7 +18005,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 2,
                    "fillGradient": 0,
                    "gridPos": {
@@ -18272,7 +18096,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 2,
                    "fillGradient": 0,
                    "gridPos": {
@@ -18372,25 +18196,9 @@ data:
        "rows": [ ],
        "schemaVersion": 18,
        "style": "dark",
-       "tags": [
-          "kubernetes-mixin"
-       ],
+       "tags": [ ],
        "templating": {
           "list": [
-             {
-                "current": {
-                   "text": "default",
-                   "value": "default"
-                },
-                "hide": 0,
-                "label": null,
-                "name": "datasource",
-                "options": [ ],
-                "query": "prometheus",
-                "refresh": 1,
-                "regex": "",
-                "type": "datasource"
-             },
              {
                 "allValue": ".+",
                 "auto": false,
@@ -18400,7 +18208,7 @@ data:
                    "text": "kube-system",
                    "value": "kube-system"
                 },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "definition": "label_values(container_network_receive_packets_total, namespace)",
                 "hide": 0,
                 "includeAll": true,
@@ -18428,7 +18236,7 @@ data:
                    "text": "5m",
                    "value": "5m"
                 },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "hide": 0,
                 "includeAll": false,
                 "label": null,
@@ -18471,7 +18279,7 @@ data:
                    "text": "5m",
                    "value": "5m"
                 },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "hide": 2,
                 "includeAll": false,
                 "label": null,
@@ -18586,7 +18394,7 @@ data:
              "bars": true,
              "dashLength": 10,
              "dashes": false,
-             "datasource": "$datasource",
+             "datasource": "prometheus",
              "fill": 2,
              "fillGradient": 0,
              "gridPos": {
@@ -18681,7 +18489,7 @@ data:
              "bars": true,
              "dashLength": 10,
              "dashes": false,
-             "datasource": "$datasource",
+             "datasource": "prometheus",
              "fill": 2,
              "fillGradient": 0,
              "gridPos": {
@@ -18814,7 +18622,7 @@ data:
                    "value": "workload"
                 }
              ],
-             "datasource": "$datasource",
+             "datasource": "prometheus",
              "fill": 1,
              "fontSize": "90%",
              "gridPos": {
@@ -19075,7 +18883,7 @@ data:
                    "bars": true,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 2,
                    "fillGradient": 0,
                    "gridPos": {
@@ -19170,7 +18978,7 @@ data:
                    "bars": true,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 2,
                    "fillGradient": 0,
                    "gridPos": {
@@ -19293,7 +19101,7 @@ data:
              "bars": false,
              "dashLength": 10,
              "dashes": false,
-             "datasource": "$datasource",
+             "datasource": "prometheus",
              "fill": 2,
              "fillGradient": 0,
              "gridPos": {
@@ -19384,7 +19192,7 @@ data:
              "bars": false,
              "dashLength": 10,
              "dashes": false,
-             "datasource": "$datasource",
+             "datasource": "prometheus",
              "fill": 2,
              "fillGradient": 0,
              "gridPos": {
@@ -19486,7 +19294,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 2,
                    "fillGradient": 0,
                    "gridPos": {
@@ -19577,7 +19385,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 2,
                    "fillGradient": 0,
                    "gridPos": {
@@ -19688,7 +19496,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 2,
                    "fillGradient": 0,
                    "gridPos": {
@@ -19779,7 +19587,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 2,
                    "fillGradient": 0,
                    "gridPos": {
@@ -19879,25 +19687,9 @@ data:
        "rows": [ ],
        "schemaVersion": 18,
        "style": "dark",
-       "tags": [
-          "kubernetes-mixin"
-       ],
+       "tags": [ ],
        "templating": {
           "list": [
-             {
-                "current": {
-                   "text": "default",
-                   "value": "default"
-                },
-                "hide": 0,
-                "label": null,
-                "name": "datasource",
-                "options": [ ],
-                "query": "prometheus",
-                "refresh": 1,
-                "regex": "",
-                "type": "datasource"
-             },
              {
                 "allValue": null,
                 "auto": false,
@@ -19907,7 +19699,7 @@ data:
                    "text": "kube-system",
                    "value": "kube-system"
                 },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "definition": "label_values(container_network_receive_packets_total, namespace)",
                 "hide": 0,
                 "includeAll": false,
@@ -19935,7 +19727,7 @@ data:
                    "text": "deployment",
                    "value": "deployment"
                 },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "definition": "label_values(namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\".+\"}, workload_type)",
                 "hide": 0,
                 "includeAll": false,
@@ -19963,7 +19755,7 @@ data:
                    "text": "5m",
                    "value": "5m"
                 },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "hide": 0,
                 "includeAll": false,
                 "label": null,
@@ -20006,7 +19798,7 @@ data:
                    "text": "5m",
                    "value": "5m"
                 },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "hide": 2,
                 "includeAll": false,
                 "label": null,
@@ -20097,7 +19889,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -20189,7 +19981,7 @@ data:
                       "rgba(237, 129, 40, 0.89)",
                       "rgba(245, 54, 54, 0.9)"
                    ],
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "format": "percent",
                    "gauge": {
                       "maxValue": 100,
@@ -20278,7 +20070,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -20370,7 +20162,7 @@ data:
                       "rgba(237, 129, 40, 0.89)",
                       "rgba(245, 54, 54, 0.9)"
                    ],
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "format": "percent",
                    "gauge": {
                       "maxValue": 100,
@@ -20453,29 +20245,13 @@ data:
        ],
        "schemaVersion": 14,
        "style": "dark",
-       "tags": [
-          "kubernetes-mixin"
-       ],
+       "tags": [ ],
        "templating": {
           "list": [
              {
-                "current": {
-                   "text": "default",
-                   "value": "default"
-                },
-                "hide": 0,
-                "label": null,
-                "name": "datasource",
-                "options": [ ],
-                "query": "prometheus",
-                "refresh": 1,
-                "regex": "",
-                "type": "datasource"
-             },
-             {
                 "allValue": null,
                 "current": { },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "hide": 2,
                 "includeAll": false,
                 "label": "cluster",
@@ -20495,7 +20271,7 @@ data:
              {
                 "allValue": null,
                 "current": { },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "hide": 0,
                 "includeAll": false,
                 "label": "Namespace",
@@ -20515,7 +20291,7 @@ data:
              {
                 "allValue": null,
                 "current": { },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "hide": 0,
                 "includeAll": false,
                 "label": "PersistentVolumeClaim",
@@ -20603,7 +20379,7 @@ data:
                       "rgba(237, 129, 40, 0.89)",
                       "#d44a3a"
                    ],
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "format": "none",
                    "gauge": {
                       "maxValue": 100,
@@ -20682,7 +20458,7 @@ data:
                       "rgba(237, 129, 40, 0.89)",
                       "#d44a3a"
                    ],
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "format": "none",
                    "gauge": {
                       "maxValue": 100,
@@ -20761,7 +20537,7 @@ data:
                       "rgba(237, 129, 40, 0.89)",
                       "#d44a3a"
                    ],
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "format": "none",
                    "gauge": {
                       "maxValue": 100,
@@ -20854,7 +20630,7 @@ data:
                       "rgba(237, 129, 40, 0.89)",
                       "#d44a3a"
                    ],
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "format": "none",
                    "gauge": {
                       "maxValue": 100,
@@ -20934,7 +20710,7 @@ data:
                       "rgba(237, 129, 40, 0.89)",
                       "#d44a3a"
                    ],
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "format": "none",
                    "gauge": {
                       "maxValue": 100,
@@ -21014,7 +20790,7 @@ data:
                       "rgba(237, 129, 40, 0.89)",
                       "#d44a3a"
                    ],
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "format": "none",
                    "gauge": {
                       "maxValue": 100,
@@ -21094,7 +20870,7 @@ data:
                       "rgba(237, 129, 40, 0.89)",
                       "#d44a3a"
                    ],
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "format": "none",
                    "gauge": {
                       "maxValue": 100,
@@ -21183,7 +20959,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 1,
                    "fillGradient": 0,
                    "gridPos": { },
@@ -21298,29 +21074,13 @@ data:
        ],
        "schemaVersion": 14,
        "style": "dark",
-       "tags": [
-          "kubernetes-mixin"
-       ],
+       "tags": [ ],
        "templating": {
           "list": [
              {
-                "current": {
-                   "text": "default",
-                   "value": "default"
-                },
-                "hide": 0,
-                "label": null,
-                "name": "datasource",
-                "options": [ ],
-                "query": "prometheus",
-                "refresh": 1,
-                "regex": "",
-                "type": "datasource"
-             },
-             {
                 "allValue": null,
                 "current": { },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "hide": 2,
                 "includeAll": false,
                 "label": "cluster",
@@ -21340,7 +21100,7 @@ data:
              {
                 "allValue": null,
                 "current": { },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "hide": 0,
                 "includeAll": false,
                 "label": "Namespace",
@@ -21360,7 +21120,7 @@ data:
              {
                 "allValue": null,
                 "current": { },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "hide": 0,
                 "includeAll": false,
                 "label": "Name",
@@ -21468,7 +21228,7 @@ data:
              "bars": true,
              "dashLength": 10,
              "dashes": false,
-             "datasource": "$datasource",
+             "datasource": "prometheus",
              "fill": 2,
              "fillGradient": 0,
              "gridPos": {
@@ -21563,7 +21323,7 @@ data:
              "bars": true,
              "dashLength": 10,
              "dashes": false,
-             "datasource": "$datasource",
+             "datasource": "prometheus",
              "fill": 2,
              "fillGradient": 0,
              "gridPos": {
@@ -21696,7 +21456,7 @@ data:
                    "value": "namespace"
                 }
              ],
-             "datasource": "$datasource",
+             "datasource": "prometheus",
              "fill": 1,
              "fontSize": "90%",
              "gridPos": {
@@ -21957,7 +21717,7 @@ data:
                    "bars": true,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 2,
                    "fillGradient": 0,
                    "gridPos": {
@@ -22052,7 +21812,7 @@ data:
                    "bars": true,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 2,
                    "fillGradient": 0,
                    "gridPos": {
@@ -22175,7 +21935,7 @@ data:
              "bars": false,
              "dashLength": 10,
              "dashes": false,
-             "datasource": "$datasource",
+             "datasource": "prometheus",
              "fill": 2,
              "fillGradient": 0,
              "gridPos": {
@@ -22266,7 +22026,7 @@ data:
              "bars": false,
              "dashLength": 10,
              "dashes": false,
-             "datasource": "$datasource",
+             "datasource": "prometheus",
              "fill": 2,
              "fillGradient": 0,
              "gridPos": {
@@ -22368,7 +22128,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 2,
                    "fillGradient": 0,
                    "gridPos": {
@@ -22459,7 +22219,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 2,
                    "fillGradient": 0,
                    "gridPos": {
@@ -22570,7 +22330,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 2,
                    "fillGradient": 0,
                    "gridPos": {
@@ -22661,7 +22421,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 2,
                    "fillGradient": 0,
                    "gridPos": {
@@ -22752,7 +22512,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 2,
                    "fillGradient": 0,
                    "gridPos": {
@@ -22849,7 +22609,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 2,
                    "fillGradient": 0,
                    "gridPos": {
@@ -22955,9 +22715,7 @@ data:
        "rows": [ ],
        "schemaVersion": 18,
        "style": "dark",
-       "tags": [
-          "kubernetes-mixin"
-       ],
+       "tags": [ ],
        "templating": {
           "list": [
              {
@@ -22969,7 +22727,7 @@ data:
                    "text": "5m",
                    "value": "5m"
                 },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "hide": 0,
                 "includeAll": false,
                 "label": null,
@@ -23012,7 +22770,7 @@ data:
                    "text": "5m",
                    "value": "5m"
                 },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "hide": 2,
                 "includeAll": false,
                 "label": null,
@@ -23035,20 +22793,6 @@ data:
                 "tagsQuery": "",
                 "type": "interval",
                 "useTags": false
-             },
-             {
-                "current": {
-                   "text": "default",
-                   "value": "default"
-                },
-                "hide": 0,
-                "label": null,
-                "name": "datasource",
-                "options": [ ],
-                "query": "prometheus",
-                "refresh": 1,
-                "regex": "",
-                "type": "datasource"
              }
           ]
        },
@@ -23145,7 +22889,7 @@ data:
                 "rgba(237, 129, 40, 0.89)",
                 "#d44a3a"
              ],
-             "datasource": "$datasource",
+             "datasource": "prometheus",
              "decimals": 0,
              "format": "time_series",
              "gauge": {
@@ -23266,7 +23010,7 @@ data:
                 "rgba(237, 129, 40, 0.89)",
                 "#d44a3a"
              ],
-             "datasource": "$datasource",
+             "datasource": "prometheus",
              "decimals": 0,
              "format": "time_series",
              "gauge": {
@@ -23402,7 +23146,7 @@ data:
              "bars": false,
              "dashLength": 10,
              "dashes": false,
-             "datasource": "$datasource",
+             "datasource": "prometheus",
              "fill": 2,
              "fillGradient": 0,
              "gridPos": {
@@ -23493,7 +23237,7 @@ data:
              "bars": false,
              "dashLength": 10,
              "dashes": false,
-             "datasource": "$datasource",
+             "datasource": "prometheus",
              "fill": 2,
              "fillGradient": 0,
              "gridPos": {
@@ -23595,7 +23339,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 2,
                    "fillGradient": 0,
                    "gridPos": {
@@ -23686,7 +23430,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 2,
                    "fillGradient": 0,
                    "gridPos": {
@@ -23797,7 +23541,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 2,
                    "fillGradient": 0,
                    "gridPos": {
@@ -23888,7 +23632,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 2,
                    "fillGradient": 0,
                    "gridPos": {
@@ -23988,25 +23732,9 @@ data:
        "rows": [ ],
        "schemaVersion": 18,
        "style": "dark",
-       "tags": [
-          "kubernetes-mixin"
-       ],
+       "tags": [ ],
        "templating": {
           "list": [
-             {
-                "current": {
-                   "text": "default",
-                   "value": "default"
-                },
-                "hide": 0,
-                "label": null,
-                "name": "datasource",
-                "options": [ ],
-                "query": "prometheus",
-                "refresh": 1,
-                "regex": "",
-                "type": "datasource"
-             },
              {
                 "allValue": ".+",
                 "auto": false,
@@ -24016,7 +23744,7 @@ data:
                    "text": "kube-system",
                    "value": "kube-system"
                 },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "definition": "label_values(container_network_receive_packets_total, namespace)",
                 "hide": 0,
                 "includeAll": true,
@@ -24044,7 +23772,7 @@ data:
                    "text": "",
                    "value": ""
                 },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "definition": "label_values(container_network_receive_packets_total{namespace=~\"$namespace\"}, pod)",
                 "hide": 0,
                 "includeAll": false,
@@ -24072,7 +23800,7 @@ data:
                    "text": "5m",
                    "value": "5m"
                 },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "hide": 0,
                 "includeAll": false,
                 "label": null,
@@ -24115,7 +23843,7 @@ data:
                    "text": "5m",
                    "value": "5m"
                 },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "hide": 2,
                 "includeAll": false,
                 "label": null,
@@ -24230,7 +23958,7 @@ data:
              "bars": true,
              "dashLength": 10,
              "dashes": false,
-             "datasource": "$datasource",
+             "datasource": "prometheus",
              "fill": 2,
              "fillGradient": 0,
              "gridPos": {
@@ -24325,7 +24053,7 @@ data:
              "bars": true,
              "dashLength": 10,
              "dashes": false,
-             "datasource": "$datasource",
+             "datasource": "prometheus",
              "fill": 2,
              "fillGradient": 0,
              "gridPos": {
@@ -24431,7 +24159,7 @@ data:
                    "bars": true,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 2,
                    "fillGradient": 0,
                    "gridPos": {
@@ -24526,7 +24254,7 @@ data:
                    "bars": true,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 2,
                    "fillGradient": 0,
                    "gridPos": {
@@ -24649,7 +24377,7 @@ data:
              "bars": false,
              "dashLength": 10,
              "dashes": false,
-             "datasource": "$datasource",
+             "datasource": "prometheus",
              "fill": 2,
              "fillGradient": 0,
              "gridPos": {
@@ -24740,7 +24468,7 @@ data:
              "bars": false,
              "dashLength": 10,
              "dashes": false,
-             "datasource": "$datasource",
+             "datasource": "prometheus",
              "fill": 2,
              "fillGradient": 0,
              "gridPos": {
@@ -24842,7 +24570,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 2,
                    "fillGradient": 0,
                    "gridPos": {
@@ -24933,7 +24661,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 2,
                    "fillGradient": 0,
                    "gridPos": {
@@ -25044,7 +24772,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 2,
                    "fillGradient": 0,
                    "gridPos": {
@@ -25135,7 +24863,7 @@ data:
                    "bars": false,
                    "dashLength": 10,
                    "dashes": false,
-                   "datasource": "$datasource",
+                   "datasource": "prometheus",
                    "fill": 2,
                    "fillGradient": 0,
                    "gridPos": {
@@ -25235,25 +24963,9 @@ data:
        "rows": [ ],
        "schemaVersion": 18,
        "style": "dark",
-       "tags": [
-          "kubernetes-mixin"
-       ],
+       "tags": [ ],
        "templating": {
           "list": [
-             {
-                "current": {
-                   "text": "default",
-                   "value": "default"
-                },
-                "hide": 0,
-                "label": null,
-                "name": "datasource",
-                "options": [ ],
-                "query": "prometheus",
-                "refresh": 1,
-                "regex": "",
-                "type": "datasource"
-             },
              {
                 "allValue": ".+",
                 "auto": false,
@@ -25263,7 +24975,7 @@ data:
                    "text": "kube-system",
                    "value": "kube-system"
                 },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "definition": "label_values(container_network_receive_packets_total, namespace)",
                 "hide": 0,
                 "includeAll": true,
@@ -25291,7 +25003,7 @@ data:
                    "text": "",
                    "value": ""
                 },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "definition": "label_values(namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\"}, workload)",
                 "hide": 0,
                 "includeAll": false,
@@ -25319,7 +25031,7 @@ data:
                    "text": "deployment",
                    "value": "deployment"
                 },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "definition": "label_values(namespace_workload_pod:kube_pod_owner:relabel{namespace=~\"$namespace\", workload=~\"$workload\"}, workload_type)",
                 "hide": 0,
                 "includeAll": false,
@@ -25347,7 +25059,7 @@ data:
                    "text": "5m",
                    "value": "5m"
                 },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "hide": 0,
                 "includeAll": false,
                 "label": null,
@@ -25390,7 +25102,7 @@ data:
                    "text": "5m",
                    "value": "5m"
                 },
-                "datasource": "$datasource",
+                "datasource": "prometheus",
                 "hide": 2,
                 "includeAll": false,
                 "label": null,
@@ -25449,4 +25161,3054 @@ data:
        "title": "Kubernetes / Networking / Workload",
        "uid": "728bf77cc1166d2f3133bf25846876cc",
        "version": 0
+    }
+---
+apiVersion: v1
+kind: ConfigMap                                                                                                                                           
+metadata:                                                                                                                                                 
+    namespace: monitoring                                                                                                                                   
+    name: grafana-dashboard-etcd
+data:
+  etcd.json: |
+    {
+      "__inputs": [ ],
+      "__requires": [ ],
+      "annotations": {
+        "list": [
+          {
+            "builtIn": 1,
+            "datasource": "-- Grafana --",
+            "enable": true,
+            "hide": true,
+            "iconColor": "rgba(0, 211, 255, 1)",
+            "name": "Annotations & Alerts",
+            "type": "dashboard"
+          }
+        ]
+      },
+      "description": "Etcd Dashboard from Prometheus for clusters running etcd as Kubernetes Pods",
+      "editable": true,
+      "gnetId": 10323,
+      "graphTooltip": 0,
+      "id": null,
+      "iteration": 1560164857592,
+      "links": [],
+      "panels": [
+        {
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 0
+          },
+          "id": 88,
+          "title": "Status",
+          "type": "row"
+        },
+        {
+          "cacheTimeout": null,
+          "columns": [],
+          "datasource": "prometheus",
+          "fontSize": "100%",
+          "gridPos": {
+            "h": 6,
+            "w": 12,
+            "x": 0,
+            "y": 1
+          },
+          "id": 74,
+          "interval": null,
+          "links": [],
+          "maxDataPoints": 100,
+          "pageSize": null,
+          "scroll": true,
+          "showHeader": true,
+          "sort": {
+            "col": 0,
+            "desc": true
+          },
+          "styles": [
+            {
+              "alias": "Time",
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "pattern": "Time",
+              "type": "hidden"
+            },
+            {
+              "alias": "Pod",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "mappingType": 1,
+              "pattern": "/pod/",
+              "thresholds": [],
+              "type": "string",
+              "unit": "short"
+            },
+            {
+              "alias": "Instance",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "mappingType": 1,
+              "pattern": "/instance/",
+              "thresholds": [],
+              "type": "string",
+              "unit": "short"
+            },
+            {
+              "alias": "% Used Space",
+              "colorMode": "value",
+              "colors": [
+                "rgba(50, 172, 45, 0.97)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(245, 54, 54, 0.9)"
+              ],
+              "decimals": 2,
+              "pattern": "/Value #B/",
+              "thresholds": [
+                "45",
+                " 80"
+              ],
+              "type": "number",
+              "unit": "percent"
+            },
+            {
+              "alias": "Mem Used",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "mappingType": 1,
+              "pattern": "Value #A",
+              "thresholds": [],
+              "type": "number",
+              "unit": "bytes"
+            },
+            {
+              "alias": "# Keys",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 0,
+              "mappingType": 1,
+              "pattern": "Value #C",
+              "thresholds": [],
+              "type": "number",
+              "unit": "none"
+            },
+            {
+              "alias": "Wal Sync 99p",
+              "colorMode": "value",
+              "colors": [
+                "rgba(50, 172, 45, 0.97)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(245, 54, 54, 0.9)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "mappingType": 1,
+              "pattern": "Value #D",
+              "thresholds": [
+                "0.100",
+                "0.400"
+              ],
+              "type": "number",
+              "unit": "s"
+            },
+            {
+              "alias": "DB Sync 99p",
+              "colorMode": "value",
+              "colors": [
+                "rgba(50, 172, 45, 0.97)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(245, 54, 54, 0.9)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "mappingType": 1,
+              "pattern": "Value #E",
+              "thresholds": [
+                "0.100",
+                "0.400"
+              ],
+              "type": "number",
+              "unit": "s"
+            },
+            {
+              "alias": "Is leader?",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "mappingType": 1,
+              "pattern": "Value #F",
+              "thresholds": [],
+              "type": "string",
+              "unit": "short",
+              "valueMaps": [
+                {
+                  "text": "NO",
+                  "value": "0"
+                },
+                {
+                  "text": "YES",
+                  "value": "1"
+                }
+              ]
+            },
+            {
+              "alias": "Compacted Keys",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 0,
+              "mappingType": 1,
+              "pattern": "Value #G",
+              "thresholds": [],
+              "type": "number",
+              "unit": "short"
+            },
+            {
+              "alias": "",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "mappingType": 1,
+              "pattern": "/.*/",
+              "thresholds": [],
+              "type": "hidden",
+              "unit": "short"
+            }
+          ],
+          "targets": [
+            {
+              "expr": "process_resident_memory_bytes{pod=~\"$pod\",job=~\"$cluster\"}",
+              "format": "table",
+              "instant": true,
+              "intervalFactor": 2,
+              "legendFormat": "",
+              "refId": "A"
+            },
+            {
+              "expr": "(etcd_mvcc_db_total_size_in_bytes{pod=~\"$pod\",job=~\"$cluster\"} / etcd_server_quota_backend_bytes{pod=~\"$pod\",job=~\"$cluster\"})*100",
+              "format": "table",
+              "instant": true,
+              "intervalFactor": 1,
+              "refId": "B"
+            },
+            {
+              "expr": "sum(etcd_debugging_mvcc_keys_total{pod=~\"$pod\",job=~\"$cluster\"}) by (instance)",
+              "format": "table",
+              "instant": true,
+              "intervalFactor": 1,
+              "refId": "C"
+            },
+            {
+              "expr": "histogram_quantile(0.99, sum(rate(etcd_disk_wal_fsync_duration_seconds_bucket{pod=~\"$pod\",job=~\"$cluster\"}[5m])) by (instance, le))",
+              "format": "table",
+              "instant": true,
+              "intervalFactor": 2,
+              "refId": "D"
+            },
+            {
+              "expr": "histogram_quantile(0.99, sum(rate(etcd_disk_backend_commit_duration_seconds_bucket{pod=~\"$pod\",job=~\"$cluster\"}[5m])) by (instance, le))",
+              "format": "table",
+              "instant": true,
+              "intervalFactor": 2,
+              "refId": "E"
+            },
+            {
+              "expr": "sum(etcd_server_is_leader{pod=~\"$pod\",job=~\"$cluster\"}) by (instance)",
+              "format": "table",
+              "instant": true,
+              "intervalFactor": 1,
+              "refId": "F"
+            },
+            {
+              "expr": "sum(etcd_debugging_mvcc_db_compaction_keys_total{pod=~\"$pod\",job=~\"$cluster\"}) by (instance)",
+              "format": "table",
+              "instant": true,
+              "intervalFactor": 1,
+              "refId": "G"
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Info",
+          "transform": "table",
+          "type": "table"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": false,
+          "colors": [
+            "#299c46",
+            "rgba(237, 129, 40, 0.89)",
+            "#d44a3a"
+          ],
+          "datasource": "prometheus",
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 3,
+            "w": 3,
+            "x": 12,
+            "y": 1
+          },
+          "id": 66,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "sum(etcd_server_id{pod=~\"$pod\",job=~\"$cluster\"})",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "members",
+              "refId": "A"
+            }
+          ],
+          "thresholds": "",
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Etcd Members",
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            }
+          ],
+          "valueName": "current"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": true,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "datasource": "prometheus",
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 3,
+            "w": 3,
+            "x": 12,
+            "y": 4
+          },
+          "id": 44,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "max(etcd_server_has_leader{pod=~\"$pod\",job=~\"$cluster\"})",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "refId": "A",
+              "step": 600
+            }
+          ],
+          "thresholds": "0,1",
+          "title": "Etcd has a leader?",
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "YES",
+              "value": "1"
+            },
+            {
+              "op": "=",
+              "text": "NO",
+              "value": "0"
+            }
+          ],
+          "valueName": "avg"
+        },
+        {
+          "collapsed": false,
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 8
+          },
+          "id": 76,
+          "panels": [],
+          "title": "General Info",
+          "type": "row"
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "prometheus",
+          "fill": 0,
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 9
+          },
+          "id": 58,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null",
+          "paceLength": 10,
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "etcd_debugging_mvcc_keys_total{pod=~\"$pod\",job=~\"$cluster\"}",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "{{ pod }} Num keys",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Keys",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "prometheus",
+          "editable": true,
+          "error": false,
+          "fill": 0,
+          "gridPos": {
+            "h": 7,
+            "w": 6,
+            "x": 12,
+            "y": 9
+          },
+          "id": 22,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "connected",
+          "paceLength": 10,
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "rate(etcd_network_client_grpc_received_bytes_total{pod=~\"$pod\",job=~\"$cluster\"}[5m])",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "{{ pod }} Client Traffic In",
+              "metric": "etcd_network_client_grpc_received_bytes_total",
+              "refId": "A",
+              "step": 120
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Client Traffic In",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "Bps",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "bytes",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "prometheus",
+          "editable": true,
+          "error": false,
+          "fill": 0,
+          "gridPos": {
+            "h": 7,
+            "w": 6,
+            "x": 18,
+            "y": 9
+          },
+          "id": 21,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "connected",
+          "paceLength": 10,
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "rate(etcd_network_client_grpc_sent_bytes_total{pod=~\"$pod\",job=~\"$cluster\"}[5m])",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "{{ pod }} Client Traffic Out",
+              "metric": "etcd_network_client_grpc_sent_bytes_total",
+              "refId": "A",
+              "step": 120
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Client Traffic Out",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "Bps",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "prometheus",
+          "editable": true,
+          "error": false,
+          "fill": 0,
+          "gridPos": {
+            "h": 7,
+            "w": 6,
+            "x": 12,
+            "y": 16
+          },
+          "id": 20,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "connected",
+          "paceLength": 10,
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(rate(etcd_network_peer_received_bytes_total{pod=~\"$pod\",job=~\"$cluster\"}[5m])) by (instance)",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "{{ pod }} Peer Traffic In",
+              "metric": "etcd_network_peer_received_bytes_total",
+              "refId": "A",
+              "step": 120
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Peer Traffic In",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "Bps",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "prometheus",
+          "decimals": null,
+          "editable": true,
+          "error": false,
+          "fill": 0,
+          "grid": {},
+          "gridPos": {
+            "h": 7,
+            "w": 6,
+            "x": 18,
+            "y": 16
+          },
+          "id": 16,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "connected",
+          "paceLength": 10,
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(rate(etcd_network_peer_sent_bytes_total{pod=~\"$pod\",job=~\"$cluster\"}[5m])) by (instance)",
+              "format": "time_series",
+              "hide": false,
+              "interval": "",
+              "intervalFactor": 2,
+              "legendFormat": "{{ pod }} Peer Traffic Out",
+              "metric": "etcd_network_peer_sent_bytes_total",
+              "refId": "A",
+              "step": 120
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Peer Traffic Out",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "Bps",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "prometheus",
+          "fill": 0,
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 17
+          },
+          "id": 52,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null",
+          "paceLength": 10,
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "rate(etcd_debugging_mvcc_put_total{pod=~\"$pod\",job=~\"$cluster\"}[5m])",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "{{ pod }} puts/s",
+              "refId": "A"
+            },
+            {
+              "expr": "rate(etcd_debugging_mvcc_delete_total{pod=~\"$pod\",job=~\"$cluster\"}[5m])",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "{{ pod }} deletes/s",
+              "refId": "B"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Key Operations",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "ops",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "cacheTimeout": null,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "prometheus",
+          "fill": 0,
+          "gridPos": {
+            "h": 7,
+            "w": 6,
+            "x": 12,
+            "y": 23
+          },
+          "id": 50,
+          "interval": null,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": false,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 3,
+          "links": [],
+          "maxDataPoints": 100,
+          "nullPointMode": "null",
+          "paceLength": 10,
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "repeat": null,
+          "repeatDirection": "h",
+          "seriesOverrides": [],
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(etcd_server_id{pod=~\"$pod\",job=~\"$cluster\"})",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Members",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "none",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "prometheus",
+          "fill": 0,
+          "gridPos": {
+            "h": 7,
+            "w": 6,
+            "x": 18,
+            "y": 23
+          },
+          "id": 62,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null",
+          "paceLength": 10,
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "etcd_server_slow_apply_total{pod=~\"$pod\",job=~\"$cluster\"}",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "{{ pod }} slow applies",
+              "refId": "A"
+            },
+            {
+              "expr": "etcd_server_slow_read_indexes_total{pod=~\"$pod\",job=~\"$cluster\"}",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "{{ pod }} slow read indexes",
+              "refId": "B"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Slow operations",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "prometheus",
+          "editable": true,
+          "error": false,
+          "fill": 0,
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 25
+          },
+          "id": 29,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "connected",
+          "paceLength": 10,
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "process_resident_memory_bytes{pod=~\"$pod\",job=~\"$cluster\"}",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "{{ pod }} Resident Memory",
+              "metric": "process_resident_memory_bytes",
+              "refId": "A",
+              "step": 120
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Memory",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "bytes",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": false,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "datasource": "prometheus",
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 6,
+            "w": 3,
+            "x": 12,
+            "y": 30
+          },
+          "id": 43,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "max(etcd_server_leader_changes_seen_total{pod=~\"$pod\",job=~\"$cluster\"})",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "refId": "A",
+              "step": 600
+            }
+          ],
+          "thresholds": "",
+          "title": "The total number of failed proposals seen",
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            }
+          ],
+          "valueName": "avg"
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "prometheus",
+          "fill": 0,
+          "gridPos": {
+            "h": 6,
+            "w": 9,
+            "x": 15,
+            "y": 30
+          },
+          "id": 60,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null",
+          "paceLength": 10,
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "etcd_server_heartbeat_send_failures_total{pod=~\"$pod\",job=~\"$cluster\"}",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "{{ pod }} heartbeat  failures",
+              "refId": "A"
+            },
+            {
+              "expr": "etcd_server_health_failures{pod=~\"$pod\",job=~\"$cluster\"}",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "{{ pod }} health failures",
+              "refId": "B"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Failures",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "prometheus",
+          "decimals": null,
+          "editable": true,
+          "error": false,
+          "fill": 0,
+          "grid": {},
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 33
+          },
+          "id": 1,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "connected",
+          "paceLength": 10,
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "etcd_mvcc_db_total_size_in_bytes{pod=~\"$pod\",job=~\"$cluster\"}",
+              "format": "time_series",
+              "hide": false,
+              "interval": "",
+              "intervalFactor": 2,
+              "legendFormat": "{{ pod }} DB Size",
+              "metric": "",
+              "refId": "A",
+              "step": 120
+            },
+            {
+              "expr": "etcd_mvcc_db_total_size_in_use_in_bytes{pod=~\"$pod\",job=~\"$cluster\"}",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "{{ pod }} Used bytes",
+              "refId": "B"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "DB Size",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "bytes",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": false,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "datasource": "prometheus",
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "gridPos": {
+            "h": 5,
+            "w": 3,
+            "x": 12,
+            "y": 36
+          },
+          "id": 42,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "expr": "max(etcd_server_leader_changes_seen_total{pod=~\"$pod\",job=~\"$cluster\"})",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "refId": "A",
+              "step": 600
+            }
+          ],
+          "thresholds": "",
+          "title": "The number of leader changes seen",
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "N/A",
+              "value": "null"
+            }
+          ],
+          "valueName": "avg"
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "prometheus",
+          "editable": true,
+          "error": false,
+          "fill": 0,
+          "gridPos": {
+            "h": 6,
+            "w": 9,
+            "x": 15,
+            "y": 36
+          },
+          "id": 40,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "connected",
+          "paceLength": 10,
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(rate(etcd_server_proposals_failed_total{pod=~\"$pod\",job=~\"$cluster\"}[5m]))",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "Proposal Failure Rate",
+              "metric": "etcd_server_proposals_failed_total",
+              "refId": "A",
+              "step": 60
+            },
+            {
+              "expr": "sum(etcd_server_proposals_pending{pod=~\"$pod\",job=~\"$cluster\"})",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "Proposal Pending Total",
+              "metric": "etcd_server_proposals_pending",
+              "refId": "B",
+              "step": 60
+            },
+            {
+              "expr": "sum(rate(etcd_server_proposals_committed_total{pod=~\"$pod\",job=~\"$cluster\"}[5m]))",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "Proposal Commit Rate",
+              "metric": "etcd_server_proposals_committed_total",
+              "refId": "C",
+              "step": 60
+            },
+            {
+              "expr": "sum(rate(etcd_server_proposals_applied_total{pod=~\"$pod\",job=~\"$cluster\"}[5m]))",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "Proposal Apply Rate",
+              "refId": "D",
+              "step": 60
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Raft Proposals",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": "",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "prometheus",
+          "fill": 0,
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 41
+          },
+          "id": 56,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null",
+          "paceLength": 10,
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "rate(etcd_disk_backend_defrag_duration_seconds_sum{pod=~\"$pod\",job=~\"$cluster\"}[1m])",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "{{ pod }} latency distributions of defrag",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Defrag time",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "prometheus",
+          "description": "indicates how many proposals are queued to commit. Rising pending proposals suggests there is a high client load or the member cannot commit proposals.",
+          "fill": 1,
+          "gridPos": {
+            "h": 7,
+            "w": 9,
+            "x": 15,
+            "y": 42
+          },
+          "id": 5,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "paceLength": 10,
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(etcd_server_proposals_pending{pod=~\"$pod\",job=~\"$cluster\"})",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "Proposals pending",
+              "refId": "A",
+              "step": 60
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Proposals pending",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "prometheus",
+          "fill": 0,
+          "gridPos": {
+            "h": 7,
+            "w": 12,
+            "x": 0,
+            "y": 49
+          },
+          "id": 48,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null",
+          "paceLength": 10,
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "etcd_debugging_mvcc_db_compaction_keys_total{pod=~\"$pod\",job=~\"$cluster\"}",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "{{ pod  }} keys compacted ",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Compacted Keys",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "prometheus",
+          "decimals": 0,
+          "editable": true,
+          "error": false,
+          "fill": 0,
+          "gridPos": {
+            "h": 5,
+            "w": 9,
+            "x": 15,
+            "y": 49
+          },
+          "id": 19,
+          "legend": {
+            "alignAsTable": false,
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "connected",
+          "paceLength": 10,
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "changes(etcd_server_leader_changes_seen_total{pod=~\"$pod\",job=~\"$cluster\"}[1d])",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "{{ pod }} Total Leader Elections Per Day",
+              "metric": "etcd_server_leader_changes_seen_total",
+              "refId": "A",
+              "step": 60
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Total Leader Elections Per Day",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "prometheus",
+          "description": "proposals_committed_total records the total number of consensus proposals committed. This gauge should increase over time if the cluster is healthy. Several healthy members of an etcd cluster may have different total committed proposals at once. This discrepancy may be due to recovering from peers after starting, lagging behind the leader, or being the leader and therefore having the most commits. It is important to monitor this metric across all the members in the cluster; a consistently large lag between a single member and its leader indicates that member is slow or unhealthy.\n\nproposals_applied_total records the total number of consensus proposals applied. The etcd server applies every committed proposal asynchronously. The difference between proposals_committed_total and proposals_applied_total should usually be small (within a few thousands even under high load). If the difference between them continues to rise, it indicates that the etcd server is overloaded. This might happen when applying expensive queries like heavy range queries or large txn operations.",
+          "fill": 1,
+          "gridPos": {
+            "h": 6,
+            "w": 9,
+            "x": 15,
+            "y": 54
+          },
+          "id": 2,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": true,
+            "max": true,
+            "min": false,
+            "rightSide": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "paceLength": 10,
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(rate(etcd_server_proposals_committed_total{pod=~\"$pod\",job=~\"$cluster\"}[5m]))",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "total number of consensus proposals committed",
+              "metric": "",
+              "refId": "A",
+              "step": 60
+            },
+            {
+              "expr": "sum(rate(etcd_server_proposals_applied_total{pod=~\"$pod\",job=~\"$cluster\"}[5m]))",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "total number of consensus proposals applied",
+              "metric": "",
+              "refId": "B",
+              "step": 60
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "The total number of consensus proposals committed",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": "",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "prometheus",
+          "fill": 1,
+          "gridPos": {
+            "h": 7,
+            "w": 12,
+            "x": 0,
+            "y": 56
+          },
+          "id": 7,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "paceLength": 10,
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "rate(etcd_disk_wal_fsync_duration_seconds_sum{pod=~\"$pod\",job=~\"$cluster\"}[1m])",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "{{ pod }} The latency distributions of fsync called by wal",
+              "refId": "A",
+              "step": 30
+            },
+            {
+              "expr": "rate(etcd_disk_backend_commit_duration_seconds_sum{pod=~\"$pod\",job=~\"$cluster\"}[1m])",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "{{ pod }} The latency distributions of commit called by backend",
+              "refId": "B",
+              "step": 30
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Disks operations",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "prometheus",
+          "editable": true,
+          "error": false,
+          "fill": 0,
+          "gridPos": {
+            "h": 6,
+            "w": 6,
+            "x": 12,
+            "y": 60
+          },
+          "id": 23,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "connected",
+          "paceLength": 10,
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(rate(grpc_server_started_total{grpc_type=\"unary\",pod=~\"$pod\",job=~\"$cluster\"}[5m]))",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "RPC Rate",
+              "metric": "grpc_server_started_total",
+              "refId": "A",
+              "step": 60
+            },
+            {
+              "expr": "sum(rate(grpc_server_handled_total{grpc_type=\"unary\",grpc_code!=\"OK\",pod=~\"$pod\",job=~\"$cluster\"}[5m]))",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "RPC Failed Rate",
+              "metric": "grpc_server_handled_total",
+              "refId": "B",
+              "step": 60
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "RPC Rate",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "ops",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "prometheus",
+          "editable": true,
+          "error": false,
+          "fill": 0,
+          "gridPos": {
+            "h": 6,
+            "w": 6,
+            "x": 18,
+            "y": 60
+          },
+          "id": 41,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "connected",
+          "paceLength": 10,
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": true,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(grpc_server_started_total{grpc_service=\"etcdserverpb.Watch\",grpc_type=\"bidi_stream\",pod=~\"$pod\",job=~\"$cluster\"}) - sum(grpc_server_handled_total{grpc_service=\"etcdserverpb.Watch\",grpc_type=\"bidi_stream\",pod=~\"$pod\",job=~\"$cluster\"})",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "Watch Streams",
+              "metric": "grpc_server_handled_total",
+              "refId": "A",
+              "step": 60
+            },
+            {
+              "expr": "sum(grpc_server_started_total{grpc_service=\"etcdserverpb.Lease\",grpc_type=\"bidi_stream\",pod=~\"$pod\",job=~\"$cluster\"}) - sum(grpc_server_handled_total{grpc_service=\"etcdserverpb.Lease\",grpc_type=\"bidi_stream\",pod=~\"$pod\",job=~\"$cluster\"})",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "Lease Streams",
+              "metric": "grpc_server_handled_total",
+              "refId": "B",
+              "step": 60
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Active Streams",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": "",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "prometheus",
+          "fill": 1,
+          "gridPos": {
+            "h": 7,
+            "w": 12,
+            "x": 0,
+            "y": 63
+          },
+          "id": 54,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "paceLength": 10,
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "rate(etcd_debugging_mvcc_db_compaction_keys_total{pod=~\"$pod\",job=~\"$cluster\"}[5m])",
+              "format": "time_series",
+              "intervalFactor": 1,
+              "legendFormat": "{{ pod }} compact/s",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Compaction rate",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "ops",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "prometheus",
+          "description": "Abnormally high snapshot duration (snapshot_save_total_duration_seconds) indicates disk issues and might cause the cluster to be unstable.",
+          "fill": 1,
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 70
+          },
+          "id": 9,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "paceLength": 10,
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(rate(etcd_debugging_snap_save_total_duration_seconds_sum{pod=~\"$pod\",job=~\"$cluster\"}[1m]))",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "The total latency distributions of save called by snapshot",
+              "refId": "A",
+              "step": 30
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Snapshot duration",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "prometheus",
+          "editable": true,
+          "error": false,
+          "fill": 0,
+          "grid": {},
+          "gridPos": {
+            "h": 7,
+            "w": 12,
+            "x": 0,
+            "y": 78
+          },
+          "id": 3,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "connected",
+          "paceLength": 10,
+          "percentage": false,
+          "pointradius": 1,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": true,
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.99, sum(rate(etcd_disk_wal_fsync_duration_seconds_bucket{pod=~\"$pod\",job=~\"$cluster\"}[5m])) by (instance, le))",
+              "format": "time_series",
+              "hide": false,
+              "intervalFactor": 2,
+              "legendFormat": "{{ pod }} WAL fsync",
+              "metric": "etcd_disk_wal_fsync_duration_seconds_bucket",
+              "refId": "A",
+              "step": 120
+            },
+            {
+              "expr": "histogram_quantile(0.99, sum(rate(etcd_disk_backend_commit_duration_seconds_bucket{pod=~\"$pod\",job=~\"$cluster\"}[5m])) by (instance, le))",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "{{ pod }} DB fsync",
+              "metric": "etcd_disk_backend_commit_duration_seconds_bucket",
+              "refId": "B",
+              "step": 120
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Disk Sync Duration",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "s",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "prometheus",
+          "fill": 1,
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 85
+          },
+          "id": 8,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "paceLength": 10,
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "sum(rate(etcd_network_client_grpc_received_bytes_total{pod=~\"$pod\",job=~\"$cluster\"}[1m]))",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "The total number of bytes received by grpc clients",
+              "refId": "A",
+              "step": 30
+            },
+            {
+              "expr": "sum(rate(etcd_network_client_grpc_sent_bytes_total{pod=~\"$pod\",job=~\"$cluster\"}[1m]))",
+              "format": "time_series",
+              "intervalFactor": 2,
+              "legendFormat": "The total number of bytes sent to grpc clients",
+              "refId": "B",
+              "step": 30
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Network",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        }
+      ],
+      "refresh": "5s",
+      "schemaVersion": 17,
+      "style": "dark",
+      "tags": [],
+      "templating": {
+        "list": [
+          {
+            "allValue": null,
+            "current": {},
+            "datasource": "prometheus",
+            "definition": "label_values(job)",
+            "hide": 0,
+            "includeAll": true,
+            "label": "Cluster",
+            "multi": true,
+            "name": "cluster",
+            "options": [],
+            "query": "label_values(job)",
+            "refresh": 1,
+            "regex": "/.*etcd.*/",
+            "skipUrlSync": false,
+            "sort": 0,
+            "tagValuesQuery": "",
+            "tags": [],
+            "tagsQuery": "",
+            "type": "query",
+            "useTags": false
+          },
+          {
+            "allValue": null,
+            "current": {},
+            "datasource": "prometheus",
+            "definition": "label_values({job=\"$cluster\"}, pod)",
+            "hide": 0,
+            "includeAll": true,
+            "label": "Pod",
+            "multi": true,
+            "name": "pod",
+            "options": [],
+            "query": "label_values({job=\"$cluster\"}, pod)",
+            "refresh": 2,
+            "regex": "",
+            "skipUrlSync": false,
+            "sort": 0,
+            "tagValuesQuery": "",
+            "tags": [],
+            "tagsQuery": "",
+            "type": "query",
+            "useTags": false
+          },
+          {
+            "allValue": null,
+            "current": {},
+            "datasource": "prometheus",
+            "definition": "label_values({job=\"$cluster\"}, instance)",
+            "hide": 2,
+            "includeAll": true,
+            "label": "Instance",
+            "multi": true,
+            "name": "instance",
+            "options": [],
+            "query": "label_values({job=\"$cluster\"}, instance)",
+            "refresh": 1,
+            "regex": "",
+            "skipUrlSync": false,
+            "sort": 0,
+            "tagValuesQuery": "",
+            "tags": [],
+            "tagsQuery": "",
+            "type": "query",
+            "useTags": false
+          },
+          {
+            "allValue": null,
+            "current": {},
+            "datasource": "prometheus",
+            "definition": "label_values({job=\"$cluster\"}, namespace)",
+            "hide": 2,
+            "includeAll": false,
+            "label": "Namespace",
+            "multi": true,
+            "name": "namespace",
+            "options": [],
+            "query": "label_values({job=\"$cluster\"}, namespace)",
+            "refresh": 1,
+            "regex": "",
+            "skipUrlSync": false,
+            "sort": 0,
+            "tagValuesQuery": "",
+            "tags": [],
+            "tagsQuery": "",
+            "type": "query",
+            "useTags": false
+          },
+          {
+            "allValue": null,
+            "current": {},
+            "datasource": "prometheus",
+            "definition": "label_values(kube_pod_info{pod=\"$pod\" }, pod_ip)",
+            "hide": 2,
+            "includeAll": false,
+            "label": "PodIp",
+            "multi": false,
+            "name": "pod_ip",
+            "options": [],
+            "query": "label_values(kube_pod_info{pod=\"$pod\" }, pod_ip)",
+            "refresh": 1,
+            "regex": "",
+            "skipUrlSync": false,
+            "sort": 0,
+            "tagValuesQuery": "",
+            "tags": [],
+            "tagsQuery": "",
+            "type": "query",
+            "useTags": false
+          }
+        ]
+      },
+      "time": {
+        "from": "now-1h",
+        "to": "now"
+      },
+      "timepicker": {
+        "refresh_intervals": [
+          "5s",
+          "10s",
+          "30s",
+          "1m",
+          "5m",
+          "15m",
+          "30m",
+          "1h",
+          "2h",
+          "1d"
+        ],
+        "time_options": [
+          "5m",
+          "15m",
+          "1h",
+          "6h",
+          "12h",
+          "24h",
+          "2d",
+          "7d",
+          "30d"
+        ]
+      },
+      "timezone": "browser",
+      "title": "Kubernetes / Etcd",
+      "uid": "hzhZzznZz",
+      "version": 1
     }

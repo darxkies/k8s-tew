@@ -133,6 +133,9 @@ spec:
             - name: certificates
               mountPath: /etc/ssl/certs/grafana-key.pem
               subPath: grafana-key.pem
+            - name: grafana-dashboard-etcd
+              mountPath: "/var/lib/grafana/dashboards/etcd.json"
+              subPath: etcd.json
             - name: grafana-dashboard-apiserver
               mountPath: "/var/lib/grafana/dashboards/apiserver.json"
               subPath: apiserver.json
@@ -156,7 +159,7 @@ spec:
               subPath: k8s-resources-node.json
             - name: grafana-dashboard-k8s-resources-namespace
               mountPath: "/var/lib/grafana/dashboards/k8s-resources-namespace.json"
-              subPath: k8s-resources-namespace
+              subPath: k8s-resources-namespace.json
             - name: grafana-dashboard-k8s-resources-pod
               mountPath: "/var/lib/grafana/dashboards/k8s-resources-pod.json"
               subPath: k8s-resources-pod.json
@@ -236,6 +239,9 @@ spec:
         - name: certificates
           configMap:
             name: grafana-certificates
+        - name: grafana-dashboard-etcd
+          configMap:
+            name: grafana-dashboard-etcd
         - name: grafana-dashboard-apiserver
           configMap:
             name: grafana-dashboard-apiserver
