@@ -65,6 +65,10 @@ func CreateFileIfMissing(filename, content string) error {
 
 // FileExists returns true if a file exists
 func FileExists(filename string) bool {
+	if len(filename) >= 2 && filename[0] == filename[len(filename)-1] && (filename[0] == '\'' || filename[0] == '"') {
+		filename = filename[1 : len(filename)-1]
+	}
+
 	_, error := os.Stat(filename)
 
 	return !os.IsNotExist(error)

@@ -442,8 +442,8 @@ func (ceph *Ceph) RunSetup(dashboardUsername, dashboardPassword, radosgwUsername
 		fmt.Sprintf("%s dashboard feature disable iscsi", cephBinary),
 		fmt.Sprintf("%s dashboard feature disable mirroring", cephBinary),
 		fmt.Sprintf("%s dashboard feature disable nfs", cephBinary),
-		fmt.Sprintf("%s dashboard set-ssl-certificate -i %s", cephBinary, sslCertificate),
-		fmt.Sprintf("%s dashboard set-ssl-certificate-key -i %s", cephBinary, sslKey),
+		fmt.Sprintf("%s dashboard set-ssl-certificate -i '%s'", cephBinary, sslCertificate),
+		fmt.Sprintf("%s dashboard set-ssl-certificate-key -i '%s'", cephBinary, sslKey),
 		fmt.Sprintf("%s config set mgr mgr/dashboard/ssl true", cephBinary),
 		fmt.Sprintf("%s dashboard ac-user-create %s %s administrator", cephBinary, dashboardUsername, dashboardPassword),
 		fmt.Sprintf("%s user create --uid=%s --display-name=%s --system --access-key=%s --secret-key=%s", radosgwAdminBinary, utils.Username, utils.Username, radosgwUsername, radosgwPassword),
@@ -524,15 +524,15 @@ func (ceph *Ceph) getCephAuthtoolBinary() string {
 }
 
 func (ceph *Ceph) getBinary(binary string) string {
-	return path.Join(ceph.binariesPath, binary)
+	return fmt.Sprintf("'%s'", path.Join(ceph.binariesPath, binary))
 }
 
 func (ceph *Ceph) getKeyring(directory string) string {
-	return path.Join(directory, "keyring")
+	return fmt.Sprintf("'%s'", path.Join(directory, "keyring"))
 }
 
 func (ceph *Ceph) getJournal(directory string) string {
-	return path.Join(directory, "journal")
+	return fmt.Sprintf("'%s'", path.Join(directory, "journal"))
 }
 
 func (ceph *Ceph) getServiceDirectory(_type, id string) string {
@@ -560,15 +560,15 @@ func (ceph *Ceph) getRgwDirectory(id string) string {
 }
 
 func (ceph *Ceph) getCephMonitoringKeyring() string {
-	return path.Join(ceph.configPath, utils.CephMonitorKeyring)
+	return fmt.Sprintf("'%s'", path.Join(ceph.configPath, utils.CephMonitorKeyring))
 }
 
 func (ceph *Ceph) getCephClientAdminKeyring() string {
-	return path.Join(ceph.configPath, utils.CephClientAdminKeyring)
+	return fmt.Sprintf("'%s'", path.Join(ceph.configPath, utils.CephClientAdminKeyring))
 }
 
 func (ceph *Ceph) getCephConfig() string {
-	return path.Join(ceph.configPath, utils.CephConfig)
+	return fmt.Sprintf("'%s'", path.Join(ceph.configPath, utils.CephConfig))
 }
 
 func (ceph *Ceph) createDirectory(directory string) error {
@@ -580,7 +580,7 @@ func (ceph *Ceph) createDirectory(directory string) error {
 
 	log.WithFields(log.Fields{"directory": directory}).Info("Updating ownership")
 
-	if _error := utils.RunCommandWithConsoleOutput(fmt.Sprintf("/bin/chown -R ceph:ceph %s", directory)); _error != nil {
+	if _error := utils.RunCommandWithConsoleOutput(fmt.Sprintf("/bin/chown -R ceph:ceph '%s'", directory)); _error != nil {
 		return _error
 	}
 

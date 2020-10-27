@@ -1,6 +1,6 @@
-export PATH={{.K8STEWPath}}:{{.K8SPath}}:{{.EtcdPath}}:{{.CRIPath}}:{{.CNIPath}}:{{.VeleroPath}}:{{.HostPath}}:{{.CurrentPath}}
+export PATH="{{.K8STEWPath}}":"{{.K8SPath}}":"{{.EtcdPath}}":"{{.CRIPath}}":"{{.CNIPath}}":"{{.VeleroPath}}":"{{.HostPath}}":{{.CurrentPath}}
 {{- if .KubeConfig }}
-export KUBECONFIG={{.KubeConfig}}
+export KUBECONFIG="{{.KubeConfig}}"
 {{- end }}
 export CONTAINER_RUNTIME_ENDPOINT=unix://{{.ContainerdSock}}
 export CONTAINERD_NAMESPACE=k8s.io
