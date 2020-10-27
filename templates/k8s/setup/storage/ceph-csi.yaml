@@ -2025,4 +2025,4 @@ parameters:
   clusterID: {{.ClusterID}}
   pool: {{.CephFSPoolName}}
   csi.storage.k8s.io/snapshotter-secret-name: csi-cephfs-secret
-  csi.storage.k8s.io/snapshotter-secret-namespace: default
+  csi.storage.k8s.io/snapshotter-secret-namespace: storage
