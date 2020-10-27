@@ -53,6 +53,7 @@ reclaimPolicy: Delete
 parameters:
   clusterID: {{.ClusterID}}
   pool: {{.CephFSPoolName}}
+  fsName: {{.CephFSPoolName}}
   mounter: kernel
   provisionVolume: "true"
   csi.storage.k8s.io/provisioner-secret-name: csi-cephfs-secret
