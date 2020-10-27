@@ -172,13 +172,13 @@ func (config *InternalConfig) registerAssetDirectories() {
 	config.addAssetDirectory(utils.DirectoryVarRun, Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, path.Join(utils.SubdirectoryVariable, utils.SubdirectoryRun, utils.SubdirectoryK8sTew), false)
 
 	// Ceph
-	config.addAssetDirectory(utils.DirectoryCephConfig, Labels{utils.NodeStorage}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryConfig), utils.SubdirectoryCeph), false)
-	config.addAssetDirectory(utils.DirectoryCephData, Labels{utils.NodeStorage}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryDynamicData), utils.SubdirectoryCeph), false)
-	config.addAssetDirectory(utils.DirectoryCephBootstrapMds, Labels{utils.NodeStorage}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryCephData), utils.DirectoryCephBootstrapMds), false)
-	config.addAssetDirectory(utils.DirectoryCephBootstrapOsd, Labels{utils.NodeStorage}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryCephData), utils.DirectoryCephBootstrapOsd), false)
-	config.addAssetDirectory(utils.DirectoryCephBootstrapRbd, Labels{utils.NodeStorage}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryCephData), utils.DirectoryCephBootstrapRbd), false)
-	config.addAssetDirectory(utils.DirectoryCephBootstrapRgw, Labels{utils.NodeStorage}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryCephData), utils.DirectoryCephBootstrapRgw), false)
-	config.addAssetDirectory(utils.DirectoryCephBootstrapRgw, Labels{utils.NodeStorage}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryCephData), utils.DirectoryCephBootstrapRgw), false)
+	config.addAssetDirectory(utils.DirectoryCephConfig, Labels{utils.NodeStorage, utils.NodeController}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryConfig), utils.SubdirectoryCeph), false)
+	config.addAssetDirectory(utils.DirectoryCephData, Labels{utils.NodeStorage, utils.NodeController}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryDynamicData), utils.SubdirectoryCeph), false)
+	config.addAssetDirectory(utils.DirectoryCephBootstrapMds, Labels{utils.NodeStorage, utils.NodeController}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryCephData), utils.DirectoryCephBootstrapMds), false)
+	config.addAssetDirectory(utils.DirectoryCephBootstrapOsd, Labels{utils.NodeStorage, utils.NodeController}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryCephData), utils.DirectoryCephBootstrapOsd), false)
+	config.addAssetDirectory(utils.DirectoryCephBootstrapRbd, Labels{utils.NodeStorage, utils.NodeController}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryCephData), utils.DirectoryCephBootstrapRbd), false)
+	config.addAssetDirectory(utils.DirectoryCephBootstrapRgw, Labels{utils.NodeStorage, utils.NodeController}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryCephData), utils.DirectoryCephBootstrapRgw), false)
+	config.addAssetDirectory(utils.DirectoryCephBootstrapRgw, Labels{utils.NodeStorage, utils.NodeController}, path.Join(config.GetRelativeAssetDirectory(utils.DirectoryCephData), utils.DirectoryCephBootstrapRgw), false)
 }
 
 func (config *InternalConfig) registerAssetFiles() {
@@ -316,13 +316,13 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.GobetweenConfig, Labels{utils.NodeController, utils.NodeStorage, utils.NodeWorker}, "", utils.DirectoryGobetweenConfig)
 
 	// Ceph
-	config.addAssetFile(utils.CephConfig, Labels{utils.NodeStorage}, "", utils.DirectoryCephConfig)
-	config.addAssetFile(utils.CephClientAdminKeyring, Labels{utils.NodeStorage}, "", utils.DirectoryCephConfig)
-	config.addAssetFile(utils.CephMonitorKeyring, Labels{utils.NodeStorage}, "", utils.DirectoryCephConfig)
-	config.addAssetFile(utils.CephBootstrapMdsKeyring, Labels{utils.NodeStorage}, utils.CephKeyring, utils.DirectoryCephBootstrapMds)
-	config.addAssetFile(utils.CephBootstrapOsdKeyring, Labels{utils.NodeStorage}, utils.CephKeyring, utils.DirectoryCephBootstrapOsd)
-	config.addAssetFile(utils.CephBootstrapRbdKeyring, Labels{utils.NodeStorage}, utils.CephKeyring, utils.DirectoryCephBootstrapRbd)
-	config.addAssetFile(utils.CephBootstrapRgwKeyring, Labels{utils.NodeStorage}, utils.CephKeyring, utils.DirectoryCephBootstrapRgw)
+	config.addAssetFile(utils.CephConfig, Labels{utils.NodeStorage, utils.NodeController}, "", utils.DirectoryCephConfig)
+	config.addAssetFile(utils.CephClientAdminKeyring, Labels{utils.NodeStorage, utils.NodeController}, "", utils.DirectoryCephConfig)
+	config.addAssetFile(utils.CephMonitorKeyring, Labels{utils.NodeStorage, utils.NodeController}, "", utils.DirectoryCephConfig)
+	config.addAssetFile(utils.CephBootstrapMdsKeyring, Labels{utils.NodeStorage, utils.NodeController}, utils.CephKeyring, utils.DirectoryCephBootstrapMds)
+	config.addAssetFile(utils.CephBootstrapOsdKeyring, Labels{utils.NodeStorage, utils.NodeController}, utils.CephKeyring, utils.DirectoryCephBootstrapOsd)
+	config.addAssetFile(utils.CephBootstrapRbdKeyring, Labels{utils.NodeStorage, utils.NodeController}, utils.CephKeyring, utils.DirectoryCephBootstrapRbd)
+	config.addAssetFile(utils.CephBootstrapRgwKeyring, Labels{utils.NodeStorage, utils.NodeController}, utils.CephKeyring, utils.DirectoryCephBootstrapRgw)
 
 	// Images
 	for _, image := range config.Config.Versions.GetImages() {
@@ -788,7 +788,7 @@ func (config *InternalConfig) getLabeledOrAllNodes(label string) []NodeData {
 }
 
 func (config *InternalConfig) GetStorageControllers() []NodeData {
-	return config.getLabeledOrAllNodes(utils.NodeStorage)
+	return config.getLabeledOrAllNodes(utils.NodeController)
 }
 
 func (config *InternalConfig) GetStorageNodes() []NodeData {

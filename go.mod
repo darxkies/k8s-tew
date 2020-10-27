@@ -79,7 +79,7 @@ require (
 	golang.org/x/crypto v0.0.0-20201016220609-9e8e0b390897
 	golang.org/x/net v0.0.0-20200226121028-0de0cce0169b
 	golang.org/x/sync v0.0.0-20201020160332-67f06af15bc9
-	golang.org/x/sys v0.0.0-20201022201747-fb209a7c41cd
+	golang.org/x/sys v0.0.0-20201027140754-0fcbb8f4928c
 	google.golang.org/grpc v1.26.0
 	gopkg.in/ini.v1 v1.58.0
 	gopkg.in/yaml.v2 v2.2.8

@@ -146,7 +146,7 @@ func (generator *Generator) generateProfileFile() error {
 	}{
 		Binary:        generator.config.GetFullTargetAssetFilename(utils.BinaryK8sTew),
 		BaseDirectory: generator.config.Config.DeploymentDirectory,
-	}, generator.config.GetFullLocalAssetFilename(utils.K8sTewProfile), true, false)
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sTewProfile), true, false, 0644)
 }
 
 func (generator *Generator) generateServiceFile() error {
@@ -160,7 +160,7 @@ func (generator *Generator) generateServiceFile() error {
 		Command:       generator.config.GetFullTargetAssetFilename(utils.BinaryK8sTew),
 		BaseDirectory: generator.config.Config.DeploymentDirectory,
 		Binary:        utils.BinaryK8sTew,
-	}, generator.config.GetFullLocalAssetFilename(utils.ServiceConfig), true, false)
+	}, generator.config.GetFullLocalAssetFilename(utils.ServiceConfig), true, false, 0644)
 }
 
 func (generator *Generator) generateGobetweenConfig() error {
@@ -170,7 +170,7 @@ func (generator *Generator) generateGobetweenConfig() error {
 	}{
 		LoadBalancerPort: generator.config.Config.LoadBalancerPort,
 		KubeAPIServers:   generator.config.GetKubeAPIServerAddresses(),
-	}, generator.config.GetFullLocalAssetFilename(utils.GobetweenConfig), true, false)
+	}, generator.config.GetFullLocalAssetFilename(utils.GobetweenConfig), true, false, 0644)
 }
 
 func (generator *Generator) generateCalicoSetup() error {
@@ -200,7 +200,7 @@ func (generator *Generator) generateCalicoSetup() error {
 		CalicoNodeImage:            generator.config.Config.Versions.CalicoNode,
 		CalicoCNIImage:             generator.config.Config.Versions.CalicoCNI,
 		CalicoKubeControllersImage: generator.config.Config.Versions.CalicoKubeControllers,
-	}, generator.config.GetFullLocalAssetFilename(utils.K8sCalicoSetup), true, false)
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sCalicoSetup), true, false, 0644)
 }
 
 func (generator *Generator) generateMetalLBSetup() error {
@@ -214,11 +214,11 @@ func (generator *Generator) generateMetalLBSetup() error {
 		MetalLBControllerImage: generator.config.Config.Versions.MetalLBController,
 		MetalLBSpeakerImage:    generator.config.Config.Versions.MetalLBSpeaker,
 		MetalLBAddresses:       addresses,
-	}, generator.config.GetFullLocalAssetFilename(utils.K8sMetalLBSetup), true, false)
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sMetalLBSetup), true, false, 0644)
 }
 
 func (generator *Generator) generateK8SKubeletConfigFile() error {
-	return utils.ApplyTemplateAndSave("kubelet-config", utils.TemplateKubeletSetup, nil, generator.config.GetFullLocalAssetFilename(utils.K8sKubeletSetup), true, false)
+	return utils.ApplyTemplateAndSave("kubelet-config", utils.TemplateKubeletSetup, nil, generator.config.GetFullLocalAssetFilename(utils.K8sKubeletSetup), true, false, 0644)
 }
 
 func (generator *Generator) generateK8SAdminUserConfigFile() error {
@@ -228,7 +228,7 @@ func (generator *Generator) generateK8SAdminUserConfigFile() error {
 	}{
 		Name:      utils.AdminUserName,
 		Namespace: utils.AdminUserNamespace,
-	}, generator.config.GetFullLocalAssetFilename(utils.K8sAdminUserSetup), true, false)
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sAdminUserSetup), true, false, 0644)
 }
 
 func (generator *Generator) generateEncryptionFile() error {
@@ -249,7 +249,7 @@ func (generator *Generator) generateEncryptionFile() error {
 		EncryptionKey string
 	}{
 		EncryptionKey: encryptionKey,
-	}, fullEncryptionConfigFilename, false, false)
+	}, fullEncryptionConfigFilename, false, false, 0644)
 }
 
 func (generator *Generator) generateContainerdConfig() error {
@@ -274,7 +274,7 @@ func (generator *Generator) generateContainerdConfig() error {
 			CRIBinariesDirectory:     generator.config.GetFullTargetAssetDirectory(utils.DirectoryCriBinaries),
 			IP:                       node.IP,
 			PauseImage:               generator.config.Config.Versions.Pause,
-		}, generator.config.GetFullLocalAssetFilename(utils.ContainerdConfig), true, false); error != nil {
+		}, generator.config.GetFullLocalAssetFilename(utils.ContainerdConfig), true, false, 0644); error != nil {
 			return error
 		}
 	}
@@ -292,7 +292,7 @@ func (generator *Generator) generateKubeProxyConfig() error {
 		}{
 			KubeConfig:  generator.config.GetFullTargetAssetFilename(utils.KubeconfigProxy),
 			ClusterCIDR: generator.config.Config.ClusterCIDR,
-		}, generator.config.GetFullLocalAssetFilename(utils.K8sKubeProxyConfig), true, false); _error != nil {
+		}, generator.config.GetFullLocalAssetFilename(utils.K8sKubeProxyConfig), true, false, 0644); _error != nil {
 			return _error
 		}
 	}
@@ -308,7 +308,7 @@ func (generator *Generator) generateKubeSchedulerConfig() error {
 			KubeConfig string
 		}{
 			KubeConfig: generator.config.GetFullTargetAssetFilename(utils.KubeconfigScheduler),
-		}, generator.config.GetFullLocalAssetFilename(utils.K8sKubeSchedulerConfig), true, false); _error != nil {
+		}, generator.config.GetFullLocalAssetFilename(utils.K8sKubeSchedulerConfig), true, false, 0644); _error != nil {
 			return _error
 		}
 	}
@@ -340,7 +340,7 @@ func (generator *Generator) generateKubeletConfig() error {
 			StaticPodPath:       generator.config.GetFullTargetAssetDirectory(utils.DirectoryK8sManifests),
 			ResolvConf:          generator.config.Config.ResolvConf,
 			MaxPods:             generator.config.Config.MaxPods,
-		}, generator.config.GetFullLocalAssetFilename(utils.K8sKubeletConfig), true, false); error != nil {
+		}, generator.config.GetFullLocalAssetFilename(utils.K8sKubeletConfig), true, false, 0644); error != nil {
 			return error
 		}
 	}
@@ -358,7 +358,7 @@ func (generator *Generator) generateManifestGobetween() error {
 		}{
 			GobetweenImage: generator.config.Config.Versions.Gobetween,
 			Config:         generator.config.GetFullTargetAssetFilename(utils.GobetweenConfig),
-		}, generator.config.GetFullLocalAssetFilename(utils.ManifestGobetween), true, false); error != nil {
+		}, generator.config.GetFullLocalAssetFilename(utils.ManifestGobetween), true, false, 0644); error != nil {
 			return error
 		}
 	}
@@ -407,7 +407,7 @@ func (generator *Generator) generateManifestControllerVirtualIP() error {
 			VirtualIP:      generator.config.Config.ControllerVirtualIP,
 			Interface:      generator.config.Config.ControllerVirtualIPInterface,
 			Peers:          peers,
-		}, generator.config.GetFullLocalAssetFilename(utils.ManifestControllerVirtualIP), true, false); error != nil {
+		}, generator.config.GetFullLocalAssetFilename(utils.ManifestControllerVirtualIP), true, false, 0644); error != nil {
 			return error
 		}
 	}
@@ -456,7 +456,7 @@ func (generator *Generator) generateManifestWorkerVirtualIP() error {
 			VirtualIP:      generator.config.Config.WorkerVirtualIP,
 			Interface:      generator.config.Config.WorkerVirtualIPInterface,
 			Peers:          peers,
-		}, generator.config.GetFullLocalAssetFilename(utils.ManifestWorkerVirtualIP), true, false); error != nil {
+		}, generator.config.GetFullLocalAssetFilename(utils.ManifestWorkerVirtualIP), true, false, 0644); error != nil {
 			return error
 		}
 	}
@@ -490,7 +490,7 @@ func (generator *Generator) generateManifestEtcd() error {
 			NodeIP:            node.IP,
 			EtcdDataDirectory: generator.config.GetFullTargetAssetDirectory(utils.DirectoryEtcdData),
 			EtcdCluster:       generator.config.GetEtcdCluster(),
-		}, generator.config.GetFullLocalAssetFilename(utils.ManifestEtcd), true, false); error != nil {
+		}, generator.config.GetFullLocalAssetFilename(utils.ManifestEtcd), true, false, 0644); error != nil {
 			return error
 		}
 	}
@@ -536,7 +536,7 @@ func (generator *Generator) generateManifestKubeApiserver() error {
 			NodeIP:            node.IP,
 			APIServerPort:     generator.config.Config.APIServerPort,
 			ClusterIPRange:    generator.config.Config.ClusterIPRange,
-		}, generator.config.GetFullLocalAssetFilename(utils.ManifestKubeApiserver), true, false); error != nil {
+		}, generator.config.GetFullLocalAssetFilename(utils.ManifestKubeApiserver), true, false, 0644); error != nil {
 			return error
 		}
 	}
@@ -572,7 +572,7 @@ func (generator *Generator) generateManifestKubeControllerManager() error {
 			PemKubernetes:        generator.config.GetFullTargetAssetFilename(utils.PemKubernetes),
 			PemKubernetesKey:     generator.config.GetFullTargetAssetFilename(utils.PemKubernetesKey),
 			PemServiceAccountKey: generator.config.GetFullTargetAssetFilename(utils.PemServiceAccountKey),
-		}, generator.config.GetFullLocalAssetFilename(utils.ManifestKubeControllerManager), true, false); error != nil {
+		}, generator.config.GetFullLocalAssetFilename(utils.ManifestKubeControllerManager), true, false, 0644); error != nil {
 			return error
 		}
 	}
@@ -596,7 +596,7 @@ func (generator *Generator) generateManifestKubeScheduler() error {
 			KubernetesImage:         generator.config.Config.Versions.KubeScheduler,
 			KubeSchedulerConfig:     generator.config.GetFullTargetAssetFilename(utils.K8sKubeSchedulerConfig),
 			KubeSchedulerKubeconfig: generator.config.GetFullTargetAssetFilename(utils.KubeconfigScheduler),
-		}, generator.config.GetFullLocalAssetFilename(utils.ManifestKubeScheduler), true, false); error != nil {
+		}, generator.config.GetFullLocalAssetFilename(utils.ManifestKubeScheduler), true, false, 0644); error != nil {
 			return error
 		}
 	}
@@ -618,7 +618,7 @@ func (generator *Generator) generateManifestKubeProxy() error {
 			ClusterCIDR:         generator.config.Config.ClusterCIDR,
 			KubeProxyKubeconfig: generator.config.GetFullTargetAssetFilename(utils.KubeconfigProxy),
 			KubeProxyConfig:     generator.config.GetFullTargetAssetFilename(utils.K8sKubeProxyConfig),
-		}, generator.config.GetFullLocalAssetFilename(utils.ManifestKubeProxy), true, false); error != nil {
+		}, generator.config.GetFullLocalAssetFilename(utils.ManifestKubeProxy), true, false, 0644); error != nil {
 			return error
 		}
 	}
@@ -788,7 +788,7 @@ func (generator *Generator) generateConfigKubeConfig(kubeConfigFilename, caFilen
 		CAData:          base64CA,
 		CertificateData: base64Certificate,
 		KeyData:         base64Key,
-	}, kubeConfigFilename, true, false)
+	}, kubeConfigFilename, true, false, 0600)
 }
 
 func (generator *Generator) getAPIServerAddress(ip string) string {
@@ -867,7 +867,7 @@ func (generator *Generator) generateCephSetup() error {
 		CephRadosGatewayCredentials: utils.CephRadosGatewayCredentials,
 		CephPlacementGroups:         generator.config.Config.CephPlacementGroups,
 		CephExpectedNumberOfObjects: generator.config.Config.CephExpectedNumberOfObjects,
-	}, generator.config.GetFullLocalAssetFilename(utils.CephSetup), true, false)
+	}, generator.config.GetFullLocalAssetFilename(utils.CephSetup), true, false, 0644)
 }
 
 func (generator *Generator) generateCephCSI() error {
@@ -880,6 +880,7 @@ func (generator *Generator) generateCephCSI() error {
 		CephRBDPoolName            string
 		CephFSPoolName             string
 		StorageControllers         []config.NodeData
+		StorageNodes               []config.NodeData
 		CSIAttacherImage           string
 		CSIProvisionerImage        string
 		CSIDriverRegistrarImage    string
@@ -896,6 +897,7 @@ func (generator *Generator) generateCephCSI() error {
 		CephRBDPoolName:            utils.CephRbdPoolName,
 		CephFSPoolName:             utils.CephFsPoolName,
 		StorageControllers:         generator.config.GetStorageControllers(),
+		StorageNodes:               generator.config.GetStorageNodes(),
 		CSIAttacherImage:           generator.config.Config.Versions.CSIAttacher,
 		CSIProvisionerImage:        generator.config.Config.Versions.CSIProvisioner,
 		CSIDriverRegistrarImage:    generator.config.Config.Versions.CSIDriverRegistrar,
@@ -903,7 +905,7 @@ func (generator *Generator) generateCephCSI() error {
 		CSISnapshotControllerImage: generator.config.Config.Versions.CSISnapshotController,
 		CSIResizerImage:            generator.config.Config.Versions.CSIResizer,
 		CSICephPluginImage:         generator.config.Config.Versions.CSICephPlugin,
-	}, generator.config.GetFullLocalAssetFilename(utils.CephCsi), true, false)
+	}, generator.config.GetFullLocalAssetFilename(utils.CephCsi), true, false, 0644)
 }
 
 func (generator *Generator) generateCephFiles() error {
@@ -914,7 +916,7 @@ func (generator *Generator) generateCephFiles() error {
 		return _error
 	}
 
-	return utils.ApplyTemplateAndSave("ceph-secrets", utils.TemplateCephSecrets, cephData, generator.config.GetFullLocalAssetFilename(utils.CephSecrets), true, false)
+	return utils.ApplyTemplateAndSave("ceph-secrets", utils.TemplateCephSecrets, cephData, generator.config.GetFullLocalAssetFilename(utils.CephSecrets), true, false, 0644)
 }
 
 func (generator *Generator) generateLetsEncryptClusterIssuer() error {
@@ -922,7 +924,7 @@ func (generator *Generator) generateLetsEncryptClusterIssuer() error {
 		Email string
 	}{
 		Email: generator.config.Config.Email,
-	}, generator.config.GetFullLocalAssetFilename(utils.LetsencryptClusterIssuer), true, false)
+	}, generator.config.GetFullLocalAssetFilename(utils.LetsencryptClusterIssuer), true, false, 0644)
 }
 
 func (generator *Generator) generateCoreDNSSetup() error {
@@ -934,7 +936,7 @@ func (generator *Generator) generateCoreDNSSetup() error {
 		ClusterDomain: generator.config.Config.ClusterDomain,
 		ClusterDNSIP:  generator.config.Config.ClusterDNSIP,
 		CoreDNSImage:  generator.config.Config.Versions.CoreDNS,
-	}, generator.config.GetFullLocalAssetFilename(utils.K8sCorednsSetup), true, false)
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sCorednsSetup), true, false, 0644)
 }
 
 func (generator *Generator) generateElasticsearchCredentials() error {
@@ -951,7 +953,7 @@ func (generator *Generator) generateElasticsearchCredentials() error {
 		Namespace:  utils.FeatureLogging,
 		SecretName: utils.ElasticsearchCredentials,
 		Data:       map[string]string{utils.KeyUsername: utils.Username, utils.KeyPassword: elasticsearchPassword},
-	}, generator.config.GetFullLocalAssetFilename(utils.K8sElasticsearchCredentials), false, false)
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sElasticsearchCredentials), false, false, 0644)
 }
 
 func (generator *Generator) generateEFKSetup() error {
@@ -983,7 +985,7 @@ func (generator *Generator) generateEFKSetup() error {
 		ElasticsearchSize:   generator.config.Config.ElasticsearchSize,
 		ElasticsearchCount:  generator.config.Config.ElasticsearchCount,
 		ElasticsearchCounts: counts,
-	}, generator.config.GetFullLocalAssetFilename(utils.K8sEfkSetup), true, false)
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sEfkSetup), true, false, 0644)
 }
 
 func (generator *Generator) generateMinioCredentials() error {
@@ -1000,7 +1002,7 @@ func (generator *Generator) generateMinioCredentials() error {
 		Namespace:  utils.FeatureBackup,
 		SecretName: utils.MinioCredentials,
 		Data:       map[string]string{utils.KeyUsername: utils.Username, utils.KeyPassword: password},
-	}, generator.config.GetFullLocalAssetFilename(utils.K8sMinioCredentials), false, false)
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sMinioCredentials), false, false, 0644)
 }
 
 func (generator *Generator) generateCerebroCredentials() error {
@@ -1022,7 +1024,7 @@ func (generator *Generator) generateCerebroCredentials() error {
 		Namespace:  utils.FeatureLogging,
 		SecretName: utils.CerebroCredentials,
 		Data:       map[string]string{utils.KeyUsername: utils.Username, utils.KeyPassword: cerebroPassword, utils.KeySecret: secret},
-	}, generator.config.GetFullLocalAssetFilename(utils.K8sCerebroCredentials), false, false)
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sCerebroCredentials), false, false, 0644)
 }
 
 func (generator *Generator) generateCephManagerCredentials() error {
@@ -1039,7 +1041,7 @@ func (generator *Generator) generateCephManagerCredentials() error {
 		Namespace:  utils.FeatureStorage,
 		SecretName: utils.CephManagerCredentials,
 		Data:       map[string]string{utils.KeyUsername: utils.Username, utils.KeyPassword: password},
-	}, generator.config.GetFullLocalAssetFilename(utils.K8sCephManagerCredentials), false, false)
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sCephManagerCredentials), false, false, 0644)
 }
 
 func (generator *Generator) generateCephRadosGatewayCredentials() error {
@@ -1061,7 +1063,7 @@ func (generator *Generator) generateCephRadosGatewayCredentials() error {
 		Namespace:  utils.FeatureStorage,
 		SecretName: utils.CephRadosGatewayCredentials,
 		Data:       map[string]string{utils.KeyUsername: strings.ToUpper(accessKey), utils.KeyPassword: secretKey},
-	}, generator.config.GetFullLocalAssetFilename(utils.K8sCephRadosGatewayCredentials), false, false)
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sCephRadosGatewayCredentials), false, false, 0644)
 }
 
 func (generator *Generator) generateVeleroSetup() error {
@@ -1081,7 +1083,7 @@ func (generator *Generator) generateVeleroSetup() error {
 		PodsDirectory:        generator.config.GetFullTargetAssetDirectory(utils.DirectoryPodsData),
 		MinioPort:            utils.PortMinio,
 		MinioSize:            generator.config.Config.MinioSize,
-	}, generator.config.GetFullLocalAssetFilename(utils.K8sVeleroSetup), true, false)
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sVeleroSetup), true, false, 0644)
 }
 
 func (generator *Generator) generateKubernetesDashboardSetup() error {
@@ -1095,7 +1097,7 @@ func (generator *Generator) generateKubernetesDashboardSetup() error {
 		KubernetesDashboardPort:  generator.config.Config.KubernetesDashboardPort,
 		KubernetesDashboardImage: generator.config.Config.Versions.KubernetesDashboard,
 		MetricsScraperImage:      generator.config.Config.Versions.MetricsScraper,
-	}, generator.config.GetFullLocalAssetFilename(utils.K8sKubernetesDashboardSetup), true, false)
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sKubernetesDashboardSetup), true, false, 0644)
 }
 
 func (generator *Generator) generateCertManagerSetup() error {
@@ -1107,7 +1109,7 @@ func (generator *Generator) generateCertManagerSetup() error {
 		CertManagerControllerImage: generator.config.Config.Versions.CertManagerController,
 		CertManagerCAInjectorImage: generator.config.Config.Versions.CertManagerCAInjector,
 		CertManagerWebHookImage:    generator.config.Config.Versions.CertManagerWebHook,
-	}, generator.config.GetFullLocalAssetFilename(utils.K8sCertManagerSetup), true, false)
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sCertManagerSetup), true, false, 0644)
 }
 
 func (generator *Generator) generateNginxIngressSetup() error {
@@ -1117,7 +1119,7 @@ func (generator *Generator) generateNginxIngressSetup() error {
 	}{
 		NginxIngressControllerImage:  generator.config.Config.Versions.NginxIngressController,
 		NginxIngressAdmissionWebhook: generator.config.Config.Versions.NginxIngressAdmissionWebhook,
-	}, generator.config.GetFullLocalAssetFilename(utils.K8sNginxIngressSetup), true, false)
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sNginxIngressSetup), true, false, 0644)
 }
 
 func (generator *Generator) generateMetricsServerSetup() error {
@@ -1125,7 +1127,7 @@ func (generator *Generator) generateMetricsServerSetup() error {
 		MetricsServerImage string
 	}{
 		MetricsServerImage: generator.config.Config.Versions.MetricsServer,
-	}, generator.config.GetFullLocalAssetFilename(utils.K8sMetricsServerSetup), true, false)
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sMetricsServerSetup), true, false, 0644)
 }
 
 func (generator *Generator) generatePrometheusSetup() error {
@@ -1137,17 +1139,17 @@ func (generator *Generator) generatePrometheusSetup() error {
 		PrometheusImage: generator.config.Config.Versions.Prometheus,
 		PrometheusSize:  generator.config.Config.PrometheusSize,
 		BusyboxImage:    generator.config.Config.Versions.Busybox,
-	}, generator.config.GetFullLocalAssetFilename(utils.K8sPrometheusSetup), true, true)
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sPrometheusSetup), true, true, 0644)
 }
 
 func (generator *Generator) generatePrometheusAlerts() error {
 	return utils.ApplyTemplateAndSave("prometheus-alerts", utils.TemplatePrometheusAlerts, struct {
-	}{}, generator.config.GetFullLocalAssetFilename(utils.K8sPrometheusAlerts), true, true)
+	}{}, generator.config.GetFullLocalAssetFilename(utils.K8sPrometheusAlerts), true, true, 0644)
 }
 
 func (generator *Generator) generatePrometheusRules() error {
 	return utils.ApplyTemplateAndSave("prometheus-rules", utils.TemplatePrometheusRules, struct {
-	}{}, generator.config.GetFullLocalAssetFilename(utils.K8sPrometheusRules), true, true)
+	}{}, generator.config.GetFullLocalAssetFilename(utils.K8sPrometheusRules), true, true, 0644)
 }
 
 func (generator *Generator) generateNodeExporterSetup() error {
@@ -1155,7 +1157,7 @@ func (generator *Generator) generateNodeExporterSetup() error {
 		NodeExporterImage string
 	}{
 		NodeExporterImage: generator.config.Config.Versions.NodeExporter,
-	}, generator.config.GetFullLocalAssetFilename(utils.K8sNodeExporterSetup), true, false)
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sNodeExporterSetup), true, false, 0644)
 }
 
 func (generator *Generator) generateKubeStateMetricsSetup() error {
@@ -1165,7 +1167,7 @@ func (generator *Generator) generateKubeStateMetricsSetup() error {
 	}{
 		KubeStateMetricsImage: generator.config.Config.Versions.KubeStateMetrics,
 		KubeStateMetricsCount: generator.config.Config.KubeStateMetricsCount,
-	}, generator.config.GetFullLocalAssetFilename(utils.K8sKubeStateMetricsSetup), true, false)
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sKubeStateMetricsSetup), true, false, 0644)
 }
 
 func (generator *Generator) generatePrometheusCertificatesConfigMap() error {
@@ -1194,7 +1196,7 @@ func (generator *Generator) generatePrometheusCertificatesConfigMap() error {
 		Namespace: utils.FeatureMonitoring,
 		Name:      utils.PrometheusCertificates,
 		Data:      data,
-	}, generator.config.GetFullLocalAssetFilename(utils.K8sPrometheusCertificates), false, false)
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sPrometheusCertificates), false, false, 0644)
 }
 
 func (generator *Generator) generateGrafanaCertificatesConfigMap() error {
@@ -1223,7 +1225,7 @@ func (generator *Generator) generateGrafanaCertificatesConfigMap() error {
 		Namespace: utils.FeatureMonitoring,
 		Name:      utils.GrafanaCertificates,
 		Data:      data,
-	}, generator.config.GetFullLocalAssetFilename(utils.K8sGrafanaCertificates), false, false)
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sGrafanaCertificates), false, false, 0644)
 }
 
 func (generator *Generator) generateCephCertificatesConfigMap() error {
@@ -1252,7 +1254,7 @@ func (generator *Generator) generateCephCertificatesConfigMap() error {
 		Namespace: utils.FeatureStorage,
 		Name:      utils.CephCertificates,
 		Data:      data,
-	}, generator.config.GetFullLocalAssetFilename(utils.K8sCephCertificates), false, false)
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sCephCertificates), false, false, 0644)
 }
 
 func (generator *Generator) generateMinioCertificatesConfigMap() error {
@@ -1281,7 +1283,7 @@ func (generator *Generator) generateMinioCertificatesConfigMap() error {
 		Namespace: utils.FeatureBackup,
 		Name:      utils.MinioCertificates,
 		Data:      data,
-	}, generator.config.GetFullLocalAssetFilename(utils.K8sMinioCertificates), false, false)
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sMinioCertificates), false, false, 0644)
 }
 
 func (generator *Generator) generateElasticsearchCertificatesConfigMap() error {
@@ -1310,7 +1312,7 @@ func (generator *Generator) generateElasticsearchCertificatesConfigMap() error {
 		Namespace: utils.FeatureLogging,
 		Name:      utils.ElasticsearchCertificates,
 		Data:      data,
-	}, generator.config.GetFullLocalAssetFilename(utils.K8sElasticsearchCertificates), false, false)
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sElasticsearchCertificates), false, false, 0644)
 }
 
 func (generator *Generator) generateGrafanaCredentials() error {
@@ -1327,7 +1329,7 @@ func (generator *Generator) generateGrafanaCredentials() error {
 		Namespace:  utils.FeatureMonitoring,
 		SecretName: utils.GrafanaCredentials,
 		Data:       map[string]string{utils.KeyUsername: utils.Username, utils.KeyPassword: password},
-	}, generator.config.GetFullLocalAssetFilename(utils.K8sGrafanaCredentials), false, false)
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sGrafanaCredentials), false, false, 0644)
 }
 
 func (generator *Generator) generateGrafanaSetup() error {
@@ -1341,12 +1343,12 @@ func (generator *Generator) generateGrafanaSetup() error {
 		GrafanaPort:  utils.PortGrafana,
 		GrafanaSize:  generator.config.Config.GrafanaSize,
 		BusyboxImage: generator.config.Config.Versions.Busybox,
-	}, generator.config.GetFullLocalAssetFilename(utils.K8sGrafanaSetup), true, true)
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sGrafanaSetup), true, true, 0644)
 }
 
 func (generator *Generator) generateGrafanaDashboards() error {
 	return utils.ApplyTemplateAndSave("grafana-dashboards", utils.TemplateGrafanaDashboards, struct {
-	}{}, generator.config.GetFullLocalAssetFilename(utils.K8sGrafanaDashboards), true, true)
+	}{}, generator.config.GetFullLocalAssetFilename(utils.K8sGrafanaDashboards), true, true, 0644)
 }
 
 func (generator *Generator) generateAlertManagerSetup() error {
@@ -1368,7 +1370,7 @@ func (generator *Generator) generateAlertManagerSetup() error {
 		AlertManagerCounts: counts,
 		AlertManagerSize:   generator.config.Config.AlertManagerSize,
 		BusyboxImage:       generator.config.Config.Versions.Busybox,
-	}, generator.config.GetFullLocalAssetFilename(utils.K8sAlertManagerSetup), true, false)
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sAlertManagerSetup), true, false, 0644)
 }
 
 func (generator *Generator) generateWordpressSetup() error {
@@ -1382,7 +1384,7 @@ func (generator *Generator) generateWordpressSetup() error {
 		MySQLImage:             generator.config.Config.Versions.MySQL,
 		WordPressImage:         generator.config.Config.Versions.WordPress,
 		WordPressPort:          utils.PortWordpress,
-	}, generator.config.GetFullLocalAssetFilename(utils.WordpressSetup), true, false)
+	}, generator.config.GetFullLocalAssetFilename(utils.WordpressSetup), true, false, 0644)
 }
 
 func (generator *Generator) GenerateFiles() error {

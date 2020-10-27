@@ -221,7 +221,7 @@ func ApplyTemplate(label, content string, data interface{}, alternativeDelimiter
 }
 
 // ApplyTemplateAndSave generates the content of a file based on a template
-func ApplyTemplateAndSave(label, templateName string, data interface{}, filename string, force bool, extendedDelimiters bool) error {
+func ApplyTemplateAndSave(label, templateName string, data interface{}, filename string, force bool, extendedDelimiters bool, fileMode os.FileMode) error {
 	content := GetTemplate(templateName)
 
 	if FileExists(filename) && !force {
@@ -235,7 +235,7 @@ func ApplyTemplateAndSave(label, templateName string, data interface{}, filename
 		return error
 	}
 
-	if error := ioutil.WriteFile(filename, []byte(content), 0644); error != nil {
+	if error := ioutil.WriteFile(filename, []byte(content), fileMode); error != nil {
 		return fmt.Errorf("Could not write to '%s' (%s)", filename, error.Error())
 	}
 

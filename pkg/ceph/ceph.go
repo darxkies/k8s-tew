@@ -166,7 +166,7 @@ func (ceph *Ceph) Setup() (*CephData, error) {
 		cephData.ClientK8STEWKey = utils.GenerateCephKey()
 	}
 
-	if error := utils.ApplyTemplateAndSave("ceph-monitor-keyring", utils.TemplateCephMonitorKeyring, cephData, cephMonitoringKeyringFilename, true, false); error != nil {
+	if error := utils.ApplyTemplateAndSave("ceph-monitor-keyring", utils.TemplateCephMonitorKeyring, cephData, cephMonitoringKeyringFilename, true, false, 0644); error != nil {
 		return nil, error
 	}
 
@@ -174,7 +174,7 @@ func (ceph *Ceph) Setup() (*CephData, error) {
 		Key string
 	}{
 		Key: cephData.ClientAdminKey,
-	}, ceph.config.GetFullLocalAssetFilename(utils.CephClientAdminKeyring), true, false); error != nil {
+	}, ceph.config.GetFullLocalAssetFilename(utils.CephClientAdminKeyring), true, false, 0644); error != nil {
 		return nil, error
 	}
 
@@ -184,7 +184,7 @@ func (ceph *Ceph) Setup() (*CephData, error) {
 	}{
 		Name: "bootstrap-mds",
 		Key:  cephData.ClientBootstrapMetadataServerKey,
-	}, ceph.config.GetFullLocalAssetFilename(utils.CephBootstrapMdsKeyring), true, false); error != nil {
+	}, ceph.config.GetFullLocalAssetFilename(utils.CephBootstrapMdsKeyring), true, false, 0644); error != nil {
 		return nil, error
 	}
 
@@ -194,7 +194,7 @@ func (ceph *Ceph) Setup() (*CephData, error) {
 	}{
 		Name: "bootstrap-osd",
 		Key:  cephData.ClientBootstrapObjectStorageKey,
-	}, ceph.config.GetFullLocalAssetFilename(utils.CephBootstrapOsdKeyring), true, false); error != nil {
+	}, ceph.config.GetFullLocalAssetFilename(utils.CephBootstrapOsdKeyring), true, false, 0644); error != nil {
 		return nil, error
 	}
 
@@ -204,7 +204,7 @@ func (ceph *Ceph) Setup() (*CephData, error) {
 	}{
 		Name: "bootstrap-rbd",
 		Key:  cephData.ClientBootstrapRadosBlockDeviceKey,
-	}, ceph.config.GetFullLocalAssetFilename(utils.CephBootstrapRbdKeyring), true, false); error != nil {
+	}, ceph.config.GetFullLocalAssetFilename(utils.CephBootstrapRbdKeyring), true, false, 0644); error != nil {
 		return nil, error
 	}
 
@@ -214,7 +214,7 @@ func (ceph *Ceph) Setup() (*CephData, error) {
 	}{
 		Name: "bootstrap-rgw",
 		Key:  cephData.ClientBootstrapRadosGatewayKey,
-	}, ceph.config.GetFullLocalAssetFilename(utils.CephBootstrapRgwKeyring), true, false); error != nil {
+	}, ceph.config.GetFullLocalAssetFilename(utils.CephBootstrapRgwKeyring), true, false, 0644); error != nil {
 		return nil, error
 	}
 
@@ -250,7 +250,7 @@ func (ceph *Ceph) Setup() (*CephData, error) {
 		OsdKeyringTemplate: osdKeyringTemplate,
 		OsdDataTemplate:    osdDataTemplate,
 		OsdJournalTemplate: osdJournalTemplate,
-	}, ceph.config.GetFullLocalAssetFilename(utils.CephConfig), true, false); error != nil {
+	}, ceph.config.GetFullLocalAssetFilename(utils.CephConfig), true, false, 0644); error != nil {
 		return nil, error
 	}
 

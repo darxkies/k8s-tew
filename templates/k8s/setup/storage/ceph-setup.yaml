@@ -3,6 +3,86 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: storage
+  name: ceph-mon-{{$node.Name}}
+  labels:
+    app: ceph
+    daemon: mon
+    instance: ceph-mon-{{$node.Name}}
+spec:
+  selector:
+    matchLabels:
+      app: ceph
+      daemon: mon
+      instance: ceph-mon-{{$node.Name}}
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: ceph
+        daemon: mon
+        instance: ceph-mon-{{$node.Name}}
+    spec:
+      hostNetwork: true
+      nodeSelector:
+        kubernetes.io/hostname: {{$node.Name}}
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
+      volumes:
+      - name: ceph-config
+        hostPath:
+          path: {{$.CephConfigDirectory}}
+          type: DirectoryOrCreate
+      - name: ceph-data
+        hostPath:
+          path: {{$.CephDataDirectory}}
+          type: DirectoryOrCreate
+      - name: k8s-tew-binary
+        hostPath:
+          path: {{$.K8sTewBinary}}
+          type: File
+      - name: k8s-tew-config
+        hostPath:
+          path: {{$.K8sTewConfig}}
+          type: File
+      containers:
+      - name: ceph-mon
+        image: {{$.CephImage}}
+        command: ["/k8s-tew"]
+        args: 
+        - ceph
+        - mon
+        - --id
+        - {{$node.Name}}
+        - --debug
+        env:
+        - name: K8S_TEW_BASE_DIRECTORY
+          value: "/"
+        volumeMounts:
+        - name: ceph-config
+          mountPath: /etc/ceph
+        - name: ceph-data
+          mountPath: /var/lib/ceph
+        - name: k8s-tew-binary
+          mountPath: /k8s-tew
+        - name: k8s-tew-config
+          mountPath: /etc/k8s-tew/config.yaml
+        livenessProbe:
+          tcpSocket:
+            port: 6789
+          initialDelaySeconds: 60
+          timeoutSeconds: 5
+        readinessProbe:
+          tcpSocket:
+            port: 6789
+          timeoutSeconds: 5
+{{end}}{{range $index, $node := .StorageNodes}}---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: storage
   name: ceph-mgr-{{$node.Name}}
   labels:
     app: ceph
@@ -106,86 +186,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: storage
-  name: ceph-mon-{{$node.Name}}
-  labels:
-    app: ceph
-    daemon: mon
-    instance: ceph-mon-{{$node.Name}}
-spec:
-  selector:
-    matchLabels:
-      app: ceph
-      daemon: mon
-      instance: ceph-mon-{{$node.Name}}
-  replicas: 1
-  strategy:
-    type: Recreate
-  template:
-    metadata:
-      labels:
-        app: ceph
-        daemon: mon
-        instance: ceph-mon-{{$node.Name}}
-    spec:
-      hostNetwork: true
-      nodeSelector:
-        kubernetes.io/hostname: {{$node.Name}}
-      tolerations:
-        - effect: NoSchedule
-          operator: Exists
-      volumes:
-      - name: ceph-config
-        hostPath:
-          path: {{$.CephConfigDirectory}}
-          type: DirectoryOrCreate
-      - name: ceph-data
-        hostPath:
-          path: {{$.CephDataDirectory}}
-          type: DirectoryOrCreate
-      - name: k8s-tew-binary
-        hostPath:
-          path: {{$.K8sTewBinary}}
-          type: File
-      - name: k8s-tew-config
-        hostPath:
-          path: {{$.K8sTewConfig}}
-          type: File
-      containers:
-      - name: ceph-mon
-        image: {{$.CephImage}}
-        command: ["/k8s-tew"]
-        args: 
-        - ceph
-        - mon
-        - --id
-        - {{$node.Name}}
-        - --debug
-        env:
-        - name: K8S_TEW_BASE_DIRECTORY
-          value: "/"
-        volumeMounts:
-        - name: ceph-config
-          mountPath: /etc/ceph
-        - name: ceph-data
-          mountPath: /var/lib/ceph
-        - name: k8s-tew-binary
-          mountPath: /k8s-tew
-        - name: k8s-tew-config
-          mountPath: /etc/k8s-tew/config.yaml
-        livenessProbe:
-          tcpSocket:
-            port: 6789
-          initialDelaySeconds: 60
-          timeoutSeconds: 5
-        readinessProbe:
-          tcpSocket:
-            port: 6789
-          timeoutSeconds: 5
-{{end}}{{range $index, $node := .StorageNodes}}---
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  namespace: storage
   name: ceph-mds-{{$node.Name}}
   labels:
     app: ceph
@@ -269,7 +269,7 @@ spec:
           tcpSocket:
             port: 6800
           timeoutSeconds: 5
-{{end}}{{range $index, $node := .StorageNodes}}---
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -471,8 +471,17 @@ spec:
       name: ceph-setup
     spec:
       restartPolicy: OnFailure
-      nodeSelector:
-        node-role.kubernetes.io/storage: "true"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                {{range $index, $node := .StorageNodes -}}
+                - "{{$node.Name}}"
+                {{end}}
       tolerations:
         - effect: NoSchedule
           operator: Exists

@@ -439,8 +439,17 @@ spec:
       tolerations:
         - effect: NoSchedule
           operator: Exists
-      nodeSelector:
-        node-role.kubernetes.io/storage: "true"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                {{range $index, $node := .StorageNodes -}}
+                - "{{$node.Name}}"
+                {{end}}
       serviceAccount: rbd-csi-provisioner
       containers:
         - name: csi-provisioner
@@ -961,6 +970,20 @@ spec:
       labels:
         app: csi-cephfsplugin-provisioner
     spec:
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                {{range $index, $node := .StorageNodes -}}
+                - "{{$node.Name}}"
+                {{end}}
       serviceAccount: cephfs-csi-provisioner
       containers:
         - name: csi-provisioner
