@@ -2003,8 +2003,10 @@ metadata:
   name: csi-rbdplugin-snapclass
   annotations:
     snapshot.storage.kubernetes.io/is-default-class: "true"
+  labels:
+    velero.io/csi-volumesnapshot-class: "true"
 driver: rbd.csi.ceph.com
-deletionPolicy: Delete
+deletionPolicy: Retain
 parameters:
   clusterID: {{.ClusterID}}
   pool: {{.CephRBDPoolName}}
@@ -2019,8 +2021,10 @@ metadata:
   name: csi-cephfsplugin-snapclass
   annotations:
     snapshot.storage.kubernetes.io/is-default-class: "true"
+  labels:
+    velero.io/csi-volumesnapshot-class: "true"
 driver: cephfs.csi.ceph.com
-deletionPolicy: Delete
+deletionPolicy: Retain
 parameters:
   clusterID: {{.ClusterID}}
   pool: {{.CephFSPoolName}}

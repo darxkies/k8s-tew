@@ -20,6 +20,8 @@ type Versions struct {
 	Busybox                      string `yaml:"busybox"`
 	Velero                       string `yaml:"velero"`
 	VeleroPluginAWS              string `yaml:"velero-plugin-aws"`
+	VeleroPluginCSI              string `yaml:"velero-plugin-csi"`
+	VeleroResticRestoreHelper    string `yaml:"velero-restic-restore-helper"`
 	MinioServer                  string `yaml:"minio-server"`
 	MinioClient                  string `yaml:"minio-client"`
 	Pause                        string `yaml:"pause"`
@@ -78,6 +80,8 @@ func NewVersions() Versions {
 		Busybox:                      utils.VersionBusybox,
 		Velero:                       utils.VersionVelero,
 		VeleroPluginAWS:              utils.VersionVeleroPluginAWS,
+		VeleroPluginCSI:              utils.VersionVeleroPluginCSI,
+		VeleroResticRestoreHelper:    utils.VersionVeleroResticRestoreHelper,
 		MinioServer:                  utils.VersionMinioServer,
 		MinioClient:                  utils.VersionMinioClient,
 		Pause:                        utils.VersionPause,
@@ -142,6 +146,8 @@ func (versions Versions) GetImages() []Image {
 		{Name: versions.MinioClient, Features: Features{utils.FeatureBackup, utils.FeatureStorage}},
 		{Name: versions.Velero, Features: Features{utils.FeatureBackup, utils.FeatureStorage}},
 		{Name: versions.VeleroPluginAWS, Features: Features{utils.FeatureBackup, utils.FeatureStorage}},
+		{Name: versions.VeleroPluginCSI, Features: Features{utils.FeatureBackup, utils.FeatureStorage}},
+		{Name: versions.VeleroResticRestoreHelper, Features: Features{utils.FeatureBackup, utils.FeatureStorage}},
 		{Name: versions.Ceph, Features: Features{utils.FeatureStorage}},
 		{Name: versions.CSIAttacher, Features: Features{utils.FeatureStorage}},
 		{Name: versions.CSIProvisioner, Features: Features{utils.FeatureStorage}},

@@ -1070,6 +1070,7 @@ func (generator *Generator) generateVeleroSetup() error {
 	return utils.ApplyTemplateAndSave("velero-setup", utils.TemplateVeleroSetup, struct {
 		VeleroImage          string
 		VeleroPluginAWSImage string
+		VeleroPluginCSIImage string
 		MinioServerImage     string
 		MinioClientImage     string
 		PodsDirectory        string
@@ -1078,6 +1079,7 @@ func (generator *Generator) generateVeleroSetup() error {
 	}{
 		VeleroImage:          generator.config.Config.Versions.Velero,
 		VeleroPluginAWSImage: generator.config.Config.Versions.VeleroPluginAWS,
+		VeleroPluginCSIImage: generator.config.Config.Versions.VeleroPluginCSI,
 		MinioServerImage:     generator.config.Config.Versions.MinioServer,
 		MinioClientImage:     generator.config.Config.Versions.MinioClient,
 		PodsDirectory:        generator.config.GetFullTargetAssetDirectory(utils.DirectoryPodsData),

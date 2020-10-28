@@ -302,6 +302,14 @@ func init() {
 		_config.Config.Versions.VeleroPluginAWS = value
 	})
 
+	addStringOption("version-velero-plugin-csi", utils.VersionVeleroPluginCSI, "Velero Plugin CSI version", func(value string) {
+		_config.Config.Versions.VeleroPluginCSI = value
+	})
+
+	addStringOption("version-velero-restic-restore-helper", utils.VersionVeleroResticRestoreHelper, "Velero Restic Restore Helper", func(value string) {
+		_config.Config.Versions.VeleroResticRestoreHelper = value
+	})
+
 	addStringOption("version-minio-server", utils.VersionMinioServer, "Minio server version", func(value string) {
 		_config.Config.Versions.MinioServer = value
 	})
