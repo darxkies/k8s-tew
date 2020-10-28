@@ -83,7 +83,7 @@ end
 if $os == "ubuntu"
   $box = "bento/ubuntu-20.04"
 else
-  $box = "centos/7"
+  $box = "bento/centos-8.2"
 end
 
 if ENV["IP_PREFIX"]
@@ -225,7 +225,6 @@ Vagrant.configure("2") do |config|
     config.vm.provider "virtualbox" do |vb|
         vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
         vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
-        vb.customize ["modifyvm", :id, "--nictype1", "virtio"]
         vb.customize ["modifyvm", :id, "--ioapic", "on"]
         vb.customize ["modifyvm", :id, "--vrde", "on"]
     end
