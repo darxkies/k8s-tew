@@ -198,15 +198,21 @@
 <h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
 <p>All k8s-tew commands accept the argument <code class="file docutils literal notranslate"><span class="pre">--base-directory</span></code>, which defines where all the files (binaries, certificates, configurations and so on) will be stored. If no value is defined then it will create a subdirectory called “assets” in the working directory. Additionally, the environment variable K8S_TEW_BASE_DIRECTORY can be set to point to the assets directory instead of using <code class="file docutils literal notranslate"><span class="pre">--base-directory</span></code>.</p>
 <p>To see all the commands and their arguments use the <code class="file docutils literal notranslate"><span class="pre">-h</span></code> argument.</p>
-<p>To activate completion enter:</p>
+<p>To activate completion for bash enter:</p>
 <blockquote>
 <div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span> &lt;<span class="o">(</span>k8s-tew completion<span class="o">)</span>
 </pre></div>
 </div>
 </div></blockquote>
+<p>For zsh run:</p>
+<blockquote>
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span> &lt;<span class="o">(</span>k8s-tew completion zsh<span class="o">)</span>
+</pre></div>
+</div>
+</div></blockquote>
 <div class="section" id="requirements">
 <h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
-<p>k8s-tew was tested so far on Ubuntu 18.04 and CentOS 7.5. But it should be able to run on other Linux distributions.</p>
+<p>k8s-tew was tested so far on Ubuntu 20.04 and CentOS 8.2. But it should be able to run on other Linux distributions.</p>
 <p>Host related dependencies such as socat, conntrack, ipset and rbd are embedded in k8s-tew and put in place, once the cluster is running. Thus it is fairly portable to other Linux distributions.</p>
 </div>
 <div class="section" id="labels">
@@ -216,12 +222,12 @@
 <li><p>bootstrapper - This label marks bootstrapping node/commands</p></li>
 <li><p>controller - Kubernetes Controler. At least three controller nodes are required for a HA cluster.</p></li>
 <li><p>worker - Kubernetes Node/Minion. At least one worker node is required.</p></li>
-<li><p>storage - The storage manager components are installed on the controller nodes. The worker nodes are used to store the actual data of the pods. If the storage label is omitted then all nodes are used. If you choose to use only some nodes for storage, then keep in mind that you need at least three storage managers and at least two data storage servers for a HA cluster.</p></li>
+<li><p>storage - The Ceph Monitors are installed on the controller nodes. The storage nodes are used to store the actual data of the pods, and also to run the containers related to Ceph and CSI.</p></li>
 </ul>
 </div>
 <div class="section" id="workflow">
 <h2>Workflow<a class="headerlink" href="#workflow" title="Permalink to this headline">¶</a></h2>
-<p>To setup a local singl-node cluster, the workflow is: initialize -&gt; configure -&gt; generate -&gt; run</p>
+<p>To setup a local single-node cluster, the workflow is: initialize -&gt; configure -&gt; generate -&gt; run</p>
 <p>For a remote cluster, the workflow is: initialize -&gt; configure -&gt; generate -&gt; deploy</p>
 <p>If something in one of the steps is changed, (e.g. configuration), then all the following steps have to be performed.</p>
 <div class="section" id="initialization">
@@ -253,6 +259,15 @@
 </dd>
 <dt><kbd><span class="option">--calico-typha-ip <var>string</var></span></kbd></dt>
 <dd><p>Calico Typha IP (default “10.32.0.5”)</p>
+</dd>
+<dt><kbd><span class="option">--ceph-cluster-name <var>string</var></span></kbd></dt>
+<dd><p>Ceph Cluster Name (default “ceph”)</p>
+</dd>
+<dt><kbd><span class="option">--ceph-expected-number-of-objects <var>uint</var></span></kbd></dt>
+<dd><p>Ceph Expected Number of Objects (default 1000000)</p>
+</dd>
+<dt><kbd><span class="option">--ceph-placement-groups <var>uint</var></span></kbd></dt>
+<dd><p>Ceph Placement Groups (default 256)</p>
 </dd>
 <dt><kbd><span class="option">--client-certificate-validity-period <var>uint16</var></span></kbd></dt>
 <dd><p>Client Certificate Validity Period (default 15)</p>
@@ -329,143 +344,173 @@
 <dt><kbd><span class="option">--rsa-key-size <var>uint16</var></span></kbd></dt>
 <dd><p>RSA Key Size (default 2048)</p>
 </dd>
+<dt><kbd><span class="option">--san-dns-names <var>string</var></span></kbd></dt>
+<dd><p>SAN DNS Names (comma separated)</p>
+</dd>
+<dt><kbd><span class="option">--san-ip-addresses <var>string</var></span></kbd></dt>
+<dd><p>SAN IP Addresses (comma separated)</p>
+</dd>
 <dt><kbd><span class="option">--version-alert-manager <var>string</var></span></kbd></dt>
-<dd><p>Alert Manager version (default “quay.io/prometheus/alertmanager:v0.19.0”)</p>
+<dd><p>Alert Manager version (default “quay.io/prometheus/alertmanager:v0.21.0”)</p>
 </dd>
 <dt><kbd><span class="option">--version-busybox <var>string</var></span></kbd></dt>
-<dd><p>Busybox version (default “docker.io/library/busybox:1.31.1”)</p>
+<dd><p>Busybox version (default “docker.io/library/busybox:1.32.0”)</p>
 </dd>
 <dt><kbd><span class="option">--version-calico-cni <var>string</var></span></kbd></dt>
-<dd><p>Calico CNI version (default “quay.io/calico/cni:v3.10.2”)</p>
+<dd><p>Calico CNI version (default “quay.io/calico/cni:v3.16.4”)</p>
 </dd>
 <dt><kbd><span class="option">--version-calico-kube-controllers <var>string</var></span></kbd></dt>
-<dd><p>Calico Kube Controllers  version (default “quay.io/calico/kube-controllers:v3.10.2”)</p>
+<dd><p>Calico Kube Controllers  version (default “quay.io/calico/kube-controllers:v3.16.4”)</p>
 </dd>
 <dt><kbd><span class="option">--version-calico-node <var>string</var></span></kbd></dt>
-<dd><p>Calico Node version (default “quay.io/calico/node:v3.10.2”)</p>
+<dd><p>Calico Node version (default “quay.io/calico/node:v3.16.4”)</p>
+</dd>
+<dt><kbd><span class="option">--version-calico-pod2daemon <var>string</var></span></kbd></dt>
+<dd><p>Calico Pod2Daemon version (default “quay.io/calico/pod2daemon-flexvol:v3.16.4”)</p>
 </dd>
 <dt><kbd><span class="option">--version-calico-typha <var>string</var></span></kbd></dt>
-<dd><p>Calico Typha version (default “quay.io/calico/typha:v3.10.2”)</p>
+<dd><p>Calico Typha version (default “quay.io/calico/typha:v3.16.4”)</p>
 </dd>
 <dt><kbd><span class="option">--version-ceph <var>string</var></span></kbd></dt>
-<dd><p>Ceph version (default “docker.io/ceph/daemon:v4.0.7-stable-4.0-nautilus-centos-7-x86_64”)</p>
+<dd><p>Ceph version (default “docker.io/ceph/ceph:v15.2.5”)</p>
 </dd>
 <dt><kbd><span class="option">--version-cerebro <var>string</var></span></kbd></dt>
-<dd><p>Cerebro version (default “docker.io/lmenezes/cerebro:0.8.5”)</p>
+<dd><p>Cerebro version (default “docker.io/lmenezes/cerebro:0.9.2”)</p>
 </dd>
 <dt><kbd><span class="option">--version-cert-manager-cainjector <var>string</var></span></kbd></dt>
-<dd><p>Cert Manager CA Injector version (default “quay.io/jetstack/cert-manager-cainjector:v0.13.1”)</p>
+<dd><p>Cert Manager CA Injector version (default “quay.io/jetstack/cert-manager-cainjector:v1.0.3”)</p>
 </dd>
 <dt><kbd><span class="option">--version-cert-manager-controller <var>string</var></span></kbd></dt>
-<dd><p>Cert Manager Controller version (default “quay.io/jetstack/cert-manager-controller:v0.13.1”)</p>
+<dd><p>Cert Manager Controller version (default “quay.io/jetstack/cert-manager-controller:v1.0.3”)</p>
 </dd>
 <dt><kbd><span class="option">--version-cert-manager-webhook <var>string</var></span></kbd></dt>
-<dd><p>Cert Manager Web Hook version (default “quay.io/jetstack/cert-manager-webhook:v0.13.1”)</p>
+<dd><p>Cert Manager Web Hook version (default “quay.io/jetstack/cert-manager-webhook:v1.0.3”)</p>
 </dd>
 <dt><kbd><span class="option">--version-containerd <var>string</var></span></kbd></dt>
-<dd><p>Containerd version (default “1.3.3”)</p>
+<dd><p>Containerd version (default “1.4.1”)</p>
 </dd>
 <dt><kbd><span class="option">--version-coredns <var>string</var></span></kbd></dt>
-<dd><p>CoreDNS version (default “docker.io/coredns/coredns:1.6.7”)</p>
+<dd><p>CoreDNS version (default “docker.io/coredns/coredns:1.8.0”)</p>
 </dd>
 <dt><kbd><span class="option">--version-crictl <var>string</var></span></kbd></dt>
-<dd><p>CriCtl version (default “1.16.1”)</p>
+<dd><p>CriCtl version (default “1.18.0”)</p>
 </dd>
 <dt><kbd><span class="option">--version-csi-attacher <var>string</var></span></kbd></dt>
-<dd><p>CSI Attacher version (default “quay.io/k8scsi/csi-attacher:v1.2.0”)</p>
+<dd><p>CSI Attacher version (default “quay.io/k8scsi/csi-attacher:v2.1.1”)</p>
 </dd>
 <dt><kbd><span class="option">--version-csi-ceph-plugin <var>string</var></span></kbd></dt>
-<dd><p>CSI Ceph Plugin version (default “quay.io/cephcsi/cephcsi:v1.2.2”)</p>
+<dd><p>CSI Ceph Plugin version (default “quay.io/cephcsi/cephcsi:v3.1.1”)</p>
 </dd>
 <dt><kbd><span class="option">--version-csi-driver-registrar <var>string</var></span></kbd></dt>
-<dd><p>CSI Driver Registrar version (default “quay.io/k8scsi/csi-node-driver-registrar:v1.1.0”)</p>
+<dd><p>CSI Driver Registrar version (default “quay.io/k8scsi/csi-node-driver-registrar:v1.3.0”)</p>
 </dd>
 <dt><kbd><span class="option">--version-csi-provisioner <var>string</var></span></kbd></dt>
-<dd><p>CSI Provisioner version (default “quay.io/k8scsi/csi-provisioner:v1.3.0”)</p>
+<dd><p>CSI Provisioner version (default “quay.io/k8scsi/csi-provisioner:v1.6.0”)</p>
 </dd>
 <dt><kbd><span class="option">--version-csi-resizer <var>string</var></span></kbd></dt>
-<dd><p>CSI Resizer version (default “quay.io/k8scsi/csi-resizer:v0.3.0”)</p>
+<dd><p>CSI Resizer version (default “quay.io/k8scsi/csi-resizer:v0.5.0”)</p>
+</dd>
+<dt><kbd><span class="option">--version-csi-snapshot-controller <var>string</var></span></kbd></dt>
+<dd><p>CSI Snapshot Controller  version (default “quay.io/k8scsi/snapshot-controller:v2.0.1”)</p>
 </dd>
 <dt><kbd><span class="option">--version-csi-snapshotter <var>string</var></span></kbd></dt>
-<dd><p>CSI Snapshotter version (default “quay.io/k8scsi/csi-snapshotter:v1.2.1”)</p>
+<dd><p>CSI Snapshotter version (default “quay.io/k8scsi/csi-snapshotter:v2.1.1”)</p>
 </dd>
 <dt><kbd><span class="option">--version-elasticsearch <var>string</var></span></kbd></dt>
-<dd><p>Elasticsearch version (default “docker.elastic.co/elasticsearch/elasticsearch:7.5.0”)</p>
+<dd><p>Elasticsearch version (default “docker.elastic.co/elasticsearch/elasticsearch:7.9.2”)</p>
 </dd>
 <dt><kbd><span class="option">--version-etcd <var>string</var></span></kbd></dt>
-<dd><p>Etcd version (default “quay.io/coreos/etcd:v3.4.3”)</p>
+<dd><p>Etcd version (default “quay.io/coreos/etcd:v3.4.13”)</p>
 </dd>
 <dt><kbd><span class="option">--version-fluent-bit <var>string</var></span></kbd></dt>
-<dd><p>Fluent-Bit version (default “docker.io/fluent/fluent-bit:1.3.4”)</p>
+<dd><p>Fluent-Bit version (default “docker.io/fluent/fluent-bit:1.6.1”)</p>
 </dd>
 <dt><kbd><span class="option">--version-gobetween <var>string</var></span></kbd></dt>
-<dd><p>Gobetween version (default “docker.io/yyyar/gobetween:0.7.0”)</p>
+<dd><p>Gobetween version (default “docker.io/yyyar/gobetween:0.8.0”)</p>
 </dd>
 <dt><kbd><span class="option">--version-grafana <var>string</var></span></kbd></dt>
-<dd><p>Grafana version (default “docker.io/grafana/grafana:6.0.1”)</p>
+<dd><p>Grafana version (default “docker.io/grafana/grafana:7.2.2”)</p>
 </dd>
 <dt><kbd><span class="option">--version-helm <var>string</var></span></kbd></dt>
-<dd><p>Helm version (default “3.1.0”)</p>
+<dd><p>Helm version (default “3.4.0”)</p>
 </dd>
 <dt><kbd><span class="option">--version-k8s <var>string</var></span></kbd></dt>
-<dd><p>Kubernetes version (default “k8s.gcr.io/hyperkube:v1.17.3”)</p>
+<dd><p>Kubernetes version (default “v1.18.10”)</p>
 </dd>
 <dt><kbd><span class="option">--version-kibana <var>string</var></span></kbd></dt>
-<dd><p>Kibana version (default “docker.elastic.co/kibana/kibana-oss:7.5.0”)</p>
+<dd><p>Kibana version (default “docker.elastic.co/kibana/kibana:7.9.2”)</p>
+</dd>
+<dt><kbd><span class="option">--version-kube-apiserver <var>string</var></span></kbd></dt>
+<dd><p>Kubernetes API Server version (default “k8s.gcr.io/kube-apiserver:v1.18.10”)</p>
+</dd>
+<dt><kbd><span class="option">--version-kube-controller-manager <var>string</var></span></kbd></dt>
+<dd><p>Kubernetes Controller Manager (default “k8s.gcr.io/kube-controller-manager:v1.18.10”)</p>
+</dd>
+<dt><kbd><span class="option">--version-kube-proxy <var>string</var></span></kbd></dt>
+<dd><p>Kubernetes Proxy version (default “k8s.gcr.io/kube-proxy:v1.18.10”)</p>
+</dd>
+<dt><kbd><span class="option">--version-kube-scheduler <var>string</var></span></kbd></dt>
+<dd><p>Kubernetes Scheduler (default “k8s.gcr.io/kube-scheduler:v1.18.10”)</p>
 </dd>
 <dt><kbd><span class="option">--version-kube-state-metrics <var>string</var></span></kbd></dt>
-<dd><p>Kube State Metrics version (default “quay.io/coreos/kube-state-metrics:v1.8.0”)</p>
+<dd><p>Kube State Metrics version (default “quay.io/coreos/kube-state-metrics:v1.9.7”)</p>
 </dd>
 <dt><kbd><span class="option">--version-kubernetes-dashboard <var>string</var></span></kbd></dt>
-<dd><p>Kubernetes Dashboard version (default “docker.io/kubernetesui/dashboard:v2.0.0-rc5”)</p>
+<dd><p>Kubernetes Dashboard version (default “docker.io/kubernetesui/dashboard:v2.0.4”)</p>
 </dd>
 <dt><kbd><span class="option">--version-metallb-controller <var>string</var></span></kbd></dt>
-<dd><p>MetalLB Controller version (default “docker.io/metallb/controller:v0.8.3”)</p>
+<dd><p>MetalLB Controller version (default “docker.io/metallb/controller:v0.9.4”)</p>
 </dd>
 <dt><kbd><span class="option">--version-metallb-speaker <var>string</var></span></kbd></dt>
-<dd><p>MetalLB Speaker version (default “docker.io/metallb/speaker:v0.8.3”)</p>
+<dd><p>MetalLB Speaker version (default “docker.io/metallb/speaker:v0.9.4”)</p>
 </dd>
 <dt><kbd><span class="option">--version-metrics-server <var>string</var></span></kbd></dt>
-<dd><p>Metrics Server version (default “k8s.gcr.io/metrics-server-amd64:v0.3.5”)</p>
+<dd><p>Metrics Server version (default “k8s.gcr.io/metrics-server/metrics-server:v0.3.7”)</p>
 </dd>
 <dt><kbd><span class="option">--version-minio-client <var>string</var></span></kbd></dt>
-<dd><p>Minio client version (default “docker.io/minio/mc:RELEASE.2019-10-09T22-54-57Z”)</p>
+<dd><p>Minio client version (default “docker.io/minio/mc:RELEASE.2020-10-03T02-54-56Z”)</p>
 </dd>
 <dt><kbd><span class="option">--version-minio-server <var>string</var></span></kbd></dt>
-<dd><p>Minio server version (default “docker.io/minio/minio:RELEASE.2019-10-12T01-39-57Z”)</p>
+<dd><p>Minio server version (default “docker.io/minio/minio:RELEASE.2020-10-18T21-54-12Z”)</p>
 </dd>
 <dt><kbd><span class="option">--version-mysql <var>string</var></span></kbd></dt>
-<dd><p>MySQL version (default “docker.io/library/mysql:5.6”)</p>
+<dd><p>MySQL version (default “docker.io/library/mysql:8.0.19”)</p>
+</dd>
+<dt><kbd><span class="option">--version-nginx-ingress-admission-webhook <var>string</var></span></kbd></dt>
+<dd><p>Nginx Ingress Admission Webhook version (default “docker.io/jettech/kube-webhook-certgen:v1.3.0”)</p>
 </dd>
 <dt><kbd><span class="option">--version-nginx-ingress-controller <var>string</var></span></kbd></dt>
-<dd><p>Nginx Ingress Controller version (default “quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.26.1”)</p>
-</dd>
-<dt><kbd><span class="option">--version-nginx-ingress-default-backend <var>string</var></span></kbd></dt>
-<dd><p>Nginx Ingress Default Backend version (default “k8s.gcr.io/defaultbackend-amd64:1.5”)</p>
+<dd><p>Nginx Ingress Controller version (default “k8s.gcr.io/ingress-nginx/controller:v0.40.2”)</p>
 </dd>
 <dt><kbd><span class="option">--version-node-exporter <var>string</var></span></kbd></dt>
-<dd><p>Node Exporter version (default “quay.io/prometheus/node-exporter:v0.18.1”)</p>
+<dd><p>Node Exporter version (default “quay.io/prometheus/node-exporter:v1.0.1”)</p>
 </dd>
 <dt><kbd><span class="option">--version-pause <var>string</var></span></kbd></dt>
-<dd><p>Pause version (default “k8s.gcr.io/pause:3.1”)</p>
+<dd><p>Pause version (default “k8s.gcr.io/pause:3.3”)</p>
 </dd>
 <dt><kbd><span class="option">--version-prometheus <var>string</var></span></kbd></dt>
-<dd><p>Prometheus version (default “quay.io/prometheus/prometheus:v2.13.0”)</p>
+<dd><p>Prometheus version (default “quay.io/prometheus/prometheus:v2.22.0”)</p>
 </dd>
 <dt><kbd><span class="option">--version-runc <var>string</var></span></kbd></dt>
-<dd><p>Runc version (default “1.0.0-rc10”)</p>
+<dd><p>Runc version (default “1.0.0-rc92”)</p>
 </dd>
 <dt><kbd><span class="option">--version-velero <var>string</var></span></kbd></dt>
-<dd><p>Velero version (default “docker.io/velero/velero:v1.2.0”)</p>
+<dd><p>Velero version (default “docker.io/velero/velero:v1.5.2”)</p>
 </dd>
 <dt><kbd><span class="option">--version-velero-plugin-aws <var>string</var></span></kbd></dt>
-<dd><p>Velero Plugin AWS version (default “docker.io/velero/velero-plugin-for-aws:v1.0.0”)</p>
+<dd><p>Velero Plugin AWS version (default “docker.io/velero/velero-plugin-for-aws:v1.1.0”)</p>
+</dd>
+<dt><kbd><span class="option">--version-velero-plugin-csi <var>string</var></span></kbd></dt>
+<dd><p>Velero Plugin CSI version (default “docker.io/velero/velero-plugin-for-csi:v0.1.2”)</p>
+</dd>
+<dt><kbd><span class="option">--version-velero-restic-restore-helper <var>string</var></span></kbd></dt>
+<dd><p>Velero Restic Restore Helper (default “docker.io/velero/velero-restic-restore-helper:v1.5.2”)</p>
 </dd>
 <dt><kbd><span class="option">--version-virtual-ip <var>string</var></span></kbd></dt>
 <dd><p>Virtual-IP version (default “docker.io/darxkies/virtual-ip:0.1.4”)</p>
 </dd>
 <dt><kbd><span class="option">--version-wordpress <var>string</var></span></kbd></dt>
-<dd><p>WordPress version (default “docker.io/library/wordpress:4.8-apache”)</p>
+<dd><p>WordPress version (default “docker.io/library/wordpress:5.4-apache”)</p>
 </dd>
 <dt><kbd><span class="option">--vip-raft-controller-port <var>uint16</var></span></kbd></dt>
 <dd><p>VIP Raft Controller Port (default 16277)</p>
