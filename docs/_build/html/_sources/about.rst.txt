@@ -1,7 +1,7 @@
 About
 =====
 
-k8s-tew_ is a CLI tool to install a Kubernetes Cluster (local, single-node, multi-node or HA-cluster) on Bare Metal. It installs the most essential components needed by a cluster such as networking, storage, monitoring, logging, backuping/restoring and so on. Besides that, k8s-tew is also a supervisor that starts all cluster components on each node, once it setup the nodes.
+k8s-tew_ is a CLI tool to install a Kubernetes Cluster (local, single-node, multi-node or HA-cluster) on Bare Metal. It installs the most essential components needed by a cluster such as networking, storage, monitoring, logging, backuping/restoring and so on. Once the nodes are configured, k8s-tew is started on each node to supervise the cluster components. k8s-tew is also used internally to generate the configuration files for a Ceph cluster and also to start the necessary Ceph deamons with the right parameters. The Ceph functionality can be used with or without Kubernetes.
 
 .. _k8s-tew: https://github.com/darxkies/k8s-tew
 

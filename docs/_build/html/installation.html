@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,44 +11,48 @@
   
 
   
-  
-  
-  
-
-  
-
-  
-  
-    
-
-  
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Usage" href="usage.html" />
     <link rel="prev" title="Quick Start" href="quickstart.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
-            <a href="index.html" class="icon icon-home"> k8s-tew
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> k8s-tew
           
 
           
@@ -79,6 +82,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -104,6 +108,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -142,7 +147,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>Installation</li>
     
@@ -167,8 +172,8 @@
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
 <p>The commands in the upcoming sections will assume that k8s-tew is going to be installed in the directory <code class="file docutils literal notranslate"><span class="pre">/usr/local/bin</span></code>. That means that the aforementioned directory exists and it is included in the PATH. If that is not the case use the following commands:</p>
 <blockquote>
-<div><div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span>sudo mkdir -p /usr/local/bin
-export PATH=/usr/local/bin:$PATH
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sudo mkdir -p /usr/local/bin
+<span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span>/usr/local/bin:<span class="nv">$PATH</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -177,22 +182,22 @@ export PATH=/usr/local/bin:$PATH
 <p>The x86 64-bit binary can be downloaded from the following address: <a class="reference external" href="https://github.com/darxkies/k8s-tew/releases">https://github.com/darxkies/k8s-tew/releases</a></p>
 <p>Additionally the these commands can be used to download it and install it in <code class="file docutils literal notranslate"><span class="pre">/usr/local/bin</span></code></p>
 <blockquote>
-<div><div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="o">-</span><span class="n">s</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">api</span><span class="o">.</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">repos</span><span class="o">/</span><span class="n">darxkies</span><span class="o">/</span><span class="n">k8s</span><span class="o">-</span><span class="n">tew</span><span class="o">/</span><span class="n">releases</span><span class="o">/</span><span class="n">latest</span> <span class="o">|</span> <span class="n">grep</span> <span class="s2">&quot;browser_download_url&quot;</span> <span class="o">|</span> <span class="n">cut</span> <span class="o">-</span><span class="n">d</span> <span class="p">:</span> <span class="o">-</span><span class="n">f</span> <span class="mi">2</span><span class="p">,</span><span class="mi">3</span> <span class="o">|</span> <span class="n">tr</span> <span class="o">-</span><span class="n">d</span> \<span class="s2">&quot; | sudo wget -O /usr/local/bin/k8s-tew -qi -</span>
-<span class="n">sudo</span> <span class="n">chmod</span> <span class="n">a</span><span class="o">+</span><span class="n">x</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">k8s</span><span class="o">-</span><span class="n">tew</span>
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>curl -s https://api.github.com/repos/darxkies/k8s-tew/releases/latest <span class="p">|</span> grep <span class="s2">&quot;browser_download_url&quot;</span> <span class="p">|</span> cut -d : -f <span class="m">2</span>,3 <span class="p">|</span> tr -d <span class="se">\&quot;</span> <span class="p">|</span> sudo wget -O /usr/local/bin/k8s-tew -qi -
+sudo chmod a+x /usr/local/bin/k8s-tew
 </pre></div>
 </div>
 </div></blockquote>
 </div>
 <div class="section" id="source">
 <h2>Source<a class="headerlink" href="#source" title="Permalink to this headline">¶</a></h2>
-<p>To compile it from source you will need a Go (version 1.11+) environment, Git, Make and Docker installed. Once everything is installed, enter the following commands:</p>
+<p>To compile it from source you will need a Go (version 1.15+) environment, Git, Make and Docker installed. Once everything is installed, enter the following commands:</p>
 <blockquote>
-<div><div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span>export GOPATH=~/go
-export PATH=$GOPATH/bin:$PATH
-mkdir -p $GOPATH/src/github.com/darxkies
-cd $GOPATH/src/github.com/darxkies
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">GOPATH</span><span class="o">=</span>~/go
+<span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="nv">$GOPATH</span>/bin:<span class="nv">$PATH</span>
+mkdir -p <span class="nv">$GOPATH</span>/src/github.com/darxkies
+<span class="nb">cd</span> <span class="nv">$GOPATH</span>/src/github.com/darxkies
 git clone https://github.com/darxkies/k8s-tew.git
-cd k8s-tew
+<span class="nb">cd</span> k8s-tew
 make
 sudo mv k8s-tew /usr/local/bin
 </pre></div>
@@ -212,7 +217,7 @@ sudo mv k8s-tew /usr/local/bin
         <a href="usage.html" class="btn btn-neutral float-right" title="Usage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="quickstart.html" class="btn btn-neutral" title="Quick Start" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="quickstart.html" class="btn btn-neutral float-left" title="Quick Start" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -221,11 +226,19 @@ sudo mv k8s-tew /usr/local/bin
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Mircea-Cristian Racasan
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -237,27 +250,16 @@ sudo mv k8s-tew /usr/local/bin
   </div>
   
 
-
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>
