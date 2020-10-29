@@ -23,7 +23,7 @@ Additionally the these commands can be used to download it and install it in :fi
 Source
 ------
 
-To compile it from source you will need a Go (version 1.11+) environment, Git, Make and Docker installed. Once everything is installed, enter the following commands:
+To compile it from source you will need a Go (version 1.15+) environment, Git, Make and Docker installed. Once everything is installed, enter the following commands:
 
   .. code:: shell
 

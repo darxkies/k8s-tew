@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,44 +11,48 @@
   
 
   
-  
-  
-  
-
-  
-
-  
-  
-    
-
-  
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Installation" href="installation.html" />
     <link rel="prev" title="Features" href="features.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
-            <a href="index.html" class="icon icon-home"> k8s-tew
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> k8s-tew
           
 
           
@@ -79,6 +82,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -100,6 +104,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -138,7 +143,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>Quick Start</li>
     
@@ -163,49 +168,49 @@
 <h1>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h1>
 <p>The following snippet will create a cluster on the host computer or in a virtual machine:</p>
 <blockquote>
-<div><div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Switch to user root</span>
-<span class="n">sudo</span> <span class="n">su</span> <span class="o">-</span>
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># Switch to user root</span>
+sudo su -
 
 <span class="c1"># Download Binary</span>
-<span class="n">wget</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">darxkies</span><span class="o">/</span><span class="n">k8s</span><span class="o">-</span><span class="n">tew</span><span class="o">/</span><span class="n">releases</span><span class="o">/</span><span class="n">download</span><span class="o">/</span><span class="mf">2.3</span><span class="o">.</span><span class="mi">5</span><span class="o">/</span><span class="n">k8s</span><span class="o">-</span><span class="n">tew</span>
-<span class="n">chmod</span> <span class="n">a</span><span class="o">+</span><span class="n">x</span> <span class="n">k8s</span><span class="o">-</span><span class="n">tew</span>
+wget https://github.com/darxkies/k8s-tew/releases/download/2.4.0/k8s-tew
+chmod a+x k8s-tew
 
 <span class="c1"># Everything is installed relative to the root directory</span>
-<span class="n">export</span> <span class="n">K8S_TEW_BASE_DIRECTORY</span><span class="o">=/</span>
+<span class="nb">export</span> <span class="nv">K8S_TEW_BASE_DIRECTORY</span><span class="o">=</span>/
 
 <span class="c1"># Initialize cluster configuration</span>
-<span class="o">./</span><span class="n">k8s</span><span class="o">-</span><span class="n">tew</span> <span class="n">initialize</span>
+./k8s-tew initialize
 
 <span class="c1"># Node the current machine to the cluster (the settings such as IP and hostname are inferred)</span>
-<span class="o">./</span><span class="n">k8s</span><span class="o">-</span><span class="n">tew</span> <span class="n">node</span><span class="o">-</span><span class="n">add</span> <span class="o">-</span><span class="n">s</span>
+./k8s-tew node-add -s
 
-<span class="c1"># Only on Ubuntu 18.04 to solve any DNS related issues</span>
-<span class="o">./</span><span class="n">k8s</span><span class="o">-</span><span class="n">tew</span> <span class="n">configure</span> <span class="o">--</span><span class="n">resolv</span><span class="o">-</span><span class="n">conf</span><span class="o">=/</span><span class="n">run</span><span class="o">/</span><span class="n">systemd</span><span class="o">/</span><span class="n">resolve</span><span class="o">/</span><span class="n">resolv</span><span class="o">.</span><span class="n">conf</span>
+<span class="c1"># Only on Ubuntu 20.04 to solve any DNS related issues</span>
+./k8s-tew configure --resolv-conf<span class="o">=</span>/run/systemd/resolve/resolv.conf
 
 <span class="c1"># Generate artefacts (e.g. certificates, configurations and so on)</span>
-<span class="o">./</span><span class="n">k8s</span><span class="o">-</span><span class="n">tew</span> <span class="n">generate</span>
+./k8s-tew generate
 
 <span class="c1"># Activate and start service</span>
-<span class="n">systemctl</span> <span class="n">daemon</span><span class="o">-</span><span class="n">reload</span>
-<span class="n">systemctl</span> <span class="n">enable</span> <span class="n">k8s</span><span class="o">-</span><span class="n">tew</span>
-<span class="n">systemctl</span> <span class="n">start</span> <span class="n">k8s</span><span class="o">-</span><span class="n">tew</span>
+systemctl daemon-reload
+systemctl <span class="nb">enable</span> k8s-tew
+systemctl start k8s-tew
 
 <span class="c1"># Activate environment variables and switch back to root</span>
-<span class="n">exit</span>
-<span class="n">sudo</span> <span class="n">su</span> <span class="o">-</span>
+<span class="nb">exit</span>
+sudo su -
 
 <span class="c1"># Watch the pods being installed</span>
-<span class="n">watch</span> <span class="o">-</span><span class="n">n</span> <span class="mi">1</span> <span class="n">kubectl</span> <span class="n">get</span> <span class="n">pods</span> <span class="o">--</span><span class="nb">all</span><span class="o">-</span><span class="n">namespaces</span>
+watch -n <span class="m">1</span> kubectl get pods --all-namespaces
 </pre></div>
 </div>
 </div></blockquote>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">You will need at least 20GB HDD, 8GB RAM and 4 CPU Cores.</p>
+<p class="admonition-title">Note</p>
+<p>You will need at least 20GB HDD, 8GB RAM and 4 CPU Cores.</p>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">To use k8s-tew with Vagrant take a look at <a class="reference external" href="https://github.com/darxkies/k8s-tew/tree/2.3.5/setup">https://github.com/darxkies/k8s-tew/tree/2.3.5/setup</a>.</p>
+<p class="admonition-title">Note</p>
+<p>To use k8s-tew with Vagrant take a look at <a class="reference external" href="https://github.com/darxkies/k8s-tew/tree/2.4.0/setup">https://github.com/darxkies/k8s-tew/tree/2.4.0/setup</a>.</p>
 </div>
 </div>
 
@@ -220,7 +225,7 @@
         <a href="installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="features.html" class="btn btn-neutral" title="Features" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="features.html" class="btn btn-neutral float-left" title="Features" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -229,11 +234,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Mircea-Cristian Racasan
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -245,27 +258,16 @@
   </div>
   
 
-
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

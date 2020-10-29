@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,44 +11,48 @@
   
 
   
-  
-  
-  
-
-  
-
-  
-  
-    
-
-  
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Troubleshooting" href="troubleshooting.html" />
     <link rel="prev" title="Usage" href="usage.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
-            <a href="index.html" class="icon icon-home"> k8s-tew
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> k8s-tew
           
 
           
@@ -79,6 +82,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -112,6 +116,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -150,7 +155,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>Setups</li>
     
@@ -178,51 +183,51 @@
 <p>Vagrant/VirtualBox can be used to test drive k8s-tew. The host is used to bootstrap the cluster which runs in VirtualBox. The Vagrantfile included in the repository can be used for single-node/multi-node &amp; Ubuntu 18.04/CentOS 7.5 setups.</p>
 <p>The Vagrantfile can be configured using the environment variables:</p>
 <ul class="simple">
-<li>OS - define the operating system. It accepts ubuntu, the default value, and centos.</li>
-<li>MULTI_NODE - if set then a HA cluster is generated. Otherwise a single-node setup is used.</li>
-<li>CONTROLLERS - defines the number of controller nodes. The default number is 3.</li>
-<li>WORKERS - specifies the number of worker nodes. The default number is 2.</li>
-<li>SSH_PUBLIC_KEY - if this environment variable is not set, then <code class="file docutils literal notranslate"><span class="pre">$HOME/.ssh/id_rsa</span></code> is used by default.</li>
-<li>IP_PREFIX - this value is used to generate the IP addresses of the nodes. If not set 192.168.100 will be used. The single node has the IP address 192.168.100.50. The controllers start with the IP address 192.168.100.200 and the workers with 192.168.100.100.</li>
-<li>CONTROLLERS_RAM - amount of RAM for one controller</li>
-<li>WORKERS_RAM - amount of RAM for one worker</li>
-<li>CONTROLLERS_CPUS - number of CPUs per controller</li>
-<li>WORKERS_CPUS - number of CPUs per worker</li>
+<li><p>OS - define the operating system. It accepts ubuntu, the default value, and centos.</p></li>
+<li><p>MULTI_NODE - if set then a HA cluster is generated. Otherwise a single-node setup is used.</p></li>
+<li><p>CONTROLLERS - defines the number of controller nodes. The default number is 3.</p></li>
+<li><p>WORKERS - specifies the number of worker nodes. The default number is 2.</p></li>
+<li><p>SSH_PUBLIC_KEY - if this environment variable is not set, then <code class="file docutils literal notranslate"><span class="pre">$HOME/.ssh/id_rsa</span></code> is used by default.</p></li>
+<li><p>IP_PREFIX - this value is used to generate the IP addresses of the nodes. If not set 192.168.100 will be used. The single node has the IP address 192.168.100.50. The controllers start with the IP address 192.168.100.200 and the workers with 192.168.100.100.</p></li>
+<li><p>CONTROLLERS_RAM - amount of RAM for one controller</p></li>
+<li><p>WORKERS_RAM - amount of RAM for one worker</p></li>
+<li><p>CONTROLLERS_CPUS - number of CPUs per controller</p></li>
+<li><p>WORKERS_CPUS - number of CPUs per worker</p></li>
 </ul>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The multi-node setup with the default settings needs about 20GB RAM for itself.</p>
+<p class="admonition-title">Note</p>
+<p>The multi-node setup with the default settings needs about 20GB RAM for itself.</p>
 </div>
 <div class="section" id="usage">
 <h3>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h3>
 <p>The directory called <code class="file docutils literal notranslate"><span class="pre">setup</span></code> (<a class="reference external" href="https://github.com/darxkies/k8s-tew/tree/2.3.5/setup">https://github.com/darxkies/k8s-tew/tree/2.3.5/setup</a>) contains sub-directories for various cluster setup configurations:</p>
 <ul class="simple">
-<li>local - it starts a single-node cluster locally without using any kind of virtualization. This kind of setup needs root rights. It is meant for local development where it might be important to fire the cluster up and shut it down fast. If you want it to start automatically, take a look at the quickstart section.</li>
-<li>ubuntu-single-node - Ubuntu 18.04 single-node cluster. It needs about 8GB Ram.</li>
-<li>ubuntu-multi-node - Ubuntu 18.04 HA cluster. It needs around 20GB Ram.</li>
-<li>centos-single-node - CentOS 7.5 single-node cluster. It needs about 8GB Ram.</li>
-<li>centos-multi-node - CentOS 7.5 HA cluster. It needs around 20GB Ram.</li>
+<li><p>local - it starts a single-node cluster locally without using any kind of virtualization. This kind of setup needs root rights. It is meant for local development where it might be important to fire the cluster up and shut it down fast. If you want it to start automatically, take a look at the quickstart section.</p></li>
+<li><p>ubuntu-single-node - Ubuntu 18.04 single-node cluster. It needs about 8GB Ram.</p></li>
+<li><p>ubuntu-multi-node - Ubuntu 18.04 HA cluster. It needs around 20GB Ram.</p></li>
+<li><p>centos-single-node - CentOS 7.5 single-node cluster. It needs about 8GB Ram.</p></li>
+<li><p>centos-multi-node - CentOS 7.5 HA cluster. It needs around 20GB Ram.</p></li>
 </ul>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Regardless of the setup, once the deployment is done it will take a while to download all required containers from the internet. So better use kubectl to check the status of the pods.</p>
+<p class="admonition-title">Note</p>
+<p>Regardless of the setup, once the deployment is done it will take a while to download all required containers from the internet. So better use kubectl to check the status of the pods.</p>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">For the local setup, to access the Kubernetes Dashboard use the internal IP address (e.g. 192.168.x.y or 10.x.y.z) and not 127.0.0.1/localhost. Depending on the hardware used, it might take a while until it starts and setups everything.</p>
+<p class="admonition-title">Note</p>
+<p>For the local setup, to access the Kubernetes Dashboard use the internal IP address (e.g. 192.168.x.y or 10.x.y.z) and not 127.0.0.1/localhost. Depending on the hardware used, it might take a while until it starts and setups everything.</p>
 </div>
 </div>
 <div class="section" id="create">
 <h3>Create<a class="headerlink" href="#create" title="Permalink to this headline">¶</a></h3>
 <p>Change to one of the sub-directories and enter the following command to start the cluster:</p>
 <blockquote>
-<div><div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span>
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>make
 </pre></div>
 </div>
 </div></blockquote>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">This will destroy any existing VMs, creates new VMs and performs all the steps (forced initialization, configuration, generation and deployment) to create the cluster.</p>
+<p class="admonition-title">Note</p>
+<p>This will destroy any existing VMs, creates new VMs and performs all the steps (forced initialization, configuration, generation and deployment) to create the cluster.</p>
 </div>
 </div>
 <div class="section" id="stop">
@@ -230,7 +235,7 @@
 <p>For the local setup, just press CTRL+C.</p>
 <p>For the other setups enter:</p>
 <blockquote>
-<div><div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">halt</span>
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>make halt
 </pre></div>
 </div>
 </div></blockquote>
@@ -239,30 +244,30 @@
 <h3>Start<a class="headerlink" href="#start" title="Permalink to this headline">¶</a></h3>
 <p>To start an existing setup/VMs enter:</p>
 <blockquote>
-<div><div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">up</span>
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>make up
 </pre></div>
 </div>
 </div></blockquote>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">This and the following commands work only for Vagrant based setups.</p>
+<p class="admonition-title">Note</p>
+<p>This and the following commands work only for Vagrant based setups.</p>
 </div>
 </div>
 <div class="section" id="ssh">
 <h3>SSH<a class="headerlink" href="#ssh" title="Permalink to this headline">¶</a></h3>
 <p>For single-node setups enter:</p>
 <blockquote>
-<div><div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">ssh</span>
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>make ssh
 </pre></div>
 </div>
 </div></blockquote>
 <p>And for multi-node setups:</p>
 <blockquote>
-<div><div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">ssh</span><span class="o">-</span><span class="n">controller00</span>
-<span class="n">make</span> <span class="n">ssh</span><span class="o">-</span><span class="n">controller01</span>
-<span class="n">make</span> <span class="n">ssh</span><span class="o">-</span><span class="n">controller02</span>
-<span class="n">make</span> <span class="n">ssh</span><span class="o">-</span><span class="n">worker00</span>
-<span class="n">make</span> <span class="n">ssh</span><span class="o">-</span><span class="n">worker01</span>
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>make ssh-controller00
+make ssh-controller01
+make ssh-controller02
+make ssh-worker00
+make ssh-worker01
 </pre></div>
 </div>
 </div></blockquote>
@@ -271,7 +276,7 @@
 <h3>Kubernetes Dashboard<a class="headerlink" href="#kubernetes-dashboard" title="Permalink to this headline">¶</a></h3>
 <p>This will display the token for three seconds, and then it will open the web browser pointing to the address of Kubernetes Dashboard:</p>
 <blockquote>
-<div><div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">dashboard</span>
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>make dashboard
 </pre></div>
 </div>
 </div></blockquote>
@@ -280,14 +285,14 @@
 <h3>Ingress Port Forwarding<a class="headerlink" href="#ingress-port-forwarding" title="Permalink to this headline">¶</a></h3>
 <p>In order to start port forwarding from your host’s ports 80 and 443 to Vagrant’s VMs for Ingress enter:</p>
 <blockquote>
-<div><div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">forward</span><span class="o">-</span><span class="mi">80</span>
-<span class="n">make</span> <span class="n">forward</span><span class="o">-</span><span class="mi">443</span>
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>make forward-80
+make forward-443
 </pre></div>
 </div>
 </div></blockquote>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Both commands are blocking. So you need two different terminal sessions.</p>
+<p class="admonition-title">Note</p>
+<p>Both commands are blocking. So you need two different terminal sessions.</p>
 </div>
 </div>
 </div>
@@ -304,7 +309,7 @@
         <a href="troubleshooting.html" class="btn btn-neutral float-right" title="Troubleshooting" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="usage.html" class="btn btn-neutral" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="usage.html" class="btn btn-neutral float-left" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -313,11 +318,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Mircea-Cristian Racasan
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -329,27 +342,16 @@
   </div>
   
 
-
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

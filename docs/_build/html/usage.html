@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,44 +11,48 @@
   
 
   
-  
-  
-  
-
-  
-
-  
-  
-    
-
-  
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Setups" href="setups.html" />
     <link rel="prev" title="Installation" href="installation.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
-            <a href="index.html" class="icon icon-home"> k8s-tew
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> k8s-tew
           
 
           
@@ -79,6 +82,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -130,6 +134,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -168,7 +173,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>Usage</li>
     
@@ -193,37 +198,43 @@
 <h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
 <p>All k8s-tew commands accept the argument <code class="file docutils literal notranslate"><span class="pre">--base-directory</span></code>, which defines where all the files (binaries, certificates, configurations and so on) will be stored. If no value is defined then it will create a subdirectory called “assets” in the working directory. Additionally, the environment variable K8S_TEW_BASE_DIRECTORY can be set to point to the assets directory instead of using <code class="file docutils literal notranslate"><span class="pre">--base-directory</span></code>.</p>
 <p>To see all the commands and their arguments use the <code class="file docutils literal notranslate"><span class="pre">-h</span></code> argument.</p>
-<p>To activate completion enter:</p>
+<p>To activate completion for bash enter:</p>
 <blockquote>
-<div><div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="o">&lt;</span><span class="p">(</span><span class="n">k8s</span><span class="o">-</span><span class="n">tew</span> <span class="n">completion</span><span class="p">)</span>
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span> &lt;<span class="o">(</span>k8s-tew completion<span class="o">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>For zsh run:</p>
+<blockquote>
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span> &lt;<span class="o">(</span>k8s-tew completion zsh<span class="o">)</span>
 </pre></div>
 </div>
 </div></blockquote>
 <div class="section" id="requirements">
 <h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
-<p>k8s-tew was tested so far on Ubuntu 18.04 and CentOS 7.5. But it should be able to run on other Linux distributions.</p>
+<p>k8s-tew was tested so far on Ubuntu 20.04 and CentOS 8.2. But it should be able to run on other Linux distributions.</p>
 <p>Host related dependencies such as socat, conntrack, ipset and rbd are embedded in k8s-tew and put in place, once the cluster is running. Thus it is fairly portable to other Linux distributions.</p>
 </div>
 <div class="section" id="labels">
 <h2>Labels<a class="headerlink" href="#labels" title="Permalink to this headline">¶</a></h2>
 <p>k8s-tew uses labels to specify which files belong on a node, which commands should be executed on a node and also which components need to be started on a node. They are similar to Kubernetes’ Labels and Selectors.</p>
 <ul class="simple">
-<li>bootstrapper - This label marks bootstrapping node/commands</li>
-<li>controller - Kubernetes Controler. At least three controller nodes are required for a HA cluster.</li>
-<li>worker - Kubernetes Node/Minion. At least one worker node is required.</li>
-<li>storage - The storage manager components are installed on the controller nodes. The worker nodes are used to store the actual data of the pods. If the storage label is omitted then all nodes are used. If you choose to use only some nodes for storage, then keep in mind that you need at least three storage managers and at least two data storage servers for a HA cluster.</li>
+<li><p>bootstrapper - This label marks bootstrapping node/commands</p></li>
+<li><p>controller - Kubernetes Controler. At least three controller nodes are required for a HA cluster.</p></li>
+<li><p>worker - Kubernetes Node/Minion. At least one worker node is required.</p></li>
+<li><p>storage - The Ceph Monitors are installed on the controller nodes. The storage nodes are used to store the actual data of the pods, and also to run the containers related to Ceph and CSI.</p></li>
 </ul>
 </div>
 <div class="section" id="workflow">
 <h2>Workflow<a class="headerlink" href="#workflow" title="Permalink to this headline">¶</a></h2>
-<p>To setup a local singl-node cluster, the workflow is: initialize -&gt; configure -&gt; generate -&gt; run</p>
+<p>To setup a local single-node cluster, the workflow is: initialize -&gt; configure -&gt; generate -&gt; run</p>
 <p>For a remote cluster, the workflow is: initialize -&gt; configure -&gt; generate -&gt; deploy</p>
 <p>If something in one of the steps is changed, (e.g. configuration), then all the following steps have to be performed.</p>
 <div class="section" id="initialization">
 <h3>Initialization<a class="headerlink" href="#initialization" title="Permalink to this headline">¶</a></h3>
 <p>The first step in using k8s-tew is to create a config file. This is achieved by executing this command:</p>
 <blockquote>
-<div><div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">k8s</span><span class="o">-</span><span class="n">tew</span> <span class="n">initialize</span>
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>k8s-tew initialize
 </pre></div>
 </div>
 </div></blockquote>
@@ -233,334 +244,291 @@
 <h3>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h3>
 <p>After the initialization step the parameters of the cluster should be be adapted. These are the configure parameters and their defaults:</p>
 <blockquote>
-<div><table class="docutils option-list" frame="void" rules="none">
-<col class="option" />
-<col class="description" />
-<tbody valign="top">
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--alert-manager-count <var>uint16</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Number of Alert Manager Servers (default 1)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--alert-manager-size <var>uint16</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Size of Alert Manager Persistent Volume (default 2)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--apiserver-port <var>uint16</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>API Server Port (default 6443)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--ca-certificate-validity-period <var>uint16</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>CA Certificate Validity Period (default 20)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--calico-typha-ip <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Calico Typha IP (default “10.32.0.5”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--client-certificate-validity-period <var>uint16</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Client Certificate Validity Period (default 15)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--cluster-cidr <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Cluster CIDR (default “10.200.0.0/16”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--cluster-dns-ip <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Cluster DNS IP (default “10.32.0.10”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--cluster-domain <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Cluster domain (default “cluster.local”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--cluster-ip-range <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Cluster IP range (default “10.32.0.0/24”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--cluster-name <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Cluster Name used for Kubernetes Dashboard (default “k8s-tew”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--controller-virtual-ip <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Controller Virtual/Floating IP for the cluster</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--controller-virtual-ip-interface <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Controller Virtual/Floating IP interface for the cluster</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--deployment-directory <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Deployment directory (default “/”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--elasticsearch-count <var>uint16</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Number of Elasticsearch Servers (default 1)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--elasticsearch-size <var>uint16</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Size of Elasticsearch Persistent Volume (default 10)</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">--email <var>string</var></span></kbd></td>
-<td>Email address used for example for Let’s Encrypt (default “<a class="reference external" href="mailto:k8s-tew&#37;&#52;&#48;gmail&#46;com">k8s-tew<span>&#64;</span>gmail<span>&#46;</span>com</a>”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--grafana-size <var>uint16</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Size of Grafana Persistent Volume (default 2)</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">--help</span></kbd></td>
-<td>help for configure</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--ingress-domain <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Ingress domain name (default “k8s-tew.net”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--kube-state-metrics-count <var>uint16</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Number of Kube State Metrics Servers (default 1)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--kubernetes-dashboard-port <var>uint16</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Kubernetes Dashboard Port (default 32443)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--load-balancer-port <var>uint16</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Load Balancer Port (default 32443)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--max-pods <var>uint16</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>MaxPods (default 110)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--metallb-addresses <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Comma separated MetalLB address ranges and CIDR (e.g 192.168.0.16/28,192.168.0.75-192.168.0.100) (default “192.168.0.16/28”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--minio-size <var>uint16</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Size of Minio Persistent Volume (default 2)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--prometheus-size <var>uint16</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Size of Prometheus Persistent Volume (default 2)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--public-network <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Public Network (default “192.168.100.0/24”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--resolv-conf <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Custom resolv.conf (default “/etc/resolv.conf”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--rsa-key-size <var>uint16</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>RSA Key Size (default 2048)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-alert-manager <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Alert Manager version (default “quay.io/prometheus/alertmanager:v0.19.0”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-busybox <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Busybox version (default “docker.io/library/busybox:1.31.1”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-calico-cni <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Calico CNI version (default “quay.io/calico/cni:v3.10.2”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-calico-kube-controllers <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Calico Kube Controllers  version (default “quay.io/calico/kube-controllers:v3.10.2”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-calico-node <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Calico Node version (default “quay.io/calico/node:v3.10.2”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-calico-typha <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Calico Typha version (default “quay.io/calico/typha:v3.10.2”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-ceph <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Ceph version (default “docker.io/ceph/daemon:v4.0.7-stable-4.0-nautilus-centos-7-x86_64”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-cerebro <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Cerebro version (default “docker.io/lmenezes/cerebro:0.8.5”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-cert-manager-cainjector <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Cert Manager CA Injector version (default “quay.io/jetstack/cert-manager-cainjector:v0.13.1”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-cert-manager-controller <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Cert Manager Controller version (default “quay.io/jetstack/cert-manager-controller:v0.13.1”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-cert-manager-webhook <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Cert Manager Web Hook version (default “quay.io/jetstack/cert-manager-webhook:v0.13.1”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-containerd <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Containerd version (default “1.3.3”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-coredns <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>CoreDNS version (default “docker.io/coredns/coredns:1.6.7”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-crictl <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>CriCtl version (default “1.16.1”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-csi-attacher <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>CSI Attacher version (default “quay.io/k8scsi/csi-attacher:v1.2.0”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-csi-ceph-plugin <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>CSI Ceph Plugin version (default “quay.io/cephcsi/cephcsi:v1.2.2”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-csi-driver-registrar <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>CSI Driver Registrar version (default “quay.io/k8scsi/csi-node-driver-registrar:v1.1.0”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-csi-provisioner <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>CSI Provisioner version (default “quay.io/k8scsi/csi-provisioner:v1.3.0”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-csi-resizer <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>CSI Resizer version (default “quay.io/k8scsi/csi-resizer:v0.3.0”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-csi-snapshotter <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>CSI Snapshotter version (default “quay.io/k8scsi/csi-snapshotter:v1.2.1”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-elasticsearch <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Elasticsearch version (default “docker.elastic.co/elasticsearch/elasticsearch:7.5.0”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-etcd <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Etcd version (default “quay.io/coreos/etcd:v3.4.3”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-fluent-bit <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Fluent-Bit version (default “docker.io/fluent/fluent-bit:1.3.4”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-gobetween <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Gobetween version (default “docker.io/yyyar/gobetween:0.7.0”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-grafana <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Grafana version (default “docker.io/grafana/grafana:6.0.1”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-helm <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Helm version (default “3.1.0”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-k8s <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Kubernetes version (default “k8s.gcr.io/hyperkube:v1.17.3”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-kibana <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Kibana version (default “docker.elastic.co/kibana/kibana-oss:7.5.0”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-kube-state-metrics <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Kube State Metrics version (default “quay.io/coreos/kube-state-metrics:v1.8.0”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-kubernetes-dashboard <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Kubernetes Dashboard version (default “docker.io/kubernetesui/dashboard:v2.0.0-rc5”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-metallb-controller <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>MetalLB Controller version (default “docker.io/metallb/controller:v0.8.3”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-metallb-speaker <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>MetalLB Speaker version (default “docker.io/metallb/speaker:v0.8.3”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-metrics-server <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Metrics Server version (default “k8s.gcr.io/metrics-server-amd64:v0.3.5”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-minio-client <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Minio client version (default “docker.io/minio/mc:RELEASE.2019-10-09T22-54-57Z”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-minio-server <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Minio server version (default “docker.io/minio/minio:RELEASE.2019-10-12T01-39-57Z”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-mysql <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>MySQL version (default “docker.io/library/mysql:5.6”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-nginx-ingress-controller <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Nginx Ingress Controller version (default “quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.26.1”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-nginx-ingress-default-backend <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Nginx Ingress Default Backend version (default “k8s.gcr.io/defaultbackend-amd64:1.5”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-node-exporter <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Node Exporter version (default “quay.io/prometheus/node-exporter:v0.18.1”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-pause <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Pause version (default “k8s.gcr.io/pause:3.1”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-prometheus <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Prometheus version (default “quay.io/prometheus/prometheus:v2.13.0”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-runc <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Runc version (default “1.0.0-rc10”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-velero <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Velero version (default “docker.io/velero/velero:v1.2.0”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-velero-plugin-aws <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Velero Plugin AWS version (default “docker.io/velero/velero-plugin-for-aws:v1.0.0”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-virtual-ip <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Virtual-IP version (default “docker.io/darxkies/virtual-ip:0.1.4”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--version-wordpress <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>WordPress version (default “docker.io/library/wordpress:4.8-apache”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--vip-raft-controller-port <var>uint16</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>VIP Raft Controller Port (default 16277)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--vip-raft-worker-port <var>uint16</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>VIP Raft Worker Port (default 16728)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--worker-virtual-ip <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Worker Virtual/Floating IP for the cluster</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--worker-virtual-ip-interface <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Worker Virtual/Floating IP interface for the cluster</td></tr>
-</tbody>
-</table>
+<div><dl class="option-list">
+<dt><kbd><span class="option">--alert-manager-count <var>uint16</var></span></kbd></dt>
+<dd><p>Number of Alert Manager Servers (default 1)</p>
+</dd>
+<dt><kbd><span class="option">--alert-manager-size <var>uint16</var></span></kbd></dt>
+<dd><p>Size of Alert Manager Persistent Volume (default 2)</p>
+</dd>
+<dt><kbd><span class="option">--apiserver-port <var>uint16</var></span></kbd></dt>
+<dd><p>API Server Port (default 6443)</p>
+</dd>
+<dt><kbd><span class="option">--ca-certificate-validity-period <var>uint16</var></span></kbd></dt>
+<dd><p>CA Certificate Validity Period (default 20)</p>
+</dd>
+<dt><kbd><span class="option">--calico-typha-ip <var>string</var></span></kbd></dt>
+<dd><p>Calico Typha IP (default “10.32.0.5”)</p>
+</dd>
+<dt><kbd><span class="option">--ceph-cluster-name <var>string</var></span></kbd></dt>
+<dd><p>Ceph Cluster Name (default “ceph”)</p>
+</dd>
+<dt><kbd><span class="option">--ceph-expected-number-of-objects <var>uint</var></span></kbd></dt>
+<dd><p>Ceph Expected Number of Objects (default 1000000)</p>
+</dd>
+<dt><kbd><span class="option">--ceph-placement-groups <var>uint</var></span></kbd></dt>
+<dd><p>Ceph Placement Groups (default 256)</p>
+</dd>
+<dt><kbd><span class="option">--client-certificate-validity-period <var>uint16</var></span></kbd></dt>
+<dd><p>Client Certificate Validity Period (default 15)</p>
+</dd>
+<dt><kbd><span class="option">--cluster-cidr <var>string</var></span></kbd></dt>
+<dd><p>Cluster CIDR (default “10.200.0.0/16”)</p>
+</dd>
+<dt><kbd><span class="option">--cluster-dns-ip <var>string</var></span></kbd></dt>
+<dd><p>Cluster DNS IP (default “10.32.0.10”)</p>
+</dd>
+<dt><kbd><span class="option">--cluster-domain <var>string</var></span></kbd></dt>
+<dd><p>Cluster domain (default “cluster.local”)</p>
+</dd>
+<dt><kbd><span class="option">--cluster-ip-range <var>string</var></span></kbd></dt>
+<dd><p>Cluster IP range (default “10.32.0.0/24”)</p>
+</dd>
+<dt><kbd><span class="option">--cluster-name <var>string</var></span></kbd></dt>
+<dd><p>Cluster Name used for Kubernetes Dashboard (default “k8s-tew”)</p>
+</dd>
+<dt><kbd><span class="option">--controller-virtual-ip <var>string</var></span></kbd></dt>
+<dd><p>Controller Virtual/Floating IP for the cluster</p>
+</dd>
+<dt><kbd><span class="option">--controller-virtual-ip-interface <var>string</var></span></kbd></dt>
+<dd><p>Controller Virtual/Floating IP interface for the cluster</p>
+</dd>
+<dt><kbd><span class="option">--deployment-directory <var>string</var></span></kbd></dt>
+<dd><p>Deployment directory (default “/”)</p>
+</dd>
+<dt><kbd><span class="option">--elasticsearch-count <var>uint16</var></span></kbd></dt>
+<dd><p>Number of Elasticsearch Servers (default 1)</p>
+</dd>
+<dt><kbd><span class="option">--elasticsearch-size <var>uint16</var></span></kbd></dt>
+<dd><p>Size of Elasticsearch Persistent Volume (default 10)</p>
+</dd>
+<dt><kbd><span class="option">--email <var>string</var></span></kbd></dt>
+<dd><p>Email address used for example for Let’s Encrypt (default “<a class="reference external" href="mailto:k8s-tew&#37;&#52;&#48;gmail&#46;com">k8s-tew<span>&#64;</span>gmail<span>&#46;</span>com</a>”)</p>
+</dd>
+<dt><kbd><span class="option">--grafana-size <var>uint16</var></span></kbd></dt>
+<dd><p>Size of Grafana Persistent Volume (default 2)</p>
+</dd>
+<dt><kbd><span class="option">--help</span></kbd></dt>
+<dd><p>help for configure</p>
+</dd>
+<dt><kbd><span class="option">--ingress-domain <var>string</var></span></kbd></dt>
+<dd><p>Ingress domain name (default “k8s-tew.net”)</p>
+</dd>
+<dt><kbd><span class="option">--kube-state-metrics-count <var>uint16</var></span></kbd></dt>
+<dd><p>Number of Kube State Metrics Servers (default 1)</p>
+</dd>
+<dt><kbd><span class="option">--kubernetes-dashboard-port <var>uint16</var></span></kbd></dt>
+<dd><p>Kubernetes Dashboard Port (default 32443)</p>
+</dd>
+<dt><kbd><span class="option">--load-balancer-port <var>uint16</var></span></kbd></dt>
+<dd><p>Load Balancer Port (default 32443)</p>
+</dd>
+<dt><kbd><span class="option">--max-pods <var>uint16</var></span></kbd></dt>
+<dd><p>MaxPods (default 110)</p>
+</dd>
+<dt><kbd><span class="option">--metallb-addresses <var>string</var></span></kbd></dt>
+<dd><p>Comma separated MetalLB address ranges and CIDR (e.g 192.168.0.16/28,192.168.0.75-192.168.0.100) (default “192.168.0.16/28”)</p>
+</dd>
+<dt><kbd><span class="option">--minio-size <var>uint16</var></span></kbd></dt>
+<dd><p>Size of Minio Persistent Volume (default 2)</p>
+</dd>
+<dt><kbd><span class="option">--prometheus-size <var>uint16</var></span></kbd></dt>
+<dd><p>Size of Prometheus Persistent Volume (default 2)</p>
+</dd>
+<dt><kbd><span class="option">--public-network <var>string</var></span></kbd></dt>
+<dd><p>Public Network (default “192.168.100.0/24”)</p>
+</dd>
+<dt><kbd><span class="option">--resolv-conf <var>string</var></span></kbd></dt>
+<dd><p>Custom resolv.conf (default “/etc/resolv.conf”)</p>
+</dd>
+<dt><kbd><span class="option">--rsa-key-size <var>uint16</var></span></kbd></dt>
+<dd><p>RSA Key Size (default 2048)</p>
+</dd>
+<dt><kbd><span class="option">--san-dns-names <var>string</var></span></kbd></dt>
+<dd><p>SAN DNS Names (comma separated)</p>
+</dd>
+<dt><kbd><span class="option">--san-ip-addresses <var>string</var></span></kbd></dt>
+<dd><p>SAN IP Addresses (comma separated)</p>
+</dd>
+<dt><kbd><span class="option">--version-alert-manager <var>string</var></span></kbd></dt>
+<dd><p>Alert Manager version (default “quay.io/prometheus/alertmanager:v0.21.0”)</p>
+</dd>
+<dt><kbd><span class="option">--version-busybox <var>string</var></span></kbd></dt>
+<dd><p>Busybox version (default “docker.io/library/busybox:1.32.0”)</p>
+</dd>
+<dt><kbd><span class="option">--version-calico-cni <var>string</var></span></kbd></dt>
+<dd><p>Calico CNI version (default “quay.io/calico/cni:v3.16.4”)</p>
+</dd>
+<dt><kbd><span class="option">--version-calico-kube-controllers <var>string</var></span></kbd></dt>
+<dd><p>Calico Kube Controllers  version (default “quay.io/calico/kube-controllers:v3.16.4”)</p>
+</dd>
+<dt><kbd><span class="option">--version-calico-node <var>string</var></span></kbd></dt>
+<dd><p>Calico Node version (default “quay.io/calico/node:v3.16.4”)</p>
+</dd>
+<dt><kbd><span class="option">--version-calico-pod2daemon <var>string</var></span></kbd></dt>
+<dd><p>Calico Pod2Daemon version (default “quay.io/calico/pod2daemon-flexvol:v3.16.4”)</p>
+</dd>
+<dt><kbd><span class="option">--version-calico-typha <var>string</var></span></kbd></dt>
+<dd><p>Calico Typha version (default “quay.io/calico/typha:v3.16.4”)</p>
+</dd>
+<dt><kbd><span class="option">--version-ceph <var>string</var></span></kbd></dt>
+<dd><p>Ceph version (default “docker.io/ceph/ceph:v15.2.5”)</p>
+</dd>
+<dt><kbd><span class="option">--version-cerebro <var>string</var></span></kbd></dt>
+<dd><p>Cerebro version (default “docker.io/lmenezes/cerebro:0.9.2”)</p>
+</dd>
+<dt><kbd><span class="option">--version-cert-manager-cainjector <var>string</var></span></kbd></dt>
+<dd><p>Cert Manager CA Injector version (default “quay.io/jetstack/cert-manager-cainjector:v1.0.3”)</p>
+</dd>
+<dt><kbd><span class="option">--version-cert-manager-controller <var>string</var></span></kbd></dt>
+<dd><p>Cert Manager Controller version (default “quay.io/jetstack/cert-manager-controller:v1.0.3”)</p>
+</dd>
+<dt><kbd><span class="option">--version-cert-manager-webhook <var>string</var></span></kbd></dt>
+<dd><p>Cert Manager Web Hook version (default “quay.io/jetstack/cert-manager-webhook:v1.0.3”)</p>
+</dd>
+<dt><kbd><span class="option">--version-containerd <var>string</var></span></kbd></dt>
+<dd><p>Containerd version (default “1.4.1”)</p>
+</dd>
+<dt><kbd><span class="option">--version-coredns <var>string</var></span></kbd></dt>
+<dd><p>CoreDNS version (default “docker.io/coredns/coredns:1.8.0”)</p>
+</dd>
+<dt><kbd><span class="option">--version-crictl <var>string</var></span></kbd></dt>
+<dd><p>CriCtl version (default “1.18.0”)</p>
+</dd>
+<dt><kbd><span class="option">--version-csi-attacher <var>string</var></span></kbd></dt>
+<dd><p>CSI Attacher version (default “quay.io/k8scsi/csi-attacher:v2.1.1”)</p>
+</dd>
+<dt><kbd><span class="option">--version-csi-ceph-plugin <var>string</var></span></kbd></dt>
+<dd><p>CSI Ceph Plugin version (default “quay.io/cephcsi/cephcsi:v3.1.1”)</p>
+</dd>
+<dt><kbd><span class="option">--version-csi-driver-registrar <var>string</var></span></kbd></dt>
+<dd><p>CSI Driver Registrar version (default “quay.io/k8scsi/csi-node-driver-registrar:v1.3.0”)</p>
+</dd>
+<dt><kbd><span class="option">--version-csi-provisioner <var>string</var></span></kbd></dt>
+<dd><p>CSI Provisioner version (default “quay.io/k8scsi/csi-provisioner:v1.6.0”)</p>
+</dd>
+<dt><kbd><span class="option">--version-csi-resizer <var>string</var></span></kbd></dt>
+<dd><p>CSI Resizer version (default “quay.io/k8scsi/csi-resizer:v0.5.0”)</p>
+</dd>
+<dt><kbd><span class="option">--version-csi-snapshot-controller <var>string</var></span></kbd></dt>
+<dd><p>CSI Snapshot Controller  version (default “quay.io/k8scsi/snapshot-controller:v2.0.1”)</p>
+</dd>
+<dt><kbd><span class="option">--version-csi-snapshotter <var>string</var></span></kbd></dt>
+<dd><p>CSI Snapshotter version (default “quay.io/k8scsi/csi-snapshotter:v2.1.1”)</p>
+</dd>
+<dt><kbd><span class="option">--version-elasticsearch <var>string</var></span></kbd></dt>
+<dd><p>Elasticsearch version (default “docker.elastic.co/elasticsearch/elasticsearch:7.9.2”)</p>
+</dd>
+<dt><kbd><span class="option">--version-etcd <var>string</var></span></kbd></dt>
+<dd><p>Etcd version (default “quay.io/coreos/etcd:v3.4.13”)</p>
+</dd>
+<dt><kbd><span class="option">--version-fluent-bit <var>string</var></span></kbd></dt>
+<dd><p>Fluent-Bit version (default “docker.io/fluent/fluent-bit:1.6.1”)</p>
+</dd>
+<dt><kbd><span class="option">--version-gobetween <var>string</var></span></kbd></dt>
+<dd><p>Gobetween version (default “docker.io/yyyar/gobetween:0.8.0”)</p>
+</dd>
+<dt><kbd><span class="option">--version-grafana <var>string</var></span></kbd></dt>
+<dd><p>Grafana version (default “docker.io/grafana/grafana:7.2.2”)</p>
+</dd>
+<dt><kbd><span class="option">--version-helm <var>string</var></span></kbd></dt>
+<dd><p>Helm version (default “3.4.0”)</p>
+</dd>
+<dt><kbd><span class="option">--version-k8s <var>string</var></span></kbd></dt>
+<dd><p>Kubernetes version (default “v1.18.10”)</p>
+</dd>
+<dt><kbd><span class="option">--version-kibana <var>string</var></span></kbd></dt>
+<dd><p>Kibana version (default “docker.elastic.co/kibana/kibana:7.9.2”)</p>
+</dd>
+<dt><kbd><span class="option">--version-kube-apiserver <var>string</var></span></kbd></dt>
+<dd><p>Kubernetes API Server version (default “k8s.gcr.io/kube-apiserver:v1.18.10”)</p>
+</dd>
+<dt><kbd><span class="option">--version-kube-controller-manager <var>string</var></span></kbd></dt>
+<dd><p>Kubernetes Controller Manager (default “k8s.gcr.io/kube-controller-manager:v1.18.10”)</p>
+</dd>
+<dt><kbd><span class="option">--version-kube-proxy <var>string</var></span></kbd></dt>
+<dd><p>Kubernetes Proxy version (default “k8s.gcr.io/kube-proxy:v1.18.10”)</p>
+</dd>
+<dt><kbd><span class="option">--version-kube-scheduler <var>string</var></span></kbd></dt>
+<dd><p>Kubernetes Scheduler (default “k8s.gcr.io/kube-scheduler:v1.18.10”)</p>
+</dd>
+<dt><kbd><span class="option">--version-kube-state-metrics <var>string</var></span></kbd></dt>
+<dd><p>Kube State Metrics version (default “quay.io/coreos/kube-state-metrics:v1.9.7”)</p>
+</dd>
+<dt><kbd><span class="option">--version-kubernetes-dashboard <var>string</var></span></kbd></dt>
+<dd><p>Kubernetes Dashboard version (default “docker.io/kubernetesui/dashboard:v2.0.4”)</p>
+</dd>
+<dt><kbd><span class="option">--version-metallb-controller <var>string</var></span></kbd></dt>
+<dd><p>MetalLB Controller version (default “docker.io/metallb/controller:v0.9.4”)</p>
+</dd>
+<dt><kbd><span class="option">--version-metallb-speaker <var>string</var></span></kbd></dt>
+<dd><p>MetalLB Speaker version (default “docker.io/metallb/speaker:v0.9.4”)</p>
+</dd>
+<dt><kbd><span class="option">--version-metrics-server <var>string</var></span></kbd></dt>
+<dd><p>Metrics Server version (default “k8s.gcr.io/metrics-server/metrics-server:v0.3.7”)</p>
+</dd>
+<dt><kbd><span class="option">--version-minio-client <var>string</var></span></kbd></dt>
+<dd><p>Minio client version (default “docker.io/minio/mc:RELEASE.2020-10-03T02-54-56Z”)</p>
+</dd>
+<dt><kbd><span class="option">--version-minio-server <var>string</var></span></kbd></dt>
+<dd><p>Minio server version (default “docker.io/minio/minio:RELEASE.2020-10-18T21-54-12Z”)</p>
+</dd>
+<dt><kbd><span class="option">--version-mysql <var>string</var></span></kbd></dt>
+<dd><p>MySQL version (default “docker.io/library/mysql:8.0.19”)</p>
+</dd>
+<dt><kbd><span class="option">--version-nginx-ingress-admission-webhook <var>string</var></span></kbd></dt>
+<dd><p>Nginx Ingress Admission Webhook version (default “docker.io/jettech/kube-webhook-certgen:v1.3.0”)</p>
+</dd>
+<dt><kbd><span class="option">--version-nginx-ingress-controller <var>string</var></span></kbd></dt>
+<dd><p>Nginx Ingress Controller version (default “k8s.gcr.io/ingress-nginx/controller:v0.40.2”)</p>
+</dd>
+<dt><kbd><span class="option">--version-node-exporter <var>string</var></span></kbd></dt>
+<dd><p>Node Exporter version (default “quay.io/prometheus/node-exporter:v1.0.1”)</p>
+</dd>
+<dt><kbd><span class="option">--version-pause <var>string</var></span></kbd></dt>
+<dd><p>Pause version (default “k8s.gcr.io/pause:3.3”)</p>
+</dd>
+<dt><kbd><span class="option">--version-prometheus <var>string</var></span></kbd></dt>
+<dd><p>Prometheus version (default “quay.io/prometheus/prometheus:v2.22.0”)</p>
+</dd>
+<dt><kbd><span class="option">--version-runc <var>string</var></span></kbd></dt>
+<dd><p>Runc version (default “1.0.0-rc92”)</p>
+</dd>
+<dt><kbd><span class="option">--version-velero <var>string</var></span></kbd></dt>
+<dd><p>Velero version (default “docker.io/velero/velero:v1.5.2”)</p>
+</dd>
+<dt><kbd><span class="option">--version-velero-plugin-aws <var>string</var></span></kbd></dt>
+<dd><p>Velero Plugin AWS version (default “docker.io/velero/velero-plugin-for-aws:v1.1.0”)</p>
+</dd>
+<dt><kbd><span class="option">--version-velero-plugin-csi <var>string</var></span></kbd></dt>
+<dd><p>Velero Plugin CSI version (default “docker.io/velero/velero-plugin-for-csi:v0.1.2”)</p>
+</dd>
+<dt><kbd><span class="option">--version-velero-restic-restore-helper <var>string</var></span></kbd></dt>
+<dd><p>Velero Restic Restore Helper (default “docker.io/velero/velero-restic-restore-helper:v1.5.2”)</p>
+</dd>
+<dt><kbd><span class="option">--version-virtual-ip <var>string</var></span></kbd></dt>
+<dd><p>Virtual-IP version (default “docker.io/darxkies/virtual-ip:0.1.4”)</p>
+</dd>
+<dt><kbd><span class="option">--version-wordpress <var>string</var></span></kbd></dt>
+<dd><p>WordPress version (default “docker.io/library/wordpress:5.4-apache”)</p>
+</dd>
+<dt><kbd><span class="option">--vip-raft-controller-port <var>uint16</var></span></kbd></dt>
+<dd><p>VIP Raft Controller Port (default 16277)</p>
+</dd>
+<dt><kbd><span class="option">--vip-raft-worker-port <var>uint16</var></span></kbd></dt>
+<dd><p>VIP Raft Worker Port (default 16728)</p>
+</dd>
+<dt><kbd><span class="option">--worker-virtual-ip <var>string</var></span></kbd></dt>
+<dd><p>Worker Virtual/Floating IP for the cluster</p>
+</dd>
+<dt><kbd><span class="option">--worker-virtual-ip-interface <var>string</var></span></kbd></dt>
+<dd><p>Worker Virtual/Floating IP interface for the cluster</p>
+</dd>
+</dl>
 </div></blockquote>
 <p>The email and the ingress-domain parameters need to be changed if you want a working Ingress and Lets’ Encrypt configuration. It goes like this:</p>
 <blockquote>
-<div><div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">k8s</span><span class="o">-</span><span class="n">tew</span> <span class="n">configure</span> <span class="o">--</span><span class="n">email</span> <span class="n">john</span><span class="o">.</span><span class="n">doe</span><span class="nd">@gmail</span><span class="o">.</span><span class="n">com</span> <span class="o">--</span><span class="n">ingress</span><span class="o">-</span><span class="n">domain</span> <span class="n">example</span><span class="o">.</span><span class="n">com</span>
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>k8s-tew configure --email john.doe@gmail.com --ingress-domain example.com
 </pre></div>
 </div>
 </div></blockquote>
@@ -570,66 +538,54 @@
 <h4>Add Remote Node<a class="headerlink" href="#add-remote-node" title="Permalink to this headline">¶</a></h4>
 <p>A remote node can be added with the following command:</p>
 <blockquote>
-<div><div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">k8s</span><span class="o">-</span><span class="n">tew</span> <span class="n">node</span><span class="o">-</span><span class="n">add</span> <span class="o">-</span><span class="n">n</span> <span class="n">controller00</span> <span class="o">-</span><span class="n">i</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">100.100</span> <span class="o">-</span><span class="n">x</span> <span class="mi">0</span> <span class="o">-</span><span class="n">l</span> <span class="n">controller</span>
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>k8s-tew node-add -n controller00 -i <span class="m">192</span>.168.100.100 -x <span class="m">0</span> -l controller
 </pre></div>
 </div>
 </div></blockquote>
 <p>The arguments:</p>
 <blockquote>
-<div><table class="docutils option-list" frame="void" rules="none">
-<col class="option" />
-<col class="description" />
-<tbody valign="top">
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-x</span>, <span class="option">--index <var>uint</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>The unique index of the node which should never be reused</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-i</span>, <span class="option">--ip <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>IP of the node (default “192.168.100.50”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-l</span>, <span class="option">--labels <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>The labels of the node which define the attributes of the node (default “controller,worker”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-n</span>, <span class="option">--name <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>The hostname of the node (default “single-node”)</td></tr>
-</tbody>
-</table>
+<div><dl class="option-list">
+<dt><kbd><span class="option">-x</span>, <span class="option">--index <var>uint</var></span></kbd></dt>
+<dd><p>The unique index of the node which should never be reused</p>
+</dd>
+<dt><kbd><span class="option">-i</span>, <span class="option">--ip <var>string</var></span></kbd></dt>
+<dd><p>IP of the node (default “192.168.100.50”)</p>
+</dd>
+<dt><kbd><span class="option">-l</span>, <span class="option">--labels <var>string</var></span></kbd></dt>
+<dd><p>The labels of the node which define the attributes of the node (default “controller,worker”)</p>
+</dd>
+<dt><kbd><span class="option">-n</span>, <span class="option">--name <var>string</var></span></kbd></dt>
+<dd><p>The hostname of the node (default “single-node”)</p>
+</dd>
+</dl>
 </div></blockquote>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Make sure the IP address of the node matches the public network set using the configuration argument <code class="file docutils literal notranslate"><span class="pre">--public-network</span></code>.</p>
+<p class="admonition-title">Note</p>
+<p>Make sure the IP address of the node matches the public network set using the configuration argument <code class="file docutils literal notranslate"><span class="pre">--public-network</span></code>.</p>
 </div>
 </div>
 <div class="section" id="add-local-node">
 <h4>Add Local Node<a class="headerlink" href="#add-local-node" title="Permalink to this headline">¶</a></h4>
 <p>k8s-tew is also able to start a cluster on the local computer and for that the local computer has to be added as a node:</p>
 <blockquote>
-<div><div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">k8s</span><span class="o">-</span><span class="n">tew</span> <span class="n">node</span><span class="o">-</span><span class="n">add</span> <span class="o">-</span><span class="n">s</span>
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>k8s-tew node-add -s
 </pre></div>
 </div>
 </div></blockquote>
 <p>The arguments:</p>
 <blockquote>
-<div><table class="docutils option-list" frame="void" rules="none">
-<col class="option" />
-<col class="description" />
-<tbody valign="top">
-<tr><td class="option-group">
-<kbd><span class="option">-s</span>, <span class="option">--self</span></kbd></td>
-<td>Add this machine by infering the host’s name &amp; ip and by setting the labels controller,worker,bootstrapper - The public-network and the deployment-directory are also updated</td></tr>
-</tbody>
-</table>
+<div><dl class="option-list">
+<dt><kbd><span class="option">-s</span>, <span class="option">--self</span></kbd></dt>
+<dd><p>Add this machine by infering the host’s name &amp; ip and by setting the labels controller,worker,bootstrapper - The public-network and the deployment-directory are also updated</p>
+</dd>
+</dl>
 </div></blockquote>
 </div>
 <div class="section" id="remove-node">
 <h4>Remove Node<a class="headerlink" href="#remove-node" title="Permalink to this headline">¶</a></h4>
 <p>A node can be removed like this:</p>
 <blockquote>
-<div><div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">k8s</span><span class="o">-</span><span class="n">tew</span> <span class="n">node</span><span class="o">-</span><span class="n">remove</span> <span class="o">-</span><span class="n">n</span> <span class="n">controller00</span>
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>k8s-tew node-remove -n controller00
 </pre></div>
 </div>
 </div></blockquote>
@@ -638,7 +594,7 @@
 <h4>List Nodes<a class="headerlink" href="#list-nodes" title="Permalink to this headline">¶</a></h4>
 <blockquote>
 <div><p>And all the nodes can be listed with the command:</p>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">k8s</span><span class="o">-</span><span class="n">tew</span> <span class="n">node</span><span class="o">-</span><span class="nb">list</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>k8s-tew node-list
 </pre></div>
 </div>
 </div></blockquote>
@@ -648,45 +604,39 @@
 <h3>Generating Files<a class="headerlink" href="#generating-files" title="Permalink to this headline">¶</a></h3>
 <p>Once all the nodes were added, the required files (third party binares, certificates, kubeconfigs and so on) have to be put in place. And this goes like this:</p>
 <blockquote>
-<div><div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">k8s</span><span class="o">-</span><span class="n">tew</span> <span class="n">generate</span>
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>k8s-tew generate
 </pre></div>
 </div>
 </div></blockquote>
 <p>The arguments:</p>
 <blockquote>
-<div><table class="docutils option-list" frame="void" rules="none">
-<col class="option" />
-<col class="description" />
-<tbody valign="top">
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-r</span>, <span class="option">--command-retries <var>uint</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>The count of command retries during the setup (default 300)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--force-download</span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Force downloading all binary dependencies from the internet</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">--parallel</span></kbd></td>
-<td>Download binary dependencies in parallel</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">--pull-images</span></kbd></td>
-<td>Pull and convert images to OCI to be deployed later on</td></tr>
-</tbody>
-</table>
+<div><dl class="option-list">
+<dt><kbd><span class="option">-r</span>, <span class="option">--command-retries <var>uint</var></span></kbd></dt>
+<dd><p>The count of command retries during the setup (default 300)</p>
+</dd>
+<dt><kbd><span class="option">--force-download</span></kbd></dt>
+<dd><p>Force downloading all binary dependencies from the internet</p>
+</dd>
+<dt><kbd><span class="option">--parallel</span></kbd></dt>
+<dd><p>Download binary dependencies in parallel</p>
+</dd>
+<dt><kbd><span class="option">--pull-images</span></kbd></dt>
+<dd><p>Pull and convert images to OCI to be deployed later on</p>
+</dd>
+</dl>
 </div></blockquote>
 </div>
 <div class="section" id="run">
 <h3>Run<a class="headerlink" href="#run" title="Permalink to this headline">¶</a></h3>
 <p>With this command the local cluster can be started:</p>
 <blockquote>
-<div><div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">k8s</span><span class="o">-</span><span class="n">tew</span> <span class="n">run</span>
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>k8s-tew run
 </pre></div>
 </div>
 </div></blockquote>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">This command will run in the foreground and it will supervise all the programs it started in the background.</p>
+<p class="admonition-title">Note</p>
+<p>This command will run in the foreground and it will supervise all the programs it started in the background.</p>
 </div>
 </div>
 <div class="section" id="deploy">
@@ -694,72 +644,58 @@
 <p>In case remote nodes were added with the deploy command, the remotely missing files are copied to the nodes. k8s-tew is installed and started as a service.</p>
 <p>The deployment is executed with the command:</p>
 <blockquote>
-<div><div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">k8s</span><span class="o">-</span><span class="n">tew</span> <span class="n">deploy</span>
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>k8s-tew deploy
 </pre></div>
 </div>
 </div></blockquote>
 <p>The arguments:</p>
 <blockquote>
-<div><table class="docutils option-list" frame="void" rules="none">
-<col class="option" />
-<col class="description" />
-<tbody valign="top">
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-r</span>, <span class="option">--command-retries <var>uint</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>The count of command retries during the setup (default 300)</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">--force-upload</span></kbd></td>
-<td>Files are uploaded without checking if they are already installed</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">-i</span>, <span class="option">--identity-file <var>string</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>SSH identity file (default “/home/darxkies/.ssh/id_rsa”)</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--import-images</span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Install images</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">--parallel</span></kbd></td>
-<td>Run steps in parallel</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--skip-backup-setup</span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Skip backup setup</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--skip-ingress-setup</span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Skip ingress setup</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--skip-logging-setup</span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Skip logging setup</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--skip-monitoring-setup</span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Skip monitoring setup</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--skip-packaging-setup</span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Skip packaging setup</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">--skip-setup</span></kbd></td>
-<td>Skip setup steps</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--skip-showcase-setup</span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Skip showcase setup</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--skip-storage-setup</span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Skip storage setup and all other feature setup steps</td></tr>
-</tbody>
-</table>
+<div><dl class="option-list">
+<dt><kbd><span class="option">-r</span>, <span class="option">--command-retries <var>uint</var></span></kbd></dt>
+<dd><p>The count of command retries during the setup (default 300)</p>
+</dd>
+<dt><kbd><span class="option">--force-upload</span></kbd></dt>
+<dd><p>Files are uploaded without checking if they are already installed</p>
+</dd>
+<dt><kbd><span class="option">-i</span>, <span class="option">--identity-file <var>string</var></span></kbd></dt>
+<dd><p>SSH identity file (default “/home/darxkies/.ssh/id_rsa”)</p>
+</dd>
+<dt><kbd><span class="option">--import-images</span></kbd></dt>
+<dd><p>Install images</p>
+</dd>
+<dt><kbd><span class="option">--parallel</span></kbd></dt>
+<dd><p>Run steps in parallel</p>
+</dd>
+<dt><kbd><span class="option">--skip-backup-setup</span></kbd></dt>
+<dd><p>Skip backup setup</p>
+</dd>
+<dt><kbd><span class="option">--skip-ingress-setup</span></kbd></dt>
+<dd><p>Skip ingress setup</p>
+</dd>
+<dt><kbd><span class="option">--skip-logging-setup</span></kbd></dt>
+<dd><p>Skip logging setup</p>
+</dd>
+<dt><kbd><span class="option">--skip-monitoring-setup</span></kbd></dt>
+<dd><p>Skip monitoring setup</p>
+</dd>
+<dt><kbd><span class="option">--skip-packaging-setup</span></kbd></dt>
+<dd><p>Skip packaging setup</p>
+</dd>
+<dt><kbd><span class="option">--skip-setup</span></kbd></dt>
+<dd><p>Skip setup steps</p>
+</dd>
+<dt><kbd><span class="option">--skip-showcase-setup</span></kbd></dt>
+<dd><p>Skip showcase setup</p>
+</dd>
+<dt><kbd><span class="option">--skip-storage-setup</span></kbd></dt>
+<dd><p>Skip storage setup and all other feature setup steps</p>
+</dd>
+</dl>
 </div></blockquote>
 <p>The files are copied using scp and the ssh private key <code class="file docutils literal notranslate"><span class="pre">$HOME/.ssh/id_rsa</span></code>. In case the file <code class="file docutils literal notranslate"><span class="pre">$HOME/.ssh/id_rsa</span></code> does not exist it should be generated using the command <code class="file docutils literal notranslate"><span class="pre">ssh-keygen</span></code>. If another private key should be used, it can be specified using the command line argument <code class="file docutils literal notranslate"><span class="pre">-i</span></code>.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The argument <code class="file docutils literal notranslate"><span class="pre">--pull-images</span></code> downloads the required Docker Images on the nodes, before the setup process is executed. That could speed up the whole setup process later on. Furthermore, by using <code class="file docutils literal notranslate"><span class="pre">--parallel</span></code> the process of uploading files to the nodes and the download of Docker Images can be again considerable shortened. Use these parameters with caution, as they can starve your network.</p>
+<p class="admonition-title">Note</p>
+<p>The argument <code class="file docutils literal notranslate"><span class="pre">--pull-images</span></code> downloads the required Docker Images on the nodes, before the setup process is executed. That could speed up the whole setup process later on. Furthermore, by using <code class="file docutils literal notranslate"><span class="pre">--parallel</span></code> the process of uploading files to the nodes and the download of Docker Images can be again considerable shortened. Use these parameters with caution, as they can starve your network.</p>
 </div>
 </div>
 </div>
@@ -767,7 +703,7 @@
 <h2>Environment<a class="headerlink" href="#environment" title="Permalink to this headline">¶</a></h2>
 <p>After starting the cluster, the user will need some environment variables set locally to make the interaction with the cluster easier. This is done with this command:</p>
 <blockquote>
-<div><div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span>eval $(k8s-tew environment)
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">eval</span> <span class="k">$(</span>k8s-tew environment<span class="k">)</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -777,76 +713,68 @@
 <h2>Services<a class="headerlink" href="#services" title="Permalink to this headline">¶</a></h2>
 <p>Depending on the configuration of the cluster, the installation of all containers can take a while. Once everything is installed, the following command can be used to open the web browser pointing to the web sites hosted by the cluster:</p>
 <blockquote>
-<div><div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">k8s</span><span class="o">-</span><span class="n">tew</span> <span class="nb">open</span><span class="o">-</span><span class="n">web</span><span class="o">-</span><span class="n">browser</span>
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>k8s-tew open-web-browser
 </pre></div>
 </div>
 </div></blockquote>
 <p>The arguments:</p>
 <blockquote>
-<div><table class="docutils option-list" frame="void" rules="none">
-<col class="option" />
-<col class="description" />
-<tbody valign="top">
-<tr><td class="option-group">
-<kbd><span class="option">--all</span></kbd></td>
-<td>Open all websites</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">--ceph-manager</span></kbd></td>
-<td>Open Ceph Manager website</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--ceph-rados-gateway</span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Open Ceph Rados Gateway website</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">--cerebro</span></kbd></td>
-<td>Open Cerebro website</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">--grafana</span></kbd></td>
-<td>Open Grafana website</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">--kibana</span></kbd></td>
-<td>Open Kibana website</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--kubernetes-dashboard</span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Open Kubernetes Dashboard website</td></tr>
-<tr><td class="option-group">
-<kbd><span class="option">--minio</span></kbd></td>
-<td>Open Minio website</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--wordpress-ingress</span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Open WordPress Ingress website</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--wordpress-nodeport</span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>Open WordPress NodePort website</td></tr>
-</tbody>
-</table>
+<div><dl class="option-list">
+<dt><kbd><span class="option">--all</span></kbd></dt>
+<dd><p>Open all websites</p>
+</dd>
+<dt><kbd><span class="option">--ceph-manager</span></kbd></dt>
+<dd><p>Open Ceph Manager website</p>
+</dd>
+<dt><kbd><span class="option">--ceph-rados-gateway</span></kbd></dt>
+<dd><p>Open Ceph Rados Gateway website</p>
+</dd>
+<dt><kbd><span class="option">--cerebro</span></kbd></dt>
+<dd><p>Open Cerebro website</p>
+</dd>
+<dt><kbd><span class="option">--grafana</span></kbd></dt>
+<dd><p>Open Grafana website</p>
+</dd>
+<dt><kbd><span class="option">--kibana</span></kbd></dt>
+<dd><p>Open Kibana website</p>
+</dd>
+<dt><kbd><span class="option">--kubernetes-dashboard</span></kbd></dt>
+<dd><p>Open Kubernetes Dashboard website</p>
+</dd>
+<dt><kbd><span class="option">--minio</span></kbd></dt>
+<dd><p>Open Minio website</p>
+</dd>
+<dt><kbd><span class="option">--wordpress-ingress</span></kbd></dt>
+<dd><p>Open WordPress Ingress website</p>
+</dd>
+<dt><kbd><span class="option">--wordpress-nodeport</span></kbd></dt>
+<dd><p>Open WordPress NodePort website</p>
+</dd>
+</dl>
 </div></blockquote>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">One of the parameters has to be used, otherwise no web site will be opened.</p>
+<p class="admonition-title">Note</p>
+<p>One of the parameters has to be used, otherwise no web site will be opened.</p>
 </div>
 <p>Alternatively, the web sites can be accessed manually.</p>
 <div class="section" id="kubernetes-dashboard">
 <h3>Kubernetes Dashboard<a class="headerlink" href="#kubernetes-dashboard" title="Permalink to this headline">¶</a></h3>
 <p>k8s-tew installs the Kubernetes Dashboard. Invoke the following command to display the admin token:</p>
 <blockquote>
-<div><div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">k8s</span><span class="o">-</span><span class="n">tew</span> <span class="n">dashboard</span>
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>k8s-tew dashboard
 </pre></div>
 </div>
 </div></blockquote>
 <p>If you have a GUI web browser installed, then you can use the following command to display the admin token for three seconds, enough time to copy the token, and to also open the web browser:</p>
 <blockquote>
-<div><div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">k8s</span><span class="o">-</span><span class="n">tew</span> <span class="n">dashboard</span> <span class="o">-</span><span class="n">o</span>
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>k8s-tew dashboard -o
 </pre></div>
 </div>
 </div></blockquote>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="admonition-title">Note</p>
 <p>It takes minutes to actually download the dashboard. Use the following command to check the status of the pods:</p>
-<div class="code shell last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">kubectl</span> <span class="n">get</span> <span class="n">pods</span> <span class="o">-</span><span class="n">n</span> <span class="n">kube</span><span class="o">-</span><span class="n">system</span>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>kubectl get pods -n kube-system
 </pre></div>
 </div>
 </div>
@@ -857,7 +785,7 @@
 <h3>Ingress<a class="headerlink" href="#ingress" title="Permalink to this headline">¶</a></h3>
 <p>For working Ingress make sure ports 80 and 443 are available. The Ingress Domain have to be also configured before ‘generate’ and ‘deploy’ are executed:</p>
 <blockquote>
-<div><div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">k8s</span><span class="o">-</span><span class="n">tew</span> <span class="n">configure</span> <span class="o">--</span><span class="n">ingress</span><span class="o">-</span><span class="n">domain</span> <span class="p">[</span><span class="n">ingress</span><span class="o">-</span><span class="n">domain</span><span class="p">]</span>
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>k8s-tew configure --ingress-domain <span class="o">[</span>ingress-domain<span class="o">]</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -866,49 +794,49 @@
 <h3>WordPress<a class="headerlink" href="#wordpress" title="Permalink to this headline">¶</a></h3>
 <p>Wordpress/MySQL are installed for testing purposes and [ingress-domain] can be set using the configure command.</p>
 <ul class="simple">
-<li>Address: <a class="reference external" href="http://[worker-ip]:30100">http://[worker-ip]:30100</a></li>
-<li>Address: <a class="reference external" href="https://wordpress.[ingress-domain">https://wordpress.[ingress-domain</a>]</li>
+<li><p>Address: <a class="reference external" href="http://[worker-ip]:30100">http://[worker-ip]:30100</a></p></li>
+<li><p>Address: <a class="reference external" href="https://wordpress.[ingress-domain">https://wordpress.[ingress-domain</a>]</p></li>
 </ul>
 </div>
 <div class="section" id="minio">
 <h3>Minio<a class="headerlink" href="#minio" title="Permalink to this headline">¶</a></h3>
 <p>Minio is used by Ark to store the backups.</p>
 <ul class="simple">
-<li>Address: <a class="reference external" href="http://[worker-ip]:30800">http://[worker-ip]:30800</a></li>
-<li>Username: minio</li>
-<li>Password: changeme</li>
+<li><p>Address: <a class="reference external" href="http://[worker-ip]:30800">http://[worker-ip]:30800</a></p></li>
+<li><p>Username: minio</p></li>
+<li><p>Password: changeme</p></li>
 </ul>
 </div>
 <div class="section" id="grafana">
 <h3>Grafana<a class="headerlink" href="#grafana" title="Permalink to this headline">¶</a></h3>
 <p>Grafana provides an overview of the cluster’s status.</p>
 <ul class="simple">
-<li>Address: <a class="reference external" href="http://[worker-ip]:30900">http://[worker-ip]:30900</a></li>
-<li>Username: admin</li>
-<li>Password: changeme</li>
+<li><p>Address: <a class="reference external" href="http://[worker-ip]:30900">http://[worker-ip]:30900</a></p></li>
+<li><p>Username: admin</p></li>
+<li><p>Password: changeme</p></li>
 </ul>
 </div>
 <div class="section" id="kibana">
 <h3>Kibana<a class="headerlink" href="#kibana" title="Permalink to this headline">¶</a></h3>
 <p>Kibana can be used to inspect the log messages of all pods in the cluster.</p>
 <ul class="simple">
-<li>Address: <a class="reference external" href="http://[worker-ip]:30980">http://[worker-ip]:30980</a></li>
+<li><p>Address: <a class="reference external" href="http://[worker-ip]:30980">http://[worker-ip]:30980</a></p></li>
 </ul>
 </div>
 <div class="section" id="cerebro">
 <h3>Cerebro<a class="headerlink" href="#cerebro" title="Permalink to this headline">¶</a></h3>
 <p>Cerebro allows the user to manage the collected log message from the cluster.</p>
 <ul class="simple">
-<li>Address: <a class="reference external" href="http://[worker-ip]:30990">http://[worker-ip]:30990</a></li>
+<li><p>Address: <a class="reference external" href="http://[worker-ip]:30990">http://[worker-ip]:30990</a></p></li>
 </ul>
 </div>
 <div class="section" id="ceph-dashboard">
 <h3>Ceph Dashboard<a class="headerlink" href="#ceph-dashboard" title="Permalink to this headline">¶</a></h3>
 <p>Ceph Dashboard gives an overview of the storage status.</p>
 <ul class="simple">
-<li>Address: <a class="reference external" href="https://[worker-ip]:30700">https://[worker-ip]:30700</a></li>
-<li>Username: admin</li>
-<li>Password: changeme</li>
+<li><p>Address: <a class="reference external" href="https://[worker-ip]:30700">https://[worker-ip]:30700</a></p></li>
+<li><p>Username: admin</p></li>
+<li><p>Password: changeme</p></li>
 </ul>
 </div>
 </div>
@@ -925,7 +853,7 @@
         <a href="setups.html" class="btn btn-neutral float-right" title="Setups" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="installation.html" class="btn btn-neutral" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -934,11 +862,19 @@
 
   <div role="contentinfo">
     <p>
+        
         &copy; Copyright 2020, Mircea-Cristian Racasan
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -950,27 +886,16 @@
   </div>
   
 
-
-  
-
-    
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>
