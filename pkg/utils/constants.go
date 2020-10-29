@@ -146,7 +146,6 @@ const FeatureLogging = "logging"
 const FeatureBackup = "backup"
 const FeatureShowcase = "showcase"
 const FeatureIngress = "ingress"
-const FeaturePackaging = "packaging"
 
 // OS
 const OsUbuntu = "ubuntu"

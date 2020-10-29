@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/darxkies/k8s-tew/pkg/config"
 	"github.com/darxkies/k8s-tew/pkg/utils"
@@ -354,4 +355,64 @@ func (k8s *K8S) GetCredentials(namespace, name string) (username string, passwor
 	password = string(data)
 
 	return username, password, nil
+}
+
+func (k8s *K8S) WaitForCluster() error {
+	var _error error
+	var clientset *kubernetes.Clientset
+	var pods *v1.PodList
+
+	log.Info("Waiting for Pods")
+
+	duration := time.Second
+
+	for {
+		clientset, _error = k8s.getClient()
+		if _error != nil {
+			log.WithFields(log.Fields{"error": _error}).Debug("Not ready")
+
+			time.Sleep(duration)
+
+			continue
+		}
+
+		context := context.Background()
+
+		namespaces := []string{"kube-system", "networking", "storage", "backup", "logging", "monitoring", "showcase"}
+
+		podsNotReady := 0
+
+		for _, namespace := range namespaces {
+			pods, _error = clientset.CoreV1().Pods(namespace).List(context, metav1.ListOptions{})
+			if _error != nil {
+				break
+			}
+
+			for _, pod := range pods.Items {
+				if pod.Status.Phase != v1.PodRunning && pod.Status.Phase != v1.PodSucceeded {
+					podsNotReady++
+				}
+			}
+		}
+
+		if _error != nil {
+			log.WithFields(log.Fields{"error": _error}).Debug("Not ready")
+
+			time.Sleep(duration)
+
+			continue
+		}
+
+		if podsNotReady == 0 {
+			break
+		}
+
+		log.WithFields(log.Fields{"pods-not-ready": podsNotReady}).Debug("Not ready")
+
+		time.Sleep(duration)
+	}
+
+	log.Debug("Ready")
+
+	return nil
 }

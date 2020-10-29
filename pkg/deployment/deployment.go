@@ -23,9 +23,10 @@ type Deployment struct {
 	images            config.Images
 	parallel          bool
 	importImages      bool
+	wait              bool
 }
 
-func NewDeployment(_config *config.InternalConfig, identityFile string, importImages, forceUpload bool, parallel bool, commandRetries uint, skipSetup, skipUpload, skipRestart, skipStorageSetup, skipMonitoringSetup, skipLoggingSetup, skipBackupSetup, skipShowcaseSetup, skipIngressSetup, skipPackagingSetup bool) *Deployment {
+func NewDeployment(_config *config.InternalConfig, identityFile string, importImages, forceUpload bool, parallel bool, commandRetries uint, skipSetup, skipUpload, skipRestart, skipStorageSetup, skipMonitoringSetup, skipLoggingSetup, skipBackupSetup, skipShowcaseSetup, skipIngressSetup, wait bool) *Deployment {
 	nodes := map[string]*NodeDeployment{}
 
 	for nodeName, node := range _config.Config.Nodes {
@@ -58,11 +59,7 @@ func NewDeployment(_config *config.InternalConfig, identityFile string, importIm
 		skipSetupFeatures = append(skipSetupFeatures, utils.FeatureIngress)
 	}
 
-	if skipPackagingSetup {
-		skipSetupFeatures = append(skipSetupFeatures, utils.FeaturePackaging)
-	}
-
-	deployment := &Deployment{config: _config, identityFile: identityFile, importImages: importImages, forceUpload: forceUpload, parallel: parallel, commandRetries: commandRetries, nodes: nodes, skipSetup: skipSetup, skipUpload: skipUpload, skipRestart: skipRestart, skipSetupFeatures: skipSetupFeatures}
+	deployment := &Deployment{config: _config, identityFile: identityFile, importImages: importImages, forceUpload: forceUpload, parallel: parallel, commandRetries: commandRetries, nodes: nodes, skipSetup: skipSetup, skipUpload: skipUpload, skipRestart: skipRestart, skipSetupFeatures: skipSetupFeatures, wait: wait}
 
 	deployment.images = deployment.config.Config.Versions.GetImages()
 
@@ -71,6 +68,10 @@ func NewDeployment(_config *config.InternalConfig, identityFile string, importIm
 
 func (deployment *Deployment) Steps() int {
 	result := 0
+
+	if deployment.wait {
+		result++
+	}
 
 	// Files deployment
 	if !deployment.skipUpload {
@@ -112,7 +113,16 @@ func (deployment *Deployment) Deploy() error {
 		}
 	}
 
-	return deployment.setup()
+	if _error := deployment.setup(); _error != nil {
+		return _error
+	}
+
+	if deployment.wait {
+		kubernetesClient := k8s.NewK8S(deployment.config)
+		kubernetesClient.WaitForCluster()
+	}
+
+	return nil
 }
 
 func (deployment *Deployment) applyManifest(name, manifest string) error {

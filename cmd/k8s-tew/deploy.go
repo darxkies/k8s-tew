@@ -22,9 +22,9 @@ var skipLoggingSetup bool
 var skipBackupSetup bool
 var skipShowcaseSetup bool
 var skipIngressSetup bool
-var skipPackagingSetup bool
 var forceUpload bool
 var importImages bool
+var wait bool
 
 var deployCmd = &cobra.Command{
 	Use:   "deploy",
@@ -37,7 +37,7 @@ var deployCmd = &cobra.Command{
 			os.Exit(-1)
 		}
 
-		_deployment := deployment.NewDeployment(_config, identityFile, importImages, forceUpload, parallel, commandRetries, skipSetup, skipUpload, skipRestart, skipStorageSetup, skipMonitoringSetup, skipLoggingSetup, skipBackupSetup, skipShowcaseSetup, skipIngressSetup, skipPackagingSetup)
+		_deployment := deployment.NewDeployment(_config, identityFile, importImages, forceUpload, parallel, commandRetries, skipSetup, skipUpload, skipRestart, skipStorageSetup, skipMonitoringSetup, skipLoggingSetup, skipBackupSetup, skipShowcaseSetup, skipIngressSetup, wait)
 
 		utils.SetProgressSteps(_deployment.Steps() + 1)
 
@@ -67,9 +67,9 @@ func init() {
 	deployCmd.Flags().BoolVar(&skipBackupSetup, "skip-backup-setup", false, "Skip backup setup")
 	deployCmd.Flags().BoolVar(&skipShowcaseSetup, "skip-showcase-setup", false, "Skip showcase setup")
 	deployCmd.Flags().BoolVar(&skipIngressSetup, "skip-ingress-setup", false, "Skip ingress setup")
-	deployCmd.Flags().BoolVar(&skipPackagingSetup, "skip-packaging-setup", false, "Skip packaging setup")
 	deployCmd.Flags().BoolVar(&importImages, "import-images", false, "Install images")
 	deployCmd.Flags().BoolVar(&parallel, "parallel", false, "Run steps in parallel")
 	deployCmd.Flags().BoolVar(&forceUpload, "force-upload", false, "Files are uploaded without checking if they are already installed")
+	deployCmd.Flags().BoolVar(&wait, "wait", false, "Wait for all cluster relevant pods to be ready and jobs to be completed")
 	RootCmd.AddCommand(deployCmd)
 }

@@ -14,16 +14,16 @@ deploy:
 	k8s-tew configure --public-network=$(IP)/24
 	k8s-tew configure --resolv-conf=/run/systemd/resolve/resolv.conf 
 	k8s-tew configure --metallb-addresses=$(IP)/32
-	k8s-tew node-add -n single-node -i $(IP) -l controller,worker
+	k8s-tew node-add -n single-node -i $(IP) -l controller,worker,storage
 	k8s-tew generate 
-	k8s-tew deploy --parallel 
+	k8s-tew deploy --parallel --wait
 
 refresh:
 	k8s-tew generate --parallel 
-	k8s-tew deploy --parallel 
+	k8s-tew deploy --parallel --wait
 
 destroy:
-	multipass delete $(NAME) -p
+	-multipass delete $(NAME) -p
 
 create:
 	echo $(CLOUD_INIT) | multipass launch -n $(NAME) -c 4 -m 8G -d 40G --cloud-init - 18.04 
