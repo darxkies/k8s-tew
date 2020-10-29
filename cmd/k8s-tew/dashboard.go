@@ -39,7 +39,7 @@ func addCommand(subCommandName, description string, getData getData) *cobra.Comm
 
 			url, username, password, error := getData(kubernetesClient, ip)
 			if error != nil {
-				log.WithFields(log.Fields{"error": error}).Error("Dashboard failed")
+				log.WithFields(log.Fields{"_reason": error, "error": "Could not retrieve data. Is the feature enabled?"}).Error("Dashboard failed")
 
 				os.Exit(-3)
 			}
