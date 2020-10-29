@@ -32,7 +32,7 @@ halt:
 	vagrant halt
 
 dashboard:
-	k8s-tew dashboard -o
+	k8s-tew dashboard kubernetes -o
 
 ssh-controller00:
 	vagrant ssh controller00

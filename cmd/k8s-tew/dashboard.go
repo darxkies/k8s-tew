@@ -61,10 +61,12 @@ func addCommand(subCommandName, description string, getData getData) *cobra.Comm
 				log.WithFields(fields).Info(subCommandName)
 			}
 
-			if error := utils.OpenWebBrowser(subCommandName, url); error != nil {
-				log.WithFields(log.Fields{"error": error}).Error("Open Web Browser failed")
+			if openWebBrowser {
+				if error := utils.OpenWebBrowser(subCommandName, url); error != nil {
+					log.WithFields(log.Fields{"error": error}).Error("Open Web Browser failed")
 
-				os.Exit(-3)
+					os.Exit(-3)
+				}
 			}
 		},
 	}
