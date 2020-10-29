@@ -1,6 +1,7 @@
 package deployment
 
 import (
+	"errors"
 	"time"
 
 	"github.com/darxkies/k8s-tew/pkg/config"
@@ -99,6 +100,10 @@ func (deployment *Deployment) Steps() int {
 
 // Deploy all files to the nodes over SSH
 func (deployment *Deployment) Deploy() error {
+	if !deployment.config.Config.Nodes.HasStorageNode() && !deployment.skipSetupFeatures.HasFeatures(config.Features{utils.FeatureStorage}) {
+		return errors.New("At least one storage node is required. After adding the storage node, run sub-command generate again.")
+	}
+
 	sortedNodeKeys := deployment.config.GetSortedNodeKeys()
 
 	if !deployment.skipUpload {

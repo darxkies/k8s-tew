@@ -11,6 +11,36 @@ type Node struct {
 
 type Nodes map[string]*Node
 
+func (nodes Nodes) HasControllerNode() bool {
+	for _, node := range nodes {
+		if node.IsController() {
+			return true
+		}
+	}
+
+	return false
+}
+
+func (nodes Nodes) HasWorkerNode() bool {
+	for _, node := range nodes {
+		if node.IsWorker() {
+			return true
+		}
+	}
+
+	return false
+}
+
+func (nodes Nodes) HasStorageNode() bool {
+	for _, node := range nodes {
+		if node.IsStorage() {
+			return true
+		}
+	}
+
+	return false
+}
+
 func NewNode(ip string, index, storageIndex uint, labels []string) *Node {
 	return &Node{IP: ip, Index: index, StorageIndex: storageIndex, Labels: labels}
 }

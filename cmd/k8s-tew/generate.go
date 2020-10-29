@@ -27,6 +27,24 @@ var generateCmd = &cobra.Command{
 			os.Exit(-1)
 		}
 
+		if !_config.Config.Nodes.HasControllerNode() {
+			log.WithFields(log.Fields{"error": "No controller node found"}).Error("Generate failed")
+
+			os.Exit(-2)
+		}
+
+		if !_config.Config.Nodes.HasWorkerNode() {
+			log.WithFields(log.Fields{"error": "No worker node found"}).Error("Generate failed")
+
+			os.Exit(-3)
+		}
+
+		if !_config.Config.Nodes.HasStorageNode() {
+			log.WithFields(log.Fields{"error": "No storage node found"}).Error("Generate failed")
+
+			os.Exit(-4)
+		}
+
 		downloader := download.NewDownloader(_config, forceDownload, parallel, pullImages)
 		generator := generate.NewGenerator(_config)
 

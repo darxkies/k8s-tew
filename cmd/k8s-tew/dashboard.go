@@ -38,6 +38,11 @@ func addCommand(subCommandName, description string, getData getData) *cobra.Comm
 			}
 
 			url, username, password, error := getData(kubernetesClient, ip)
+			if error != nil {
+				log.WithFields(log.Fields{"error": error}).Error("Dashboard failed")
+
+				os.Exit(-3)
+			}
 
 			if quiet {
 				fmt.Printf("%s", password)
