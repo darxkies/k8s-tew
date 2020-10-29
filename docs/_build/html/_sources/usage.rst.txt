@@ -162,7 +162,7 @@ The email and the ingress-domain parameters need to be changed if you want a wor
 
 Another important argument is :file:`--resolv-conf` which is used to define which resolv.conf file should be used for DNS.
 
-The Virtual/Floating IP parameters should be accordingly changed if you want true HA. This is especially for the controllers important. Then if there are for example three controllers then the IP of the first controller is used by the whole cluster and if that one fails then the whole cluster will stop working. k8s-tew uses internally RAFT_ and its leader election functionality to select one node on which the Virtual IP is set. If the leader fails, one of the remaining nodes gets the Virtual IP assigned.
+The Virtual/Floating IP parameters should be accordingly changed if you want true HA. k8s-tew uses internally RAFT_ and its leader election functionality to select one node on which the Virtual IP is set. If the leader fails, one of the remaining nodes gets the Virtual IP assigned.
 
 .. _RAFT: https://raft.github.io/ 
 
@@ -174,14 +174,16 @@ A remote node can be added with the following command:
 
   .. code:: shell
 
-    k8s-tew node-add -n controller00 -i 192.168.100.100 -x 0 -l controller
+    k8s-tew node-add -n controller00 -i 192.168.100.100 -l controller,node,storage
 
 The arguments:
 
-  -x, --index uint      The unique index of the node which should never be reused
-  -i, --ip string       IP of the node (default "192.168.100.50")
-  -l, --labels string   The labels of the node which define the attributes of the node (default "controller,worker")
-  -n, --name string     The hostname of the node (default "single-node")
+  -x, --index uint           The unique index of the node which should never be reused; if it is already in use a new one is assigned
+  -i, --ip string            IP of the node (default "192.168.100.50")
+  -l, --labels string        The labels of the node which define the attributes of the node (default "controller,worker")
+  -n, --name string          The hostname of the node (default "single-node")
+  -s, --self                 Add this machine by inferring the host's name & IP and by setting the labels controller,worker,bootstrapper - The public-network and the deployment-directory are also updated
+  -r, --storage-index uint   The unique index of the storage node which should never be reused; if it is already in use a new one is assigned
 
 
 .. note:: Make sure the IP address of the node matches the public network set using the configuration argument :file:`--public-network`.
@@ -197,7 +199,7 @@ k8s-tew is also able to start a cluster on the local computer and for that the l
     
 The arguments:
 
-  -s, --self            Add this machine by infering the host's name & ip and by setting the labels controller,worker,bootstrapper - The public-network and the deployment-directory are also updated
+  -s, --self            Add this machine by inferring the host's name & IP and by setting the labels controller,worker,bootstrapper - The public-network and the deployment-directory are also updated
 
 Remove Node
 """""""""""
@@ -256,8 +258,9 @@ The deployment is executed with the command:
 
 The arguments:
 
-  -r, --command-retries uint    The count of command retries during the setup (default 300)
+  -r, --command-retries uint    The number of command retries during the setup (default 1200)
   --force-upload            Files are uploaded without checking if they are already installed
+  -h, --help                    help for deploy
   -i, --identity-file string    SSH identity file (default "/home/darxkies/.ssh/id_rsa")
   --import-images           Install images
   --parallel                Run steps in parallel
@@ -265,10 +268,12 @@ The arguments:
   --skip-ingress-setup      Skip ingress setup
   --skip-logging-setup      Skip logging setup
   --skip-monitoring-setup   Skip monitoring setup
-  --skip-packaging-setup    Skip packaging setup
+  --skip-restart            Skip restart steps
   --skip-setup              Skip setup steps
   --skip-showcase-setup     Skip showcase setup
   --skip-storage-setup      Skip storage setup and all other feature setup steps
+  --skip-upload             Skip upload steps
+  --wait uint               Wait for all cluster relevant pods to be ready and jobs to be completed. The parameter reflects the number of seconds in which the pods have to run stable.
 
 The files are copied using scp and the ssh private key :file:`$HOME/.ssh/id_rsa`. In case the file :file:`$HOME/.ssh/id_rsa` does not exist it should be generated using the command :file:`ssh-keygen`. If another private key should be used, it can be specified using the command line argument :file:`-i`.
 
@@ -282,7 +287,7 @@ After starting the cluster, the user will need some environment variables set lo
 
   .. code:: shell
 
-      eval $(k8s-tew environment)
+      source <(k8s-tew environment)
 
 This command sets KUBECONFIG needed by kubectl to communicate with the cluster and it also updates PATH to point to the downloaded third-party binaries.
 
