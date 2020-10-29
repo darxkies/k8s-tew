@@ -180,7 +180,7 @@
 <h1>Setups<a class="headerlink" href="#setups" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="vagrant">
 <h2>Vagrant<a class="headerlink" href="#vagrant" title="Permalink to this headline">¶</a></h2>
-<p>Vagrant/VirtualBox can be used to test drive k8s-tew. The host is used to bootstrap the cluster which runs in VirtualBox. The Vagrantfile included in the repository can be used for single-node/multi-node &amp; Ubuntu 18.04/CentOS 7.5 setups.</p>
+<p>Vagrant/VirtualBox can be used to test drive k8s-tew. The host is used to bootstrap the cluster which runs in VirtualBox. The Vagrantfile included in the repository can be used for single-node/multi-node &amp; Ubuntu 20.04/CentOS 8.2 setups.</p>
 <p>The Vagrantfile can be configured using the environment variables:</p>
 <ul class="simple">
 <li><p>OS - define the operating system. It accepts ubuntu, the default value, and centos.</p></li>
@@ -191,8 +191,10 @@
 <li><p>IP_PREFIX - this value is used to generate the IP addresses of the nodes. If not set 192.168.100 will be used. The single node has the IP address 192.168.100.50. The controllers start with the IP address 192.168.100.200 and the workers with 192.168.100.100.</p></li>
 <li><p>CONTROLLERS_RAM - amount of RAM for one controller</p></li>
 <li><p>WORKERS_RAM - amount of RAM for one worker</p></li>
+<li><p>STORAGE_RAM - amount of RAM for one storage</p></li>
 <li><p>CONTROLLERS_CPUS - number of CPUs per controller</p></li>
 <li><p>WORKERS_CPUS - number of CPUs per worker</p></li>
+<li><p>STORAGE_CPUS - number of CPUs per storage</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -200,13 +202,13 @@
 </div>
 <div class="section" id="usage">
 <h3>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h3>
-<p>The directory called <code class="file docutils literal notranslate"><span class="pre">setup</span></code> (<a class="reference external" href="https://github.com/darxkies/k8s-tew/tree/2.3.5/setup">https://github.com/darxkies/k8s-tew/tree/2.3.5/setup</a>) contains sub-directories for various cluster setup configurations:</p>
+<p>The directory called <code class="file docutils literal notranslate"><span class="pre">setup</span></code> (<a class="reference external" href="https://github.com/darxkies/k8s-tew/tree/2.4.0/setup">https://github.com/darxkies/k8s-tew/tree/2.4.0/setup</a>) contains sub-directories for various cluster setup configurations:</p>
 <ul class="simple">
 <li><p>local - it starts a single-node cluster locally without using any kind of virtualization. This kind of setup needs root rights. It is meant for local development where it might be important to fire the cluster up and shut it down fast. If you want it to start automatically, take a look at the quickstart section.</p></li>
-<li><p>ubuntu-single-node - Ubuntu 18.04 single-node cluster. It needs about 8GB Ram.</p></li>
-<li><p>ubuntu-multi-node - Ubuntu 18.04 HA cluster. It needs around 20GB Ram.</p></li>
-<li><p>centos-single-node - CentOS 7.5 single-node cluster. It needs about 8GB Ram.</p></li>
-<li><p>centos-multi-node - CentOS 7.5 HA cluster. It needs around 20GB Ram.</p></li>
+<li><p>ubuntu-single-node - Ubuntu 20.04 single-node cluster. It needs about 8GB Ram.</p></li>
+<li><p>ubuntu-multi-node - Ubuntu 20.04 HA cluster. It needs around 20GB Ram.</p></li>
+<li><p>centos-single-node - CentOS 8.2 single-node cluster. It needs about 8GB Ram.</p></li>
+<li><p>centos-multi-node - CentOS 8.2 HA cluster. It needs around 20GB Ram.</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -274,7 +276,7 @@ make ssh-worker01
 </div>
 <div class="section" id="kubernetes-dashboard">
 <h3>Kubernetes Dashboard<a class="headerlink" href="#kubernetes-dashboard" title="Permalink to this headline">¶</a></h3>
-<p>This will display the token for three seconds, and then it will open the web browser pointing to the address of Kubernetes Dashboard:</p>
+<p>This will display the token, and then it will open the web browser pointing to the address of Kubernetes Dashboard:</p>
 <blockquote>
 <div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>make dashboard
 </pre></div>

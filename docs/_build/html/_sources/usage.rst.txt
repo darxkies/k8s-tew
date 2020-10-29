@@ -291,56 +291,26 @@ After starting the cluster, the user will need some environment variables set lo
 
 This command sets KUBECONFIG needed by kubectl to communicate with the cluster and it also updates PATH to point to the downloaded third-party binaries.
 
-Services
---------
+Dashboards & Websites
+---------------------
 
-Depending on the configuration of the cluster, the installation of all containers can take a while. Once everything is installed, the following command can be used to open the web browser pointing to the web sites hosted by the cluster:
-
-  .. code:: shell
-
-    k8s-tew open-web-browser
-
-The arguments:
-
-      --all                    Open all websites
-      --ceph-manager           Open Ceph Manager website
-      --ceph-rados-gateway     Open Ceph Rados Gateway website
-      --cerebro                Open Cerebro website
-      --grafana                Open Grafana website
-      --kibana                 Open Kibana website
-      --kubernetes-dashboard   Open Kubernetes Dashboard website
-      --minio                  Open Minio website
-      --wordpress-ingress      Open WordPress Ingress website
-      --wordpress-nodeport     Open WordPress NodePort website
-
-.. note:: One of the parameters has to be used, otherwise no web site will be opened.
-
-Alternatively, the web sites can be accessed manually.
-
-Kubernetes Dashboard
-^^^^^^^^^^^^^^^^^^^^
-
-k8s-tew installs the Kubernetes Dashboard. Invoke the following command to display the admin token:
+Depending on the configuration of the cluster, the installation of all containers can take a while. Once everything is installed, the following command can be used to display the credentials (username + generated password) and open the web browser (by passing -o) pointing to the web sites hosted by the cluster:
 
   .. code:: shell
 
-    k8s-tew dashboard
+    k8s-tew dashboard XXX
 
-If you have a GUI web browser installed, then you can use the following command to display the admin token for three seconds, enough time to copy the token, and to also open the web browser:
+XXX is a place holder and can be replaced with one of the following values:
 
-  .. code:: shell
-
-    k8s-tew dashboard -o
-
-.. note:: It takes minutes to actually download the dashboard. Use the following command to check the status of the pods:
-
-  .. code:: shell
-
-    kubectl get pods -n kube-system
-
-Once the pod is running the dashboard can be accessed through the TCP port 32443. Regarding the IP address, use the IP address of a worker node or the worker Virtual IP if one was specified.
-
-When asked to login, enter the admin token.
+  * ceph-manager - Display Ceph Manager website related information
+  * ceph-rados-gateway - Display Ceph Rados Gateway website related information
+  * cerebro - Display Cerebro website related information
+  * grafana - Display Grafana website related information
+  * kibana - Display Kibana website related information
+  * kubernetes - Display Kuberenetes Dashboard website related information
+  * minio - Display Minio website related information
+  * wordpress-ingress - Display WordPress Ingress website related information
+  * wordpress-nodeport - Display WordPress Nodeport website related information
 
 
 Ingress
@@ -351,54 +321,4 @@ For working Ingress make sure ports 80 and 443 are available. The Ingress Domain
   .. code:: shell
 
     k8s-tew configure --ingress-domain [ingress-domain]
-
-WordPress
-^^^^^^^^^
-
-Wordpress/MySQL are installed for testing purposes and [ingress-domain] can be set using the configure command.
-
-- Address: http://[worker-ip]:30100
-- Address: https://wordpress.[ingress-domain]
-
-
-Minio
-^^^^^
-
-Minio is used by Ark to store the backups.
-
-- Address: http://[worker-ip]:30800
-- Username: minio
-- Password: changeme
-
-Grafana
-^^^^^^^
-
-Grafana provides an overview of the cluster's status.
-
-- Address: http://[worker-ip]:30900
-- Username: admin
-- Password: changeme
-
-Kibana
-^^^^^^^
-
-Kibana can be used to inspect the log messages of all pods in the cluster.
-
-- Address: http://[worker-ip]:30980
-
-Cerebro
-^^^^^^^
-
-Cerebro allows the user to manage the collected log message from the cluster.
-
-- Address: http://[worker-ip]:30990
-
-Ceph Dashboard
-^^^^^^^^^^^^^^
-
-Ceph Dashboard gives an overview of the storage status.
-
-- Address: https://[worker-ip]:30700
-- Username: admin
-- Password: changeme
 

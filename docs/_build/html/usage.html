@@ -114,15 +114,8 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#environment">Environment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#services">Services</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#kubernetes-dashboard">Kubernetes Dashboard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dashboards-websites">Dashboards &amp; Websites</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#ingress">Ingress</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#wordpress">WordPress</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#minio">Minio</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#grafana">Grafana</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#kibana">Kibana</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cerebro">Cerebro</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ceph-dashboard">Ceph Dashboard</a></li>
 </ul>
 </li>
 </ul>
@@ -724,78 +717,28 @@
 </div></blockquote>
 <p>This command sets KUBECONFIG needed by kubectl to communicate with the cluster and it also updates PATH to point to the downloaded third-party binaries.</p>
 </div>
-<div class="section" id="services">
-<h2>Services<a class="headerlink" href="#services" title="Permalink to this headline">¶</a></h2>
-<p>Depending on the configuration of the cluster, the installation of all containers can take a while. Once everything is installed, the following command can be used to open the web browser pointing to the web sites hosted by the cluster:</p>
+<div class="section" id="dashboards-websites">
+<h2>Dashboards &amp; Websites<a class="headerlink" href="#dashboards-websites" title="Permalink to this headline">¶</a></h2>
+<p>Depending on the configuration of the cluster, the installation of all containers can take a while. Once everything is installed, the following command can be used to display the credentials (username + generated password) and open the web browser (by passing -o) pointing to the web sites hosted by the cluster:</p>
 <blockquote>
-<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>k8s-tew open-web-browser
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>k8s-tew dashboard XXX
 </pre></div>
 </div>
 </div></blockquote>
-<p>The arguments:</p>
+<p>XXX is a place holder and can be replaced with one of the following values:</p>
 <blockquote>
-<div><dl class="option-list">
-<dt><kbd><span class="option">--all</span></kbd></dt>
-<dd><p>Open all websites</p>
-</dd>
-<dt><kbd><span class="option">--ceph-manager</span></kbd></dt>
-<dd><p>Open Ceph Manager website</p>
-</dd>
-<dt><kbd><span class="option">--ceph-rados-gateway</span></kbd></dt>
-<dd><p>Open Ceph Rados Gateway website</p>
-</dd>
-<dt><kbd><span class="option">--cerebro</span></kbd></dt>
-<dd><p>Open Cerebro website</p>
-</dd>
-<dt><kbd><span class="option">--grafana</span></kbd></dt>
-<dd><p>Open Grafana website</p>
-</dd>
-<dt><kbd><span class="option">--kibana</span></kbd></dt>
-<dd><p>Open Kibana website</p>
-</dd>
-<dt><kbd><span class="option">--kubernetes-dashboard</span></kbd></dt>
-<dd><p>Open Kubernetes Dashboard website</p>
-</dd>
-<dt><kbd><span class="option">--minio</span></kbd></dt>
-<dd><p>Open Minio website</p>
-</dd>
-<dt><kbd><span class="option">--wordpress-ingress</span></kbd></dt>
-<dd><p>Open WordPress Ingress website</p>
-</dd>
-<dt><kbd><span class="option">--wordpress-nodeport</span></kbd></dt>
-<dd><p>Open WordPress NodePort website</p>
-</dd>
-</dl>
+<div><ul class="simple">
+<li><p>ceph-manager - Display Ceph Manager website related information</p></li>
+<li><p>ceph-rados-gateway - Display Ceph Rados Gateway website related information</p></li>
+<li><p>cerebro - Display Cerebro website related information</p></li>
+<li><p>grafana - Display Grafana website related information</p></li>
+<li><p>kibana - Display Kibana website related information</p></li>
+<li><p>kubernetes - Display Kuberenetes Dashboard website related information</p></li>
+<li><p>minio - Display Minio website related information</p></li>
+<li><p>wordpress-ingress - Display WordPress Ingress website related information</p></li>
+<li><p>wordpress-nodeport - Display WordPress Nodeport website related information</p></li>
+</ul>
 </div></blockquote>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>One of the parameters has to be used, otherwise no web site will be opened.</p>
-</div>
-<p>Alternatively, the web sites can be accessed manually.</p>
-<div class="section" id="kubernetes-dashboard">
-<h3>Kubernetes Dashboard<a class="headerlink" href="#kubernetes-dashboard" title="Permalink to this headline">¶</a></h3>
-<p>k8s-tew installs the Kubernetes Dashboard. Invoke the following command to display the admin token:</p>
-<blockquote>
-<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>k8s-tew dashboard
-</pre></div>
-</div>
-</div></blockquote>
-<p>If you have a GUI web browser installed, then you can use the following command to display the admin token for three seconds, enough time to copy the token, and to also open the web browser:</p>
-<blockquote>
-<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>k8s-tew dashboard -o
-</pre></div>
-</div>
-</div></blockquote>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>It takes minutes to actually download the dashboard. Use the following command to check the status of the pods:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>kubectl get pods -n kube-system
-</pre></div>
-</div>
-</div>
-<p>Once the pod is running the dashboard can be accessed through the TCP port 32443. Regarding the IP address, use the IP address of a worker node or the worker Virtual IP if one was specified.</p>
-<p>When asked to login, enter the admin token.</p>
-</div>
 <div class="section" id="ingress">
 <h3>Ingress<a class="headerlink" href="#ingress" title="Permalink to this headline">¶</a></h3>
 <p>For working Ingress make sure ports 80 and 443 are available. The Ingress Domain have to be also configured before ‘generate’ and ‘deploy’ are executed:</p>
@@ -804,55 +747,6 @@
 </pre></div>
 </div>
 </div></blockquote>
-</div>
-<div class="section" id="wordpress">
-<h3>WordPress<a class="headerlink" href="#wordpress" title="Permalink to this headline">¶</a></h3>
-<p>Wordpress/MySQL are installed for testing purposes and [ingress-domain] can be set using the configure command.</p>
-<ul class="simple">
-<li><p>Address: <a class="reference external" href="http://[worker-ip]:30100">http://[worker-ip]:30100</a></p></li>
-<li><p>Address: <a class="reference external" href="https://wordpress.[ingress-domain">https://wordpress.[ingress-domain</a>]</p></li>
-</ul>
-</div>
-<div class="section" id="minio">
-<h3>Minio<a class="headerlink" href="#minio" title="Permalink to this headline">¶</a></h3>
-<p>Minio is used by Ark to store the backups.</p>
-<ul class="simple">
-<li><p>Address: <a class="reference external" href="http://[worker-ip]:30800">http://[worker-ip]:30800</a></p></li>
-<li><p>Username: minio</p></li>
-<li><p>Password: changeme</p></li>
-</ul>
-</div>
-<div class="section" id="grafana">
-<h3>Grafana<a class="headerlink" href="#grafana" title="Permalink to this headline">¶</a></h3>
-<p>Grafana provides an overview of the cluster’s status.</p>
-<ul class="simple">
-<li><p>Address: <a class="reference external" href="http://[worker-ip]:30900">http://[worker-ip]:30900</a></p></li>
-<li><p>Username: admin</p></li>
-<li><p>Password: changeme</p></li>
-</ul>
-</div>
-<div class="section" id="kibana">
-<h3>Kibana<a class="headerlink" href="#kibana" title="Permalink to this headline">¶</a></h3>
-<p>Kibana can be used to inspect the log messages of all pods in the cluster.</p>
-<ul class="simple">
-<li><p>Address: <a class="reference external" href="http://[worker-ip]:30980">http://[worker-ip]:30980</a></p></li>
-</ul>
-</div>
-<div class="section" id="cerebro">
-<h3>Cerebro<a class="headerlink" href="#cerebro" title="Permalink to this headline">¶</a></h3>
-<p>Cerebro allows the user to manage the collected log message from the cluster.</p>
-<ul class="simple">
-<li><p>Address: <a class="reference external" href="http://[worker-ip]:30990">http://[worker-ip]:30990</a></p></li>
-</ul>
-</div>
-<div class="section" id="ceph-dashboard">
-<h3>Ceph Dashboard<a class="headerlink" href="#ceph-dashboard" title="Permalink to this headline">¶</a></h3>
-<p>Ceph Dashboard gives an overview of the storage status.</p>
-<ul class="simple">
-<li><p>Address: <a class="reference external" href="https://[worker-ip]:30700">https://[worker-ip]:30700</a></p></li>
-<li><p>Username: admin</p></li>
-<li><p>Password: changeme</p></li>
-</ul>
 </div>
 </div>
 </div>

@@ -4,7 +4,7 @@ Setups
 Vagrant
 -------
 
-Vagrant/VirtualBox can be used to test drive k8s-tew. The host is used to bootstrap the cluster which runs in VirtualBox. The Vagrantfile included in the repository can be used for single-node/multi-node & Ubuntu 18.04/CentOS 7.5 setups.
+Vagrant/VirtualBox can be used to test drive k8s-tew. The host is used to bootstrap the cluster which runs in VirtualBox. The Vagrantfile included in the repository can be used for single-node/multi-node & Ubuntu 20.04/CentOS 8.2 setups.
 
 The Vagrantfile can be configured using the environment variables:
 
@@ -16,8 +16,10 @@ The Vagrantfile can be configured using the environment variables:
 - IP_PREFIX - this value is used to generate the IP addresses of the nodes. If not set 192.168.100 will be used. The single node has the IP address 192.168.100.50. The controllers start with the IP address 192.168.100.200 and the workers with 192.168.100.100.
 - CONTROLLERS_RAM - amount of RAM for one controller
 - WORKERS_RAM - amount of RAM for one worker
+- STORAGE_RAM - amount of RAM for one storage
 - CONTROLLERS_CPUS - number of CPUs per controller
 - WORKERS_CPUS - number of CPUs per worker
+- STORAGE_CPUS - number of CPUs per storage
 
 .. note:: The multi-node setup with the default settings needs about 20GB RAM for itself.
 
@@ -25,13 +27,13 @@ The Vagrantfile can be configured using the environment variables:
 Usage
 ^^^^^
 
-The directory called :file:`setup` (`https://github.com/darxkies/k8s-tew/tree/2.3.5/setup <https://github.com/darxkies/k8s-tew/tree/2.3.5/setup>`_) contains sub-directories for various cluster setup configurations:
+The directory called :file:`setup` (`https://github.com/darxkies/k8s-tew/tree/2.4.0/setup <https://github.com/darxkies/k8s-tew/tree/2.4.0/setup>`_) contains sub-directories for various cluster setup configurations:
 
 - local - it starts a single-node cluster locally without using any kind of virtualization. This kind of setup needs root rights. It is meant for local development where it might be important to fire the cluster up and shut it down fast. If you want it to start automatically, take a look at the quickstart section.
-- ubuntu-single-node - Ubuntu 18.04 single-node cluster. It needs about 8GB Ram.
-- ubuntu-multi-node - Ubuntu 18.04 HA cluster. It needs around 20GB Ram.
-- centos-single-node - CentOS 7.5 single-node cluster. It needs about 8GB Ram.
-- centos-multi-node - CentOS 7.5 HA cluster. It needs around 20GB Ram.
+- ubuntu-single-node - Ubuntu 20.04 single-node cluster. It needs about 8GB Ram.
+- ubuntu-multi-node - Ubuntu 20.04 HA cluster. It needs around 20GB Ram.
+- centos-single-node - CentOS 8.2 single-node cluster. It needs about 8GB Ram.
+- centos-multi-node - CentOS 8.2 HA cluster. It needs around 20GB Ram.
 
 .. note:: Regardless of the setup, once the deployment is done it will take a while to download all required containers from the internet. So better use kubectl to check the status of the pods.
 
@@ -92,7 +94,7 @@ And for multi-node setups:
 Kubernetes Dashboard
 ^^^^^^^^^^^^^^^^^^^^
 
-This will display the token for three seconds, and then it will open the web browser pointing to the address of Kubernetes Dashboard:
+This will display the token, and then it will open the web browser pointing to the address of Kubernetes Dashboard:
 
   .. code:: shell
 
