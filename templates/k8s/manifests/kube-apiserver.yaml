@@ -22,14 +22,13 @@ spec:
     - --client-ca-file={{.PemCA}}
     - --enable-admission-plugins=NamespaceLifecycle,NodeRestriction,LimitRanger,ServiceAccount,DefaultStorageClass,ResourceQuota
     - --enable-aggregator-routing=true
-    - --enable-swagger-ui=true
     - --etcd-cafile={{.PemCA}}
     - --etcd-certfile={{.PemKubernetes}}
     - --etcd-keyfile={{.PemKubernetesKey}}
     - --etcd-servers={{.EtcdServers}}
     - --event-ttl=1h
     - --encryption-provider-config={{.EncryptionConfig}}
-    - --feature-gates=CSIBlockVolume=true,BlockVolume=true,VolumeSnapshotDataSource=true
+    - --feature-gates=VolumeSnapshotDataSource=true
     - --kubelet-certificate-authority={{.PemCA}}
     - --kubelet-client-certificate={{.PemKubernetes}}
     - --kubelet-client-key={{.PemKubernetesKey}}

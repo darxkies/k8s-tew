@@ -24,7 +24,7 @@ var skipShowcaseSetup bool
 var skipIngressSetup bool
 var forceUpload bool
 var importImages bool
-var wait bool
+var wait uint
 
 var deployCmd = &cobra.Command{
 	Use:   "deploy",
@@ -70,6 +70,6 @@ func init() {
 	deployCmd.Flags().BoolVar(&importImages, "import-images", false, "Install images")
 	deployCmd.Flags().BoolVar(&parallel, "parallel", false, "Run steps in parallel")
 	deployCmd.Flags().BoolVar(&forceUpload, "force-upload", false, "Files are uploaded without checking if they are already installed")
-	deployCmd.Flags().BoolVar(&wait, "wait", false, "Wait for all cluster relevant pods to be ready and jobs to be completed")
+	deployCmd.Flags().UintVar(&wait, "wait", 0, "Wait for all cluster relevant pods to be ready and jobs to be completed. The parameter reflects the number of seconds in which the pods have to run stable.")
 	RootCmd.AddCommand(deployCmd)
 }

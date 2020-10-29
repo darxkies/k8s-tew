@@ -23,10 +23,10 @@ type Deployment struct {
 	images            config.Images
 	parallel          bool
 	importImages      bool
-	wait              bool
+	wait              uint
 }
 
-func NewDeployment(_config *config.InternalConfig, identityFile string, importImages, forceUpload bool, parallel bool, commandRetries uint, skipSetup, skipUpload, skipRestart, skipStorageSetup, skipMonitoringSetup, skipLoggingSetup, skipBackupSetup, skipShowcaseSetup, skipIngressSetup, wait bool) *Deployment {
+func NewDeployment(_config *config.InternalConfig, identityFile string, importImages, forceUpload bool, parallel bool, commandRetries uint, skipSetup, skipUpload, skipRestart, skipStorageSetup, skipMonitoringSetup, skipLoggingSetup, skipBackupSetup, skipShowcaseSetup, skipIngressSetup bool, wait uint) *Deployment {
 	nodes := map[string]*NodeDeployment{}
 
 	for nodeName, node := range _config.Config.Nodes {
@@ -69,7 +69,7 @@ func NewDeployment(_config *config.InternalConfig, identityFile string, importIm
 func (deployment *Deployment) Steps() int {
 	result := 0
 
-	if deployment.wait {
+	if deployment.wait > 0 {
 		result++
 	}
 
@@ -117,9 +117,9 @@ func (deployment *Deployment) Deploy() error {
 		return _error
 	}
 
-	if deployment.wait {
+	if deployment.wait > 0 {
 		kubernetesClient := k8s.NewK8S(deployment.config)
-		kubernetesClient.WaitForCluster()
+		kubernetesClient.WaitForCluster(deployment.wait)
 	}
 
 	return nil

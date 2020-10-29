@@ -357,62 +357,107 @@ func (k8s *K8S) GetCredentials(namespace, name string) (username string, passwor
 	return username, password, nil
 }
 
-func (k8s *K8S) WaitForCluster() error {
-	var _error error
-	var clientset *kubernetes.Clientset
-	var pods *v1.PodList
-
+func (k8s *K8S) WaitForCluster(totalStableIterations uint) error {
 	log.Info("Waiting for Pods")
 
-	duration := time.Second
+	checkPods := func() (total int, notReady int, emptyNamespaces int, _error error) {
+		var clientset *kubernetes.Clientset
+		var pods *v1.PodList
+		var namespaces *v1.NamespaceList
 
-	for {
 		clientset, _error = k8s.getClient()
+
 		if _error != nil {
-			log.WithFields(log.Fields{"error": _error}).Debug("Not ready")
-
-			time.Sleep(duration)
-
-			continue
+			return
 		}
 
 		context := context.Background()
 
-		namespaces := []string{"kube-system", "networking", "storage", "backup", "logging", "monitoring", "showcase"}
+		namespaces, _error = clientset.CoreV1().Namespaces().List(context, metav1.ListOptions{})
+		if _error != nil {
+			return
+		}
 
-		podsNotReady := 0
+		clusterNamespaces := []string{"kube-system", "networking", "storage", "backup", "logging", "monitoring", "showcase"}
 
-		for _, namespace := range namespaces {
-			pods, _error = clientset.CoreV1().Pods(namespace).List(context, metav1.ListOptions{})
-			if _error != nil {
-				break
-			}
+		for _, namespace := range namespaces.Items {
+			isRelevant := false
 
-			for _, pod := range pods.Items {
-				if pod.Status.Phase != v1.PodRunning && pod.Status.Phase != v1.PodSucceeded {
-					podsNotReady++
+			for _, clusterNamespace := range clusterNamespaces {
+				if clusterNamespace == namespace.Name {
+					isRelevant = true
+
+					break
 				}
 			}
+
+			if !isRelevant {
+				continue
+			}
+
+			pods, _error = clientset.CoreV1().Pods(namespace.Name).List(context, metav1.ListOptions{})
+			if _error != nil {
+				return
+			}
+
+			namespacePods := 0
+
+			for _, pod := range pods.Items {
+				podReady := true
+
+				for _, container := range pod.Status.InitContainerStatuses {
+					if !container.Ready {
+						podReady = false
+					}
+				}
+
+				for _, container := range pod.Status.ContainerStatuses {
+					if !container.Ready {
+						podReady = false
+					}
+				}
+
+				if pod.Status.Phase != v1.PodSucceeded && !podReady {
+					notReady++
+				}
+
+				total++
+				namespacePods++
+			}
+
+			if namespacePods == 0 {
+				emptyNamespaces++
+			}
 		}
 
-		if _error != nil {
-			log.WithFields(log.Fields{"error": _error}).Debug("Not ready")
+		return
+	}
 
-			time.Sleep(duration)
+	var lastPodsTotal int
+	var stableIterations int
 
-			continue
+	for {
+		podsTotal, podsNotReady, emptyNamespaces, _error := checkPods()
+
+		if emptyNamespaces == 0 && podsTotal > 0 && lastPodsTotal == podsTotal && podsNotReady == 0 && _error == nil {
+			stableIterations++
+
+		} else {
+			stableIterations = 0
 		}
 
-		if podsNotReady == 0 {
+		lastPodsTotal = podsTotal
+
+		if uint(stableIterations) >= totalStableIterations {
+			log.WithFields(log.Fields{"pods-total": podsTotal}).Debug("Ready")
+
 			break
 		}
 
-		log.WithFields(log.Fields{"pods-not-ready": podsNotReady}).Debug("Not ready")
+		log.WithFields(log.Fields{"empty-namespaces": emptyNamespaces, "pods-not-ready": podsNotReady, "pods-total": podsTotal, "error": _error, "stable-iterations": stableIterations}).Debug("Not ready")
 
-		time.Sleep(duration)
+		time.Sleep(time.Second)
 	}
-
-	log.Debug("Ready")
 
 	return nil
 }
