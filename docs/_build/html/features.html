@@ -1,7 +1,8 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
   
@@ -11,48 +12,44 @@
   
 
   
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-
-  
-  
-  
-  
-
-  
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/language_data.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Quick Start" href="quickstart.html" />
     <link rel="prev" title="About" href="about.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
+
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
+        <div class="wy-side-nav-search">
           
 
           
-            <a href="index.html" class="icon icon-home" alt="Documentation Home"> k8s-tew
+            <a href="index.html" class="icon icon-home"> k8s-tew
           
 
           
@@ -82,7 +79,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -104,7 +100,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -143,7 +138,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="index.html">Docs</a> &raquo;</li>
         
       <li>Features</li>
     
@@ -167,34 +162,34 @@
   <div class="section" id="features">
 <h1>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
-<li><p>HA cluster setup passes all CNCF conformance tests (Kubernetes <a class="reference external" href="https://github.com/cncf/k8s-conformance/tree/master/v1.10/k8s-tew">1.10</a>, <a class="reference external" href="https://github.com/cncf/k8s-conformance/tree/master/v1.11/k8s-tew">1.11</a>, <a class="reference external" href="https://github.com/cncf/k8s-conformance/tree/master/v1.12/k8s-tew">1.12</a>, <a class="reference external" href="https://github.com/cncf/k8s-conformance/tree/master/v1.13/k8s-tew">1.13</a>, <a class="reference external" href="https://github.com/cncf/k8s-conformance/tree/master/v1.14/k8s-tew">1.14</a>, <a class="reference external" href="https://github.com/cncf/k8s-conformance/tree/master/v1.15/k8s-tew">1.15</a>, <a class="reference external" href="https://github.com/cncf/k8s-conformance/tree/master/v1.16/k8s-tew">1.16</a> &amp; <a class="reference external" href="https://github.com/cncf/k8s-conformance/tree/master/v1.17/k8s-tew">1.17</a>)</p></li>
-<li><p>Container Management: <a class="reference external" href="https://containerd.io/">Containerd</a></p></li>
-<li><p>Networking: <a class="reference external" href="https://www.projectcalico.org">Calico</a></p></li>
-<li><p>Ingress: <a class="reference external" href="https://kubernetes.github.io/ingress-nginx/">NGINX Ingress</a> and <a class="reference external" href="http://docs.cert-manager.io/en/latest/">cert-manager</a> for <a class="reference external" href="https://letsencrypt.org/">Let’s Encrypt</a></p></li>
-<li><p>Storage: <a class="reference external" href="https://ceph.com/">Ceph/RBD</a></p></li>
-<li><p>Metrics: <a class="reference external" href="https://github.com/kubernetes-incubator/metrics-server">metering-metrics</a> and <a class="reference external" href="https://github.com/kubernetes/heapster">Heapster</a></p></li>
-<li><p>Monitoring: <a class="reference external" href="https://prometheus.io/">Prometheus</a> and <a class="reference external" href="https://grafana.com/">Grafana</a></p></li>
-<li><p>Logging: <a class="reference external" href="https://fluentbit.io/">Fluent-Bit</a>, <a class="reference external" href="https://www.elastic.co/">Elasticsearch</a>, <a class="reference external" href="https://www.elastic.co/products/kibana">Kibana</a> and <a class="reference external" href="https://github.com/lmenezes/cerebro">Cerebro</a></p></li>
-<li><p>Backups: <a class="reference external" href="https://github.com/heptio/velero">Velero</a>, <a class="reference external" href="https://restic.net/">Restic</a> and <a class="reference external" href="https://www.minio.io/">Minio</a></p></li>
-<li><p>Cluster Load Balancing: <a class="reference external" href="https://metallb.universe.tf">MetalLB</a></p></li>
-<li><p>Controller Load Balancing: <a class="reference external" href="http://gobetween.io/">gobetween</a></p></li>
-<li><p>Package Manager: <a class="reference external" href="https://helm.sh/">Helm</a></p></li>
-<li><p>Dashboard: <a class="reference external" href="https://github.com/kubernetes/dashboard">Kubernetes Dashboard</a></p></li>
-<li><p>The communication between the components is encrypted</p></li>
-<li><p>RBAC is enabled</p></li>
-<li><p>The controllers and the workers have Floating/Virtual IPs</p></li>
-<li><p>Integrated Load Balancer for the API Servers</p></li>
-<li><p>Support for deployment to a HA cluster using ssh</p></li>
-<li><p>Only the changed files are deployed</p></li>
-<li><p>No <a class="reference external" href="https://www.docker.com/">Docker</a> installation required</p></li>
-<li><p>No cloud provider required</p></li>
-<li><p>Single binary without any dependencies</p></li>
-<li><p>Runs locally</p></li>
-<li><p>Nodes management from the command line</p></li>
-<li><p>Downloads all the used binaries (kubernetes, calico, ceph…) from the Internet</p></li>
-<li><p>Pull Images, Convert them to OCI and import them on the cluster for offline installations</p></li>
-<li><p>Uses systemd to install itself as a service on the remote machine</p></li>
-<li><p>Installs <a class="reference external" href="https://wordpress.com">WordPress</a> and <a class="reference external" href="https://www.mysql.com">MySQL</a> to test drive the installation</p></li>
+<li>HA cluster setup passes all CNCF conformance tests (Kubernetes <a class="reference external" href="https://github.com/cncf/k8s-conformance/tree/master/v1.10/k8s-tew">1.10</a>, <a class="reference external" href="https://github.com/cncf/k8s-conformance/tree/master/v1.11/k8s-tew">1.11</a>, <a class="reference external" href="https://github.com/cncf/k8s-conformance/tree/master/v1.12/k8s-tew">1.12</a>, <a class="reference external" href="https://github.com/cncf/k8s-conformance/tree/master/v1.13/k8s-tew">1.13</a>, <a class="reference external" href="https://github.com/cncf/k8s-conformance/tree/master/v1.14/k8s-tew">1.14</a>, <a class="reference external" href="https://github.com/cncf/k8s-conformance/tree/master/v1.15/k8s-tew">1.15</a>, <a class="reference external" href="https://github.com/cncf/k8s-conformance/tree/master/v1.16/k8s-tew">1.16</a> &amp; <a class="reference external" href="https://github.com/cncf/k8s-conformance/tree/master/v1.17/k8s-tew">1.17</a>)</li>
+<li>Container Management: <a class="reference external" href="https://containerd.io/">Containerd</a></li>
+<li>Networking: <a class="reference external" href="https://www.projectcalico.org">Calico</a></li>
+<li>Ingress: <a class="reference external" href="https://kubernetes.github.io/ingress-nginx/">NGINX Ingress</a> and <a class="reference external" href="http://docs.cert-manager.io/en/latest/">cert-manager</a> for <a class="reference external" href="https://letsencrypt.org/">Let’s Encrypt</a></li>
+<li>Storage: <a class="reference external" href="https://ceph.com/">Ceph/RBD</a></li>
+<li>Metrics: <a class="reference external" href="https://github.com/kubernetes-incubator/metrics-server">metering-metrics</a> and <a class="reference external" href="https://github.com/kubernetes/heapster">Heapster</a></li>
+<li>Monitoring: <a class="reference external" href="https://prometheus.io/">Prometheus</a> and <a class="reference external" href="https://grafana.com/">Grafana</a></li>
+<li>Logging: <a class="reference external" href="https://fluentbit.io/">Fluent-Bit</a>, <a class="reference external" href="https://www.elastic.co/">Elasticsearch</a>, <a class="reference external" href="https://www.elastic.co/products/kibana">Kibana</a> and <a class="reference external" href="https://github.com/lmenezes/cerebro">Cerebro</a></li>
+<li>Backups: <a class="reference external" href="https://github.com/heptio/velero">Velero</a>, <a class="reference external" href="https://restic.net/">Restic</a> and <a class="reference external" href="https://www.minio.io/">Minio</a></li>
+<li>Cluster Load Balancing: <a class="reference external" href="https://metallb.universe.tf">MetalLB</a></li>
+<li>Controller Load Balancing: <a class="reference external" href="http://gobetween.io/">gobetween</a></li>
+<li>Package Manager: <a class="reference external" href="https://helm.sh/">Helm</a></li>
+<li>Dashboard: <a class="reference external" href="https://github.com/kubernetes/dashboard">Kubernetes Dashboard</a></li>
+<li>The communication between the components is encrypted</li>
+<li>RBAC is enabled</li>
+<li>The controllers and the workers have Floating/Virtual IPs</li>
+<li>Integrated Load Balancer for the API Servers</li>
+<li>Support for deployment to a HA cluster using ssh</li>
+<li>Only the changed files are deployed</li>
+<li>No <a class="reference external" href="https://www.docker.com/">Docker</a> installation required</li>
+<li>No cloud provider required</li>
+<li>Single binary without any dependencies</li>
+<li>Runs locally</li>
+<li>Nodes management from the command line</li>
+<li>Downloads all the used binaries (kubernetes, calico, ceph…) from the Internet</li>
+<li>Pull Images, Convert them to OCI and import them on the cluster for offline installations</li>
+<li>Uses systemd to install itself as a service on the remote machine</li>
+<li>Installs <a class="reference external" href="https://wordpress.com">WordPress</a> and <a class="reference external" href="https://www.mysql.com">MySQL</a> to test drive the installation</li>
 </ul>
 </div>
 
@@ -209,7 +204,7 @@
         <a href="quickstart.html" class="btn btn-neutral float-right" title="Quick Start" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="about.html" class="btn btn-neutral float-left" title="About" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="about.html" class="btn btn-neutral" title="About" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -218,19 +213,11 @@
 
   <div role="contentinfo">
     <p>
-        
         &copy; Copyright 2020, Mircea-Cristian Racasan
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -242,16 +229,27 @@
   </div>
   
 
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>
