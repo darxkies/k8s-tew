@@ -450,14 +450,26 @@ func (converter *imageConverter) writeOCIImageConfig() (hash string, size int, e
 	ociImageConfig.RootFS.Type = "layers"
 	ociImageConfig.History = []ociv1.History{}
 
-	for _, layer := range converter.layers {
+	for i, layer := range converter.layers {
 		timestamp, error := time.Parse(time.RFC3339, layer.History.Created)
 
 		if error != nil {
 			return hash, size, error
 		}
 
-		history := ociv1.History{Created: &timestamp, CreatedBy: strings.Join(layer.History.ContainerConfig.Cmd, " "), EmptyLayer: layer.EmptyLayer, Author: layer.History.Author}
+		var cmd []string
+
+		if layer.History.ContainerConfig != nil {
+			cmd = layer.History.ContainerConfig.Cmd
+
+		} else if layer.History.Config != nil {
+			cmd = layer.History.Config.Cmd
+
+		} else {
+			return hash, size, fmt.Errorf("No history config found in layer %d of image '%s'", i, converter.imageName)
+		}
+
+		history := ociv1.History{Created: &timestamp, CreatedBy: strings.Join(cmd, " "), EmptyLayer: layer.EmptyLayer, Author: layer.History.Author}
 
 		ociImageConfig.History = append(ociImageConfig.History, history)
 

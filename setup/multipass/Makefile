@@ -16,7 +16,7 @@ deploy:
 	k8s-tew configure --metallb-addresses=$(IP)/32
 	k8s-tew node-add -n single-node -i $(IP) -l controller,worker,storage
 	k8s-tew generate 
-	k8s-tew deploy --parallel --wait
+	k8s-tew deploy --parallel --wait=5
 
 refresh:
 	k8s-tew generate --parallel 
@@ -26,7 +26,7 @@ destroy:
 	-multipass delete $(NAME) -p
 
 create:
-	echo $(CLOUD_INIT) | multipass launch -n $(NAME) -c 4 -m 8G -d 40G --cloud-init - 18.04 
+	echo $(CLOUD_INIT) | multipass launch -n $(NAME) -c 4 -m 8G -d 40G --cloud-init - 20.04 
 
 start:
 	multipass start $(NAME)
