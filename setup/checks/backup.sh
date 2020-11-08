@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -x
-
 function wait_for_pod()
 {
 	echo "waiting for pod $1" 
@@ -54,6 +52,8 @@ function check_showcase()
 
 	write_to_pod $wordpress_pod_name $wordpress_content $wordpress_file
 	write_to_pod $mysql_pod_name $mysql_content $mysql_file
+
+	velero backup delete showcase --confirm
 
 	velero backup create showcase --include-namespaces showcase --wait
 
