@@ -192,8 +192,8 @@ func GenerateCA(rsaSize uint16, validityPeriod uint, commonName, organization, c
 	return createAndSaveCertificate(nil, template, int(rsaSize), certificateFilename, privateKeyFilename)
 }
 
-func GenerateClient(signer *CertificateAndPrivateKey, rsaSize uint16, validityPeriod uint, commonName, organization string, dnsNames []string, ipAddresses []string, certificateFilename, privateKeyFilename string, force bool) error {
-	if utils.FileExists(certificateFilename) && utils.FileExists(privateKeyFilename) && !force {
+func GenerateClient(signer *CertificateAndPrivateKey, rsaSize uint16, validityPeriod uint, commonName, organization string, dnsNames []string, ipAddresses []string, certificateFilename, privateKeyFilename string, update bool) error {
+	if utils.FileExists(certificateFilename) && utils.FileExists(privateKeyFilename) && !update {
 		utils.LogDebugFilename("Skipped", certificateFilename)
 		utils.LogDebugFilename("Skipped", privateKeyFilename)
 
@@ -221,6 +221,70 @@ func GenerateClient(signer *CertificateAndPrivateKey, rsaSize uint16, validityPe
 	}
 
 	template.DNSNames = dnsNames
+
+	stringSlicesAreEqual := func(firstSlice, secondSlice []string) bool {
+		if len(firstSlice) != len(secondSlice) {
+			return false
+		}
+
+		for _, first := range firstSlice {
+			found := false
+
+			for _, second := range secondSlice {
+				if second == first {
+					found = true
+					break
+				}
+			}
+
+			if !found {
+				return false
+			}
+		}
+
+		return true
+	}
+
+	ipSlicesAreEqual := func(firstSlice, secondSlice []net.IP) bool {
+		if len(firstSlice) != len(secondSlice) {
+			return false
+		}
+
+		for _, first := range firstSlice {
+			found := false
+
+			for _, second := range secondSlice {
+				if second.Equal(first) {
+					found = true
+					break
+				}
+			}
+
+			if !found {
+				return false
+			}
+		}
+
+		return true
+	}
+
+	if utils.FileExists(certificateFilename) && utils.FileExists(privateKeyFilename) {
+		oldCertificateAndPrivateKey, _error := LoadCertificateAndPrivateKey(certificateFilename, privateKeyFilename)
+
+		if _error == nil {
+			dnsMatch := stringSlicesAreEqual(oldCertificateAndPrivateKey.Certificate.DNSNames, template.DNSNames)
+			ipMatch := ipSlicesAreEqual(oldCertificateAndPrivateKey.Certificate.IPAddresses, template.IPAddresses)
+			organizationMatch := stringSlicesAreEqual(oldCertificateAndPrivateKey.Certificate.Subject.Organization, template.Subject.Organization)
+			commonNameMatch := oldCertificateAndPrivateKey.Certificate.Subject.CommonName == template.Subject.CommonName
+
+			if dnsMatch && ipMatch && organizationMatch && commonNameMatch {
+				utils.LogDebugFilename("Skipped", certificateFilename)
+				utils.LogDebugFilename("Skipped", privateKeyFilename)
+
+				return nil
+			}
+		}
+	}
 
 	return createAndSaveCertificate(signer, template, int(rsaSize), certificateFilename, privateKeyFilename)
 }
