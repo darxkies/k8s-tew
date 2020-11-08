@@ -170,6 +170,11 @@ func (deployment *NodeDeployment) getChangedFiles() map[string]string {
 	files := map[string]string{}
 
 	for fromFile, toFile := range deployment.getFiles() {
+		// Skip if the file does not exist locally
+		if !utils.FileExists(fromFile) {
+			continue
+		}
+
 		if remoteChecksum, ok := remoteFileChecksums[toFile]; ok {
 			localChecksum, error := deployment.md5sum(fromFile)
 
