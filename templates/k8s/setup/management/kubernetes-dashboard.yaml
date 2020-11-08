@@ -3,30 +3,13 @@ apiVersion: v1
 kind: Secret
 metadata:
   namespace: kube-system
-  name: kubernetes-dashboard
-  labels:
-    k8s-app: kubernetes-dashboard
-type: Opaque
----
-apiVersion: v1
-kind: Secret
-metadata:
-  namespace: kube-system
-  name: kubernetes-dashboard-certs
-  labels:
-    k8s-app: kubernetes-dashboard
-type: Opaque
----
-apiVersion: v1
-kind: Secret
-metadata:
-  namespace: kube-system
   name: kubernetes-dashboard-csrf
   labels:
     k8s-app: kubernetes-dashboard
 type: Opaque
 data:
   csrf: ""
+
 ---
 apiVersion: v1
 kind: Secret
@@ -36,6 +19,7 @@ metadata:
   labels:
     k8s-app: kubernetes-dashboard
 type: Opaque
+
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -43,19 +27,20 @@ metadata:
   namespace: kube-system
   name: kubernetes-dashboard
   labels:
-    app: kubernetes-dashboard
+    k8s-app: kubernetes-dashboard
+
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   namespace: kube-system
   name: kubernetes-dashboard
   labels:
-    app: kubernetes-dashboard
+    k8s-app: kubernetes-dashboard
 rules:
   - apiGroups: [""]
     resources: ["secrets"]
-    resourceNames: ["kubernetes-dashboard-key-holder", "kubernetes-dashboard-certs", "kubernetes-dashboard-csrf"]
+    resourceNames: ["kubernetes-dashboard-key-holder",  "kubernetes-dashboard-csrf"]
     verbs: ["get", "update", "delete"]
   - apiGroups: [""]
     resources: ["configmaps"]
@@ -69,6 +54,7 @@ rules:
     resources: ["services/proxy"]
     resourceNames: ["heapster", "http:heapster:", "https:heapster:", "dashboard-metrics-scraper", "http:dashboard-metrics-scraper"]
     verbs: ["get"]
+
 ---
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
@@ -80,14 +66,15 @@ rules:
   - apiGroups: ["metrics.k8s.io"]
     resources: ["pods", "nodes"]
     verbs: ["get", "list", "watch"]
+
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   namespace: kube-system
   name: kubernetes-dashboard
   labels:
-    app: kubernetes-dashboard
+    k8s-app: kubernetes-dashboard
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -96,11 +83,11 @@ subjects:
   - kind: ServiceAccount
     namespace: kube-system
     name: kubernetes-dashboard
+
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  namespace: kube-system
   name: kubernetes-dashboard
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -110,6 +97,7 @@ subjects:
   - kind: ServiceAccount
     namespace: kube-system
     name: kubernetes-dashboard
+
 ---
 apiVersion: v1
 kind: Service
@@ -117,15 +105,17 @@ metadata:
   namespace: kube-system
   name: kubernetes-dashboard
   labels:
-    app: kubernetes-dashboard
+    k8s-app: kubernetes-dashboard
 spec:
   type: NodePort
   ports:
-  - port: 443
-    targetPort: https
-    nodePort: {{.KubernetesDashboardPort}}
+    - port: 443
+      targetPort: 8443
+      nodePort: {{.KubernetesDashboardPort}}
+      protocol: TCP
   selector:
-    app: kubernetes-dashboard
+    k8s-app: kubernetes-dashboard
+
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -133,65 +123,74 @@ metadata:
   namespace: kube-system
   name: kubernetes-dashboard
   labels:
-    app: kubernetes-dashboard
+    k8s-app: kubernetes-dashboard
 spec:
+  replicas: 1
+  revisionHistoryLimit: 10
   selector:
     matchLabels:
-      app: kubernetes-dashboard
-  replicas: 1
-  strategy:
-    rollingUpdate:
-      maxSurge: 0
-      maxUnavailable: 1
-    type: RollingUpdate
+      k8s-app: kubernetes-dashboard
   template:
     metadata:
       labels:
-        app: kubernetes-dashboard
+        k8s-app: kubernetes-dashboard
+      annotations:
+        seccomp.security.alpha.kubernetes.io/pod: 'runtime/default'
     spec:
-      serviceAccountName: kubernetes-dashboard
       containers:
-      - name: kubernetes-dashboard
-        image: "{{.KubernetesDashboardImage}}"
-        args:
-          - --auto-generate-certificates
-        ports:
-        - name: https
-          containerPort: 8443
-          protocol: TCP
-        volumeMounts:
-        - name: kubernetes-dashboard-certs
-          mountPath: /certs
-        - mountPath: /tmp
-          name: tmp-volume
-        livenessProbe:
-          httpGet:
-            scheme: HTTPS
-            path: /
-            port: 8443
-          initialDelaySeconds: 30
-          timeoutSeconds: 30
-        resources:
-          limits:
-            cpu: 100m
-            memory: 50Mi
-          requests:
-            cpu: 100m
-            memory: 50Mi
+        - name: kubernetes-dashboard
+          image: "{{.KubernetesDashboardImage}}"
+          ports:
+            - containerPort: 8443
+              protocol: TCP
+          args:
+          - --tls-cert-file 
+          - kubernetes-dashboard.pem
+          - --tls-key-file 
+          - kubernetes-dashboard-key.pem
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp-volume
+            - name: certificates
+              mountPath: /etc/ssl/certs/ca.pem
+              subPath: ca.pem
+            - name: certificates
+              mountPath: /certs/kubernetes-dashboard.pem
+              subPath: kubernetes-dashboard.pem
+            - name: certificates
+              mountPath: /certs/kubernetes-dashboard-key.pem
+              subPath: kubernetes-dashboard-key.pem
+          livenessProbe:
+            httpGet:
+              scheme: HTTPS
+              path: /
+              port: 8443
+            initialDelaySeconds: 30
+            timeoutSeconds: 30
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsUser: 1001
+            runAsGroup: 2001
       volumes:
-      - name: kubernetes-dashboard-certs
-        secret:
-          secretName: kubernetes-dashboard
-      - name: tmp-volume
-        emptyDir: {}
+        - name: certificates
+          configMap:
+            name: kubernetes-dashboard-certificates
+        - name: tmp-volume
+          emptyDir: {}
+      serviceAccountName: kubernetes-dashboard
+
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   namespace: kube-system
   name: kubernetes-dashboard-settings
+  labels:
+    k8s-app: kubernetes-dashboard
 data:
-  _global: '{"clusterName":"{{.ClusterName}}","itemsPerPage":50,"autoRefreshTimeInterval":5}'
+  _global: '{"clusterName":"{{.ClusterName}}","itemsPerPage":50,"labelsLimit":0,"logsAutoRefreshTimeInterval":2,"resourceAutoRefreshTimeInterval":5,"disableAccessDeniedNotifications":false}'
+
 ---
 kind: Service
 apiVersion: v1
@@ -204,8 +203,10 @@ spec:
   ports:
     - port: 8000
       targetPort: 8000
+      protocol: TCP
   selector:
     k8s-app: dashboard-metrics-scraper
+
 ---
 kind: Deployment
 apiVersion: apps/v1
@@ -224,6 +225,8 @@ spec:
     metadata:
       labels:
         k8s-app: dashboard-metrics-scraper
+      annotations:
+        seccomp.security.alpha.kubernetes.io/pod: 'runtime/default'
     spec:
       containers:
         - name: dashboard-metrics-scraper
@@ -241,6 +244,11 @@ spec:
           volumeMounts:
           - mountPath: /tmp
             name: tmp-volume
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsUser: 1001
+            runAsGroup: 2001
       serviceAccountName: kubernetes-dashboard
       volumes:
         - name: tmp-volume

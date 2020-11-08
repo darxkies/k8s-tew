@@ -328,7 +328,7 @@ func MoveFile(sourceFilename, targetFilename string) error {
 
 		defer sourceHandle.Close()
 
-		targetHandle, error := os.OpenFile(targetFilename, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0555)
+		targetHandle, error := os.OpenFile(targetFilename, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0755)
 		if error != nil {
 			return errors.Wrapf(error, "Could not open target file %s", targetFilename)
 		}

@@ -55,8 +55,8 @@ const VersionGrafana = "docker.io/grafana/grafana:7.2.2"
 const VersionPrometheus = "quay.io/prometheus/prometheus:v2.22.0"
 const VersionNodeExporter = "quay.io/prometheus/node-exporter:v1.0.1"
 const VersionAlertManager = "quay.io/prometheus/alertmanager:v0.21.0"
-const VersionMysql = "docker.io/library/mysql:8.0.19"
-const VersionWordpress = "docker.io/library/wordpress:5.4-apache"
+const VersionMysql = "docker.io/library/mysql:8.0.22"
+const VersionWordpress = "docker.io/library/wordpress:5.5.3-apache"
 
 // Settings
 const ProjectTitle = "Kubernetes - The Easier Way"
@@ -96,6 +96,7 @@ const IngressDomain = "k8s-tew.net"
 const IngressSubdomainWordpress = "wordpress"
 const AdminUserName = "admin-user"
 const AdminUserNamespace = "kube-system"
+const KubernetesDashboardNamespace = "kube-system"
 
 // Ports
 const PortVipRaftController uint16 = 16277
@@ -283,6 +284,8 @@ const PemCeph = "ceph.pem"
 const PemCephKey = "ceph-key.pem"
 const PemPrometheus = "prometheus.pem"
 const PemPrometheusKey = "prometheus-key.pem"
+const PemKubernetesDashboard = "kubernetes-dashboard.pem"
+const PemKubernetesDashboardKey = "kubernetes-dashboard-key.pem"
 
 // Kubeconfig
 const KubeconfigAdmin = "admin.kubeconfig"
@@ -323,6 +326,7 @@ const K8sMetalLBSetup = "metallb-setup.yaml"
 const K8sEfkSetup = "efk-setup.yaml"
 const K8sVeleroSetup = "velero-setup.yaml"
 const K8sKubernetesDashboardSetup = "kubernetes-dashboard-setup.yaml"
+const K8sKubernetesDashboardCertificates = "kubernetes-dashboard-certificates.yaml"
 const K8sHelmSetup = "helm-setup.yaml"
 const K8sCertManagerSetup = "cert-manager-setup.yaml"
 const K8sNginxIngressSetup = "nginx-ingress-setup.yaml"
@@ -402,6 +406,7 @@ const CnMinio = "minio"
 const CnGrafana = "grafana"
 const CnCeph = "ceph"
 const CnPrometheus = "prometheus"
+const CnKubernetesDashboard = "kubernetes-dashboard"
 
 // Templates
 const TemplateContainerdToml = "k8s/cri/containerd.toml"
@@ -472,3 +477,4 @@ const MinioCertificates = "minio-certificates"
 const GrafanaCertificates = "grafana-certificates"
 const CephCertificates = "ceph-certificates"
 const PrometheusCertificates = "prometheus-certificates"
+const KubernetesDashboardCertificates = "kubernetes-dashboard-certificates"

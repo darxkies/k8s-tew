@@ -387,6 +387,7 @@ spec:
     - name: https-webhook
       port: 443
       targetPort: webhook
+      protocol: TCP
   selector:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/component: controller

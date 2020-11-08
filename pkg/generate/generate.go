@@ -84,6 +84,8 @@ func NewGenerator(config *config.InternalConfig) *Generator {
 		generator.generateVeleroSetup,
 		// Generate Kubernetes dashboard setup file
 		generator.generateKubernetesDashboardSetup,
+		// Generate Kubernetes Dashboard certificates config map file
+		generator.generateKubernetesDashboardCertificatesConfigMap,
 		// Generate cert-manager setup file
 		generator.generateCertManagerSetup,
 		// Generate Nginx ingress setup file
@@ -746,6 +748,11 @@ func (generator *Generator) generateCertificates() error {
 		return error
 	}
 
+	// Generate Kubernetes Dashboard certificate
+	if error := pki.GenerateClient(generator.ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, utils.CnKubernetesDashboard, "kubernetes-dashboard", []string{}, []string{}, generator.config.GetFullLocalAssetFilename(utils.PemKubernetesDashboard), generator.config.GetFullLocalAssetFilename(utils.PemKubernetesDashboardKey), false); error != nil {
+		return error
+	}
+
 	return nil
 }
 
@@ -1170,6 +1177,35 @@ func (generator *Generator) generateKubeStateMetricsSetup() error {
 		KubeStateMetricsImage: generator.config.Config.Versions.KubeStateMetrics,
 		KubeStateMetricsCount: generator.config.Config.KubeStateMetricsCount,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sKubeStateMetricsSetup), true, false, 0644)
+}
+
+func (generator *Generator) generateKubernetesDashboardCertificatesConfigMap() error {
+	ca, error := utils.ReadFile(generator.config.GetFullLocalAssetFilename(utils.PemCa))
+	if error != nil {
+		return error
+	}
+
+	kubernetesDashboard, error := utils.ReadFile(generator.config.GetFullLocalAssetFilename(utils.PemKubernetesDashboard))
+	if error != nil {
+		return error
+	}
+
+	kubernetesDashboardKey, error := utils.ReadFile(generator.config.GetFullLocalAssetFilename(utils.PemKubernetesDashboardKey))
+	if error != nil {
+		return error
+	}
+
+	data := map[string]string{"ca.pem": ca, "kubernetes-dashboard.pem": kubernetesDashboard, "kubernetes-dashboard-key.pem": kubernetesDashboardKey}
+
+	return utils.ApplyTemplateAndSave(utils.KubernetesDashboardCertificates, utils.TemplateConfigMap, struct {
+		Namespace string
+		Name      string
+		Data      map[string]string
+	}{
+		Namespace: utils.KubernetesDashboardNamespace,
+		Name:      utils.KubernetesDashboardCertificates,
+		Data:      data,
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sKubernetesDashboardCertificates), false, false, 0644)
 }
 
 func (generator *Generator) generatePrometheusCertificatesConfigMap() error {

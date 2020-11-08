@@ -25739,6 +25739,7 @@ spec:
   - name: https
     port: 443
     targetPort: 10250
+    protocol: TCP
   selector:
     app.kubernetes.io/name: webhook
 ---
@@ -25854,6 +25855,7 @@ spec:
           ports:
           - name: https
             containerPort: 10250
+            protocol: TCP
           livenessProbe:
             httpGet:
               path: /livez

@@ -16,6 +16,8 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	v1 "k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/api/meta"
+
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -165,34 +167,6 @@ func (k8s *K8S) TaintNode(name string, nodeData *config.Node) error {
 		return errors.Wrapf(error, "Could not update node '%s'", name)
 	}
 
-	/*
-		for {
-			noSchedule := false
-
-			for _, taint := range node.Spec.Taints {
-				if taint.Key == utils.NodeNotReady && taint.Effect == v1.TaintEffectNoSchedule {
-					noSchedule = true
-
-					break
-				}
-			}
-
-			spew.Config.DisableMethods = true
-			spew.Dump(node)
-			spew.Dump(noSchedule)
-
-			if !noSchedule {
-				break
-			}
-
-			// Get Node
-			node, error = clientset.CoreV1().Nodes().Get(context, name, metav1.GetOptions{})
-			if error != nil {
-				return errors.Wrapf(error, "Could not get Kubernetes node '%s'", name)
-			}
-		}
-	*/
-
 	return nil
 }
 
@@ -272,19 +246,33 @@ func (k8s *K8S) Apply(manifest string) error {
 			FieldManager: "kubectl",
 		}
 
+		isAPIService := false
+
+		if kind == "APIService" {
+			isAPIService = true
+		}
+
 		helper := resource.NewHelper(info.Client, info.Mapping)
-		object, error = helper.Patch(
-			info.Namespace,
-			info.Name,
-			types.ApplyPatchType,
-			data,
-			&options,
-		)
-		if error == nil {
+
+		if isAPIService == false {
+			object, error = helper.Patch(
+				info.Namespace,
+				info.Name,
+				types.ApplyPatchType,
+				data,
+				&options,
+			)
+		}
+
+		if isAPIService == false && error == nil {
 			log.WithFields(log.Fields{"namespace": info.Namespace, "object": info.Name, "kind": kind, "index": i, "count": count}).Debug("Object updated")
 
 		} else {
-			existingObject, error := resource.NewHelper(info.Client, info.Mapping).Get(info.Namespace, info.Name, true)
+			if error != nil {
+				log.WithFields(log.Fields{"namespace": info.Namespace, "object": info.Name, "kind": kind, "index": i, "count": count, "error": error}).Debug("Patch failed")
+			}
+
+			existingObject, error := resource.NewHelper(info.Client, info.Mapping).Get(info.Namespace, info.Name)
 			if error != nil {
 				object, error = resource.NewHelper(info.Client, info.Mapping).Create(info.Namespace, true, info.Object)
 				if error != nil {
@@ -294,6 +282,12 @@ func (k8s *K8S) Apply(manifest string) error {
 				log.WithFields(log.Fields{"namespace": info.Namespace, "object": info.Name, "kind": kind, "index": i, "count": count}).Debug("Object created")
 
 			} else {
+				accessor, error := meta.Accessor(existingObject)
+				if error != nil {
+					return errors.Wrapf(error, "Could not marshal existing '%s/%s'", info.Namespace, info.Name)
+				}
+				accessor.SetResourceVersion("")
+
 				existingJson, error := json.Marshal(existingObject)
 				if error != nil {
 					return errors.Wrapf(error, "Could not marshal existing '%s/%s'", info.Namespace, info.Name)

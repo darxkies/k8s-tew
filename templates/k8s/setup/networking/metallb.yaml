@@ -152,6 +152,7 @@ spec:
         ports:
         - name: monitoring
           containerPort: 7472
+          protocol: TCP
         resources:
           limits:
             cpu: 100m
@@ -205,6 +206,7 @@ spec:
         ports:
         - name: monitoring
           containerPort: 7472
+          protocol: TCP
         resources:
           limits:
             cpu: 100m

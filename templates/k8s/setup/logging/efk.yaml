@@ -14,7 +14,7 @@ metadata:
   namespace: logging
 
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: fluent-bit
@@ -31,7 +31,7 @@ rules:
 
 ---
 kind: ClusterRoleBinding
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: fluent-bit
 roleRef:
@@ -613,9 +613,10 @@ metadata:
 spec:
   selector:
     app: elasticsearch
-  clusterIP: None
   ports:
     - port: 9200
       name: rest
+      protocol: TCP
     - port: 9300
       name: inter-node
+      protocol: TCP

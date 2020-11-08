@@ -173,8 +173,10 @@ spec:
         ports:
         - containerPort: 8080
           name: http-metrics
+          protocol: TCP
         - containerPort: 8081
           name: telemetry
+          protocol: TCP
         readinessProbe:
           httpGet:
             path: /
@@ -200,8 +202,10 @@ spec:
   - name: http-metrics
     port: 8080
     targetPort: http-metrics
+    protocol: TCP
   - name: telemetry
     port: 8081
     targetPort: telemetry
+    protocol: TCP
   selector:
     app.kubernetes.io/name: kube-state-metrics

@@ -33300,10 +33300,7 @@ data:
       "refresh": "1m",
       "schemaVersion": 26,
       "style": "dark",
-      "tags": [
-        "ceph",
-        "cluster"
-      ],
+      "tags": [ ],
       "templating": {
         "list": [
           {
@@ -33404,7 +33401,7 @@ data:
             "current": {},
             "datasource": "prometheus",
             "definition": "",
-            "hide": 0,
+            "hide": 2,
             "includeAll": false,
             "label": "cluster",
             "multi": false,

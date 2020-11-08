@@ -115,8 +115,10 @@ spec:
           ports:
             - containerPort: 9093
               name: http
+              protocol: TCP
             - containerPort: 6783
               name: mesh
+              protocol: TCP
           readinessProbe:
             httpGet:
               path: /#/status

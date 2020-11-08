@@ -246,6 +246,7 @@ spec:
         - --debug
         ports:
         - containerPort: 6800
+          protocol: TCP
         env:
         - name: K8S_TEW_BASE_DIRECTORY
           value: "/"
@@ -340,6 +341,7 @@ spec:
         ports:
         - containerPort: 15728
           name: rgw
+          protocol: TCP
         env:
         - name: K8S_TEW_BASE_DIRECTORY
           value: "/"

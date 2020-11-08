@@ -237,6 +237,8 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.PemCephKey, Labels{}, "", utils.DirectoryCertificates)
 	config.addAssetFile(utils.PemPrometheus, Labels{}, "", utils.DirectoryCertificates)
 	config.addAssetFile(utils.PemPrometheusKey, Labels{}, "", utils.DirectoryCertificates)
+	config.addAssetFile(utils.PemKubernetesDashboard, Labels{}, "", utils.DirectoryCertificates)
+	config.addAssetFile(utils.PemKubernetesDashboardKey, Labels{}, "", utils.DirectoryCertificates)
 
 	// Kubeconfig
 	config.addAssetFile(utils.KubeconfigAdmin, Labels{utils.NodeController}, "", utils.DirectoryK8sKubeConfig)
@@ -269,6 +271,7 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.K8sEfkSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sVeleroSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sKubernetesDashboardSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
+	config.addAssetFile(utils.K8sKubernetesDashboardCertificates, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sHelmSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sCertManagerSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sNginxIngressSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
@@ -371,6 +374,7 @@ func (config *InternalConfig) registerCommands() {
 	config.addManifest("ceph-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.CephSetup))
 	config.addManifest("ceph-csi", Labels{utils.NodeBootstrapper}, Features{utils.FeatureStorage}, OS{}, config.GetFullLocalAssetFilename(utils.CephCsi))
 	config.addManifest("kubernetes-dashboard-setup", Labels{utils.NodeBootstrapper}, Features{}, OS{}, config.GetFullLocalAssetFilename(utils.K8sKubernetesDashboardSetup))
+	config.addManifest("kubernetes-dashboard-certificates", Labels{utils.NodeBootstrapper}, Features{}, OS{}, config.GetFullLocalAssetFilename(utils.K8sKubernetesDashboardCertificates))
 	config.addManifest("cert-manager-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureIngress}, OS{}, config.GetFullLocalAssetFilename(utils.K8sCertManagerSetup))
 	config.addManifest("nginx-ingress-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureIngress}, OS{}, config.GetFullLocalAssetFilename(utils.K8sNginxIngressSetup))
 	config.addManifest("letsencrypt-cluster-issuer-setup", Labels{utils.NodeBootstrapper}, Features{utils.FeatureIngress}, OS{}, config.GetFullLocalAssetFilename(utils.LetsencryptClusterIssuer))

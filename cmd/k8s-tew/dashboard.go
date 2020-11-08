@@ -45,7 +45,7 @@ func addCommand(subCommandName, description string, getData getData) *cobra.Comm
 			}
 
 			if quiet {
-				fmt.Printf("%s", password)
+				fmt.Printf("%s %s %s", username, password, url)
 
 			} else {
 				fields := log.Fields{"url": url}
@@ -71,7 +71,7 @@ func addCommand(subCommandName, description string, getData getData) *cobra.Comm
 		},
 	}
 
-	cmd.Flags().BoolVarP(&quiet, "quiet", "q", false, "Display only password/secret")
+	cmd.Flags().BoolVarP(&quiet, "quiet", "q", false, "Display username, password/secret && endpoint separated by space")
 	cmd.Flags().BoolVarP(&openWebBrowser, "open-web-browser", "o", false, "Open web browser")
 
 	return cmd

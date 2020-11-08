@@ -9,15 +9,19 @@ windows:
         - make watch-and-compile
   - shell:
   - sandbox-command:
-      - cd setup/sandbox/vbox-single
+      - cd setup/sandbox/multipass
   - sandbox-environment:
-      - cd setup/sandbox/vbox-single
+      - cd setup/sandbox/multipass
       - source <(k8s-tew environment)
   - k9s:
-      - cd setup/sandbox/vbox-single
+      - cd setup/sandbox/multipass
       - source <(k8s-tew environment)
       - k9s
   - documentation-update:
       - make watch-and-update-documentation 
   - documentation-server:
       - (cd docs/_build/html && python -m SimpleHTTPServer 8080)
+  - port-forwarding-80:
+      - make forward-80
+  - port-forwarding-443:
+      - make forward-443
