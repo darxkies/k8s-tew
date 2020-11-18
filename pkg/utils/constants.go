@@ -2,7 +2,7 @@ package utils
 
 // Versions
 const VersionConfig = "2.4.0"
-const VersionK8s = "v1.19.3"
+const VersionK8s = "v1.19.4"
 const VersionKubeAPIServer = "k8s.gcr.io/kube-apiserver:" + VersionK8s
 const VersionKubeControllerManager = "k8s.gcr.io/kube-controller-manager:" + VersionK8s
 const VersionKubeScheduler = "k8s.gcr.io/kube-scheduler:" + VersionK8s

@@ -21,16 +21,17 @@ import (
 )
 
 type NodeDeployment struct {
-	identityFile string
-	name         string
-	node         *config.Node
-	config       *config.InternalConfig
-	sshLimiter   *utils.Limiter
-	parallel     bool
+	identityFile      string
+	name              string
+	node              *config.Node
+	config            *config.InternalConfig
+	sshLimiter        *utils.Limiter
+	parallel          bool
+	checksumsFilename string
 }
 
 func NewNodeDeployment(identityFile string, name string, node *config.Node, config *config.InternalConfig, parallel bool) *NodeDeployment {
-	return &NodeDeployment{identityFile: identityFile, name: name, node: node, config: config, sshLimiter: utils.NewLimiter(utils.ConcurrentSshConnectionsLimit), parallel: parallel}
+	return &NodeDeployment{identityFile: identityFile, name: name, node: node, config: config, sshLimiter: utils.NewLimiter(utils.ConcurrentSshConnectionsLimit), parallel: parallel, checksumsFilename: path.Join(config.GetFullTargetAssetDirectory(utils.DirectoryDynamicData), "checksums")}
 }
 
 func (deployment *NodeDeployment) Steps(skipRestart bool) (result int) {
@@ -54,6 +55,9 @@ func (deployment *NodeDeployment) Steps(skipRestart bool) (result int) {
 		// Start service
 		result++
 	}
+
+	// Update checksums
+	result++
 
 	return
 }
@@ -131,6 +135,11 @@ func (deployment *NodeDeployment) getFiles() map[string]string {
 		fromFile := deployment.config.GetFullLocalAssetFilename(name)
 		toFile := deployment.config.GetFullTargetAssetFilename(name)
 
+		// Skip if the file does not exist locally
+		if !utils.FileExists(fromFile) {
+			continue
+		}
+
 		files[fromFile] = toFile
 	}
 
@@ -139,11 +148,13 @@ func (deployment *NodeDeployment) getFiles() map[string]string {
 
 func (deployment *NodeDeployment) getRemoteFileChecksums() map[string]string {
 	// Calculate checksums of remote files
-	checksumCommand := "md5sum"
+	checksumCommand := "for i in"
 
 	for _, toFile := range deployment.getFiles() {
-		checksumCommand += " " + toFile
+		checksumCommand += fmt.Sprintf(" '%s'", toFile)
 	}
+
+	checksumCommand += fmt.Sprintf("; do if [ -f $i ]; then if [ $i -ot '%s' ]; then grep -e \" $i$\" '%s'; else md5sum $i; fi; fi; done", deployment.checksumsFilename, deployment.checksumsFilename)
 
 	output, _ := deployment.Execute("get-checksums", checksumCommand)
 
@@ -211,6 +222,8 @@ func (deployment *NodeDeployment) UploadFiles(forceUpload bool, skipRestart bool
 
 	tasks := utils.Tasks{}
 
+	filesList := ""
+
 	for name, file := range deployment.config.Config.Assets.Files {
 		fromFile := deployment.config.GetFullLocalAssetFilename(name)
 		toFile := deployment.config.GetFullTargetAssetFilename(name)
@@ -226,6 +239,12 @@ func (deployment *NodeDeployment) UploadFiles(forceUpload bool, skipRestart bool
 
 			continue
 		}
+
+		if len(filesList) >= 0 {
+			filesList += " "
+		}
+
+		filesList += fmt.Sprintf("'%s'", toFile)
 
 		tasks = append(tasks, func() error {
 			defer utils.IncreaseProgressStep()
@@ -274,6 +293,20 @@ func (deployment *NodeDeployment) UploadFiles(forceUpload bool, skipRestart bool
 	if len(files) > 0 && skipRestart == false {
 		// Registrate and start service
 		_, _error = deployment.Execute("start-service", fmt.Sprintf("systemctl daemon-reload && systemctl enable %s && systemctl start %s", utils.ServiceName, utils.ServiceName))
+	}
+
+	utils.IncreaseProgressStep()
+
+	if len(filesList) > 0 {
+		command := fmt.Sprintf("for i in %s; do if [ -f '%s' ]; then grep -ve \" $i$\" '%s' > /tmp/checksums; mv /tmp/checksums %s; fi; md5sum $i >> '%s'; done", filesList, deployment.checksumsFilename, deployment.checksumsFilename, deployment.checksumsFilename, deployment.checksumsFilename)
+
+		log.Println(command)
+
+		_, _error = deployment.Execute("update-checkups", command)
+
+		if _error != nil {
+			return _error
+		}
 	}
 
 	utils.IncreaseProgressStep()
@@ -327,13 +360,15 @@ func (deployment *NodeDeployment) importImage(image string, filename string) err
 
 	tokens := strings.Split(image, ":")
 
+	baseName := image
+
 	// Remove tag
 	if len(tokens) == 2 {
-		image = tokens[0]
+		baseName = tokens[0]
 	}
 
 	ctr := deployment.config.GetFullTargetAssetFilename(utils.BinaryCtr)
-	command := fmt.Sprintf("CONTAINERD_NAMESPACE=%s %s i import --digests --base-name %s %s", utils.ContainerdKubernetesNamespace, ctr, image, filename)
+	command := fmt.Sprintf("%s i ls -q | grep -e \"^%s$\"; CONTAINERD_NAMESPACE=%s [ $? -eq 0 ] || %s i import --digests --base-name %s %s", ctr, image, utils.ContainerdKubernetesNamespace, ctr, baseName, filename)
 
 	if _, error := deployment.Execute(fmt.Sprintf("import-image-%s", image), command); error != nil {
 		return fmt.Errorf("Failed to import image %s (%s)", image, error.Error())

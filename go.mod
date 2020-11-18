@@ -37,7 +37,7 @@ require (
 	github.com/gobuffalo/gogen v0.0.0-20190315121717-8f38393713f5 // indirect
 	github.com/gobuffalo/mapi v1.0.1 // indirect
 	github.com/gobuffalo/packr v1.30.1
-	github.com/gobuffalo/packr/v2 v2.8.0 // indirect
+	github.com/gobuffalo/packr/v2 v2.8.1 // indirect
 	github.com/gobuffalo/syncx v0.0.0-20190224160051-33c29581e754 // indirect
 	github.com/gogo/googleapis v1.3.2
 	github.com/gogo/protobuf v1.3.1
@@ -73,10 +73,10 @@ require (
 	github.com/urfave/cli v1.22.4
 	github.com/wille/osutil v0.0.0-20190526221756-e91b8656e290
 	go.etcd.io/bbolt v1.3.5
-	golang.org/x/crypto v0.0.0-20201016220609-9e8e0b390897
+	golang.org/x/crypto v0.0.0-20201117144127-c1f2f97bffc9
 	golang.org/x/net v0.0.0-20200707034311-ab3426394381
 	golang.org/x/sync v0.0.0-20201020160332-67f06af15bc9
-	golang.org/x/sys v0.0.0-20201107080550-4d91cf3a1aaf
+	golang.org/x/sys v0.0.0-20201117222635-ba5294a509c7
 	google.golang.org/grpc v1.27.0
 	gopkg.in/ini.v1 v1.58.0
 	gopkg.in/yaml.v2 v2.2.8

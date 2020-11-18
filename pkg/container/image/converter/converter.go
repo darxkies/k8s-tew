@@ -349,7 +349,12 @@ func (converter *imageConverter) process() error {
 		return error
 	}
 
-	if error := converter.writeOCIIndex(hashManifest, size); error != nil {
+	digest, error := digest.Parse(hashManifest)
+	if error != nil {
+		return error
+	}
+
+	if error := converter.writeOCIIndex(digest, size); error != nil {
 		return error
 	}
 
@@ -376,17 +381,12 @@ func (converter *imageConverter) writeOCILayout() error {
 	return converter.storage.WriteFile(filename, data)
 }
 
-func (converter *imageConverter) writeOCIIndex(hash string, size int) error {
+func (converter *imageConverter) writeOCIIndex(_digest digest.Digest, size int) error {
 	ociIndex := ociv1.Index{}
 	ociIndex.SchemaVersion = 2
 
-	digest, error := digest.Parse(hash)
-	if error != nil {
-		return error
-	}
-
 	ociManifest := ociv1.Descriptor{}
-	ociManifest.Digest = digest
+	ociManifest.Digest = _digest
 	ociManifest.MediaType = ociv1.MediaTypeImageManifest
 	ociManifest.Size = int64(size)
 	ociManifest.Annotations = map[string]string{
