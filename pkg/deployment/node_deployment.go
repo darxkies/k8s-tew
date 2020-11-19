@@ -2,10 +2,7 @@ package deployment
 
 import (
 	"bytes"
-	"crypto/md5"
-	"encoding/hex"
 	"fmt"
-	"io"
 	"io/ioutil"
 	"os"
 	"path"
@@ -21,17 +18,18 @@ import (
 )
 
 type NodeDeployment struct {
-	identityFile      string
-	name              string
-	node              *config.Node
-	config            *config.InternalConfig
-	sshLimiter        *utils.Limiter
-	parallel          bool
-	checksumsFilename string
+	identityFile            string
+	name                    string
+	node                    *config.Node
+	config                  *config.InternalConfig
+	sshLimiter              *utils.Limiter
+	parallel                bool
+	targetChecksumsFilename string
+	localChecksums          *utils.Checksums
 }
 
 func NewNodeDeployment(identityFile string, name string, node *config.Node, config *config.InternalConfig, parallel bool) *NodeDeployment {
-	return &NodeDeployment{identityFile: identityFile, name: name, node: node, config: config, sshLimiter: utils.NewLimiter(utils.ConcurrentSshConnectionsLimit), parallel: parallel, checksumsFilename: path.Join(config.GetFullTargetAssetDirectory(utils.DirectoryDynamicData), "checksums")}
+	return &NodeDeployment{identityFile: identityFile, name: name, node: node, config: config, sshLimiter: utils.NewLimiter(utils.ConcurrentSshConnectionsLimit), parallel: parallel, targetChecksumsFilename: path.Join(config.GetFullTargetAssetDirectory(utils.DirectoryDynamicData), "checksums"), localChecksums: utils.NewChecksums(path.Join(config.GetFullLocalAssetDirectory(utils.DirectoryDynamicData), "checksums"), config.BaseDirectory)}
 }
 
 func (deployment *NodeDeployment) Steps(skipRestart bool) (result int) {
@@ -63,23 +61,7 @@ func (deployment *NodeDeployment) Steps(skipRestart bool) (result int) {
 }
 
 func (deployment *NodeDeployment) md5sum(filename string) (result string, error error) {
-	file, error := os.Open(filename)
-
-	if error != nil {
-		return
-	}
-
-	defer file.Close()
-
-	hash := md5.New()
-
-	if _, error = io.Copy(hash, file); error != nil {
-		return
-	}
-
-	result = hex.EncodeToString(hash.Sum(nil)[:16])
-
-	return
+	return deployment.localChecksums.GetChecksum(filename)
 }
 
 func (deployment *NodeDeployment) createDirectories() error {
@@ -154,7 +136,7 @@ func (deployment *NodeDeployment) getRemoteFileChecksums() map[string]string {
 		checksumCommand += fmt.Sprintf(" '%s'", toFile)
 	}
 
-	checksumCommand += fmt.Sprintf("; do if [ -f $i ]; then if [ $i -ot '%s' ]; then grep -e \" $i$\" '%s'; else md5sum $i; fi; fi; done", deployment.checksumsFilename, deployment.checksumsFilename)
+	checksumCommand += fmt.Sprintf("; do if [ -f $i ]; then if [ $i -ot '%s' ]; then grep -e \" $i$\" '%s'; else md5sum $i; fi; fi; done", deployment.targetChecksumsFilename, deployment.targetChecksumsFilename)
 
 	output, _ := deployment.Execute("get-checksums", checksumCommand)
 
@@ -298,9 +280,7 @@ func (deployment *NodeDeployment) UploadFiles(forceUpload bool, skipRestart bool
 	utils.IncreaseProgressStep()
 
 	if len(filesList) > 0 {
-		command := fmt.Sprintf("for i in %s; do if [ -f '%s' ]; then grep -ve \" $i$\" '%s' > /tmp/checksums; mv /tmp/checksums %s; fi; md5sum $i >> '%s'; done", filesList, deployment.checksumsFilename, deployment.checksumsFilename, deployment.checksumsFilename, deployment.checksumsFilename)
-
-		log.Println(command)
+		command := fmt.Sprintf("for i in %s; do if [ -f '%s' ]; then grep -ve \" $i$\" '%s' > /tmp/checksums; mv /tmp/checksums %s; fi; md5sum $i >> '%s'; done", filesList, deployment.targetChecksumsFilename, deployment.targetChecksumsFilename, deployment.targetChecksumsFilename, deployment.targetChecksumsFilename)
 
 		_, _error = deployment.Execute("update-checkups", command)
 

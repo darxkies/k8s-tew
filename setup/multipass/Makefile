@@ -1,9 +1,9 @@
 .EXPORT_ALL_VARIABLES:
 
 NAME=single-node
-IP=$(shell multipass info $(NAME) | grep IPv4 | sed -e "s/IPv4://" | xargs)
+IP=$(shell multipass info $(NAME) 2> /dev/null | grep IPv4 | sed -e "s/IPv4://" | xargs)
 SSH_KEY=$(shell cat ~/.ssh/id_rsa.pub)
-CLOUD_INIT="disable_root: 0\nssh_authorized_keys:\\n  - $(SSH_KEY)" 
+CLOUD_INIT="disable_root: 0\\nssh_authorized_keys:\\n  - $(SSH_KEY)" 
 
 run: destroy create deploy 
 
