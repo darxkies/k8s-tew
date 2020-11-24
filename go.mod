@@ -73,7 +73,7 @@ require (
 	github.com/urfave/cli v1.22.4
 	github.com/wille/osutil v0.0.0-20190526221756-e91b8656e290
 	go.etcd.io/bbolt v1.3.5
-	golang.org/x/crypto v0.0.0-20201117144127-c1f2f97bffc9
+	golang.org/x/crypto v0.0.0-20201124201722-c8d3bf9c5392
 	golang.org/x/net v0.0.0-20200707034311-ab3426394381
 	golang.org/x/sync v0.0.0-20201020160332-67f06af15bc9
 	golang.org/x/sys v0.0.0-20201119102817-f84b799fce68

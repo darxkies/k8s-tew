@@ -704,11 +704,9 @@ func (config *InternalConfig) ApplyTemplate(label string, value string) (string,
 }
 
 func (config *InternalConfig) GetAPIServerIP() (string, error) {
-	/*
-		if len(config.Config.ControllerVirtualIP) > 0 {
-			return config.Config.ControllerVirtualIP, nil
-		}
-	*/
+	if len(config.Config.ControllerVirtualIP) > 0 {
+		return config.Config.ControllerVirtualIP, nil
+	}
 
 	for _, node := range config.Config.Nodes {
 		if node.IsController() {
