@@ -2493,7 +2493,7 @@ spec:
       clientConfig:
         service:
           name: cert-manager-webhook
-          namespace: cert-manager
+          namespace: networking
           path: /convert
       conversionReviewVersions:
       - v1
@@ -8518,7 +8518,7 @@ spec:
       clientConfig:
         service:
           name: cert-manager-webhook
-          namespace: cert-manager
+          namespace: networking
           path: /convert
       conversionReviewVersions:
       - v1
@@ -16447,7 +16447,7 @@ spec:
       clientConfig:
         service:
           name: cert-manager-webhook
-          namespace: cert-manager
+          namespace: networking
           path: /convert
       conversionReviewVersions:
       - v1
