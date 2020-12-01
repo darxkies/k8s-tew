@@ -28,11 +28,9 @@ spec:
     - --etcd-servers={{.EtcdServers}}
     - --event-ttl=1h
     - --encryption-provider-config={{.EncryptionConfig}}
-    - --feature-gates=VolumeSnapshotDataSource=true
     - --kubelet-certificate-authority={{.PemCA}}
     - --kubelet-client-certificate={{.PemKubernetes}}
     - --kubelet-client-key={{.PemKubernetesKey}}
-    - --kubelet-https=true
     - --proxy-client-cert-file={{.PemAggregator}}
     - --proxy-client-key-file={{.PemAggregatorKey}}
     - --requestheader-allowed-names=aggregator,admin,system:kube-controller-manager,system:kube-controller-manager,system:kube-scheduler,system:node:single-node
@@ -42,7 +40,10 @@ spec:
     - --requestheader-username-headers=X-Remote-User
     - --runtime-config=api/all=true
     - --secure-port={{.APIServerPort}}
+    - --service-account-signing-key-file={{.PemServiceAccountKey}}
     - --service-account-key-file={{.PemServiceAccount}}
+    - --service-account-issuer=kubernetes
+    - --service-account-api-audiences=api
     - --service-cluster-ip-range={{.ClusterIPRange}}
     - --service-node-port-range=30000-32767
     - --tls-cert-file={{.PemKubernetes}}
@@ -78,6 +79,9 @@ spec:
     - name: pem-service-account
       mountPath: {{.PemServiceAccount}}
       readOnly: true
+    - name: pem-service-account-key
+      mountPath: {{.PemServiceAccountKey}}
+      readOnly: true
     - name: encryption-config
       mountPath: {{.EncryptionConfig}}
       readOnly: true
@@ -108,6 +112,10 @@ spec:
     hostPath:
       type: File
       path: {{.PemServiceAccount}}
+  - name: pem-service-account-key
+    hostPath:
+      type: File
+      path: {{.PemServiceAccountKey}}
   - name: encryption-config
     hostPath:
       type: File

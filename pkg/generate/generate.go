@@ -509,35 +509,37 @@ func (generator *Generator) generateManifestKubeApiserver() error {
 		}
 
 		if error := utils.ApplyTemplateAndSave("manifest-kube-apiserver", utils.TemplateManifestKubeApiserver, struct {
-			KubernetesImage   string
-			ControllersCount  string
-			AuditLog          string
-			EtcdServers       string
-			PemCA             string
-			PemKubernetes     string
-			PemKubernetesKey  string
-			PemAggregator     string
-			PemAggregatorKey  string
-			PemServiceAccount string
-			EncryptionConfig  string
-			NodeIP            string
-			APIServerPort     uint16
-			ClusterIPRange    string
+			KubernetesImage      string
+			ControllersCount     string
+			AuditLog             string
+			EtcdServers          string
+			PemCA                string
+			PemKubernetes        string
+			PemKubernetesKey     string
+			PemAggregator        string
+			PemAggregatorKey     string
+			PemServiceAccount    string
+			PemServiceAccountKey string
+			EncryptionConfig     string
+			NodeIP               string
+			APIServerPort        uint16
+			ClusterIPRange       string
 		}{
-			KubernetesImage:   generator.config.Config.Versions.KubeAPIServer,
-			ControllersCount:  generator.config.GetControllersCount(),
-			AuditLog:          path.Join(generator.config.GetFullTargetAssetDirectory(utils.DirectoryLogging), utils.AuditLog),
-			EtcdServers:       generator.config.GetEtcdServers(),
-			PemCA:             generator.config.GetFullTargetAssetFilename(utils.PemCa),
-			PemKubernetes:     generator.config.GetFullTargetAssetFilename(utils.PemKubernetes),
-			PemKubernetesKey:  generator.config.GetFullTargetAssetFilename(utils.PemKubernetesKey),
-			PemAggregator:     generator.config.GetFullTargetAssetFilename(utils.PemAggregator),
-			PemAggregatorKey:  generator.config.GetFullTargetAssetFilename(utils.PemAggregatorKey),
-			PemServiceAccount: generator.config.GetFullTargetAssetFilename(utils.PemServiceAccount),
-			EncryptionConfig:  generator.config.GetFullTargetAssetFilename(utils.EncryptionConfig),
-			NodeIP:            node.IP,
-			APIServerPort:     generator.config.Config.APIServerPort,
-			ClusterIPRange:    generator.config.Config.ClusterIPRange,
+			KubernetesImage:      generator.config.Config.Versions.KubeAPIServer,
+			ControllersCount:     generator.config.GetControllersCount(),
+			AuditLog:             path.Join(generator.config.GetFullTargetAssetDirectory(utils.DirectoryLogging), utils.AuditLog),
+			EtcdServers:          generator.config.GetEtcdServers(),
+			PemCA:                generator.config.GetFullTargetAssetFilename(utils.PemCa),
+			PemKubernetes:        generator.config.GetFullTargetAssetFilename(utils.PemKubernetes),
+			PemKubernetesKey:     generator.config.GetFullTargetAssetFilename(utils.PemKubernetesKey),
+			PemAggregator:        generator.config.GetFullTargetAssetFilename(utils.PemAggregator),
+			PemAggregatorKey:     generator.config.GetFullTargetAssetFilename(utils.PemAggregatorKey),
+			PemServiceAccount:    generator.config.GetFullTargetAssetFilename(utils.PemServiceAccount),
+			PemServiceAccountKey: generator.config.GetFullTargetAssetFilename(utils.PemServiceAccountKey),
+			EncryptionConfig:     generator.config.GetFullTargetAssetFilename(utils.EncryptionConfig),
+			NodeIP:               node.IP,
+			APIServerPort:        generator.config.Config.APIServerPort,
+			ClusterIPRange:       generator.config.Config.ClusterIPRange,
 		}, generator.config.GetFullLocalAssetFilename(utils.ManifestKubeApiserver), true, false, 0644); error != nil {
 			return error
 		}
