@@ -73,11 +73,11 @@ require (
 	github.com/urfave/cli v1.22.4
 	github.com/wille/osutil v0.0.0-20190526221756-e91b8656e290
 	go.etcd.io/bbolt v1.3.5
-	golang.org/x/crypto v0.0.0-20201124201722-c8d3bf9c5392
+	golang.org/x/crypto v0.0.0-20201208171446-5f87f3452ae9
 	golang.org/x/net v0.0.0-20200707034311-ab3426394381
-	golang.org/x/sync v0.0.0-20201020160332-67f06af15bc9
-	golang.org/x/sys v0.0.0-20201201145000-ef89a241ccb3
-	golang.org/x/term v0.0.0-20201126162022-7de9c90e9dd1 // indirect
+	golang.org/x/sync v0.0.0-20201207232520-09787c993a3a
+	golang.org/x/sys v0.0.0-20201207223542-d4d67f95c62d
+	golang.org/x/term v0.0.0-20201207232118-ee85cb95a76b // indirect
 	google.golang.org/grpc v1.27.0
 	gopkg.in/ini.v1 v1.58.0
 	gopkg.in/yaml.v2 v2.2.8
