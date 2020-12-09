@@ -347,8 +347,9 @@ func (deployment *NodeDeployment) importImage(image string, filename string) err
 		baseName = tokens[0]
 	}
 
-	ctr := deployment.config.GetFullTargetAssetFilename(utils.BinaryCtr)
-	command := fmt.Sprintf("%s i ls -q | grep -e \"^%s$\"; CONTAINERD_NAMESPACE=%s [ $? -eq 0 ] || %s i import --digests --base-name %s %s", ctr, image, utils.ContainerdKubernetesNamespace, ctr, baseName, filename)
+	ctr := fmt.Sprintf("CONTAINERD_NAMESPACE=\"%s\" \"%s\"", utils.ContainerdKubernetesNamespace, deployment.config.GetFullTargetAssetFilename(utils.BinaryCtr))
+
+	command := fmt.Sprintf("%s i ls -q | grep -e \"^%s$\"; [ $? -eq 0 ] || %s i import --digests --base-name %s %s", ctr, image, ctr, baseName, filename)
 
 	if _, error := deployment.Execute(fmt.Sprintf("import-image-%s", image), command); error != nil {
 		return fmt.Errorf("Failed to import image %s (%s)", image, error.Error())
