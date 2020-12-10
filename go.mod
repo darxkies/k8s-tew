@@ -28,6 +28,7 @@ require (
 	github.com/coreos/go-systemd v0.0.0-20191104093116-d3cd4ed1dbcf
 	github.com/davecgh/go-spew v1.1.1
 	github.com/docker/distribution v2.7.1+incompatible
+	github.com/docker/docker v20.10.0+incompatible // indirect
 	github.com/docker/go-events v0.0.0-20190806004212-e31b211e4f1c
 	github.com/docker/go-metrics v0.0.1
 	github.com/docker/go-units v0.4.0
@@ -50,6 +51,8 @@ require (
 	github.com/jsonnet-bundler/jsonnet-bundler v0.4.0 // indirect
 	github.com/karrick/godirwalk v1.16.1 // indirect
 	github.com/mattn/go-colorable v0.1.1 // indirect
+	github.com/moby/sys/mount v0.2.0 // indirect
+	github.com/moby/sys/symlink v0.1.0 // indirect
 	github.com/moul/http2curl v1.0.0 // indirect
 	github.com/opencontainers/go-digest v1.0.0-rc1
 	github.com/opencontainers/image-spec v1.0.1
@@ -84,9 +87,10 @@ require (
 	gotest.tools v2.2.0+incompatible
 	k8s.io/api v0.19.3
 	k8s.io/apimachinery v0.19.3
-	k8s.io/apiserver v0.19.3
+	k8s.io/apiserver v0.19.3 // indirect
 	k8s.io/cli-runtime v0.19.3
 	k8s.io/client-go v0.19.3
 	k8s.io/cri-api v0.19.3
+	k8s.io/klog v1.0.0 // indirect
 	k8s.io/kubectl v0.19.3
 )
