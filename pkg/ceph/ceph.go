@@ -446,7 +446,7 @@ func (ceph *Ceph) RunSetup(dashboardUsername, dashboardPassword, radosgwUsername
 		fmt.Sprintf("%s dashboard set-ssl-certificate-key -i '%s'", cephBinary, sslKey),
 		fmt.Sprintf("%s config set mgr mgr/dashboard/ssl true", cephBinary),
 		fmt.Sprintf("%s dashboard ac-user-create %s %s administrator", cephBinary, dashboardUsername, dashboardPassword),
-		fmt.Sprintf("%s user create --uid=%s --display-name=%s --system --access-key=%s --secret-key=%s", radosgwAdminBinary, utils.Username, utils.Username, radosgwUsername, radosgwPassword),
+		fmt.Sprintf("%s user info --uid=%s || %s user create --uid=%s --display-name=%s --system --access-key=%s --secret-key=%s", radosgwAdminBinary, utils.Username, radosgwAdminBinary, utils.Username, utils.Username, radosgwUsername, radosgwPassword),
 		fmt.Sprintf("%s dashboard set-rgw-api-access-key %s", cephBinary, radosgwUsername),
 		fmt.Sprintf("%s dashboard set-rgw-api-secret-key %s", cephBinary, radosgwPassword),
 		fmt.Sprintf("%s mgr module disable dashboard", cephBinary),
