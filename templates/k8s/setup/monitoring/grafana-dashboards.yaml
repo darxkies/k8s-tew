@@ -20033,7 +20033,8 @@ data:
                          "format": "time_series",
                          "intervalFactor": 2,
                          "legendFormat": "",
-                         "refId": "A"
+                         "refId": "A",
+                         "instant": true
                       }
                    ],
                    "thresholds": "80, 90",
@@ -20214,7 +20215,8 @@ data:
                          "format": "time_series",
                          "intervalFactor": 2,
                          "legendFormat": "",
-                         "refId": "A"
+                         "refId": "A",
+                         "instant": true
                       }
                    ],
                    "thresholds": "80, 90",
