@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: monitoring
+  name: {{.Namespace}}
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  namespace: monitoring
+  namespace: {{.Namespace}}
   name: metrics-server
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -29,14 +29,14 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: metrics-server:system:auth-delegator
-  namespace: monitoring
+  namespace: {{.Namespace}}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: system:auth-delegator
 subjects:
   - kind: ServiceAccount
-    namespace: monitoring
+    namespace: {{.Namespace}}
     name: metrics-server
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -50,7 +50,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: metrics-server
-    namespace: monitoring
+    namespace: {{.Namespace}}
 ---
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
@@ -77,12 +77,12 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: metrics-server
-    namespace: monitoring
+    namespace: {{.Namespace}}
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: monitoring
+  namespace: {{.Namespace}}
   name: metrics-server
   labels:
     kubernetes.io/name: "Metrics-server"
@@ -97,7 +97,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: monitoring
+  namespace: {{.Namespace}}
   name: metrics-server
   labels:
     app: metrics-server
@@ -129,11 +129,11 @@ spec:
 apiVersion: apiregistration.k8s.io/v1
 kind: APIService
 metadata:
-  namespace: monitoring
+  namespace: {{.Namespace}}
   name: v1beta1.metrics.k8s.io
 spec:
   service:
-    namespace: monitoring
+    namespace: {{.Namespace}}
     name: metrics-server
   group: metrics.k8s.io
   version: v1beta1

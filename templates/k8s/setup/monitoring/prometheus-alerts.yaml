@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap                                                                                                                                           
 metadata:                                                                                                                                                 
-    namespace: monitoring                                                                                                                                   
+    namespace: [[.Namespace]]                                                                                                                                   
     name: prometheus-alerts                                                                                                                                
 data:
   prometheus-alerts.yaml: |

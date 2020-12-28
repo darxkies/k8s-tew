@@ -2,7 +2,7 @@ package utils
 
 // Versions
 const VersionConfig = "2.4.0"
-const VersionK8s = "v1.20.0"
+const VersionK8s = "v1.20.1"
 const VersionKubeAPIServer = "k8s.gcr.io/kube-apiserver:" + VersionK8s
 const VersionKubeControllerManager = "k8s.gcr.io/kube-controller-manager:" + VersionK8s
 const VersionKubeScheduler = "k8s.gcr.io/kube-scheduler:" + VersionK8s
@@ -147,6 +147,15 @@ const FeatureLogging = "logging"
 const FeatureBackup = "backup"
 const FeatureShowcase = "showcase"
 const FeatureIngress = "ingress"
+
+// Namespaces
+const NamespaceKubeSystem = "kube-system"
+const NamespaceNetworking = "networking"
+const NamespaceStorage = "storage"
+const NamespaceMonitoring = "monitoring"
+const NamespaceLogging = "logging"
+const NamespaceBackup = "backup"
+const NamespaceShowcase = "showcase"
 
 // OS
 const OsUbuntu = "ubuntu"

@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  namespace: monitoring
+  namespace: {{.Namespace}}
   name: alert-manager
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  namespace: monitoring
+  namespace: {{.Namespace}}
   name: alert-manager-config
   labels:
     k8s-app: alert-manager
@@ -25,7 +25,7 @@ data:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: monitoring
+  namespace: {{.Namespace}}
   name: alert-manager-operated
   labels:
     k8s-app: alert-manager
@@ -47,7 +47,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: monitoring
+  namespace: {{.Namespace}}
   name: alert-manager
   labels:
     k8s-app: alert-manager
@@ -64,7 +64,7 @@ spec:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  namespace: monitoring
+  namespace: {{.Namespace}}
   name: alert-manager
   labels: 
     k8s-app: alert-manager
@@ -103,7 +103,7 @@ spec:
             - --web.route-prefix=/
             - --cluster.listen-address=$(POD_IP):6783
             {{ range $index, $element := .AlertManagerCounts -}}
-            - --cluster.peer=alert-manager-{{ $element }}.alert-manager-operated.monitoring.svc:6783
+            - --cluster.peer=alert-manager-{{ $element }}.alert-manager-operated.{{$.Namespace}}.svc:6783
             {{ end -}}
             - --log.level=debug
           env:

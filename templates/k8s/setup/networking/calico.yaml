@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: networking
+  name: {{.Namespace}}
 
 ---
 kind: ConfigMap
 apiVersion: v1
 metadata:
   name: calico-config
-  namespace: networking
+  namespace: {{.Namespace}}
 data:
   typha_service_name: "calico-typha"
   calico_backend: "bird"
@@ -3307,7 +3307,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: calico-kube-controllers
-  namespace: networking
+  namespace: {{.Namespace}}
 
 ---
 kind: ClusterRole
@@ -3441,14 +3441,14 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: calico-node
-  namespace: networking
+  namespace: {{.Namespace}}
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: calico-typha
-  namespace: networking
+  namespace: {{.Namespace}}
   labels:
     k8s-app: calico-typha
 spec:
@@ -3466,7 +3466,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: calico-typha
-  namespace: networking
+  namespace: {{.Namespace}}
   labels:
     k8s-app: calico-typha
 spec:
@@ -3521,7 +3521,7 @@ spec:
           - name: TYPHA_PROMETHEUSMETRICSPORT
             value: "9093"
           - name: TYPHA_K8SNAMESPACE
-            value: "networking"
+            value: "{{.Namespace}}"
         livenessProbe:
           httpGet:
             path: /liveness
@@ -3544,7 +3544,7 @@ apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
   name: calico-typha
-  namespace: networking
+  namespace: {{.Namespace}}
   labels:
     k8s-app: calico-typha
 spec:
@@ -3557,7 +3557,7 @@ kind: DaemonSet
 apiVersion: apps/v1
 metadata:
   name: calico-node
-  namespace: networking
+  namespace: {{.Namespace}}
   labels:
     k8s-app: calico-node
 spec:
@@ -3664,7 +3664,7 @@ spec:
             - name: DATASTORE_TYPE
               value: "kubernetes"
             - name: FELIX_TYPHAK8SNAMESPACE
-              value: "networking"
+              value: "{{.Namespace}}"
             - name: FELIX_TYPHAK8SSERVICENAME
               valueFrom:
                 configMapKeyRef:
@@ -3802,14 +3802,14 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: calico-node
-  namespace: networking
+  namespace: {{.Namespace}}
 
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: calico-kube-controllers
-  namespace: networking
+  namespace: {{.Namespace}}
   labels:
     k8s-app: calico-kube-controllers
 spec:
@@ -3822,7 +3822,7 @@ spec:
   template:
     metadata:
       name: calico-kube-controllers
-      namespace: networking
+      namespace: {{.Namespace}}
       labels:
         k8s-app: calico-kube-controllers
     spec:
@@ -3854,7 +3854,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: calico-kube-controllers
-  namespace: networking
+  namespace: {{.Namespace}}
 
 ---
 apiVersion: policy/v1beta1

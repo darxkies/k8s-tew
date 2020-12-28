@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"github.com/darxkies/k8s-tew/pkg/ceph"
+	"github.com/darxkies/k8s-tew/pkg/utils"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -51,7 +52,7 @@ var cephInitializeCmd = &cobra.Command{
 
 		ceph := getCeph()
 
-		if _, _error := ceph.Setup(); _error != nil {
+		if _, _error := ceph.Setup(utils.NamespaceStorage); _error != nil {
 			return _error
 		}
 

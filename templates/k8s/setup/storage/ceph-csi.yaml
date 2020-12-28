@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  namespace: storage
+  namespace: {{.Namespace}}
   name: ceph-csi-config
 data:
   config.json: |-
@@ -17,7 +17,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  namespace: storage
+  namespace: {{.Namespace}}
   name: ceph-csi-encryption-kms-config
 data:
 
@@ -25,7 +25,7 @@ data:
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  namespace: storage
+  namespace: {{.Namespace}}
   name: csi-rbd
   annotations:
     storageclass.kubernetes.io/is-default-class: "true"
@@ -37,16 +37,16 @@ parameters:
   imageFormat: "2"
   imageFeatures: layering
   csi.storage.k8s.io/provisioner-secret-name: csi-rbd-secret
-  csi.storage.k8s.io/provisioner-secret-namespace: storage
+  csi.storage.k8s.io/provisioner-secret-namespace: {{.Namespace}}
   csi.storage.k8s.io/node-stage-secret-name: csi-rbd-secret
-  csi.storage.k8s.io/node-stage-secret-namespace: storage
+  csi.storage.k8s.io/node-stage-secret-namespace: {{.Namespace}}
   allowVolumeExpansion: "true"
 
 ---
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  namespace: storage
+  namespace: {{.Namespace}}
   name: csi-cephfs
 provisioner: cephfs.csi.ceph.com
 reclaimPolicy: Delete
@@ -57,18 +57,18 @@ parameters:
   mounter: kernel
   provisionVolume: "true"
   csi.storage.k8s.io/provisioner-secret-name: csi-cephfs-secret
-  csi.storage.k8s.io/provisioner-secret-namespace: storage
+  csi.storage.k8s.io/provisioner-secret-namespace: {{.Namespace}}
   csi.storage.k8s.io/controller-expand-secret-name: csi-cephfs-secret
-  csi.storage.k8s.io/controller-expand-secret-namespace: storage
+  csi.storage.k8s.io/controller-expand-secret-namespace: {{.Namespace}}
   csi.storage.k8s.io/node-stage-secret-name: csi-cephfs-secret
-  csi.storage.k8s.io/node-stage-secret-namespace: storage
+  csi.storage.k8s.io/node-stage-secret-namespace: {{.Namespace}}
   allowVolumeExpansion: "true"
 
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  namespace: storage
+  namespace: {{.Namespace}}
   name: rbd-csi-nodeplugin
 
 ---
@@ -102,7 +102,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: rbd-csi-nodeplugin
-    namespace: storage
+    namespace: {{.Namespace}}
 roleRef:
   kind: ClusterRole
   name: rbd-csi-nodeplugin
@@ -112,7 +112,7 @@ roleRef:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  namespace: storage
+  namespace: {{.Namespace}}
   name: rbd-csi-provisioner
 
 ---
@@ -181,7 +181,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: rbd-csi-provisioner
-    namespace: storage
+    namespace: {{.Namespace}}
 roleRef:
   kind: ClusterRole
   name: rbd-external-provisioner-runner
@@ -191,7 +191,7 @@ roleRef:
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  namespace: storage
+  namespace: {{.Namespace}}
   name: rbd-external-provisioner-cfg
 rules:
   - apiGroups: [""]
@@ -205,12 +205,12 @@ rules:
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  namespace: storage
+  namespace: {{.Namespace}}
   name: rbd-csi-provisioner-role-cfg
 subjects:
   - kind: ServiceAccount
     name: rbd-csi-provisioner
-    namespace: storage
+    namespace: {{.Namespace}}
 roleRef:
   kind: Role
   name: rbd-external-provisioner-cfg
@@ -220,7 +220,7 @@ roleRef:
 kind: DaemonSet
 apiVersion: apps/v1
 metadata:
-  namespace: storage
+  namespace: {{.Namespace}}
   name: csi-rbdplugin
 spec:
   selector:
@@ -385,7 +385,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: storage
+  namespace: {{.Namespace}}
   name: csi-metrics-rbdplugin
   annotations:
       prometheus.io/scrape: "true"
@@ -405,7 +405,7 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  namespace: storage
+  namespace: {{.Namespace}}
   name: csi-rbdplugin-provisioner
   annotations:
       prometheus.io/scrape: "true"
@@ -425,7 +425,7 @@ spec:
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  namespace: storage
+  namespace: {{.Namespace}}
   name: csi-rbdplugin-provisioner
 spec:
   replicas: 3
@@ -611,7 +611,7 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  namespace: storage
+  namespace: {{.Namespace}}
   name: cephfs-csi-nodeplugin
 
 ---
@@ -643,7 +643,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: cephfs-csi-nodeplugin
-    namespace: storage
+    namespace: {{.Namespace}}
 roleRef:
   kind: ClusterRole
   name: cephfs-csi-nodeplugin
@@ -653,7 +653,7 @@ roleRef:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  namespace: storage
+  namespace: {{.Namespace}}
   name: cephfs-csi-provisioner
 
 ---
@@ -722,7 +722,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: cephfs-csi-provisioner
-    namespace: storage
+    namespace: {{.Namespace}}
 roleRef:
   kind: ClusterRole
   name: cephfs-external-provisioner-runner
@@ -732,7 +732,7 @@ roleRef:
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  namespace: storage
+  namespace: {{.Namespace}}
   name: cephfs-external-provisioner-cfg
 rules:
   - apiGroups: [""]
@@ -746,12 +746,12 @@ rules:
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  namespace: storage
+  namespace: {{.Namespace}}
   name: cephfs-csi-provisioner-role-cfg
 subjects:
   - kind: ServiceAccount
     name: cephfs-csi-provisioner
-    namespace: storage
+    namespace: {{.Namespace}}
 roleRef:
   kind: Role
   name: cephfs-external-provisioner-cfg
@@ -761,7 +761,7 @@ roleRef:
 kind: DaemonSet
 apiVersion: apps/v1
 metadata:
-  namespace: storage
+  namespace: {{.Namespace}}
   name: csi-cephfsplugin
 spec:
   selector:
@@ -919,7 +919,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: storage
+  namespace: {{.Namespace}}
   name: csi-metrics-cephfsplugin
   annotations:
       prometheus.io/scrape: "true"
@@ -939,7 +939,7 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  namespace: storage
+  namespace: {{.Namespace}}
   name: csi-cephfsplugin-provisioner
   annotations:
       prometheus.io/scrape: "true"
@@ -959,7 +959,7 @@ spec:
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  namespace: storage
+  namespace: {{.Namespace}}
   name: csi-cephfsplugin-provisioner
 spec:
   selector:
@@ -1184,7 +1184,7 @@ spec:
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  namespace: storage
+  namespace: {{.Namespace}}
   name: rbd-csi-nodeplugin-psp
 rules:
   - apiGroups: ['policy']
@@ -1196,12 +1196,12 @@ rules:
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  namespace: storage
+  namespace: {{.Namespace}}
   name: rbd-csi-nodeplugin-psp
 subjects:
   - kind: ServiceAccount
     name: rbd-csi-nodeplugin
-    namespace: storage
+    namespace: {{.Namespace}}
 roleRef:
   kind: Role
   name: rbd-csi-nodeplugin-psp
@@ -1244,7 +1244,7 @@ spec:
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  namespace: storage
+  namespace: {{.Namespace}}
   name: rbd-csi-provisioner-psp
 rules:
   - apiGroups: ['policy']
@@ -1256,12 +1256,12 @@ rules:
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  namespace: storage
+  namespace: {{.Namespace}}
   name: rbd-csi-provisioner-psp
 subjects:
   - kind: ServiceAccount
     name: rbd-csi-provisioner
-    namespace: storage
+    namespace: {{.Namespace}}
 roleRef:
   kind: Role
   name: rbd-csi-provisioner-psp
@@ -1316,7 +1316,7 @@ spec:
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  namespace: storage
+  namespace: {{.Namespace}}
   name: cephfs-csi-nodeplugin-psp
 rules:
   - apiGroups: ['policy']
@@ -1328,12 +1328,12 @@ rules:
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  namespace: storage
+  namespace: {{.Namespace}}
   name: cephfs-csi-nodeplugin-psp
 subjects:
   - kind: ServiceAccount
     name: cephfs-csi-nodeplugin
-    namespace: storage
+    namespace: {{.Namespace}}
 roleRef:
   kind: Role
   name: cephfs-csi-nodeplugin-psp
@@ -1375,7 +1375,7 @@ spec:
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  namespace: storage
+  namespace: {{.Namespace}}
   name: cephfs-csi-provisioner-psp
 rules:
   - apiGroups: ['policy']
@@ -1387,12 +1387,12 @@ rules:
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  namespace: storage
+  namespace: {{.Namespace}}
   name: cephfs-csi-provisioner-psp
 subjects:
   - kind: ServiceAccount
     name: cephfs-csi-provisioner
-    namespace: storage
+    namespace: {{.Namespace}}
 roleRef:
   kind: Role
   name: cephfs-csi-provisioner-psp
@@ -2338,7 +2338,7 @@ status:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  namespace: storage
+  namespace: {{.Namespace}}
   name: snapshot-controller
 
 ---
@@ -2380,7 +2380,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: snapshot-controller
-    namespace: storage
+    namespace: {{.Namespace}}
 roleRef:
   kind: ClusterRole
   name: snapshot-controller-runner
@@ -2390,7 +2390,7 @@ roleRef:
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  namespace: storage
+  namespace: {{.Namespace}}
   name: snapshot-controller-leaderelection
 rules:
 - apiGroups: ["coordination.k8s.io"]
@@ -2402,11 +2402,11 @@ kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: snapshot-controller-leaderelection
-  namespace: storage
+  namespace: {{.Namespace}}
 subjects:
   - kind: ServiceAccount
     name: snapshot-controller
-    namespace: storage
+    namespace: {{.Namespace}}
 roleRef:
   kind: Role
   name: snapshot-controller-leaderelection
@@ -2416,7 +2416,7 @@ roleRef:
 kind: StatefulSet
 apiVersion: apps/v1
 metadata:
-  namespace: storage
+  namespace: {{.Namespace}}
   name: csi-snapshot-controller
 spec:
   serviceName: snapshot-controller
@@ -2441,7 +2441,7 @@ spec:
 apiVersion: snapshot.storage.k8s.io/v1beta1
 kind: VolumeSnapshotClass
 metadata:
-  namespace: storage
+  namespace: {{.Namespace}}
   name: csi-rbdplugin-snapclass
   annotations:
     snapshot.storage.kubernetes.io/is-default-class: "true"
@@ -2453,13 +2453,13 @@ parameters:
   clusterID: {{.ClusterID}}
   pool: {{.CephRBDPoolName}}
   csi.storage.k8s.io/snapshotter-secret-name: csi-rbd-secret
-  csi.storage.k8s.io/snapshotter-secret-namespace: storage
+  csi.storage.k8s.io/snapshotter-secret-namespace: {{.Namespace}}
 
 ---
 apiVersion: snapshot.storage.k8s.io/v1beta1
 kind: VolumeSnapshotClass
 metadata:
-  namespace: storage
+  namespace: {{.Namespace}}
   name: csi-cephfsplugin-snapclass
   annotations:
     snapshot.storage.kubernetes.io/is-default-class: "true"
@@ -2471,4 +2471,4 @@ parameters:
   clusterID: {{.ClusterID}}
   pool: {{.CephFSPoolName}}
   csi.storage.k8s.io/snapshotter-secret-name: csi-cephfs-secret
-  csi.storage.k8s.io/snapshotter-secret-namespace: storage
+  csi.storage.k8s.io/snapshotter-secret-namespace: {{.Namespace}}

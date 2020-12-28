@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  namespace: kube-system
+  namespace: {{.Namespace}}
   name: kubernetes-dashboard-csrf
   labels:
     k8s-app: kubernetes-dashboard
@@ -14,7 +14,7 @@ data:
 apiVersion: v1
 kind: Secret
 metadata:
-  namespace: kube-system
+  namespace: {{.Namespace}}
   name: kubernetes-dashboard-key-holder
   labels:
     k8s-app: kubernetes-dashboard
@@ -24,7 +24,7 @@ type: Opaque
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  namespace: kube-system
+  namespace: {{.Namespace}}
   name: kubernetes-dashboard
   labels:
     k8s-app: kubernetes-dashboard
@@ -33,7 +33,7 @@ metadata:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  namespace: kube-system
+  namespace: {{.Namespace}}
   name: kubernetes-dashboard
   labels:
     k8s-app: kubernetes-dashboard
@@ -71,7 +71,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  namespace: kube-system
+  namespace: {{.Namespace}}
   name: kubernetes-dashboard
   labels:
     k8s-app: kubernetes-dashboard
@@ -81,7 +81,7 @@ roleRef:
   name: kubernetes-dashboard
 subjects:
   - kind: ServiceAccount
-    namespace: kube-system
+    namespace: {{.Namespace}}
     name: kubernetes-dashboard
 
 ---
@@ -95,14 +95,14 @@ roleRef:
   name: kubernetes-dashboard
 subjects:
   - kind: ServiceAccount
-    namespace: kube-system
+    namespace: {{.Namespace}}
     name: kubernetes-dashboard
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: kube-system
+  namespace: {{.Namespace}}
   name: kubernetes-dashboard
   labels:
     k8s-app: kubernetes-dashboard
@@ -120,7 +120,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: kube-system
+  namespace: {{.Namespace}}
   name: kubernetes-dashboard
   labels:
     k8s-app: kubernetes-dashboard
@@ -184,7 +184,7 @@ spec:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  namespace: kube-system
+  namespace: {{.Namespace}}
   name: kubernetes-dashboard-settings
   labels:
     k8s-app: kubernetes-dashboard
@@ -195,7 +195,7 @@ data:
 kind: Service
 apiVersion: v1
 metadata:
-  namespace: kube-system
+  namespace: {{.Namespace}}
   name: dashboard-metrics-scraper
   labels:
     k8s-app: dashboard-metrics-scraper
@@ -211,7 +211,7 @@ spec:
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  namespace: kube-system
+  namespace: {{.Namespace}}
   name: dashboard-metrics-scraper
   labels:
     k8s-app: dashboard-metrics-scraper

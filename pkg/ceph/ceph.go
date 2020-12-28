@@ -25,6 +25,7 @@ const CephConfigPath = "/etc/ceph"
 const CephDataPath = "/var/lib/ceph"
 
 type CephData struct {
+	Namespace                          string
 	CephClusterName                    string
 	CephPoolName                       string
 	MonitorKey                         string
@@ -133,8 +134,9 @@ func NewCeph(config *config.InternalConfig, binariesPath, configPath, dataPath s
 	return &Ceph{config: config, binariesPath: binariesPath, configPath: configPath, dataPath: dataPath}
 }
 
-func (ceph *Ceph) Setup() (*CephData, error) {
+func (ceph *Ceph) Setup(namespace string) (*CephData, error) {
 	cephData := &CephData{}
+	cephData.Namespace = namespace
 	cephData.CephClusterName = ceph.config.Config.CephClusterName
 	cephData.CephPoolName = utils.CephRbdPoolName
 

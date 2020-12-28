@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap                                                                                                                                           
 metadata:                                                                                                                                                 
-    namespace: monitoring                                                                                                                                   
+    namespace: [[.Namespace]]
     name: grafana-dashboard-apiserver                                                                                                                                
 data:
   apiserver.json: |
@@ -1532,7 +1532,7 @@ data:
 apiVersion: v1
 kind: ConfigMap                                                                                                                                           
 metadata:                                                                                                                                                 
-    namespace: monitoring                                                                                                                                   
+    namespace: [[.Namespace]]
     name: grafana-dashboard-scheduler                                                                                                                                
 data:
   scheduler.json: |
@@ -2459,7 +2459,7 @@ data:
 apiVersion: v1
 kind: ConfigMap                                                                                                                                           
 metadata:                                                                                                                                                 
-    namespace: monitoring                                                                                                                                   
+    namespace: [[.Namespace]]
     name: grafana-dashboard-controller-manager                                                                                                                                
 data:
   controller-manager.json: |
@@ -3451,7 +3451,7 @@ data:
 apiVersion: v1
 kind: ConfigMap                                                                                                                                           
 metadata:                                                                                                                                                 
-    namespace: monitoring                                                                                                                                   
+    namespace: [[.Namespace]]
     name: grafana-dashboard-kubelet                                                                                                                                
 data:
   kubelet.json: |
@@ -5691,7 +5691,7 @@ data:
 apiVersion: v1
 kind: ConfigMap                                                                                                                                           
 metadata:                                                                                                                                                 
-    namespace: monitoring                                                                                                                                   
+    namespace: [[.Namespace]]
     name: grafana-dashboard-proxy                                                                                                                                
 data:
   proxy.json: |
@@ -6751,7 +6751,7 @@ data:
 apiVersion: v1
 kind: ConfigMap                                                                                                                                           
 metadata:                                                                                                                                                 
-    namespace: monitoring                                                                                                                                   
+    namespace: [[.Namespace]]
     name: grafana-dashboard-k8s-resources-cluster                                                                                                                                
 data:
   k8s-resources-cluster.json: |
@@ -9010,7 +9010,7 @@ data:
 apiVersion: v1
 kind: ConfigMap                                                                                                                                           
 metadata:                                                                                                                                                 
-    namespace: monitoring                                                                                                                                   
+    namespace: [[.Namespace]]
     name: grafana-dashboard-k8s-resources-node                                                                                                                                
 data:
   k8s-resources-node.json: |
@@ -9835,7 +9835,7 @@ data:
 apiVersion: v1
 kind: ConfigMap                                                                                                                                           
 metadata:                                                                                                                                                 
-    namespace: monitoring                                                                                                                                   
+    namespace: [[.Namespace]]
     name: grafana-dashboard-k8s-resources-namespace                                                                                                                                
 data:
   k8s-resources-namespace.json: |
@@ -11838,7 +11838,7 @@ data:
 apiVersion: v1
 kind: ConfigMap                                                                                                                                           
 metadata:                                                                                                                                                 
-    namespace: monitoring                                                                                                                                   
+    namespace: [[.Namespace]]
     name: grafana-dashboard-k8s-resources-pod                                                                                                                                
 data:
   k8s-resources-pod.json: |
@@ -13389,7 +13389,7 @@ data:
 apiVersion: v1
 kind: ConfigMap                                                                                                                                           
 metadata:                                                                                                                                                 
-    namespace: monitoring                                                                                                                                   
+    namespace: [[.Namespace]]
     name: grafana-dashboard-k8s-resources-workload                                                                                                                                
 data:
   k8s-resources-workload.json: |
@@ -15152,7 +15152,7 @@ data:
 apiVersion: v1
 kind: ConfigMap                                                                                                                                           
 metadata:                                                                                                                                                 
-    namespace: monitoring                                                                                                                                   
+    namespace: [[.Namespace]]
     name: grafana-dashboard-k8s-resources-workloads-namespace                                                                                                                                
 data:
   k8s-resources-workloads-namespace.json: |
@@ -17064,7 +17064,7 @@ data:
 apiVersion: v1
 kind: ConfigMap                                                                                                                                           
 metadata:                                                                                                                                                 
-    namespace: monitoring                                                                                                                                   
+    namespace: [[.Namespace]]
     name: grafana-dashboard-namespace-by-pod                                                                                                                                
 data:
   namespace-by-pod.json: |
@@ -18343,7 +18343,7 @@ data:
 apiVersion: v1
 kind: ConfigMap                                                                                                                                           
 metadata:                                                                                                                                                 
-    namespace: monitoring                                                                                                                                   
+    namespace: [[.Namespace]]
     name: grafana-dashboard-namespace-by-workload                                                                                                                                
 data:
   namespace-by-workload.json: |
@@ -19862,7 +19862,7 @@ data:
 apiVersion: v1
 kind: ConfigMap                                                                                                                                           
 metadata:                                                                                                                                                 
-    namespace: monitoring                                                                                                                                   
+    namespace: [[.Namespace]]
     name: grafana-dashboard-persistentvolumesusage                                                                                                                                
 data:
   persistentvolumesusage.json: |
@@ -20350,7 +20350,7 @@ data:
 apiVersion: v1
 kind: ConfigMap                                                                                                                                           
 metadata:                                                                                                                                                 
-    namespace: monitoring                                                                                                                                   
+    namespace: [[.Namespace]]
     name: grafana-dashboard-statefulset                                                                                                                                
 data:
   statefulset.json: |
@@ -21179,7 +21179,7 @@ data:
 apiVersion: v1
 kind: ConfigMap                                                                                                                                           
 metadata:                                                                                                                                                 
-    namespace: monitoring                                                                                                                                   
+    namespace: [[.Namespace]]
     name: grafana-dashboard-cluster-total                                                                                                                                
 data:
   cluster-total.json: |
@@ -22836,7 +22836,7 @@ data:
 apiVersion: v1
 kind: ConfigMap                                                                                                                                           
 metadata:                                                                                                                                                 
-    namespace: monitoring                                                                                                                                   
+    namespace: [[.Namespace]]
     name: grafana-dashboard-pod-total                                                                                                                                
 data:
   pod-total.json: |
@@ -23909,7 +23909,7 @@ data:
 apiVersion: v1
 kind: ConfigMap                                                                                                                                           
 metadata:                                                                                                                                                 
-    namespace: monitoring                                                                                                                                   
+    namespace: [[.Namespace]]
     name: grafana-dashboard-workload-total                                                                                                                                
 data:
   workload-total.json: |
@@ -25168,7 +25168,7 @@ data:
 apiVersion: v1
 kind: ConfigMap                                                                                                                                           
 metadata:                                                                                                                                                 
-    namespace: monitoring                                                                                                                                   
+    namespace: [[.Namespace]]
     name: grafana-dashboard-etcd
 data:
   etcd.json: |
@@ -28218,7 +28218,7 @@ data:
 apiVersion: v1
 kind: ConfigMap                                                                                                                                           
 metadata:                                                                                                                                                 
-    namespace: monitoring                                                                                                                                   
+    namespace: [[.Namespace]]
     name: grafana-dashboard-ceph
 data:
   ceph.json: |

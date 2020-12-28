@@ -177,6 +177,7 @@ func (generator *Generator) generateGobetweenConfig() error {
 
 func (generator *Generator) generateCalicoSetup() error {
 	return utils.ApplyTemplateAndSave("calico-setup", utils.TemplateCalicoSetup, struct {
+		Namespace                  string
 		CalicoTyphaIP              string
 		ClusterCIDR                string
 		CNIConfigDirectory         string
@@ -191,6 +192,7 @@ func (generator *Generator) generateCalicoSetup() error {
 		CalicoCNIImage             string
 		CalicoKubeControllersImage string
 	}{
+		Namespace:                  utils.NamespaceNetworking,
 		CalicoTyphaIP:              generator.config.Config.CalicoTyphaIP,
 		ClusterCIDR:                generator.config.Config.ClusterCIDR,
 		CNIConfigDirectory:         generator.config.GetFullTargetAssetDirectory(utils.DirectoryCniConfig),
@@ -211,10 +213,12 @@ func (generator *Generator) generateMetalLBSetup() error {
 	addresses := strings.Split(generator.config.Config.MetalLBAddresses, ",")
 
 	return utils.ApplyTemplateAndSave("metallb-setup", utils.TemplateMetalLBSetup, struct {
+		Namespace              string
 		MetalLBControllerImage string
 		MetalLBSpeakerImage    string
 		MetalLBAddresses       []string
 	}{
+		Namespace:              utils.NamespaceNetworking,
 		MetalLBControllerImage: generator.config.Config.Versions.MetalLBController,
 		MetalLBSpeakerImage:    generator.config.Config.Versions.MetalLBSpeaker,
 		MetalLBAddresses:       addresses,
@@ -845,6 +849,7 @@ func (generator *Generator) generateKubeConfigs() error {
 
 func (generator *Generator) generateCephSetup() error {
 	return utils.ApplyTemplateAndSave("ceph-setup", utils.TemplateCephSetup, struct {
+		Namespace                   string
 		CephRBDPoolName             string
 		CephFSPoolName              string
 		PublicNetwork               string
@@ -862,6 +867,7 @@ func (generator *Generator) generateCephSetup() error {
 		CephPlacementGroups         uint
 		CephExpectedNumberOfObjects uint
 	}{
+		Namespace:                   utils.NamespaceStorage,
 		CephRBDPoolName:             utils.CephRbdPoolName,
 		CephFSPoolName:              utils.CephFsPoolName,
 		PublicNetwork:               generator.config.Config.PublicNetwork,
@@ -883,6 +889,7 @@ func (generator *Generator) generateCephSetup() error {
 
 func (generator *Generator) generateCephCSI() error {
 	return utils.ApplyTemplateAndSave("ceph-csi", utils.TemplateCephCsi, struct {
+		Namespace                  string
 		ClusterID                  string
 		KubeletDirectory           string
 		PluginsDirectory           string
@@ -900,6 +907,7 @@ func (generator *Generator) generateCephCSI() error {
 		CSIResizerImage            string
 		CSICephPluginImage         string
 	}{
+		Namespace:                  utils.NamespaceStorage,
 		ClusterID:                  generator.config.Config.ClusterID,
 		KubeletDirectory:           generator.config.GetFullTargetAssetDirectory(utils.DirectoryKubeletData),
 		PluginsDirectory:           generator.config.GetFullTargetAssetDirectory(utils.DirectoryKubeletPlugins),
@@ -922,7 +930,7 @@ func (generator *Generator) generateCephCSI() error {
 func (generator *Generator) generateCephFiles() error {
 	ceph := ceph.NewCeph(generator.config, ceph.CephBinariesPath, ceph.CephConfigPath, ceph.CephDataPath)
 
-	cephData, _error := ceph.Setup()
+	cephData, _error := ceph.Setup(utils.NamespaceStorage)
 	if _error != nil {
 		return _error
 	}
@@ -940,10 +948,12 @@ func (generator *Generator) generateLetsEncryptClusterIssuer() error {
 
 func (generator *Generator) generateCoreDNSSetup() error {
 	return utils.ApplyTemplateAndSave("core-dns", utils.TemplateCorednsSetup, struct {
+		Namespace     string
 		ClusterDomain string
 		ClusterDNSIP  string
 		CoreDNSImage  string
 	}{
+		Namespace:     utils.NamespaceKubeSystem,
 		ClusterDomain: generator.config.Config.ClusterDomain,
 		ClusterDNSIP:  generator.config.Config.ClusterDNSIP,
 		CoreDNSImage:  generator.config.Config.Versions.CoreDNS,
@@ -975,6 +985,7 @@ func (generator *Generator) generateEFKSetup() error {
 	}
 
 	return utils.ApplyTemplateAndSave("efk", utils.TemplateEfkSetup, struct {
+		Namespace           string
 		ElasticsearchImage  string
 		KibanaImage         string
 		CerebroImage        string
@@ -986,6 +997,7 @@ func (generator *Generator) generateEFKSetup() error {
 		ElasticsearchCount  uint16
 		ElasticsearchCounts []string
 	}{
+		Namespace:           utils.NamespaceLogging,
 		ElasticsearchImage:  generator.config.Config.Versions.Elasticsearch,
 		KibanaImage:         generator.config.Config.Versions.Kibana,
 		CerebroImage:        generator.config.Config.Versions.Cerebro,
@@ -1079,6 +1091,7 @@ func (generator *Generator) generateCephRadosGatewayCredentials() error {
 
 func (generator *Generator) generateVeleroSetup() error {
 	return utils.ApplyTemplateAndSave("velero-setup", utils.TemplateVeleroSetup, struct {
+		Namespace            string
 		VeleroImage          string
 		VeleroPluginAWSImage string
 		VeleroPluginCSIImage string
@@ -1088,6 +1101,7 @@ func (generator *Generator) generateVeleroSetup() error {
 		MinioPort            uint16
 		MinioSize            uint16
 	}{
+		Namespace:            utils.NamespaceBackup,
 		VeleroImage:          generator.config.Config.Versions.Velero,
 		VeleroPluginAWSImage: generator.config.Config.Versions.VeleroPluginAWS,
 		VeleroPluginCSIImage: generator.config.Config.Versions.VeleroPluginCSI,
@@ -1101,11 +1115,13 @@ func (generator *Generator) generateVeleroSetup() error {
 
 func (generator *Generator) generateKubernetesDashboardSetup() error {
 	return utils.ApplyTemplateAndSave("kubernetes-dashboard", utils.TemplateKubernetesDashboardSetup, struct {
+		Namespace                string
 		ClusterName              string
 		KubernetesDashboardPort  uint16
 		KubernetesDashboardImage string
 		MetricsScraperImage      string
 	}{
+		Namespace:                utils.NamespaceKubeSystem,
 		ClusterName:              generator.config.Config.ClusterName,
 		KubernetesDashboardPort:  generator.config.Config.KubernetesDashboardPort,
 		KubernetesDashboardImage: generator.config.Config.Versions.KubernetesDashboard,
@@ -1115,10 +1131,12 @@ func (generator *Generator) generateKubernetesDashboardSetup() error {
 
 func (generator *Generator) generateCertManagerSetup() error {
 	return utils.ApplyTemplateAndSave("cert-manager", utils.TemplateCertManagerSetup, struct {
+		Namespace                  string
 		CertManagerControllerImage string
 		CertManagerCAInjectorImage string
 		CertManagerWebHookImage    string
 	}{
+		Namespace:                  utils.NamespaceNetworking,
 		CertManagerControllerImage: generator.config.Config.Versions.CertManagerController,
 		CertManagerCAInjectorImage: generator.config.Config.Versions.CertManagerCAInjector,
 		CertManagerWebHookImage:    generator.config.Config.Versions.CertManagerWebHook,
@@ -1127,9 +1145,11 @@ func (generator *Generator) generateCertManagerSetup() error {
 
 func (generator *Generator) generateNginxIngressSetup() error {
 	return utils.ApplyTemplateAndSave("nginx-ingress", utils.TemplateNginxIngressSetup, struct {
+		Namespace                    string
 		NginxIngressControllerImage  string
 		NginxIngressAdmissionWebhook string
 	}{
+		Namespace:                    utils.NamespaceNetworking,
 		NginxIngressControllerImage:  generator.config.Config.Versions.NginxIngressController,
 		NginxIngressAdmissionWebhook: generator.config.Config.Versions.NginxIngressAdmissionWebhook,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sNginxIngressSetup), true, false, 0644)
@@ -1137,18 +1157,22 @@ func (generator *Generator) generateNginxIngressSetup() error {
 
 func (generator *Generator) generateMetricsServerSetup() error {
 	return utils.ApplyTemplateAndSave("metrics-server", utils.TemplateMetricsServerSetup, struct {
+		Namespace          string
 		MetricsServerImage string
 	}{
+		Namespace:          utils.NamespaceMonitoring,
 		MetricsServerImage: generator.config.Config.Versions.MetricsServer,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sMetricsServerSetup), true, false, 0644)
 }
 
 func (generator *Generator) generatePrometheusSetup() error {
 	return utils.ApplyTemplateAndSave("prometheus", utils.TemplatePrometheusSetup, struct {
+		Namespace       string
 		PrometheusImage string
 		PrometheusSize  uint16
 		BusyboxImage    string
 	}{
+		Namespace:       utils.NamespaceMonitoring,
 		PrometheusImage: generator.config.Config.Versions.Prometheus,
 		PrometheusSize:  generator.config.Config.PrometheusSize,
 		BusyboxImage:    generator.config.Config.Versions.Busybox,
@@ -1157,27 +1181,37 @@ func (generator *Generator) generatePrometheusSetup() error {
 
 func (generator *Generator) generatePrometheusAlerts() error {
 	return utils.ApplyTemplateAndSave("prometheus-alerts", utils.TemplatePrometheusAlerts, struct {
-	}{}, generator.config.GetFullLocalAssetFilename(utils.K8sPrometheusAlerts), true, true, 0644)
+		Namespace string
+	}{
+		Namespace: utils.NamespaceMonitoring,
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sPrometheusAlerts), true, true, 0644)
 }
 
 func (generator *Generator) generatePrometheusRules() error {
 	return utils.ApplyTemplateAndSave("prometheus-rules", utils.TemplatePrometheusRules, struct {
-	}{}, generator.config.GetFullLocalAssetFilename(utils.K8sPrometheusRules), true, true, 0644)
+		Namespace string
+	}{
+		Namespace: utils.NamespaceMonitoring,
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sPrometheusRules), true, true, 0644)
 }
 
 func (generator *Generator) generateNodeExporterSetup() error {
 	return utils.ApplyTemplateAndSave("node-exporter", utils.TemplateNodeExporterSetup, struct {
+		Namespace         string
 		NodeExporterImage string
 	}{
+		Namespace:         utils.NamespaceMonitoring,
 		NodeExporterImage: generator.config.Config.Versions.NodeExporter,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sNodeExporterSetup), true, false, 0644)
 }
 
 func (generator *Generator) generateKubeStateMetricsSetup() error {
 	return utils.ApplyTemplateAndSave("kube-state-metrics", utils.TemplateKubeStateMetricsSetup, struct {
+		Namespace             string
 		KubeStateMetricsImage string
 		KubeStateMetricsCount uint16
 	}{
+		Namespace:             utils.NamespaceMonitoring,
 		KubeStateMetricsImage: generator.config.Config.Versions.KubeStateMetrics,
 		KubeStateMetricsCount: generator.config.Config.KubeStateMetricsCount,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sKubeStateMetricsSetup), true, false, 0644)
@@ -1376,11 +1410,13 @@ func (generator *Generator) generateGrafanaCredentials() error {
 
 func (generator *Generator) generateGrafanaSetup() error {
 	return utils.ApplyTemplateAndSave("grafana", utils.TemplateGrafanaSetup, struct {
+		Namespace    string
 		GrafanaImage string
 		GrafanaPort  uint16
 		GrafanaSize  uint16
 		BusyboxImage string
 	}{
+		Namespace:    utils.NamespaceMonitoring,
 		GrafanaImage: generator.config.Config.Versions.Grafana,
 		GrafanaPort:  utils.PortGrafana,
 		GrafanaSize:  generator.config.Config.GrafanaSize,
@@ -1390,7 +1426,10 @@ func (generator *Generator) generateGrafanaSetup() error {
 
 func (generator *Generator) generateGrafanaDashboards() error {
 	return utils.ApplyTemplateAndSave("grafana-dashboards", utils.TemplateGrafanaDashboards, struct {
-	}{}, generator.config.GetFullLocalAssetFilename(utils.K8sGrafanaDashboards), true, true, 0644)
+		Namespace string
+	}{
+		Namespace: utils.NamespaceMonitoring,
+	}, generator.config.GetFullLocalAssetFilename(utils.K8sGrafanaDashboards), true, true, 0644)
 }
 
 func (generator *Generator) generateAlertManagerSetup() error {
@@ -1401,12 +1440,14 @@ func (generator *Generator) generateAlertManagerSetup() error {
 	}
 
 	return utils.ApplyTemplateAndSave("alert-manager", utils.TemplateAlertManagerSetup, struct {
+		Namespace          string
 		AlertManagerImage  string
 		AlertManagerCount  uint16
 		AlertManagerCounts []string
 		AlertManagerSize   uint16
 		BusyboxImage       string
 	}{
+		Namespace:          utils.NamespaceMonitoring,
 		AlertManagerImage:  generator.config.Config.Versions.AlertManager,
 		AlertManagerCount:  generator.config.Config.AlertManagerCount,
 		AlertManagerCounts: counts,
@@ -1417,11 +1458,13 @@ func (generator *Generator) generateAlertManagerSetup() error {
 
 func (generator *Generator) generateWordpressSetup() error {
 	return utils.ApplyTemplateAndSave("wordpress", utils.TemplateWordpressSetup, struct {
+		Namespace              string
 		WordPressIngressDomain string
 		MySQLImage             string
 		WordPressImage         string
 		WordPressPort          uint16
 	}{
+		Namespace:              utils.NamespaceShowcase,
 		WordPressIngressDomain: fmt.Sprintf("%s.%s", utils.IngressSubdomainWordpress, generator.config.Config.IngressDomain),
 		MySQLImage:             generator.config.Config.Versions.MySQL,
 		WordPressImage:         generator.config.Config.Versions.WordPress,

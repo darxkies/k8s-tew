@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: storage
+  namespace: {{$.Namespace}}
   name: ceph-mon-{{$node.Name}}
   labels:
     app: ceph
@@ -82,7 +82,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: storage
+  namespace: {{$.Namespace}}
   name: ceph-mgr-{{$node.Name}}
   labels:
     app: ceph
@@ -185,7 +185,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: storage
+  namespace: {{$.Namespace}}
   name: ceph-mds-{{$node.Name}}
   labels:
     app: ceph
@@ -274,7 +274,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: storage
+  namespace: {{$.Namespace}}
   name: ceph-rgw-{{$node.Name}}
   labels:
     app: ceph
@@ -377,7 +377,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: storage
+  namespace: {{$.Namespace}}
   name: ceph-osd-{{$node.Name}}
   labels:
     app: ceph
@@ -465,7 +465,7 @@ spec:
 apiVersion: batch/v1
 kind: Job
 metadata:
-  namespace: storage
+  namespace: {{.Namespace}}
   name: ceph-setup
 spec:
   template:
@@ -561,7 +561,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-    namespace: storage
+    namespace: {{$.Namespace}}
     name: ceph-rgw
     labels:
         app: ceph
@@ -580,7 +580,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-    namespace: storage
+    namespace: {{$.Namespace}}
     name: ceph-mgr
     annotations:
       prometheus.io/scrape: "true"

@@ -4496,7 +4496,7 @@ spec:
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: backup
+  name: {{.Namespace}}
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -4510,20 +4510,20 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: velero
-  namespace: backup
+  namespace: {{.Namespace}}
 
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: velero
-  namespace: backup
+  namespace: {{.Namespace}}
 
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  namespace: backup
+  namespace: {{.Namespace}}
   name: minio-storage
 spec:
   accessModes:
@@ -4536,7 +4536,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: backup
+  namespace: {{.Namespace}}
   name: minio
   labels:
     component: minio
@@ -4596,7 +4596,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: backup
+  namespace: {{.Namespace}}
   name: minio
   labels:
     component: minio
@@ -4614,7 +4614,7 @@ spec:
 apiVersion: batch/v1
 kind: Job
 metadata:
-  namespace: backup
+  namespace: {{.Namespace}}
   name: minio-setup
   labels:
     component: minio
@@ -4662,7 +4662,7 @@ apiVersion: velero.io/v1
 kind: BackupStorageLocation
 metadata:
   name: default
-  namespace: backup
+  namespace: {{.Namespace}}
 spec:
   objectStorage:
     bucket: velero
@@ -4677,7 +4677,7 @@ apiVersion: velero.io/v1
 kind: VolumeSnapshotLocation
 metadata:
   name: default
-  namespace: backup
+  namespace: {{.Namespace}}
 spec:
   provider: velero.io/aws
   config:
@@ -4687,7 +4687,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: backup
+  namespace: {{.Namespace}}
   name: velero
 spec:
   selector:
@@ -4769,7 +4769,7 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: restic
-  namespace: backup
+  namespace: {{.Namespace}}
 spec:
   selector:
     matchLabels:

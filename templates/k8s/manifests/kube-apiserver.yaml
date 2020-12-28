@@ -10,6 +10,7 @@ spec:
     image: {{.KubernetesImage}}
     command:
     - kube-apiserver
+    - --feature-gates=EphemeralContainers=true
     - --advertise-address={{.NodeIP}}
     - --allow-privileged=true
     - --apiserver-count={{.ControllersCount}}

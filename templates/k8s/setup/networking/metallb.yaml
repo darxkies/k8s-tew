@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  namespace: networking
+  namespace: {{.Namespace}}
   name: metallb-controller
   labels:
     app: metallb
@@ -10,7 +10,7 @@ metadata:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  namespace: networking
+  namespace: {{.Namespace}}
   name: metallb-speaker
   labels:
     app: metallb
@@ -19,7 +19,7 @@ metadata:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: networking:metallb-controller
+  name: {{.Namespace}}:metallb-controller
   labels:
     app: metallb
 rules:
@@ -37,7 +37,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: networking:metallb-speaker
+  name: {{.Namespace}}:metallb-speaker
   labels:
     app: metallb
 rules:
@@ -49,7 +49,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  namespace: networking
+  namespace: {{.Namespace}}
   name: config-watcher
   labels:
     app: metallb
@@ -65,39 +65,39 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: networking:metallb-controller
+  name: {{.Namespace}}:metallb-controller
   labels:
     app: metallb
 subjects:
 - kind: ServiceAccount
   name: metallb-controller
-  namespace: networking
+  namespace: {{.Namespace}}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: networking:metallb-controller
+  name: {{.Namespace}}:metallb-controller
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: networking:metallb-speaker
+  name: {{.Namespace}}:metallb-speaker
   labels:
     app: metallb
 subjects:
 - kind: ServiceAccount
   name: metallb-speaker
-  namespace: networking
+  namespace: {{.Namespace}}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: networking:metallb-speaker
+  name: {{.Namespace}}:metallb-speaker
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  namespace: networking
+  namespace: {{.Namespace}}
   name: config-watcher
   labels:
     app: metallb
@@ -115,7 +115,7 @@ roleRef:
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  namespace: networking
+  namespace: {{.Namespace}}
   name: metallb-speaker
   labels:
     app: metallb
@@ -171,7 +171,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: networking
+  namespace: {{.Namespace}}
   name: metallb-controller
   labels:
     app: metallb
@@ -223,7 +223,7 @@ spec:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  namespace: networking
+  namespace: {{.Namespace}}
   name: metallb-config
 data:
   config: |
