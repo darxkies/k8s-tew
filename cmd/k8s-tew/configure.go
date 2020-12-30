@@ -106,6 +106,10 @@ func init() {
 		_config.Config.MaxPods = value
 	})
 
+	addUint16Option("drain-grace-period-seconds", utils.DrainGracePeriodSeconds, "Drain Grace Period in Seconds", func(value uint16) {
+		_config.Config.DrainGracePeriodSeconds = value
+	})
+
 	addUint16Option("ca-certificate-validity-period", utils.CaValidityPeriod, "CA Certificate Validity Period", func(value uint16) {
 		_config.Config.CAValidityPeriod = uint(value)
 	})

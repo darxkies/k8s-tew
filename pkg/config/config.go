@@ -46,6 +46,7 @@ type Config struct {
 	AlertManagerCount            uint16      `yaml:"alert-manager-count"`
 	AlertManagerSize             uint16      `yaml:"alert-manager-size"`
 	KubeStateMetricsCount        uint16      `yaml:"kube-state-metrics-count"`
+	DrainGracePeriodSeconds      uint16      `yaml:"drain-grace-period-seconds"`
 	Versions                     Versions    `yaml:"versions"`
 	Assets                       AssetConfig `yaml:"assets,omitempty"`
 	Nodes                        Nodes       `yaml:"nodes"`
@@ -89,6 +90,7 @@ func NewConfig() *Config {
 	config.AlertManagerCount = utils.AlertManagerCount
 	config.AlertManagerSize = utils.AlertManagerSize
 	config.KubeStateMetricsCount = utils.KubeStateMetricsCount
+	config.DrainGracePeriodSeconds = utils.DrainGracePeriodSeconds
 	config.Versions = NewVersions()
 	config.Assets = AssetConfig{Directories: map[string]*AssetDirectory{}, Files: map[string]*AssetFile{}}
 	config.Nodes = Nodes{}

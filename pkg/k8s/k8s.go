@@ -55,6 +55,113 @@ func (k8s *K8S) getClient() (*kubernetes.Clientset, error) {
 	return result, nil
 }
 
+func (k8s *K8S) unschedulable(name string, unschedulable bool) error {
+	// Create client
+	clientset, error := k8s.getClient()
+	if error != nil {
+		return error
+	}
+
+	context := context.Background()
+
+	// Get Node
+	node, error := clientset.CoreV1().Nodes().Get(context, name, metav1.GetOptions{})
+	if error != nil {
+		return errors.Wrapf(error, "Could not get Kubernetes node '%s'", name)
+	}
+
+	if node.Spec.Unschedulable == unschedulable {
+		return nil
+	}
+
+	node.Spec.Unschedulable = unschedulable
+
+	node, error = clientset.CoreV1().Nodes().Update(context, node, metav1.UpdateOptions{})
+
+	if error != nil {
+		return errors.Wrapf(error, "Could not update node '%s'", name)
+	}
+
+	return nil
+}
+
+func (k8s *K8S) Cordon(name string) error {
+	return k8s.unschedulable(name, true)
+}
+
+func (k8s *K8S) Uncordon(name string) error {
+	return k8s.unschedulable(name, false)
+}
+
+func (k8s *K8S) Drain(nodeName string) error {
+	var clientset *kubernetes.Clientset
+	var pods *v1.PodList
+
+	clientset, _error := k8s.getClient()
+	if _error != nil {
+		return errors.Wrapf(_error, "Could not connect to cluster")
+	}
+
+	context := context.Background()
+
+	labelSelector := "cluster-relevant!=true"
+	fieldSelector := fmt.Sprintf("spec.nodeName=%s", nodeName)
+
+	for {
+		pods, _error = clientset.CoreV1().Pods("").List(context, metav1.ListOptions{FieldSelector: fieldSelector, LabelSelector: labelSelector})
+		if _error != nil {
+			return errors.Wrap(_error, "Could not get pods")
+		}
+
+		killed := 0
+
+		for _, pod := range pods.Items {
+			skip := false
+
+			for _, ownerReference := range pod.OwnerReferences {
+				if ownerReference.Kind == "Node" || ownerReference.Kind == "DaemonSet" {
+					skip = true
+
+					break
+				}
+			}
+
+			for _, toleration := range pod.Spec.Tolerations {
+				if toleration.Effect == v1.TaintEffectNoSchedule && toleration.Operator == v1.TolerationOpExists {
+					skip = true
+
+					break
+				}
+			}
+
+			if skip {
+				log.WithFields(log.Fields{"namespace": pod.Namespace, "pod": pod.Name}).Debug("Ignoring pod")
+
+				continue
+			}
+
+			log.WithFields(log.Fields{"namespace": pod.Namespace, "pod": pod.Name}).Debug("Evicting pod")
+
+			gracePeriodSeconds := int64(k8s.config.Config.DrainGracePeriodSeconds)
+
+			_error := clientset.CoreV1().Pods(pod.Namespace).Delete(context, pod.Name, metav1.DeleteOptions{GracePeriodSeconds: &gracePeriodSeconds})
+			if _error != nil {
+				log.WithFields(log.Fields{"error": _error, "namespace": pod.Namespace, "pod": pod.Name}).Debug("Could not evict pod")
+			}
+
+			killed++
+		}
+
+		if killed == 0 {
+			break
+		}
+
+		time.Sleep(time.Second)
+	}
+
+	return nil
+}
+
 func (k8s *K8S) TaintNode(name string, nodeData *config.Node) error {
 	// Create client
 	clientset, error := k8s.getClient()
@@ -372,7 +479,7 @@ func (k8s *K8S) WaitForCluster(totalStableIterations uint) error {
 			return
 		}
 
-		clusterNamespaces := []string{"kube-system", "networking", "storage", "backup", "logging", "monitoring", "showcase"}
+		clusterNamespaces := []string{utils.NamespaceKubeSystem, utils.NamespaceNetworking, utils.NamespaceStorage, utils.NamespaceBackup, utils.NamespaceLogging, utils.NamespaceMonitoring, utils.NamespaceShowcase}
 
 		for _, namespace := range namespaces.Items {
 			isRelevant := false

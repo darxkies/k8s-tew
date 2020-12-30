@@ -3237,7 +3237,6 @@ status:
   storedVersions: []
 
 ---
----
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
@@ -3295,6 +3294,7 @@ rules:
       - create
       - update
       - watch
+
 ---
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
@@ -3479,6 +3479,7 @@ spec:
     metadata:
       labels:
         k8s-app: calico-typha
+        cluster-relevant: "true"
       annotations:
         cluster-autoscaler.kubernetes.io/safe-to-evict: 'true'
     spec:
@@ -3552,6 +3553,7 @@ spec:
   selector:
     matchLabels:
       k8s-app: calico-typha
+
 ---
 kind: DaemonSet
 apiVersion: apps/v1
@@ -3572,6 +3574,7 @@ spec:
     metadata:
       labels:
         k8s-app: calico-node
+        cluster-relevant: "true"
     spec:
       nodeSelector:
         kubernetes.io/os: linux
@@ -3825,6 +3828,7 @@ spec:
       namespace: {{.Namespace}}
       labels:
         k8s-app: calico-kube-controllers
+        cluster-relevant: "true"
     spec:
       nodeSelector:
         kubernetes.io/os: linux

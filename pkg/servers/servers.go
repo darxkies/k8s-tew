@@ -13,6 +13,7 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"github.com/darxkies/k8s-tew/pkg/config"
+	"github.com/darxkies/k8s-tew/pkg/k8s"
 	"github.com/darxkies/k8s-tew/pkg/utils"
 )
 
@@ -138,8 +139,46 @@ func (servers *Servers) Run(commandRetries uint, cleanup func()) error {
 		utils.IncreaseProgressStep()
 	}
 
+	kubernetesClient := k8s.NewK8S(servers.config)
+
+	go func() {
+		log.Info("Uncordoning")
+
+		for {
+			if _error := kubernetesClient.Uncordon(servers.config.Name); _error != nil {
+				log.WithFields(log.Fields{"status": _error}).Debug("Uncordoning")
+
+				time.Sleep(time.Second)
+
+				continue
+			}
+
+			break
+		}
+
+		log.Info("Uncordoned")
+	}()
+
 	// Register servers' stop
 	defer func() {
+		log.Info("Cordoning")
+
+		if _error := kubernetesClient.Cordon(servers.config.Name); _error != nil {
+			log.WithFields(log.Fields{"Error": _error}).Error("Cordoning failed")
+
+		} else {
+			log.Info("Cordoned")
+
+			log.Info("Draining")
+
+			if _error := kubernetesClient.Drain(servers.config.Name); _error != nil {
+				log.WithFields(log.Fields{"error": _error}).Error("Drain failed")
+
+			} else {
+				log.Info("Drained")
+			}
+		}
+
 		for _, server := range servers.servers {
 			if server.Name() == utils.ContainerdServerName {
 				continue

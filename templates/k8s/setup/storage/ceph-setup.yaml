@@ -23,6 +23,7 @@ spec:
         app: ceph
         daemon: mon
         instance: ceph-mon-{{$node.Name}}
+        cluster-relevant: "true"
     spec:
       hostNetwork: true
       nodeSelector:
@@ -103,6 +104,7 @@ spec:
         app: ceph
         daemon: mgr
         instance: ceph-mgr-{{$node.Name}}
+        cluster-relevant: "true"
     spec:
       hostNetwork: true
       nodeSelector:
@@ -206,6 +208,7 @@ spec:
         app: ceph
         daemon: mds
         instance: ceph-mds-{{$node.Name}}
+        cluster-relevant: "true"
     spec:
       hostNetwork: true
       nodeSelector:
@@ -295,6 +298,7 @@ spec:
         app: ceph
         daemon: rgw
         instance: ceph-rgw-{{$node.Name}}
+        cluster-relevant: "true"
     spec:
       hostNetwork: true
       nodeSelector:
@@ -398,6 +402,7 @@ spec:
         app: ceph
         daemon: osd
         instance: ceph-osd-{{$node.Name}}
+        cluster-relevant: "true"
     spec:
       hostNetwork: true
       nodeSelector:
