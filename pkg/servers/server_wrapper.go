@@ -100,7 +100,7 @@ func (server *ServerWrapper) Start() error {
 				command.Env = append(command.Env, fmt.Sprintf("%s=%s", key, value))
 			}
 
-			log.WithFields(log.Fields{"name": server.Name(), "environment": strings.Join(command.Env, " ")}).Info("Server environment")
+			log.WithFields(log.Fields{"name": server.Name(), "environment": strings.Join(command.Env, " ")}).Debug("Server environment")
 
 			var logFile *os.File
 			var error error

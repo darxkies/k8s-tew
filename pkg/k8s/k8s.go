@@ -562,3 +562,29 @@ func (k8s *K8S) WaitForCluster(totalStableIterations uint) error {
 
 	return nil
 }
+
+func ApplyManifest(_config *config.InternalConfig, name, manifest string, commandRetries uint) error {
+	var error error
+
+	log.WithFields(log.Fields{"name": name, "_manifest": manifest}).Info("Applying manifest")
+
+	kubernetesClient := NewK8S(_config)
+
+	for retries := uint(0); retries < commandRetries; retries++ {
+		if error = kubernetesClient.Apply(manifest); error == nil {
+			break
+		}
+
+		log.WithFields(log.Fields{"name": name, "manifest": manifest, "error": error}).Debug("Manifest failed")
+
+		time.Sleep(time.Second)
+	}
+
+	if error != nil {
+		log.WithFields(log.Fields{"name": name, "manifest": manifest, "error": error}).Error("Manifest failed")
+
+		return error
+	}
+
+	return nil
+}

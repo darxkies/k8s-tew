@@ -221,14 +221,27 @@ func (servers *Servers) Run(commandRetries uint, cleanup func()) error {
 				continue
 			}
 
-			if error := servers.runCommand(command, commandRetries, index+1, len(servers.config.Config.Commands)); error != nil {
-				log.WithFields(log.Fields{"error": error}).Error("Cluster setup failed")
+			if len(command.Manifest) > 0 {
+				if error := k8s.ApplyManifest(servers.config, command.Name, command.Manifest, commandRetries); error != nil {
+					log.WithFields(log.Fields{"error": error}).Error("Cluster setup failed")
 
-				successful = false
+					successful = false
 
-				servers.stop = true
+					servers.stop = true
 
-				break
+					break
+				}
+
+			} else {
+				if error := servers.runCommand(command, commandRetries, index+1, len(servers.config.Config.Commands)); error != nil {
+					log.WithFields(log.Fields{"error": error}).Error("Cluster setup failed")
+
+					successful = false
+
+					servers.stop = true
+
+					break
+				}
 			}
 
 			utils.IncreaseProgressStep()

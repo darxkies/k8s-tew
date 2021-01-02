@@ -59,7 +59,7 @@ func addNode() error {
 		}
 
 		// Set labels
-		labels = []string{utils.NodeBootstrapper, utils.NodeController, utils.NodeWorker}
+		labels = []string{utils.NodeBootstrapper, utils.NodeController, utils.NodeWorker, utils.NodeStorage}
 
 		// Get public network settings
 		network, error := utils.RunCommandWithOutput(fmt.Sprintf("ip address | grep %s | cut -d ' ' -f 6", nodeIP))
