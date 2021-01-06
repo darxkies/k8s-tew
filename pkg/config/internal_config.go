@@ -241,7 +241,7 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.PemKubernetesDashboardKey, Labels{}, "", utils.DirectoryCertificates)
 
 	// Kubeconfig
-	config.addAssetFile(utils.KubeconfigAdmin, Labels{utils.NodeController}, "", utils.DirectoryK8sKubeConfig)
+	config.addAssetFile(utils.KubeconfigAdmin, Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, "", utils.DirectoryK8sKubeConfig)
 	config.addAssetFile(utils.KubeconfigControllerManager, Labels{utils.NodeController}, "", utils.DirectoryK8sKubeConfig)
 	config.addAssetFile(utils.KubeconfigScheduler, Labels{utils.NodeController}, "", utils.DirectoryK8sKubeConfig)
 	config.addAssetFile(utils.KubeconfigProxy, Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, "", utils.DirectoryK8sKubeConfig)
