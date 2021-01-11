@@ -5,6 +5,7 @@ metadata:
   name: kube-proxy
   labels:
     cluster-relevant: "true"
+    cluster-weight: "80"
 spec:
   hostNetwork: true
   containers:

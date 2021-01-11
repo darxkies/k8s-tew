@@ -5,6 +5,7 @@ metadata:
   name: kube-scheduler
   labels:
     cluster-relevant: "true"
+    cluster-weight: "85"
 spec:
   hostNetwork: true
   containers:

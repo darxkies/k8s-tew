@@ -5,6 +5,7 @@ metadata:
   name: kube-apiserver
   labels:
     cluster-relevant: "true"
+    cluster-weight: "95"
 spec:
   hostNetwork: true
   containers:

@@ -242,7 +242,7 @@ func (deployment *Deployment) runBoostrapperCommands() error {
 		}
 
 		if len(command.Manifest) > 0 {
-			if error := k8s.ApplyManifest(deployment.config, command.Name, command.Manifest, deployment.commandRetries); error != nil {
+			if error := k8s.ApplyManifest(deployment.config, command.Name, command.Manifest, int(deployment.commandRetries)); error != nil {
 				return error
 			}
 

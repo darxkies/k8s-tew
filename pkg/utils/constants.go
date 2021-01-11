@@ -98,6 +98,7 @@ const AdminUserName = "admin-user"
 const AdminUserNamespace = "kube-system"
 const KubernetesDashboardNamespace = "kube-system"
 const DrainGracePeriodSeconds = 0
+const ClusterWeight = "cluster-weight"
 
 // Ports
 const PortVipRaftController uint16 = 16277

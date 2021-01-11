@@ -5,6 +5,7 @@ metadata:
   name: {{.Type}}-virtual-ip
   labels:
     cluster-relevant: "true"
+    cluster-weight: "99"
 spec:
   hostNetwork: true
   containers:

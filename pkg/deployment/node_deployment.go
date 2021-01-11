@@ -334,10 +334,7 @@ func (deployment *NodeDeployment) pullImage(image string) error {
 	return nil
 }
 
-func (deployment *NodeDeployment) importImage(image string, filename string) error {
-	deployment.sshLimiter.Lock()
-	defer deployment.sshLimiter.Unlock()
-
+func GetImportImageCommand(config *config.InternalConfig, image, filename string) string {
 	tokens := strings.Split(image, ":")
 
 	baseName := image
@@ -347,9 +344,18 @@ func (deployment *NodeDeployment) importImage(image string, filename string) err
 		baseName = tokens[0]
 	}
 
-	ctr := fmt.Sprintf("CONTAINERD_NAMESPACE=\"%s\" \"%s\"", utils.ContainerdKubernetesNamespace, deployment.config.GetFullTargetAssetFilename(utils.BinaryCtr))
+	ctr := fmt.Sprintf("CONTAINERD_NAMESPACE=\"%s\" \"%s\"", utils.ContainerdKubernetesNamespace, config.GetFullTargetAssetFilename(utils.BinaryCtr))
 
 	command := fmt.Sprintf("%s i ls -q | grep -e \"^%s$\"; [ $? -eq 0 ] || %s i import --digests --base-name %s %s", ctr, image, ctr, baseName, filename)
+
+	return command
+}
+
+func (deployment *NodeDeployment) importImage(image string, filename string) error {
+	deployment.sshLimiter.Lock()
+	defer deployment.sshLimiter.Unlock()
+
+	command := GetImportImageCommand(deployment.config, image, filename)
 
 	if _, error := deployment.Execute(fmt.Sprintf("import-image-%s", image), command); error != nil {
 		return fmt.Errorf("Failed to import image %s (%s)", image, error.Error())

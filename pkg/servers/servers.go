@@ -13,6 +13,7 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"github.com/darxkies/k8s-tew/pkg/config"
+	"github.com/darxkies/k8s-tew/pkg/deployment"
 	"github.com/darxkies/k8s-tew/pkg/k8s"
 	"github.com/darxkies/k8s-tew/pkg/utils"
 )
@@ -204,6 +205,29 @@ func (servers *Servers) Run(commandRetries uint, cleanup func()) error {
 		log.Info("Stopped all servers")
 	}()
 
+	// Import images if downloaded and in node is a Bootstrapper
+	if config.CompareLabels(servers.config.Node.Labels, config.Labels{utils.NodeBootstrapper}) {
+		go func() {
+			for _, image := range servers.config.Config.Versions.GetImages() {
+				command := deployment.GetImportImageCommand(servers.config, image.Name, servers.config.GetFullTargetAssetFilename(image.GetImageFilename()))
+
+				log.WithFields(log.Fields{"name": image.Name}).Info("Import image")
+
+				for {
+					if _error := utils.RunCommand(command); _error != nil {
+						log.WithFields(log.Fields{"error": _error}).Info("Image import failed")
+
+						time.Sleep(time.Second)
+
+						continue
+					}
+
+					break
+				}
+			}
+		}()
+	}
+
 	go func() {
 		successful := true
 
@@ -222,7 +246,7 @@ func (servers *Servers) Run(commandRetries uint, cleanup func()) error {
 			}
 
 			if len(command.Manifest) > 0 {
-				if error := k8s.ApplyManifest(servers.config, command.Name, command.Manifest, commandRetries); error != nil {
+				if error := k8s.ApplyManifest(servers.config, command.Name, command.Manifest, -1); error != nil {
 					log.WithFields(log.Fields{"error": error}).Error("Cluster setup failed")
 
 					successful = false

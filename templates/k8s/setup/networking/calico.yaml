@@ -3480,6 +3480,7 @@ spec:
       labels:
         k8s-app: calico-typha
         cluster-relevant: "true"
+        cluster-weight: "85"
       annotations:
         cluster-autoscaler.kubernetes.io/safe-to-evict: 'true'
     spec:
@@ -3575,6 +3576,7 @@ spec:
       labels:
         k8s-app: calico-node
         cluster-relevant: "true"
+        cluster-weight: "85"
     spec:
       nodeSelector:
         kubernetes.io/os: linux
@@ -3829,6 +3831,7 @@ spec:
       labels:
         k8s-app: calico-kube-controllers
         cluster-relevant: "true"
+        cluster-weight: "85"
     spec:
       nodeSelector:
         kubernetes.io/os: linux

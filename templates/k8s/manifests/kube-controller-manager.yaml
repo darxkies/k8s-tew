@@ -5,6 +5,7 @@ metadata:
   name: kube-controller-manager
   labels:
     cluster-relevant: "true"
+    cluster-weight: "90"
 spec:
   hostNetwork: true
   containers:

@@ -5,6 +5,7 @@ metadata:
   name: gobetween
   labels:
     cluster-relevant: "true"
+    cluster-weight: "98"
 spec:
   hostNetwork: true
   containers:

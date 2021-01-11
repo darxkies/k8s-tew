@@ -6,6 +6,7 @@ import (
 	"net"
 	"os"
 	"sort"
+	"strconv"
 	"strings"
 	"time"
 
@@ -77,8 +78,7 @@ func Unmount(path string) error {
 }
 
 func KillContainers(_config *config.InternalConfig) {
-	// TODO
-	address := "/run/containerd/containerd.sock"
+	address := _config.GetFullTargetAssetFilename(utils.ContainerdSock)
 
 	dialer := func(address string, timeout time.Duration) (net.Conn, error) {
 		return net.DialTimeout("unix", address, timeout)
@@ -108,25 +108,14 @@ func KillContainers(_config *config.InternalConfig) {
 		return
 	}
 
-	getRemovalPriority := func(namespace string, name string) int {
-		if namespace == "kube-system" {
-			if strings.HasPrefix(name, "etcd-") {
-				return 5
+	getRemovalPriority := func(namespace string, name string, labels map[string]string) int {
+		if value, ok := labels[utils.ClusterWeight]; ok {
+			result, _error := strconv.ParseInt(value, 10, 64)
+			if _error == nil {
+				return int(result)
 			}
 
-			if strings.HasPrefix(name, "kube-apiserver") {
-				return 4
-			}
-
-			return 3
-		}
-
-		if namespace == "networking" {
-			return 2
-		}
-
-		if namespace == "storage" {
-			return 1
+			log.WithFields(log.Fields{"error": _error, "namespace": namespace, "pod": name}).Error("Cluster weight error")
 		}
 
 		return 0
@@ -135,8 +124,8 @@ func KillContainers(_config *config.InternalConfig) {
 	items := response.GetItems()
 
 	sort.Slice(items, func(i, j int) bool {
-		iRemovalPriority := getRemovalPriority(items[i].Metadata.Namespace, items[i].Metadata.Name)
-		jRemovalPriority := getRemovalPriority(items[j].Metadata.Namespace, items[j].Metadata.Name)
+		iRemovalPriority := getRemovalPriority(items[i].Metadata.Namespace, items[i].Metadata.Name, items[i].Labels)
+		jRemovalPriority := getRemovalPriority(items[j].Metadata.Namespace, items[j].Metadata.Name, items[j].Labels)
 
 		if iRemovalPriority == jRemovalPriority {
 			return items[i].Metadata.Name < items[j].Metadata.Name
@@ -159,7 +148,11 @@ func KillContainers(_config *config.InternalConfig) {
 	spew.Config.DisablePointerAddresses = true
 
 	for _, entry := range items {
+		log.Debug("Listing containers with timeout")
+
+		// ContainerStatus returns status of the container.
 		containers, _error := runtimeClient.ListContainers(context.Background(), &cri.ListContainersRequest{Filter: &cri.ContainerFilter{PodSandboxId: entry.Id}})
+
 		if _error != nil {
 			log.WithFields(log.Fields{"error": _error, "id": entry.Id, "namespace": entry.Metadata.Namespace, "name": entry.Metadata.Name}).Debug("CRI containers list failed")
 
@@ -169,7 +162,11 @@ func KillContainers(_config *config.InternalConfig) {
 		mounts := map[string]bool{}
 
 		for _, container := range containers.Containers {
-			containerStatus, _error := runtimeClient.ContainerStatus(context.Background(), &cri.ContainerStatusRequest{ContainerId: container.Id, Verbose: true})
+			log.WithFields(log.Fields{"id": entry.Id, "namespace": entry.Metadata.Namespace, "name": entry.Metadata.Name, "container-id": container.Id}).Debug("CRI container status query")
+
+			_context, _ := context.WithTimeout(context.Background(), time.Second)
+
+			containerStatus, _error := runtimeClient.ContainerStatus(_context, &cri.ContainerStatusRequest{ContainerId: container.Id, Verbose: true})
 			if _error != nil {
 				log.WithFields(log.Fields{"error": _error, "id": entry.Id, "namespace": entry.Metadata.Namespace, "name": entry.Metadata.Name, "container-id": container.Id}).Debug("CRI container status failed")
 
