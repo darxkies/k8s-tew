@@ -2,7 +2,7 @@ package utils
 
 // Versions
 const VersionConfig = "2.4.0"
-const VersionK8s = "v1.20.1"
+const VersionK8s = "v1.20.2"
 const VersionKubeAPIServer = "k8s.gcr.io/kube-apiserver:" + VersionK8s
 const VersionKubeControllerManager = "k8s.gcr.io/kube-controller-manager:" + VersionK8s
 const VersionKubeScheduler = "k8s.gcr.io/kube-scheduler:" + VersionK8s
@@ -22,7 +22,7 @@ const VersionCalicoTypha = "quay.io/calico/typha:v3.17.0"
 const VersionCalicoNode = "quay.io/calico/node:v3.17.0"
 const VersionCalicoCni = "quay.io/calico/cni:v3.17.0"
 const VersionCalicoKubeControllers = "quay.io/calico/kube-controllers:v3.17.0"
-const VersionCeph = "docker.io/ceph/ceph:v15.2.7"
+const VersionCeph = "docker.io/ceph/ceph:v15.2.8"
 const VersionCsiCephPlugin = "quay.io/cephcsi/cephcsi:v3.1.1"
 const VersionCsiAttacher = "quay.io/k8scsi/csi-attacher:v2.1.1"
 const VersionCsiProvisioner = "quay.io/k8scsi/csi-provisioner:v1.6.0"
