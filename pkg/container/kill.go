@@ -19,7 +19,7 @@ import (
 	cri "k8s.io/cri-api/pkg/apis/runtime/v1alpha2"
 )
 
-func getCSIGlobalMounts(destinationPrefix string) []string {
+func GetCSIGlobalMounts(destinationPrefix string) []string {
 	mounts := []string{}
 
 	bytes, error := ioutil.ReadFile("/proc/mounts")
@@ -134,7 +134,7 @@ func KillContainers(_config *config.InternalConfig) {
 		return iRemovalPriority < jRemovalPriority
 	})
 
-	for _, mount := range getCSIGlobalMounts(_config.GetFullLocalAssetDirectory(utils.DirectoryKubeletPlugins)) {
+	for _, mount := range GetCSIGlobalMounts(_config.GetFullLocalAssetDirectory(utils.DirectoryKubeletPlugins)) {
 		if _error = Unmount(mount); _error != nil {
 			log.WithFields(log.Fields{"error": _error, "mount": mount}).Debug("Global unmount failed")
 		} else {
