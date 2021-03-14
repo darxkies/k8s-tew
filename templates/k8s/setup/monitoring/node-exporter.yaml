@@ -131,6 +131,7 @@ spec:
           args:
             - --path.procfs=/host/proc
             - --path.sysfs=/host/sys
+            - --path.rootfs=/host/root
             - --web.listen-address=$(HOST_IP):9100
           env:
           - name: HOST_IP
@@ -156,6 +157,10 @@ spec:
             - name: sys
               mountPath: /host/sys
               readOnly: true
+            - name: root
+              mountPath: /host/root
+              mountPropagation: HostToContainer
+              readOnly: true
       hostNetwork: true
       hostPID: true
       tolerations:
@@ -168,3 +173,6 @@ spec:
         - name: sys
           hostPath:
             path: /sys
+        - name: root
+          hostPath:
+            path: /

@@ -113,7 +113,7 @@ rules:
     verbs: ["get", "list", "watch"]
   - apiGroups: [""]
     resources: ["secrets"]
-    verbs: ["get", "list"]
+    verbs: ["get", "list", "watch"]
   - apiGroups: [""]
     resources: ["events"]
     verbs: ["list", "watch", "create", "update", "patch"]
@@ -288,7 +288,6 @@ spec:
               mountPropagation: "Bidirectional"
             - name: mountpoint-dir
               mountPath: {{.PodsDirectory}}
-              mountPath: /var/lib/kubelet/pods
               mountPropagation: "Bidirectional"
             - name: keys-tmp-dir
               mountPath: /tmp/csi/keys
@@ -652,8 +651,8 @@ rules:
     resources: ["nodes"]
     verbs: ["get", "list", "watch"]
   - apiGroups: [""]
-    resources: ["secrets"]
-    verbs: ["get", "list"]
+    resources: ["becrets"]
+    verbs: ["get", "list", "watch"]
   - apiGroups: [""]
     resources: ["events"]
     verbs: ["list", "watch", "create", "update", "patch"]
@@ -1951,7 +1950,7 @@ metadata:
   namespace: {{.Namespace}}
   name: csi-snapshot-controller
 spec:
-  serviceName: snapshot-controller
+  serviceName: "snapshot-controller"
   replicas: 1
   selector:
     matchLabels:
