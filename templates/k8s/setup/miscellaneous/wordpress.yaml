@@ -62,6 +62,12 @@ spec:
         env:
         - name: MYSQL_ROOT_PASSWORD
           value: changeme
+        - name: MYSQL_USER
+          value: wordpress
+        - name: MYSQL_PASSWORD
+          value: changeme
+        - name: MYSQL_DATABASE
+          value: wordpress
         ports:
         - containerPort: 3306
           name: mysql
@@ -100,8 +106,12 @@ spec:
         env:
         - name: WORDPRESS_DB_HOST
           value: mysql
+        - name: WORDPRESS_DB_USER
+          value: wordpress
         - name: WORDPRESS_DB_PASSWORD
           value: changeme
+        - name: WORDPRESS_DB_NAME
+          value: wordpress
         livenessProbe:
           httpGet:
             path: /wp-admin/install.php

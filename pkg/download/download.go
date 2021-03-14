@@ -167,7 +167,7 @@ func (downloader Downloader) downloadExecutable(urlTemplate, remoteFilename, fil
 	return nil
 }
 
-func (downloader Downloader) extractTGZ(filename string, targetDirectory string) error {
+func (downloader Downloader) extractTGZ(filename string, targetDirectory string, compressed bool) error {
 	// Remove any previous content
 	os.RemoveAll(targetDirectory)
 
@@ -185,14 +185,22 @@ func (downloader Downloader) extractTGZ(filename string, targetDirectory string)
 	// Defer file close operation
 	defer file.Close()
 
-	// Open gzip reader
-	gzipReader, error := gzip.NewReader(file)
-	if error != nil {
-		return errors.Wrapf(error, "could not create gzip reader for '%s'", filename)
-	}
+	var tarReader *tar.Reader
 
-	// Open tar reader
-	tarReader := tar.NewReader(gzipReader)
+	if compressed {
+		// Open gzip reader
+		gzipReader, error := gzip.NewReader(file)
+		if error != nil {
+			return errors.Wrapf(error, "could not create gzip reader for '%s'", filename)
+		}
+
+		// Open tar reader
+		tarReader = tar.NewReader(gzipReader)
+
+	} else {
+		// Open tar reader
+		tarReader = tar.NewReader(file)
+	}
 
 	for {
 		// Get tar header
@@ -242,7 +250,7 @@ func (downloader Downloader) extractTGZ(filename string, targetDirectory string)
 	return nil
 }
 
-func (downloader Downloader) downloadAndExtractTGZFiles(urlTemplate, baseName string, files []CompressedFile) error {
+func (downloader Downloader) downloadAndExtractTGZFiles(urlTemplate, baseName string, files []CompressedFile, compressed bool) error {
 	// Check if files already exist
 	exist := true
 	temporaryDirectory := downloader.config.GetFullLocalAssetDirectory(utils.DirectoryTemporary)
@@ -299,7 +307,7 @@ func (downloader Downloader) downloadAndExtractTGZFiles(urlTemplate, baseName st
 	temporaryExtractedDirectory := path.Join(temporaryDirectory, baseName)
 
 	// Extrace files
-	if error := downloader.extractTGZ(temporaryFile, temporaryExtractedDirectory); error != nil {
+	if error := downloader.extractTGZ(temporaryFile, temporaryExtractedDirectory, compressed); error != nil {
 		return errors.Wrapf(error, "could not extract tgz '%s' to '%s'", temporaryFile, temporaryExtractedDirectory)
 	}
 
@@ -372,7 +380,7 @@ func (downloader Downloader) downloadHelmBinary() error {
 		},
 	}
 
-	return downloader.downloadAndExtractTGZFiles(utils.HelmDownloadUrl, utils.HelmBaseName, compressedFiles)
+	return downloader.downloadAndExtractTGZFiles(utils.HelmDownloadUrl, utils.HelmBaseName, compressedFiles, true)
 }
 
 func (downloader Downloader) downloadRuncBinary() error {
@@ -393,7 +401,7 @@ func (downloader Downloader) downloadEtcdBinaries() error {
 		},
 	}
 
-	return downloader.downloadAndExtractTGZFiles(utils.EtcdDownloadUrl, utils.EtcdBaseName, compressedFiles)
+	return downloader.downloadAndExtractTGZFiles(utils.EtcdDownloadUrl, utils.EtcdBaseName, compressedFiles, false)
 }
 
 func (downloader Downloader) downloadKubernetesBinaries() error {
@@ -410,7 +418,7 @@ func (downloader Downloader) downloadKubernetesBinaries() error {
 		},
 	}
 
-	return downloader.downloadAndExtractTGZFiles(utils.K8sDownloadUrl, utils.K8sBaseName, compressedFiles)
+	return downloader.downloadAndExtractTGZFiles(utils.K8sDownloadUrl, utils.K8sBaseName, compressedFiles, true)
 }
 
 func (downloader Downloader) downloadContainerdBinaries() error {
@@ -429,7 +437,7 @@ func (downloader Downloader) downloadContainerdBinaries() error {
 		},
 	}
 
-	return downloader.downloadAndExtractTGZFiles(utils.ContainerdDownloadUrl, utils.ContainerdBaseName, compressedFiles)
+	return downloader.downloadAndExtractTGZFiles(utils.ContainerdDownloadUrl, utils.ContainerdBaseName, compressedFiles, true)
 }
 
 func (downloader Downloader) downloadCriCtlBinary() error {
@@ -440,7 +448,7 @@ func (downloader Downloader) downloadCriCtlBinary() error {
 		},
 	}
 
-	return downloader.downloadAndExtractTGZFiles(utils.CrictlDownloadUrl, utils.CrictlBaseName, compressedFiles)
+	return downloader.downloadAndExtractTGZFiles(utils.CrictlDownloadUrl, utils.CrictlBaseName, compressedFiles, true)
 }
 
 func (downloader Downloader) downloadVeleroBinaries() error {
@@ -457,7 +465,7 @@ func (downloader Downloader) downloadVeleroBinaries() error {
 		},
 	}
 
-	return downloader.downloadAndExtractTGZFiles(utils.VeleroDownloadUrl, utils.VeleroBaseName, compressedFiles)
+	return downloader.downloadAndExtractTGZFiles(utils.VeleroDownloadUrl, utils.VeleroBaseName, compressedFiles, true)
 }
 
 func (downloader Downloader) downloadImages() error {

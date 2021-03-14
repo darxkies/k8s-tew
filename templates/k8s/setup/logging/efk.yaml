@@ -451,7 +451,7 @@ spec:
         command:
         - sh
         - -c
-        - bin/elasticsearch-users useradd $ELASTIC_USERNAME -p $ELASTIC_PASSWORD -r superuser && /tini -s -- /usr/local/bin/docker-entrypoint.sh eswrapper
+        - bin/elasticsearch-users useradd $ELASTIC_USERNAME -p $ELASTIC_PASSWORD -r superuser && /bin/tini -- /usr/local/bin/docker-entrypoint.sh eswrapper
         resources:
           limits:
             cpu: 1000m

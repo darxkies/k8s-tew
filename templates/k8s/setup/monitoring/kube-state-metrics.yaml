@@ -151,10 +151,10 @@ metadata:
   labels:
     app.kubernetes.io/name: kube-state-metrics
 spec:
+  replicas: {{ .KubeStateMetricsCount }}
   selector:
     matchLabels:
       app.kubernetes.io/name: kube-state-metrics
-  replicas: {{ .KubeStateMetricsCount }}
   template:
     metadata:
       labels:

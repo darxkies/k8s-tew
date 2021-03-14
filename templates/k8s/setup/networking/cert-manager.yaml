@@ -25414,7 +25414,7 @@ rules:
   - apiGroups: [""]
     resources: ["pods", "services"]
     verbs: ["get", "list", "watch", "create", "delete"]
-  - apiGroups: ["extensions"]
+  - apiGroups: ["networking.k8s.io"]
     resources: ["ingresses"]
     verbs: ["get", "list", "watch", "create", "delete", "update"]
   - apiGroups: ["route.openshift.io"]
@@ -25442,10 +25442,10 @@ rules:
   - apiGroups: ["cert-manager.io"]
     resources: ["certificates", "certificaterequests", "issuers", "clusterissuers"]
     verbs: ["get", "list", "watch"]
-  - apiGroups: ["extensions"]
+  - apiGroups: ["networking.k8s.io"]
     resources: ["ingresses"]
     verbs: ["get", "list", "watch"]
-  - apiGroups: ["extensions"]
+  - apiGroups: ["networking.k8s.io"]
     resources: ["ingresses/finalizers"]
     verbs: ["update"]
   - apiGroups: [""]
@@ -25467,6 +25467,9 @@ rules:
   - apiGroups: ["cert-manager.io"]
     resources: ["certificates", "certificaterequests", "issuers"]
     verbs: ["get", "list", "watch"]
+  - apiGroups: ["acme.cert-manager.io"]
+    resources: ["challenges", "orders"]
+    verbs: ["get", "list", "watch"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -25481,6 +25484,9 @@ rules:
   - apiGroups: ["cert-manager.io"]
     resources: ["certificates", "certificaterequests", "issuers"]
     verbs: ["create", "delete", "deletecollection", "patch", "update"]
+  - apiGroups: ["acme.cert-manager.io"]
+    resources: ["challenges", "orders"]
+    verbs: ["get", "list", "watch"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -25777,7 +25783,7 @@ spec:
                 fieldPath: metadata.namespace
           resources:
             {}
-            
+
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -25907,6 +25913,7 @@ webhooks:
         resources:
           - "*/*"
     admissionReviewVersions: ["v1", "v1beta1"]
+    timeoutSeconds: 10
     failurePolicy: Fail
     sideEffects: None
     clientConfig:
@@ -25948,6 +25955,7 @@ webhooks:
         resources:
           - "*/*"
     admissionReviewVersions: ["v1", "v1beta1"]
+    timeoutSeconds: 10
     failurePolicy: Fail
     sideEffects: None
     clientConfig:

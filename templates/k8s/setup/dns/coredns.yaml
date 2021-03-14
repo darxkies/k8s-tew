@@ -11,16 +11,23 @@ metadata:
     kubernetes.io/bootstrapping: rbac-defaults
   name: system:coredns
 rules:
-- apiGroups:
-  - ""
-  resources:
-  - endpoints
-  - services
-  - pods
-  - namespaces
-  verbs:
-  - list
-  - watch
+  - apiGroups:
+    - ""
+    resources:
+    - endpoints
+    - services
+    - pods
+    - namespaces
+    verbs:
+    - list
+    - watch
+  - apiGroups:
+    - discovery.k8s.io
+    resources:
+    - endpointslices
+    verbs:
+    - list
+    - watch
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -49,16 +56,16 @@ data:
     .:53 {
         errors
         health {
-            lameduck 5s
+          lameduck 5s
         }
         ready
         kubernetes {{.ClusterDomain}} in-addr.arpa ip6.arpa {
-          pods insecure
           fallthrough in-addr.arpa ip6.arpa
-          ttl 30
         }
         prometheus :9153
-        forward . /etc/resolv.conf
+        forward . /etc/resolv.conf {
+          max_concurrent 1000
+        }
         cache 30
         loop
         reload
@@ -87,6 +94,7 @@ spec:
       labels:
         k8s-app: kube-dns
     spec:
+      priorityClassName: system-cluster-critical
       serviceAccountName: coredns
       tolerations:
         - key: "CriticalAddonsOnly"
@@ -94,6 +102,12 @@ spec:
       containers:
       - name: coredns
         image: {{.CoreDNSImage}}
+        resources:
+          limits:
+            memory: 170Mi
+          requests:
+            cpu: 100m
+            memory: 70Mi
         args: [ "-conf", "/etc/coredns/Corefile" ]
         volumeMounts:
         - name: config-volume
@@ -126,6 +140,11 @@ spec:
           timeoutSeconds: 5
           successThreshold: 1
           failureThreshold: 5
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8181
+            scheme: HTTP
       dnsPolicy: Default
       volumes:
         - name: config-volume
@@ -157,4 +176,7 @@ spec:
     protocol: UDP
   - name: dns-tcp
     port: 53
+    protocol: TCP
+  - name: metrics
+    port: 9153
     protocol: TCP
