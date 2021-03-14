@@ -44,7 +44,9 @@ var runCmd = &cobra.Command{
 
 		if error := serversContainer.Run(commandRetries, func() {
 			if killContainers {
-				container.KillContainers(_config)
+				pods := container.NewPods(_config)
+
+				pods.Kill()
 			}
 
 		}); error != nil {

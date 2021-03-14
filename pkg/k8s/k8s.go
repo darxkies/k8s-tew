@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/darxkies/k8s-tew/pkg/config"
-	"github.com/darxkies/k8s-tew/pkg/container"
 	"github.com/darxkies/k8s-tew/pkg/utils"
 	jsonpatch "github.com/evanphx/json-patch"
 
@@ -163,7 +162,7 @@ func (k8s *K8S) Drain(nodeName string) error {
 	log.Debug("Looking for CSI mounts")
 
 	for i := 0; i < int(k8s.config.Config.DrainGracePeriodSeconds); i++ {
-		list := container.GetCSIGlobalMounts(k8s.config.GetFullLocalAssetDirectory(utils.DirectoryKubeletPlugins))
+		list := utils.GetCSIGlobalMounts(k8s.config.GetFullLocalAssetDirectory(utils.DirectoryKubeletPlugins))
 
 		if len(list) == 0 {
 			break

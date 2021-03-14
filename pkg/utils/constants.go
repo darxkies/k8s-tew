@@ -2,7 +2,7 @@ package utils
 
 // Versions
 const VersionConfig = "2.4.0"
-const VersionK8s = "v1.20.2"
+const VersionK8s = "v1.20.4"
 const VersionKubeAPIServer = "k8s.gcr.io/kube-apiserver:" + VersionK8s
 const VersionKubeControllerManager = "k8s.gcr.io/kube-controller-manager:" + VersionK8s
 const VersionKubeScheduler = "k8s.gcr.io/kube-scheduler:" + VersionK8s
@@ -99,6 +99,7 @@ const AdminUserNamespace = "kube-system"
 const KubernetesDashboardNamespace = "kube-system"
 const DrainGracePeriodSeconds = 0
 const ClusterWeight = "cluster-weight"
+const ClusterCache = "cluster-cache"
 
 // Ports
 const PortVipRaftController uint16 = 16277

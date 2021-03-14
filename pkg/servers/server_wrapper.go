@@ -65,7 +65,7 @@ func NewServerWrapper(_config config.InternalConfig, name string, serverConfig c
 
 func (server *ServerWrapper) Start() error {
 	if server.started {
-		return fmt.Errorf("%s already started", server.name)
+		return nil
 	}
 
 	server.stop = false
@@ -143,6 +143,8 @@ func (server *ServerWrapper) Stop() {
 	if !server.started {
 		return
 	}
+
+	log.WithFields(log.Fields{"name": server.Name()}).Info("Stopping server")
 
 	server.stop = true
 

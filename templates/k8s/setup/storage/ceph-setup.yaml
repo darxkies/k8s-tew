@@ -25,6 +25,7 @@ spec:
         instance: ceph-mon-{{$node.Name}}
         cluster-relevant: "true"
         cluster-weight: "75"
+        cluster-cache: "true"
     spec:
       hostNetwork: true
       nodeSelector:
@@ -107,6 +108,7 @@ spec:
         instance: ceph-mgr-{{$node.Name}}
         cluster-relevant: "true"
         cluster-weight: "75"
+        cluster-cache: "true"
     spec:
       hostNetwork: true
       nodeSelector:
@@ -212,6 +214,7 @@ spec:
         instance: ceph-mds-{{$node.Name}}
         cluster-relevant: "true"
         cluster-weight: "75"
+        cluster-cache: "true"
     spec:
       hostNetwork: true
       nodeSelector:
@@ -303,6 +306,7 @@ spec:
         instance: ceph-rgw-{{$node.Name}}
         cluster-relevant: "true"
         cluster-weight: "75"
+        cluster-cache: "true"
     spec:
       hostNetwork: true
       nodeSelector:
@@ -408,6 +412,7 @@ spec:
         instance: ceph-osd-{{$node.Name}}
         cluster-relevant: "true"
         cluster-weight: "75"
+        cluster-cache: "true"
     spec:
       hostNetwork: true
       nodeSelector:

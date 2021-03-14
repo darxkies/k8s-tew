@@ -23,4 +23,3 @@ featureGates:
 resolvConf: "{{.ResolvConf}}"
 readOnlyPort: 10255
 maxPods: {{.MaxPods}}
-cpuManagerReconcilePeriod: 0s

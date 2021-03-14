@@ -19,6 +19,7 @@ import (
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 	oslib "github.com/wille/osutil"
+	"golang.org/x/sys/unix"
 )
 
 const commandTimeout = 60 // In seconds
@@ -346,4 +347,62 @@ func MoveFile(sourceFilename, targetFilename string) error {
 	}
 
 	return nil
+}
+
+func PathExists(path string) bool {
+	if _, error := os.Stat(path); !os.IsNotExist(error) {
+		return true
+	}
+
+	return false
+}
+
+func Unmount(path string) error {
+	if PathExists(path) {
+		return unix.Unmount(path, 0)
+	}
+
+	return nil
+}
+
+func GetCSIGlobalMounts(destinationPrefix string) []string {
+	mounts := []string{}
+
+	bytes, error := ioutil.ReadFile("/proc/mounts")
+	if error != nil {
+		log.WithFields(log.Fields{"error": error}).Debug("Read mounts failed")
+
+		return mounts
+	}
+
+	content := string(bytes)
+
+	lines := strings.Split(content, "\n")
+
+	for _, line := range lines {
+		tokens := strings.Split(line, " ")
+
+		if len(tokens) < 3 {
+			continue
+		}
+
+		source := tokens[0]
+		destination := tokens[1]
+
+		if !strings.HasPrefix(source, "/dev/rbd") {
+			continue
+		}
+
+		if !strings.HasPrefix(destination, destinationPrefix) {
+			continue
+		}
+
+		if !strings.Contains(destination, "globalmount") {
+			continue
+		}
+
+		mounts = append(mounts, destination)
+	}
+
+	return mounts
 }

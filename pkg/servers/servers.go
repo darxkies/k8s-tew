@@ -13,6 +13,7 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"github.com/darxkies/k8s-tew/pkg/config"
+	"github.com/darxkies/k8s-tew/pkg/container"
 	"github.com/darxkies/k8s-tew/pkg/deployment"
 	"github.com/darxkies/k8s-tew/pkg/k8s"
 	"github.com/darxkies/k8s-tew/pkg/utils"
@@ -107,6 +108,10 @@ func (servers *Servers) Run(commandRetries uint, cleanup func()) error {
 		return errors.Wrap(error, "extracting embedded files failed")
 	}
 
+	isContainerd := func(server Server) bool {
+		return server.Name() == utils.ContainerdServerName
+	}
+
 	pathEnvironment := os.Getenv("PATH")
 	pathEnvironment = fmt.Sprintf("PATH=%s:%s", servers.config.GetFullLocalAssetDirectory(utils.DirectoryHostBinaries), pathEnvironment)
 
@@ -129,11 +134,31 @@ func (servers *Servers) Run(commandRetries uint, cleanup func()) error {
 		servers.add(server)
 	}
 
-	// Start servers
+	// Start only containerd
 	for _, server := range servers.servers {
-		if error := server.Start(); error != nil {
-			log.WithFields(log.Fields{"name": server.Name(), "error": error}).Error("Server start failed")
+		if !isContainerd(server) {
+			continue
+		}
 
+		if error := server.Start(); error != nil {
+			return error
+		}
+
+		utils.IncreaseProgressStep()
+	}
+
+	// Restore Pods
+	_pods := container.NewPods(servers.config)
+
+	_pods.Restore()
+
+	// Start all other entries
+	for _, server := range servers.servers {
+		if isContainerd(server) {
+			continue
+		}
+
+		if error := server.Start(); error != nil {
 			return error
 		}
 
@@ -180,32 +205,26 @@ func (servers *Servers) Run(commandRetries uint, cleanup func()) error {
 			}
 		}
 
+		// Stop all servers but containerd
 		for _, server := range servers.servers {
-			if server.Name() == utils.ContainerdServerName {
+			if isContainerd(server) {
 				continue
 			}
-
-			log.WithFields(log.Fields{"name": server.Name()}).Info("Stopping server")
 
 			server.Stop()
 		}
 
 		cleanup()
 
+		// Stop containerd
 		for _, server := range servers.servers {
-			if server.Name() != utils.ContainerdServerName {
-				continue
-			}
-
-			log.WithFields(log.Fields{"name": server.Name()}).Info("Stopping server")
-
 			server.Stop()
 		}
 
 		log.Info("Stopped all servers")
 	}()
 
-	// Import images if downloaded and in node is a Bootstrapper
+	// Import images if downloaded and if node is a Bootstrapper
 	if config.CompareLabels(servers.config.Node.Labels, config.Labels{utils.NodeBootstrapper}) {
 		go func() {
 			for _, image := range servers.config.Config.Versions.GetImages() {
