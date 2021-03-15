@@ -291,16 +291,8 @@ func (pods *Pods) Kill() {
 		return
 	}
 
-	filter := &cri.PodSandboxFilter{}
-
-	stateValue := &cri.PodSandboxStateValue{}
-	stateValue.State = cri.PodSandboxState_SANDBOX_READY
-	filter.State = stateValue
-
-	request := &cri.ListPodSandboxRequest{Filter: filter}
-
 	// Get list of pods
-	response, _error := runtimeClient.ListPodSandbox(context.Background(), request)
+	response, _error := runtimeClient.ListPodSandbox(context.Background(), &cri.ListPodSandboxRequest{Filter: &cri.PodSandboxFilter{State: &cri.PodSandboxStateValue{State: cri.PodSandboxState_SANDBOX_READY}}})
 	if _error != nil {
 		log.WithFields(log.Fields{"error": _error}).Debug("CRI pods list failed")
 
@@ -370,7 +362,7 @@ func (pods *Pods) Kill() {
 		logMessage.Debug("Listing pod containers with timeout")
 
 		// ContainerStatus returns status of the container.
-		containers, _error := runtimeClient.ListContainers(context.Background(), &cri.ListContainersRequest{Filter: &cri.ContainerFilter{PodSandboxId: pod.Id}})
+		containers, _error := runtimeClient.ListContainers(context.Background(), &cri.ListContainersRequest{Filter: &cri.ContainerFilter{PodSandboxId: pod.Id, State: &cri.ContainerStateValue{State: cri.ContainerState_CONTAINER_RUNNING}}})
 		if _error != nil {
 			logMessage.WithFields(log.Fields{"error": _error}).Debug("CRI containers list failed")
 

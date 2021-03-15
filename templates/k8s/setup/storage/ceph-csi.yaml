@@ -651,7 +651,7 @@ rules:
     resources: ["nodes"]
     verbs: ["get", "list", "watch"]
   - apiGroups: [""]
-    resources: ["becrets"]
+    resources: ["secrets"]
     verbs: ["get", "list", "watch"]
   - apiGroups: [""]
     resources: ["events"]

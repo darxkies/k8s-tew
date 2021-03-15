@@ -10,6 +10,7 @@ import (
 	"net/url"
 	"os"
 	"path"
+	"time"
 
 	"github.com/pkg/errors"
 	uuid "github.com/satori/go.uuid"
@@ -116,9 +117,17 @@ func NewProxy(scheme, publicAddress, port string) *Proxy {
 func RunProxy(proxyPort, sslCertificate, sslKey, scheme, publicAddress, targetPort string) {
 	address := fmt.Sprintf(":%s", proxyPort)
 
-	log.Printf("Starting proxy at '%s'", address)
+	log.Printf("Starting proxy at '%s' to '%s:%s'", address, publicAddress, targetPort)
 
-	http.ListenAndServeTLS(address, sslCertificate, sslKey, NewProxy(scheme, publicAddress, targetPort))
+	for {
+		if _error := http.ListenAndServeTLS(address, sslCertificate, sslKey, NewProxy(scheme, publicAddress, targetPort)); _error != nil {
+			log.Printf("Proxy listener failed: %v", _error)
+		}
+
+		time.Sleep(time.Second)
+
+		log.Printf("Restarting proxy")
+	}
 }
 
 func (proxy *Proxy) ServeHTTP(response http.ResponseWriter, request *http.Request) {
