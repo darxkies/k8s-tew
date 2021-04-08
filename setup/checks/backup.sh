@@ -21,7 +21,7 @@ function get_mysql_pod_name()
 
 function write_to_pod()
 {
-	kubectl exec -t -i -n showcase $1 -- sh -c "echo $2 > $3"
+	kubectl exec -t -i -n showcase $1 -- sh -c "echo $2 > $3; sync"
 }
 
 function read_from_pod()

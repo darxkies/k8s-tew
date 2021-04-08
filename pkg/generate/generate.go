@@ -704,7 +704,7 @@ func (generator *Generator) generateCertificates() error {
 	}
 
 	// Generate service accounts certificate
-	if error := pki.GenerateClient(generator.ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, "service-accounts", "Kubernetes", kubernetesDNSNames, kubernetesIPAddresses, generator.config.GetFullLocalAssetFilename(utils.PemServiceAccount), generator.config.GetFullLocalAssetFilename(utils.PemServiceAccountKey), false); error != nil {
+	if error := pki.GenerateClient(generator.ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, "service-accounts", "Kubernetes", kubernetesDNSNames, kubernetesIPAddresses, generator.config.GetFullLocalAssetFilename(utils.PemServiceAccount), generator.config.GetFullLocalAssetFilename(utils.PemServiceAccountKey), true); error != nil {
 		return error
 	}
 
@@ -726,7 +726,7 @@ func (generator *Generator) generateCertificates() error {
 	for nodeName, node := range generator.config.Config.Nodes {
 		generator.config.SetNode(nodeName, node)
 
-		if error := pki.GenerateClient(generator.ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, fmt.Sprintf(utils.CnSystemNodePrefix, nodeName), "system:nodes", []string{nodeName}, []string{node.IP}, generator.config.GetFullLocalAssetFilename(utils.PemKubelet), generator.config.GetFullLocalAssetFilename(utils.PemKubeletKey), false); error != nil {
+		if error := pki.GenerateClient(generator.ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, fmt.Sprintf(utils.CnSystemNodePrefix, nodeName), "system:nodes", []string{nodeName}, []string{node.IP}, generator.config.GetFullLocalAssetFilename(utils.PemKubelet), generator.config.GetFullLocalAssetFilename(utils.PemKubeletKey), true); error != nil {
 			return error
 		}
 	}

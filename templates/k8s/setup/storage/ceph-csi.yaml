@@ -38,6 +38,8 @@ parameters:
   imageFeatures: layering
   csi.storage.k8s.io/provisioner-secret-name: csi-rbd-secret
   csi.storage.k8s.io/provisioner-secret-namespace: {{.Namespace}}
+  csi.storage.k8s.io/controller-expand-secret-name: csi-rbd-secret
+  csi.storage.k8s.io/controller-expand-secret-namespace: {{.Namespace}}
   csi.storage.k8s.io/node-stage-secret-name: csi-rbd-secret
   csi.storage.k8s.io/node-stage-secret-namespace: {{.Namespace}}
   allowVolumeExpansion: "true"
@@ -1979,7 +1981,7 @@ metadata:
   labels:
     velero.io/csi-volumesnapshot-class: "true"
 driver: rbd.csi.ceph.com
-deletionPolicy: Retain
+deletionPolicy: Delete
 parameters:
   clusterID: {{.ClusterID}}
   pool: {{.CephRBDPoolName}}
@@ -1997,7 +1999,7 @@ metadata:
   labels:
     velero.io/csi-volumesnapshot-class: "true"
 driver: cephfs.csi.ceph.com
-deletionPolicy: Retain
+deletionPolicy: Delete
 parameters:
   clusterID: {{.ClusterID}}
   pool: {{.CephFSPoolName}}
