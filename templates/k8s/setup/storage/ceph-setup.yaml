@@ -177,12 +177,12 @@ spec:
           subPath: ceph-key.pem
         livenessProbe:
           tcpSocket:
-            port: 8443
+            port: 9283
           initialDelaySeconds: 60
           timeoutSeconds: 5
         readinessProbe:
           tcpSocket:
-            port: 8443
+            port: 9283
           timeoutSeconds: 5
 
 ---

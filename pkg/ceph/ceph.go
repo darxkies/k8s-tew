@@ -292,7 +292,7 @@ func (ceph *Ceph) RunMgr(id, publicAddress, sslCertificate, sslKey, proxyPort st
 	log.WithFields(log.Fields{"keyring": keyring, "id": id}).Info("Starting mgr")
 
 	// Start mgr
-	if _error := utils.RunCommandWithConsoleOutput(fmt.Sprintf("%s -f -i %s", cephMgrBinary, id)); _error != nil {
+	if _error := utils.RunCommandWithConsoleOutput(fmt.Sprintf("%s -f -d -i %s", cephMgrBinary, id)); _error != nil {
 		return _error
 	}
 
