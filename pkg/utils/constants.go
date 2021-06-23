@@ -2,21 +2,21 @@ package utils
 
 // Versions
 const VersionConfig = "2.4.0"
-const VersionK8s = "v1.21.1"
+const VersionK8s = "v1.21.2"
 const VersionKubeAPIServer = "k8s.gcr.io/kube-apiserver:" + VersionK8s
 const VersionKubeControllerManager = "k8s.gcr.io/kube-controller-manager:" + VersionK8s
 const VersionKubeScheduler = "k8s.gcr.io/kube-scheduler:" + VersionK8s
 const VersionKubeProxy = "k8s.gcr.io/kube-proxy:" + VersionK8s
-const VersionEtcd = "quay.io/coreos/etcd:v3.4.15"
+const VersionEtcd = "quay.io/coreos/etcd:v3.5.0"
 const VersionContainerd = "1.5.2"
-const VersionRunc = "1.0.0-rc95"
+const VersionRunc = "1.0.0"
 const VersionCrictl = "1.21.0"
-const VersionHelm = "3.5.4"
+const VersionHelm = "3.6.1"
 const VersionGobetween = "docker.io/yyyar/gobetween:0.8.0"
 const VersionVirtualIP = "docker.io/darxkies/virtual-ip:1.0.1"
 const VersionBusybox = "docker.io/library/busybox:1.33.1"
 const VersionPause = "k8s.gcr.io/pause:3.5"
-const VersionCoreDNS = "docker.io/coredns/coredns:1.8.3"
+const VersionCoreDNS = "docker.io/coredns/coredns:1.8.4"
 const VersionCalicoPod2Daemon = "quay.io/calico/pod2daemon-flexvol:v3.18.3"
 const VersionCalicoTypha = "quay.io/calico/typha:v3.18.3"
 const VersionCalicoNode = "quay.io/calico/node:v3.18.3"
@@ -119,7 +119,7 @@ const PortWordpress uint16 = 30100
 const K8sBaseName = "kubernetes-node-linux-amd64"
 const K8sDownloadUrl = "https://storage.googleapis.com/kubernetes-release/release/{{.Versions.K8S}}/{{.Filename}}.tar.gz"
 const EtcdBaseName = "etcd-{{.Versions.Etcd | image_tag}}-linux-amd64"
-const EtcdDownloadUrl = "https://github.com/etcd-io/etcd/releases/download/{{.Versions.Etcd | image_tag}}/{{.Filename}}.tar"
+const EtcdDownloadUrl = "https://github.com/etcd-io/etcd/releases/download/{{.Versions.Etcd | image_tag}}/{{.Filename}}.tar.gz"
 const CniBaseName = "cni-plugins-amd64-v{{.Versions.CNI}}"
 const CniDownloadUrl = "https://github.com/containernetworking/plugins/releases/download/v{{.Versions.CNI}}/{{.Filename}}.tgz"
 const ContainerdBaseName = "containerd-{{.Versions.Containerd}}-linux-amd64"

@@ -401,7 +401,7 @@ func (downloader Downloader) downloadEtcdBinaries() error {
 		},
 	}
 
-	return downloader.downloadAndExtractTGZFiles(utils.EtcdDownloadUrl, utils.EtcdBaseName, compressedFiles, false)
+	return downloader.downloadAndExtractTGZFiles(utils.EtcdDownloadUrl, utils.EtcdBaseName, compressedFiles, true)
 }
 
 func (downloader Downloader) downloadKubernetesBinaries() error {
