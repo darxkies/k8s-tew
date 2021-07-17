@@ -2,14 +2,14 @@ package utils
 
 // Versions
 const VersionConfig = "2.4.0"
-const VersionK8s = "v1.21.2"
+const VersionK8s = "v1.21.3"
 const VersionKubeAPIServer = "k8s.gcr.io/kube-apiserver:" + VersionK8s
 const VersionKubeControllerManager = "k8s.gcr.io/kube-controller-manager:" + VersionK8s
 const VersionKubeScheduler = "k8s.gcr.io/kube-scheduler:" + VersionK8s
 const VersionKubeProxy = "k8s.gcr.io/kube-proxy:" + VersionK8s
 const VersionEtcd = "quay.io/coreos/etcd:v3.5.0"
-const VersionContainerd = "1.5.2"
-const VersionRunc = "1.0.0"
+const VersionContainerd = "1.5.3"
+const VersionRunc = "1.0.1"
 const VersionCrictl = "1.21.0"
 const VersionHelm = "3.6.1"
 const VersionGobetween = "docker.io/yyyar/gobetween:0.8.0"
