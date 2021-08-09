@@ -18,8 +18,6 @@ tlsCertFile: "{{.CertificateFilename}}"
 tlsPrivateKeyFile: "{{.KeyFilename}}"
 staticPodPath: "{{.StaticPodPath}}"
 failSwapOn: false
-featureGates: 
-  VolumeSnapshotDataSource: true
 resolvConf: "{{.ResolvConf}}"
 readOnlyPort: 10255
 maxPods: {{.MaxPods}}
