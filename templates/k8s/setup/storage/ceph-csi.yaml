@@ -88,6 +88,15 @@ rules:
   - apiGroups: [""]
     resources: ["configmaps"]
     verbs: ["get"]
+  - apiGroups: [""]
+    resources: ["serviceaccounts"]
+    verbs: ["get"]
+  - apiGroups: [""]
+    resources: ["persistentvolumes"]
+    verbs: ["get"]
+  - apiGroups: ["storage.k8s.io"]
+    resources: ["volumeattachments"]
+    verbs: ["list", "get"]
 ---
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
@@ -159,6 +168,9 @@ rules:
     verbs: ["update"]
   - apiGroups: [""]
     resources: ["configmaps"]
+    verbs: ["get"]
+  - apiGroups: [""]
+    resources: ["serviceaccounts"]
     verbs: ["get"]
 ---
 kind: ClusterRoleBinding
@@ -256,11 +268,14 @@ spec:
           image: {{.CSICephPluginImage}}
           args:
             - "--nodeid=$(NODE_ID)"
+            - "--pluginpath=/var/lib/kubelet/plugins"
+            - "--stagingpath=/var/lib/kubelet/plugins/kubernetes.io/csi/pv/"
             - "--type=rbd"
             - "--nodeserver=true"
             - "--endpoint=$(CSI_ENDPOINT)"
             - "--v=5"
             - "--drivername=rbd.csi.ceph.com"
+            - "--enableprofiling=false"
           env:
             - name: POD_IP
               valueFrom:
@@ -522,6 +537,7 @@ spec:
             - "--pidlimit=-1"
             - "--rbdhardmaxclonedepth=8"
             - "--rbdsoftmaxclonedepth=4"
+            - "--enableprofiling=false"
           env:
             - name: POD_IP
               valueFrom:
@@ -805,6 +821,7 @@ spec:
             - "--endpoint=$(CSI_ENDPOINT)"
             - "--v=5"
             - "--drivername=cephfs.csi.ceph.com"
+            - "--enableprofiling=false"
           env:
             - name: POD_IP
               valueFrom:
@@ -1053,6 +1070,7 @@ spec:
             - "--v=5"
             - "--drivername=cephfs.csi.ceph.com"
             - "--pidlimit=-1"
+            - "--enableprofiling=false"
           env:
             - name: POD_IP
               valueFrom:
@@ -1126,51 +1144,6 @@ spec:
           }
 
 ---
-apiVersion: policy/v1beta1
-kind: PodSecurityPolicy
-metadata:
-  name: rbd-csi-nodeplugin-psp
-spec:
-  allowPrivilegeEscalation: true
-  allowedCapabilities:
-    - 'SYS_ADMIN'
-  fsGroup:
-    rule: RunAsAny
-  privileged: true
-  hostNetwork: true
-  hostPID: true
-  runAsUser:
-    rule: RunAsAny
-  seLinux:
-    rule: RunAsAny
-  supplementalGroups:
-    rule: RunAsAny
-  volumes:
-    - 'configMap'
-    - 'emptyDir'
-    - 'projected'
-    - 'secret'
-    - 'downwardAPI'
-    - 'hostPath'
-  allowedHostPaths:
-    - pathPrefix: '/dev'
-      readOnly: false
-    - pathPrefix: '/run/mount'
-      readOnly: false
-    - pathPrefix: '/sys'
-      readOnly: false
-    - pathPrefix: '/lib/modules'
-      readOnly: true
-    - pathPrefix: '/var/lib/kubelet/pods'
-      readOnly: false
-    - pathPrefix: '/var/lib/kubelet/plugins/rbd.csi.ceph.com'
-      readOnly: false
-    - pathPrefix: '/var/lib/kubelet/plugins_registry'
-      readOnly: false
-    - pathPrefix: '/var/lib/kubelet/plugins'
-      readOnly: false
-
----
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
@@ -1196,39 +1169,6 @@ roleRef:
   kind: Role
   name: rbd-csi-nodeplugin-psp
   apiGroup: rbac.authorization.k8s.io
-
----
-apiVersion: policy/v1beta1
-kind: PodSecurityPolicy
-metadata:
-  name: rbd-csi-provisioner-psp
-spec:
-  allowPrivilegeEscalation: true
-  allowedCapabilities:
-    - 'SYS_ADMIN'
-  fsGroup:
-    rule: RunAsAny
-  privileged: true
-  runAsUser:
-    rule: RunAsAny
-  seLinux:
-    rule: RunAsAny
-  supplementalGroups:
-    rule: RunAsAny
-  volumes:
-    - 'configMap'
-    - 'emptyDir'
-    - 'projected'
-    - 'secret'
-    - 'downwardAPI'
-    - 'hostPath'
-  allowedHostPaths:
-    - pathPrefix: '/dev'
-      readOnly: false
-    - pathPrefix: '/sys'
-      readOnly: false
-    - pathPrefix: '/lib/modules'
-      readOnly: true
 
 ---
 kind: Role
@@ -1258,51 +1198,6 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 
 ---
-apiVersion: policy/v1beta1
-kind: PodSecurityPolicy
-metadata:
-  name: cephfs-csi-nodeplugin-psp
-spec:
-  allowPrivilegeEscalation: true
-  allowedCapabilities:
-    - 'SYS_ADMIN'
-  fsGroup:
-    rule: RunAsAny
-  privileged: true
-  hostNetwork: true
-  hostPID: true
-  runAsUser:
-    rule: RunAsAny
-  seLinux:
-    rule: RunAsAny
-  supplementalGroups:
-    rule: RunAsAny
-  volumes:
-    - 'configMap'
-    - 'emptyDir'
-    - 'projected'
-    - 'secret'
-    - 'downwardAPI'
-    - 'hostPath'
-  allowedHostPaths:
-    - pathPrefix: '/dev'
-      readOnly: false
-    - pathPrefix: '/run/mount'
-      readOnly: false
-    - pathPrefix: '/sys'
-      readOnly: false
-    - pathPrefix: '/lib/modules'
-      readOnly: true
-    - pathPrefix: '/var/lib/kubelet/pods'
-      readOnly: false
-    - pathPrefix: '/var/lib/kubelet/plugins/cephfs.csi.ceph.com'
-      readOnly: false
-    - pathPrefix: '/var/lib/kubelet/plugins_registry'
-      readOnly: false
-    - pathPrefix: '/var/lib/kubelet/plugins'
-      readOnly: false
-
----
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
@@ -1328,38 +1223,6 @@ roleRef:
   kind: Role
   name: cephfs-csi-nodeplugin-psp
   apiGroup: rbac.authorization.k8s.io
----
-apiVersion: policy/v1beta1
-kind: PodSecurityPolicy
-metadata:
-  name: cephfs-csi-provisioner-psp
-spec:
-  allowPrivilegeEscalation: true
-  allowedCapabilities:
-    - 'SYS_ADMIN'
-  fsGroup:
-    rule: RunAsAny
-  privileged: true
-  runAsUser:
-    rule: RunAsAny
-  seLinux:
-    rule: RunAsAny
-  supplementalGroups:
-    rule: RunAsAny
-  volumes:
-    - 'configMap'
-    - 'emptyDir'
-    - 'projected'
-    - 'secret'
-    - 'downwardAPI'
-    - 'hostPath'
-  allowedHostPaths:
-    - pathPrefix: '/dev'
-      readOnly: false
-    - pathPrefix: '/sys'
-      readOnly: false
-    - pathPrefix: '/lib/modules'
-      readOnly: true
 
 ---
 kind: Role
@@ -2109,7 +1972,7 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   namespace: {{.Namespace}}
-  name: csi-snapshot-controller
+  name: snapshot-controller
 spec:
   replicas: 2
   selector:
@@ -2135,7 +1998,7 @@ spec:
             - "--leader-election=true"
 
 ---
-apiVersion: snapshot.storage.k8s.io/v1beta1
+apiVersion: snapshot.storage.k8s.io/v1
 kind: VolumeSnapshotClass
 metadata:
   namespace: {{.Namespace}}
@@ -2153,7 +2016,7 @@ parameters:
   csi.storage.k8s.io/snapshotter-secret-namespace: {{.Namespace}}
 
 ---
-apiVersion: snapshot.storage.k8s.io/v1beta1
+apiVersion: snapshot.storage.k8s.io/v1
 kind: VolumeSnapshotClass
 metadata:
   namespace: {{.Namespace}}

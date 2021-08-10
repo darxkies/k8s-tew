@@ -3543,7 +3543,7 @@ spec:
           periodSeconds: 10
 
 ---
-apiVersion: policy/v1beta1
+apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   name: calico-typha
@@ -3865,7 +3865,7 @@ metadata:
   namespace: {{.Namespace}}
 
 ---
-apiVersion: policy/v1beta1
+apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   name: calico-kube-controllers
