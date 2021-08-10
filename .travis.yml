@@ -1,12 +1,11 @@
 sudo: required
 
+dist: focal
+
 language: go
 
 services:
 - docker
-
-go:
-- "1.13"
 
 install: true
 
