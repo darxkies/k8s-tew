@@ -4,7 +4,7 @@
 
 # Kubernetes - The Easier Way (k8s-tew)
 
-[![Build Status](https://travis-ci.org/darxkies/k8s-tew.svg?branch=master)](https://travis-ci.org/darxkies/k8s-tew)
+[![Build Status](https://travis-ci.com/darxkies/k8s-tew.svg?branch=master)](https://travis-ci.com/darxkies/k8s-tew)
 [![Go Report Card](https://goreportcard.com/badge/github.com/darxkies/k8s-tew)](https://goreportcard.com/report/github.com/darxkies/k8s-tew)
 [![GitHub release](https://img.shields.io/github/release/darxkies/k8s-tew.svg)](https://github.com/darxkies/k8s-tew/releases/latest)
 ![GitHub](https://img.shields.io/github/license/darxkies/k8s-tew.svg)
