@@ -48,7 +48,7 @@ func (transport *ProxyTransport) RoundTrip(request *http.Request) (*http.Respons
 	redirectRequest := *request
 
 	if request.Body != nil {
-		buffer.ReadFrom(request.Body)
+		_, _ = buffer.ReadFrom(request.Body)
 
 		request.Body = ioutil.NopCloser(&buffer)
 
@@ -455,6 +455,8 @@ func (ceph *Ceph) RunSetup(dashboardUsername, dashboardPassword, radosgwUsername
 		fmt.Sprintf("%s dashboard feature disable nfs", cephBinary),
 		fmt.Sprintf("%s dashboard set-ssl-certificate -i '%s'", cephBinary, sslCertificate),
 		fmt.Sprintf("%s dashboard set-ssl-certificate-key -i '%s'", cephBinary, sslKey),
+		fmt.Sprintf("%s config set mon auth_expose_insecure_global_id_reclaim false", cephBinary),
+		fmt.Sprintf("%s config set mon auth_allow_insecure_global_id_reclaim false", cephBinary),
 		fmt.Sprintf("%s config set mgr mgr/dashboard/ssl true", cephBinary),
 		fmt.Sprintf("echo \"%s\" | %s dashboard ac-user-create %s -i - administrator", dashboardPassword, cephBinary, dashboardUsername),
 		fmt.Sprintf("%s user info --uid=%s || %s user create --uid=%s --display-name=%s --system --access-key=%s --secret-key=%s", radosgwAdminBinary, utils.Username, radosgwAdminBinary, utils.Username, utils.Username, radosgwUsername, radosgwPassword),

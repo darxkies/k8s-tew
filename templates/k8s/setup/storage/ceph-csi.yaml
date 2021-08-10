@@ -31,6 +31,9 @@ metadata:
     storageclass.kubernetes.io/is-default-class: "true"
 provisioner: rbd.csi.ceph.com
 reclaimPolicy: Delete
+allowVolumeExpansion: true
+mountOptions:
+  - discard
 parameters:
   clusterID: {{.ClusterID}}
   pool: {{.CephRBDPoolName}}
@@ -42,7 +45,6 @@ parameters:
   csi.storage.k8s.io/controller-expand-secret-namespace: {{.Namespace}}
   csi.storage.k8s.io/node-stage-secret-name: csi-rbd-secret
   csi.storage.k8s.io/node-stage-secret-namespace: {{.Namespace}}
-  allowVolumeExpansion: "true"
 
 ---
 apiVersion: storage.k8s.io/v1
@@ -52,6 +54,7 @@ metadata:
   name: csi-cephfs
 provisioner: cephfs.csi.ceph.com
 reclaimPolicy: Delete
+allowVolumeExpansion: true
 parameters:
   clusterID: {{.ClusterID}}
   pool: {{.CephFSPoolName}}
@@ -64,7 +67,6 @@ parameters:
   csi.storage.k8s.io/controller-expand-secret-namespace: {{.Namespace}}
   csi.storage.k8s.io/node-stage-secret-name: csi-cephfs-secret
   csi.storage.k8s.io/node-stage-secret-namespace: {{.Namespace}}
-  allowVolumeExpansion: "true"
 
 ---
 apiVersion: v1
