@@ -2,7 +2,7 @@ package utils
 
 // Versions
 const VersionConfig = "2.4.0"
-const VersionK8s = "v1.21.3"
+const VersionK8s = "v1.21.4"
 const VersionKubeAPIServer = "k8s.gcr.io/kube-apiserver:" + VersionK8s
 const VersionKubeControllerManager = "k8s.gcr.io/kube-controller-manager:" + VersionK8s
 const VersionKubeScheduler = "k8s.gcr.io/kube-scheduler:" + VersionK8s
@@ -23,13 +23,13 @@ const VersionCalicoNode = "quay.io/calico/node:v3.20.0"
 const VersionCalicoCni = "quay.io/calico/cni:v3.20.0"
 const VersionCalicoKubeControllers = "quay.io/calico/kube-controllers:v3.20.0"
 const VersionCeph = "docker.io/ceph/ceph:v16.2.5"
-const VersionCsiCephPlugin = "quay.io/cephcsi/cephcsi:v3.4.0"
-const VersionCsiProvisioner = "k8s.gcr.io/sig-storage/csi-provisioner:v2.2.2"
-const VersionCsiAttacher = "k8s.gcr.io/sig-storage/csi-attacher:v3.2.1"
-const VersionCsiSnapshotter = "k8s.gcr.io/sig-storage/csi-snapshotter:v4.1.1"
-const VersionCsiSnapshotController = "k8s.gcr.io/sig-storage/snapshot-controller:v4.0.0"
-const VersionCsiDriverRegistrar = "k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.2.0"
-const VersionCsiResizer = "k8s.gcr.io/sig-storage/csi-resizer:v1.2.0"
+const VersionCsiCephPlugin = "quay.io/cephcsi/cephcsi:v3.3.1"
+const VersionCsiProvisioner = "k8s.gcr.io/sig-storage/csi-provisioner:v2.0.4"
+const VersionCsiAttacher = "k8s.gcr.io/sig-storage/csi-attacher:v3.0.2"
+const VersionCsiSnapshotter = "k8s.gcr.io/sig-storage/csi-snapshotter:v4.0.0"
+const VersionCsiSnapshotController = "k8s.gcr.io/sig-storage/snapshot-controller:v4.1.0"
+const VersionCsiDriverRegistrar = "k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.0.1"
+const VersionCsiResizer = "k8s.gcr.io/sig-storage/csi-resizer:v1.0.1"
 const VersionVelero = "docker.io/velero/velero:v1.5.3"
 const VersionVeleroPluginAWS = "docker.io/velero/velero-plugin-for-aws:v1.1.0"
 const VersionVeleroPluginCSI = "docker.io/velero/velero-plugin-for-csi:v0.1.2"

@@ -270,14 +270,11 @@ spec:
           image: {{.CSICephPluginImage}}
           args:
             - "--nodeid=$(NODE_ID)"
-            - "--pluginpath=/var/lib/kubelet/plugins"
-            - "--stagingpath=/var/lib/kubelet/plugins/kubernetes.io/csi/pv/"
             - "--type=rbd"
             - "--nodeserver=true"
             - "--endpoint=$(CSI_ENDPOINT)"
             - "--v=5"
             - "--drivername=rbd.csi.ceph.com"
-            - "--enableprofiling=false"
           env:
             - name: POD_IP
               valueFrom:
@@ -539,7 +536,6 @@ spec:
             - "--pidlimit=-1"
             - "--rbdhardmaxclonedepth=8"
             - "--rbdsoftmaxclonedepth=4"
-            - "--enableprofiling=false"
           env:
             - name: POD_IP
               valueFrom:
@@ -823,7 +819,6 @@ spec:
             - "--endpoint=$(CSI_ENDPOINT)"
             - "--v=5"
             - "--drivername=cephfs.csi.ceph.com"
-            - "--enableprofiling=false"
           env:
             - name: POD_IP
               valueFrom:
@@ -1072,7 +1067,6 @@ spec:
             - "--v=5"
             - "--drivername=cephfs.csi.ceph.com"
             - "--pidlimit=-1"
-            - "--enableprofiling=false"
           env:
             - name: POD_IP
               valueFrom:
@@ -1974,7 +1968,7 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   namespace: {{.Namespace}}
-  name: snapshot-controller
+  name: csi-snapshot-controller
 spec:
   replicas: 2
   selector:
