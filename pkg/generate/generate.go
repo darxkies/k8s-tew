@@ -530,6 +530,7 @@ func (generator *Generator) generateManifestKubeApiserver() error {
 			NodeIP               string
 			APIServerPort        uint16
 			ClusterIPRange       string
+			ClusterDomain        string
 		}{
 			KubernetesImage:      generator.config.Config.Versions.KubeAPIServer,
 			ControllersCount:     generator.config.GetControllersCount(),
@@ -546,6 +547,7 @@ func (generator *Generator) generateManifestKubeApiserver() error {
 			NodeIP:               node.IP,
 			APIServerPort:        generator.config.Config.APIServerPort,
 			ClusterIPRange:       generator.config.Config.ClusterIPRange,
+			ClusterDomain:        generator.config.Config.ClusterDomain,
 		}, generator.config.GetFullLocalAssetFilename(utils.ManifestKubeApiserver), true, false, 0644); error != nil {
 			return error
 		}

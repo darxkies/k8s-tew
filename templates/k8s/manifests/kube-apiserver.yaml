@@ -6,7 +6,6 @@ metadata:
   labels:
     cluster-relevant: "true"
     cluster-weight: "95"
-    cluster-cache: "true"
 spec:
   hostNetwork: true
   containers:
@@ -47,7 +46,7 @@ spec:
     - --secure-port={{.APIServerPort}}
     - --service-account-signing-key-file={{.PemServiceAccountKey}}
     - --service-account-key-file={{.PemServiceAccount}}
-    - --service-account-issuer=kubernetes
+    - --service-account-issuer=https://kubernetes.default.svc.{{.ClusterDomain}}
     - --service-account-api-audiences=api
     - --service-cluster-ip-range={{.ClusterIPRange}}
     - --service-node-port-range=30000-32767

@@ -8,7 +8,6 @@ metadata:
     app.kubernetes.io/instance: {{.Name}}
     cluster-relevant: "true"
     cluster-weight: "100"
-    cluster-cache: "true"
 spec:
   hostNetwork: true
   initContainers:

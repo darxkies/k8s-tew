@@ -60,6 +60,7 @@ data:
         }
         ready
         kubernetes {{.ClusterDomain}} in-addr.arpa ip6.arpa {
+          pods verified
           fallthrough in-addr.arpa ip6.arpa
         }
         prometheus :9153

@@ -6,7 +6,6 @@ metadata:
   labels:
     cluster-relevant: "true"
     cluster-weight: "90"
-    cluster-cache: "true"
 spec:
   hostNetwork: true
   containers:
