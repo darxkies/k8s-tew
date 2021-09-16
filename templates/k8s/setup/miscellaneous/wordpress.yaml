@@ -175,7 +175,6 @@ metadata:
     ingress.kubernetes.io/ssl-redirect: "true"
     kubernetes.io/tls-acme: "true"
     cert-manager.io/cluster-issuer: letsencrypt-production
-    kubernetes.io/ingress.class: "nginx"
 spec:
   tls:
   - hosts:

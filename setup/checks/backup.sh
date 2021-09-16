@@ -26,7 +26,7 @@ function write_to_pod()
 
 function read_from_pod()
 {
-	kubectl exec -t -i -n showcase $1 -- sh -c "cat $2" | tr -d '\r'
+	kubectl exec -t -i -n showcase $1 -- sh -c "cat $2" | tr -d '\r' | tr -d '\n'
 }
 
 function check_content()

@@ -5,7 +5,7 @@ windows:
   - editor:
       layout: main-horizontal
       panes:
-        - vim
+        - vi
         - make watch-and-compile
   - shell:
   - sandbox-command:

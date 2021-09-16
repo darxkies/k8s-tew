@@ -2,14 +2,14 @@ package utils
 
 // Versions
 const VersionConfig = "2.4.0"
-const VersionK8s = "v1.21.4"
+const VersionK8s = "v1.21.5"
 const VersionKubeAPIServer = "k8s.gcr.io/kube-apiserver:" + VersionK8s
 const VersionKubeControllerManager = "k8s.gcr.io/kube-controller-manager:" + VersionK8s
 const VersionKubeScheduler = "k8s.gcr.io/kube-scheduler:" + VersionK8s
 const VersionKubeProxy = "k8s.gcr.io/kube-proxy:" + VersionK8s
 const VersionEtcd = "quay.io/coreos/etcd:v3.5.0"
 const VersionContainerd = "1.5.5"
-const VersionRunc = "1.0.1"
+const VersionRunc = "1.0.2"
 const VersionCrictl = "1.21.0"
 const VersionHelm = "3.6.3"
 const VersionGobetween = "docker.io/yyyar/gobetween:0.8.0"
@@ -30,8 +30,8 @@ const VersionCsiSnapshotter = "k8s.gcr.io/sig-storage/csi-snapshotter:v4.0.0"
 const VersionCsiSnapshotController = "k8s.gcr.io/sig-storage/snapshot-controller:v4.1.0"
 const VersionCsiDriverRegistrar = "k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.0.1"
 const VersionCsiResizer = "k8s.gcr.io/sig-storage/csi-resizer:v1.0.1"
-const VersionVelero = "docker.io/velero/velero:v1.5.3"
-const VersionVeleroPluginAWS = "docker.io/velero/velero-plugin-for-aws:v1.1.0"
+const VersionVelero = "docker.io/velero/velero:v1.6.3"
+const VersionVeleroPluginAWS = "docker.io/velero/velero-plugin-for-aws:v1.2.1"
 const VersionVeleroPluginCSI = "docker.io/velero/velero-plugin-for-csi:v0.1.2"
 const VersionVeleroResticRestoreHelper = "docker.io/velero/velero-restic-restore-helper:v1.5.3"
 const VersionMinioServer = "docker.io/minio/minio:RELEASE.2021-03-12T00-00-47Z"

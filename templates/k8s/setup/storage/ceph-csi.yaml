@@ -39,6 +39,7 @@ parameters:
   pool: {{.CephRBDPoolName}}
   imageFormat: "2"
   imageFeatures: layering
+  provisionVolume: "true"
   csi.storage.k8s.io/provisioner-secret-name: csi-rbd-secret
   csi.storage.k8s.io/provisioner-secret-namespace: {{.Namespace}}
   csi.storage.k8s.io/controller-expand-secret-name: csi-rbd-secret
@@ -2004,7 +2005,7 @@ metadata:
   labels:
     velero.io/csi-volumesnapshot-class: "true"
 driver: rbd.csi.ceph.com
-deletionPolicy: Delete
+deletionPolicy: Retain
 parameters:
   clusterID: {{.ClusterID}}
   pool: {{.CephRBDPoolName}}
@@ -2022,7 +2023,7 @@ metadata:
   labels:
     velero.io/csi-volumesnapshot-class: "true"
 driver: cephfs.csi.ceph.com
-deletionPolicy: Delete
+deletionPolicy: Retain
 parameters:
   clusterID: {{.ClusterID}}
   pool: {{.CephFSPoolName}}

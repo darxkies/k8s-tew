@@ -1,6 +1,6 @@
 #!/usr/bin/env bash 
 
-VERSION=v3.1.1
+VERSION=devel
 
 function wait_for_pod()
 {
@@ -27,7 +27,7 @@ function check_content()
 
 	if [ "$content" == "$2" ]
 	then
-		echo "content of pod $1 is OK"
+		echo "content of pod $1 is [OK]"
 	else
 		echo "***content of pod $1 is wrong: got '$content' but expected '$2'***"
 	fi
@@ -154,7 +154,7 @@ function check_cephfs()
 	check_content csi-cephfs-restore-demo-pod  "yyy" "html" 
 	check_content csi-cephfs-demo-pod "zzz" 
 
-	#clean_up_cephfs
+	clean_up_cephfs
 }
 
 function check_rados_gateway()
@@ -194,7 +194,7 @@ EOF
 
 	if [ "$(cat $put_file)" == "$(cat $get_file)" ]
 	then
-		echo "Rados Gateway check OK"
+		echo "Rados Gateway check [OK]"
 	else
 		echo "***Rados Gateway content is not ok***"
 	fi
