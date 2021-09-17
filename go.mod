@@ -7,13 +7,17 @@ replace github.com/docker/distribution => github.com/docker/distribution v2.7.1-
 require (
 	github.com/briandowns/spinner v0.0.0-20181029155426-195c31b675a7
 	github.com/cavaliercoder/grab v2.0.0+incompatible
+	github.com/cespare/reflex v0.3.1 // indirect
 	github.com/davecgh/go-spew v1.1.1
 	github.com/evanphx/json-patch v4.9.0+incompatible
 	github.com/gobuffalo/envy v1.9.0 // indirect
+	github.com/gobuffalo/logger v1.0.4 // indirect
 	github.com/gobuffalo/packd v1.0.0 // indirect
 	github.com/gobuffalo/packr v1.30.1
+	github.com/gobuffalo/packr/v2 v2.8.1 // indirect
 	github.com/gregjones/httpcache v0.0.0-20181110185634-c63ab54fda8f // indirect
 	github.com/imdario/mergo v0.3.6 // indirect
+	github.com/karrick/godirwalk v1.16.1 // indirect
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51 // indirect
 	github.com/mattn/go-colorable v0.1.1 // indirect
 	github.com/mattn/go-isatty v0.0.6 // indirect
@@ -32,9 +36,9 @@ require (
 	github.com/spf13/viper v1.8.1
 	github.com/tmc/scp v0.0.0-20170824174625-f7b48647feef
 	github.com/wille/osutil v0.0.0-20190526221756-e91b8656e290
-	golang.org/x/crypto v0.0.0-20210817164053-32db794688a5
+	golang.org/x/crypto v0.0.0-20210915214749-c084706c2272
 	golang.org/x/sys v0.0.0-20210915083310-ed5796bab164
-	golang.org/x/term v0.0.0-20210615171337-6886f2dfbf5b // indirect
+	golang.org/x/term v0.0.0-20210916214954-140adaaadfaf // indirect
 	google.golang.org/grpc v1.38.0
 	gopkg.in/ini.v1 v1.62.0
 	gopkg.in/yaml.v2 v2.4.0
