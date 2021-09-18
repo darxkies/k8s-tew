@@ -28,9 +28,9 @@ spec:
     livenessProbe:
       failureThreshold: 8
       httpGet:
-        scheme: HTTP
+        scheme: HTTPS
         host: 127.0.0.1
-        port: 10252
+        port: 10257
         path: /healthz
       initialDelaySeconds: 15
       timeoutSeconds: 15
