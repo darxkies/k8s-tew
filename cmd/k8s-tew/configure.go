@@ -382,6 +382,10 @@ func init() {
 		_config.Config.Versions.KubernetesDashboard = value
 	})
 
+	addStringOption("version-cert-manager-ctl", utils.VersionCertManagerCtl, "Cert Manager Ctl  version", func(value string) {
+		_config.Config.Versions.CertManagerCtl = value
+	})
+
 	addStringOption("version-cert-manager-controller", utils.VersionCertManagerController, "Cert Manager Controller version", func(value string) {
 		_config.Config.Versions.CertManagerController = value
 	})

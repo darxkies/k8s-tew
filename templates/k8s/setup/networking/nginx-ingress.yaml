@@ -168,6 +168,12 @@ kind: ServiceAccount
 metadata:
   namespace: {{.Namespace}}
   name: ingress-nginx
+  labels:
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/version: "1.0.0"
+    app.kubernetes.io/component: controller
+automountServiceAccountToken: true
 
 ---
 apiVersion: v1
@@ -177,6 +183,9 @@ metadata:
   name: ingress-nginx-controller
   labels:
     app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/version: "1.0.0"
+    app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/component: controller
 data:
 
@@ -187,6 +196,9 @@ metadata:
   name: ingress-nginx
   labels:
     app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/version: "1.0.0"
+    app.kubernetes.io/managed-by: Helm
 rules:
   - apiGroups:
       - ""
@@ -214,8 +226,7 @@ rules:
       - list
       - watch
   - apiGroups:
-      - extensions
-      - "networking.k8s.io"
+      - networking.k8s.io
     resources:
       - ingresses
     verbs:
@@ -230,14 +241,13 @@ rules:
       - create
       - patch
   - apiGroups:
-      - extensions
-      - "networking.k8s.io"
+      - networking.k8s.io
     resources:
       - ingresses/status
     verbs:
       - update
   - apiGroups:
-      - "networking.k8s.io"
+      - networking.k8s.io
     resources:
       - ingressclasses
     verbs:
@@ -252,6 +262,8 @@ metadata:
   name: ingress-nginx
   labels:
     app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/version: "1.0.0"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -269,6 +281,8 @@ metadata:
   name: ingress-nginx
   labels:
     app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/version: "1.0.0"
     app.kubernetes.io/component: controller
 rules:
   - apiGroups:
@@ -297,8 +311,7 @@ rules:
       - list
       - watch
   - apiGroups:
-      - extensions
-      - "networking.k8s.io"
+      - networking.k8s.io
     resources:
       - ingresses
     verbs:
@@ -306,14 +319,13 @@ rules:
       - list
       - watch
   - apiGroups:
-      - extensions
-      - "networking.k8s.io"
+      - networking.k8s.io
     resources:
       - ingresses/status
     verbs:
       - update
   - apiGroups:
-      - "networking.k8s.io"
+      - networking.k8s.io
     resources:
       - ingressclasses
     verbs:
@@ -325,7 +337,7 @@ rules:
     resources:
       - configmaps
     resourceNames:
-      - ingress-controller-leader-nginx
+      - ingress-controller-leader
     verbs:
       - get
       - update
@@ -351,6 +363,8 @@ metadata:
   name: ingress-nginx
   labels:
     app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/version: "1.0.0"
     app.kubernetes.io/component: controller
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -369,6 +383,8 @@ metadata:
   name: ingress-nginx-controller-admission
   labels:
     app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/version: "1.0.0"
     app.kubernetes.io/component: controller
 spec:
   type: ClusterIP
@@ -376,9 +392,10 @@ spec:
     - name: https-webhook
       port: 443
       targetPort: webhook
-      protocol: TCP
+      appProtocol: https
   selector:
     app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/instance: k8s-tew
     app.kubernetes.io/component: controller
 
 ---
@@ -389,6 +406,8 @@ metadata:
   name: ingress-nginx-controller
   labels:
     app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/version: "1.0.0"
     app.kubernetes.io/component: controller
 spec:
   type: LoadBalancer
@@ -397,12 +416,15 @@ spec:
       port: 80
       protocol: TCP
       targetPort: http
+      appProtocol: http
     - name: https
       port: 443
       protocol: TCP
       targetPort: https
+      appProtocol: https
   selector:
     app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/instance: k8s-tew
     app.kubernetes.io/component: controller
 
 ---
@@ -413,11 +435,14 @@ metadata:
   name: ingress-nginx-controller
   labels:
     app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/version: "1.0.0"
     app.kubernetes.io/component: controller
 spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: ingress-nginx
+      app.kubernetes.io/instance: k8s-tew
       app.kubernetes.io/component: controller
   replicas: 1
   revisionHistoryLimit: 10
@@ -426,6 +451,7 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: ingress-nginx
+        app.kubernetes.io/instance: k8s-tew
         app.kubernetes.io/component: controller
     spec:
       dnsPolicy: ClusterFirst
@@ -442,7 +468,7 @@ spec:
             - /nginx-ingress-controller
             - --publish-service=$(POD_NAMESPACE)/ingress-nginx-controller
             - --election-id=ingress-controller-leader
-            - --ingress-class=nginx
+            - --controller-class=k8s.io/ingress-nginx
             - --configmap=$(POD_NAMESPACE)/ingress-nginx-controller
             - --validating-webhook=:8443
             - --validating-webhook-certificate=/usr/local/certificates/cert
@@ -466,26 +492,26 @@ spec:
                   fieldPath: metadata.namespace
             - name: LD_PRELOAD
               value: /usr/local/lib/libmimalloc.so
-          livenessProbe:
-            httpGet:
-              path: /healthz
-              port: 10254
-              scheme: HTTP
-            initialDelaySeconds: 10
-            periodSeconds: 10
-            timeoutSeconds: 1
-            successThreshold: 1
+          livenessProbe: 
             failureThreshold: 5
-          readinessProbe:
             httpGet:
               path: /healthz
               port: 10254
               scheme: HTTP
             initialDelaySeconds: 10
             periodSeconds: 10
-            timeoutSeconds: 1
             successThreshold: 1
+            timeoutSeconds: 1
+          readinessProbe: 
             failureThreshold: 3
+            httpGet:
+              path: /healthz
+              port: 10254
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
           ports:
             - name: http
               containerPort: 80
@@ -514,6 +540,21 @@ spec:
             secretName: ingress-nginx-admission
 
 ---
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  name: nginx
+  annotations:
+    ingressclass.kubernetes.io/is-default-class: "true"
+  labels:
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/version: "1.0.0"
+    app.kubernetes.io/component: controller
+spec:
+  controller: k8s.io/ingress-nginx
+
+---
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
 metadata:
@@ -521,6 +562,8 @@ metadata:
   name: ingress-nginx-admission
   labels:
     app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/version: "1.0.0"
     app.kubernetes.io/component: admission-webhook
 webhooks:
   - name: validate.nginx.ingress.kubernetes.io
@@ -529,7 +572,7 @@ webhooks:
       - apiGroups:
           - networking.k8s.io
         apiVersions:
-          - v1beta1
+          - v1
         operations:
           - CREATE
           - UPDATE
@@ -539,20 +582,9 @@ webhooks:
     sideEffects: None
     admissionReviewVersions:
       - v1
-      - v1beta1
     clientConfig:
       service:
         namespace: {{.Namespace}}
         name: ingress-nginx-controller-admission
-        path: /networking/v1beta1/ingresses
-
----
-apiVersion: networking.k8s.io/v1
-kind: IngressClass
-metadata:
-  name: nginx
-  annotations:
-    ingressclass.kubernetes.io/is-default-class: "true"
-spec:
-  controller: k8s.io/ingress-nginx
+        path: /networking/v1/ingresses
 

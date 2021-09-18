@@ -39,6 +39,7 @@ type Versions struct {
 	MetalLBSpeaker               string `yaml:"metallb-speaker"`
 	Ceph                         string `yaml:"ceph"`
 	KubernetesDashboard          string `yaml:"kubernetes-dashboard"`
+	CertManagerCtl               string `yaml:"cert-manager-ctl"`
 	CertManagerController        string `yaml:"cert-manager-controller"`
 	CertManagerCAInjector        string `yaml:"cert-manager-cainjector"`
 	CertManagerWebHook           string `yaml:"cert-manager-webhook"`
@@ -99,6 +100,7 @@ func NewVersions() Versions {
 		MetalLBSpeaker:               utils.VersionMetalLBSpeaker,
 		Ceph:                         utils.VersionCeph,
 		KubernetesDashboard:          utils.VersionKubernetesDashboard,
+		CertManagerCtl:               utils.VersionCertManagerCtl,
 		CertManagerController:        utils.VersionCertManagerController,
 		CertManagerCAInjector:        utils.VersionCertManagerCAInjector,
 		CertManagerWebHook:           utils.VersionCertManagerWebHook,

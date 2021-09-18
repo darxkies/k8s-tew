@@ -25229,30 +25229,124 @@ status:
 ---
 apiVersion: v1
 kind: ServiceAccount
+automountServiceAccountToken: true
+metadata:
+  name: cert-manager-startupapicheck
+  namespace: "{{.Namespace}}"
+  labels:
+    app: startupapicheck
+    app.kubernetes.io/name: startupapicheck
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "startupapicheck"
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: cert-manager-startupapicheck:create-cert
+  namespace: "{{.Namespace}}"
+  labels:
+    app: startupapicheck
+    app.kubernetes.io/name: startupapicheck
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "startupapicheck"
+rules:
+  - apiGroups: ["cert-manager.io"]
+    resources: ["certificates"]
+    verbs: ["create"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: cert-manager-startupapicheck:create-cert
+  namespace: "{{.Namespace}}"
+  labels:
+    app: startupapicheck
+    app.kubernetes.io/name: startupapicheck
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "startupapicheck"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: cert-manager-startupapicheck:create-cert
+subjects:
+  - kind: ServiceAccount
+    name: cert-manager-startupapicheck
+    namespace: "{{.Namespace}}"
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cert-manager-startupapicheck
+  namespace: "{{.Namespace}}"
+  labels:
+    app: startupapicheck
+    app.kubernetes.io/name: startupapicheck
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "startupapicheck"
+spec:
+  backoffLimit: 4
+  template:
+    metadata:
+      labels:
+        app: startupapicheck
+        app.kubernetes.io/name: startupapicheck
+        app.kubernetes.io/instance: k8s-tew
+        app.kubernetes.io/component: "startupapicheck"
+    spec:
+      restartPolicy: OnFailure
+      serviceAccountName: cert-manager-startupapicheck
+      securityContext:
+        runAsNonRoot: true
+      containers:
+        - name: cert-manager
+          image: {{ .CertManagerCtlImage }}
+          imagePullPolicy: IfNotPresent
+          args:
+          - check
+          - api
+          - --wait=1m
+
+---
+apiVersion: v1
+kind: ServiceAccount
+automountServiceAccountToken: true
 metadata:
   name: cert-manager-cainjector
   namespace: "{{.Namespace}}"
   labels:
     app: cainjector
     app.kubernetes.io/name: cainjector
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "cainjector"
+
 ---
 apiVersion: v1
 kind: ServiceAccount
+automountServiceAccountToken: true
 metadata:
   name: cert-manager
   namespace: "{{.Namespace}}"
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "controller"
+
 ---
 apiVersion: v1
 kind: ServiceAccount
+automountServiceAccountToken: true
 metadata:
   name: cert-manager-webhook
   namespace: "{{.Namespace}}"
   labels:
     app: webhook
     app.kubernetes.io/name: webhook
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "webhook"
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -25262,6 +25356,8 @@ metadata:
   labels:
     app: cainjector
     app.kubernetes.io/name: cainjector
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "cainjector"
 rules:
   - apiGroups: ["cert-manager.io"]
     resources: ["certificates"]
@@ -25284,6 +25380,7 @@ rules:
   - apiGroups: ["auditregistration.k8s.io"]
     resources: ["auditsinks"]
     verbs: ["get", "list", "watch", "update"]
+
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -25292,6 +25389,8 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "controller"
 rules:
   - apiGroups: ["cert-manager.io"]
     resources: ["issuers", "issuers/status"]
@@ -25314,6 +25413,8 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "controller"
 rules:
   - apiGroups: ["cert-manager.io"]
     resources: ["clusterissuers", "clusterissuers/status"]
@@ -25336,6 +25437,8 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "controller"
 rules:
   - apiGroups: ["cert-manager.io"]
     resources: ["certificates", "certificates/status", "certificaterequests", "certificaterequests/status"]
@@ -25364,6 +25467,8 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "controller"
 rules:
   - apiGroups: ["acme.cert-manager.io"]
     resources: ["orders", "orders/status"]
@@ -25395,6 +25500,8 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "controller"
 rules:
   - apiGroups: ["acme.cert-manager.io"]
     resources: ["challenges", "challenges/status"]
@@ -25417,6 +25524,9 @@ rules:
   - apiGroups: ["networking.k8s.io"]
     resources: ["ingresses"]
     verbs: ["get", "list", "watch", "create", "delete", "update"]
+  - apiGroups: [ "networking.x-k8s.io" ]
+    resources: [ "httproutes" ]
+    verbs: ["get", "list", "watch", "create", "delete", "update"]
   - apiGroups: ["route.openshift.io"]
     resources: ["routes/custom-host"]
     verbs: ["create"]
@@ -25435,6 +25545,8 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "controller"
 rules:
   - apiGroups: ["cert-manager.io"]
     resources: ["certificates", "certificaterequests"]
@@ -25448,6 +25560,12 @@ rules:
   - apiGroups: ["networking.k8s.io"]
     resources: ["ingresses/finalizers"]
     verbs: ["update"]
+  - apiGroups: ["networking.x-k8s.io"]
+    resources: ["gateways", "httproutes"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["networking.x-k8s.io"]
+    resources: ["gateways/finalizers", "httproutes/finalizers"]
+    verbs: ["update"]
   - apiGroups: [""]
     resources: ["events"]
     verbs: ["create", "patch"]
@@ -25460,6 +25578,8 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "controller"
     rbac.authorization.k8s.io/aggregate-to-view: "true"
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
     rbac.authorization.k8s.io/aggregate-to-admin: "true"
@@ -25478,6 +25598,8 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "controller"
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
     rbac.authorization.k8s.io/aggregate-to-admin: "true"
 rules:
@@ -25486,7 +25608,63 @@ rules:
     verbs: ["create", "delete", "deletecollection", "patch", "update"]
   - apiGroups: ["acme.cert-manager.io"]
     resources: ["challenges", "orders"]
-    verbs: ["get", "list", "watch"]
+    verbs: ["create", "delete", "deletecollection", "patch", "update"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cert-manager-controller-approve:cert-manager-io
+  labels:
+    app: cert-manager
+    app.kubernetes.io/name: cert-manager
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "cert-manager"
+rules:
+  - apiGroups: ["cert-manager.io"]
+    resources: ["signers"]
+    verbs: ["approve"]
+    resourceNames: ["issuers.cert-manager.io/*", "clusterissuers.cert-manager.io/*"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cert-manager-controller-certificatesigningrequests
+  labels:
+    app: cert-manager
+    app.kubernetes.io/name: cert-manager
+    app.kubernetes.io/instance: k8s-tew
+rules:
+  - apiGroups: ["certificates.k8s.io"]
+    resources: ["certificatesigningrequests"]
+    verbs: ["get", "list", "watch", "update"]
+  - apiGroups: ["certificates.k8s.io"]
+    resources: ["certificatesigningrequests/status"]
+    verbs: ["update"]
+  - apiGroups: ["certificates.k8s.io"]
+    resources: ["signers"]
+    resourceNames: ["issuers.cert-manager.io/*", "clusterissuers.cert-manager.io/*"]
+    verbs: ["sign"]
+  - apiGroups: ["authorization.k8s.io"]
+    resources: ["subjectaccessreviews"]
+    verbs: ["create"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cert-manager-webhook:subjectaccessreviews
+  labels:
+    app: webhook
+    app.kubernetes.io/name: webhook
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "webhook"
+rules:
+- apiGroups: ["authorization.k8s.io"]
+  resources: ["subjectaccessreviews"]
+  verbs: ["create"]
+
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -25495,6 +25673,8 @@ metadata:
   labels:
     app: cainjector
     app.kubernetes.io/name: cainjector
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "cainjector"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -25512,6 +25692,8 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "controller"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -25529,6 +25711,8 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "controller"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -25546,6 +25730,8 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "controller"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -25563,6 +25749,8 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "controller"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -25580,6 +25768,8 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "controller"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -25597,6 +25787,8 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "controller"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -25608,6 +25800,64 @@ subjects:
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: cert-manager-controller-approve:cert-manager-io
+  labels:
+    app: cert-manager
+    app.kubernetes.io/name: cert-manager
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "cert-manager"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cert-manager-controller-approve:cert-manager-io
+subjects:
+  - name: cert-manager
+    namespace: "{{.Namespace}}"
+    kind: ServiceAccount
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: cert-manager-controller-certificatesigningrequests
+  labels:
+    app: cert-manager
+    app.kubernetes.io/name: cert-manager
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "cert-manager"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cert-manager-controller-certificatesigningrequests
+subjects:
+  - name: cert-manager
+    namespace: "{{.Namespace}}"
+    kind: ServiceAccount
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: cert-manager-webhook:subjectaccessreviews
+  labels:
+    app: webhook
+    app.kubernetes.io/name: webhook
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "webhook"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cert-manager-webhook:subjectaccessreviews
+subjects:
+- apiGroup: ""
+  kind: ServiceAccount
+  name: cert-manager-webhook
+  namespace: {{.Namespace}}
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: cert-manager-cainjector:leaderelection
@@ -25615,6 +25865,8 @@ metadata:
   labels:
     app: cainjector
     app.kubernetes.io/name: cainjector
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "cainjector"
 rules:
   - apiGroups: [""]
     resources: ["configmaps"]
@@ -25623,6 +25875,14 @@ rules:
   - apiGroups: [""]
     resources: ["configmaps"]
     verbs: ["create"]
+  - apiGroups: ["coordination.k8s.io"]
+    resources: ["leases"]
+    resourceNames: ["cert-manager-cainjector-leader-election", "cert-manager-cainjector-leader-election-core"]
+    verbs: ["get", "update", "patch"]
+  - apiGroups: ["coordination.k8s.io"]
+    resources: ["leases"]
+    verbs: ["create"]
+
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -25632,6 +25892,8 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "controller"
 rules:
   - apiGroups: [""]
     resources: ["configmaps"]
@@ -25640,6 +25902,14 @@ rules:
   - apiGroups: [""]
     resources: ["configmaps"]
     verbs: ["create"]
+  - apiGroups: ["coordination.k8s.io"]
+    resources: ["leases"]
+    resourceNames: ["cert-manager-controller"]
+    verbs: ["get", "update", "patch"]
+  - apiGroups: ["coordination.k8s.io"]
+    resources: ["leases"]
+    verbs: ["create"]
+
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -25649,6 +25919,8 @@ metadata:
   labels:
     app: webhook
     app.kubernetes.io/name: webhook
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "webhook"
 rules:
 - apiGroups: [""]
   resources: ["secrets"]
@@ -25658,6 +25930,7 @@ rules:
 - apiGroups: [""]
   resources: ["secrets"]
   verbs: ["create"]
+
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -25667,6 +25940,8 @@ metadata:
   labels:
     app: cainjector
     app.kubernetes.io/name: cainjector
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "cainjector"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -25685,6 +25960,8 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "controller"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -25703,6 +25980,8 @@ metadata:
   labels:
     app: webhook
     app.kubernetes.io/name: webhook
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "webhook"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -25721,14 +26000,19 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "controller"
 spec:
   type: ClusterIP
   ports:
     - protocol: TCP
       port: 9402
+      name: tcp-prometheus-servicemonitor
       targetPort: 9402
   selector:
     app.kubernetes.io/name: cert-manager
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "controller"
 
 ---
 apiVersion: v1
@@ -25739,15 +26023,20 @@ metadata:
   labels:
     app: webhook
     app.kubernetes.io/name: webhook
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "webhook"
 spec:
   type: ClusterIP
   ports:
   - name: https
     port: 443
-    targetPort: 10250
     protocol: TCP
+    targetPort: 10250
   selector:
     app.kubernetes.io/name: webhook
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "webhook"
+
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -25757,18 +26046,26 @@ metadata:
   labels:
     app: cainjector
     app.kubernetes.io/name: cainjector
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "cainjector"
 spec:
   replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: cainjector
+      app.kubernetes.io/instance: k8s-tew
+      app.kubernetes.io/component: "cainjector"
   template:
     metadata:
       labels:
         app: cainjector
         app.kubernetes.io/name: cainjector
+        app.kubernetes.io/instance: k8s-tew
+        app.kubernetes.io/component: "cainjector"
     spec:
       serviceAccountName: cert-manager-cainjector
+      securityContext:
+        runAsNonRoot: true
       containers:
         - name: cert-manager
           image: {{ .CertManagerCAInjectorImage }}
@@ -25793,22 +26090,30 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "controller"
 spec:
   replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: cert-manager
+      app.kubernetes.io/instance: k8s-tew
+      app.kubernetes.io/component: "controller"
   template:
     metadata:
       labels:
         app: cert-manager
         app.kubernetes.io/name: cert-manager
+        app.kubernetes.io/instance: k8s-tew
+        app.kubernetes.io/component: "controller"
       annotations:
         prometheus.io/path: "/metrics"
         prometheus.io/scrape: 'true'
         prometheus.io/port: '9402'
     spec:
       serviceAccountName: cert-manager
+      securityContext:
+        runAsNonRoot: true
       containers:
         - name: cert-manager
           image: {{.CertManagerControllerImage }}
@@ -25836,18 +26141,27 @@ metadata:
   labels:
     app: webhook
     app.kubernetes.io/name: webhook
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "webhook"
 spec:
   replicas: 1
   selector:
     matchLabels:
+      app: webhook
       app.kubernetes.io/name: webhook
+      app.kubernetes.io/instance: k8s-tew
+      app.kubernetes.io/component: "webhook"
   template:
     metadata:
       labels:
         app: webhook
         app.kubernetes.io/name: webhook
+        app.kubernetes.io/instance: k8s-tew
+        app.kubernetes.io/component: "webhook"
     spec:
       serviceAccountName: cert-manager-webhook
+      securityContext:
+        runAsNonRoot: true
       containers:
         - name: cert-manager
           image: {{ .CertManagerWebHookImage }}
@@ -25860,8 +26174,8 @@ spec:
           - --dynamic-serving-dns-names=cert-manager-webhook,cert-manager-webhook.{{.Namespace}},cert-manager-webhook.{{.Namespace}}.svc
           ports:
           - name: https
-            containerPort: 10250
             protocol: TCP
+            containerPort: 10250
           livenessProbe:
             httpGet:
               path: /livez
@@ -25897,6 +26211,8 @@ metadata:
   labels:
     app: webhook
     app.kubernetes.io/name: webhook
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "webhook"
   annotations:
     cert-manager.io/inject-ca-from-secret: "{{.Namespace}}/cert-manager-webhook-ca"
 webhooks:
@@ -25906,13 +26222,14 @@ webhooks:
           - "cert-manager.io"
           - "acme.cert-manager.io"
         apiVersions:
-          - "*"
+          - "v1"
         operations:
           - CREATE
           - UPDATE
         resources:
           - "*/*"
     admissionReviewVersions: ["v1", "v1beta1"]
+    matchPolicy: Equivalent
     timeoutSeconds: 10
     failurePolicy: Fail
     sideEffects: None
@@ -25921,6 +26238,7 @@ webhooks:
         name: cert-manager-webhook
         namespace: "{{.Namespace}}"
         path: /mutate
+
 ---
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
@@ -25929,6 +26247,8 @@ metadata:
   labels:
     app: webhook
     app.kubernetes.io/name: webhook
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "webhook"
   annotations:
     cert-manager.io/inject-ca-from-secret: "{{.Namespace}}/cert-manager-webhook-ca"
 webhooks:
@@ -25948,13 +26268,14 @@ webhooks:
           - "cert-manager.io"
           - "acme.cert-manager.io"
         apiVersions:
-          - "*"
+          - "v1"
         operations:
           - CREATE
           - UPDATE
         resources:
           - "*/*"
     admissionReviewVersions: ["v1", "v1beta1"]
+    matchPolicy: Equivalent
     timeoutSeconds: 10
     failurePolicy: Fail
     sideEffects: None
