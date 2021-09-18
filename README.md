@@ -1,6 +1,6 @@
 <p align="center"><img src="logo.svg" width="360"></p>
 
-<p align="center"><a href="https://github.com/cncf/k8s-conformance/tree/master/v1.20/k8s-tew"><img src="conformance/certified-kubernetes-color.svg"  alt="Kubernetes v1.20" width="120"></a></p>
+<p align="center"><a href="https://github.com/cncf/k8s-conformance/tree/master/v1.21/k8s-tew"><img src="conformance/certified-kubernetes-color.svg"  alt="Kubernetes v1.21" width="120"></a></p>
 
 # Kubernetes - The Easier Way (k8s-tew)
 
