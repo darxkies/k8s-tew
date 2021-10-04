@@ -17,6 +17,16 @@ import (
 	"golang.org/x/crypto/ssh"
 )
 
+type Session struct {
+	client  *ssh.Client
+	session *ssh.Session
+}
+
+func (session *Session) Close() {
+	session.session.Close()
+	session.client.Close()
+}
+
 type NodeDeployment struct {
 	identityFile            string
 	name                    string
@@ -294,7 +304,7 @@ func (deployment *NodeDeployment) UploadFiles(forceUpload bool, skipRestart bool
 	return
 }
 
-func (deployment *NodeDeployment) getSession() (*ssh.Session, error) {
+func (deployment *NodeDeployment) getSession() (*Session, error) {
 	privateKeyContent, error := ioutil.ReadFile(deployment.identityFile)
 	if error != nil {
 		return nil, error
@@ -316,7 +326,15 @@ func (deployment *NodeDeployment) getSession() (*ssh.Session, error) {
 		return nil, error
 	}
 
-	return client.NewSession()
+	session, error := client.NewSession()
+	if error != nil {
+		return nil, error
+	}
+
+	return &Session{
+		client:  client,
+		session: session,
+	}, nil
 }
 
 func (deployment *NodeDeployment) pullImage(image string) error {
@@ -376,9 +394,9 @@ func (deployment *NodeDeployment) Execute(name, command string) (string, error) 
 
 	var buffer bytes.Buffer
 
-	session.Stdout = &buffer
+	session.session.Stdout = &buffer
 
-	error = session.Run(command)
+	error = session.session.Run(command)
 
 	if error != nil {
 		error = errors.Wrapf(error, "Could not execute remote command '%s' on '%s'", command, deployment.name)
@@ -395,7 +413,7 @@ func (deployment *NodeDeployment) execute(command string) error {
 
 	defer session.Close()
 
-	return session.Run(command)
+	return session.session.Run(command)
 }
 
 func (deployment *NodeDeployment) UploadFile(from, to string) error {
@@ -432,7 +450,7 @@ func (deployment *NodeDeployment) UploadFile(from, to string) error {
 
 	defer session.Close()
 
-	if error := scp.CopyPath(from, to, session); error != nil {
+	if error := scp.CopyPath(from, to, session.session); error != nil {
 		return fmt.Errorf("Could not deploy file '%s' (%s)", from, error.Error())
 	}
 
