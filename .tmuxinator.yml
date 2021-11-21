@@ -9,12 +9,12 @@ windows:
         - make watch-and-compile
   - shell:
   - sandbox-command:
-      - cd setup/sandbox/multipass
+      - cd setup/sandbox/vbox-single
   - sandbox-environment:
-      - cd setup/sandbox/multipass
+      - cd setup/sandbox/vbox-single
       - source <(k8s-tew environment)
   - k9s:
-      - cd setup/sandbox/multipass
+      - cd setup/sandbox/vbox-single
       - source <(k8s-tew environment)
       - k9s
   - documentation-update:
