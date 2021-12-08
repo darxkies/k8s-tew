@@ -32,8 +32,8 @@ require (
 	github.com/spf13/viper v1.8.1
 	github.com/tmc/scp v0.0.0-20170824174625-f7b48647feef
 	github.com/wille/osutil v0.0.0-20190526221756-e91b8656e290
-	golang.org/x/crypto v0.0.0-20211117183948-ae814b36b871
-	golang.org/x/sys v0.0.0-20211117180635-dee7805ff2e1
+	golang.org/x/crypto v0.0.0-20211202192323-5770296d904e
+	golang.org/x/sys v0.0.0-20211205182925-97ca703d548d
 	golang.org/x/term v0.0.0-20210927222741-03fcf44c2211 // indirect
 	google.golang.org/grpc v1.38.0
 	gopkg.in/ini.v1 v1.62.0
