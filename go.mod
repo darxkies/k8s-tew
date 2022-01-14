@@ -16,27 +16,26 @@ require (
 	github.com/gregjones/httpcache v0.0.0-20181110185634-c63ab54fda8f // indirect
 	github.com/imdario/mergo v0.3.12 // indirect
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51 // indirect
-	github.com/mattn/go-colorable v0.1.1 // indirect
-	github.com/mattn/go-isatty v0.0.6 // indirect
 	github.com/moul/http2curl v1.0.0 // indirect
 	github.com/onsi/gomega v1.10.3 // indirect
 	github.com/opencontainers/go-digest v1.0.0
 	github.com/opencontainers/image-spec v1.0.2
 	github.com/pkg/errors v0.9.1
+	github.com/rogpeppe/go-internal v1.8.1 // indirect
 	github.com/satori/go.uuid v1.2.0
 	github.com/sethvargo/go-password v0.1.3
 	github.com/sirupsen/logrus v1.8.1
 	github.com/smallnest/goreq v0.0.0-20180727030113-2e3372c80388
-	github.com/spf13/cobra v1.2.1
+	github.com/spf13/cobra v1.3.0
 	github.com/spf13/pflag v1.0.5
-	github.com/spf13/viper v1.8.1
+	github.com/spf13/viper v1.10.0
 	github.com/tmc/scp v0.0.0-20170824174625-f7b48647feef
 	github.com/wille/osutil v0.0.0-20190526221756-e91b8656e290
-	golang.org/x/crypto v0.0.0-20211202192323-5770296d904e
-	golang.org/x/sys v0.0.0-20211205182925-97ca703d548d
+	golang.org/x/crypto v0.0.0-20220112180741-5e0467b6c7ce
+	golang.org/x/sys v0.0.0-20220114195835-da31bd327af9
 	golang.org/x/term v0.0.0-20210927222741-03fcf44c2211 // indirect
-	google.golang.org/grpc v1.38.0
-	gopkg.in/ini.v1 v1.62.0
+	google.golang.org/grpc v1.42.0
+	gopkg.in/ini.v1 v1.66.2
 	gopkg.in/yaml.v2 v2.4.0
 	k8s.io/api v0.22.1
 	k8s.io/apimachinery v0.22.1
