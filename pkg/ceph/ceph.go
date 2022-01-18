@@ -443,6 +443,7 @@ func (ceph *Ceph) RunRgw(id, publicAddress, sslCertificate, sslKey, proxyPort st
 }
 
 func (ceph *Ceph) RunSetup(dashboardUsername, dashboardPassword, radosgwUsername, radosgwPassword, sslCertificate, sslKey string, placementGroups, expectedNumberOfObjects uint) error {
+	rbdBinary := ceph.getRbdBinary()
 	cephBinary := ceph.getCephBinary()
 	radosgwAdminBinary := ceph.getRadosgwAdminBinary()
 
@@ -466,6 +467,7 @@ func (ceph *Ceph) RunSetup(dashboardUsername, dashboardPassword, radosgwUsername
 		fmt.Sprintf("%s mgr module enable dashboard", cephBinary),
 		fmt.Sprintf("%s osd pool create %s %d %d replicated replicated_rule %d", cephBinary, utils.CephRbdPoolName, placementGroups, placementGroups, expectedNumberOfObjects),
 		fmt.Sprintf("%s osd pool application enable %s rbd", cephBinary, utils.CephRbdPoolName),
+		fmt.Sprintf("%s pool init %s", rbdBinary, utils.CephRbdPoolName),
 		fmt.Sprintf("%s osd pool create %s 8", cephBinary, utils.CephFsPoolName),
 		fmt.Sprintf("%s osd pool create %s_metadata 8", cephBinary, utils.CephFsPoolName),
 		fmt.Sprintf("%s fs new cephfs %s_metadata %s", cephBinary, utils.CephFsPoolName, utils.CephFsPoolName),
@@ -506,6 +508,10 @@ func (ceph *Ceph) getClientAdminBinary(binary string) string {
 
 func (ceph *Ceph) getRadosgwAdminBinary() string {
 	return ceph.getBinary("radosgw-admin")
+}
+
+func (ceph *Ceph) getRbdBinary() string {
+	return ceph.getClientAdminBinary(ceph.getUserGroupBinary(ceph.getClusterBinary(ceph.getConfigBinary(ceph.getBinary("rbd")))))
 }
 
 func (ceph *Ceph) getCephBinary() string {

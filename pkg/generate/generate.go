@@ -897,6 +897,7 @@ func (generator *Generator) generateCephCSI() error {
 		PluginsDirectory           string
 		PluginsRegistryDirectory   string
 		PodsDirectory              string
+		LoggingDirectory           string
 		CephRBDPoolName            string
 		CephFSPoolName             string
 		StorageControllers         []config.NodeData
@@ -915,6 +916,7 @@ func (generator *Generator) generateCephCSI() error {
 		PluginsDirectory:           generator.config.GetFullTargetAssetDirectory(utils.DirectoryKubeletPlugins),
 		PluginsRegistryDirectory:   generator.config.GetFullTargetAssetDirectory(utils.DirectoryKubeletPluginsRegistry),
 		PodsDirectory:              generator.config.GetFullTargetAssetDirectory(utils.DirectoryPodsData),
+		LoggingDirectory:           generator.config.GetFullTargetAssetDirectory(utils.DirectoryLogging),
 		CephRBDPoolName:            utils.CephRbdPoolName,
 		CephFSPoolName:             utils.CephFsPoolName,
 		StorageControllers:         generator.config.GetStorageControllers(),
