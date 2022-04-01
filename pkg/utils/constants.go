@@ -2,14 +2,14 @@ package utils
 
 // Versions
 const VersionConfig = "2.4.0"
-const VersionK8s = "v1.23.1"
+const VersionK8s = "v1.23.5"
 const VersionKubeAPIServer = "k8s.gcr.io/kube-apiserver:" + VersionK8s
 const VersionKubeControllerManager = "k8s.gcr.io/kube-controller-manager:" + VersionK8s
 const VersionKubeScheduler = "k8s.gcr.io/kube-scheduler:" + VersionK8s
 const VersionKubeProxy = "k8s.gcr.io/kube-proxy:" + VersionK8s
 const VersionEtcd = "quay.io/coreos/etcd:v3.5.0"
-const VersionContainerd = "1.5.9"
-const VersionRunc = "1.1.0"
+const VersionContainerd = "1.6.2"
+const VersionRunc = "1.1.1"
 const VersionCrictl = "1.23.0"
 const VersionHelm = "3.7.0"
 const VersionGobetween = "docker.io/yyyar/gobetween:0.8.0"
@@ -22,8 +22,8 @@ const VersionCalicoTypha = "quay.io/calico/typha:v3.20.1"
 const VersionCalicoNode = "quay.io/calico/node:v3.20.1"
 const VersionCalicoCni = "quay.io/calico/cni:v3.20.1"
 const VersionCalicoKubeControllers = "quay.io/calico/kube-controllers:v3.20.1"
-const VersionCeph = "docker.io/ceph/ceph:v16.2.5"
-const VersionCsiCephPlugin = "quay.io/cephcsi/cephcsi:v3.5.0"
+const VersionCeph = "quay.io/ceph/ceph:v16.2.7"
+const VersionCsiCephPlugin = "quay.io/cephcsi/cephcsi:v3.5.1"
 const VersionCsiProvisioner = "k8s.gcr.io/sig-storage/csi-provisioner:v3.1.0"
 const VersionCsiAttacher = "k8s.gcr.io/sig-storage/csi-attacher:v3.4.0"
 const VersionCsiSnapshotter = "k8s.gcr.io/sig-storage/csi-snapshotter:v4.2.0"
