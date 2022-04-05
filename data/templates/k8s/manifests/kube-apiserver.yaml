@@ -1,0 +1,130 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: kube-system
+  name: kube-apiserver
+  labels:
+    cluster-relevant: "true"
+    cluster-weight: "95"
+spec:
+  hostNetwork: true
+  containers:
+  - name: kube-apiserver
+    image: {{.KubernetesImage}}
+    command:
+    - kube-apiserver
+    - --feature-gates=EphemeralContainers=true
+    - --advertise-address={{.NodeIP}}
+    - --allow-privileged=true
+    - --apiserver-count={{.ControllersCount}}
+    - --audit-log-maxage=30
+    - --audit-log-maxbackup=3
+    - --audit-log-maxsize=100
+    - --audit-log-path={{.AuditLog}}
+    - --authorization-mode=Node,RBAC
+    - --bind-address=0.0.0.0
+    - --client-ca-file={{.PemCA}}
+    - --enable-admission-plugins=NamespaceLifecycle,NodeRestriction,LimitRanger,ServiceAccount,DefaultStorageClass,ResourceQuota
+    - --enable-aggregator-routing=true
+    - --etcd-cafile={{.PemCA}}
+    - --etcd-certfile={{.PemKubernetes}}
+    - --etcd-keyfile={{.PemKubernetesKey}}
+    - --etcd-servers={{.EtcdServers}}
+    - --event-ttl=1h
+    - --encryption-provider-config={{.EncryptionConfig}}
+    - --kubelet-certificate-authority={{.PemCA}}
+    - --kubelet-client-certificate={{.PemKubernetes}}
+    - --kubelet-client-key={{.PemKubernetesKey}}
+    - --proxy-client-cert-file={{.PemAggregator}}
+    - --proxy-client-key-file={{.PemAggregatorKey}}
+    - --requestheader-allowed-names=aggregator,admin,system:kube-controller-manager,system:kube-controller-manager,system:kube-scheduler,system:node:single-node
+    - --requestheader-client-ca-file={{.PemCA}}
+    - --requestheader-extra-headers-prefix=X-Remote-Extra-
+    - --requestheader-group-headers=X-Remote-Group
+    - --requestheader-username-headers=X-Remote-User
+    - --runtime-config=api/all=true
+    - --secure-port={{.APIServerPort}}
+    - --service-account-signing-key-file={{.PemServiceAccountKey}}
+    - --service-account-key-file={{.PemServiceAccount}}
+    - --service-account-issuer=https://kubernetes.default.svc.{{.ClusterDomain}}
+    - --service-account-api-audiences=api
+    - --service-cluster-ip-range={{.ClusterIPRange}}
+    - --service-node-port-range=30000-32767
+    - --tls-cert-file={{.PemKubernetes}}
+    - --tls-private-key-file={{.PemKubernetesKey}}
+    livenessProbe:
+      failureThreshold: 8
+      httpGet:
+        scheme: HTTPS
+        host: {{.NodeIP}}
+        port: 6443
+        path: /healthz
+      initialDelaySeconds: 15
+      timeoutSeconds: 15
+    resources:
+      requests:
+        cpu: 250m
+    volumeMounts:
+    - name: pem-ca
+      mountPath: {{.PemCA}}
+      readOnly: true
+    - name: pem-kubernetes
+      mountPath: {{.PemKubernetes}}
+      readOnly: true
+    - name: pem-kubernetes-key
+      mountPath: {{.PemKubernetesKey}}
+      readOnly: true
+    - name: pem-aggregator
+      mountPath: {{.PemAggregator}}
+      readOnly: true
+    - name: pem-aggregator-key
+      mountPath: {{.PemAggregatorKey}}
+      readOnly: true
+    - name: pem-service-account
+      mountPath: {{.PemServiceAccount}}
+      readOnly: true
+    - name: pem-service-account-key
+      mountPath: {{.PemServiceAccountKey}}
+      readOnly: true
+    - name: encryption-config
+      mountPath: {{.EncryptionConfig}}
+      readOnly: true
+    - name: audit-log
+      mountPath: {{.AuditLog}}
+  volumes:
+  - name: pem-ca
+    hostPath:
+      type: File
+      path: {{.PemCA}}
+  - name: pem-kubernetes
+    hostPath:
+      type: File
+      path: {{.PemKubernetes}}
+  - name: pem-kubernetes-key
+    hostPath:
+      type: File
+      path: {{.PemKubernetesKey}}
+  - name: pem-aggregator
+    hostPath:
+      type: File
+      path: {{.PemAggregator}}
+  - name: pem-aggregator-key
+    hostPath:
+      type: File
+      path: {{.PemAggregatorKey}}
+  - name: pem-service-account
+    hostPath:
+      type: File
+      path: {{.PemServiceAccount}}
+  - name: pem-service-account-key
+    hostPath:
+      type: File
+      path: {{.PemServiceAccountKey}}
+  - name: encryption-config
+    hostPath:
+      type: File
+      path: {{.EncryptionConfig}}
+  - name: audit-log
+    hostPath:
+      type: FileOrCreate
+      path: {{.AuditLog}}

@@ -1,3 +1,0 @@
-[client.{{.Name}}]
-        key = {{.Key | unescape}}
-        caps mon = "allow profile {{.Name}}"

@@ -1,0 +1,23 @@
+apiVersion: kubelet.config.k8s.io/v1beta1
+kind: KubeletConfiguration
+authentication:
+  anonymous:
+    enabled: false
+  webhook:
+    enabled: true
+  x509:
+    clientCAFile: "{{.CA}}"
+authorization:
+  mode: Webhook
+clusterDomain: "cluster.local"
+clusterDNS:
+  - "{{.ClusterDNSIP}}"
+podCIDR: "{{.PODCIDR}}"
+runtimeRequestTimeout: "15m"
+tlsCertFile: "{{.CertificateFilename}}"
+tlsPrivateKeyFile: "{{.KeyFilename}}"
+staticPodPath: "{{.StaticPodPath}}"
+failSwapOn: false
+resolvConf: "{{.ResolvConf}}"
+readOnlyPort: 10255
+maxPods: {{.MaxPods}}

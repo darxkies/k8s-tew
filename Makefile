@@ -7,12 +7,9 @@ compile:
 	docker run --rm --ulimit memlock=-1:-1 -v $$(pwd):/go/src/$(PACKAGE) $(BUILD_IMAGE)
 
 build-binaries:
-	mkdir -p embedded
-	packr
 	CGO_ENABLED=0 go build -ldflags "-X ${PACKAGE}/pkg/version.Version=${VERSION} -s -w" -o k8s-tew ${PACKAGE}/cmd/k8s-tew 
 
 watch-and-compile:
-	go get -u github.com/gobuffalo/packr/packr
 	go get github.com/cespare/reflex
 	reflex -r '\.(go|yaml)$$' -R '^vendor' -R '^setup' -R '^pkg/utils/a_utils-packr\.go$$' make build-binaries
 

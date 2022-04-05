@@ -2,10 +2,8 @@ package servers
 
 import (
 	"fmt"
-	"io"
 	"os"
 	"os/signal"
-	"path"
 	"syscall"
 	"time"
 
@@ -67,47 +65,7 @@ func (servers *Servers) Steps() int {
 	return len(servers.config.Config.Servers) + len(servers.config.Config.Commands) + 1
 }
 
-func (servers *Servers) extractEmbeddedFiles() error {
-	log.Debug("Extracting embedded files")
-
-	return utils.GetEmbeddedFiles(func(filename string, in io.ReadCloser) error {
-		log.WithFields(log.Fields{"filename": filename}).Info("Extracting embedded file")
-
-		hostDirectory := servers.config.GetFullLocalAssetDirectory(utils.DirectoryHostBinaries)
-		outFilename := path.Join(hostDirectory, filename)
-
-		if error := utils.CreateDirectoryIfMissing(path.Dir(outFilename)); error != nil {
-			return error
-		}
-
-		// Defer source file closing
-		defer in.Close()
-
-		// Open target file
-		out, error := os.OpenFile(outFilename, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0755)
-		if error != nil {
-			return error
-		}
-
-		// Defer target file closing
-		defer out.Close()
-
-		// Copy file content
-		if _, error = io.Copy(out, in); error != nil {
-			return error
-		}
-
-		// Sync content to storage
-		return out.Sync()
-	})
-}
-
 func (servers *Servers) Run(commandRetries uint, cleanup func()) error {
-	// Make sure the embedded dependencies are in place before the servers are started
-	if error := servers.extractEmbeddedFiles(); error != nil {
-		return errors.Wrap(error, "extracting embedded files failed")
-	}
-
 	isContainerd := func(server Server) bool {
 		return server.Name() == utils.ContainerdServerName
 	}

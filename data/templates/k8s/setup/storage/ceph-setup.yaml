@@ -1,0 +1,609 @@
+{{range $index, $node := .StorageControllers}}---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{$.Namespace}}
+  name: ceph-mon-{{$node.Name}}
+  labels:
+    app: ceph
+    daemon: mon
+    instance: ceph-mon-{{$node.Name}}
+spec:
+  selector:
+    matchLabels:
+      app: ceph
+      daemon: mon
+      instance: ceph-mon-{{$node.Name}}
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: ceph
+        daemon: mon
+        instance: ceph-mon-{{$node.Name}}
+        cluster-relevant: "true"
+        cluster-weight: "75"
+    spec:
+      hostNetwork: true
+      nodeSelector:
+        kubernetes.io/hostname: {{$node.Name}}
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
+      volumes:
+      - name: ceph-config
+        hostPath:
+          path: {{$.CephConfigDirectory}}
+          type: DirectoryOrCreate
+      - name: ceph-data
+        hostPath:
+          path: {{$.CephDataDirectory}}
+          type: DirectoryOrCreate
+      - name: k8s-tew-binary
+        hostPath:
+          path: {{$.K8sTewBinary}}
+          type: File
+      - name: k8s-tew-config
+        hostPath:
+          path: {{$.K8sTewConfig}}
+          type: File
+      containers:
+      - name: ceph-mon
+        image: {{$.CephImage}}
+        command: ["/k8s-tew"]
+        args: 
+        - ceph
+        - mon
+        - --id
+        - {{$node.Name}}
+        - --debug
+        env:
+        - name: K8S_TEW_BASE_DIRECTORY
+          value: "/"
+        volumeMounts:
+        - name: ceph-config
+          mountPath: /etc/ceph
+        - name: ceph-data
+          mountPath: /var/lib/ceph
+        - name: k8s-tew-binary
+          mountPath: /k8s-tew
+        - name: k8s-tew-config
+          mountPath: /etc/k8s-tew/config.yaml
+        livenessProbe:
+          tcpSocket:
+            port: 6789
+          initialDelaySeconds: 60
+          timeoutSeconds: 5
+        readinessProbe:
+          tcpSocket:
+            port: 6789
+          timeoutSeconds: 5
+{{end}}{{range $index, $node := .StorageNodes}}---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{$.Namespace}}
+  name: ceph-mgr-{{$node.Name}}
+  labels:
+    app: ceph
+    daemon: mgr
+    instance: ceph-mgr-{{$node.Name}}
+spec:
+  selector:
+    matchLabels:
+      app: ceph
+      daemon: mgr
+      instance: ceph-mgr-{{$node.Name}}
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: ceph
+        daemon: mgr
+        instance: ceph-mgr-{{$node.Name}}
+        cluster-relevant: "true"
+        cluster-weight: "75"
+    spec:
+      hostNetwork: true
+      nodeSelector:
+        kubernetes.io/hostname: {{$node.Name}}
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
+      volumes:
+      - name: ceph-config
+        hostPath:
+          path: {{$.CephConfigDirectory}}
+          type: DirectoryOrCreate
+      - name: ceph-data
+        hostPath:
+          path: {{$.CephDataDirectory}}
+          type: DirectoryOrCreate
+      - name: k8s-tew-binary
+        hostPath:
+          path: {{$.K8sTewBinary}}
+          type: File
+      - name: k8s-tew-config
+        hostPath:
+          path: {{$.K8sTewConfig}}
+          type: File
+      - name: certificates
+        configMap:
+          name: ceph-certificates
+      containers:
+      - name: ceph-mgr
+        image: {{$.CephImage}}
+        securityContext:
+          privileged: true
+        command: ["/k8s-tew"]
+        args: 
+        - ceph
+        - mgr
+        - --id
+        - {{$node.Name}}
+        - --ip
+        - {{$node.IP}}
+        - --debug
+        - --ssl-certificate 
+        - /etc/ssl/certs/ceph.pem 
+        - --ssl-key 
+        - /etc/ssl/certs/ceph-key.pem
+        - --proxy-port
+        - "28715"
+        env:
+        - name: K8S_TEW_BASE_DIRECTORY
+          value: "/"
+        volumeMounts:
+        - name: ceph-config
+          mountPath: /etc/ceph
+        - name: ceph-data
+          mountPath: /var/lib/ceph
+        - name: k8s-tew-binary
+          mountPath: /k8s-tew
+        - name: k8s-tew-config
+          mountPath: /etc/k8s-tew/config.yaml
+        - name: certificates
+          mountPath: /etc/ssl/certs/ca.pem
+          subPath: ca.pem
+        - name: certificates
+          mountPath: /etc/ssl/certs/ceph.pem
+          subPath: ceph.pem
+        - name: certificates
+          mountPath: /etc/ssl/certs/ceph-key.pem
+          subPath: ceph-key.pem
+        livenessProbe:
+          tcpSocket:
+            port: 9283
+          initialDelaySeconds: 60
+          timeoutSeconds: 5
+        readinessProbe:
+          tcpSocket:
+            port: 9283
+          timeoutSeconds: 5
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{$.Namespace}}
+  name: ceph-mds-{{$node.Name}}
+  labels:
+    app: ceph
+    daemon: mds
+    instance: ceph-mds-{{$node.Name}}
+spec:
+  selector:
+    matchLabels:
+      app: ceph
+      daemon: mds
+      instance: ceph-mds-{{$node.Name}}
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: ceph
+        daemon: mds
+        instance: ceph-mds-{{$node.Name}}
+        cluster-relevant: "true"
+        cluster-weight: "75"
+    spec:
+      hostNetwork: true
+      nodeSelector:
+        kubernetes.io/hostname: {{$node.Name}}
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
+      volumes:
+      - name: ceph-config
+        hostPath:
+          path: {{$.CephConfigDirectory}}
+          type: DirectoryOrCreate
+      - name: ceph-data
+        hostPath:
+          path: {{$.CephDataDirectory}}
+          type: DirectoryOrCreate
+      - name: ceph-dev
+        hostPath:
+          path: /dev
+          type: DirectoryOrCreate
+      - name: k8s-tew-binary
+        hostPath:
+          path: {{$.K8sTewBinary}}
+          type: File
+      - name: k8s-tew-config
+        hostPath:
+          path: {{$.K8sTewConfig}}
+          type: File
+      containers:
+      - name: ceph-mds
+        image: {{$.CephImage}}
+        command: ["/k8s-tew"]
+        args: 
+        - ceph
+        - mds
+        - --id
+        - {{$node.Name}}
+        - --debug
+        ports:
+        - containerPort: 6800
+          protocol: TCP
+        env:
+        - name: K8S_TEW_BASE_DIRECTORY
+          value: "/"
+        volumeMounts:
+        - name: ceph-config
+          mountPath: /etc/ceph
+        - name: ceph-data
+          mountPath: /var/lib/ceph
+        - name: ceph-dev
+          mountPath: /dev
+        - name: k8s-tew-binary
+          mountPath: /k8s-tew
+        - name: k8s-tew-config
+          mountPath: /etc/k8s-tew/config.yaml
+        livenessProbe:
+          tcpSocket:
+            port: 6800
+          initialDelaySeconds: 60
+          timeoutSeconds: 5
+        readinessProbe:
+          tcpSocket:
+            port: 6800
+          timeoutSeconds: 5
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{$.Namespace}}
+  name: ceph-rgw-{{$node.Name}}
+  labels:
+    app: ceph
+    daemon: rgw
+    instance: ceph-rgw-{{$node.Name}}
+spec:
+  selector:
+    matchLabels:
+      app: ceph
+      daemon: rgw
+      instance: ceph-rgw-{{$node.Name}}
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: ceph
+        daemon: rgw
+        instance: ceph-rgw-{{$node.Name}}
+        cluster-relevant: "true"
+        cluster-weight: "75"
+    spec:
+      hostNetwork: true
+      nodeSelector:
+        kubernetes.io/hostname: {{$node.Name}}
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
+      volumes:
+      - name: ceph-config
+        hostPath:
+          path: {{$.CephConfigDirectory}}
+          type: DirectoryOrCreate
+      - name: ceph-data
+        hostPath:
+          path: {{$.CephDataDirectory}}
+          type: DirectoryOrCreate
+      - name: k8s-tew-binary
+        hostPath:
+          path: {{$.K8sTewBinary}}
+          type: File
+      - name: k8s-tew-config
+        hostPath:
+          path: {{$.K8sTewConfig}}
+          type: File
+      - name: certificates
+        configMap:
+          name: ceph-certificates
+      containers:
+      - name: ceph-rgw
+        image: {{$.CephImage}}
+        command: ["/k8s-tew"]
+        args: 
+        - ceph
+        - rgw
+        - --id
+        - {{$node.Name}}
+        - --debug
+        - --ssl-certificate 
+        - /etc/ssl/certs/ceph.pem 
+        - --ssl-key 
+        - /etc/ssl/certs/ceph-key.pem
+        - --proxy-port
+        - "15728"
+        ports:
+        - containerPort: 15728
+          name: rgw
+          protocol: TCP
+        env:
+        - name: K8S_TEW_BASE_DIRECTORY
+          value: "/"
+        volumeMounts:
+        - name: ceph-config
+          mountPath: /etc/ceph
+        - name: ceph-data
+          mountPath: /var/lib/ceph
+        - name: k8s-tew-binary
+          mountPath: /k8s-tew
+        - name: k8s-tew-config
+          mountPath: /etc/k8s-tew/config.yaml
+        - name: certificates
+          mountPath: /etc/ssl/certs/ca.pem
+          subPath: ca.pem
+        - name: certificates
+          mountPath: /etc/ssl/certs/ceph.pem
+          subPath: ceph.pem
+        - name: certificates
+          mountPath: /etc/ssl/certs/ceph-key.pem
+          subPath: ceph-key.pem
+        livenessProbe:
+          tcpSocket:
+            port: 7480
+          initialDelaySeconds: 60
+          timeoutSeconds: 5
+        readinessProbe:
+          tcpSocket:
+            port: 7480
+          timeoutSeconds: 5
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{$.Namespace}}
+  name: ceph-osd-{{$node.Name}}
+  labels:
+    app: ceph
+    daemon: osd
+    instance: ceph-osd-{{$node.Name}}
+spec:
+  selector:
+    matchLabels:
+      app: ceph
+      daemon: osd
+      instance: ceph-osd-{{$node.Name}}
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: ceph
+        daemon: osd
+        instance: ceph-osd-{{$node.Name}}
+        cluster-relevant: "true"
+        cluster-weight: "75"
+    spec:
+      hostNetwork: true
+      nodeSelector:
+        kubernetes.io/hostname: {{$node.Name}}
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
+      volumes:
+      - name: ceph-config
+        hostPath:
+          path: {{$.CephConfigDirectory}}
+          type: DirectoryOrCreate
+      - name: ceph-data
+        hostPath:
+          path: {{$.CephDataDirectory}}
+          type: DirectoryOrCreate
+      - name: ceph-dev
+        hostPath:
+          path: /dev
+          type: DirectoryOrCreate
+      - name: k8s-tew-binary
+        hostPath:
+          path: {{$.K8sTewBinary}}
+          type: File
+      - name: k8s-tew-config
+        hostPath:
+          path: {{$.K8sTewConfig}}
+          type: File
+      containers:
+      - name: ceph-osd
+        image: {{$.CephImage}}
+        securityContext:
+          privileged: true
+        command: ["/k8s-tew"]
+        args: 
+        - ceph
+        - osd
+        - --id
+        - "{{$node.StorageIndex}}"
+        - --debug
+        env:
+        - name: K8S_TEW_BASE_DIRECTORY
+          value: "/"
+        volumeMounts:
+        - name: ceph-config
+          mountPath: /etc/ceph
+        - name: ceph-data
+          mountPath: /var/lib/ceph
+        - name: ceph-dev
+          mountPath: /dev
+        - name: k8s-tew-binary
+          mountPath: /k8s-tew
+        - name: k8s-tew-config
+          mountPath: /etc/k8s-tew/config.yaml
+        livenessProbe:
+          tcpSocket:
+            port: 6800
+          initialDelaySeconds: 60
+          timeoutSeconds: 5
+        readinessProbe:
+          tcpSocket:
+            port: 6800
+          timeoutSeconds: 5
+{{end}}---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  namespace: {{.Namespace}}
+  name: ceph-setup
+spec:
+  template:
+    metadata:
+      name: ceph-setup
+    spec:
+      restartPolicy: OnFailure
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                {{range $index, $node := .StorageNodes -}}
+                - "{{$node.Name}}"
+                {{end}}
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
+      volumes:
+      - name: ceph-config
+        hostPath:
+          path: {{$.CephConfigDirectory}}
+          type: DirectoryOrCreate
+      - name: ceph-data
+        hostPath:
+          path: {{$.CephDataDirectory}}
+          type: DirectoryOrCreate
+      - name: k8s-tew-binary
+        hostPath:
+          path: {{$.K8sTewBinary}}
+          type: File
+      - name: k8s-tew-config
+        hostPath:
+          path: {{$.K8sTewConfig}}
+          type: File
+      - name: certificates
+        configMap:
+          name: ceph-certificates
+      containers:
+      - name: ceph
+        image: {{$.CephImage}}
+        command:
+        - /bin/sh
+        - -c
+        - "/k8s-tew ceph setup --dashboard-username $CEPH_MANAGER_USERNAME --dashboard-password $CEPH_MANAGER_PASSWORD --radosgw-username $CEPH_RADOSGW_USERNAME --radosgw-password $CEPH_RADOSGW_PASSWORD --ssl-certificate /etc/ssl/certs/ceph.pem --ssl-key /etc/ssl/certs/ceph-key.pem --placement-groups {{.CephPlacementGroups}} --expected-number-of-objects {{.CephExpectedNumberOfObjects}}"
+        volumeMounts:
+        - name: ceph-config
+          mountPath: /etc/ceph
+        - name: ceph-data
+          mountPath: /var/lib/ceph
+        - name: k8s-tew-binary
+          mountPath: /k8s-tew
+        - name: k8s-tew-config
+          mountPath: /etc/k8s-tew/config.yaml
+        - name: certificates
+          mountPath: /etc/ssl/certs/ca.pem
+          subPath: ca.pem
+        - name: certificates
+          mountPath: /etc/ssl/certs/ceph.pem
+          subPath: ceph.pem
+        - name: certificates
+          mountPath: /etc/ssl/certs/ceph-key.pem
+          subPath: ceph-key.pem
+        env:
+          - name: K8S_TEW_BASE_DIRECTORY
+            value: "/"
+          - name: CEPH_MANAGER_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: {{$.CephManagerCredentials}}
+                key: username
+          - name: CEPH_MANAGER_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{$.CephManagerCredentials}}
+                key: password
+          - name: CEPH_RADOSGW_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: ceph-rados-gateway-credentials
+                name: {{$.CephRadosGatewayCredentials}}
+                key: username
+          - name: CEPH_RADOSGW_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{$.CephRadosGatewayCredentials}}
+                key: password
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+    namespace: {{$.Namespace}}
+    name: ceph-rgw
+    labels:
+        app: ceph
+        daemon: rgw
+spec:
+    type: NodePort
+    ports:
+    - port: 15728
+      protocol: TCP
+      nodePort: {{.CephRadosGatewayPort}}
+    selector:
+      app: ceph
+      daemon: rgw
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+    namespace: {{$.Namespace}}
+    name: ceph-mgr
+    annotations:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "9283"
+    labels:
+      app: ceph
+      daemon: mgr
+spec:
+    type: NodePort
+    ports:
+    - port: 28715
+      protocol: TCP
+      nodePort: {{.CephManagerPort}}
+    selector:
+      app: ceph
+      daemon: mgr

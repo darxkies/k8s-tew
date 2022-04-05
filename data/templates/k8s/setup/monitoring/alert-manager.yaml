@@ -1,0 +1,162 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  namespace: {{.Namespace}}
+  name: alert-manager
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: {{.Namespace}}
+  name: alert-manager-config
+  labels:
+    k8s-app: alert-manager
+data:
+  alert-manager.yml: |
+    global: null
+    receivers:
+    - name: default-receiver
+    route:
+      group_interval: 5m
+      group_wait: 10s
+      receiver: default-receiver
+      repeat_interval: 3h
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{.Namespace}}
+  name: alert-manager-operated
+  labels:
+    k8s-app: alert-manager
+spec:
+  type: "ClusterIP"
+  clusterIP: None
+  selector:
+    k8s-app: alert-manager
+  ports:
+    - name: mesh
+      port: 6783
+      protocol: TCP
+      targetPort: 6783
+    - name: http
+      port: 9093
+      protocol: TCP
+      targetPort: 9093
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{.Namespace}}
+  name: alert-manager
+  labels:
+    k8s-app: alert-manager
+spec:
+  ports:
+    - name: http
+      port: 9093
+      protocol: TCP
+      targetPort: 9093
+  selector:
+    k8s-app: alert-manager
+  type: "ClusterIP"
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: {{.Namespace}}
+  name: alert-manager
+  labels: 
+    k8s-app: alert-manager
+spec:
+  serviceName: "alert-manager-operated"
+  replicas: {{ .AlertManagerCount }} 
+  podManagementPolicy: OrderedReady
+  updateStrategy:
+    type: RollingUpdate
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels: 
+      k8s-app: alert-manager
+  template:
+    metadata:
+      labels:
+        k8s-app: alert-manager
+    spec:
+      serviceAccountName: alert-manager
+      initContainers:
+          - name: "init-chmod-data"
+            image: {{ .BusyboxImage }}
+            imagePullPolicy: "IfNotPresent"
+            command: ["chmod", "777", "/data"]
+            volumeMounts:
+            - name: alert-manager-data
+              mountPath: "/data"
+      containers:
+        - name: alert-manager
+          image: {{ .AlertManagerImage }}
+          imagePullPolicy: IfNotPresent
+          args:
+            - --config.file=/etc/config/alert-manager.yml
+            - --storage.path=/data
+            - --web.listen-address=:9093
+            - --web.route-prefix=/
+            - --cluster.listen-address=$(POD_IP):6783
+            {{ range $index, $element := .AlertManagerCounts -}}
+            - --cluster.peer=alert-manager-{{ $element }}.alert-manager-operated.{{$.Namespace}}.svc:6783
+            {{ end -}}
+            - --log.level=debug
+          env:
+          - name: POD_IP
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: status.podIP
+          ports:
+            - containerPort: 9093
+              name: http
+              protocol: TCP
+            - containerPort: 6783
+              name: mesh
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /#/status
+              port: 9093
+            initialDelaySeconds: 30
+            timeoutSeconds: 30
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/config
+            - name: alert-manager-data
+              mountPath: "/data"
+          resources:
+            limits:
+              cpu: 10m
+              memory: 50Mi
+            requests:
+              cpu: 10m
+              memory: 50Mi
+      volumes:
+        - name: config-volume
+          configMap:
+            name: alert-manager-config
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: k8s-app
+                operator: In
+                values:
+                - alert-manager
+            topologyKey: "kubernetes.io/hostname"
+  volumeClaimTemplates:
+  - metadata:
+      name: alert-manager-data
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: "{{ .AlertManagerSize }}Gi"

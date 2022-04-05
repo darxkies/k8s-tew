@@ -1,0 +1,314 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  namespace: [[.Namespace]]
+  name: grafana
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: [[.Namespace]]
+  name: grafana-ini
+  labels:
+    k8s-app: grafana
+data:
+  grafana.ini: |
+    [analytics]
+    check_for_updates = true
+    [grafana_net]
+    url = https://grafana.net
+    [log]
+    mode = console
+    [paths]
+    data = /var/lib/grafana/data
+    logs = /var/log/grafana
+    plugins = /var/lib/grafana/plugins
+    [server]
+    protocol=https
+    cert_file=/etc/ssl/certs/grafana.pem
+    cert_key=/etc/ssl/certs/grafana-key.pem
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: [[.Namespace]]
+  name: grafana-datasources
+  labels:
+    k8s-app: grafana
+data:
+  datasources.yaml: |
+    apiVersion: 1
+    datasources:
+    - access: proxy
+      isDefault: true
+      name: prometheus
+      type: prometheus
+      url: http://prometheus:9090
+      version: 1
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: [[.Namespace]]
+  name: grafana-dashboard-providers
+  labels:
+    k8s-app: grafana
+data:
+  dashboardproviders.yaml: |
+    apiVersion: 1
+    providers:
+    - disableDeletion: false
+      editable: true
+      folder: ""
+      name: default
+      options:
+        path: /var/lib/grafana/dashboards
+      orgId: 1
+      type: file
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: [[.Namespace]]
+  name: grafana
+  labels:
+    k8s-app: grafana
+spec:
+  type: NodePort
+  ports:
+    - name: https
+      port: 3000
+      protocol: TCP
+      targetPort: 3000
+      nodePort: [[.GrafanaPort]]
+  selector:
+    k8s-app: grafana
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: [[.Namespace]]
+  name: grafana
+  labels: 
+    k8s-app: grafana
+spec:
+  serviceName: grafana
+  replicas: 1
+  selector:
+    matchLabels: 
+      k8s-app: grafana
+  template:
+    metadata:
+      labels: 
+        k8s-app: grafana
+    spec:
+      serviceAccountName: grafana
+      initContainers:
+          - name: "init-chmod-data"
+            image: [[ .BusyboxImage ]]
+            imagePullPolicy: "IfNotPresent"
+            command: ["chmod", "777", "/var/lib/grafana"]
+            volumeMounts:
+            - name: grafana-data
+              mountPath: "/var/lib/grafana"
+      containers:
+        - name: grafana
+          image: [[ .GrafanaImage ]]
+          imagePullPolicy: "IfNotPresent"
+          volumeMounts:
+            - name: config
+              mountPath: "/etc/grafana/"
+            - name: datasources
+              mountPath: "/etc/grafana/provisioning/datasources/"
+            - name: dashboard-providers
+              mountPath: "/etc/grafana/provisioning/dashboards/"
+            - name: grafana-data
+              mountPath: "/var/lib/grafana"
+            - name: certificates
+              mountPath: /etc/ssl/certs/ca.pem
+              subPath: ca.pem
+            - name: certificates
+              mountPath: /etc/ssl/certs/grafana.pem
+              subPath: grafana.pem
+            - name: certificates
+              mountPath: /etc/ssl/certs/grafana-key.pem
+              subPath: grafana-key.pem
+            - name: grafana-dashboard-etcd
+              mountPath: "/var/lib/grafana/dashboards/etcd.json"
+              subPath: etcd.json
+            - name: grafana-dashboard-ceph
+              mountPath: "/var/lib/grafana/dashboards/ceph.json"
+              subPath: ceph.json
+            - name: grafana-dashboard-apiserver
+              mountPath: "/var/lib/grafana/dashboards/apiserver.json"
+              subPath: apiserver.json
+            - name: grafana-dashboard-scheduler
+              mountPath: "/var/lib/grafana/dashboards/scheduler.json"
+              subPath: scheduler.json
+            - name: grafana-dashboard-controller-manager
+              mountPath: "/var/lib/grafana/dashboards/controller-manager.json"
+              subPath: controller-manager.json
+            - name: grafana-dashboard-kubelet
+              mountPath: "/var/lib/grafana/dashboards/kubelet.json"
+              subPath: kubelet.json
+            - name: grafana-dashboard-proxy
+              mountPath: "/var/lib/grafana/dashboards/proxy.json"
+              subPath: proxy.json
+            - name: grafana-dashboard-k8s-resources-cluster
+              mountPath: "/var/lib/grafana/dashboards/k8s-resources-cluster.json"
+              subPath: k8s-resources-cluster.json
+            - name: grafana-dashboard-k8s-resources-node
+              mountPath: "/var/lib/grafana/dashboards/k8s-resources-node.json"
+              subPath: k8s-resources-node.json
+            - name: grafana-dashboard-k8s-resources-namespace
+              mountPath: "/var/lib/grafana/dashboards/k8s-resources-namespace.json"
+              subPath: k8s-resources-namespace.json
+            - name: grafana-dashboard-k8s-resources-pod
+              mountPath: "/var/lib/grafana/dashboards/k8s-resources-pod.json"
+              subPath: k8s-resources-pod.json
+            - name: grafana-dashboard-k8s-resources-workload
+              mountPath: "/var/lib/grafana/dashboards/k8s-resources-workload.json"
+              subPath: k8s-resources-workload.json
+            - name: grafana-dashboard-k8s-resources-workloads-namespace
+              mountPath: "/var/lib/grafana/dashboards/k8s-resources-workloads-namespace.json"
+              subPath: k8s-resources-workloads-namespace.json
+            - name: grafana-dashboard-namespace-by-pod
+              mountPath: "/var/lib/grafana/dashboards/namespace-by-pod.json"
+              subPath: namespace-by-pod.json
+            - name: grafana-dashboard-namespace-by-workload
+              mountPath: "/var/lib/grafana/dashboards/namespace-by-workload.json"
+              subPath: namespace-by-workload.json
+            - name: grafana-dashboard-persistentvolumesusage
+              mountPath: "/var/lib/grafana/dashboards/persistentvolumesusage.json"
+              subPath: persistentvolumesusage.json
+            - name: grafana-dashboard-statefulset
+              mountPath: "/var/lib/grafana/dashboards/statefulset.json"
+              subPath: statefulset.json
+            - name: grafana-dashboard-cluster-total
+              mountPath: "/var/lib/grafana/dashboards/cluster-total.json"
+              subPath: cluster-total.json
+            - name: grafana-dashboard-pod-total
+              mountPath: "/var/lib/grafana/dashboards/pod-total.json"
+              subPath: pod-total.json
+            - name: grafana-dashboard-workload-total
+              mountPath: "/var/lib/grafana/dashboards/workload-total.json"
+              subPath: workload-total.json
+          ports:
+            - name: grafana
+              containerPort: 3000
+              protocol: TCP
+          env:
+            - name: GF_SECURITY_ADMIN_USER
+              valueFrom:
+                secretKeyRef:
+                  name: grafana-credentials
+                  key: username
+            - name: GF_SECURITY_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: grafana-credentials
+                  key: password
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+              scheme: HTTPS
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+              scheme: HTTPS
+            initialDelaySeconds: 3
+            timeoutSeconds: 30
+            failureThreshold: 10
+            periodSeconds: 10
+          resources:
+            limits:
+              cpu: 50m
+              memory: 100Mi
+            requests:
+              cpu: 50m
+              memory: 100Mi
+      volumes:
+        - name: config
+          configMap:
+            name: grafana-ini
+        - name: datasources
+          configMap:
+            name: grafana-datasources
+        - name: dashboard-providers
+          configMap:
+            name: grafana-dashboard-providers
+        - name: certificates
+          configMap:
+            name: grafana-certificates
+        - name: grafana-dashboard-etcd
+          configMap:
+            name: grafana-dashboard-etcd
+        - name: grafana-dashboard-ceph
+          configMap:
+            name: grafana-dashboard-ceph
+        - name: grafana-dashboard-apiserver
+          configMap:
+            name: grafana-dashboard-apiserver
+        - name: grafana-dashboard-scheduler
+          configMap:
+            name: grafana-dashboard-scheduler
+        - name: grafana-dashboard-controller-manager
+          configMap:
+            name: grafana-dashboard-controller-manager
+        - name: grafana-dashboard-kubelet
+          configMap:
+            name: grafana-dashboard-kubelet
+        - name: grafana-dashboard-proxy
+          configMap:
+            name: grafana-dashboard-proxy
+        - name: grafana-dashboard-k8s-resources-cluster
+          configMap:
+            name: grafana-dashboard-k8s-resources-cluster
+        - name: grafana-dashboard-k8s-resources-node
+          configMap:
+            name: grafana-dashboard-k8s-resources-node
+        - name: grafana-dashboard-k8s-resources-namespace
+          configMap:
+            name: grafana-dashboard-k8s-resources-namespace
+        - name: grafana-dashboard-k8s-resources-pod
+          configMap:
+            name: grafana-dashboard-k8s-resources-pod
+        - name: grafana-dashboard-k8s-resources-workload
+          configMap:
+            name: grafana-dashboard-k8s-resources-workload
+        - name: grafana-dashboard-k8s-resources-workloads-namespace
+          configMap:
+            name: grafana-dashboard-k8s-resources-workloads-namespace
+        - name: grafana-dashboard-namespace-by-pod
+          configMap:
+            name: grafana-dashboard-namespace-by-pod
+        - name: grafana-dashboard-namespace-by-workload
+          configMap:
+            name: grafana-dashboard-namespace-by-workload
+        - name: grafana-dashboard-persistentvolumesusage
+          configMap:
+            name: grafana-dashboard-persistentvolumesusage
+        - name: grafana-dashboard-statefulset
+          configMap:
+            name: grafana-dashboard-statefulset
+        - name: grafana-dashboard-cluster-total
+          configMap:
+            name: grafana-dashboard-cluster-total
+        - name: grafana-dashboard-pod-total
+          configMap:
+            name: grafana-dashboard-pod-total
+        - name: grafana-dashboard-workload-total
+          configMap:
+            name: grafana-dashboard-workload-total
+
+  volumeClaimTemplates:
+  - metadata:
+      name: grafana-data
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: "[[ .GrafanaSize ]]Gi"
