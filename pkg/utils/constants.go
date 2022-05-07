@@ -471,7 +471,7 @@ const TemplateManifestKubeProxy = "k8s/manifests/kube-proxy.yaml"
 const TemplateManifestGobetween = "k8s/manifests/gobetween.yaml"
 const TemplateManifestVirtualIP = "k8s/manifests/virtual-ip.yaml"
 
-const NodeRoleController = "node-role.kubernetes.io/control-plane"
+const NodeRoleController = "node-role.kubernetes.io/controller"
 const NodeRoleWorker = "node-role.kubernetes.io/worker"
 const NodeRoleStorage = "node-role.kubernetes.io/storage"
 const NodeNotReady = "node.kubernetes.io/not-ready"
