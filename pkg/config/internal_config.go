@@ -340,15 +340,12 @@ func (config *InternalConfig) registerServers() {
 	})
 
 	config.addServer("kubelet", Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, config.GetTemplateAssetFilename(utils.BinaryKubelet), map[string]string{
-		"config":                       config.GetTemplateAssetFilename(utils.K8sKubeletConfig),
-		"container-runtime":            "remote",
-		"container-runtime-endpoint":   "unix://" + config.GetTemplateAssetFilename(utils.ContainerdSock),
-		"image-pull-progress-deadline": "2m",
-		"kubeconfig":                   config.GetTemplateAssetFilename(utils.KubeconfigKubelet),
-		"network-plugin":               "cni",
-		"register-node":                "true",
-		"root-dir":                     config.GetTemplateAssetDirectory(utils.DirectoryKubeletData),
-		"v":                            "0",
+		"config":                     config.GetTemplateAssetFilename(utils.K8sKubeletConfig),
+		"container-runtime-endpoint": "unix://" + config.GetTemplateAssetFilename(utils.ContainerdSock),
+		"kubeconfig":                 config.GetTemplateAssetFilename(utils.KubeconfigKubelet),
+		"register-node":              "true",
+		"root-dir":                   config.GetTemplateAssetDirectory(utils.DirectoryKubeletData),
+		"v":                          "0",
 	})
 }
 
