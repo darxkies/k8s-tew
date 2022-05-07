@@ -248,3 +248,13 @@ spec:
       volumes:
         - name: tmp-volume
           emptyDir: {}
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: admin-user-token-0
+  namespace: kube-system
+  annotations:
+    kubernetes.io/service-account.name: admin-user
+type: kubernetes.io/service-account-token
