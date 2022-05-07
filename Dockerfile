@@ -18,6 +18,6 @@ COPY go.mod go.sum ${WORKING_DIRECTORY}
 
 RUN go mod download
 
-RUN go get github.com/gobuffalo/packr/...
+RUN git config --global --add safe.directory /go/src/github.com/darxkies/k8s-tew
 
 CMD ["make", "build-binaries"]
