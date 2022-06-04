@@ -2,21 +2,21 @@ package utils
 
 // Versions
 const VersionConfig = "2.4.0"
-const VersionK8s = "v1.24.0"
+const VersionK8s = "v1.24.1"
 const VersionKubeAPIServer = "k8s.gcr.io/kube-apiserver:" + VersionK8s
 const VersionKubeControllerManager = "k8s.gcr.io/kube-controller-manager:" + VersionK8s
 const VersionKubeScheduler = "k8s.gcr.io/kube-scheduler:" + VersionK8s
 const VersionKubeProxy = "k8s.gcr.io/kube-proxy:" + VersionK8s
-const VersionEtcd = "quay.io/coreos/etcd:v3.5.0"
-const VersionContainerd = "1.6.4"
-const VersionRunc = "1.1.1"
-const VersionCrictl = "1.24.0"
+const VersionEtcd = "quay.io/coreos/etcd:v3.5.4"
+const VersionContainerd = "1.6.5"
+const VersionRunc = "1.1.2"
+const VersionCrictl = "1.24.2"
 const VersionHelm = "3.7.0"
 const VersionGobetween = "docker.io/yyyar/gobetween:0.8.0"
 const VersionVirtualIP = "docker.io/darxkies/virtual-ip:1.0.1"
-const VersionBusybox = "docker.io/library/busybox:1.34.0"
-const VersionPause = "k8s.gcr.io/pause:3.5"
-const VersionCoreDNS = "docker.io/coredns/coredns:1.8.4"
+const VersionBusybox = "docker.io/library/busybox:1.35.0"
+const VersionPause = "k8s.gcr.io/pause:3.7"
+const VersionCoreDNS = "docker.io/coredns/coredns:1.8.7"
 const VersionCalicoPod2Daemon = "quay.io/calico/pod2daemon-flexvol:v3.20.1"
 const VersionCalicoTypha = "quay.io/calico/typha:v3.20.1"
 const VersionCalicoNode = "quay.io/calico/node:v3.20.1"
