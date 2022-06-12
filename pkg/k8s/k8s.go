@@ -1,6 +1,7 @@
 package k8s
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -16,6 +17,7 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	v1 "k8s.io/api/core/v1"
+
 	"k8s.io/apimachinery/pkg/api/meta"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -25,8 +27,11 @@ import (
 	"k8s.io/cli-runtime/pkg/genericclioptions"
 	"k8s.io/cli-runtime/pkg/resource"
 	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
+	"k8s.io/client-go/tools/remotecommand"
 	cmdutil "k8s.io/kubectl/pkg/cmd/util"
+	"k8s.io/kubectl/pkg/scheme"
 )
 
 type K8S struct {
@@ -37,7 +42,7 @@ func NewK8S(config *config.InternalConfig) *K8S {
 	return &K8S{config: config}
 }
 
-func (k8s *K8S) getClient() (*kubernetes.Clientset, error) {
+func (k8s *K8S) getConfig() (*rest.Config, error) {
 	kubeconfig := k8s.config.GetFullLocalAssetFilename(utils.KubeconfigAdmin)
 
 	// Configure connection
@@ -46,10 +51,20 @@ func (k8s *K8S) getClient() (*kubernetes.Clientset, error) {
 		return nil, errors.Wrap(error, "Could not get Kubernetes config from flags")
 	}
 
+	return config, nil
+}
+
+func (k8s *K8S) getClient() (*kubernetes.Clientset, error) {
+	// Configure connection
+	config, _error := k8s.getConfig()
+	if _error != nil {
+		return nil, _error
+	}
+
 	// Create client
-	result, error := kubernetes.NewForConfig(config)
-	if error != nil {
-		return nil, errors.Wrap(error, "Could not get Kubernetes config")
+	result, _error := kubernetes.NewForConfig(config)
+	if _error != nil {
+		return nil, errors.Wrap(_error, "Could not get Kubernetes config")
 	}
 
 	return result, nil
@@ -76,7 +91,7 @@ func (k8s *K8S) unschedulable(name string, unschedulable bool) error {
 
 	node.Spec.Unschedulable = unschedulable
 
-	node, error = clientset.CoreV1().Nodes().Update(context, node, metav1.UpdateOptions{})
+	_, error = clientset.CoreV1().Nodes().Update(context, node, metav1.UpdateOptions{})
 
 	if error != nil {
 		return errors.Wrapf(error, "Could not update node '%s'", name)
@@ -93,6 +108,26 @@ func (k8s *K8S) Uncordon(name string) error {
 	return k8s.unschedulable(name, false)
 }
 
+func (k8s *K8S) DeleteJob(namespace, jobName string) error {
+	clientset, _error := k8s.getClient()
+	if _error != nil {
+		return errors.Wrapf(_error, "Could not connect to cluster")
+	}
+
+	context := context.Background()
+
+	delete := metav1.DeletePropagationBackground
+
+	_error = clientset.BatchV1().Jobs(namespace).Delete(context, jobName, metav1.DeleteOptions{PropagationPolicy: &delete})
+	if _error != nil {
+		log.WithFields(log.Fields{"error": _error, "namespace": namespace, "job": jobName}).Debug("Could not delete job")
+
+		return _error
+	}
+
+	return nil
+}
+
 func (k8s *K8S) Drain(nodeName string) error {
 	var clientset *kubernetes.Clientset
 	var pods *v1.PodList
@@ -103,74 +138,138 @@ func (k8s *K8S) Drain(nodeName string) error {
 	}
 
 	context := context.Background()
-
-	labelSelector := "cluster-relevant!=true"
 	fieldSelector := fmt.Sprintf("spec.nodeName=%s", nodeName)
 
-	for {
-		pods, _error = clientset.CoreV1().Pods("").List(context, metav1.ListOptions{FieldSelector: fieldSelector, LabelSelector: labelSelector})
-		if _error != nil {
-			return errors.Wrap(_error, "Could not get pods")
-		}
+	// Delete non-essential pods
+	{
+		log.Debug("Deleting pods")
 
-		killed := 0
+		labelSelector := "cluster-relevant!=true"
 
-		for _, pod := range pods.Items {
-			skip := false
-
-			for _, ownerReference := range pod.OwnerReferences {
-				if ownerReference.Kind == "Node" || ownerReference.Kind == "DaemonSet" {
-					skip = true
-
-					break
-				}
-			}
-
-			for _, toleration := range pod.Spec.Tolerations {
-				if toleration.Effect == v1.TaintEffectNoSchedule && toleration.Operator == v1.TolerationOpExists {
-					skip = true
-
-					break
-				}
-			}
-
-			if skip {
-				log.WithFields(log.Fields{"namespace": pod.Namespace, "pod": pod.Name}).Debug("Ignoring pod")
-
-				continue
-			}
-
-			log.WithFields(log.Fields{"namespace": pod.Namespace, "pod": pod.Name}).Debug("Evicting pod")
-
-			gracePeriodSeconds := int64(k8s.config.Config.DrainGracePeriodSeconds)
-
-			_error := clientset.CoreV1().Pods(pod.Namespace).Delete(context, pod.Name, metav1.DeleteOptions{GracePeriodSeconds: &gracePeriodSeconds})
+		for {
+			pods, _error = clientset.CoreV1().Pods("").List(context, metav1.ListOptions{FieldSelector: fieldSelector, LabelSelector: labelSelector})
 			if _error != nil {
-				log.WithFields(log.Fields{"error": _error, "namespace": pod.Namespace, "pod": pod.Name}).Debug("Could not evict pod")
+				return errors.Wrap(_error, "Could not get pods")
 			}
 
-			killed++
-		}
+			killed := 0
 
-		if killed == 0 {
-			break
-		}
+			for _, pod := range pods.Items {
+				skip := false
 
-		time.Sleep(time.Second)
+				for _, ownerReference := range pod.OwnerReferences {
+					if ownerReference.Kind == "Node" || ownerReference.Kind == "DaemonSet" {
+						skip = true
+
+						break
+					}
+				}
+
+				for _, toleration := range pod.Spec.Tolerations {
+					if toleration.Effect == v1.TaintEffectNoSchedule && toleration.Operator == v1.TolerationOpExists {
+						skip = true
+
+						break
+					}
+				}
+
+				if skip {
+					log.WithFields(log.Fields{"namespace": pod.Namespace, "pod": pod.Name}).Debug("Ignoring pod")
+
+					continue
+				}
+
+				log.WithFields(log.Fields{"namespace": pod.Namespace, "pod": pod.Name}).Debug("Evicting pod")
+
+				gracePeriodSeconds := int64(k8s.config.Config.DrainGracePeriodSeconds)
+
+				_error := clientset.CoreV1().Pods(pod.Namespace).Delete(context, pod.Name, metav1.DeleteOptions{GracePeriodSeconds: &gracePeriodSeconds})
+				if _error != nil {
+					log.WithFields(log.Fields{"error": _error, "namespace": pod.Namespace, "pod": pod.Name}).Debug("Could not evict pod")
+				}
+
+				killed++
+			}
+
+			if killed == 0 {
+				break
+			}
+
+			time.Sleep(time.Second)
+		}
 	}
 
-	log.Debug("Looking for CSI mounts")
+	// Retrieve RBD Plugin pod
+	{
+		log.Debug("Looking for RBD Plugin Pod")
 
-	for i := 0; i < int(k8s.config.Config.DrainGracePeriodSeconds); i++ {
-		list := utils.GetCSIGlobalMounts(k8s.config.GetFullLocalAssetDirectory(utils.DirectoryKubeletPlugins))
+		done := false
 
-		if len(list) == 0 {
-			break
+		for i := 0; i < 5; i++ {
+			pods, _error = clientset.CoreV1().Pods("").List(context, metav1.ListOptions{FieldSelector: fieldSelector})
+			if _error != nil {
+				return errors.Wrap(_error, "Could not get pods")
+			}
+
+			for _, pod := range pods.Items {
+				if pod.Namespace == utils.NamespaceStorage && strings.HasPrefix(pod.Name, "csi-rbdplugin-") {
+					log.WithFields(log.Fields{"pod": pod.Name}).Debug("Found RBD Plugin Pod")
+
+					output, _error := k8s.Exec(utils.NamespaceStorage, pod.Name, "csi-rbdplugin", "for i in $(rbd device list | grep cephrbd | cut -d'/' -f 3); do rbd device unmap /dev/$i; done")
+					if _error != nil {
+						log.WithFields(log.Fields{"error": _error, "output": output, "pod": pod.Name, "namespace": utils.NamespaceStorage}).Debug("RBD Plugin command failed")
+
+					} else {
+						log.WithFields(log.Fields{"output": output}).Debug("RBD Plugin command successful")
+
+						done = true
+
+						break
+					}
+				}
+			}
+
+			if done {
+				break
+			}
 		}
 
-		log.WithFields(log.Fields{"mounts": list}).Debug("Found CSI mounts")
+		if done {
+			log.Debug("Removing VolumeAttachments")
 
-		time.Sleep(time.Second)
+			attachments, _error := clientset.StorageV1().VolumeAttachments().List(context, metav1.ListOptions{})
+			if _error != nil {
+				return errors.Wrap(_error, "Could not get VolumeAttachments")
+			}
+
+			for _, attachment := range attachments.Items {
+				if attachment.Spec.NodeName != nodeName {
+					continue
+				}
+
+				_error := clientset.StorageV1().VolumeAttachments().Delete(context, attachment.Name, metav1.DeleteOptions{})
+				if _error != nil {
+					log.WithFields(log.Fields{"error": _error, "namespace": attachment.Namespace, "attachment": attachment.Name}).Debug("Could not remove attachment")
+				}
+			}
+		}
+	}
+
+	// Unmount dangling CSI mounting points
+	{
+		log.Debug("Looking for CSI mounts")
+
+		for i := 0; i < int(k8s.config.Config.DrainGracePeriodSeconds); i++ {
+			list := utils.GetCSIGlobalMounts(k8s.config.GetFullLocalAssetDirectory(utils.DirectoryKubeletPlugins))
+
+			if len(list) == 0 {
+				break
+			}
+
+			log.WithFields(log.Fields{"mounts": list}).Debug("Found CSI mounts")
+
+			time.Sleep(time.Second)
+		}
 	}
 
 	return nil
@@ -375,7 +474,7 @@ func (k8s *K8S) Apply(manifest string) error {
 
 		helper := resource.NewHelper(info.Client, info.Mapping)
 
-		if isAPIService == false {
+		if !isAPIService {
 			object, error = helper.Patch(
 				info.Namespace,
 				info.Name,
@@ -385,7 +484,7 @@ func (k8s *K8S) Apply(manifest string) error {
 			)
 		}
 
-		if isAPIService == false && error == nil {
+		if !isAPIService && error == nil {
 			log.WithFields(log.Fields{"namespace": info.Namespace, "object": info.Name, "kind": kind, "index": i, "count": count}).Debug("Object updated")
 
 		} else {
@@ -470,6 +569,54 @@ func (k8s *K8S) GetCredentials(namespace, name string) (username string, passwor
 	password = string(data)
 
 	return username, password, nil
+}
+
+func (k8s *K8S) Exec(namespace, pod, container, command string) (string, error) {
+	config, _error := k8s.getConfig()
+	if _error != nil {
+		return "", _error
+	}
+
+	clientset, _error := k8s.getClient()
+	if _error != nil {
+		return "", _error
+	}
+
+	options := &v1.PodExecOptions{
+		Stdin:     false,
+		Stdout:    true,
+		Stderr:    true,
+		TTY:       false,
+		Container: container,
+		Command:   []string{"sh", "-c", command},
+	}
+
+	request := clientset.CoreV1().RESTClient().Post().
+		Resource("pods").
+		Name(pod).
+		Namespace(namespace).
+		SubResource("exec").
+		VersionedParams(options, scheme.ParameterCodec)
+
+	exec, _error := remotecommand.NewSPDYExecutor(config, "POST", request.URL())
+	if _error != nil {
+		return "", errors.Wrap(_error, "Could not create k8s executor")
+	}
+
+	stdout := new(bytes.Buffer)
+	stderr := new(bytes.Buffer)
+
+	_error = exec.Stream(remotecommand.StreamOptions{
+		Stdout: stdout,
+		Stderr: stderr,
+	})
+	if _error != nil {
+		return "", errors.Wrap(_error, "Could not open stream")
+	}
+
+	output := strings.TrimSpace(stdout.String()) + "\n" + strings.TrimSpace(stderr.String())
+
+	return output, nil
 }
 
 func (k8s *K8S) WaitForCluster(totalStableIterations uint) error {

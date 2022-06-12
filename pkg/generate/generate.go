@@ -3,6 +3,7 @@ package generate
 import (
 	"fmt"
 	"path"
+	"sort"
 	"strings"
 
 	"github.com/pkg/errors"
@@ -379,18 +380,19 @@ func (generator *Generator) generateManifestControllerVirtualIP() error {
 		return nil
 	}
 
-	peers := ""
+	peersList := []string{}
 
 	for nodeName, node := range generator.config.Config.Nodes {
 		if !node.IsController() {
 			continue
 		}
-		if len(peers) > 0 {
-			peers += ","
-		}
 
-		peers += fmt.Sprintf("%s=%s:%d", nodeName, node.IP, generator.config.Config.VIPRaftControllerPort)
+		peersList = append(peersList, fmt.Sprintf("%s=%s:%d", nodeName, node.IP, generator.config.Config.VIPRaftControllerPort))
 	}
+
+	sort.Strings(peersList)
+
+	peers := strings.Join(peersList, ",")
 
 	for nodeName, node := range generator.config.Config.Nodes {
 		generator.config.SetNode(nodeName, node)
@@ -428,18 +430,19 @@ func (generator *Generator) generateManifestWorkerVirtualIP() error {
 		return nil
 	}
 
-	peers := ""
+	peersList := []string{}
 
 	for nodeName, node := range generator.config.Config.Nodes {
 		if !node.IsWorker() {
 			continue
 		}
-		if len(peers) > 0 {
-			peers += ","
-		}
 
-		peers += fmt.Sprintf("%s=%s:%d", nodeName, node.IP, generator.config.Config.VIPRaftWorkerPort)
+		peersList = append(peersList, fmt.Sprintf("%s=%s:%d", nodeName, node.IP, generator.config.Config.VIPRaftWorkerPort))
 	}
+
+	sort.Strings(peersList)
+
+	peers := strings.Join(peersList, ",")
 
 	for nodeName, node := range generator.config.Config.Nodes {
 		generator.config.SetNode(nodeName, node)

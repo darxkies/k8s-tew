@@ -2,6 +2,7 @@ package deployment
 
 import (
 	"errors"
+	"path"
 	"time"
 
 	"github.com/darxkies/k8s-tew/pkg/config"
@@ -25,13 +26,16 @@ type Deployment struct {
 	parallel          bool
 	importImages      bool
 	wait              uint
+	localChecksums    *utils.Checksums
 }
 
 func NewDeployment(_config *config.InternalConfig, identityFile string, importImages, forceUpload bool, parallel bool, commandRetries uint, skipSetup, skipUpload, skipRestart, skipStorageSetup, skipMonitoringSetup, skipLoggingSetup, skipBackupSetup, skipShowcaseSetup, skipIngressSetup bool, wait uint) *Deployment {
 	nodes := map[string]*NodeDeployment{}
 
+	localChecksums := utils.NewChecksums(path.Join(_config.GetFullLocalAssetDirectory(utils.DirectoryDynamicData), "checksums"), _config.BaseDirectory)
+
 	for nodeName, node := range _config.Config.Nodes {
-		nodes[nodeName] = NewNodeDeployment(identityFile, nodeName, node, _config, parallel)
+		nodes[nodeName] = NewNodeDeployment(identityFile, nodeName, node, _config, parallel, localChecksums)
 	}
 
 	skipSetupFeatures := config.Features{}
@@ -60,7 +64,7 @@ func NewDeployment(_config *config.InternalConfig, identityFile string, importIm
 		skipSetupFeatures = append(skipSetupFeatures, utils.FeatureIngress)
 	}
 
-	deployment := &Deployment{config: _config, identityFile: identityFile, importImages: importImages, forceUpload: forceUpload, parallel: parallel, commandRetries: commandRetries, nodes: nodes, skipSetup: skipSetup, skipUpload: skipUpload, skipRestart: skipRestart, skipSetupFeatures: skipSetupFeatures, wait: wait}
+	deployment := &Deployment{config: _config, identityFile: identityFile, importImages: importImages, forceUpload: forceUpload, parallel: parallel, commandRetries: commandRetries, nodes: nodes, skipSetup: skipSetup, skipUpload: skipUpload, skipRestart: skipRestart, skipSetupFeatures: skipSetupFeatures, wait: wait, localChecksums: localChecksums}
 
 	deployment.images = deployment.config.Config.Versions.GetImages()
 
@@ -107,6 +111,8 @@ func (deployment *Deployment) Deploy() error {
 	sortedNodeKeys := deployment.config.GetSortedNodeKeys()
 
 	if !deployment.skipUpload {
+		_ = deployment.localChecksums.Load()
+
 		for _, nodeName := range sortedNodeKeys {
 			nodeDeployment := deployment.nodes[nodeName]
 
@@ -116,6 +122,10 @@ func (deployment *Deployment) Deploy() error {
 				return error
 			}
 		}
+
+		if _error := deployment.localChecksums.Save(); _error != nil {
+			log.WithFields(log.Fields{"error": _error}).Error("Checksum save failed")
+		}
 	}
 
 	if _error := deployment.setup(); _error != nil {
@@ -124,7 +134,7 @@ func (deployment *Deployment) Deploy() error {
 
 	if deployment.wait > 0 {
 		kubernetesClient := k8s.NewK8S(deployment.config)
-		kubernetesClient.WaitForCluster(deployment.wait)
+		_ = kubernetesClient.WaitForCluster(deployment.wait)
 	}
 
 	return nil
@@ -276,6 +286,10 @@ func (deployment *Deployment) setup() error {
 	if error := deployment.runConfigureTaints(); error != nil {
 		return error
 	}
+
+	kubernetesClient := k8s.NewK8S(deployment.config)
+
+	_ = kubernetesClient.DeleteJob(utils.NamespaceStorage, "ceph-setup")
 
 	return deployment.runBoostrapperCommands()
 }

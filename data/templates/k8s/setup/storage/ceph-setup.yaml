@@ -463,13 +463,19 @@ spec:
         - name: k8s-tew-config
           mountPath: /etc/k8s-tew/config.yaml
         livenessProbe:
-          tcpSocket:
-            port: 6800
+          exec:
+            command:
+              - /bin/sh 
+              - -c
+              - ceph osd tree | grep 'osd.{{$node.StorageIndex}}' | grep -q 'up'
           initialDelaySeconds: 60
           timeoutSeconds: 5
         readinessProbe:
-          tcpSocket:
-            port: 6800
+          exec:
+            command:
+              - /bin/sh 
+              - -c
+              - ceph osd tree | grep 'osd.{{$node.StorageIndex}}' | grep -q 'up'
           timeoutSeconds: 5
 {{end}}---
 apiVersion: batch/v1

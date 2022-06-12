@@ -10,35 +10,26 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
+	log "github.com/sirupsen/logrus"
 )
 
+type Checksum struct {
+	value   string
+	updated bool
+}
 type Checksums struct {
 	filename      string
 	baseDirectory string
-	checksums     map[string]string
+	checksums     map[string]Checksum
 	loaded        bool
 }
 
 func NewChecksums(filename, baseDirectory string) *Checksums {
-	return &Checksums{filename: filename, baseDirectory: baseDirectory, checksums: map[string]string{}}
+	return &Checksums{filename: filename, baseDirectory: baseDirectory, checksums: map[string]Checksum{}}
 }
 
-func (checksums *Checksums) GetChecksum(targetFilename string) (result string, error error) {
-	relativeFilename := targetFilename[len(checksums.baseDirectory):]
-
-	_ = checksums.load()
-
-	checksumsCache, _errorCache := os.Stat(checksums.filename)
-	checksumsTarget, _errorTarget := os.Stat(targetFilename)
-
-	if _errorCache == nil && _errorTarget == nil && checksumsTarget.ModTime().Before(checksumsCache.ModTime()) {
-		if checksum, ok := checksums.checksums[relativeFilename]; ok {
-			return checksum, nil
-		}
-	}
-
+func (checksums *Checksums) md5(targetFilename string) (result string, error error) {
 	file, error := os.Open(targetFilename)
-
 	if error != nil {
 		return
 	}
@@ -53,18 +44,42 @@ func (checksums *Checksums) GetChecksum(targetFilename string) (result string, e
 
 	result = hex.EncodeToString(hash.Sum(nil)[:16])
 
-	checksums.checksums[relativeFilename] = result
+	return
+}
 
-	_ = checksums.save()
+func (checksums *Checksums) GetChecksum(targetFilename string) (result string, error error) {
+	relativeFilename := targetFilename[len(checksums.baseDirectory):]
+
+	checksumsCache, _errorCache := os.Stat(checksums.filename)
+	checksumsTarget, _errorTarget := os.Stat(targetFilename)
+
+	if _errorCache == nil && _errorTarget == nil && checksumsTarget.ModTime().Before(checksumsCache.ModTime()) {
+		if checksum, ok := checksums.checksums[relativeFilename]; ok {
+			return checksum.value, nil
+		}
+	}
+
+	if checksum, ok := checksums.checksums[relativeFilename]; ok && checksum.updated {
+		return checksum.value, nil
+	}
+
+	result, _error := checksums.md5(targetFilename)
+	if _error != nil {
+		return "", _error
+	}
+
+	log.WithFields(log.Fields{"file": targetFilename, "checksum": result}).Debug("Updated checksum")
+
+	checksums.checksums[relativeFilename] = Checksum{value: result, updated: true}
 
 	return
 }
 
-func (checksums *Checksums) save() error {
+func (checksums *Checksums) Save() error {
 	buffer := ""
 
 	for filename, value := range checksums.checksums {
-		buffer += fmt.Sprintf("%s %s\n", value, filename)
+		buffer += fmt.Sprintf("%s %s\n", value.value, filename)
 	}
 
 	if _error := ioutil.WriteFile(checksums.filename, []byte(buffer), 0644); _error != nil {
@@ -74,7 +89,7 @@ func (checksums *Checksums) save() error {
 	return nil
 }
 
-func (checksums *Checksums) load() error {
+func (checksums *Checksums) Load() error {
 	if checksums.loaded {
 		return nil
 	}
@@ -96,7 +111,7 @@ func (checksums *Checksums) load() error {
 		filename := line[33:]
 		checksum := line[:32]
 
-		checksums.checksums[filename] = checksum
+		checksums.checksums[filename] = Checksum{value: checksum, updated: false}
 	}
 
 	return nil

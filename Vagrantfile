@@ -81,7 +81,7 @@ end
 ############################################################
 
 if $os == "ubuntu"
-  $box = "bento/ubuntu-20.04"
+  $box = "bento/ubuntu-22.04"
 else
   $box = "bento/centos-8.2"
 end

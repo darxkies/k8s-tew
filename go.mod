@@ -21,7 +21,7 @@ require (
 	github.com/spf13/viper v1.10.0
 	github.com/tmc/scp v0.0.0-20170824174625-f7b48647feef
 	github.com/wille/osutil v0.0.0-20190526221756-e91b8656e290
-	golang.org/x/crypto v0.0.0-20220112180741-5e0467b6c7ce
+	golang.org/x/crypto v0.0.0-20220525230936-793ad666bf5e
 	golang.org/x/sys v0.0.0-20220405052023-b1e9470b6e64
 	google.golang.org/grpc v1.42.0
 	gopkg.in/ini.v1 v1.66.2
@@ -61,6 +61,7 @@ require (
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
+	github.com/k0kubun/pp v3.0.1+incompatible // indirect
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51 // indirect
 	github.com/liggitt/tabwriter v0.0.0-20181228230101-89fcab3d43de // indirect
 	github.com/magiconair/properties v1.8.5 // indirect

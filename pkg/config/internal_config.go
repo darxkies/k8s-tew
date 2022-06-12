@@ -359,6 +359,7 @@ func (config *InternalConfig) registerCommands() {
 	config.addCommand("load-br_netfilter", Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, Features{}, OS{}, "modprobe br_netfilter")
 	config.addCommand("enable-br_netfilter", Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, Features{}, OS{}, "echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables")
 	config.addCommand("enable-net-forwarding", Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, Features{}, OS{}, "sysctl net.ipv4.conf.all.forwarding=1")
+	config.addCommand("update-inotify-limits", Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, Features{}, OS{}, "sysctl fs.inotify.max_user_watches=524288 && sysctl fs.inotify.max_user_instances=512")
 	config.addManifest("kubelet-setup", Labels{utils.NodeBootstrapper}, Features{}, OS{}, config.GetFullLocalAssetFilename(utils.K8sKubeletSetup))
 	config.addManifest("admin-user-setup", Labels{utils.NodeBootstrapper}, Features{}, OS{}, config.GetFullLocalAssetFilename(utils.K8sAdminUserSetup))
 	config.addManifest("calico-setup", Labels{utils.NodeBootstrapper}, Features{}, OS{}, config.GetFullLocalAssetFilename(utils.K8sCalicoSetup))
@@ -624,35 +625,27 @@ func (config *InternalConfig) GetETCDClientEndpoints() []string {
 }
 
 func (config *InternalConfig) GetEtcdCluster() string {
-	result := ""
+	list := []string{}
 
 	for name, node := range config.Config.Nodes {
 		if !node.IsController() {
 			continue
 		}
 
-		if len(result) > 0 {
-			result += ","
-		}
-
-		result += fmt.Sprintf("%s=https://%s:2380", name, node.IP)
+		list = append(list, fmt.Sprintf("%s=https://%s:2380", name, node.IP))
 	}
 
-	return result
+	sort.Strings(list)
+
+	return strings.Join(list, ",")
 }
 
 func (config *InternalConfig) GetEtcdServers() string {
-	result := ""
+	list := config.GetETCDClientEndpoints()
 
-	for _, endpoint := range config.GetETCDClientEndpoints() {
-		if len(result) > 0 {
-			result += ","
-		}
+	sort.Strings(list)
 
-		result += endpoint
-	}
-
-	return result
+	return strings.Join(list, ",")
 }
 
 func (config *InternalConfig) GetControllersCount() string {
@@ -748,6 +741,8 @@ func (config *InternalConfig) GetKubeAPIServerAddresses() []string {
 			result = append(result, fmt.Sprintf("%s:%d", node.IP, config.Config.APIServerPort))
 		}
 	}
+
+	sort.Strings(result)
 
 	return result
 }

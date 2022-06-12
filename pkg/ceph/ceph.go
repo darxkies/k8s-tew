@@ -474,6 +474,8 @@ func (ceph *Ceph) RunSetup(dashboardUsername, dashboardPassword, radosgwUsername
 	}
 
 	for _, command := range commands {
+		log.WithFields(log.Fields{"command": command}).Info("Running command")
+
 		if _error := utils.RunCommandWithConsoleOutput(command); _error != nil {
 			return errors.Wrapf(_error, "Could not execute command '%s'", command)
 		}

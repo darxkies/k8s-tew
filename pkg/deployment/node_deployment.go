@@ -38,8 +38,8 @@ type NodeDeployment struct {
 	localChecksums          *utils.Checksums
 }
 
-func NewNodeDeployment(identityFile string, name string, node *config.Node, config *config.InternalConfig, parallel bool) *NodeDeployment {
-	return &NodeDeployment{identityFile: identityFile, name: name, node: node, config: config, sshLimiter: utils.NewLimiter(utils.ConcurrentSshConnectionsLimit), parallel: parallel, targetChecksumsFilename: path.Join(config.GetFullTargetAssetDirectory(utils.DirectoryDynamicData), "checksums"), localChecksums: utils.NewChecksums(path.Join(config.GetFullLocalAssetDirectory(utils.DirectoryDynamicData), "checksums"), config.BaseDirectory)}
+func NewNodeDeployment(identityFile string, name string, node *config.Node, config *config.InternalConfig, parallel bool, localChecksums *utils.Checksums) *NodeDeployment {
+	return &NodeDeployment{identityFile: identityFile, name: name, node: node, config: config, sshLimiter: utils.NewLimiter(utils.ConcurrentSshConnectionsLimit), parallel: parallel, targetChecksumsFilename: path.Join(config.GetFullTargetAssetDirectory(utils.DirectoryDynamicData), "checksums"), localChecksums: localChecksums}
 }
 
 func (deployment *NodeDeployment) Steps(skipRestart bool) (result int) {
@@ -184,6 +184,8 @@ func (deployment *NodeDeployment) getChangedFiles() map[string]string {
 			if error == nil && localChecksum == remoteChecksum {
 				continue
 			}
+
+			log.WithFields(log.Fields{"local": localChecksum, "remote": remoteChecksum, "file": toFile}).Debug("Checksum mismatch")
 		}
 
 		files[fromFile] = toFile
@@ -205,7 +207,7 @@ func (deployment *NodeDeployment) UploadFiles(forceUpload bool, skipRestart bool
 		files = deployment.getChangedFiles()
 	}
 
-	if len(files) > 0 && skipRestart == false {
+	if len(files) > 0 && !skipRestart {
 		// Stop service
 		_, _ = deployment.Execute("stop-service", fmt.Sprintf("systemctl stop %s", utils.ServiceName))
 	}
@@ -282,7 +284,7 @@ func (deployment *NodeDeployment) UploadFiles(forceUpload bool, skipRestart bool
 
 	utils.IncreaseProgressStep()
 
-	if len(files) > 0 && skipRestart == false {
+	if len(files) > 0 && !skipRestart {
 		// Registrate and start service
 		_, _error = deployment.Execute("start-service", fmt.Sprintf("systemctl daemon-reload && systemctl enable %s && systemctl start %s", utils.ServiceName, utils.ServiceName))
 	}
