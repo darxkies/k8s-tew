@@ -1,16 +1,20 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>About &mdash; k8s-tew  documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <title>About &mdash; k8s-tew  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="#" />
@@ -25,10 +29,11 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> k8s-tew<img src="_static/logo.svg" class="logo" alt="Logo"/>
+            <a href="index.html" class="icon icon-home"> k8s-tew
+            <img src="_static/logo.svg" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                2.4.0
+                2.4.10
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -38,7 +43,7 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">About</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#why">Why</a></li>
@@ -76,15 +81,15 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="about">
-<h1>About<a class="headerlink" href="#about" title="Permalink to this headline">¶</a></h1>
+  <section id="about">
+<h1>About<a class="headerlink" href="#about" title="Permalink to this heading"></a></h1>
 <p><a class="reference external" href="https://github.com/darxkies/k8s-tew">k8s-tew</a> is a CLI tool to install a Kubernetes Cluster (local, single-node, multi-node or HA-cluster) on Bare Metal. It installs the most essential components needed by a cluster such as networking, storage, monitoring, logging, backuping/restoring and so on. Once the nodes are configured, k8s-tew is started on each node to supervise the cluster components. k8s-tew is also used internally to generate the configuration files for a Ceph cluster and also to start the necessary Ceph deamons with the right parameters. The Ceph functionality can be used with or without Kubernetes.</p>
-<div class="section" id="why">
-<h2>Why<a class="headerlink" href="#why" title="Permalink to this headline">¶</a></h2>
+<section id="why">
+<h2>Why<a class="headerlink" href="#why" title="Permalink to this heading"></a></h2>
 <p><a class="reference external" href="https://kubernetes.io/">Kubernetes</a> is a fairly complex project. For a newbie it is hard to understand and also to use. While <a class="reference external" href="https://github.com/kelseyhightower/kubernetes-the-hard-way">Kelsey Hightower’s Kubernetes The Hard Way</a>, on which this project is based, helps a lot to understand Kubernetes, it is optimized for the use with Google Cloud Platform.</p>
 <p>Thus, this project’s aim is to give newbies an easy to use tool that allows them to tinker with Kubernetes and later on to install HA production grade clusters.</p>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>

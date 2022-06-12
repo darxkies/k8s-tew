@@ -1,16 +1,20 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Usage &mdash; k8s-tew  documentation</title><link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <title>Usage &mdash; k8s-tew  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="about.html" />
@@ -25,10 +29,11 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> k8s-tew<img src="_static/logo.svg" class="logo" alt="Logo"/>
+            <a href="index.html" class="icon icon-home"> k8s-tew
+            <img src="_static/logo.svg" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                2.4.0
+                2.4.10
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -38,7 +43,7 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="features.html">Features</a></li>
@@ -96,8 +101,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="usage">
-<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
+  <section id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h1>
 <p>All k8s-tew commands accept the argument <code class="file docutils literal notranslate"><span class="pre">--base-directory</span></code>, which defines where all the files (binaries, certificates, configurations and so on) will be stored. If no value is defined then it will create a subdirectory called “assets” in the working directory. Additionally, the environment variable K8S_TEW_BASE_DIRECTORY can be set to point to the assets directory instead of using <code class="file docutils literal notranslate"><span class="pre">--base-directory</span></code>.</p>
 <p>To see all the commands and their arguments use the <code class="file docutils literal notranslate"><span class="pre">-h</span></code> argument.</p>
 <p>To activate completion for bash enter:</p>
@@ -112,13 +117,13 @@
 </pre></div>
 </div>
 </div></blockquote>
-<div class="section" id="requirements">
-<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<section id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this heading"></a></h2>
 <p>k8s-tew was tested so far on Ubuntu 20.04 and CentOS 8.2. But it should be able to run on other Linux distributions.</p>
 <p>Host related dependencies such as socat, conntrack, ipset and rbd are embedded in k8s-tew and put in place, once the cluster is running. Thus it is fairly portable to other Linux distributions.</p>
-</div>
-<div class="section" id="labels">
-<h2>Labels<a class="headerlink" href="#labels" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="labels">
+<h2>Labels<a class="headerlink" href="#labels" title="Permalink to this heading"></a></h2>
 <p>k8s-tew uses labels to specify which files belong on a node, which commands should be executed on a node and also which components need to be started on a node. They are similar to Kubernetes’ Labels and Selectors.</p>
 <ul class="simple">
 <li><p>bootstrapper - This label marks bootstrapping node/commands</p></li>
@@ -126,14 +131,14 @@
 <li><p>worker - Kubernetes Node/Minion. At least one worker node is required.</p></li>
 <li><p>storage - The Ceph Monitors are installed on the controller nodes. The storage nodes are used to store the actual data of the pods, and also to run the containers related to Ceph and CSI.</p></li>
 </ul>
-</div>
-<div class="section" id="workflow">
-<h2>Workflow<a class="headerlink" href="#workflow" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="workflow">
+<h2>Workflow<a class="headerlink" href="#workflow" title="Permalink to this heading"></a></h2>
 <p>To setup a local single-node cluster, the workflow is: initialize -&gt; configure -&gt; generate -&gt; run</p>
 <p>For a remote cluster, the workflow is: initialize -&gt; configure -&gt; generate -&gt; deploy</p>
 <p>If something in one of the steps is changed, (e.g. configuration), then all the following steps have to be performed.</p>
-<div class="section" id="initialization">
-<h3>Initialization<a class="headerlink" href="#initialization" title="Permalink to this headline">¶</a></h3>
+<section id="initialization">
+<h3>Initialization<a class="headerlink" href="#initialization" title="Permalink to this heading"></a></h3>
 <p>The first step in using k8s-tew is to create a config file. This is achieved by executing this command:</p>
 <blockquote>
 <div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>k8s-tew initialize
@@ -141,9 +146,9 @@
 </div>
 </div></blockquote>
 <p>That command generates the config file called <code class="file docutils literal notranslate"><em><span class="pre">base-directory</span></em><span class="pre">/etc/k8s-tew/config.yaml</span></code>. To overwrite the existing configuration use the argument -f.</p>
-</div>
-<div class="section" id="configuration">
-<h3>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="configuration">
+<h3>Configuration<a class="headerlink" href="#configuration" title="Permalink to this heading"></a></h3>
 <p>After the initialization step the parameters of the cluster should be be adapted. These are the configure parameters and their defaults:</p>
 <blockquote>
 <div><dl class="option-list">
@@ -436,8 +441,8 @@
 </div></blockquote>
 <p>Another important argument is <code class="file docutils literal notranslate"><span class="pre">--resolv-conf</span></code> which is used to define which resolv.conf file should be used for DNS.</p>
 <p>The Virtual/Floating IP parameters should be accordingly changed if you want true HA. k8s-tew uses internally <a class="reference external" href="https://raft.github.io/">RAFT</a> and its leader election functionality to select one node on which the Virtual IP is set. If the leader fails, one of the remaining nodes gets the Virtual IP assigned.</p>
-<div class="section" id="add-remote-node">
-<h4>Add Remote Node<a class="headerlink" href="#add-remote-node" title="Permalink to this headline">¶</a></h4>
+<section id="add-remote-node">
+<h4>Add Remote Node<a class="headerlink" href="#add-remote-node" title="Permalink to this heading"></a></h4>
 <p>A remote node can be added with the following command:</p>
 <blockquote>
 <div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>k8s-tew node-add -n controller00 -i <span class="m">192</span>.168.100.100 -l controller,node,storage
@@ -471,9 +476,9 @@
 <p class="admonition-title">Note</p>
 <p>Make sure the IP address of the node matches the public network set using the configuration argument <code class="file docutils literal notranslate"><span class="pre">--public-network</span></code>.</p>
 </div>
-</div>
-<div class="section" id="add-local-node">
-<h4>Add Local Node<a class="headerlink" href="#add-local-node" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="add-local-node">
+<h4>Add Local Node<a class="headerlink" href="#add-local-node" title="Permalink to this heading"></a></h4>
 <p>k8s-tew is also able to start a cluster on the local computer and for that the local computer has to be added as a node:</p>
 <blockquote>
 <div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>k8s-tew node-add -s
@@ -488,28 +493,28 @@
 </dd>
 </dl>
 </div></blockquote>
-</div>
-<div class="section" id="remove-node">
-<h4>Remove Node<a class="headerlink" href="#remove-node" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="remove-node">
+<h4>Remove Node<a class="headerlink" href="#remove-node" title="Permalink to this heading"></a></h4>
 <p>A node can be removed like this:</p>
 <blockquote>
 <div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>k8s-tew node-remove -n controller00
 </pre></div>
 </div>
 </div></blockquote>
-</div>
-<div class="section" id="list-nodes">
-<h4>List Nodes<a class="headerlink" href="#list-nodes" title="Permalink to this headline">¶</a></h4>
+</section>
+<section id="list-nodes">
+<h4>List Nodes<a class="headerlink" href="#list-nodes" title="Permalink to this heading"></a></h4>
 <blockquote>
 <div><p>And all the nodes can be listed with the command:</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>k8s-tew node-list
 </pre></div>
 </div>
 </div></blockquote>
-</div>
-</div>
-<div class="section" id="generating-files">
-<h3>Generating Files<a class="headerlink" href="#generating-files" title="Permalink to this headline">¶</a></h3>
+</section>
+</section>
+<section id="generating-files">
+<h3>Generating Files<a class="headerlink" href="#generating-files" title="Permalink to this heading"></a></h3>
 <p>Once all the nodes were added, the required files (third party binares, certificates, kubeconfigs and so on) have to be put in place. And this goes like this:</p>
 <blockquote>
 <div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>k8s-tew generate
@@ -533,9 +538,9 @@
 </dd>
 </dl>
 </div></blockquote>
-</div>
-<div class="section" id="run">
-<h3>Run<a class="headerlink" href="#run" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="run">
+<h3>Run<a class="headerlink" href="#run" title="Permalink to this heading"></a></h3>
 <p>With this command the local cluster can be started:</p>
 <blockquote>
 <div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>k8s-tew run
@@ -546,9 +551,9 @@
 <p class="admonition-title">Note</p>
 <p>This command will run in the foreground and it will supervise all the programs it started in the background.</p>
 </div>
-</div>
-<div class="section" id="deploy">
-<h3>Deploy<a class="headerlink" href="#deploy" title="Permalink to this headline">¶</a></h3>
+</section>
+<section id="deploy">
+<h3>Deploy<a class="headerlink" href="#deploy" title="Permalink to this heading"></a></h3>
 <p>In case remote nodes were added with the deploy command, the remotely missing files are copied to the nodes. k8s-tew is installed and started as a service.</p>
 <p>The deployment is executed with the command:</p>
 <blockquote>
@@ -614,10 +619,10 @@
 <p class="admonition-title">Note</p>
 <p>The argument <code class="file docutils literal notranslate"><span class="pre">--pull-images</span></code> downloads the required Docker Images on the nodes, before the setup process is executed. That could speed up the whole setup process later on. Furthermore, by using <code class="file docutils literal notranslate"><span class="pre">--parallel</span></code> the process of uploading files to the nodes and the download of Docker Images can be again considerable shortened. Use these parameters with caution, as they can starve your network.</p>
 </div>
-</div>
-</div>
-<div class="section" id="environment">
-<h2>Environment<a class="headerlink" href="#environment" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+<section id="environment">
+<h2>Environment<a class="headerlink" href="#environment" title="Permalink to this heading"></a></h2>
 <p>After starting the cluster, the user will need some environment variables set locally to make the interaction with the cluster easier. This is done with this command:</p>
 <blockquote>
 <div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span> &lt;<span class="o">(</span>k8s-tew environment<span class="o">)</span>
@@ -625,9 +630,9 @@
 </div>
 </div></blockquote>
 <p>This command sets KUBECONFIG needed by kubectl to communicate with the cluster and it also updates PATH to point to the downloaded third-party binaries.</p>
-</div>
-<div class="section" id="dashboards-websites">
-<h2>Dashboards &amp; Websites<a class="headerlink" href="#dashboards-websites" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="dashboards-websites">
+<h2>Dashboards &amp; Websites<a class="headerlink" href="#dashboards-websites" title="Permalink to this heading"></a></h2>
 <p>Depending on the configuration of the cluster, the installation of all containers can take a while. Once everything is installed, the following command can be used to display the credentials (username + generated password) and open the web browser (by passing -o) pointing to the web sites hosted by the cluster:</p>
 <blockquote>
 <div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>k8s-tew dashboard XXX
@@ -648,17 +653,17 @@
 <li><p>wordpress-nodeport - Display WordPress Nodeport website related information</p></li>
 </ul>
 </div></blockquote>
-<div class="section" id="ingress">
-<h3>Ingress<a class="headerlink" href="#ingress" title="Permalink to this headline">¶</a></h3>
+<section id="ingress">
+<h3>Ingress<a class="headerlink" href="#ingress" title="Permalink to this heading"></a></h3>
 <p>For working Ingress make sure ports 80 and 443 are available. The Ingress Domain have to be also configured before ‘generate’ and ‘deploy’ are executed:</p>
 <blockquote>
 <div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>k8s-tew configure --ingress-domain <span class="o">[</span>ingress-domain<span class="o">]</span>
 </pre></div>
 </div>
 </div></blockquote>
-</div>
-</div>
-</div>
+</section>
+</section>
+</section>
 
 
            </div>
