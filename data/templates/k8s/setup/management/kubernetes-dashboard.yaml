@@ -1,66 +1,55 @@
-apiVersion: v1
-kind: Secret
-metadata:
-  namespace: {{.Namespace}}
-  name: kubernetes-dashboard-csrf
-  labels:
-    k8s-app: kubernetes-dashboard
-type: Opaque
-data:
-  csrf: ""
-
----
-apiVersion: v1
-kind: Secret
-metadata:
-  namespace: {{.Namespace}}
-  name: kubernetes-dashboard-key-holder
-  labels:
-    k8s-app: kubernetes-dashboard
-type: Opaque
-
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  namespace: {{.Namespace}}
-  name: kubernetes-dashboard
   labels:
-    k8s-app: kubernetes-dashboard
+    app.kubernetes.io/name: kubernetes-dashboard
+    app.kubernetes.io/instance: k8s-tew
+  name: kubernetes-dashboard
+  namespace: {{.Namespace}}
 
 ---
-apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
+apiVersion: v1
+kind: Secret
 metadata:
-  namespace: {{.Namespace}}
-  name: kubernetes-dashboard
   labels:
-    k8s-app: kubernetes-dashboard
-rules:
-  - apiGroups: [""]
-    resources: ["secrets"]
-    resourceNames: ["kubernetes-dashboard-key-holder",  "kubernetes-dashboard-csrf"]
-    verbs: ["get", "update", "delete"]
-  - apiGroups: [""]
-    resources: ["configmaps"]
-    resourceNames: ["kubernetes-dashboard-settings"]
-    verbs: ["get", "update"]
-  - apiGroups: [""]
-    resources: ["services"]
-    resourceNames: ["heapster", "dashboard-metrics-scraper"]
-    verbs: ["proxy"]
-  - apiGroups: [""]
-    resources: ["services/proxy"]
-    resourceNames: ["heapster", "http:heapster:", "https:heapster:", "dashboard-metrics-scraper", "http:dashboard-metrics-scraper"]
-    verbs: ["get"]
+    app.kubernetes.io/name: kubernetes-dashboard
+    app.kubernetes.io/instance: k8s-tew
+  name: kubernetes-dashboard-csrf
+  namespace: {{.Namespace}}
+type: Opaque
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  labels:
+    app.kubernetes.io/name: kubernetes-dashboard
+    app.kubernetes.io/instance: k8s-tew
+  name: kubernetes-dashboard-key-holder
+  namespace: {{.Namespace}}
+type: Opaque
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/name: kubernetes-dashboard
+    app.kubernetes.io/instance: k8s-tew
+  name: kubernetes-dashboard-settings
+  namespace: {{.Namespace}}
+data:
+  _global: '{"clusterName":"{{.ClusterName}}","itemsPerPage":50,"labelsLimit":0,"logsAutoRefreshTimeInterval":2,"resourceAutoRefreshTimeInterval":5,"disableAccessDeniedNotifications":false}'
 
 ---
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: kubernetes-dashboard
+  name: "kubernetes-dashboard-metrics"
   labels:
-    k8s-app: kubernetes-dashboard
+    app.kubernetes.io/name: kubernetes-dashboard
+    app.kubernetes.io/instance: k8s-tew
 rules:
   - apiGroups: ["metrics.k8s.io"]
     resources: ["pods", "nodes"]
@@ -68,186 +57,207 @@ rules:
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: "kubernetes-dashboard-metrics"
+  labels:
+    app.kubernetes.io/name: kubernetes-dashboard
+    app.kubernetes.io/instance: k8s-tew
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: kubernetes-dashboard-metrics
+subjects:
+  - kind: ServiceAccount
+    name: kubernetes-dashboard
+    namespace: {{.Namespace}}
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: kubernetes-dashboard
+  namespace: {{.Namespace}}
+  labels:
+    app.kubernetes.io/name: kubernetes-dashboard
+    app.kubernetes.io/instance: k8s-tew
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    resourceNames: ["kubernetes-dashboard-key-holder", "kubernetes-dashboard-csrf"]
+    verbs: ["get", "update", "delete"]
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    resourceNames: ["kubernetes-dashboard-settings"]
+    verbs: ["get", "update"]
+  - apiGroups: [""]
+    resources: ["services"]
+    resourceNames: ["heapster"]
+    verbs: ["proxy"]
+  - apiGroups: [""]
+    resources: ["services/proxy"]
+    resourceNames: ["heapster", "http:heapster:", "https:heapster:"]
+    verbs: ["get"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  namespace: {{.Namespace}}
   name: kubernetes-dashboard
+  namespace: {{.Namespace}}
   labels:
-    k8s-app: kubernetes-dashboard
+    app.kubernetes.io/name: kubernetes-dashboard
+    app.kubernetes.io/instance: k8s-tew
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
   name: kubernetes-dashboard
 subjects:
   - kind: ServiceAccount
-    namespace: {{.Namespace}}
     name: kubernetes-dashboard
-
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: kubernetes-dashboard
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: kubernetes-dashboard
-subjects:
-  - kind: ServiceAccount
     namespace: {{.Namespace}}
-    name: kubernetes-dashboard
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: {{.Namespace}}
   name: kubernetes-dashboard
+  namespace: {{.Namespace}}
   labels:
-    k8s-app: kubernetes-dashboard
+    app.kubernetes.io/name: kubernetes-dashboard
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: kubernetes-dashboard
+    kubernetes.io/cluster-service: "true"
 spec:
   type: NodePort
   ports:
-    - port: 443
-      targetPort: 8443
-      nodePort: {{.KubernetesDashboardPort}}
-      protocol: TCP
+  - port: 443
+    targetPort: https
+    name: https
+    nodePort: {{.KubernetesDashboardPort}}
+    protocol: TCP
   selector:
-    k8s-app: kubernetes-dashboard
+    app.kubernetes.io/name: kubernetes-dashboard
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: kubernetes-dashboard
 
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: {{.Namespace}}
   name: kubernetes-dashboard
+  namespace: {{.Namespace}}
   labels:
-    k8s-app: kubernetes-dashboard
+    app.kubernetes.io/name: kubernetes-dashboard
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: kubernetes-dashboard
 spec:
   replicas: 1
-  revisionHistoryLimit: 10
+  strategy:
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+    type: RollingUpdate
   selector:
     matchLabels:
-      k8s-app: kubernetes-dashboard
+      app.kubernetes.io/name: kubernetes-dashboard
+      app.kubernetes.io/instance: k8s-tew
+      app.kubernetes.io/component: kubernetes-dashboard
   template:
     metadata:
       labels:
-        k8s-app: kubernetes-dashboard
+        app.kubernetes.io/name: kubernetes-dashboard
+        app.kubernetes.io/instance: k8s-tew
+        app.kubernetes.io/component: kubernetes-dashboard
     spec:
-      containers:
-        - name: kubernetes-dashboard
-          image: "{{.KubernetesDashboardImage}}"
-          ports:
-            - containerPort: 8443
-              protocol: TCP
-          args:
-          - --tls-cert-file 
-          - kubernetes-dashboard.pem
-          - --tls-key-file 
-          - kubernetes-dashboard-key.pem
-          volumeMounts:
-            - mountPath: /tmp
-              name: tmp-volume
-            - name: certificates
-              mountPath: /etc/ssl/certs/ca.pem
-              subPath: ca.pem
-            - name: certificates
-              mountPath: /certs/kubernetes-dashboard.pem
-              subPath: kubernetes-dashboard.pem
-            - name: certificates
-              mountPath: /certs/kubernetes-dashboard-key.pem
-              subPath: kubernetes-dashboard-key.pem
-          livenessProbe:
-            httpGet:
-              scheme: HTTPS
-              path: /
-              port: 8443
-            initialDelaySeconds: 30
-            timeoutSeconds: 30
-          securityContext:
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
-            runAsUser: 1001
-            runAsGroup: 2001
-      volumes:
-        - name: certificates
-          configMap:
-            name: kubernetes-dashboard-certificates
-        - name: tmp-volume
-          emptyDir: {}
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
       serviceAccountName: kubernetes-dashboard
+      containers:
+      - name: kubernetes-dashboard
+        image: "{{.KubernetesDashboardImage}}"
+        imagePullPolicy: IfNotPresent
+        args:
+        - --tls-cert-file 
+        - kubernetes-dashboard.pem
+        - --tls-key-file 
+        - kubernetes-dashboard-key.pem
+        - --sidecar-host=http://127.0.0.1:8000
+        - --metrics-provider=none
+        ports:
+        - name: https
+          containerPort: 8443
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp-volume
+        - name: certificates
+          mountPath: /etc/ssl/certs/ca.pem
+          subPath: ca.pem
+        - name: certificates
+          mountPath: /certs/kubernetes-dashboard.pem
+          subPath: kubernetes-dashboard.pem
+        - name: certificates
+          mountPath: /certs/kubernetes-dashboard-key.pem
+          subPath: kubernetes-dashboard-key.pem
+        livenessProbe:
+          httpGet:
+            scheme: HTTPS
+            path: /
+            port: 8443
+          initialDelaySeconds: 30
+          timeoutSeconds: 30
+        resources:
+          limits:
+            cpu: 2
+            memory: 200Mi
+          requests:
+            cpu: 100m
+            memory: 200Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsGroup: 2001
+          runAsUser: 1001
+      - name: dashboard-metrics-scraper
+        image: {{ .MetricsScraperImage }}
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 8000
+            protocol: TCP
+        livenessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /
+            port: 8000
+          initialDelaySeconds: 30
+          timeoutSeconds: 30
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp-volume
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsGroup: 2001
+          runAsUser: 1001
+      volumes:
+      - name: certificates
+        configMap:
+          name: kubernetes-dashboard-certificates
+      - name: tmp-volume
+        emptyDir: {}
 
 ---
-apiVersion: v1
 kind: ConfigMap
+apiVersion: v1
 metadata:
-  namespace: {{.Namespace}}
-  name: kubernetes-dashboard-settings
   labels:
     k8s-app: kubernetes-dashboard
+  name: kubernetes-dashboard-settings
+  namespace: {{.Namespace}}
 data:
   _global: '{"clusterName":"{{.ClusterName}}","itemsPerPage":50,"labelsLimit":0,"logsAutoRefreshTimeInterval":2,"resourceAutoRefreshTimeInterval":5,"disableAccessDeniedNotifications":false}'
-
----
-kind: Service
-apiVersion: v1
-metadata:
-  namespace: {{.Namespace}}
-  name: dashboard-metrics-scraper
-  labels:
-    k8s-app: dashboard-metrics-scraper
-spec:
-  ports:
-    - port: 8000
-      targetPort: 8000
-      protocol: TCP
-  selector:
-    k8s-app: dashboard-metrics-scraper
-
----
-kind: Deployment
-apiVersion: apps/v1
-metadata:
-  namespace: {{.Namespace}}
-  name: dashboard-metrics-scraper
-  labels:
-    k8s-app: dashboard-metrics-scraper
-spec:
-  replicas: 1
-  revisionHistoryLimit: 10
-  selector:
-    matchLabels:
-      k8s-app: dashboard-metrics-scraper
-  template:
-    metadata:
-      labels:
-        k8s-app: dashboard-metrics-scraper
-    spec:
-      containers:
-        - name: dashboard-metrics-scraper
-          image: {{ .MetricsScraperImage }}
-          ports:
-            - containerPort: 8000
-              protocol: TCP
-          livenessProbe:
-            httpGet:
-              scheme: HTTP
-              path: /
-              port: 8000
-            initialDelaySeconds: 30
-            timeoutSeconds: 30
-          volumeMounts:
-          - mountPath: /tmp
-            name: tmp-volume
-          securityContext:
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
-            runAsUser: 1001
-            runAsGroup: 2001
-      serviceAccountName: kubernetes-dashboard
-      volumes:
-        - name: tmp-volume
-          emptyDir: {}
 
 ---
 apiVersion: v1

@@ -2,185 +2,212 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: {{.Namespace}}
+
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  namespace: {{.Namespace}}
   name: metrics-server
   labels:
-    k8s-app: metrics-server
+    app.kubernetes.io/name: metrics-server
+    app.kubernetes.io/instance: k8s-tew
+  namespace: {{.Namespace}}
+
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: system:aggregated-metrics-reader
+  name: system:metrics-server-aggregated-reader
   labels:
-    k8s-app: metrics-server
+    app.kubernetes.io/name: metrics-server
+    app.kubernetes.io/instance: k8s-tew
     rbac.authorization.k8s.io/aggregate-to-admin: "true"
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
     rbac.authorization.k8s.io/aggregate-to-view: "true"
 rules:
-- apiGroups:
-  - metrics.k8s.io
-  resources:
-  - pods
-  - nodes
-  verbs:
-  - get
-  - list
-  - watch
+  - apiGroups:
+      - metrics.k8s.io
+    resources:
+      - pods
+      - nodes
+    verbs:
+      - get
+      - list
+      - watch
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: system:metrics-server
   labels:
-    k8s-app: metrics-server
+    app.kubernetes.io/name: metrics-server
+    app.kubernetes.io/instance: k8s-tew
 rules:
-- apiGroups:
-  - ""
-  resources:
-  - pods
-  - nodes
-  - nodes/stats
-  - namespaces
-  - configmaps
-  verbs:
-  - get
-  - list
-  - watch
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name: metrics-server-auth-reader
-  namespace: {{.Namespace}}
-  labels:
-    k8s-app: metrics-server
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: extension-apiserver-authentication-reader
-subjects:
-- kind: ServiceAccount
-  namespace: {{.Namespace}}
-  name: metrics-server
+  - apiGroups:
+    - ""
+    resources:
+    - nodes/metrics
+    verbs:
+    - get
+  - apiGroups:
+    - ""
+    resources:
+      - pods
+      - nodes
+      - namespaces
+      - configmaps
+    verbs:
+      - get
+      - list
+      - watch
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: metrics-server:system:auth-delegator
   labels:
-    k8s-app: metrics-server
+    app.kubernetes.io/name: metrics-server
+    app.kubernetes.io/instance: k8s-tew
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: system:auth-delegator
 subjects:
-- kind: ServiceAccount
-  namespace: {{.Namespace}}
-  name: metrics-server
+  - kind: ServiceAccount
+    name: metrics-server
+    namespace: {{.Namespace}}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: system:metrics-server
   labels:
-    k8s-app: metrics-server
+    app.kubernetes.io/name: metrics-server
+    app.kubernetes.io/instance: k8s-tew
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: system:metrics-server
 subjects:
-- kind: ServiceAccount
-  namespace: {{.Namespace}}
-  name: metrics-server
+  - kind: ServiceAccount
+    name: metrics-server
+    namespace: {{.Namespace}}
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: metrics-server-auth-reader
+  namespace: kube-system
+  labels:
+    app.kubernetes.io/name: metrics-server
+    app.kubernetes.io/instance: k8s-tew
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: extension-apiserver-authentication-reader
+subjects:
+  - kind: ServiceAccount
+    name: metrics-server
+    namespace: {{.Namespace}}
+
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: {{.Namespace}}
   name: metrics-server
   labels:
-    k8s-app: metrics-server
+    app.kubernetes.io/name: metrics-server
+    app.kubernetes.io/instance: k8s-tew
+  namespace: {{.Namespace}}
 spec:
-  selector:
-    k8s-app: metrics-server
+  type: ClusterIP
   ports:
-  - name: https
-    port: 443
-    protocol: TCP
-    targetPort: https
+    - name: https
+      port: 443
+      protocol: TCP
+      targetPort: https
+  selector:
+    app.kubernetes.io/name: metrics-server
+    app.kubernetes.io/instance: k8s-tew
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: {{.Namespace}}
   name: metrics-server
   labels:
-    k8s-app: metrics-server
+    app.kubernetes.io/name: metrics-server
+    app.kubernetes.io/instance: k8s-tew
+  namespace: {{.Namespace}}
 spec:
+  replicas: 1
   selector:
     matchLabels:
-      k8s-app: metrics-server
+      app.kubernetes.io/name: metrics-server
+      app.kubernetes.io/instance: k8s-tew
   template:
     metadata:
       labels:
-        k8s-app: metrics-server
+        app.kubernetes.io/name: metrics-server
+        app.kubernetes.io/instance: k8s-tew
     spec:
-      containers:
-      - name: metrics-server
-        image: {{ .MetricsServerImage }}
-        args:
-        - --cert-dir=/tmp
-        - --secure-port=4443
-        - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
-        - --kubelet-use-node-status-port
-        livenessProbe:
-          failureThreshold: 3
-          httpGet:
-            path: /livez
-            port: https
-            scheme: HTTPS
-          periodSeconds: 10
-        ports:
-        - containerPort: 4443
-          name: https
-          protocol: TCP
-        readinessProbe:
-          failureThreshold: 3
-          httpGet:
-            path: /readyz
-            port: https
-            scheme: HTTPS
-          periodSeconds: 10
-        securityContext:
-          readOnlyRootFilesystem: true
-          runAsNonRoot: true
-          runAsUser: 1000
-        volumeMounts:
-        - mountPath: /tmp
-          name: tmp-dir
-      priorityClassName: system-cluster-critical
       serviceAccountName: metrics-server
+      priorityClassName: "system-cluster-critical"
+      containers:
+        - name: metrics-server
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 1000
+          image: {{ .MetricsServerImage }}
+          imagePullPolicy: IfNotPresent
+          args:
+            - --secure-port=4443
+            - --cert-dir=/tmp
+            - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
+            - --kubelet-use-node-status-port
+            - --metric-resolution=15s
+          ports:
+          - name: https
+            protocol: TCP
+            containerPort: 4443
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /livez
+              port: https
+              scheme: HTTPS
+            initialDelaySeconds: 0
+            periodSeconds: 10
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /readyz
+              port: https
+              scheme: HTTPS
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
       volumes:
-      - emptyDir: {}
-        name: tmp-dir
+        - name: tmp
+          emptyDir: {}
 ---
 apiVersion: apiregistration.k8s.io/v1
 kind: APIService
 metadata:
-  namespace: {{.Namespace}}
   name: v1beta1.metrics.k8s.io
   labels:
-    k8s-app: metrics-server
+    app.kubernetes.io/name: metrics-server
+    app.kubernetes.io/instance: k8s-tew
 spec:
   group: metrics.k8s.io
   groupPriorityMinimum: 100
   insecureSkipTLSVerify: true
   service:
-    namespace: {{.Namespace}}
     name: metrics-server
+    namespace: {{.Namespace}}
   version: v1beta1
   versionPriority: 100

@@ -260,7 +260,6 @@ func (config *InternalConfig) registerAssetFiles() {
 	// K8S Setup
 	config.addAssetFile(utils.K8sKubeletSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sAdminUserSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
-	config.addAssetFile(utils.K8sHelmUserSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.CephSecrets, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.CephSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.CephCsi, Labels{}, "", utils.DirectoryK8sSetupConfig)
@@ -272,7 +271,6 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.K8sVeleroSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sKubernetesDashboardSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sKubernetesDashboardCertificates, Labels{}, "", utils.DirectoryK8sSetupConfig)
-	config.addAssetFile(utils.K8sHelmSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sCertManagerSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sNginxIngressSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
 	config.addAssetFile(utils.K8sMetricsServerSetup, Labels{}, "", utils.DirectoryK8sSetupConfig)
