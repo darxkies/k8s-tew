@@ -84,7 +84,7 @@ metadata:
 rules:
   - apiGroups: [""]
     resources: ["secrets"]
-    resourceNames: ["kubernetes-dashboard-key-holder", "kubernetes-dashboard-csrf"]
+    resourceNames: ["kubernetes-dashboard-key-holder", "kubernetes-dashboard-certs", "kubernetes-dashboard-csrf"]
     verbs: ["get", "update", "delete"]
   - apiGroups: [""]
     resources: ["configmaps"]
@@ -92,11 +92,11 @@ rules:
     verbs: ["get", "update"]
   - apiGroups: [""]
     resources: ["services"]
-    resourceNames: ["heapster"]
+    resourceNames: ["heapster", "dashboard-metrics-scraper"]
     verbs: ["proxy"]
   - apiGroups: [""]
     resources: ["services/proxy"]
-    resourceNames: ["heapster", "http:heapster:", "https:heapster:"]
+    resourceNames: ["heapster", "http:heapster:", "https:heapster:", "dashboard-metrics-scraper", "http:dashboard-metrics-scraper"]
     verbs: ["get"]
 
 ---
@@ -179,12 +179,11 @@ spec:
         image: "{{.KubernetesDashboardImage}}"
         imagePullPolicy: IfNotPresent
         args:
-        - --tls-cert-file 
-        - kubernetes-dashboard.pem
-        - --tls-key-file 
-        - kubernetes-dashboard-key.pem
-        - --sidecar-host=http://127.0.0.1:8000
-        - --metrics-provider=none
+          - --tls-cert-file 
+          - kubernetes-dashboard.pem
+          - --tls-key-file 
+          - kubernetes-dashboard-key.pem
+          - --sidecar-host=http://127.0.0.1:8000
         ports:
         - name: https
           containerPort: 8443
@@ -258,6 +257,7 @@ metadata:
   namespace: {{.Namespace}}
 data:
   _global: '{"clusterName":"{{.ClusterName}}","itemsPerPage":50,"labelsLimit":0,"logsAutoRefreshTimeInterval":2,"resourceAutoRefreshTimeInterval":5,"disableAccessDeniedNotifications":false}'
+
 
 ---
 apiVersion: v1
