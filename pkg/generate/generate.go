@@ -187,7 +187,6 @@ func (generator *Generator) generateCalicoSetup() error {
 		VarRunDirectory            string
 		KubeletPluginsDirectory    string
 		LoggingDirectory           string
-		CalicoPod2DaemonImage      string
 		CalicoTyphaImage           string
 		CalicoNodeImage            string
 		CalicoCNIImage             string
@@ -202,7 +201,6 @@ func (generator *Generator) generateCalicoSetup() error {
 		VarRunDirectory:            generator.config.GetFullTargetAssetDirectory(utils.DirectoryVarRun),
 		KubeletPluginsDirectory:    generator.config.GetFullTargetAssetDirectory(utils.DirectoryKubeletPlugins),
 		LoggingDirectory:           generator.config.GetFullTargetAssetDirectory(utils.DirectoryLogging),
-		CalicoPod2DaemonImage:      generator.config.Config.Versions.CalicoPod2Daemon,
 		CalicoTyphaImage:           generator.config.Config.Versions.CalicoTypha,
 		CalicoNodeImage:            generator.config.Config.Versions.CalicoNode,
 		CalicoCNIImage:             generator.config.Config.Versions.CalicoCNI,

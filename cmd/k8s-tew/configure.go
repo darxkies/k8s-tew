@@ -350,10 +350,6 @@ func init() {
 		_config.Config.Versions.CalicoTypha = value
 	})
 
-	addStringOption("version-calico-pod2daemon", utils.VersionCalicoPod2Daemon, "Calico Pod2Daemon version", func(value string) {
-		_config.Config.Versions.CalicoPod2Daemon = value
-	})
-
 	addStringOption("version-calico-node", utils.VersionCalicoNode, "Calico Node version", func(value string) {
 		_config.Config.Versions.CalicoNode = value
 	})

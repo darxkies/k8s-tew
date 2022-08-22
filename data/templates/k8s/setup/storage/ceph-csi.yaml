@@ -36,7 +36,7 @@ data:
       auth_cluster_required = cephx
       auth_service_required = cephx
       auth_client_required = cephx
-
+    
   keyring: ""
 
 ---
@@ -57,6 +57,8 @@ data:
             "monitors": [{{range $index, $node := .StorageControllers}}{{if $index}},{{end}}"{{$node.IP}}:6789"{{end}}]
         }
     ]
+  cluster-mapping.json: |-
+    []
 
 ---
 apiVersion: v1
@@ -100,6 +102,9 @@ rules:
   - apiGroups: ["storage.k8s.io"]
     resources: ["volumeattachments"]
     verbs: ["list", "get"]
+  - apiGroups: [""]
+    resources: ["serviceaccounts/token"]
+    verbs: ["create"]
 
 ---
 kind: ClusterRole
@@ -180,6 +185,9 @@ rules:
   - apiGroups: ["storage.k8s.io"]
     resources: ["csinodes"]
     verbs: ["get", "list", "watch"]
+  - apiGroups: [""]
+    resources: ["serviceaccounts/token"]
+    verbs: ["create"]
 
 ---
 kind: ClusterRole
@@ -417,7 +425,7 @@ spec:
           args:
             - "--nodeid=$(NODE_ID)"
             - "--pluginpath=/var/lib/kubelet/plugins"
-            - "--stagingpath=/var/lib/kubelet/plugins/kubernetes.io/csi/pv/"
+            - "--stagingpath=/var/lib/kubelet/plugins/kubernetes.io/csi/"
             - "--type=rbd"
             - "--nodeserver=true"
             - "--pidlimit=-1"
@@ -619,12 +627,14 @@ spec:
           imagePullPolicy: IfNotPresent
           args:
             - "--csi-address=$(ADDRESS)"
-            - "--v=5"
+            - "--v=1"
             - "--timeout=60s"
             - "--leader-election=true"
             - "--retry-interval-start=500ms"
             - "--default-fstype=ext4"
             - "--extra-create-metadata=true"
+            - "--feature-gates=HonorPVReclaimPolicy=true"
+            - "--prevent-volume-mode-conversion=true"
             - "--feature-gates=Topology=false"
           env:
             - name: ADDRESS
@@ -638,12 +648,13 @@ spec:
           image: {{.CSIResizerImage}}
           imagePullPolicy: IfNotPresent
           args:
-            - "--v=5"
+            - "--v=1"
             - "--csi-address=$(ADDRESS)"
             - "--timeout=60s"
             - "--leader-election"
             - "--retry-interval-start=500ms"
             - "--handle-volume-inuse-error=false"
+            - "--feature-gates=RecoverVolumeExpansionFailure=true"
           env:
             - name: ADDRESS
               value: "unix:///csi/csi-provisioner.sock"
@@ -657,9 +668,10 @@ spec:
           imagePullPolicy: IfNotPresent
           args:
             - "--csi-address=$(ADDRESS)"
-            - "--v=5"
+            - "--v=1"
             - "--timeout=60s"
             - "--leader-election=true"
+            - "--extra-create-metadata=true"
           env:
             - name: ADDRESS
               value: "unix:///csi/csi-provisioner.sock"
@@ -672,7 +684,7 @@ spec:
           image: {{.CSIAttacherImage}}
           imagePullPolicy: IfNotPresent
           args:
-            - "--v=5"
+            - "--v=1"
             - "--csi-address=$(ADDRESS)"
             - "--leader-election=true"
             - "--retry-interval-start=500ms"
@@ -700,6 +712,7 @@ spec:
             - "--rbdsoftmaxclonedepth=4"
             - "--maxsnapshotsonimage=450"
             - "--minsnapshotsonimage=250"
+            - "--setmetadata=true"
           env:
             - name: POD_IP
               valueFrom:
@@ -746,6 +759,7 @@ spec:
             - "--v=5"
             - "--drivername=$(DRIVER_NAME)"
             - "--drivernamespace=$(DRIVER_NAMESPACE)"
+            - "--setmetadata=true"
           env:
             - name: DRIVER_NAMESPACE
               valueFrom:
@@ -825,7 +839,6 @@ spec:
 
 ---
 apiVersion: storage.k8s.io/v1
-
 kind: CSIDriver
 metadata:
   name: rbd.csi.ceph.com
@@ -899,7 +912,7 @@ rules:
     verbs: ["get", "list"]
   - apiGroups: [""]
     resources: ["persistentvolumes"]
-    verbs: ["get", "list", "watch", "create", "delete","patch"]
+    verbs: ["get", "list", "watch", "create", "update", "delete","patch"]
   - apiGroups: [""]
     resources: ["persistentvolumeclaims"]
     verbs: ["get", "list", "watch", "update"]
@@ -924,21 +937,9 @@ rules:
   - apiGroups: ["snapshot.storage.k8s.io"]
     resources: ["volumesnapshotcontents/status"]
     verbs: ["update", "patch"]
-  - apiGroups: ["storage.k8s.io"]
-    resources: ["volumeattachments"]
-    verbs: ["get", "list", "watch", "update", "patch"]
-  - apiGroups: ["storage.k8s.io"]
-    resources: ["volumeattachments/status"]
-    verbs: ["patch"]
   - apiGroups: [""]
     resources: ["persistentvolumeclaims/status"]
     verbs: ["update", "patch"]
-  - apiGroups: [""]
-    resources: ["nodes"]
-    verbs: ["get", "list", "watch"]
-  - apiGroups: ["storage.k8s.io"]
-    resources: ["csinodes"]
-    verbs: ["get", "list", "watch"]
 
 ---
 kind: ClusterRole
@@ -1178,6 +1179,8 @@ spec:
             - "--type=cephfs"
             - "--nodeserver=true"
             - "--pidlimit=-1"
+            - "--kernelmountoptions="
+            - "--fusemountoptions="
             - "--endpoint=$(CSI_ENDPOINT)"
             - "--v=5"
             - "--drivername=$(DRIVER_NAME)"
@@ -1358,11 +1361,13 @@ spec:
           imagePullPolicy: IfNotPresent
           args:
             - "--csi-address=$(ADDRESS)"
-            - "--v=5"
+            - "--v=1"
             - "--timeout=60s"
             - "--leader-election=true"
             - "--retry-interval-start=500ms"
             - "--extra-create-metadata=true"
+            - "--feature-gates=HonorPVReclaimPolicy=true"
+            - "--prevent-volume-mode-conversion=true"
             - "--feature-gates=Topology=false"
           env:
             - name: ADDRESS
@@ -1377,25 +1382,10 @@ spec:
           imagePullPolicy: IfNotPresent
           args:
             - "--csi-address=$(ADDRESS)"
-            - "--v=5"
+            - "--v=1"
             - "--timeout=60s"
             - "--leader-election=true"
-          env:
-            - name: ADDRESS
-              value: "unix:///csi/csi-provisioner.sock"
-          volumeMounts:
-            - name: socket-dir
-              mountPath: /csi
-          resources:
-            {}
-        - name: csi-attacher
-          image: {{.CSIAttacherImage}}
-          imagePullPolicy: IfNotPresent
-          args:
-            - "--v=5"
-            - "--csi-address=$(ADDRESS)"
-            - "--leader-election=true"
-            - "--retry-interval-start=500ms"
+            - "--extra-create-metadata=true"
           env:
             - name: ADDRESS
               value: "unix:///csi/csi-provisioner.sock"
@@ -1408,12 +1398,13 @@ spec:
           image: {{.CSIResizerImage}}
           imagePullPolicy: IfNotPresent
           args:
-            - "--v=5"
+            - "--v=1"
             - "--csi-address=$(ADDRESS)"
             - "--timeout=60s"
             - "--leader-election"
             - "--retry-interval-start=500ms"
             - "--handle-volume-inuse-error=false"
+            - "--feature-gates=RecoverVolumeExpansionFailure=true"
           env:
             - name: ADDRESS
               value: "unix:///csi/csi-provisioner.sock"
@@ -1433,6 +1424,7 @@ spec:
             - "--endpoint=$(CSI_ENDPOINT)"
             - "--v=5"
             - "--drivername=$(DRIVER_NAME)"
+            - "--setmetadata=true"
           env:
             - name: POD_IP
               valueFrom:
@@ -1517,13 +1509,13 @@ spec:
 
 ---
 apiVersion: storage.k8s.io/v1
-
 kind: CSIDriver
 metadata:
   name: cephfs.csi.ceph.com
 spec:
-  attachRequired: true
+  attachRequired: false
   podInfoOnMount: false
+  fsGroupPolicy: File
 
 
 ---
@@ -1709,6 +1701,7 @@ parameters:
   csi.storage.k8s.io/node-stage-secret-name: csi-cephfs-secret
   csi.storage.k8s.io/node-stage-secret-namespace: {{.Namespace}}
 
+
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -1801,10 +1794,7 @@ spec:
       name: Age
       type: date
     name: v1beta1
-    # This indicates the v1beta1 version of the custom resource is deprecated.
-    # API requests to this version receive a warning in the server response.
     deprecated: true
-    # This overrides the default warning returned to clients making v1beta1 API requests.
     deprecationWarning: "snapshot.storage.k8s.io/v1beta1 VolumeSnapshotClass is deprecated; use snapshot.storage.k8s.io/v1 VolumeSnapshotClass"
     schema:
       openAPIV3Schema:
@@ -1843,6 +1833,7 @@ status:
     plural: ""
   conditions: []
   storedVersions: []
+
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2125,10 +2116,7 @@ spec:
       name: Age
       type: date
     name: v1beta1
-    # This indicates the v1beta1 version of the custom resource is deprecated.
-    # API requests to this version receive a warning in the server response.
     deprecated: true
-    # This overrides the default warning returned to clients making v1beta1 API requests.
     deprecationWarning: "snapshot.storage.k8s.io/v1beta1 VolumeSnapshotContent is deprecated; use snapshot.storage.k8s.io/v1 VolumeSnapshotContent"
     schema:
       openAPIV3Schema:
@@ -2239,6 +2227,7 @@ status:
     plural: ""
   conditions: []
   storedVersions: []
+
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
@@ -2470,10 +2459,7 @@ spec:
       name: Age
       type: date
     name: v1beta1
-    # This indicates the v1beta1 version of the custom resource is deprecated.
-    # API requests to this version receive a warning in the server response.
     deprecated: true
-    # This overrides the default warning returned to clients making v1beta1 API requests.
     deprecationWarning: "snapshot.storage.k8s.io/v1beta1 VolumeSnapshot is deprecated; use snapshot.storage.k8s.io/v1 VolumeSnapshot"
     schema:
       openAPIV3Schema:

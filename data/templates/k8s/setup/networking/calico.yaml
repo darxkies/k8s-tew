@@ -4,6 +4,50 @@ metadata:
   name: {{.Namespace}}
 
 ---
+
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: calico-kube-controllers
+  namespace: {{.Namespace}}
+  labels:
+    k8s-app: calico-kube-controllers
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      k8s-app: calico-kube-controllers
+
+---
+
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: calico-typha
+  namespace: {{.Namespace}}
+  labels:
+    k8s-app: calico-typha
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      k8s-app: calico-typha
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: calico-kube-controllers
+  namespace: {{.Namespace}}
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: calico-node
+  namespace: {{.Namespace}}
+
+---
 kind: ConfigMap
 apiVersion: v1
 metadata:
@@ -27,8 +71,8 @@ data:
           "mtu": __CNI_MTU__,
           "nodename_file_optional": true,
           "ipam": {
-            "type": "calico-ipam",
-            "subnet": "usePodCidr"
+              "type": "calico-ipam",
+              "subnet": "usePodCidr"
           },
           "policy": {
               "type": "k8s"
@@ -50,7 +94,6 @@ data:
     }
 
 ---
-
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
@@ -62,6 +105,7 @@ spec:
     listKind: BGPConfigurationList
     plural: bgpconfigurations
     singular: bgpconfiguration
+  preserveUnknownFields: false
   scope: Cluster
   versions:
   - name: v1
@@ -242,6 +286,7 @@ spec:
     listKind: BGPPeerList
     plural: bgppeers
     singular: bgppeer
+  preserveUnknownFields: false
   scope: Cluster
   versions:
   - name: v1
@@ -361,6 +406,7 @@ spec:
     listKind: BlockAffinityList
     plural: blockaffinities
     singular: blockaffinity
+  preserveUnknownFields: false
   scope: Cluster
   versions:
   - name: v1
@@ -425,6 +471,7 @@ spec:
     listKind: CalicoNodeStatusList
     plural: caliconodestatuses
     singular: caliconodestatus
+  preserveUnknownFields: false
   scope: Cluster
   versions:
   - name: v1
@@ -685,6 +732,7 @@ spec:
     listKind: ClusterInformationList
     plural: clusterinformations
     singular: clusterinformation
+  preserveUnknownFields: false
   scope: Cluster
   versions:
   - name: v1
@@ -749,6 +797,7 @@ spec:
     listKind: FelixConfigurationList
     plural: felixconfigurations
     singular: felixconfiguration
+  preserveUnknownFields: false
   scope: Cluster
   versions:
   - name: v1
@@ -826,7 +875,7 @@ spec:
                 description: 'BPFExtToServiceConnmark in BPF mode, control a 32bit
                   mark that is set on connections from an external client to a local
                   service. This mark allows us to control how packets of that connection
-                  are routed within the host and how is routing intepreted by RPF
+                  are routed within the host and how is routing interpreted by RPF
                   check. [Default: 0]'
                 type: integer
               bpfExternalServiceMode:
@@ -874,6 +923,11 @@ spec:
                   policy.  Selectors such as "all()" can result in large numbers of
                   entries (one entry per endpoint in that case).
                 type: integer
+              bpfMapSizeIfState:
+                description: BPFMapSizeIfState sets the size for ifstate map.  The
+                  ifstate map must be large enough to hold an entry for each device
+                  (host + workloads) on a host.
+                type: integer
               bpfMapSizeNATAffinity:
                 type: integer
               bpfMapSizeNATBackend:
@@ -906,6 +960,11 @@ spec:
                   are inclusive. [Default: 20000:29999]'
                 pattern: ^.*
                 x-kubernetes-int-or-string: true
+              bpfPolicyDebugEnabled:
+                description: BPFPolicyDebugEnabled when true, Felix records detailed
+                  information about the BPF policy programs, which can be examined
+                  with the calico-bpf command-line tool.
+                type: boolean
               chainInsertMode:
                 description: 'ChainInsertMode controls whether Felix hooks the kernel''s
                   top-level iptables chains by inserting a rule at the top of the
@@ -1035,7 +1094,6 @@ spec:
                   are auto-detected.
                 type: string
               floatingIPs:
-                default: Disabled
                 description: FloatingIPs configures whether or not Felix will program
                   floating IP addresses.
                 enum:
@@ -1297,6 +1355,10 @@ spec:
                   information. - WorkloadIPs: use workload endpoints to construct
                   routes. - CalicoIPAM: the default - use IPAM data to construct routes.'
                 type: string
+              routeSyncDisabled:
+                description: RouteSyncDisabled will disable all operations performed
+                  on the route table. Set to true to run in network-policy mode only.
+                type: boolean
               routeTableRange:
                 description: Deprecated in favor of RouteTableRanges. Calico programs
                   additional Linux route tables for various purposes. RouteTableRange
@@ -1374,7 +1436,13 @@ spec:
               vxlanVNI:
                 type: integer
               wireguardEnabled:
-                description: 'WireguardEnabled controls whether Wireguard is enabled.
+                description: 'WireguardEnabled controls whether Wireguard is enabled
+                  for IPv4 (encapsulating IPv4 traffic over an IPv4 underlay network).
+                  [Default: false]'
+                type: boolean
+              wireguardEnabledV6:
+                description: 'WireguardEnabledV6 controls whether Wireguard is enabled
+                  for IPv6 (encapsulating IPv6 traffic over an IPv6 underlay network).
                   [Default: false]'
                 type: boolean
               wireguardHostEncryptionEnabled:
@@ -1383,7 +1451,11 @@ spec:
                 type: boolean
               wireguardInterfaceName:
                 description: 'WireguardInterfaceName specifies the name to use for
-                  the Wireguard interface. [Default: wg.calico]'
+                  the IPv4 Wireguard interface. [Default: wireguard.cali]'
+                type: string
+              wireguardInterfaceNameV6:
+                description: 'WireguardInterfaceNameV6 specifies the name to use for
+                  the IPv6 Wireguard interface. [Default: wg-v6.cali]'
                 type: string
               wireguardKeepAlive:
                 description: 'WireguardKeepAlive controls Wireguard PersistentKeepalive
@@ -1391,11 +1463,19 @@ spec:
                 type: string
               wireguardListeningPort:
                 description: 'WireguardListeningPort controls the listening port used
-                  by Wireguard. [Default: 51820]'
+                  by IPv4 Wireguard. [Default: 51820]'
+                type: integer
+              wireguardListeningPortV6:
+                description: 'WireguardListeningPortV6 controls the listening port
+                  used by IPv6 Wireguard. [Default: 51821]'
                 type: integer
               wireguardMTU:
-                description: 'WireguardMTU controls the MTU on the Wireguard interface.
-                  See Configuring MTU [Default: 1420]'
+                description: 'WireguardMTU controls the MTU on the IPv4 Wireguard
+                  interface. See Configuring MTU [Default: 1440]'
+                type: integer
+              wireguardMTUV6:
+                description: 'WireguardMTUV6 controls the MTU on the IPv6 Wireguard
+                  interface. See Configuring MTU [Default: 1420]'
                 type: integer
               wireguardRoutingRulePriority:
                 description: 'WireguardRoutingRulePriority controls the priority value
@@ -1440,6 +1520,7 @@ spec:
     listKind: GlobalNetworkPolicyList
     plural: globalnetworkpolicies
     singular: globalnetworkpolicy
+  preserveUnknownFields: false
   scope: Cluster
   versions:
   - name: v1
@@ -2295,6 +2376,7 @@ spec:
     listKind: GlobalNetworkSetList
     plural: globalnetworksets
     singular: globalnetworkset
+  preserveUnknownFields: false
   scope: Cluster
   versions:
   - name: v1
@@ -2348,6 +2430,7 @@ spec:
     listKind: HostEndpointList
     plural: hostendpoints
     singular: hostendpoint
+  preserveUnknownFields: false
   scope: Cluster
   versions:
   - name: v1
@@ -2456,6 +2539,7 @@ spec:
     listKind: IPAMBlockList
     plural: ipamblocks
     singular: ipamblock
+  preserveUnknownFields: false
   scope: Cluster
   versions:
   - name: v1
@@ -2573,6 +2657,7 @@ spec:
     listKind: IPAMConfigList
     plural: ipamconfigs
     singular: ipamconfig
+  preserveUnknownFields: false
   scope: Cluster
   versions:
   - name: v1
@@ -2600,6 +2685,8 @@ spec:
               maxBlocksPerHost:
                 description: MaxBlocksPerHost, if non-zero, is the max number of blocks
                   that can be affine to each host.
+                maximum: 2147483647
+                minimum: 0
                 type: integer
               strictAffinity:
                 type: boolean
@@ -2629,6 +2716,7 @@ spec:
     listKind: IPAMHandleList
     plural: ipamhandles
     singular: ipamhandle
+  preserveUnknownFields: false
   scope: Cluster
   versions:
   - name: v1
@@ -2685,6 +2773,7 @@ spec:
     listKind: IPPoolList
     plural: ippools
     singular: ippool
+  preserveUnknownFields: false
   scope: Cluster
   versions:
   - name: v1
@@ -2797,6 +2886,7 @@ spec:
     listKind: IPReservationList
     plural: ipreservations
     singular: ipreservation
+  preserveUnknownFields: false
   scope: Cluster
   versions:
   - name: v1
@@ -2848,6 +2938,7 @@ spec:
     listKind: KubeControllersConfigurationList
     plural: kubecontrollersconfigurations
     singular: kubecontrollersconfiguration
+  preserveUnknownFields: false
   scope: Cluster
   versions:
   - name: v1
@@ -3101,6 +3192,7 @@ spec:
     listKind: NetworkPolicyList
     plural: networkpolicies
     singular: networkpolicy
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - name: v1
@@ -3937,6 +4029,7 @@ spec:
     listKind: NetworkSetList
     plural: networksets
     singular: networkset
+  preserveUnknownFields: false
   scope: Namespaced
   versions:
   - name: v1
@@ -4045,19 +4138,6 @@ rules:
       - create
       - update
       - watch
----
-kind: ClusterRoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: calico-kube-controllers
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: calico-kube-controllers
-subjects:
-- kind: ServiceAccount
-  name: calico-kube-controllers
-  namespace: {{.Namespace}}
 
 ---
 kind: ClusterRole
@@ -4065,6 +4145,13 @@ apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: calico-node
 rules:
+  - apiGroups: [""]
+    resources:
+      - serviceaccounts/token
+    resourceNames:
+      - calico-node
+    verbs:
+      - create
   - apiGroups: [""]
     resources:
       - pods
@@ -4116,13 +4203,6 @@ rules:
       - pods/status
     verbs:
       - patch
-  - apiGroups: [""]
-    resources:
-      - serviceaccounts/token
-    resourceNames:
-      - calico-node
-    verbs:
-      - create
   - apiGroups: ["crd.projectcalico.org"]
     resources:
       - globalfelixconfigs
@@ -4188,6 +4268,7 @@ rules:
       - ipamconfigs
     verbs:
       - get
+      - create
   - apiGroups: ["crd.projectcalico.org"]
     resources:
       - blockaffinities
@@ -4198,6 +4279,20 @@ rules:
       - daemonsets
     verbs:
       - get
+
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: calico-kube-controllers
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: calico-kube-controllers
+subjects:
+- kind: ServiceAccount
+  name: calico-kube-controllers
+  namespace: {{.Namespace}}
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -4232,105 +4327,6 @@ spec:
   selector:
     k8s-app: calico-typha
 
----
-
-
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: calico-typha
-  namespace: {{.Namespace}}
-  labels:
-    k8s-app: calico-typha
-spec:
-  replicas: 1
-  revisionHistoryLimit: 2
-  selector:
-    matchLabels:
-      k8s-app: calico-typha
-  template:
-    metadata:
-      labels:
-        k8s-app: calico-typha
-        cluster-relevant: "true"
-        cluster-weight: "85"
-      annotations:
-        cluster-autoscaler.kubernetes.io/safe-to-evict: 'true'
-    spec:
-      nodeSelector:
-        kubernetes.io/os: linux
-      hostNetwork: true
-      tolerations:
-        - key: CriticalAddonsOnly
-          operator: Exists
-      serviceAccountName: calico-node
-      priorityClassName: system-cluster-critical
-      securityContext:
-        fsGroup: 65534
-      containers:
-      - image: {{.CalicoTyphaImage}}
-        name: calico-typha
-        ports:
-        - containerPort: 5473
-          name: calico-typha
-          protocol: TCP
-        envFrom:
-        - configMapRef:
-            name: kubernetes-services-endpoint
-            optional: true
-        env:
-          - name: TYPHA_LOGSEVERITYSCREEN
-            value: "info"
-          - name: TYPHA_LOGFILEPATH
-            value: "none"
-          - name: TYPHA_LOGSEVERITYSYS
-            value: "none"
-          - name: TYPHA_CONNECTIONREBALANCINGMODE
-            value: "kubernetes"
-          - name: TYPHA_DATASTORETYPE
-            value: "kubernetes"
-          - name: TYPHA_HEALTHENABLED
-            value: "true"
-          - name: TYPHA_PROMETHEUSMETRICSENABLED
-            value: "true"
-          - name: TYPHA_PROMETHEUSMETRICSPORT
-            value: "9093"
-          - name: TYPHA_K8SNAMESPACE
-            value: "{{.Namespace}}"
-        livenessProbe:
-          httpGet:
-            path: /liveness
-            port: 9098
-            host: localhost
-          periodSeconds: 30
-          initialDelaySeconds: 30
-          timeoutSeconds: 10
-        securityContext:
-          runAsNonRoot: true
-          allowPrivilegeEscalation: false
-        readinessProbe:
-          httpGet:
-            path: /readiness
-            port: 9098
-            host: localhost
-          periodSeconds: 10
-          timeoutSeconds: 10
-
----
-
-
-apiVersion: policy/v1
-kind: PodDisruptionBudget
-metadata:
-  name: calico-typha
-  namespace: {{.Namespace}}
-  labels:
-    k8s-app: calico-typha
-spec:
-  maxUnavailable: 1
-  selector:
-    matchLabels:
-      k8s-app: calico-typha
 ---
 kind: DaemonSet
 apiVersion: apps/v1
@@ -4370,6 +4366,7 @@ spec:
       initContainers:
         - name: upgrade-ipam
           image: {{.CalicoCNIImage}}
+          imagePullPolicy: IfNotPresent
           command: ["/opt/cni/bin/calico-ipam", "-upgrade"]
           envFrom:
           - configMapRef:
@@ -4394,6 +4391,7 @@ spec:
             privileged: true
         - name: install-cni
           image: {{.CalicoCNIImage}}
+          imagePullPolicy: IfNotPresent
           command: ["/opt/cni/bin/install"]
           envFrom:
           - configMapRef:
@@ -4427,16 +4425,26 @@ spec:
               name: cni-net-dir
           securityContext:
             privileged: true
-        - name: flexvol-driver
-          image: {{.CalicoPod2DaemonImage}}
+        - name: "mount-bpffs"
+          image: {{.CalicoNodeImage}}
+          imagePullPolicy: IfNotPresent
+          command: ["calico-node", "-init", "-best-effort"]
           volumeMounts:
-          - name: flexvol-driver-host
-            mountPath: /host/driver
+            - mountPath: /sys/fs
+              name: sys-fs
+              mountPropagation: Bidirectional
+            - mountPath: /var/run/calico
+              name: var-run-calico
+              mountPropagation: Bidirectional
+            - mountPath: /nodeproc
+              name: nodeproc
+              readOnly: true
           securityContext:
             privileged: true
       containers:
         - name: calico-node
           image: {{.CalicoNodeImage}}
+          imagePullPolicy: IfNotPresent
           envFrom:
           - configMapRef:
               name: kubernetes-services-endpoint
@@ -4546,9 +4554,8 @@ spec:
               readOnly: false
             - name: policysync
               mountPath: /var/run/nodeagent
-            - name: sysfs
-              mountPath: /sys/fs/
-              mountPropagation: Bidirectional
+            - name: bpffs
+              mountPath: /sys/fs/bpf
             - name: cni-log-dir
               mountPath: /var/log/calico/cni
               readOnly: true
@@ -4566,10 +4573,17 @@ spec:
           hostPath:
             path: /run/xtables.lock
             type: FileOrCreate
-        - name: sysfs
+        - name: sys-fs
           hostPath:
             path: /sys/fs/
             type: DirectoryOrCreate
+        - name: bpffs
+          hostPath:
+            path: /sys/fs/bpf
+            type: Directory
+        - name: nodeproc
+          hostPath:
+            path: /proc
         - name: cni-bin-dir
           hostPath:
             path: {{.CNIBinariesDirectory}}
@@ -4590,14 +4604,6 @@ spec:
           hostPath:
             type: DirectoryOrCreate
             path: {{.KubeletPluginsDirectory}}/volume/exec/nodeagent~uds
-
----
-
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: calico-node
-  namespace: {{.Namespace}}
 
 ---
 apiVersion: apps/v1
@@ -4658,24 +4664,85 @@ spec:
 
 ---
 
-apiVersion: v1
-kind: ServiceAccount
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: calico-kube-controllers
+  name: calico-typha
   namespace: {{.Namespace}}
-
----
-
-
-apiVersion: policy/v1
-kind: PodDisruptionBudget
-metadata:
-  name: calico-kube-controllers
-  namespace: kube-system
   labels:
-    k8s-app: calico-kube-controllers
+    k8s-app: calico-typha
 spec:
-  maxUnavailable: 1
+  replicas: 1
+  revisionHistoryLimit: 2
   selector:
     matchLabels:
-      k8s-app: calico-kube-controllers
+      k8s-app: calico-typha
+  template:
+    metadata:
+      labels:
+        k8s-app: calico-typha
+        cluster-relevant: "true"
+        cluster-weight: "85"
+      annotations:
+        cluster-autoscaler.kubernetes.io/safe-to-evict: 'true'
+    spec:
+      nodeSelector:
+        kubernetes.io/os: linux
+      hostNetwork: true
+      tolerations:
+        - key: CriticalAddonsOnly
+          operator: Exists
+      serviceAccountName: calico-node
+      priorityClassName: system-cluster-critical
+      securityContext:
+        fsGroup: 65534
+      containers:
+      - image: {{.CalicoTyphaImage}}
+        imagePullPolicy: IfNotPresent
+        name: calico-typha
+        ports:
+        - containerPort: 5473
+          name: calico-typha
+          protocol: TCP
+        envFrom:
+        - configMapRef:
+            name: kubernetes-services-endpoint
+            optional: true
+        env:
+          - name: TYPHA_LOGSEVERITYSCREEN
+            value: "info"
+          - name: TYPHA_LOGFILEPATH
+            value: "none"
+          - name: TYPHA_LOGSEVERITYSYS
+            value: "none"
+          - name: TYPHA_CONNECTIONREBALANCINGMODE
+            value: "kubernetes"
+          - name: TYPHA_DATASTORETYPE
+            value: "kubernetes"
+          - name: TYPHA_HEALTHENABLED
+            value: "true"
+          - name: TYPHA_PROMETHEUSMETRICSENABLED
+            value: "true"
+          - name: TYPHA_PROMETHEUSMETRICSPORT
+            value: "9093"
+          - name: TYPHA_K8SNAMESPACE
+            value: "{{.Namespace}}"
+        livenessProbe:
+          httpGet:
+            path: /liveness
+            port: 9098
+            host: localhost
+          periodSeconds: 30
+          initialDelaySeconds: 30
+          timeoutSeconds: 10
+        securityContext:
+          runAsNonRoot: true
+          allowPrivilegeEscalation: false
+        readinessProbe:
+          httpGet:
+            path: /readiness
+            port: 9098
+            host: localhost
+          periodSeconds: 10
+          timeoutSeconds: 10
+
