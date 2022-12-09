@@ -181,9 +181,6 @@ spec:
             - name: grafana-dashboard-persistentvolumesusage
               mountPath: "/var/lib/grafana/dashboards/persistentvolumesusage.json"
               subPath: persistentvolumesusage.json
-            - name: grafana-dashboard-statefulset
-              mountPath: "/var/lib/grafana/dashboards/statefulset.json"
-              subPath: statefulset.json
             - name: grafana-dashboard-cluster-total
               mountPath: "/var/lib/grafana/dashboards/cluster-total.json"
               subPath: cluster-total.json

@@ -114,7 +114,7 @@ func (downloader Downloader) downloadFile(url, filename string) error {
 	// Create new request
 	request, error := grab.NewRequest(filename, url)
 	if error != nil {
-		return fmt.Errorf("Could not create request to download file %s from %s (%s)", filename, url, error.Error())
+		return fmt.Errorf("could not create request to download file %s from %s (%s)", filename, url, error.Error())
 	}
 
 	// Send request
@@ -122,7 +122,7 @@ func (downloader Downloader) downloadFile(url, filename string) error {
 
 	// Check error
 	if error := response.Err(); error != nil {
-		return fmt.Errorf("Could not download file %s from %s (%s)", filename, url, error.Error())
+		return fmt.Errorf("could not download file %s from %s (%s)", filename, url, error.Error())
 	}
 
 	return nil

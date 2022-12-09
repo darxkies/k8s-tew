@@ -47,7 +47,6 @@ spec:
     - --service-account-signing-key-file={{.PemServiceAccountKey}}
     - --service-account-key-file={{.PemServiceAccount}}
     - --service-account-issuer=https://kubernetes.default.svc.{{.ClusterDomain}}
-    - --service-account-api-audiences=api
     - --service-cluster-ip-range={{.ClusterIPRange}}
     - --service-node-port-range=30000-32767
     - --tls-cert-file={{.PemKubernetes}}

@@ -50,7 +50,7 @@ var initializeCmd = &cobra.Command{
 		if error := _config.Save(); error != nil {
 			log.WithFields(log.Fields{"error": error}).Error("Initialize failed")
 
-			os.Exit(-1)
+			    os.Exit(-1)
 		}
 
 		utils.IncreaseProgressStep()

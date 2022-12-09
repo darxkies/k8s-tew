@@ -2,15 +2,15 @@ package utils
 
 // Versions
 const VersionConfig = "2.4.0"
-const VersionK8s = "v1.24.4"
+const VersionK8s = "v1.25.0"
 const VersionKubeAPIServer = "k8s.gcr.io/kube-apiserver:" + VersionK8s
 const VersionKubeControllerManager = "k8s.gcr.io/kube-controller-manager:" + VersionK8s
 const VersionKubeScheduler = "k8s.gcr.io/kube-scheduler:" + VersionK8s
 const VersionKubeProxy = "k8s.gcr.io/kube-proxy:" + VersionK8s
 const VersionEtcd = "quay.io/coreos/etcd:v3.5.4"
 const VersionContainerd = "1.6.8"
-const VersionRunc = "1.1.3"
-const VersionCrictl = "1.24.2"
+const VersionRunc = "1.1.4"
+const VersionCrictl = "1.25.0"
 const VersionHelm = "3.9.3"
 const VersionGobetween = "docker.io/yyyar/gobetween:0.8.0"
 const VersionVirtualIP = "docker.io/darxkies/virtual-ip:1.0.1"
@@ -53,7 +53,7 @@ const VersionMetricsServer = "k8s.gcr.io/metrics-server/metrics-server:v0.6.1"
 const VersionKubeStateMetrics = "k8s.gcr.io/kube-state-metrics/kube-state-metrics:v2.5.0"
 const VersionGrafana = "docker.io/grafana/grafana:7.4.3"
 const VersionPrometheus = "quay.io/prometheus/prometheus:v2.22.0"
-const VersionNodeExporter = "quay.io/prometheus/node-exporter:v1.1.2"
+const VersionNodeExporter = "quay.io/prometheus/node-exporter:v1.3.1"
 const VersionAlertManager = "quay.io/prometheus/alertmanager:v0.21.0"
 const VersionMysql = "docker.io/library/mysql:8.0.23"
 const VersionWordpress = "docker.io/library/wordpress:5.7.0-apache"
