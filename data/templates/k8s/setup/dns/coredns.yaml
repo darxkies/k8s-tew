@@ -6,7 +6,7 @@ metadata:
   namespace: {{.Namespace}}
   labels:
     app.kubernetes.io/instance: "k8s-tew"
-    k8s-app: "coredns"
+    k8s-app: coredns
     kubernetes.io/cluster-service: "true"
     kubernetes.io/name: "CoreDNS"
     app.kubernetes.io/name: coredns
@@ -21,6 +21,7 @@ data:
         kubernetes {{.ClusterDomain}} in-addr.arpa ip6.arpa {
             pods verified
             fallthrough in-addr.arpa ip6.arpa
+            ttl 30
         }
         prometheus 0.0.0.0:9153
         forward . /etc/resolv.conf
@@ -44,7 +45,7 @@ metadata:
   name: coredns
   labels:
     app.kubernetes.io/instance: "k8s-tew"
-    k8s-app: "coredns"
+    k8s-app: coredns
     kubernetes.io/cluster-service: "true"
     kubernetes.io/name: "CoreDNS"
     app.kubernetes.io/name: coredns
@@ -74,7 +75,7 @@ metadata:
   name: coredns
   labels:
     app.kubernetes.io/instance: "k8s-tew"
-    k8s-app: "coredns"
+    k8s-app: coredns
     kubernetes.io/cluster-service: "true"
     kubernetes.io/name: "CoreDNS"
     app.kubernetes.io/name: coredns
@@ -98,14 +99,14 @@ metadata:
     prometheus.io/scrape: "true"
   labels:
     app.kubernetes.io/instance: "k8s-tew"
-    k8s-app: "coredns"
+    k8s-app: coredns
     kubernetes.io/cluster-service: "true"
     kubernetes.io/name: "CoreDNS"
     app.kubernetes.io/name: coredns
 spec:
   selector:
     app.kubernetes.io/instance: "k8s-tew"
-    k8s-app: "coredns"
+    k8s-app: coredns
     app.kubernetes.io/name: coredns
   clusterIP: {{.ClusterDNSIP}}
   ports:
@@ -122,7 +123,7 @@ metadata:
   namespace: {{.Namespace}}
   labels:
     app.kubernetes.io/instance: "k8s-tew"
-    k8s-app: "coredns"
+    k8s-app: coredns
     kubernetes.io/cluster-service: "true"
     kubernetes.io/name: "CoreDNS"
     app.kubernetes.io/name: coredns
@@ -136,12 +137,12 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/instance: "k8s-tew"
-      k8s-app: "coredns"
+      k8s-app: coredns
       app.kubernetes.io/name: coredns
   template:
     metadata:
       labels:
-        k8s-app: "coredns"
+        k8s-app: coredns
         app.kubernetes.io/name: coredns
         app.kubernetes.io/instance: "k8s-tew"
     spec:

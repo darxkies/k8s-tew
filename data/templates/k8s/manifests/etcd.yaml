@@ -10,16 +10,6 @@ metadata:
     cluster-weight: "100"
 spec:
   hostNetwork: true
-  initContainers:
-  - name: setup
-    image: {{.EtcdImage}}
-    command:
-    - chmod 
-    - go-rwx
-    - {{.EtcdDataDirectory}}
-    volumeMounts:
-    - name: etcd-data-directory
-      mountPath: {{.EtcdDataDirectory}}
   containers:
   - name: etcd
     image: {{.EtcdImage}}
@@ -42,31 +32,20 @@ spec:
     - --peer-key-file={{.PemKubernetesKey}}
     - --peer-trusted-ca-file={{.PemCA}}
     - --trusted-ca-file={{.PemCA}}
+    - --listen-metrics-urls=http://{{.NodeIP}}:2381
     readinessProbe:
-      exec:
-        command:
-        - /bin/sh
-        - -ec
-        - ETCDCTL_API=3 etcdctl 
-          --endpoints=https://{{.NodeIP}}:2379 
-          --cacert={{.PemCA}}
-          --cert={{.PemKubernetes}}
-          --key={{.PemKubernetesKey}}
-          endpoint health
+      httpGet:
+        path: /health
+        port: 2381
+        scheme: HTTP
       initialDelaySeconds: 1
       timeoutSeconds: 5
       failureThreshold: 5
     livenessProbe:
-      exec:
-        command:
-        - /bin/sh
-        - -ec
-        - ETCDCTL_API=3 etcdctl 
-          --endpoints=https://{{.NodeIP}}:2379 
-          --cacert={{.PemCA}}
-          --cert={{.PemKubernetes}}
-          --key={{.PemKubernetesKey}}
-          endpoint health
+      httpGet:
+        path: /health
+        port: 2381
+        scheme: HTTP
       initialDelaySeconds: 10
       timeoutSeconds: 10
       failureThreshold: 5

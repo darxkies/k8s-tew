@@ -433,6 +433,7 @@ spec:
             - "--csi-addons-endpoint=$(CSI_ADDONS_ENDPOINT)"
             - "--v=5"
             - "--drivername=$(DRIVER_NAME)"
+            - "--domainlabels=failure-domain/region,failure-domain/zone"
           env:
             - name: POD_IP
               valueFrom:
@@ -521,7 +522,7 @@ spec:
       volumes:
         - name: socket-dir
           hostPath:
-            path: {{.PluginsDirectory}}/rbd.csi.ceph.com
+            path: "{{.PluginsDirectory}}/rbd.csi.ceph.com"
             type: DirectoryOrCreate
         - name: registration-dir
           hostPath:
@@ -537,7 +538,7 @@ spec:
             type: DirectoryOrCreate
         - name: ceph-logdir
           hostPath:
-            path: {{.LoggingDirectory}}/ceph
+            path: "{{.LoggingDirectory}}/ceph"
             type: DirectoryOrCreate
         - name: host-dev
           hostPath:
@@ -845,6 +846,7 @@ metadata:
 spec:
   attachRequired: true
   podInfoOnMount: false
+  fsGroupPolicy: File
 
 ---
 apiVersion: v1
@@ -1265,11 +1267,11 @@ spec:
       volumes:
         - name: socket-dir
           hostPath:
-            path: {{.PluginsDirectory}}/cephfs.csi.ceph.com/
+            path: "{{.PluginsDirectory}}/cephfs.csi.ceph.com/"
             type: DirectoryOrCreate
         - name: registration-dir
           hostPath:
-            path: {{.PluginsRegistryDirectory}}/
+            path: "{{.PluginsRegistryDirectory}}/"
             type: Directory
         - name: mountpoint-dir
           hostPath:
@@ -1306,7 +1308,7 @@ spec:
           }
         - name: ceph-csi-mountinfo
           hostPath:
-            path: {{.PluginsDirectory}}/cephfs.csi.ceph.com/mountinfo
+            path: "{{.PluginsDirectory}}/cephfs.csi.ceph.com/mountinfo"
             type: DirectoryOrCreate
 
 ---
