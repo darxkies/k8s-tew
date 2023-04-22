@@ -21,6 +21,12 @@ import (
 	"github.com/smallnest/goreq"
 )
 
+const DOCKER_DISTRIUBUTION_MANIFEST = "application/vnd.docker.distribution.manifest.v1+prettyjws"
+const DOCKER_IMAGE_ROOTFS = "application/vnd.docker.image.rootfs.diff.tar.gzip"
+const OCI_IMAGE_MANIFEST = "application/vnd.oci.image.manifest.v1+json"
+const OCI_IMAGE_INDEX = "application/vnd.oci.image.index.v1+json"
+const OCI_IMAGE_CONFIG = "application/vnd.oci.image.config.v1+json"
+
 type imageConverter struct {
 	domain    string
 	imageName string
@@ -28,12 +34,11 @@ type imageConverter struct {
 	token     string
 	debug     bool
 	layers    layers
-	manifest  *manifest.Manifest
 	storage   storage.Storage
 }
 
-func (converter *imageConverter) getManifestAddress() string {
-	return fmt.Sprintf("https://%s/v2/%s/manifests/%s", converter.domain, converter.imageName, converter.tag)
+func (converter *imageConverter) getManifestAddress(tag string) string {
+	return fmt.Sprintf("https://%s/v2/%s/manifests/%s", converter.domain, converter.imageName, tag)
 }
 
 func (converter *imageConverter) getBlobAddress(blob string) string {
@@ -55,7 +60,7 @@ func (converter *imageConverter) stripQuotes(value string) string {
 func (converter *imageConverter) getToken() error {
 	httpClient := &http.Client{}
 
-	address := converter.getManifestAddress()
+	address := converter.getManifestAddress(converter.tag)
 
 	log.WithFields(log.Fields{"address": address, "image": converter.String()}).Debug("Image converter token")
 
@@ -172,17 +177,17 @@ func (converter *imageConverter) String() string {
 	return fmt.Sprintf("%s/%s:%s", converter.domain, converter.imageName, converter.tag)
 }
 
-func (converter *imageConverter) getManifest() error {
+func (converter *imageConverter) getManifest(tag string) (string, error) {
 	httpClient := &http.Client{}
 
-	address := converter.getManifestAddress()
+	address := converter.getManifestAddress(tag)
 
 	log.WithFields(log.Fields{"address": address, "image": converter.String()}).Debug("Image converter manifest")
 
 	request := goreq.New().SetClient(httpClient).
 		Get(address).
 		SetDebug(converter.debug).
-		SetHeader("Accept", "application/vnd.docker.distribution.manifest.v1+prettyjws")
+		SetHeader("Accept", strings.Join([]string{DOCKER_DISTRIUBUTION_MANIFEST, OCI_IMAGE_INDEX, OCI_IMAGE_MANIFEST}, ", "))
 
 	if len(converter.token) > 0 {
 		request = request.SetHeader("Authorization", "Bearer "+converter.token)
@@ -191,25 +196,17 @@ func (converter *imageConverter) getManifest() error {
 	response, body, error := request.End()
 
 	if error != nil {
-		return error[0]
+		return "", error[0]
 	}
 
 	if response.StatusCode != 200 {
-		return fmt.Errorf("Could not download manifest for '%s' (%s)", converter.String(), body)
+		return "", fmt.Errorf("Could not download manifest for '%s' (%s)", converter.String(), body)
 	}
 
-	converter.manifest = &manifest.Manifest{}
-
-	if _error := json.Unmarshal([]byte(body), converter.manifest); _error != nil {
-		return _error
-	}
-
-	log.WithFields(log.Fields{"schema-version": converter.manifest.SchemaVersion, "name": converter.manifest.Name, "tag": converter.manifest.Tag, "architecture": converter.manifest.Architecture, "image": converter.String()}).Debug("Image converter manifest")
-
-	return nil
+	return body, nil
 }
 
-func (converter *imageConverter) getBlob(layer *layer) error {
+func (converter *imageConverter) getBlob(layer *layer, skipCheck bool) error {
 	log.WithFields(log.Fields{"filename": layer.Filename, "image": converter.String()}).Debug("Image converter downloading blob")
 
 	if layer.BlobDigest == manifest.EmptyLayer {
@@ -241,6 +238,10 @@ func (converter *imageConverter) getBlob(layer *layer) error {
 
 	if error := converter.storage.WriteFile(layer.Filename, body); error != nil {
 		return error
+	}
+
+	if skipCheck {
+		return nil
 	}
 
 	// Check digest of downloaded blob
@@ -279,7 +280,7 @@ func (converter *imageConverter) downloadLayers() error {
 	for _, layer := range converter.layers {
 		layer.Filename = path.Join(blobsDirectory, layer.BlobDigest[7:])
 
-		if error := converter.getBlob(layer); error != nil {
+		if error := converter.getBlob(layer, false); error != nil {
 			return error
 		}
 	}
@@ -294,18 +295,42 @@ func (converter *imageConverter) process() error {
 		return error
 	}
 
-	if error := converter.getManifest(); error != nil {
+	body, error := converter.getManifest(converter.tag)
+
+	if error != nil {
 		return error
 	}
 
-	if len(converter.manifest.FileSystemLayers) != len(converter.manifest.History) {
+	ociIndex := ociv1.Index{}
+
+	if _error := json.Unmarshal([]byte(body), &ociIndex); _error == nil {
+		if ociIndex.MediaType == OCI_IMAGE_INDEX {
+			return converter.saveOCI(&ociIndex)
+		}
+	}
+
+	dockerManifest := manifest.Manifest{}
+
+	if _error := json.Unmarshal([]byte(body), &dockerManifest); _error == nil {
+		return converter.convertToOCI(&dockerManifest)
+	}
+
+	return fmt.Errorf("unknown image format in %s", converter.String())
+}
+
+func (converter *imageConverter) convertToOCI(dockerManifest *manifest.Manifest) error {
+	if len(dockerManifest.FileSystemLayers) == 0 || len(dockerManifest.History) == 0 {
+		return fmt.Errorf("%s has no layers", converter.String())
+	}
+
+	if len(dockerManifest.FileSystemLayers) != len(dockerManifest.History) {
 		return fmt.Errorf("%s does not have the same number of layers and history entries", converter.String())
 	}
 
 	converter.layers = layers{}
 
-	for i := len(converter.manifest.History) - 1; i >= 0; i-- {
-		historyEntry := converter.manifest.History[i]
+	for i := len(dockerManifest.History) - 1; i >= 0; i-- {
+		historyEntry := dockerManifest.History[i]
 
 		data := &manifest.HistoryEntryData{}
 
@@ -314,9 +339,9 @@ func (converter *imageConverter) process() error {
 		}
 
 		layer := &layer{}
-		layer.BlobDigest = converter.manifest.FileSystemLayers[i].BlobSum
+		layer.BlobDigest = dockerManifest.FileSystemLayers[i].BlobSum
 		layer.History = data
-		layer.MediaType = "application/vnd.docker.image.rootfs.diff.tar.gzip"
+		layer.MediaType = DOCKER_IMAGE_ROOTFS
 
 		log.WithFields(log.Fields{"id": data.ID, "layer-parent": data.Parent, "docker-version": data.DockerVersion, "architecture": data.Architecture, "os": data.OS, "container": data.Container, "throwaway": data.Throwaway, "created": data.Created, "author": data.Author, "image": converter.String()}).Debug("Image converter layer")
 
@@ -339,7 +364,7 @@ func (converter *imageConverter) process() error {
 		return error
 	}
 
-	hashImageConfig, size, error := converter.writeOCIImageConfig()
+	hashImageConfig, size, error := converter.writeOCIImageConfig(dockerManifest.Architecture)
 	if error != nil {
 		return error
 	}
@@ -405,7 +430,7 @@ func (converter *imageConverter) writeOCIIndex(_digest digest.Digest, size int) 
 	return converter.storage.WriteFile(filename, data)
 }
 
-func (converter *imageConverter) writeOCIImageConfig() (hash string, size int, error error) {
+func (converter *imageConverter) writeOCIImageConfig(architecture string) (hash string, size int, error error) {
 	ociImageConfig := &ociv1.Image{}
 
 	timestamp, error := time.Parse(time.RFC3339, converter.layers[len(converter.layers)-1].History.Created)
@@ -415,7 +440,7 @@ func (converter *imageConverter) writeOCIImageConfig() (hash string, size int, e
 	}
 
 	ociImageConfig.Created = &timestamp
-	ociImageConfig.Architecture = converter.manifest.Architecture
+	ociImageConfig.Architecture = architecture
 	ociImageConfig.OS = converter.layers[len(converter.layers)-1].History.OS
 	ociImageConfig.Config = ociv1.ImageConfig{}
 
@@ -506,7 +531,7 @@ func (converter *imageConverter) writeOCIImageConfig() (hash string, size int, e
 func (converter *imageConverter) writeOCIManifest(imageConfigHash string, imageConfigSize int) (hash string, size int, error error) {
 	ociManifest := ociv1.Manifest{}
 	ociManifest.SchemaVersion = 2
-	ociManifest.Config.MediaType = "application/vnd.oci.image.config.v1+json"
+	ociManifest.Config.MediaType = OCI_IMAGE_CONFIG
 	ociManifest.Config.Size = int64(imageConfigSize)
 
 	ociManifest.Config.Digest, error = digest.Parse(imageConfigHash)
@@ -592,6 +617,73 @@ func PullImage(imageName, outputFilename string, debug bool) error {
 		_ = storage.Remove()
 
 		return error
+	}
+
+	return nil
+}
+
+func (converter *imageConverter) saveOCI(ociIndex *ociv1.Index) error {
+	if ociIndex.SchemaVersion != 2 {
+		return fmt.Errorf("unsupported OCI schema version")
+	}
+
+	var digest digest.Digest
+
+	for _, manifest := range ociIndex.Manifests {
+		if manifest.Platform.Architecture == "amd64" {
+			digest = manifest.Digest
+		}
+	}
+
+	if len(digest) == 0 {
+		return fmt.Errorf("Could not find a matching manifest in '%s'", converter.String())
+	}
+
+	body, error := converter.getManifest(digest.String())
+	if error != nil {
+		return error
+	}
+
+	ociManifest := ociv1.Manifest{}
+
+	if _error := json.Unmarshal([]byte(body), &ociManifest); _error != nil {
+		return _error
+	}
+
+	// Write oci-layout
+	converter.writeOCILayout()
+
+	// Write Index
+	if _error := converter.writeOCIIndex(digest, len(body)); _error != nil {
+		return _error
+	}
+
+	// Write Manifest
+	filename := path.Join("blobs", "sha256", ociManifest.Config.Digest.String())
+
+	if _error := converter.storage.WriteFile(filename, []byte(body)); _error != nil {
+		return _error
+	}
+
+	blobsDirectory := path.Join("blobs", "sha256")
+	layer := &layer{}
+
+	// Write Config
+	layer.Filename = path.Join(blobsDirectory, ociManifest.Config.Digest.String()[7:])
+	layer.BlobDigest = ociManifest.Config.Digest.String()
+
+	if error := converter.getBlob(layer, true); error != nil {
+		return error
+	}
+
+	// Write blobs
+	for _, ociLayer := range ociManifest.Layers {
+		layer.Filename = path.Join(blobsDirectory, ociLayer.Digest.String()[7:])
+		layer.BlobDigest = ociLayer.Digest.String()
+
+		if error := converter.getBlob(layer, false); error != nil {
+			return error
+		}
 	}
 
 	return nil

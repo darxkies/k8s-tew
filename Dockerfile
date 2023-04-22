@@ -1,4 +1,4 @@
-ARG GO_VERSION=1.19.5
+ARG GO_VERSION=1.20.2
 
 FROM golang:${GO_VERSION}-alpine AS builder
 

@@ -110,21 +110,6 @@ rules:
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: ceph-csi-rbd-nodeplugin-rules
-  labels:
-    app: ceph-csi-rbd
-    component: nodeplugin
-    release: k8s-tew
-    rbac.rbd.csi.ceph.com/aggregate-to-ceph-csi-rbd-nodeplugin: "true"
-rules:
-  - apiGroups: [""]
-    resources: ["nodes"]
-    verbs: ["get"]
-
----
-kind: ClusterRole
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
   name: ceph-csi-rbd-provisioner
   labels:
     app: ceph-csi-rbd
@@ -188,60 +173,6 @@ rules:
   - apiGroups: [""]
     resources: ["serviceaccounts/token"]
     verbs: ["create"]
-
----
-kind: ClusterRole
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: ceph-csi-rbd-provisioner-rules
-  labels:
-    app: ceph-csi-rbd
-    component: provisioner
-    release: k8s-tew
-    rbac.rbd.csi.ceph.com/aggregate-to-ceph-csi-rbd-provisioner: "true"
-rules:
-  - apiGroups: [""]
-    resources: ["secrets"]
-    verbs: ["get", "list"]
-  - apiGroups: [""]
-    resources: ["persistentvolumes"]
-    verbs: ["get", "list", "watch", "create", "update", "delete", "patch"]
-  - apiGroups: [""]
-    resources: ["persistentvolumeclaims"]
-    verbs: ["get", "list", "watch", "update"]
-  - apiGroups: ["storage.k8s.io"]
-    resources: ["storageclasses"]
-    verbs: ["get", "list", "watch"]
-  - apiGroups: [""]
-    resources: ["events"]
-    verbs: ["list", "watch", "create", "update", "patch"]
-  - apiGroups: [""]
-    resources: ["endpoints"]
-    verbs: ["get", "create", "update"]
-  - apiGroups: ["storage.k8s.io"]
-    resources: ["volumeattachments"]
-    verbs: ["get", "list", "watch", "update", "patch"]
-  - apiGroups: ["snapshot.storage.k8s.io"]
-    resources: ["volumesnapshots"]
-    verbs: ["get", "list"]
-  - apiGroups: ["snapshot.storage.k8s.io"]
-    resources: ["volumesnapshotcontents"]
-    verbs: ["create", "get", "list", "watch", "update", "delete"]
-  - apiGroups: ["snapshot.storage.k8s.io"]
-    resources: ["volumesnapshotclasses"]
-    verbs: ["get", "list", "watch"]
-  - apiGroups: ["snapshot.storage.k8s.io"]
-    resources: ["volumesnapshotcontents/status"]
-    verbs: ["update"]
-  - apiGroups: [""]
-    resources: ["persistentvolumeclaims/status"]
-    verbs: ["update", "patch"]
-  - apiGroups: [""]
-    resources: ["nodes"]
-    verbs: ["get", "list", watch"]
-  - apiGroups: ["storage.k8s.io"]
-    resources: ["csinodes"]
-    verbs: ["get", "list", "watch"]
 
 ---
 kind: ClusterRoleBinding
@@ -433,7 +364,6 @@ spec:
             - "--csi-addons-endpoint=$(CSI_ADDONS_ENDPOINT)"
             - "--v=5"
             - "--drivername=$(DRIVER_NAME)"
-            - "--domainlabels=failure-domain/region,failure-domain/zone"
           env:
             - name: POD_IP
               valueFrom:
@@ -689,6 +619,7 @@ spec:
             - "--csi-address=$(ADDRESS)"
             - "--leader-election=true"
             - "--retry-interval-start=500ms"
+            - "--default-fstype=ext4"
           env:
             - name: ADDRESS
               value: "unix:///csi/csi-provisioner.sock"
@@ -870,34 +801,7 @@ metadata:
     component: provisioner
     release: k8s-tew
 
----
-kind: ClusterRole
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: ceph-csi-cephfs-nodeplugin
-  labels:
-    app: ceph-csi-cephfs
-    component: nodeplugin
-    release: k8s-tew
-rules:
-  - apiGroups: [""]
-    resources: ["nodes"]
-    verbs: ["get"]
 
----
-kind: ClusterRole
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: ceph-csi-cephfs-nodeplugin-rules
-  labels:
-    app: ceph-csi-cephfs
-    component: nodeplugin
-    release: k8s-tew
-    rbac.cephfs.csi.ceph.com/aggregate-to-ceph-csi-cephfs-nodeplugin: "true"
-rules:
-  - apiGroups: [""]
-    resources: ["nodes"]
-    verbs: ["get"]
 
 ---
 kind: ClusterRole
@@ -942,75 +846,6 @@ rules:
   - apiGroups: [""]
     resources: ["persistentvolumeclaims/status"]
     verbs: ["update", "patch"]
-
----
-kind: ClusterRole
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: ceph-csi-cephfs-provisioner-rules
-  labels:
-    app: ceph-csi-cephfs
-    component: provisioner
-    release: k8s-tew
-    rbac.cephfs.csi.ceph.com/aggregate-to-ceph-csi-cephfs-provisioner: "true"
-rules:
-  - apiGroups: [""]
-    resources: ["secrets"]
-    verbs: ["get", "list"]
-  - apiGroups: [""]
-    resources: ["persistentvolumes"]
-    verbs: ["get", "list", "watch", "create", "delete","patch"]
-  - apiGroups: [""]
-    resources: ["persistentvolumeclaims"]
-    verbs: ["get", "list", "watch", "update"]
-  - apiGroups: ["storage.k8s.io"]
-    resources: ["storageclasses"]
-    verbs: ["get", "list", "watch"]
-  - apiGroups: [""]
-    resources: ["events"]
-    verbs: ["list", "watch", "create", "update", "patch"]
-  - apiGroups: ["snapshot.storage.k8s.io"]
-    resources: ["volumesnapshots"]
-    verbs: ["get", "list"]
-  - apiGroups: ["snapshot.storage.k8s.io"]
-    resources: ["volumesnapshotcontents"]
-    verbs: ["create", "get", "list", "watch", "update", "delete"]
-  - apiGroups: ["snapshot.storage.k8s.io"]
-    resources: ["volumesnapshotclasses"]
-    verbs: ["get", "list", "watch"]
-  - apiGroups: ["snapshot.storage.k8s.io"]
-    resources: ["volumesnapshotcontents/status"]
-    verbs: ["update"]
-  - apiGroups: ["storage.k8s.io"]
-    resources: ["volumeattachments"]
-    verbs: ["get", "list", "watch", "update", "patch"]
-  - apiGroups: [""]
-    resources: ["persistentvolumeclaims/status"]
-    verbs: ["update", "patch"]
-  - apiGroups: [""]
-    resources: ["nodes"]
-    verbs: ["get", "list", watch"]
-  - apiGroups: ["storage.k8s.io"]
-    resources: ["csinodes"]
-    verbs: ["get", "list", "watch"]
-
----
-kind: ClusterRoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: ceph-csi-cephfs-nodeplugin
-  labels:
-    app: ceph-csi-cephfs
-    component: nodeplugin
-    release: k8s-tew
-subjects:
-  - kind: ServiceAccount
-    name: ceph-csi-cephfs-nodeplugin
-    namespace: {{.Namespace}}
-roleRef:
-  kind: ClusterRole
-  name: ceph-csi-cephfs-nodeplugin
-  apiGroup: rbac.authorization.k8s.io
 
 ---
 kind: ClusterRoleBinding
@@ -1518,7 +1353,6 @@ spec:
   attachRequired: false
   podInfoOnMount: false
   fsGroupPolicy: File
-
 
 ---
 apiVersion: v1
