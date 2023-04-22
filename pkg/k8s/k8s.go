@@ -423,7 +423,7 @@ func (k8s *K8S) Apply(manifest string) error {
 
 	factory := cmdutil.NewFactory(getter)
 
-	schema, error := factory.Validator(false)
+	schema, error := factory.Validator("")
 	if error != nil {
 		return errors.Wrapf(error, "Could not generate validator for '%s'", manifest)
 	}
