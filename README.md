@@ -4,7 +4,6 @@
 
 # Kubernetes - The Easier Way (k8s-tew)
 
-[![CircleCI](https://dl.circleci.com/status-badge/img/gh/darxkies/k8s-tew/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/darxkies/k8s-tew/tree/master)
 [![Go Report Card](https://goreportcard.com/badge/github.com/darxkies/k8s-tew)](https://goreportcard.com/report/github.com/darxkies/k8s-tew)
 [![GitHub release](https://img.shields.io/github/tag/darxkies/k8s-tew.svg)](https://github.com/darxkies/k8s-tew/releases/latest)
 [![Downloads](https://img.shields.io/github/downloads/darxkies/k8s-tew/total)](https://github.com/darxkies/k8s-tew/releases/latest)
