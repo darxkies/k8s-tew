@@ -1,0 +1,16 @@
+version: 2.1
+
+jobs:
+  k8s-tew:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run:
+          name: Make
+          command: Make
+
+workflows:
+  main-workflow:
+    jobs:
+      - k8s-tew
