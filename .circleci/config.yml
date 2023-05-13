@@ -4,7 +4,6 @@ jobs:
   k8s-tew:
     machine:
       image: ubuntu-2204:2023.04.02 
-    resource_class: large
     steps:
       - checkout
       - run:
