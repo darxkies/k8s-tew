@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path"
+	"path/filepath"
 	"sync"
 
 	"context"
@@ -335,7 +336,7 @@ func (pods *Pods) Kill() {
 	})
 
 	// Unmount CSI mount points
-	for _, mount := range utils.GetCSIGlobalMounts(pods.config.GetFullLocalAssetDirectory(utils.DirectoryKubeletPlugins)) {
+	for _, mount := range utils.GetCSIMounts(pods.config.GetFullLocalAssetDirectory(utils.DirectoryKubeletData)) {
 		if _error = utils.Unmount(mount); _error != nil {
 			log.WithFields(log.Fields{"error": _error, "mount": mount}).Debug("Global unmount failed")
 		} else {
@@ -377,7 +378,8 @@ func (pods *Pods) Kill() {
 
 			containerLogMessage.WithFields(log.Fields{"pod-id": pod.Id, "namespace": pod.Metadata.Namespace, "name": pod.Metadata.Name, "container-id": container.Id}).Debug("CRI container status query")
 
-			_context, _ := context.WithTimeout(context.Background(), time.Second)
+			_context, cancelFunction := context.WithTimeout(context.Background(), time.Second)
+			defer cancelFunction()
 
 			containerStatus, _error := runtimeClient.ContainerStatus(_context, &cri.ContainerStatusRequest{ContainerId: container.Id, Verbose: true})
 			if _error != nil {
@@ -424,5 +426,43 @@ func (pods *Pods) Kill() {
 		}
 
 		logMessage.Debug("CRI pod removed")
+	}
+
+	// Removing unmounted pvc directories
+	podsData := pods.config.GetFullLocalAssetDirectory(utils.DirectoryPodsData)
+
+	log.WithFields(log.Fields{"directory": podsData}).Debug("Removing POD PVC directories")
+
+	directories, _error := utils.ListSubdirectories(podsData)
+	if _error != nil {
+		log.WithFields(log.Fields{"error": _error}).Debug("Could not list pod directories")
+
+	} else {
+		for _, directory := range directories {
+			fullDirectory := filepath.Join(podsData, directory, "volumes", "kubernetes.io~csi")
+
+			log.WithFields(log.Fields{"directory": fullDirectory}).Debug("Check for PVCs diretories")
+
+			if !utils.PathExists(fullDirectory) {
+				continue
+			}
+
+			log.WithFields(log.Fields{"directory": fullDirectory}).Debug("Removing PVCs diretories")
+
+			pvcs, _error := utils.ListSubdirectories(fullDirectory)
+			if _error != nil {
+				log.WithFields(log.Fields{"error": _error}).Debug("Could not list pod PVCs")
+			} else {
+				for _, pvc := range pvcs {
+					fullPVC := filepath.Join(fullDirectory, pvc)
+
+					log.WithFields(log.Fields{"directory": fullPVC}).Debug("Removing PVC directory")
+
+					if error := utils.RemoveDirectoryWithTimeout(fullPVC, time.Second); error != nil {
+						log.WithFields(log.Fields{"error": _error}).Debug("Could not remove PVC")
+					}
+				}
+			}
+		}
 	}
 }

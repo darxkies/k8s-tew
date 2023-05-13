@@ -21,3 +21,4 @@ failSwapOn: false
 resolvConf: "{{.ResolvConf}}"
 readOnlyPort: 10255
 maxPods: {{.MaxPods}}
+containerRuntimeEndpoint: {{.ContainerRuntimeEndpoint}}

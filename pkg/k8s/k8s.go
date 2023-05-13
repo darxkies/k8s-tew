@@ -260,7 +260,7 @@ func (k8s *K8S) Drain(nodeName string) error {
 		log.Debug("Looking for CSI mounts")
 
 		for i := 0; i < int(k8s.config.Config.DrainGracePeriodSeconds); i++ {
-			list := utils.GetCSIGlobalMounts(k8s.config.GetFullLocalAssetDirectory(utils.DirectoryKubeletPlugins))
+			list := utils.GetCSIMounts(k8s.config.GetFullLocalAssetDirectory(utils.DirectoryKubeletData))
 
 			if len(list) == 0 {
 				break
@@ -423,7 +423,7 @@ func (k8s *K8S) Apply(manifest string) error {
 
 	factory := cmdutil.NewFactory(getter)
 
-	schema, error := factory.Validator("")
+	schema, error := factory.Validator(metav1.FieldValidationIgnore)
 	if error != nil {
 		return errors.Wrapf(error, "Could not generate validator for '%s'", manifest)
 	}

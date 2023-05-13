@@ -365,7 +365,7 @@ func Unmount(path string) error {
 	return nil
 }
 
-func GetCSIGlobalMounts(destinationPrefix string) []string {
+func GetCSIMounts(destinationPrefix string) []string {
 	mounts := []string{}
 
 	bytes, error := ioutil.ReadFile("/proc/mounts")
@@ -393,16 +393,48 @@ func GetCSIGlobalMounts(destinationPrefix string) []string {
 			continue
 		}
 
+		log.WithFields(log.Fields{"source": source, "destination": destination, "prefix": destinationPrefix}).Debug("RBD: found")
+
 		if !strings.HasPrefix(destination, destinationPrefix) {
 			continue
 		}
 
-		if !strings.Contains(destination, "globalmount") {
-			continue
-		}
+		log.WithFields(log.Fields{"source": source, "destination": destination, "prefix": destinationPrefix}).Debug("RBD: added")
 
 		mounts = append(mounts, destination)
 	}
 
 	return mounts
+}
+
+func ListSubdirectories(directoryPath string) ([]string, error) {
+	var result []string
+
+	entries, error := os.ReadDir(directoryPath)
+	if error != nil {
+		return result, error
+	}
+
+	for _, entry := range entries {
+		if entry.IsDir() {
+			result = append(result, entry.Name())
+		}
+	}
+
+	return result, nil
+}
+
+func RemoveDirectoryWithTimeout(directoryPath string, timeout time.Duration) error {
+	errorChan := make(chan error)
+
+	go func() {
+		errorChan <- os.RemoveAll(directoryPath)
+	}()
+
+	select {
+	case error := <-errorChan:
+		return error
+	case <-time.After(timeout):
+		return fmt.Errorf("Timeout exceeded while removing directory '%s'", directoryPath)
+	}
 }

@@ -328,25 +328,27 @@ func (generator *Generator) generateKubeletConfig() error {
 		generator.config.SetNode(nodeName, node)
 
 		if error := utils.ApplyTemplateAndSave("kubelet-configuration", utils.TemplateKubeletConfiguration, struct {
-			CA                  string
-			CertificateFilename string
-			KeyFilename         string
-			ClusterDomain       string
-			ClusterDNSIP        string
-			PODCIDR             string
-			StaticPodPath       string
-			ResolvConf          string
-			MaxPods             uint16
+			CA                       string
+			CertificateFilename      string
+			KeyFilename              string
+			ClusterDomain            string
+			ClusterDNSIP             string
+			PODCIDR                  string
+			StaticPodPath            string
+			ResolvConf               string
+			MaxPods                  uint16
+			ContainerRuntimeEndpoint string
 		}{
-			CA:                  generator.config.GetFullTargetAssetFilename(utils.PemCa),
-			CertificateFilename: generator.config.GetFullTargetAssetFilename(utils.PemKubelet),
-			KeyFilename:         generator.config.GetFullTargetAssetFilename(utils.PemKubeletKey),
-			ClusterDomain:       generator.config.Config.ClusterDomain,
-			ClusterDNSIP:        generator.config.Config.ClusterDNSIP,
-			PODCIDR:             generator.config.Config.ClusterCIDR,
-			StaticPodPath:       generator.config.GetFullTargetAssetDirectory(utils.DirectoryK8sManifests),
-			ResolvConf:          generator.config.Config.ResolvConf,
-			MaxPods:             generator.config.Config.MaxPods,
+			CA:                       generator.config.GetFullTargetAssetFilename(utils.PemCa),
+			CertificateFilename:      generator.config.GetFullTargetAssetFilename(utils.PemKubelet),
+			KeyFilename:              generator.config.GetFullTargetAssetFilename(utils.PemKubeletKey),
+			ClusterDomain:            generator.config.Config.ClusterDomain,
+			ClusterDNSIP:             generator.config.Config.ClusterDNSIP,
+			PODCIDR:                  generator.config.Config.ClusterCIDR,
+			StaticPodPath:            generator.config.GetFullTargetAssetDirectory(utils.DirectoryK8sManifests),
+			ResolvConf:               generator.config.Config.ResolvConf,
+			MaxPods:                  generator.config.Config.MaxPods,
+			ContainerRuntimeEndpoint: "unix://" + generator.config.GetFullTargetAssetFilename(utils.ContainerdSock),
 		}, generator.config.GetFullLocalAssetFilename(utils.K8sKubeletConfig), true, false, 0644); error != nil {
 			return error
 		}
