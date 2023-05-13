@@ -8,7 +8,7 @@ jobs:
       - checkout
       - run:
           name: Make
-          command: Make
+          command: make
 
 workflows:
   main-workflow:
