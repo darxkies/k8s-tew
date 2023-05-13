@@ -2,13 +2,13 @@ version: 2.1
 
 jobs:
   k8s-tew:
-    machine:
-      image: ubuntu-2204:2023.04.02 
+    docker:
+      - image: cimg/go:1.20.4
     steps:
       - checkout
       - run:
           name: Make
-          command: make
+          command: make build-binaries
 
 workflows:
   main-workflow:
