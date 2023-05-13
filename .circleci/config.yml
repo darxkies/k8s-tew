@@ -9,6 +9,8 @@ jobs:
       - run:
           name: Make
           command: make build-binaries
+      - store_artifacts:
+          path: k8s-tew
 
 workflows:
   main-workflow:
