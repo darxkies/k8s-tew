@@ -3,8 +3,8 @@ version: 2.1
 jobs:
   k8s-tew:
     machine:
-      image: ubuntu-2004:202010-01 # recommended linux image
-    resource_class: large
+      image: ubuntu-2204:2023.04.02 
+    resource_class: medium
     steps:
       - checkout
       - run:
