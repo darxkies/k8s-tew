@@ -253,13 +253,16 @@ kind: Service
 metadata:
   name: ceph-csi-rbd-nodeplugin-http-metrics
   namespace: {{.Namespace}}
+  annotations:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "8080"
   labels:
     app: ceph-csi-rbd
     component: nodeplugin
     release: k8s-tew
 spec:
   ports:
-    - name: http-metrics
+    - name: metrics
       port: 8080
       targetPort: 8080
   selector:
@@ -283,7 +286,7 @@ metadata:
     release: k8s-tew
 spec:
   ports:
-    - name: http-metrics
+    - name: metrics
       port: 8080
       targetPort: 8080
   selector:
@@ -456,7 +459,7 @@ spec:
             type: DirectoryOrCreate
         - name: registration-dir
           hostPath:
-            path: {{.PluginsRegistryDirectory}}
+            path: "{{.PluginsRegistryDirectory}}/"
             type: Directory
         - name: plugin-dir
           hostPath:
@@ -917,7 +920,7 @@ metadata:
     release: k8s-tew
 spec:
   ports:
-    - name: http-metrics
+    - name: metrics
       port: 8080
       targetPort: 8081
   selector:
@@ -941,7 +944,7 @@ metadata:
     release: k8s-tew
 spec:
   ports:
-    - name: http-metrics
+    - name: metrics
       port: 8080
       targetPort: 8081
   selector:

@@ -25,6 +25,7 @@ spec:
     - --service-account-private-key-file={{.PemServiceAccountKey}}
     - --service-cluster-ip-range={{.ClusterIPRange}}
     - --use-service-account-credentials=true
+    - --authorization-always-allow-paths=/healthz,/readyz,/livez,/metrics
     livenessProbe:
       failureThreshold: 8
       httpGet:

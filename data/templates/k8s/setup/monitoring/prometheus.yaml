@@ -245,7 +245,7 @@ data:
       scrape_interval: 15s
       scrape_timeout: 10s
       metrics_path: /metrics
-      scheme: http
+      scheme: https
       bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
       tls_config:
         ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
@@ -253,6 +253,9 @@ data:
       kubernetes_sd_configs:
       - role: node
       relabel_configs:
+      - source_labels: [__meta_kubernetes_node_label_node_role_kubernetes_io_controller]
+        action: keep
+        regex: true
       - separator: ;
         regex: __meta_kubernetes_node_label_(.+)
         replacement: $1
@@ -261,7 +264,7 @@ data:
         separator: ;
         regex: ([^:]+)(?::\d+)?
         target_label: __address__
-        replacement: $1:10252
+        replacement: $1:10257
         action: replace
       - separator: ;
         regex: (.*)
@@ -273,7 +276,7 @@ data:
       scrape_interval: 15s
       scrape_timeout: 10s
       metrics_path: /metrics
-      scheme: http
+      scheme: https
       bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
       tls_config:
         ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
@@ -281,6 +284,9 @@ data:
       kubernetes_sd_configs:
       - role: node
       relabel_configs:
+      - source_labels: [__meta_kubernetes_node_label_node_role_kubernetes_io_controller]
+        action: keep
+        regex: true
       - separator: ;
         regex: __meta_kubernetes_node_label_(.+)
         replacement: $1
@@ -289,7 +295,7 @@ data:
         separator: ;
         regex: ([^:]+)(?::\d+)?
         target_label: __address__
-        replacement: $1:10251
+        replacement: $1:10259
         action: replace
       - separator: ;
         regex: (.*)

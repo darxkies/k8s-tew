@@ -112,7 +112,7 @@ spec:
   ports:
   - {"name":"udp-53","port":53,"protocol":"UDP"}
   - {"name":"tcp-53","port":53,"protocol":"TCP"}
-  - { "name": "metrics", "port": 9153, "protocol": "TCP" }
+  - {"name": "metrics", "port": 9153, "protocol": "TCP"}
   type: ClusterIP
 
 ---
@@ -165,9 +165,9 @@ spec:
             cpu: 100m
             memory: 128Mi
         ports:
-        - {containerPort: 53, protocol: UDP, name: udp-53}
-        - {containerPort: 53, protocol: TCP, name: tcp-53}
-        - {containerPort: 9153, protocol: TCP, name: metrics}
+        - {"containerPort":53,"name":"udp-53","protocol":"UDP"}
+        - {"containerPort":53,"name":"tcp-53","protocol":"TCP"}
+        - {"containerPort":9153,"name":"metrics","protocol":"TCP"}
         livenessProbe:
           httpGet:
             path: /health
@@ -188,6 +188,10 @@ spec:
           timeoutSeconds: 5
           successThreshold: 1
           failureThreshold: 5
+        securityContext:
+          capabilities:
+            add:
+            - NET_BIND_SERVICE
       volumes:
         - name: config-volume
           configMap:
