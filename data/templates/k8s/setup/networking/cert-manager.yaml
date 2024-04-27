@@ -25303,18 +25303,28 @@ spec:
     spec:
       restartPolicy: OnFailure
       serviceAccountName: cert-manager-startupapicheck
+      enableServiceLinks: false
       securityContext:
         runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: cert-manager
-          image: {{ .CertManagerCtlImage }}
+          image: {{ .CertManagerStartupAPICheckImage }}
           imagePullPolicy: IfNotPresent
           args:
           - check
           - api
           - --wait=1m
+          - -v
           securityContext:
             allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
+      nodeSelector:
+        kubernetes.io/os: linux
 
 ---
 apiVersion: v1
@@ -25356,19 +25366,6 @@ metadata:
     app.kubernetes.io/component: "webhook"
 
 ---
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: cert-manager-webhook
-  namespace: {{.Namespace}}
-  labels:
-    app: webhook
-    app.kubernetes.io/name: webhook
-    app.kubernetes.io/instance: k8s-tew
-    app.kubernetes.io/component: "webhook"
-data:
-
----
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -25390,13 +25387,13 @@ rules:
     verbs: ["get", "create", "update", "patch"]
   - apiGroups: ["admissionregistration.k8s.io"]
     resources: ["validatingwebhookconfigurations", "mutatingwebhookconfigurations"]
-    verbs: ["get", "list", "watch", "update"]
+    verbs: ["get", "list", "watch", "update", "patch"]
   - apiGroups: ["apiregistration.k8s.io"]
     resources: ["apiservices"]
-    verbs: ["get", "list", "watch", "update"]
+    verbs: ["get", "list", "watch", "update", "patch"]
   - apiGroups: ["apiextensions.k8s.io"]
     resources: ["customresourcedefinitions"]
-    verbs: ["get", "list", "watch", "update"]
+    verbs: ["get", "list", "watch", "update", "patch"]
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -25591,6 +25588,22 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
+  name: cert-manager-cluster-view
+  labels:
+    app: cert-manager
+    app.kubernetes.io/name: cert-manager
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/component: "controller"
+    rbac.authorization.k8s.io/aggregate-to-cluster-reader: "true"
+rules:
+  - apiGroups: ["cert-manager.io"]
+    resources: ["clusterissuers"]
+    verbs: ["get", "list", "watch"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
   name: cert-manager-view
   labels:
     app: cert-manager
@@ -25600,6 +25613,7 @@ metadata:
     rbac.authorization.k8s.io/aggregate-to-view: "true"
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
     rbac.authorization.k8s.io/aggregate-to-admin: "true"
+    rbac.authorization.k8s.io/aggregate-to-cluster-reader: "true"
 rules:
   - apiGroups: ["cert-manager.io"]
     resources: ["certificates", "certificaterequests", "issuers"]
@@ -26074,8 +26088,11 @@ spec:
         app.kubernetes.io/component: "cainjector"
     spec:
       serviceAccountName: cert-manager-cainjector
+      enableServiceLinks: false
       securityContext:
         runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: cert-manager
           image: {{ .CertManagerCAInjectorImage }}
@@ -26090,6 +26107,12 @@ spec:
                 fieldPath: metadata.namespace
           securityContext:
             allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
+      nodeSelector:
+        kubernetes.io/os: linux
 
 ---
 apiVersion: apps/v1
@@ -26122,8 +26145,11 @@ spec:
         prometheus.io/port: '9402'
     spec:
       serviceAccountName: cert-manager
+      enableServiceLinks: false
       securityContext:
         runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: cert-manager
           image: {{.CertManagerControllerImage }}
@@ -26132,17 +26158,38 @@ spec:
           - --v=2
           - --cluster-resource-namespace=$(POD_NAMESPACE)
           - --leader-election-namespace={{.Namespace}}
+          - --acme-http01-solver-image={{.CertManagerAcmeSolverImage}}
+          - --max-concurrent-challenges=60
           ports:
           - containerPort: 9402
             name: http-metrics
             protocol: TCP
+          - containerPort: 9403
+            name: http-healthz
+            protocol: TCP
           securityContext:
             allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
           env:
           - name: POD_NAMESPACE
             valueFrom:
               fieldRef:
                 fieldPath: metadata.namespace
+          livenessProbe:
+            httpGet:
+              port: http-healthz
+              path: /livez
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 15
+            successThreshold: 1
+            failureThreshold: 8
+      nodeSelector:
+        kubernetes.io/os: linux
 
 ---
 apiVersion: apps/v1
@@ -26171,8 +26218,11 @@ spec:
         app.kubernetes.io/component: "webhook"
     spec:
       serviceAccountName: cert-manager-webhook
+      enableServiceLinks: false
       securityContext:
         runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: cert-manager
           image: {{ .CertManagerWebHookImage }}
@@ -26182,11 +26232,17 @@ spec:
           - --secure-port=10250
           - --dynamic-serving-ca-secret-namespace=$(POD_NAMESPACE)
           - --dynamic-serving-ca-secret-name=cert-manager-webhook-ca
-          - --dynamic-serving-dns-names=cert-manager-webhook,cert-manager-webhook.{{.Namespace}},cert-manager-webhook.{{.Namespace}}.svc
+          - --dynamic-serving-dns-names=cert-manager-webhook
+          - --dynamic-serving-dns-names=cert-manager-webhook.$(POD_NAMESPACE)
+          - --dynamic-serving-dns-names=cert-manager-webhook.$(POD_NAMESPACE).svc
+          
           ports:
           - name: https
             protocol: TCP
             containerPort: 10250
+          - name: healthcheck
+            protocol: TCP
+            containerPort: 6080
           livenessProbe:
             httpGet:
               path: /livez
@@ -26209,11 +26265,17 @@ spec:
             failureThreshold: 3
           securityContext:
             allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
           env:
           - name: POD_NAMESPACE
             valueFrom:
               fieldRef:
                 fieldPath: metadata.namespace
+      nodeSelector:
+        kubernetes.io/os: linux
 
 ---
 apiVersion: admissionregistration.k8s.io/v1
@@ -26232,17 +26294,15 @@ webhooks:
     rules:
       - apiGroups:
           - "cert-manager.io"
-          - "acme.cert-manager.io"
         apiVersions:
           - "v1"
         operations:
           - CREATE
-          - UPDATE
         resources:
-          - "*/*"
+          - "certificaterequests"
     admissionReviewVersions: ["v1"]
     matchPolicy: Equivalent
-    timeoutSeconds: 10
+    timeoutSeconds: 30
     failurePolicy: Fail
     sideEffects: None
     clientConfig:
@@ -26267,14 +26327,10 @@ webhooks:
   - name: webhook.cert-manager.io
     namespaceSelector:
       matchExpressions:
-      - key: "cert-manager.io/disable-validation"
-        operator: "NotIn"
+      - key: cert-manager.io/disable-validation
+        operator: NotIn
         values:
         - "true"
-      - key: "name"
-        operator: "NotIn"
-        values:
-        - {{.Namespace}}
     rules:
       - apiGroups:
           - "cert-manager.io"
@@ -26288,7 +26344,7 @@ webhooks:
           - "*/*"
     admissionReviewVersions: ["v1"]
     matchPolicy: Equivalent
-    timeoutSeconds: 10
+    timeoutSeconds: 30
     failurePolicy: Fail
     sideEffects: None
     clientConfig:

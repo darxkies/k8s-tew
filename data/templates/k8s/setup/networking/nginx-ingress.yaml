@@ -60,7 +60,7 @@ subjects:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name:  ingress-nginx-admission
+  name: ingress-nginx-admission
   namespace: {{.Namespace}}
   labels:
     app.kubernetes.io/name: ingress-nginx
@@ -133,12 +133,18 @@ spec:
                   fieldPath: metadata.namespace
           securityContext:
             allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 65532
+            seccompProfile:
+              type: RuntimeDefault
       restartPolicy: OnFailure
       serviceAccountName: ingress-nginx-admission
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 2000
-        fsGroup: 2000
+      nodeSelector: 
+        kubernetes.io/os: linux
 
 ---
 apiVersion: batch/v1
@@ -179,12 +185,18 @@ spec:
                   fieldPath: metadata.namespace
           securityContext:
             allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 65532
+            seccompProfile:
+              type: RuntimeDefault
       restartPolicy: OnFailure
       serviceAccountName: ingress-nginx-admission
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 2000
-        fsGroup: 2000
+      nodeSelector: 
+        kubernetes.io/os: linux
 
 ---
 apiVersion: v1
@@ -211,7 +223,7 @@ metadata:
   name: ingress-nginx-controller
   namespace: {{.Namespace}}
 data:
-  allow-snippet-annotations: "true"
+  allow-snippet-annotations: "false"
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -285,6 +297,14 @@ rules:
       - get
       - list
       - watch
+  - apiGroups:
+      - discovery.k8s.io
+    resources:
+      - endpointslices
+    verbs:
+      - list
+      - watch
+      - get
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -364,26 +384,11 @@ rules:
       - list
       - watch
   - apiGroups:
-      - ""
-    resources:
-      - configmaps
-    resourceNames:
-      - ingress-controller-leader
-    verbs:
-      - get
-      - update
-  - apiGroups:
-      - ""
-    resources:
-      - configmaps
-    verbs:
-      - create
-  - apiGroups:
       - coordination.k8s.io
     resources:
       - leases
     resourceNames:
-      - ingress-controller-leader
+      - ingress-nginx-leader
     verbs:
       - get
       - update
@@ -400,6 +405,14 @@ rules:
     verbs:
       - create
       - patch
+  - apiGroups:
+      - discovery.k8s.io
+    resources:
+      - endpointslices
+    verbs:
+      - list
+      - watch
+      - get
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -501,6 +514,7 @@ spec:
       labels:
         app.kubernetes.io/name: ingress-nginx
         app.kubernetes.io/instance: k8s-tew
+        app.kubernetes.io/part-of: ingress-nginx
         app.kubernetes.io/component: controller
     spec:
       dnsPolicy: ClusterFirst
@@ -516,21 +530,26 @@ spec:
           args:
             - /nginx-ingress-controller
             - --publish-service=$(POD_NAMESPACE)/ingress-nginx-controller
-            - --election-id=ingress-controller-leader
+            - --election-id=ingress-nginx-leader
             - --controller-class=k8s.io/ingress-nginx
             - --ingress-class=nginx
             - --configmap=$(POD_NAMESPACE)/ingress-nginx-controller
             - --validating-webhook=:8443
             - --validating-webhook-certificate=/usr/local/certificates/cert
             - --validating-webhook-key=/usr/local/certificates/key
+            - --enable-metrics=false
           securityContext: 
+            runAsNonRoot: true
+            runAsUser: 101
+            allowPrivilegeEscalation: false
+            seccompProfile: 
+              type: RuntimeDefault
             capabilities:
               drop:
               - ALL
               add:
               - NET_BIND_SERVICE
-            runAsUser: 101
-            allowPrivilegeEscalation: true
+            readOnlyRootFilesystem: false
           env:
             - name: POD_NAME
               valueFrom:

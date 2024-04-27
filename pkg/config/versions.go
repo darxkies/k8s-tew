@@ -42,6 +42,8 @@ type Versions struct {
 	CertManagerController        string `yaml:"cert-manager-controller"`
 	CertManagerCAInjector        string `yaml:"cert-manager-cainjector"`
 	CertManagerWebHook           string `yaml:"cert-manager-webhook"`
+	CertManagerStartupAPICheck   string `yaml:"cert-manager-startup-api-checker"`
+	CertManagerAcmeSolver        string `yaml:"cert-manager-acme-solver"`
 	NginxIngressController       string `yaml:"nginx-ingress-controller"`
 	NginxIngressAdmissionWebhook string `yaml:"nginx-ingress-admission-webhook"`
 	MetricsScraper               string `yaml:"metrics-scraper"`
@@ -103,6 +105,8 @@ func NewVersions() Versions {
 		CertManagerController:        utils.VersionCertManagerController,
 		CertManagerCAInjector:        utils.VersionCertManagerCAInjector,
 		CertManagerWebHook:           utils.VersionCertManagerWebHook,
+		CertManagerStartupAPICheck:   utils.VersionCertManagerStartupAPICheck,
+		CertManagerAcmeSolver:        utils.VersionCertManagerAcmeSolver,
 		NginxIngressController:       utils.VersionNginxIngressController,
 		NginxIngressAdmissionWebhook: utils.VersionNginxIngressAdmissionWebhook,
 		MetricsScraper:               utils.VersionMetricsScraper,
@@ -173,6 +177,8 @@ func (versions Versions) GetImages() []Image {
 		{Name: versions.CertManagerController, Features: Features{utils.FeatureIngress, utils.FeatureStorage}},
 		{Name: versions.CertManagerCAInjector, Features: Features{utils.FeatureIngress, utils.FeatureStorage}},
 		{Name: versions.CertManagerWebHook, Features: Features{utils.FeatureIngress, utils.FeatureStorage}},
+		{Name: versions.CertManagerStartupAPICheck, Features: Features{utils.FeatureIngress, utils.FeatureStorage}},
+		{Name: versions.CertManagerAcmeSolver, Features: Features{utils.FeatureIngress, utils.FeatureStorage}},
 		{Name: versions.NginxIngressAdmissionWebhook, Features: Features{utils.FeatureIngress, utils.FeatureStorage}},
 		{Name: versions.NginxIngressController, Features: Features{utils.FeatureIngress, utils.FeatureStorage}},
 		{Name: versions.MySQL, Features: Features{utils.FeatureShowcase, utils.FeatureStorage}},

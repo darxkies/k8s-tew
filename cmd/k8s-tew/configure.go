@@ -394,6 +394,14 @@ func init() {
 		_config.Config.Versions.CertManagerWebHook = value
 	})
 
+	addStringOption("version-cert-manager-startup-api-check", utils.VersionCertManagerStartupAPICheck, "Cert Manager Startup API Check version", func(value string) {
+		_config.Config.Versions.CertManagerStartupAPICheck = value
+	})
+
+	addStringOption("version-cert-manager-acme-solver", utils.VersionCertManagerAcmeSolver, "Cert Manager ACME Solver version", func(value string) {
+		_config.Config.Versions.CertManagerAcmeSolver = value
+	})
+
 	addStringOption("version-nginx-ingress-controller", utils.VersionNginxIngressController, "Nginx Ingress Controller version", func(value string) {
 		_config.Config.Versions.NginxIngressController = value
 	})

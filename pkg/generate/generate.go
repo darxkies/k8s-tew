@@ -1168,17 +1168,21 @@ func (generator *Generator) generateKubernetesDashboardSetup() error {
 
 func (generator *Generator) generateCertManagerSetup() error {
 	return utils.ApplyTemplateAndSave("cert-manager", utils.TemplateCertManagerSetup, struct {
-		Namespace                  string
-		CertManagerCtlImage        string
-		CertManagerControllerImage string
-		CertManagerCAInjectorImage string
-		CertManagerWebHookImage    string
+		Namespace                       string
+		CertManagerCtlImage             string
+		CertManagerControllerImage      string
+		CertManagerCAInjectorImage      string
+		CertManagerWebHookImage         string
+		CertManagerStartupAPICheckImage string
+		CertManagerAcmeSolverImage      string
 	}{
-		Namespace:                  utils.NamespaceNetworking,
-		CertManagerCtlImage:        generator.config.Config.Versions.CertManagerCtl,
-		CertManagerControllerImage: generator.config.Config.Versions.CertManagerController,
-		CertManagerCAInjectorImage: generator.config.Config.Versions.CertManagerCAInjector,
-		CertManagerWebHookImage:    generator.config.Config.Versions.CertManagerWebHook,
+		Namespace:                       utils.NamespaceNetworking,
+		CertManagerCtlImage:             generator.config.Config.Versions.CertManagerCtl,
+		CertManagerControllerImage:      generator.config.Config.Versions.CertManagerController,
+		CertManagerCAInjectorImage:      generator.config.Config.Versions.CertManagerCAInjector,
+		CertManagerWebHookImage:         generator.config.Config.Versions.CertManagerWebHook,
+		CertManagerStartupAPICheckImage: generator.config.Config.Versions.CertManagerStartupAPICheck,
+		CertManagerAcmeSolverImage:      generator.config.Config.Versions.CertManagerAcmeSolver,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sCertManagerSetup), true, false, 0644)
 }
 
