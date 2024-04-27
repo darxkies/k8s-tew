@@ -652,13 +652,13 @@ func (generator *Generator) generateCertificates() error {
 		return error
 	}
 
-	// Load ca certificate and private key
+	// Load CA certificate and private key
 	generator.ca, error = pki.LoadCertificateAndPrivateKey(fullCAFilename, fullCAKeyFilename)
 	if error != nil {
 		return error
 	}
 
-	// Collect dns names and ip addresses
+	// Collect DNS names and IP addresses
 	kubernetesDNSNames := []string{"kubernetes", "kubernetes.default", "kubernetes.default.svc", "kubernetes.default.svc.cluster.local", "localhost"}
 	kubernetesIPAddresses := []string{"127.0.0.1", "10.32.0.1"}
 
@@ -692,6 +692,13 @@ func (generator *Generator) generateCertificates() error {
 
 	apiServerDNSNames := mergeLists(kubernetesDNSNames[:], generator.config.Config.SANDNSNames)
 	apiServerIPAddresses := mergeLists(kubernetesIPAddresses[:], generator.config.Config.SANIPAddresses)
+
+	// Generate Snapshot Validation Webhook
+	snapshotValidationWebhookName := fmt.Sprintf("snapshot-validation-webhook.%s.svc", utils.NamespaceStorage)
+
+	if error := pki.GenerateClient(nil, generator.config.Config.RSASize, generator.config.Config.CAValidityPeriod, snapshotValidationWebhookName, "", []string{snapshotValidationWebhookName}, []string{}, generator.config.GetFullLocalAssetFilename(utils.PemSnapshotValidationWebhook), generator.config.GetFullLocalAssetFilename(utils.PemSnapshotValidationWebhookKey), false); error != nil {
+		return error
+	}
 
 	// Generate admin certificate
 	if error := pki.GenerateClient(generator.ca, generator.config.Config.RSASize, generator.config.Config.ClientValidityPeriod, utils.CnAdmin, "system:masters", []string{}, []string{}, generator.config.GetFullLocalAssetFilename(utils.PemAdmin), generator.config.GetFullLocalAssetFilename(utils.PemAdminKey), false); error != nil {
@@ -893,44 +900,67 @@ func (generator *Generator) generateCephSetup() error {
 }
 
 func (generator *Generator) generateCephCSI() error {
+	caCertificate, error := utils.GetBase64OfPEM(generator.config.GetFullLocalAssetFilename(utils.PemSnapshotValidationWebhook))
+	if error != nil {
+		return error
+	}
+
+	snapshotValidationWebhookCertificate, error := utils.GetBase64OfPEM(generator.config.GetFullLocalAssetFilename(utils.PemSnapshotValidationWebhook))
+	if error != nil {
+		return error
+	}
+
+	snapshotValidationWebhookKey, error := utils.GetBase64OfPEM(generator.config.GetFullLocalAssetFilename(utils.PemSnapshotValidationWebhookKey))
+	if error != nil {
+		return error
+	}
+
 	return utils.ApplyTemplateAndSave("ceph-csi", utils.TemplateCephCsi, struct {
-		Namespace                  string
-		ClusterID                  string
-		KubeletDirectory           string
-		PluginsDirectory           string
-		PluginsRegistryDirectory   string
-		PodsDirectory              string
-		LoggingDirectory           string
-		CephRBDPoolName            string
-		CephFSPoolName             string
-		StorageControllers         []config.NodeData
-		StorageNodes               []config.NodeData
-		CSIAttacherImage           string
-		CSIProvisionerImage        string
-		CSIDriverRegistrarImage    string
-		CSISnapshotterImage        string
-		CSISnapshotControllerImage string
-		CSIResizerImage            string
-		CSICephPluginImage         string
+		Namespace                            string
+		ClusterID                            string
+		KubeletDirectory                     string
+		PluginsDirectory                     string
+		PluginsRegistryDirectory             string
+		PodsDirectory                        string
+		LoggingDirectory                     string
+		CephRBDPoolName                      string
+		CephFSPoolName                       string
+		StorageControllers                   []config.NodeData
+		StorageNodes                         []config.NodeData
+		CSIAttacherImage                     string
+		CSIProvisionerImage                  string
+		CSIDriverRegistrarImage              string
+		CSISnapshotterImage                  string
+		CSISnapshotControllerImage           string
+		CSISnapshotValidationWebhookImage    string
+		CSIResizerImage                      string
+		CSICephPluginImage                   string
+		CACertificate                        string
+		SnapshotValidationWebhookCertificate string
+		SnapshotValidationWebhookKey         string
 	}{
-		Namespace:                  utils.NamespaceStorage,
-		ClusterID:                  generator.config.Config.ClusterID,
-		KubeletDirectory:           generator.config.GetFullTargetAssetDirectory(utils.DirectoryKubeletData),
-		PluginsDirectory:           generator.config.GetFullTargetAssetDirectory(utils.DirectoryKubeletPlugins),
-		PluginsRegistryDirectory:   generator.config.GetFullTargetAssetDirectory(utils.DirectoryKubeletPluginsRegistry),
-		PodsDirectory:              generator.config.GetFullTargetAssetDirectory(utils.DirectoryPodsData),
-		LoggingDirectory:           generator.config.GetFullTargetAssetDirectory(utils.DirectoryLogging),
-		CephRBDPoolName:            utils.CephRbdPoolName,
-		CephFSPoolName:             utils.CephFsPoolName,
-		StorageControllers:         generator.config.GetStorageControllers(),
-		StorageNodes:               generator.config.GetStorageNodes(),
-		CSIAttacherImage:           generator.config.Config.Versions.CSIAttacher,
-		CSIProvisionerImage:        generator.config.Config.Versions.CSIProvisioner,
-		CSIDriverRegistrarImage:    generator.config.Config.Versions.CSIDriverRegistrar,
-		CSISnapshotterImage:        generator.config.Config.Versions.CSISnapshotter,
-		CSISnapshotControllerImage: generator.config.Config.Versions.CSISnapshotController,
-		CSIResizerImage:            generator.config.Config.Versions.CSIResizer,
-		CSICephPluginImage:         generator.config.Config.Versions.CSICephPlugin,
+		Namespace:                            utils.NamespaceStorage,
+		ClusterID:                            generator.config.Config.ClusterID,
+		KubeletDirectory:                     generator.config.GetFullTargetAssetDirectory(utils.DirectoryKubeletData),
+		PluginsDirectory:                     generator.config.GetFullTargetAssetDirectory(utils.DirectoryKubeletPlugins),
+		PluginsRegistryDirectory:             generator.config.GetFullTargetAssetDirectory(utils.DirectoryKubeletPluginsRegistry),
+		PodsDirectory:                        generator.config.GetFullTargetAssetDirectory(utils.DirectoryPodsData),
+		LoggingDirectory:                     generator.config.GetFullTargetAssetDirectory(utils.DirectoryLogging),
+		CephRBDPoolName:                      utils.CephRbdPoolName,
+		CephFSPoolName:                       utils.CephFsPoolName,
+		StorageControllers:                   generator.config.GetStorageControllers(),
+		StorageNodes:                         generator.config.GetStorageNodes(),
+		CSIAttacherImage:                     generator.config.Config.Versions.CSIAttacher,
+		CSIProvisionerImage:                  generator.config.Config.Versions.CSIProvisioner,
+		CSIDriverRegistrarImage:              generator.config.Config.Versions.CSIDriverRegistrar,
+		CSISnapshotterImage:                  generator.config.Config.Versions.CSISnapshotter,
+		CSISnapshotControllerImage:           generator.config.Config.Versions.CSISnapshotController,
+		CSISnapshotValidationWebhookImage:    generator.config.Config.Versions.CSISnapshotValidationWebhook,
+		CSIResizerImage:                      generator.config.Config.Versions.CSIResizer,
+		CSICephPluginImage:                   generator.config.Config.Versions.CSICephPlugin,
+		CACertificate:                        caCertificate,
+		SnapshotValidationWebhookCertificate: snapshotValidationWebhookCertificate,
+		SnapshotValidationWebhookKey:         snapshotValidationWebhookKey,
 	}, generator.config.GetFullLocalAssetFilename(utils.CephCsi), true, false, 0644)
 }
 

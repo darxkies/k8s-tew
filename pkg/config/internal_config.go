@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"html/template"
-	"io/ioutil"
 	"net"
 	"os"
 	"path"
@@ -239,6 +238,8 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.PemPrometheusKey, Labels{}, "", utils.DirectoryCertificates)
 	config.addAssetFile(utils.PemKubernetesDashboard, Labels{}, "", utils.DirectoryCertificates)
 	config.addAssetFile(utils.PemKubernetesDashboardKey, Labels{}, "", utils.DirectoryCertificates)
+	config.addAssetFile(utils.PemSnapshotValidationWebhook, Labels{}, "", utils.DirectoryCertificates)
+	config.addAssetFile(utils.PemSnapshotValidationWebhookKey, Labels{}, "", utils.DirectoryCertificates)
 
 	// Kubeconfig
 	config.addAssetFile(utils.KubeconfigAdmin, Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, "", utils.DirectoryK8sKubeConfig)
@@ -351,6 +352,8 @@ func (config *InternalConfig) registerCommands() {
 	config.addCommand("setup-centos", Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, Features{}, OS{utils.OsCentos}, "systemctl disable firewalld && systemctl stop firewalld && yum install -y socat bash-completion libseccomp && sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux && (setenforce 0 || true)")
 	config.addCommand("swapoff", Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, Features{}, OS{}, "swapoff -a")
 	config.addCommand("load-overlay", Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, Features{}, OS{}, "modprobe overlay")
+	config.addCommand("load-rbd", Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, Features{}, OS{}, "modprobe rbd")
+	config.addCommand("load-ceph", Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, Features{}, OS{}, "modprobe ceph")
 	config.addCommand("load-btrfs", Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, Features{}, OS{}, "modprobe btrfs")
 	config.addCommand("load-br_netfilter", Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, Features{}, OS{}, "modprobe br_netfilter")
 	config.addCommand("enable-br_netfilter", Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, Features{}, OS{}, "echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables")
@@ -493,7 +496,7 @@ func (config *InternalConfig) Save() error {
 
 	filename := config.getConfigFilename()
 
-	if error := ioutil.WriteFile(filename, yamlOutput, 0644); error != nil {
+	if error := os.WriteFile(filename, yamlOutput, 0644); error != nil {
 		return error
 	}
 
@@ -512,7 +515,7 @@ func (config *InternalConfig) Load() error {
 		return fmt.Errorf("config '%s' not found", filename)
 	}
 
-	yamlContent, error := ioutil.ReadFile(filename)
+	yamlContent, error := os.ReadFile(filename)
 
 	if error != nil {
 		return error

@@ -144,11 +144,11 @@ rules:
     resources: ["volumesnapshots"]
     verbs: ["get", "list", "patch"]
   - apiGroups: ["snapshot.storage.k8s.io"]
-    resources: ["volumesnapshots/status"]
-    verbs: ["get", "list", "patch"]
-  - apiGroups: ["snapshot.storage.k8s.io"]
     resources: ["volumesnapshotcontents"]
     verbs: ["create", "get", "list", "watch", "update", "delete", "patch"]
+  - apiGroups: ["snapshot.storage.k8s.io"]
+    resources: ["volumesnapshots/status"]
+    verbs: ["get", "list", "patch"]
   - apiGroups: ["snapshot.storage.k8s.io"]
     resources: ["volumesnapshotclasses"]
     verbs: ["get", "list", "watch"]
@@ -279,7 +279,7 @@ metadata:
   namespace: {{.Namespace}}
   annotations:
       prometheus.io/scrape: "true"
-      prometheus.io/port: "8680"
+      prometheus.io/port: "8080"
   labels:
     app: ceph-csi-rbd
     component: provisioner
@@ -331,28 +331,6 @@ spec:
       priorityClassName: system-node-critical
       dnsPolicy: ClusterFirstWithHostNet
       containers:
-        - name: driver-registrar
-          securityContext:
-            privileged: true
-            allowPrivilegeEscalation: true
-          image: {{.CSIDriverRegistrarImage}}
-          imagePullPolicy: IfNotPresent
-          args:
-            - "--v=5"
-            - "--csi-address=/csi/csi.sock"
-            - "--kubelet-registration-path={{.PluginsDirectory}}/rbd.csi.ceph.com/csi.sock"
-          env:
-            - name: KUBE_NODE_NAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: spec.nodeName
-          volumeMounts:
-            - name: socket-dir
-              mountPath: /csi
-            - name: registration-dir
-              mountPath: /registration
-          resources:
-            {}
         - name: csi-rbdplugin
           image: {{.CSICephPluginImage}}
           imagePullPolicy: IfNotPresent
@@ -421,6 +399,28 @@ spec:
             - name: oidc-token
               mountPath: /run/secrets/tokens
               readOnly: true
+          resources:
+            {}
+        - name: driver-registrar
+          securityContext:
+            privileged: true
+            allowPrivilegeEscalation: true
+          image: {{.CSIDriverRegistrarImage}}
+          imagePullPolicy: IfNotPresent
+          args:
+            - "--v=5"
+            - "--csi-address=/csi/csi.sock"
+            - "--kubelet-registration-path={{.PluginsDirectory}}/rbd.csi.ceph.com/csi.sock"
+          env:
+            - name: KUBE_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /csi
+            - name: registration-dir
+              mountPath: /registration
           resources:
             {}
         - name: liveness-prometheus
@@ -554,83 +554,9 @@ spec:
                 - "{{$node.Name}}"
                 {{end}}
       serviceAccountName: ceph-csi-rbd-provisioner
+      hostNetwork: false
       priorityClassName: system-cluster-critical
       containers:
-        - name: csi-provisioner
-          image: {{.CSIProvisionerImage}}
-          imagePullPolicy: IfNotPresent
-          args:
-            - "--csi-address=$(ADDRESS)"
-            - "--v=1"
-            - "--timeout=60s"
-            - "--leader-election=true"
-            - "--retry-interval-start=500ms"
-            - "--default-fstype=ext4"
-            - "--extra-create-metadata=true"
-            - "--feature-gates=HonorPVReclaimPolicy=true"
-            - "--prevent-volume-mode-conversion=true"
-            - "--feature-gates=Topology=false"
-          env:
-            - name: ADDRESS
-              value: "unix:///csi/csi-provisioner.sock"
-          volumeMounts:
-            - name: socket-dir
-              mountPath: /csi
-          resources:
-            {}
-        - name: csi-resizer
-          image: {{.CSIResizerImage}}
-          imagePullPolicy: IfNotPresent
-          args:
-            - "--v=1"
-            - "--csi-address=$(ADDRESS)"
-            - "--timeout=60s"
-            - "--leader-election"
-            - "--retry-interval-start=500ms"
-            - "--handle-volume-inuse-error=false"
-            - "--feature-gates=RecoverVolumeExpansionFailure=true"
-          env:
-            - name: ADDRESS
-              value: "unix:///csi/csi-provisioner.sock"
-          volumeMounts:
-            - name: socket-dir
-              mountPath: /csi
-          resources:
-            {}
-        - name: csi-snapshotter
-          image: {{.CSISnapshotterImage}}
-          imagePullPolicy: IfNotPresent
-          args:
-            - "--csi-address=$(ADDRESS)"
-            - "--v=1"
-            - "--timeout=60s"
-            - "--leader-election=true"
-            - "--extra-create-metadata=true"
-          env:
-            - name: ADDRESS
-              value: "unix:///csi/csi-provisioner.sock"
-          volumeMounts:
-            - name: socket-dir
-              mountPath: /csi
-          resources:
-            {}
-        - name: csi-attacher
-          image: {{.CSIAttacherImage}}
-          imagePullPolicy: IfNotPresent
-          args:
-            - "--v=1"
-            - "--csi-address=$(ADDRESS)"
-            - "--leader-election=true"
-            - "--retry-interval-start=500ms"
-            - "--default-fstype=ext4"
-          env:
-            - name: ADDRESS
-              value: "unix:///csi/csi-provisioner.sock"
-          volumeMounts:
-            - name: socket-dir
-              mountPath: /csi
-          resources:
-            {}
         - name: csi-rbdplugin
           image: {{.CSICephPluginImage}}
           imagePullPolicy: IfNotPresent
@@ -684,6 +610,81 @@ spec:
             - name: oidc-token
               mountPath: /run/secrets/tokens
               readOnly: true
+          resources:
+            {}
+        - name: csi-provisioner
+          image: {{.CSIProvisionerImage}}
+          imagePullPolicy: IfNotPresent
+          args:
+            - "--csi-address=$(ADDRESS)"
+            - "--v=1"
+            - "--timeout=60s"
+            - "--leader-election=true"
+            - "--retry-interval-start=500ms"
+            - "--default-fstype=ext4"
+            - "--extra-create-metadata=true"
+            - "--feature-gates=HonorPVReclaimPolicy=true"
+            - "--prevent-volume-mode-conversion=true"
+          env:
+            - name: ADDRESS
+              value: "unix:///csi/csi-provisioner.sock"
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /csi
+          resources:
+            {}
+        - name: csi-resizer
+          image: {{.CSIResizerImage}}
+          imagePullPolicy: IfNotPresent
+          args:
+            - "--v=1"
+            - "--csi-address=$(ADDRESS)"
+            - "--timeout=60s"
+            - "--leader-election"
+            - "--retry-interval-start=500ms"
+            - "--handle-volume-inuse-error=false"
+            - "--feature-gates=RecoverVolumeExpansionFailure=true"
+          env:
+            - name: ADDRESS
+              value: "unix:///csi/csi-provisioner.sock"
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /csi
+          resources:
+            {}
+        - name: csi-snapshotter
+          image: {{.CSISnapshotterImage}}
+          imagePullPolicy: IfNotPresent
+          args:
+            - "--csi-address=$(ADDRESS)"
+            - "--v=1"
+            - "--timeout=60s"
+            - "--leader-election=true"
+            - "--extra-create-metadata=true"
+            - "--enable-volume-group-snapshots=false"
+          env:
+            - name: ADDRESS
+              value: "unix:///csi/csi-provisioner.sock"
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /csi
+          resources:
+            {}
+        - name: csi-attacher
+          image: {{.CSIAttacherImage}}
+          imagePullPolicy: IfNotPresent
+          args:
+            - "--v=1"
+            - "--csi-address=$(ADDRESS)"
+            - "--leader-election=true"
+            - "--retry-interval-start=500ms"
+            - "--default-fstype=ext4"
+          env:
+            - name: ADDRESS
+              value: "unix:///csi/csi-provisioner.sock"
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /csi
           resources:
             {}
         - name: csi-rbdplugin-controller
@@ -781,6 +782,7 @@ spec:
   attachRequired: true
   podInfoOnMount: false
   fsGroupPolicy: File
+  seLinuxMount: true
 
 ---
 apiVersion: v1
@@ -805,6 +807,25 @@ metadata:
     release: k8s-tew
 
 
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: ceph-csi-cephfs-nodeplugin
+  labels:
+    app: ceph-csi-cephfs
+    component: nodeplugin
+    release: k8s-tew
+rules:
+  - apiGroups: [""]
+    resources: ["nodes"]
+    verbs: ["get"]
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    verbs: ["get"]
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get"]
 
 ---
 kind: ClusterRole
@@ -820,6 +841,9 @@ rules:
     resources: ["secrets"]
     verbs: ["get", "list"]
   - apiGroups: [""]
+    resources: ["configmaps"]
+    verbs: ["get"]
+  - apiGroups: [""]
     resources: ["persistentvolumes"]
     verbs: ["get", "list", "watch", "create", "update", "delete","patch"]
   - apiGroups: [""]
@@ -832,23 +856,41 @@ rules:
     resources: ["events"]
     verbs: ["list", "watch", "create", "update", "patch"]
   - apiGroups: ["snapshot.storage.k8s.io"]
-    resources: ["volumesnapshots"]
-    verbs: ["get", "list", "patch"]
-  - apiGroups: ["snapshot.storage.k8s.io"]
     resources: ["volumesnapshots/status"]
     verbs: ["update", "patch"]
-  - apiGroups: ["snapshot.storage.k8s.io"]
-    resources: ["volumesnapshotcontents"]
-    verbs: ["create", "get", "list", "watch", "update", "delete", "patch"]
   - apiGroups: ["snapshot.storage.k8s.io"]
     resources: ["volumesnapshotclasses"]
     verbs: ["get", "list", "watch"]
   - apiGroups: ["snapshot.storage.k8s.io"]
     resources: ["volumesnapshotcontents/status"]
     verbs: ["update", "patch"]
+  - apiGroups: ["snapshot.storage.k8s.io"]
+    resources: ["volumesnapshots"]
+    verbs: ["get", "list", "patch"]
+  - apiGroups: ["snapshot.storage.k8s.io"]
+    resources: ["volumesnapshotcontents"]
+    verbs: ["create", "get", "list", "watch", "update", "delete", "patch"]
   - apiGroups: [""]
     resources: ["persistentvolumeclaims/status"]
     verbs: ["update", "patch"]
+
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: ceph-csi-cephfs-nodeplugin
+  labels:
+    app: ceph-csi-cephfs
+    component: nodeplugin
+    release: k8s-tew
+subjects:
+  - kind: ServiceAccount
+    name: ceph-csi-cephfs-nodeplugin
+    namespace: {{.Namespace}}
+roleRef:
+  kind: ClusterRole
+  name: ceph-csi-cephfs-nodeplugin
+  apiGroup: rbac.authorization.k8s.io
 
 ---
 kind: ClusterRoleBinding
@@ -913,7 +955,7 @@ metadata:
   namespace: {{.Namespace}}
   annotations:
       prometheus.io/scrape: "true"
-      prometheus.io/port: "8681"
+      prometheus.io/port: "8080"
   labels:
     app: ceph-csi-cephfs
     component: nodeplugin
@@ -937,7 +979,7 @@ metadata:
   namespace: {{.Namespace}}
   annotations:
       prometheus.io/scrape: "true"
-      prometheus.io/port: "8681"
+      prometheus.io/port: "8080"
   labels:
     app: ceph-csi-cephfs
     component: provisioner
@@ -989,28 +1031,6 @@ spec:
       hostPID: true
       dnsPolicy: ClusterFirstWithHostNet
       containers:
-        - name: driver-registrar
-          securityContext:
-            privileged: true
-            allowPrivilegeEscalation: true
-          image: {{.CSIDriverRegistrarImage}}
-          imagePullPolicy: IfNotPresent
-          args:
-            - "--v=5"
-            - "--csi-address=/csi/csi.sock"
-            - "--kubelet-registration-path={{.PluginsDirectory}}/cephfs.csi.ceph.com/csi.sock"
-          env:
-            - name: KUBE_NODE_NAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: spec.nodeName
-          volumeMounts:
-            - name: socket-dir
-              mountPath: /csi
-            - name: registration-dir
-              mountPath: /registration
-          resources:
-            {}
         - name: csi-cephfsplugin
           image: {{.CSICephPluginImage}}
           imagePullPolicy: IfNotPresent
@@ -1024,6 +1044,7 @@ spec:
             - "--endpoint=$(CSI_ENDPOINT)"
             - "--v=5"
             - "--drivername=$(DRIVER_NAME)"
+            - "--enable-read-affinity=false"
           env:
             - name: POD_IP
               valueFrom:
@@ -1071,6 +1092,28 @@ spec:
               mountPath: /tmp/csi/keys
             - name: ceph-csi-mountinfo
               mountPath: /csi/mountinfo
+          resources:
+            {}
+        - name: driver-registrar
+          securityContext:
+            privileged: true
+            allowPrivilegeEscalation: true
+          image: {{.CSIDriverRegistrarImage}}
+          imagePullPolicy: IfNotPresent
+          args:
+            - "--v=5"
+            - "--csi-address=/csi/csi.sock"
+            - "--kubelet-registration-path={{.PluginsDirectory}}/cephfs.csi.ceph.com/csi.sock"
+          env:
+            - name: KUBE_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /csi
+            - name: registration-dir
+              mountPath: /registration
           resources:
             {}
         - name: liveness-prometheus
@@ -1146,7 +1189,7 @@ spec:
           }
         - name: ceph-csi-mountinfo
           hostPath:
-            path: "{{.PluginsDirectory}}/cephfs.csi.ceph.com/mountinfo"
+            path: {{.PluginsDirectory}}/cephfs.csi.ceph.com/mountinfo
             type: DirectoryOrCreate
 
 ---
@@ -1194,65 +1237,9 @@ spec:
                 - "{{$node.Name}}"
                 {{end}}
       serviceAccountName: ceph-csi-cephfs-provisioner
+      hostNetwork: false
       priorityClassName: system-cluster-critical
       containers:
-        - name: csi-provisioner
-          image: {{.CSIProvisionerImage}}
-          imagePullPolicy: IfNotPresent
-          args:
-            - "--csi-address=$(ADDRESS)"
-            - "--v=1"
-            - "--timeout=60s"
-            - "--leader-election=true"
-            - "--retry-interval-start=500ms"
-            - "--extra-create-metadata=true"
-            - "--feature-gates=HonorPVReclaimPolicy=true"
-            - "--prevent-volume-mode-conversion=true"
-            - "--feature-gates=Topology=false"
-          env:
-            - name: ADDRESS
-              value: "unix:///csi/csi-provisioner.sock"
-          volumeMounts:
-            - name: socket-dir
-              mountPath: /csi
-          resources:
-            {}
-        - name: csi-snapshotter
-          image: {{.CSISnapshotterImage}}
-          imagePullPolicy: IfNotPresent
-          args:
-            - "--csi-address=$(ADDRESS)"
-            - "--v=1"
-            - "--timeout=60s"
-            - "--leader-election=true"
-            - "--extra-create-metadata=true"
-          env:
-            - name: ADDRESS
-              value: "unix:///csi/csi-provisioner.sock"
-          volumeMounts:
-            - name: socket-dir
-              mountPath: /csi
-          resources:
-            {}
-        - name: csi-resizer
-          image: {{.CSIResizerImage}}
-          imagePullPolicy: IfNotPresent
-          args:
-            - "--v=1"
-            - "--csi-address=$(ADDRESS)"
-            - "--timeout=60s"
-            - "--leader-election"
-            - "--retry-interval-start=500ms"
-            - "--handle-volume-inuse-error=false"
-            - "--feature-gates=RecoverVolumeExpansionFailure=true"
-          env:
-            - name: ADDRESS
-              value: "unix:///csi/csi-provisioner.sock"
-          volumeMounts:
-            - name: socket-dir
-              mountPath: /csi
-          resources:
-            {}
         - name: csi-cephfsplugin
           image: {{.CSICephPluginImage}}
           imagePullPolicy: IfNotPresent
@@ -1294,6 +1281,64 @@ spec:
               mountPath: /etc/ceph-csi-config/
             - name: keys-tmp-dir
               mountPath: /tmp/csi/keys
+          resources:
+            {}
+        - name: csi-provisioner
+          image: {{.CSIProvisionerImage}}
+          imagePullPolicy: IfNotPresent
+          args:
+            - "--csi-address=$(ADDRESS)"
+            - "--v=1"
+            - "--timeout=60s"
+            - "--leader-election=true"
+            - "--retry-interval-start=500ms"
+            - "--extra-create-metadata=true"
+            - "--feature-gates=HonorPVReclaimPolicy=true"
+            - "--prevent-volume-mode-conversion=true"
+            - "--feature-gates=Topology=false"
+          env:
+            - name: ADDRESS
+              value: "unix:///csi/csi-provisioner.sock"
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /csi
+          resources:
+            {}
+        - name: csi-snapshotter
+          image: {{.CSISnapshotterImage}}
+          imagePullPolicy: IfNotPresent
+          args:
+            - "--csi-address=$(ADDRESS)"
+            - "--v=1"
+            - "--timeout=60s"
+            - "--leader-election=true"
+            - "--extra-create-metadata=true"
+            - "--enable-volume-group-snapshots=false"
+          env:
+            - name: ADDRESS
+              value: "unix:///csi/csi-provisioner.sock"
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /csi
+          resources:
+            {}
+        - name: csi-resizer
+          image: {{.CSIResizerImage}}
+          imagePullPolicy: IfNotPresent
+          args:
+            - "--v=1"
+            - "--csi-address=$(ADDRESS)"
+            - "--timeout=60s"
+            - "--leader-election"
+            - "--retry-interval-start=500ms"
+            - "--handle-volume-inuse-error=false"
+            - "--feature-gates=RecoverVolumeExpansionFailure=true"
+          env:
+            - name: ADDRESS
+              value: "unix:///csi/csi-provisioner.sock"
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /csi
           resources:
             {}
         - name: liveness-prometheus
@@ -1356,6 +1401,7 @@ spec:
   attachRequired: false
   podInfoOnMount: false
   fsGroupPolicy: File
+  seLinuxMount: true
 
 ---
 apiVersion: v1
@@ -1366,6 +1412,31 @@ metadata:
   labels:
     app.kubernetes.io/name: snapshot-controller
     app.kubernetes.io/instance: k8s-tew
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: snapshot-validation-webhook
+  namespace: {{.Namespace}}
+  labels:
+    app.kubernetes.io/name: snapshot-validation-webhook
+    app.kubernetes.io/instance: k8s-tew
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: snapshot-validation-webhook-tls
+  namespace: {{.Namespace}}
+  labels:
+    app.kubernetes.io/name: snapshot-validation-webhook
+    app.kubernetes.io/instance: k8s-tew
+type: kubernetes.io/tls
+data:
+  ca.crt: {{.CACertificate}}
+  tls.key: {{.SnapshotValidationWebhookKey}}
+  tls.crt: {{.SnapshotValidationWebhookCertificate}}
 
 ---
 kind: ClusterRole
@@ -1402,6 +1473,16 @@ rules:
     verbs: ["update", "patch"]
 
 ---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: snapshot-validation-webhook
+rules:
+  - apiGroups: ["snapshot.storage.k8s.io", "groupsnapshot.storage.k8s.io"]
+    resources: ["volumesnapshotclasses", "volumegroupsnapshotclasses"]
+    verbs: ["list", "watch"]
+
+---
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
@@ -1413,6 +1494,20 @@ subjects:
 roleRef:
   kind: ClusterRole
   name: snapshot-controller
+  apiGroup: rbac.authorization.k8s.io
+
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: snapshot-validation-webhook
+subjects:
+  - kind: ServiceAccount
+    name: snapshot-validation-webhook
+    namespace: {{.Namespace}}
+roleRef:
+  kind: ClusterRole
+  name: snapshot-validation-webhook
   apiGroup: rbac.authorization.k8s.io
 
 ---
@@ -1440,6 +1535,26 @@ roleRef:
   kind: Role
   name: snapshot-controller
   apiGroup: rbac.authorization.k8s.io
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: snapshot-validation-webhook
+  namespace: {{.Namespace}}
+  labels:
+    app.kubernetes.io/name: snapshot-validation-webhook
+    app.kubernetes.io/instance: k8s-tew
+spec:
+  type: ClusterIP
+  ports:
+    - port: 443
+      targetPort: https
+      protocol: TCP
+      name: https
+  selector:
+    app.kubernetes.io/name: snapshot-validation-webhook
+    app.kubernetes.io/instance: k8s-tew
 
 ---
 apiVersion: apps/v1
@@ -1491,6 +1606,74 @@ spec:
                   fieldPath: metadata.namespace
           resources:
             {}
+      hostNetwork: false
+      dnsPolicy: ClusterFirst
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: snapshot-validation-webhook
+  namespace: {{.Namespace}}
+  labels:
+    app.kubernetes.io/name: snapshot-validation-webhook
+    app.kubernetes.io/instance: k8s-tew
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: snapshot-validation-webhook
+      app.kubernetes.io/instance: k8s-tew
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: snapshot-validation-webhook
+        app.kubernetes.io/instance: k8s-tew
+    spec:
+      serviceAccountName: snapshot-validation-webhook
+      securityContext:
+        {}
+      containers:
+        - name: snapshot-validation-webhook
+          securityContext:
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 1000
+          image: {{.CSISnapshotValidationWebhookImage}}
+          imagePullPolicy: IfNotPresent
+          args:
+            - --port=8443
+            - --tls-cert-file=/etc/snapshot-validation/tls.crt
+            - --tls-private-key-file=/etc/snapshot-validation/tls.key
+          ports:
+            - name: https
+              containerPort: 8443
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /etc/snapshot-validation
+              name: tls-config
+          livenessProbe:
+            httpGet:
+              path: /readyz
+              port: https
+              scheme: HTTPS
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: https
+              scheme: HTTPS
+          resources:
+            {}
+      volumes:
+        - name: tls-config
+          secret:
+            secretName: snapshot-validation-webhook-tls
+      hostNetwork: false
+      dnsPolicy: ClusterFirst
 
 ---
 apiVersion: storage.k8s.io/v1
@@ -1540,14 +1723,76 @@ parameters:
   csi.storage.k8s.io/node-stage-secret-name: csi-cephfs-secret
   csi.storage.k8s.io/node-stage-secret-namespace: {{.Namespace}}
 
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: snapshot-validation-webhook
+  labels:
+    app.kubernetes.io/name: snapshot-validation-webhook
+    app.kubernetes.io/instance: k8s-tew
+webhooks:
+  - name: snapshot-validation-webhook.snapshot.storage.k8s.io
+    rules:
+      - apiGroups:
+        - snapshot.storage.k8s.io
+        apiVersions:
+        - v1
+        - v1beta1
+        operations:
+        - CREATE
+        - UPDATE
+        resources:
+        - volumesnapshots
+        - volumesnapshotclasses
+        - volumesnapshotcontents
+        scope: "*"
+    clientConfig:
+      service:
+        namespace: {{.Namespace}}
+        name: snapshot-validation-webhook
+        path: "/volumesnapshot"
+      caBundle: {{.CACertificate}}
+    admissionReviewVersions:
+      - v1
+      - v1beta1
+    sideEffects: None
+    failurePolicy: Fail
+    timeoutSeconds: 2
+  - name: snapshot-validation-webhook.groupsnapshot.storage.k8s.io
+    rules:
+      - apiGroups:
+          - groupsnapshot.storage.k8s.io
+        apiVersions:
+          - v1alpha1
+        operations:
+          - CREATE
+          - UPDATE
+        resources:
+          - volumegroupsnapshots
+          - volumegroupsnapshotcontents
+          - volumegroupsnapshotclasses
+        scope: "*"
+    clientConfig:
+      service:
+        namespace: {{.Namespace}}
+        name: snapshot-validation-webhook
+        path: "/volumegroupsnapshot"
+      caBundle: {{.CACertificate}}
+    admissionReviewVersions:
+      - v1
+      - v1beta1
+    sideEffects: None
+    failurePolicy: Fail
+    timeoutSeconds: 2
 
 ---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.8.0
-    api-approved.kubernetes.io: "https://github.com/kubernetes-csi/external-snapshotter/pull/665"
+    api-approved.kubernetes.io: "https://github.com/kubernetes-csi/external-snapshotter/pull/814"
+    controller-gen.kubebuilder.io/version: v0.12.0
   creationTimestamp: null
   name: volumesnapshotclasses.snapshot.storage.k8s.io
 spec:
@@ -1608,6 +1853,8 @@ spec:
               object represents. Servers may infer this from the endpoint the client
               submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
+          metadata:
+            type: object
           parameters:
             additionalProperties:
               type: string
@@ -1678,8 +1925,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.8.0
-    api-approved.kubernetes.io: "https://github.com/kubernetes-csi/external-snapshotter/pull/665"
+    api-approved.kubernetes.io: "https://github.com/kubernetes-csi/external-snapshotter/pull/955"
+    controller-gen.kubebuilder.io/version: v0.12.0
   creationTimestamp: null
   name: volumesnapshotcontents.snapshot.storage.k8s.io
 spec:
@@ -1746,6 +1993,8 @@ spec:
               object represents. Servers may infer this from the endpoint the client
               submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
+          metadata:
+            type: object
           spec:
             description: spec defines properties of a VolumeSnapshotContent created
               by the underlying storage system. Required.
@@ -1847,6 +2096,7 @@ spec:
                     description: 'UID of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#uids'
                     type: string
                 type: object
+                x-kubernetes-map-type: atomic
             required:
             - deletionPolicy
             - driver
@@ -1913,6 +2163,10 @@ spec:
                   on the underlying storage system. If not specified, it indicates
                   that dynamic snapshot creation has either failed or it is still
                   in progress.
+                type: string
+              volumeGroupSnapshotHandle:
+                description: VolumeGroupSnapshotHandle is the CSI "group_snapshot_id"
+                  of a group snapshot on the underlying storage system.
                 type: string
             type: object
         required:
@@ -2072,8 +2326,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.8.0
-    api-approved.kubernetes.io: "https://github.com/kubernetes-csi/external-snapshotter/pull/665"
+    api-approved.kubernetes.io: "https://github.com/kubernetes-csi/external-snapshotter/pull/814"
+    controller-gen.kubebuilder.io/version: v0.12.0
   creationTimestamp: null
   name: volumesnapshots.snapshot.storage.k8s.io
 spec:
@@ -2143,6 +2397,8 @@ spec:
               object represents. Servers may infer this from the endpoint the client
               submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
+          metadata:
+            type: object
           spec:
             description: 'spec defines the desired characteristics of a snapshot requested
               by a user. More info: https://kubernetes.io/docs/concepts/storage/volume-snapshots#volumesnapshots
@@ -2257,6 +2513,10 @@ spec:
                   specified, it indicates that the size is unknown.
                 pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
                 x-kubernetes-int-or-string: true
+              volumeGroupSnapshotName:
+                description: VolumeGroupSnapshotName is the name of the VolumeGroupSnapshot
+                  of which this VolumeSnapshot is a part of.
+                type: string
             type: object
         required:
         - spec

@@ -5,7 +5,6 @@ import (
 	"encoding/hex"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"strings"
 
@@ -82,7 +81,7 @@ func (checksums *Checksums) Save() error {
 		buffer += fmt.Sprintf("%s %s\n", value.value, filename)
 	}
 
-	if _error := ioutil.WriteFile(checksums.filename, []byte(buffer), 0644); _error != nil {
+	if _error := os.WriteFile(checksums.filename, []byte(buffer), 0644); _error != nil {
 		return errors.Wrapf(_error, "Could not write to %s", checksums.filename)
 	}
 
@@ -96,7 +95,7 @@ func (checksums *Checksums) Load() error {
 
 	checksums.loaded = true
 
-	content, _error := ioutil.ReadFile(checksums.filename)
+	content, _error := os.ReadFile(checksums.filename)
 	if _error != nil {
 		return _error
 	}

@@ -454,6 +454,10 @@ func init() {
 		_config.Config.Versions.CSISnapshotController = value
 	})
 
+	addStringOption("version-csi-snapshot-validation-webhook", utils.VersionCsiSnapshotValidationWebhook, "CSI Snapshot Validation Webhook  version", func(value string) {
+		_config.Config.Versions.CSISnapshotValidationWebhook = value
+	})
+
 	addStringOption("version-wordpress", utils.VersionWordpress, "WordPress version", func(value string) {
 		_config.Config.Versions.WordPress = value
 	})

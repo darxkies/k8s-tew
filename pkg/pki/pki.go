@@ -9,7 +9,7 @@ import (
 	"encoding/base64"
 	"encoding/pem"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"math/big"
 	"net"
 	"os"
@@ -65,7 +65,7 @@ func loadPEMBlock(filename string) (*pem.Block, error) {
 
 	defer file.Close()
 
-	raw, error := ioutil.ReadAll(file)
+	raw, error := io.ReadAll(file)
 	if error != nil {
 		return nil, error
 	}
@@ -125,12 +125,17 @@ func newTemplate(validityPeriod int, commonName, organization string) (*x509.Cer
 	template := &x509.Certificate{
 		SerialNumber: serialNumber,
 		SubjectKeyId: subjectKeyId,
-		Subject: pkix.Name{
-			CommonName:   commonName,
-			Organization: []string{organization},
-		},
-		NotBefore: now.Add(-5 * time.Minute),
-		NotAfter:  now.AddDate(validityPeriod, 0, 0),
+		Subject:      pkix.Name{},
+		NotBefore:    now.Add(-5 * time.Minute),
+		NotAfter:     now.AddDate(validityPeriod, 0, 0),
+	}
+
+	if len(commonName) > 0 {
+		template.Subject.CommonName = commonName
+	}
+
+	if len(organization) > 0 {
+		template.Subject.Organization = []string{organization}
 	}
 
 	return template, nil
@@ -155,13 +160,13 @@ func createAndSaveCertificate(signer *CertificateAndPrivateKey, template *x509.C
 
 	certificatePEM := pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: certificateData})
 
-	if error := ioutil.WriteFile(certificateFilename, certificatePEM, 0644); error != nil {
+	if error := os.WriteFile(certificateFilename, certificatePEM, 0644); error != nil {
 		return error
 	}
 
 	privateKeyPEM := pem.EncodeToMemory(&pem.Block{Type: "RSA PRIVATE KEY", Bytes: x509.MarshalPKCS1PrivateKey(privateKey)})
 
-	if error := ioutil.WriteFile(privateKeyFilename, privateKeyPEM, 0644); error != nil {
+	if error := os.WriteFile(privateKeyFilename, privateKeyPEM, 0644); error != nil {
 		return error
 	}
 

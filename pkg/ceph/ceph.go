@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"crypto/tls"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
@@ -50,9 +50,9 @@ func (transport *ProxyTransport) RoundTrip(request *http.Request) (*http.Respons
 	if request.Body != nil {
 		_, _ = buffer.ReadFrom(request.Body)
 
-		request.Body = ioutil.NopCloser(&buffer)
+		request.Body = io.NopCloser(&buffer)
 
-		redirectRequest.Body = ioutil.NopCloser(bytes.NewReader(buffer.Bytes()))
+		redirectRequest.Body = io.NopCloser(bytes.NewReader(buffer.Bytes()))
 	}
 
 	dumpResponse := func(_request *http.Request, _response *http.Response) {
@@ -375,7 +375,7 @@ func (ceph *Ceph) RunOsd(id, publicAddress string) error {
 
 		log.WithFields(log.Fields{"keyring": keyring}).Info("Generating keyring")
 
-		file, _error := ioutil.TempFile("/tmp", "osd-cephx-secret")
+		file, _error := os.CreateTemp("/tmp", "osd-cephx-secret")
 		if _error != nil {
 			return errors.Wrap(_error, "Could not create temporary file to store osd cephx secret")
 		}
@@ -383,7 +383,7 @@ func (ceph *Ceph) RunOsd(id, publicAddress string) error {
 
 		secret := fmt.Sprintf("{\"cephx_secret\": \"%s\"}", key)
 
-		if _error := ioutil.WriteFile(file.Name(), []byte(secret), 0666); _error != nil {
+		if _error := os.WriteFile(file.Name(), []byte(secret), 0666); _error != nil {
 			return errors.Wrapf(_error, "Could not write to file '%s'", file.Name())
 		}
 
@@ -471,6 +471,7 @@ func (ceph *Ceph) RunSetup(dashboardUsername, dashboardPassword, radosgwUsername
 		fmt.Sprintf("%s osd pool create %s 8", cephBinary, utils.CephFsPoolName),
 		fmt.Sprintf("%s osd pool create %s_metadata 8", cephBinary, utils.CephFsPoolName),
 		fmt.Sprintf("%s fs new cephfs %s_metadata %s", cephBinary, utils.CephFsPoolName, utils.CephFsPoolName),
+		fmt.Sprintf("%s fs subvolumegroup create %s %s", cephBinary, utils.CephFsPoolName, utils.CephFsSubgroupName),
 	}
 
 	for _, command := range commands {

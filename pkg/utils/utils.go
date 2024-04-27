@@ -8,7 +8,6 @@ import (
 	"encoding/binary"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -61,7 +60,7 @@ func CreateFileIfMissing(filename, content string) error {
 		return error
 	}
 
-	return ioutil.WriteFile(filename, []byte(content), 0644)
+	return os.WriteFile(filename, []byte(content), 0644)
 }
 
 // FileExists returns true if a file exists
@@ -240,7 +239,7 @@ func ApplyTemplateAndSave(label, templateName string, data interface{}, filename
 		return error
 	}
 
-	if error := ioutil.WriteFile(filename, []byte(content), fileMode); error != nil {
+	if error := os.WriteFile(filename, []byte(content), fileMode); error != nil {
 		return fmt.Errorf("Could not write to '%s' (%s)", filename, error.Error())
 	}
 
@@ -251,7 +250,7 @@ func ApplyTemplateAndSave(label, templateName string, data interface{}, filename
 
 // ReadFile reads the content of a file
 func ReadFile(filename string) (string, error) {
-	content, error := ioutil.ReadFile(filename)
+	content, error := os.ReadFile(filename)
 
 	if error != nil {
 		return "", fmt.Errorf("Could not read file '%s' (%s)", filename, error.Error())
@@ -368,7 +367,7 @@ func Unmount(path string) error {
 func GetCSIMounts(destinationPrefix string) []string {
 	mounts := []string{}
 
-	bytes, error := ioutil.ReadFile("/proc/mounts")
+	bytes, error := os.ReadFile("/proc/mounts")
 	if error != nil {
 		log.WithFields(log.Fields{"error": error}).Debug("Read mounts failed")
 
