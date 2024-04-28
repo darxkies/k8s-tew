@@ -8,10 +8,10 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: metrics-server
+  namespace: {{.Namespace}}
   labels:
     app.kubernetes.io/name: metrics-server
     app.kubernetes.io/instance: k8s-tew
-  namespace: {{.Namespace}}
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -34,6 +34,7 @@ rules:
       - get
       - list
       - watch
+
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -60,6 +61,7 @@ rules:
       - get
       - list
       - watch
+
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -76,6 +78,7 @@ subjects:
   - kind: ServiceAccount
     name: metrics-server
     namespace: {{.Namespace}}
+
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -116,10 +119,10 @@ apiVersion: v1
 kind: Service
 metadata:
   name: metrics-server
+  namespace: {{.Namespace}}
   labels:
     app.kubernetes.io/name: metrics-server
     app.kubernetes.io/instance: k8s-tew
-  namespace: {{.Namespace}}
 spec:
   type: ClusterIP
   ports:
@@ -130,15 +133,16 @@ spec:
   selector:
     app.kubernetes.io/name: metrics-server
     app.kubernetes.io/instance: k8s-tew
+
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: metrics-server
+  namespace: {{.Namespace}}
   labels:
     app.kubernetes.io/name: metrics-server
     app.kubernetes.io/instance: k8s-tew
-  namespace: {{.Namespace}}
 spec:
   replicas: 1
   selector:
@@ -151,19 +155,25 @@ spec:
         app.kubernetes.io/name: metrics-server
         app.kubernetes.io/instance: k8s-tew
     spec:
+      schedulerName: 
       serviceAccountName: metrics-server
       priorityClassName: "system-cluster-critical"
       containers:
         - name: metrics-server
           securityContext:
             allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
             readOnlyRootFilesystem: true
             runAsNonRoot: true
             runAsUser: 1000
+            seccompProfile:
+              type: RuntimeDefault
           image: {{ .MetricsServerImage }}
           imagePullPolicy: IfNotPresent
           args:
-            - --secure-port=4443
+            - --secure-port=10250
             - --cert-dir=/tmp
             - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
             - --kubelet-use-node-status-port
@@ -171,7 +181,7 @@ spec:
           ports:
           - name: https
             protocol: TCP
-            containerPort: 4443
+            containerPort: 10250
           livenessProbe:
             failureThreshold: 3
             httpGet:
@@ -191,9 +201,14 @@ spec:
           volumeMounts:
             - name: tmp
               mountPath: /tmp
+          resources:
+            requests:
+              cpu: 100m
+              memory: 200Mi
       volumes:
         - name: tmp
           emptyDir: {}
+
 ---
 apiVersion: apiregistration.k8s.io/v1
 kind: APIService
@@ -209,5 +224,6 @@ spec:
   service:
     name: metrics-server
     namespace: {{.Namespace}}
+    port: 443
   version: v1beta1
   versionPriority: 100
