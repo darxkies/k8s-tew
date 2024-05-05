@@ -20,7 +20,7 @@ windows:
   - documentation-update:
       - make watch-and-update-documentation 
   - documentation-server:
-      - (cd docs/_build/html && python -m SimpleHTTPServer 8080)
+      - (cd docs/_build/html && python -m http.server 8080)
   - port-forwarding-80:
       - make forward-80
   - port-forwarding-443:

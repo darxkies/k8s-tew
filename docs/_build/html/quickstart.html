@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Quick Start &mdash; k8s-tew  documentation</title>
@@ -11,11 +11,11 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="_static/doctools.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
@@ -29,15 +29,19 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> k8s-tew
-            <img src="_static/logo.svg" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            k8s-tew
+              <img src="_static/logo.svg" class="logo" alt="Logo"/>
           </a>
               <div class="version">
                 2.4.10
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -67,8 +71,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Quick Start</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Quick Start</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/quickstart.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -79,42 +83,42 @@
            <div itemprop="articleBody">
              
   <section id="quick-start">
-<h1>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this heading"></a></h1>
+<h1>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading"></a></h1>
 <p>The following snippet will create a cluster on the host computer or in a virtual machine:</p>
 <blockquote>
 <div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># Switch to user root</span>
-sudo su -
+sudo<span class="w"> </span>su<span class="w"> </span>-
 
 <span class="c1"># Download Binary</span>
-wget https://github.com/darxkies/k8s-tew/releases/download/2.4.1/k8s-tew
-chmod a+x k8s-tew
+wget<span class="w"> </span>https://github.com/darxkies/k8s-tew/releases/download/2.4.1/k8s-tew
+chmod<span class="w"> </span>a+x<span class="w"> </span>k8s-tew
 
 <span class="c1"># Everything is installed relative to the root directory</span>
-<span class="nb">export</span> <span class="nv">K8S_TEW_BASE_DIRECTORY</span><span class="o">=</span>/
+<span class="nb">export</span><span class="w"> </span><span class="nv">K8S_TEW_BASE_DIRECTORY</span><span class="o">=</span>/
 
 <span class="c1"># Initialize cluster configuration</span>
-./k8s-tew initialize
+./k8s-tew<span class="w"> </span>initialize
 
 <span class="c1"># Node the current machine to the cluster (the settings such as IP and hostname are inferred)</span>
-./k8s-tew node-add -s
+./k8s-tew<span class="w"> </span>node-add<span class="w"> </span>-s
 
 <span class="c1"># Only on Ubuntu 20.04 to solve any DNS related issues</span>
-./k8s-tew configure --resolv-conf<span class="o">=</span>/run/systemd/resolve/resolv.conf
+./k8s-tew<span class="w"> </span>configure<span class="w"> </span>--resolv-conf<span class="o">=</span>/run/systemd/resolve/resolv.conf
 
 <span class="c1"># Generate artefacts (e.g. certificates, configurations and so on)</span>
-./k8s-tew generate
+./k8s-tew<span class="w"> </span>generate
 
 <span class="c1"># Activate and start service</span>
-systemctl daemon-reload
-systemctl <span class="nb">enable</span> k8s-tew
-systemctl start k8s-tew
+systemctl<span class="w"> </span>daemon-reload
+systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>k8s-tew
+systemctl<span class="w"> </span>start<span class="w"> </span>k8s-tew
 
 <span class="c1"># Activate environment variables and switch back to root</span>
 <span class="nb">exit</span>
-sudo su -
+sudo<span class="w"> </span>su<span class="w"> </span>-
 
 <span class="c1"># Watch the pods being installed</span>
-watch -n <span class="m">1</span> kubectl get pods --all-namespaces
+watch<span class="w"> </span>-n<span class="w"> </span><span class="m">1</span><span class="w"> </span>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>--all-namespaces
 </pre></div>
 </div>
 </div></blockquote>

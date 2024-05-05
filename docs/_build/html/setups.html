@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Setups &mdash; k8s-tew  documentation</title>
@@ -11,11 +11,11 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="_static/doctools.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
@@ -29,15 +29,19 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> k8s-tew
-            <img src="_static/logo.svg" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            k8s-tew
+              <img src="_static/logo.svg" class="logo" alt="Logo"/>
           </a>
               <div class="version">
                 2.4.10
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -79,8 +83,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Setups</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Setups</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/setups.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -91,9 +95,9 @@
            <div itemprop="articleBody">
              
   <section id="setups">
-<h1>Setups<a class="headerlink" href="#setups" title="Permalink to this heading"></a></h1>
+<h1>Setups<a class="headerlink" href="#setups" title="Link to this heading"></a></h1>
 <section id="vagrant">
-<h2>Vagrant<a class="headerlink" href="#vagrant" title="Permalink to this heading"></a></h2>
+<h2>Vagrant<a class="headerlink" href="#vagrant" title="Link to this heading"></a></h2>
 <p>Vagrant/VirtualBox can be used to test drive k8s-tew. The host is used to bootstrap the cluster which runs in VirtualBox. The Vagrantfile included in the repository can be used for single-node/multi-node &amp; Ubuntu 20.04/CentOS 8.2 setups.</p>
 <p>The Vagrantfile can be configured using the environment variables:</p>
 <ul class="simple">
@@ -115,7 +119,7 @@
 <p>The multi-node setup with the default settings needs about 20GB RAM for itself.</p>
 </div>
 <section id="usage">
-<h3>Usage<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h3>
+<h3>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h3>
 <p>The directory called <code class="file docutils literal notranslate"><span class="pre">setup</span></code> (<a class="reference external" href="https://github.com/darxkies/k8s-tew/tree/2.4.1/setup">https://github.com/darxkies/k8s-tew/tree/2.4.1/setup</a>) contains sub-directories for various cluster setup configurations:</p>
 <ul class="simple">
 <li><p>local - it starts a single-node cluster locally without using any kind of virtualization. This kind of setup needs root rights. It is meant for local development where it might be important to fire the cluster up and shut it down fast. If you want it to start automatically, take a look at the quickstart section.</p></li>
@@ -134,7 +138,7 @@
 </div>
 </section>
 <section id="create">
-<h3>Create<a class="headerlink" href="#create" title="Permalink to this heading"></a></h3>
+<h3>Create<a class="headerlink" href="#create" title="Link to this heading"></a></h3>
 <p>Change to one of the sub-directories and enter the following command to start the cluster:</p>
 <blockquote>
 <div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>make
@@ -147,20 +151,20 @@
 </div>
 </section>
 <section id="stop">
-<h3>Stop<a class="headerlink" href="#stop" title="Permalink to this heading"></a></h3>
+<h3>Stop<a class="headerlink" href="#stop" title="Link to this heading"></a></h3>
 <p>For the local setup, just press CTRL+C.</p>
 <p>For the other setups enter:</p>
 <blockquote>
-<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>make halt
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>halt
 </pre></div>
 </div>
 </div></blockquote>
 </section>
 <section id="start">
-<h3>Start<a class="headerlink" href="#start" title="Permalink to this heading"></a></h3>
+<h3>Start<a class="headerlink" href="#start" title="Link to this heading"></a></h3>
 <p>To start an existing setup/VMs enter:</p>
 <blockquote>
-<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>make up
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>up
 </pre></div>
 </div>
 </div></blockquote>
@@ -170,39 +174,39 @@
 </div>
 </section>
 <section id="ssh">
-<h3>SSH<a class="headerlink" href="#ssh" title="Permalink to this heading"></a></h3>
+<h3>SSH<a class="headerlink" href="#ssh" title="Link to this heading"></a></h3>
 <p>For single-node setups enter:</p>
 <blockquote>
-<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>make ssh
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>ssh
 </pre></div>
 </div>
 </div></blockquote>
 <p>And for multi-node setups:</p>
 <blockquote>
-<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>make ssh-controller00
-make ssh-controller01
-make ssh-controller02
-make ssh-worker00
-make ssh-worker01
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>ssh-controller00
+make<span class="w"> </span>ssh-controller01
+make<span class="w"> </span>ssh-controller02
+make<span class="w"> </span>ssh-worker00
+make<span class="w"> </span>ssh-worker01
 </pre></div>
 </div>
 </div></blockquote>
 </section>
 <section id="kubernetes-dashboard">
-<h3>Kubernetes Dashboard<a class="headerlink" href="#kubernetes-dashboard" title="Permalink to this heading"></a></h3>
+<h3>Kubernetes Dashboard<a class="headerlink" href="#kubernetes-dashboard" title="Link to this heading"></a></h3>
 <p>This will display the token, and then it will open the web browser pointing to the address of Kubernetes Dashboard:</p>
 <blockquote>
-<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>make dashboard
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>dashboard
 </pre></div>
 </div>
 </div></blockquote>
 </section>
 <section id="ingress-port-forwarding">
-<h3>Ingress Port Forwarding<a class="headerlink" href="#ingress-port-forwarding" title="Permalink to this heading"></a></h3>
+<h3>Ingress Port Forwarding<a class="headerlink" href="#ingress-port-forwarding" title="Link to this heading"></a></h3>
 <p>In order to start port forwarding from your host’s ports 80 and 443 to Vagrant’s VMs for Ingress enter:</p>
 <blockquote>
-<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>make forward-80
-make forward-443
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>forward-80
+make<span class="w"> </span>forward-443
 </pre></div>
 </div>
 </div></blockquote>

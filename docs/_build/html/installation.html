@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Installation &mdash; k8s-tew  documentation</title>
@@ -11,11 +11,11 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="_static/doctools.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
@@ -29,15 +29,19 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> k8s-tew
-            <img src="_static/logo.svg" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            k8s-tew
+              <img src="_static/logo.svg" class="logo" alt="Logo"/>
           </a>
               <div class="version">
                 2.4.10
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -71,8 +75,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Installation</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Installation</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/installation.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -83,37 +87,37 @@
            <div itemprop="articleBody">
              
   <section id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h1>
+<h1>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h1>
 <p>The commands in the upcoming sections will assume that k8s-tew is going to be installed in the directory <code class="file docutils literal notranslate"><span class="pre">/usr/local/bin</span></code>. That means that the aforementioned directory exists and it is included in the PATH. If that is not the case use the following commands:</p>
 <blockquote>
-<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sudo mkdir -p /usr/local/bin
-<span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span>/usr/local/bin:<span class="nv">$PATH</span>
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>/usr/local/bin
+<span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span>/usr/local/bin:<span class="nv">$PATH</span>
 </pre></div>
 </div>
 </div></blockquote>
 <section id="binary">
-<h2>Binary<a class="headerlink" href="#binary" title="Permalink to this heading"></a></h2>
+<h2>Binary<a class="headerlink" href="#binary" title="Link to this heading"></a></h2>
 <p>The x86 64-bit binary can be downloaded from the following address: <a class="reference external" href="https://github.com/darxkies/k8s-tew/releases">https://github.com/darxkies/k8s-tew/releases</a></p>
 <p>Additionally the these commands can be used to download it and install it in <code class="file docutils literal notranslate"><span class="pre">/usr/local/bin</span></code></p>
 <blockquote>
-<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>curl -s https://api.github.com/repos/darxkies/k8s-tew/releases/latest <span class="p">|</span> grep <span class="s2">&quot;browser_download_url&quot;</span> <span class="p">|</span> cut -d : -f <span class="m">2</span>,3 <span class="p">|</span> tr -d <span class="se">\&quot;</span> <span class="p">|</span> sudo wget -O /usr/local/bin/k8s-tew -qi -
-sudo chmod a+x /usr/local/bin/k8s-tew
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-s<span class="w"> </span>https://api.github.com/repos/darxkies/k8s-tew/releases/latest<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;browser_download_url&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-d<span class="w"> </span>:<span class="w"> </span>-f<span class="w"> </span><span class="m">2</span>,3<span class="w"> </span><span class="p">|</span><span class="w"> </span>tr<span class="w"> </span>-d<span class="w"> </span><span class="se">\&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>wget<span class="w"> </span>-O<span class="w"> </span>/usr/local/bin/k8s-tew<span class="w"> </span>-qi<span class="w"> </span>-
+sudo<span class="w"> </span>chmod<span class="w"> </span>a+x<span class="w"> </span>/usr/local/bin/k8s-tew
 </pre></div>
 </div>
 </div></blockquote>
 </section>
 <section id="source">
-<h2>Source<a class="headerlink" href="#source" title="Permalink to this heading"></a></h2>
+<h2>Source<a class="headerlink" href="#source" title="Link to this heading"></a></h2>
 <p>To compile it from source you will need a Go (version 1.15+) environment, Git, Make and Docker installed. Once everything is installed, enter the following commands:</p>
 <blockquote>
-<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">GOPATH</span><span class="o">=</span>~/go
-<span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="nv">$GOPATH</span>/bin:<span class="nv">$PATH</span>
-mkdir -p <span class="nv">$GOPATH</span>/src/github.com/darxkies
-<span class="nb">cd</span> <span class="nv">$GOPATH</span>/src/github.com/darxkies
-git clone https://github.com/darxkies/k8s-tew.git
-<span class="nb">cd</span> k8s-tew
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">GOPATH</span><span class="o">=</span>~/go
+<span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$GOPATH</span>/bin:<span class="nv">$PATH</span>
+mkdir<span class="w"> </span>-p<span class="w"> </span><span class="nv">$GOPATH</span>/src/github.com/darxkies
+<span class="nb">cd</span><span class="w"> </span><span class="nv">$GOPATH</span>/src/github.com/darxkies
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/darxkies/k8s-tew.git
+<span class="nb">cd</span><span class="w"> </span>k8s-tew
 make
-sudo mv k8s-tew /usr/local/bin
+sudo<span class="w"> </span>mv<span class="w"> </span>k8s-tew<span class="w"> </span>/usr/local/bin
 </pre></div>
 </div>
 </div></blockquote>

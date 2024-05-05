@@ -854,7 +854,7 @@ spec:
             - --tls-key-file 
             - kubernetes-dashboard-key.pem
           ports:
-            - containerPort: 8000
+            - containerPort: 8001
               name: web
               protocol: TCP
           volumeMounts:
