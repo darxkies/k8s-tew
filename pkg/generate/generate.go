@@ -1152,17 +1152,25 @@ func (generator *Generator) generateVeleroSetup() error {
 
 func (generator *Generator) generateKubernetesDashboardSetup() error {
 	return utils.ApplyTemplateAndSave("kubernetes-dashboard", utils.TemplateKubernetesDashboardSetup, struct {
-		Namespace                string
-		ClusterName              string
-		KubernetesDashboardPort  uint16
-		KubernetesDashboardImage string
-		MetricsScraperImage      string
+		Namespace                              string
+		ClusterName                            string
+		KubernetesDashboardPort                uint16
+		KubernetesDashboardWebImage            string
+		KubernetesDashboardMetricsScraperImage string
+		KubernetesDashboardAuthImage           string
+		KubernetesDashboardApiImage            string
+		KubernetesDashboardKongImage           string
+		MetricsScraperImage                    string
 	}{
-		Namespace:                utils.NamespaceKubeSystem,
-		ClusterName:              generator.config.Config.ClusterName,
-		KubernetesDashboardPort:  generator.config.Config.KubernetesDashboardPort,
-		KubernetesDashboardImage: generator.config.Config.Versions.KubernetesDashboard,
-		MetricsScraperImage:      generator.config.Config.Versions.MetricsScraper,
+		Namespace:                              utils.NamespaceKubeSystem,
+		ClusterName:                            generator.config.Config.ClusterName,
+		KubernetesDashboardPort:                generator.config.Config.KubernetesDashboardPort,
+		KubernetesDashboardWebImage:            generator.config.Config.Versions.KubernetesDashboardWeb,
+		KubernetesDashboardMetricsScraperImage: generator.config.Config.Versions.KubernetesDashboardMetricsScraper,
+		KubernetesDashboardAuthImage:           generator.config.Config.Versions.KubernetesDashboardAuth,
+		KubernetesDashboardApiImage:            generator.config.Config.Versions.KubernetesDashboardApi,
+		KubernetesDashboardKongImage:           generator.config.Config.Versions.KubernetesDashboardKong,
+		MetricsScraperImage:                    generator.config.Config.Versions.MetricsScraper,
 	}, generator.config.GetFullLocalAssetFilename(utils.K8sKubernetesDashboardSetup), true, false, 0644)
 }
 

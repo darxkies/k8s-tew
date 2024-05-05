@@ -5,127 +5,135 @@ import (
 )
 
 type Versions struct {
-	Etcd                         string `yaml:"etcd"`
-	K8S                          string `yaml:"kubernetes"`
-	KubeAPIServer                string `yaml:"kube-apiserver"`
-	KubeControllerManager        string `yaml:"kube-controller-manager"`
-	KubeScheduler                string `yaml:"kube-scheduler"`
-	KubeProxy                    string `yaml:"kube-proxy"`
-	Helm                         string `yaml:"helm"`
-	Containerd                   string `yaml:"containerd"`
-	Runc                         string `yaml:"runc"`
-	CriCtl                       string `yaml:"crictl"`
-	Gobetween                    string `yaml:"gobetween"`
-	VirtualIP                    string `yaml:"virtual-ip"`
-	Busybox                      string `yaml:"busybox"`
-	Velero                       string `yaml:"velero"`
-	VeleroPluginAWS              string `yaml:"velero-plugin-aws"`
-	VeleroPluginCSI              string `yaml:"velero-plugin-csi"`
-	VeleroResticRestoreHelper    string `yaml:"velero-restic-restore-helper"`
-	MinioServer                  string `yaml:"minio-server"`
-	MinioClient                  string `yaml:"minio-client"`
-	Pause                        string `yaml:"pause"`
-	CoreDNS                      string `yaml:"core-dns"`
-	Elasticsearch                string `yaml:"elasticsearch"`
-	Kibana                       string `yaml:"kibana"`
-	Cerebro                      string `yaml:"cerebro"`
-	FluentBit                    string `yaml:"fluent-bit"`
-	CalicoTypha                  string `yaml:"calico-typha"`
-	CalicoNode                   string `yaml:"calico-node"`
-	CalicoCNI                    string `yaml:"calico-cni"`
-	CalicoKubeControllers        string `yaml:"calico-kube-controllers"`
-	MetalLBController            string `yaml:"metallb-controller"`
-	MetalLBSpeaker               string `yaml:"metallb-speaker"`
-	Ceph                         string `yaml:"ceph"`
-	KubernetesDashboard          string `yaml:"kubernetes-dashboard"`
-	CertManagerCtl               string `yaml:"cert-manager-ctl"`
-	CertManagerController        string `yaml:"cert-manager-controller"`
-	CertManagerCAInjector        string `yaml:"cert-manager-cainjector"`
-	CertManagerWebHook           string `yaml:"cert-manager-webhook"`
-	CertManagerStartupAPICheck   string `yaml:"cert-manager-startup-api-checker"`
-	CertManagerAcmeSolver        string `yaml:"cert-manager-acme-solver"`
-	NginxIngressController       string `yaml:"nginx-ingress-controller"`
-	NginxIngressAdmissionWebhook string `yaml:"nginx-ingress-admission-webhook"`
-	MetricsScraper               string `yaml:"metrics-scraper"`
-	MetricsServer                string `yaml:"metrics-server"`
-	ConfigMapReload              string `yaml:"configmap-reload"`
-	KubeStateMetrics             string `yaml:"kube-state-metrics"`
-	Grafana                      string `yaml:"grafana"`
-	Prometheus                   string `yaml:"prometheus"`
-	NodeExporter                 string `yaml:"node-exporter"`
-	AlertManager                 string `yaml:"alert-manager"`
-	CSIAttacher                  string `yaml:"csi-attacher"`
-	CSIProvisioner               string `yaml:"csi-provisioner"`
-	CSIDriverRegistrar           string `yaml:"csi-driver-registrar"`
-	CSISnapshotter               string `yaml:"csi-snapshotter"`
-	CSISnapshotController        string `yaml:"csi-snapshot-controller"`
-	CSISnapshotValidationWebhook string `yaml:"csi-snapshot-validation-webhook"`
-	CSIResizer                   string `yaml:"csi-resizer"`
-	CSICephPlugin                string `yaml:"csi-ceph-plugin"`
-	WordPress                    string `yaml:"wordpress"`
-	MySQL                        string `yaml:"mysql"`
+	Etcd                              string `yaml:"etcd"`
+	K8S                               string `yaml:"kubernetes"`
+	KubeAPIServer                     string `yaml:"kube-apiserver"`
+	KubeControllerManager             string `yaml:"kube-controller-manager"`
+	KubeScheduler                     string `yaml:"kube-scheduler"`
+	KubeProxy                         string `yaml:"kube-proxy"`
+	Helm                              string `yaml:"helm"`
+	Containerd                        string `yaml:"containerd"`
+	Runc                              string `yaml:"runc"`
+	CriCtl                            string `yaml:"crictl"`
+	Gobetween                         string `yaml:"gobetween"`
+	VirtualIP                         string `yaml:"virtual-ip"`
+	Busybox                           string `yaml:"busybox"`
+	Velero                            string `yaml:"velero"`
+	VeleroPluginAWS                   string `yaml:"velero-plugin-aws"`
+	VeleroPluginCSI                   string `yaml:"velero-plugin-csi"`
+	VeleroResticRestoreHelper         string `yaml:"velero-restic-restore-helper"`
+	MinioServer                       string `yaml:"minio-server"`
+	MinioClient                       string `yaml:"minio-client"`
+	Pause                             string `yaml:"pause"`
+	CoreDNS                           string `yaml:"core-dns"`
+	Elasticsearch                     string `yaml:"elasticsearch"`
+	Kibana                            string `yaml:"kibana"`
+	Cerebro                           string `yaml:"cerebro"`
+	FluentBit                         string `yaml:"fluent-bit"`
+	CalicoTypha                       string `yaml:"calico-typha"`
+	CalicoNode                        string `yaml:"calico-node"`
+	CalicoCNI                         string `yaml:"calico-cni"`
+	CalicoKubeControllers             string `yaml:"calico-kube-controllers"`
+	MetalLBController                 string `yaml:"metallb-controller"`
+	MetalLBSpeaker                    string `yaml:"metallb-speaker"`
+	Ceph                              string `yaml:"ceph"`
+	KubernetesDashboardWeb            string `yaml:"kubernetes-dashboard-web"`
+	KubernetesDashboardMetricsScraper string `yaml:"kubernetes-dashboard-metrics-scraper"`
+	KubernetesDashboardAuth           string `yaml:"kubernetes-dashboard-auth"`
+	KubernetesDashboardApi            string `yaml:"kubernetes-dashboard-api"`
+	KubernetesDashboardKong           string `yaml:"kubernetes-dashboard-kong"`
+	CertManagerCtl                    string `yaml:"cert-manager-ctl"`
+	CertManagerController             string `yaml:"cert-manager-controller"`
+	CertManagerCAInjector             string `yaml:"cert-manager-cainjector"`
+	CertManagerWebHook                string `yaml:"cert-manager-webhook"`
+	CertManagerStartupAPICheck        string `yaml:"cert-manager-startup-api-checker"`
+	CertManagerAcmeSolver             string `yaml:"cert-manager-acme-solver"`
+	NginxIngressController            string `yaml:"nginx-ingress-controller"`
+	NginxIngressAdmissionWebhook      string `yaml:"nginx-ingress-admission-webhook"`
+	MetricsScraper                    string `yaml:"metrics-scraper"`
+	MetricsServer                     string `yaml:"metrics-server"`
+	ConfigMapReload                   string `yaml:"configmap-reload"`
+	KubeStateMetrics                  string `yaml:"kube-state-metrics"`
+	Grafana                           string `yaml:"grafana"`
+	Prometheus                        string `yaml:"prometheus"`
+	NodeExporter                      string `yaml:"node-exporter"`
+	AlertManager                      string `yaml:"alert-manager"`
+	CSIAttacher                       string `yaml:"csi-attacher"`
+	CSIProvisioner                    string `yaml:"csi-provisioner"`
+	CSIDriverRegistrar                string `yaml:"csi-driver-registrar"`
+	CSISnapshotter                    string `yaml:"csi-snapshotter"`
+	CSISnapshotController             string `yaml:"csi-snapshot-controller"`
+	CSISnapshotValidationWebhook      string `yaml:"csi-snapshot-validation-webhook"`
+	CSIResizer                        string `yaml:"csi-resizer"`
+	CSICephPlugin                     string `yaml:"csi-ceph-plugin"`
+	WordPress                         string `yaml:"wordpress"`
+	MySQL                             string `yaml:"mysql"`
 }
 
 func NewVersions() Versions {
 	return Versions{
-		Etcd:                         utils.VersionEtcd,
-		K8S:                          utils.VersionK8s,
-		KubeAPIServer:                utils.VersionKubeAPIServer,
-		KubeControllerManager:        utils.VersionKubeControllerManager,
-		KubeScheduler:                utils.VersionKubeScheduler,
-		KubeProxy:                    utils.VersionKubeProxy,
-		Helm:                         utils.VersionHelm,
-		Containerd:                   utils.VersionContainerd,
-		Runc:                         utils.VersionRunc,
-		CriCtl:                       utils.VersionCrictl,
-		Gobetween:                    utils.VersionGobetween,
-		VirtualIP:                    utils.VersionVirtualIP,
-		Busybox:                      utils.VersionBusybox,
-		Velero:                       utils.VersionVelero,
-		VeleroPluginAWS:              utils.VersionVeleroPluginAWS,
-		VeleroPluginCSI:              utils.VersionVeleroPluginCSI,
-		VeleroResticRestoreHelper:    utils.VersionVeleroResticRestoreHelper,
-		MinioServer:                  utils.VersionMinioServer,
-		MinioClient:                  utils.VersionMinioClient,
-		Pause:                        utils.VersionPause,
-		CoreDNS:                      utils.VersionCoreDNS,
-		Elasticsearch:                utils.VersionElasticsearch,
-		Kibana:                       utils.VersionKibana,
-		Cerebro:                      utils.VersionCerebro,
-		FluentBit:                    utils.VersionFluentBit,
-		CalicoTypha:                  utils.VersionCalicoTypha,
-		CalicoNode:                   utils.VersionCalicoNode,
-		CalicoCNI:                    utils.VersionCalicoCni,
-		CalicoKubeControllers:        utils.VersionCalicoKubeControllers,
-		MetalLBController:            utils.VersionMetalLBController,
-		MetalLBSpeaker:               utils.VersionMetalLBSpeaker,
-		Ceph:                         utils.VersionCeph,
-		KubernetesDashboard:          utils.VersionKubernetesDashboard,
-		CertManagerCtl:               utils.VersionCertManagerCtl,
-		CertManagerController:        utils.VersionCertManagerController,
-		CertManagerCAInjector:        utils.VersionCertManagerCAInjector,
-		CertManagerWebHook:           utils.VersionCertManagerWebHook,
-		CertManagerStartupAPICheck:   utils.VersionCertManagerStartupAPICheck,
-		CertManagerAcmeSolver:        utils.VersionCertManagerAcmeSolver,
-		NginxIngressController:       utils.VersionNginxIngressController,
-		NginxIngressAdmissionWebhook: utils.VersionNginxIngressAdmissionWebhook,
-		MetricsScraper:               utils.VersionMetricsScraper,
-		MetricsServer:                utils.VersionMetricsServer,
-		KubeStateMetrics:             utils.VersionKubeStateMetrics,
-		Grafana:                      utils.VersionGrafana,
-		Prometheus:                   utils.VersionPrometheus,
-		NodeExporter:                 utils.VersionNodeExporter,
-		AlertManager:                 utils.VersionAlertManager,
-		CSIAttacher:                  utils.VersionCsiAttacher,
-		CSIProvisioner:               utils.VersionCsiProvisioner,
-		CSIDriverRegistrar:           utils.VersionCsiDriverRegistrar,
-		CSICephPlugin:                utils.VersionCsiCephPlugin,
-		CSISnapshotter:               utils.VersionCsiSnapshotter,
-		CSISnapshotController:        utils.VersionCsiSnapshotController,
-		CSISnapshotValidationWebhook: utils.VersionCsiSnapshotValidationWebhook,
-		CSIResizer:                   utils.VersionCsiResizer,
-		WordPress:                    utils.VersionWordpress,
-		MySQL:                        utils.VersionMysql,
+		Etcd:                              utils.VersionEtcd,
+		K8S:                               utils.VersionK8s,
+		KubeAPIServer:                     utils.VersionKubeAPIServer,
+		KubeControllerManager:             utils.VersionKubeControllerManager,
+		KubeScheduler:                     utils.VersionKubeScheduler,
+		KubeProxy:                         utils.VersionKubeProxy,
+		Helm:                              utils.VersionHelm,
+		Containerd:                        utils.VersionContainerd,
+		Runc:                              utils.VersionRunc,
+		CriCtl:                            utils.VersionCrictl,
+		Gobetween:                         utils.VersionGobetween,
+		VirtualIP:                         utils.VersionVirtualIP,
+		Busybox:                           utils.VersionBusybox,
+		Velero:                            utils.VersionVelero,
+		VeleroPluginAWS:                   utils.VersionVeleroPluginAWS,
+		VeleroPluginCSI:                   utils.VersionVeleroPluginCSI,
+		VeleroResticRestoreHelper:         utils.VersionVeleroResticRestoreHelper,
+		MinioServer:                       utils.VersionMinioServer,
+		MinioClient:                       utils.VersionMinioClient,
+		Pause:                             utils.VersionPause,
+		CoreDNS:                           utils.VersionCoreDNS,
+		Elasticsearch:                     utils.VersionElasticsearch,
+		Kibana:                            utils.VersionKibana,
+		Cerebro:                           utils.VersionCerebro,
+		FluentBit:                         utils.VersionFluentBit,
+		CalicoTypha:                       utils.VersionCalicoTypha,
+		CalicoNode:                        utils.VersionCalicoNode,
+		CalicoCNI:                         utils.VersionCalicoCni,
+		CalicoKubeControllers:             utils.VersionCalicoKubeControllers,
+		MetalLBController:                 utils.VersionMetalLBController,
+		MetalLBSpeaker:                    utils.VersionMetalLBSpeaker,
+		Ceph:                              utils.VersionCeph,
+		KubernetesDashboardWeb:            utils.VersionKubernetesDashboardWeb,
+		KubernetesDashboardMetricsScraper: utils.VersionKubernetesDashboardMetricsScraper,
+		KubernetesDashboardAuth:           utils.VersionKubernetesDashboardAuth,
+		KubernetesDashboardApi:            utils.VersionKubernetesDashboardApi,
+		KubernetesDashboardKong:           utils.VersionKubernetesDashboardKong,
+		CertManagerCtl:                    utils.VersionCertManagerCtl,
+		CertManagerController:             utils.VersionCertManagerController,
+		CertManagerCAInjector:             utils.VersionCertManagerCAInjector,
+		CertManagerWebHook:                utils.VersionCertManagerWebHook,
+		CertManagerStartupAPICheck:        utils.VersionCertManagerStartupAPICheck,
+		CertManagerAcmeSolver:             utils.VersionCertManagerAcmeSolver,
+		NginxIngressController:            utils.VersionNginxIngressController,
+		NginxIngressAdmissionWebhook:      utils.VersionNginxIngressAdmissionWebhook,
+		MetricsScraper:                    utils.VersionMetricsScraper,
+		MetricsServer:                     utils.VersionMetricsServer,
+		KubeStateMetrics:                  utils.VersionKubeStateMetrics,
+		Grafana:                           utils.VersionGrafana,
+		Prometheus:                        utils.VersionPrometheus,
+		NodeExporter:                      utils.VersionNodeExporter,
+		AlertManager:                      utils.VersionAlertManager,
+		CSIAttacher:                       utils.VersionCsiAttacher,
+		CSIProvisioner:                    utils.VersionCsiProvisioner,
+		CSIDriverRegistrar:                utils.VersionCsiDriverRegistrar,
+		CSICephPlugin:                     utils.VersionCsiCephPlugin,
+		CSISnapshotter:                    utils.VersionCsiSnapshotter,
+		CSISnapshotController:             utils.VersionCsiSnapshotController,
+		CSISnapshotValidationWebhook:      utils.VersionCsiSnapshotValidationWebhook,
+		CSIResizer:                        utils.VersionCsiResizer,
+		WordPress:                         utils.VersionWordpress,
+		MySQL:                             utils.VersionMysql,
 	}
 }
 
@@ -147,7 +155,11 @@ func (versions Versions) GetImages() []Image {
 		{Name: versions.MetalLBSpeaker, Features: Features{}},
 		{Name: versions.CoreDNS, Features: Features{}},
 		{Name: versions.Busybox, Features: Features{}},
-		{Name: versions.KubernetesDashboard, Features: Features{}},
+		{Name: versions.KubernetesDashboardWeb, Features: Features{}},
+		{Name: versions.KubernetesDashboardMetricsScraper, Features: Features{}},
+		{Name: versions.KubernetesDashboardAuth, Features: Features{}},
+		{Name: versions.KubernetesDashboardApi, Features: Features{}},
+		{Name: versions.KubernetesDashboardKong, Features: Features{}},
 		{Name: versions.MetricsScraper, Features: Features{}},
 		{Name: versions.MinioServer, Features: Features{utils.FeatureBackup, utils.FeatureStorage}},
 		{Name: versions.MinioClient, Features: Features{utils.FeatureBackup, utils.FeatureStorage}},

@@ -374,8 +374,24 @@ func init() {
 		_config.Config.Versions.Ceph = value
 	})
 
-	addStringOption("version-kubernetes-dashboard", utils.VersionKubernetesDashboard, "Kubernetes Dashboard version", func(value string) {
-		_config.Config.Versions.KubernetesDashboard = value
+	addStringOption("version-kubernetes-dashboard-web", utils.VersionKubernetesDashboardWeb, "Kubernetes Dashboard Web version", func(value string) {
+		_config.Config.Versions.KubernetesDashboardWeb = value
+	})
+
+	addStringOption("version-kubernetes-dashboard-metrics-scraper", utils.VersionKubernetesDashboardMetricsScraper, "Kubernetes Dashboard Metrics Scraper version", func(value string) {
+		_config.Config.Versions.KubernetesDashboardMetricsScraper = value
+	})
+
+	addStringOption("version-kubernetes-dashboard-auth", utils.VersionKubernetesDashboardAuth, "Kubernetes Dashboard Auth version", func(value string) {
+		_config.Config.Versions.KubernetesDashboardAuth = value
+	})
+
+	addStringOption("version-kubernetes-dashboard-api", utils.VersionKubernetesDashboardApi, "Kubernetes Dashboard API version", func(value string) {
+		_config.Config.Versions.KubernetesDashboardApi = value
+	})
+
+	addStringOption("version-kubernetes-dashboard-kong", utils.VersionKubernetesDashboardKong, "Kubernetes Dashboard Kong version", func(value string) {
+		_config.Config.Versions.KubernetesDashboardKong = value
 	})
 
 	addStringOption("version-cert-manager-ctl", utils.VersionCertManagerCtl, "Cert Manager Ctl  version", func(value string) {

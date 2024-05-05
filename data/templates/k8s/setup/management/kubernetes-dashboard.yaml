@@ -2,10 +2,40 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
+  name: kubernetes-dashboard-kong
+  namespace: {{.Namespace}}
   labels:
-    app.kubernetes.io/name: kubernetes-dashboard
+    app.kubernetes.io/name: kubernetes-dashboard-kong
+    app.kubernetes.io/instance: "k8s-tew"
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
     app.kubernetes.io/instance: k8s-tew
-  name: kubernetes-dashboard
+    app.kubernetes.io/part-of: kubernetes-dashboard
+  name: kubernetes-dashboard-api
+  namespace: {{.Namespace}}
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/part-of: kubernetes-dashboard
+  name: kubernetes-dashboard-metrics-scraper
+  namespace: {{.Namespace}}
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/part-of: kubernetes-dashboard
+  name: kubernetes-dashboard-web
   namespace: {{.Namespace}}
 
 ---
@@ -13,251 +43,859 @@ apiVersion: v1
 kind: Secret
 metadata:
   labels:
-    app.kubernetes.io/name: kubernetes-dashboard
     app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/part-of: kubernetes-dashboard
   name: kubernetes-dashboard-csrf
   namespace: {{.Namespace}}
-type: Opaque
-
----
-apiVersion: v1
-kind: Secret
-metadata:
-  labels:
-    app.kubernetes.io/name: kubernetes-dashboard
-    app.kubernetes.io/instance: k8s-tew
-  name: kubernetes-dashboard-key-holder
-  namespace: {{.Namespace}}
-type: Opaque
+data:
+  private.key: "MGdGNm9qYzR1VGpPbm5hcHJQOWpZdXZSZStIbFNlWDBIRXNzNXlENlltMHg1RFZaS3pzeW1jQ0pnbnk4ZE94aUp4VzRnaXJGUlNKNUNNeDcvb0dxSE1BVzRmOE40d1hGWE12Mjd1d2FMRGFXeU5TbnhVelhWcGR2Z05TeG82T0RYY3hkaXFSYldTcXd6YjNJQmRJNU5oYTFodTZySWswQW84WGF5MnIvUGdoKzlUS21QUXlBSzVKSlNrNWZMQlFXVmkrS0JPekhDenNKcXhyN05QbTJ1MW9ETmlMcXFkMnF4Vi9Pa093NXA0OFVxVnVBL1dwM0xQd29reW1JaDJad1R1SHlBNWlRaHU0L25qYnRjQXJ4UXdHTWtuRmlRVkFJdGZSeFdCZlJWUW0rMGQyaWhkVFZuaVpFcm00dU5ld0lvTkJJRDRTQTRNaFRtdHl2SUFTMHd3PT0="
 
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   labels:
-    app.kubernetes.io/name: kubernetes-dashboard
     app.kubernetes.io/instance: k8s-tew
-  name: kubernetes-dashboard-settings
+    app.kubernetes.io/part-of: kubernetes-dashboard
+  name: kubernetes-dashboard-kong-dbless-config
   namespace: {{.Namespace}}
 data:
-  _global: '{"clusterName":"{{.ClusterName}}","itemsPerPage":50,"labelsLimit":0,"logsAutoRefreshTimeInterval":2,"resourceAutoRefreshTimeInterval":5,"disableAccessDeniedNotifications":false}'
+  kong.yml: |
+    _format_version: "3.0"
+    services:
+      - name: auth
+        host: kubernetes-dashboard-auth
+        port: 8000
+        protocol: http
+        routes:
+          - name: authLogin
+            paths:
+              - /api/v1/login
+            strip_path: false
+          - name: authCsrf
+            paths:
+              - /api/v1/csrftoken/login
+            strip_path: false
+          - name: authMe
+            paths:
+              - /api/v1/me
+            strip_path: false
+      - name: api
+        host: kubernetes-dashboard-api
+        port: 8000
+        protocol: http
+        routes:
+          - name: api
+            paths:
+              - /api
+            strip_path: false
+          - name: metrics
+            paths:
+              - /metrics
+            strip_path: false
+      - name: web
+        host: kubernetes-dashboard-web
+        port: 8001
+        protocol: https
+        routes:
+          - name: root
+            paths:
+              - /
+            strip_path: false
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app.kubernetes.io/instance: k8s-tew
+  name: kubernetes-dashboard-web-settings
+  namespace: {{.Namespace}}
+data:
+  settings: '{"clusterName":"{{.ClusterName}}","itemsPerPage":50,"labelsLimit":0,"logsAutoRefreshTimeInterval":2,"resourceAutoRefreshTimeInterval":5,"disableAccessDeniedNotifications":false}'
 
 ---
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: "kubernetes-dashboard-metrics"
   labels:
-    app.kubernetes.io/name: kubernetes-dashboard
     app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/part-of: kubernetes-dashboard
+  name: kubernetes-dashboard-metrics-scraper
 rules:
-  - apiGroups: ["metrics.k8s.io"]
-    resources: ["pods", "nodes"]
-    verbs: ["get", "list", "watch"]
+  - apiGroups: [ "metrics.k8s.io" ]
+    resources: [ "pods", "nodes" ]
+    verbs: [ "get", "list", "watch" ]
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: "kubernetes-dashboard-metrics"
   labels:
-    app.kubernetes.io/name: kubernetes-dashboard
     app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/part-of: kubernetes-dashboard
+  name: kubernetes-dashboard-metrics-scraper
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: kubernetes-dashboard-metrics
+  name: kubernetes-dashboard-metrics-scraper
 subjects:
   - kind: ServiceAccount
-    name: kubernetes-dashboard
+    name: kubernetes-dashboard-metrics-scraper
     namespace: {{.Namespace}}
 
 ---
-apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: kubernetes-dashboard
-  namespace: {{.Namespace}}
   labels:
-    app.kubernetes.io/name: kubernetes-dashboard
     app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/part-of: kubernetes-dashboard
+  name: kubernetes-dashboard-api
+  namespace: {{.Namespace}}
 rules:
-  - apiGroups: [""]
-    resources: ["secrets"]
-    resourceNames: ["kubernetes-dashboard-key-holder", "kubernetes-dashboard-certs", "kubernetes-dashboard-csrf"]
-    verbs: ["get", "update", "delete"]
-  - apiGroups: [""]
-    resources: ["configmaps"]
-    resourceNames: ["kubernetes-dashboard-settings"]
-    verbs: ["get", "update"]
-  - apiGroups: [""]
-    resources: ["services"]
-    resourceNames: ["heapster", "dashboard-metrics-scraper"]
-    verbs: ["proxy"]
-  - apiGroups: [""]
-    resources: ["services/proxy"]
-    resourceNames: ["heapster", "http:heapster:", "https:heapster:", "dashboard-metrics-scraper", "http:dashboard-metrics-scraper"]
-    verbs: ["get"]
+  - apiGroups: [ "" ]
+    resources: [ "services/proxy" ]
+    resourceNames: [ "kubernetes-dashboard-metrics-scraper", "http:kubernetes-dashboard-metrics-scraper" ]
+    verbs: [ "get" ]
+
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  labels:
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/part-of: kubernetes-dashboard
+  name: kubernetes-dashboard-web
+  namespace: {{.Namespace}}
+rules:
+  - apiGroups: [ "" ]
+    resources: [ "configmaps" ]
+    resourceNames: [ "kubernetes-dashboard-web-settings" ]
+    verbs: [ "get", "update" ]
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: kubernetes-dashboard
-  namespace: {{.Namespace}}
   labels:
-    app.kubernetes.io/name: kubernetes-dashboard
     app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/part-of: kubernetes-dashboard
+  name: kubernetes-dashboard-api
+  namespace: {{.Namespace}}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: kubernetes-dashboard
+  name: kubernetes-dashboard-api
 subjects:
   - kind: ServiceAccount
-    name: kubernetes-dashboard
+    name: kubernetes-dashboard-api
+    namespace: {{.Namespace}}
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/part-of: kubernetes-dashboard
+  name: kubernetes-dashboard-web
+  namespace: {{.Namespace}}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: kubernetes-dashboard-web
+subjects:
+  - kind: ServiceAccount
+    name: kubernetes-dashboard-web
     namespace: {{.Namespace}}
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: kubernetes-dashboard
+  name: kubernetes-dashboard-kong-manager
   namespace: {{.Namespace}}
   labels:
-    app.kubernetes.io/name: kubernetes-dashboard
-    app.kubernetes.io/instance: k8s-tew
-    app.kubernetes.io/component: kubernetes-dashboard
-    kubernetes.io/cluster-service: "true"
+    app.kubernetes.io/name: kubernetes-dashboard-kong
+    app.kubernetes.io/instance: "k8s-tew"
+spec:
+  type: ClusterIP
+  ports:
+  - name: kubernetes-dashboard-kong-manager
+    port: 8002
+    targetPort: 8002
+    protocol: TCP
+  - name: kubernetes-dashboard-kong-manager-tls
+    port: 8445
+    targetPort: 8445
+    protocol: TCP
+  selector:
+    app.kubernetes.io/name: kubernetes-dashboard-kong
+    app.kubernetes.io/component: app
+    app.kubernetes.io/instance: "k8s-tew"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kubernetes-dashboard-kong-proxy
+  namespace: {{.Namespace}}
+  labels:
+    app.kubernetes.io/name: kubernetes-dashboard-kong
+    app.kubernetes.io/instance: "k8s-tew"
+    enable-metrics: "true"
 spec:
   type: NodePort
   ports:
-  - port: 443
-    targetPort: https
-    name: https
-    nodePort: {{.KubernetesDashboardPort}}
+  - name: kubernetes-dashboard-kong-proxy-tls
+    port: 443
+    targetPort: 8443
     protocol: TCP
+    nodePort: {{.KubernetesDashboardPort}}
   selector:
-    app.kubernetes.io/name: kubernetes-dashboard
+    app.kubernetes.io/name: kubernetes-dashboard-kong
+    app.kubernetes.io/component: app
+    app.kubernetes.io/instance: "k8s-tew"
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
     app.kubernetes.io/instance: k8s-tew
-    app.kubernetes.io/component: kubernetes-dashboard
+    app.kubernetes.io/part-of: kubernetes-dashboard
+    app.kubernetes.io/name: kubernetes-dashboard-api
+    app.kubernetes.io/component: api
+  name: kubernetes-dashboard-api
+  namespace: {{.Namespace}}
+spec:
+  ports:
+    - name: api
+      port: 8000
+  selector:
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/part-of: kubernetes-dashboard
+    app.kubernetes.io/name: kubernetes-dashboard-api
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/part-of: kubernetes-dashboard
+    app.kubernetes.io/name: kubernetes-dashboard-auth
+    app.kubernetes.io/component: auth
+  name: kubernetes-dashboard-auth
+  namespace: {{.Namespace}}
+spec:
+  ports:
+    - name: auth
+      port: 8000
+  selector:
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/part-of: kubernetes-dashboard
+    app.kubernetes.io/name: kubernetes-dashboard-auth
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/part-of: kubernetes-dashboard
+    app.kubernetes.io/name: kubernetes-dashboard-metrics-scraper
+    app.kubernetes.io/component: metrics-scraper
+  name: kubernetes-dashboard-metrics-scraper
+  namespace: {{.Namespace}}
+spec:
+  ports:
+    - port: 8000
+  selector:
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/part-of: kubernetes-dashboard
+    app.kubernetes.io/name: kubernetes-dashboard-metrics-scraper
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/part-of: kubernetes-dashboard
+    app.kubernetes.io/name: kubernetes-dashboard-web
+    app.kubernetes.io/component: web
+  name: kubernetes-dashboard-web
+  namespace: {{.Namespace}}
+spec:
+  type: ClusterIP
+  ports:
+    - name: web
+      port: 8001
+      targetPort: 8001
+  selector:
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/part-of: kubernetes-dashboard
+    app.kubernetes.io/name: kubernetes-dashboard-web
 
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: kubernetes-dashboard
+  name: kubernetes-dashboard-kong
   namespace: {{.Namespace}}
   labels:
-    app.kubernetes.io/name: kubernetes-dashboard
-    app.kubernetes.io/instance: k8s-tew
-    app.kubernetes.io/component: kubernetes-dashboard
+    app.kubernetes.io/name: kubernetes-dashboard-kong
+    app.kubernetes.io/instance: "k8s-tew"
+    app.kubernetes.io/component: app
 spec:
   replicas: 1
-  strategy:
-    rollingUpdate:
-      maxSurge: 0
-      maxUnavailable: 1
-    type: RollingUpdate
   selector:
     matchLabels:
-      app.kubernetes.io/name: kubernetes-dashboard
+      app.kubernetes.io/name: kubernetes-dashboard-kong
+      app.kubernetes.io/component: app
+      app.kubernetes.io/instance: "k8s-tew"
+  template:
+    metadata:
+      annotations:
+        kuma.io/service-account-token-volume: kubernetes-dashboard-kong-token
+        kuma.io/gateway: "enabled"
+        traffic.sidecar.istio.io/includeInboundPorts: ""
+      labels:
+        app.kubernetes.io/name: kubernetes-dashboard-kong
+        app.kubernetes.io/instance: "k8s-tew"
+        app.kubernetes.io/component: app
+        app: kubernetes-dashboard-kong
+        version: "3.6"
+    spec:
+      serviceAccountName: kubernetes-dashboard-kong
+      automountServiceAccountToken: false
+      initContainers:
+      - name: clear-stale-pid
+        image: {{.KubernetesDashboardKongImage}}
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 1000
+          seccompProfile:
+            type: RuntimeDefault
+        resources:
+          {}
+        command:
+        - "rm"
+        - "-vrf"
+        - "$KONG_PREFIX/pids"
+        env:
+        - name: KONG_ADMIN_ACCESS_LOG
+          value: "/dev/stdout"
+        - name: KONG_ADMIN_ERROR_LOG
+          value: "/dev/stderr"
+        - name: KONG_ADMIN_GUI_ACCESS_LOG
+          value: "/dev/stdout"
+        - name: KONG_ADMIN_GUI_ERROR_LOG
+          value: "/dev/stderr"
+        - name: KONG_ADMIN_LISTEN
+          value: "127.0.0.1:8444 http2 ssl, [::1]:8444 http2 ssl"
+        - name: KONG_CLUSTER_LISTEN
+          value: "off"
+        - name: KONG_DATABASE
+          value: "off"
+        - name: KONG_DECLARATIVE_CONFIG
+          value: "/kong_dbless/kong.yml"
+        - name: KONG_DNS_ORDER
+          value: "LAST,A,CNAME,AAAA,SRV"
+        - name: KONG_LUA_PACKAGE_PATH
+          value: "/opt/?.lua;/opt/?/init.lua;;"
+        - name: KONG_NGINX_WORKER_PROCESSES
+          value: "1"
+        - name: KONG_PLUGINS
+          value: "off"
+        - name: KONG_PORTAL_API_ACCESS_LOG
+          value: "/dev/stdout"
+        - name: KONG_PORTAL_API_ERROR_LOG
+          value: "/dev/stderr"
+        - name: KONG_PORT_MAPS
+          value: "443:8443"
+        - name: KONG_PREFIX
+          value: "/kong_prefix/"
+        - name: KONG_PROXY_ACCESS_LOG
+          value: "/dev/stdout"
+        - name: KONG_PROXY_ERROR_LOG
+          value: "/dev/stderr"
+        - name: KONG_PROXY_LISTEN
+          value: "0.0.0.0:8443 http2 ssl, [::]:8443 http2 ssl"
+        - name: KONG_PROXY_STREAM_ACCESS_LOG
+          value: "/dev/stdout basic"
+        - name: KONG_PROXY_STREAM_ERROR_LOG
+          value: "/dev/stderr"
+        - name: KONG_ROUTER_FLAVOR
+          value: "traditional"
+        - name: KONG_STATUS_ACCESS_LOG
+          value: "off"
+        - name: KONG_STATUS_ERROR_LOG
+          value: "/dev/stderr"
+        - name: KONG_STATUS_LISTEN
+          value: "0.0.0.0:8100, [::]:8100"
+        - name: KONG_STREAM_LISTEN
+          value: "off"
+        volumeMounts:
+        - name: kong-prefix-dir
+          mountPath: /kong_prefix/
+        - name: kong-tmp
+          mountPath: /tmp
+        - name: kong-custom-dbless-config-volume
+          mountPath: /kong_dbless/
+      containers:
+      - name: "proxy"
+        image: {{.KubernetesDashboardKongImage}}
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 1000
+          seccompProfile:
+            type: RuntimeDefault
+        env:
+        - name: KONG_ADMIN_ACCESS_LOG
+          value: "/dev/stdout"
+        - name: KONG_ADMIN_ERROR_LOG
+          value: "/dev/stderr"
+        - name: KONG_ADMIN_GUI_ACCESS_LOG
+          value: "/dev/stdout"
+        - name: KONG_ADMIN_GUI_ERROR_LOG
+          value: "/dev/stderr"
+        - name: KONG_ADMIN_LISTEN
+          value: "127.0.0.1:8444 http2 ssl, [::1]:8444 http2 ssl"
+        - name: KONG_CLUSTER_LISTEN
+          value: "off"
+        - name: KONG_DATABASE
+          value: "off"
+        - name: KONG_DECLARATIVE_CONFIG
+          value: "/kong_dbless/kong.yml"
+        - name: KONG_DNS_ORDER
+          value: "LAST,A,CNAME,AAAA,SRV"
+        - name: KONG_LUA_PACKAGE_PATH
+          value: "/opt/?.lua;/opt/?/init.lua;;"
+        - name: KONG_NGINX_WORKER_PROCESSES
+          value: "1"
+        - name: KONG_PLUGINS
+          value: "off"
+        - name: KONG_PORTAL_API_ACCESS_LOG
+          value: "/dev/stdout"
+        - name: KONG_PORTAL_API_ERROR_LOG
+          value: "/dev/stderr"
+        - name: KONG_PORT_MAPS
+          value: "443:8443"
+        - name: KONG_PREFIX
+          value: "/kong_prefix/"
+        - name: KONG_PROXY_ACCESS_LOG
+          value: "/dev/stdout"
+        - name: KONG_PROXY_ERROR_LOG
+          value: "/dev/stderr"
+        - name: KONG_PROXY_LISTEN
+          value: "0.0.0.0:8443 http2 ssl, [::]:8443 http2 ssl"
+        - name: KONG_PROXY_STREAM_ACCESS_LOG
+          value: "/dev/stdout basic"
+        - name: KONG_PROXY_STREAM_ERROR_LOG
+          value: "/dev/stderr"
+        - name: KONG_ROUTER_FLAVOR
+          value: "traditional"
+        - name: KONG_STATUS_ACCESS_LOG
+          value: "off"
+        - name: KONG_STATUS_ERROR_LOG
+          value: "/dev/stderr"
+        - name: KONG_STATUS_LISTEN
+          value: "0.0.0.0:8100, [::]:8100"
+        - name: KONG_STREAM_LISTEN
+          value: "off"
+        - name: KONG_NGINX_DAEMON
+          value: "off"
+        lifecycle:
+          preStop:
+            exec:
+              command:
+              - kong
+              - quit
+              - --wait=15
+        ports:
+        - name: proxy-tls
+          containerPort: 8443
+          protocol: TCP
+        - name: status
+          containerPort: 8100
+          protocol: TCP
+        volumeMounts:
+          - name: kong-prefix-dir
+            mountPath: /kong_prefix/
+          - name: kong-tmp
+            mountPath: /tmp
+          - name: kong-custom-dbless-config-volume
+            mountPath: /kong_dbless/
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /status/ready
+            port: status
+            scheme: HTTP
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /status
+            port: status
+            scheme: HTTP
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        resources:
+          {} 
+      securityContext:
+        {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - name: kong-prefix-dir
+          emptyDir:
+            sizeLimit: 256Mi
+        - name: kong-tmp
+          emptyDir:
+            sizeLimit: 1Gi
+        - name: kubernetes-dashboard-kong-token
+          projected:
+            sources:
+            - serviceAccountToken:
+                expirationSeconds: 3607
+                path: token
+            - configMap:
+                items:
+                - key: ca.crt
+                  path: ca.crt
+                name: kube-root-ca.crt
+            - downwardAPI:
+                items:
+                - fieldRef:
+                    apiVersion: v1
+                    fieldPath: metadata.namespace
+                  path: namespace
+        - name: kong-custom-dbless-config-volume
+          configMap:
+            name: kubernetes-dashboard-kong-dbless-config
+
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  labels:
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/part-of: kubernetes-dashboard
+    app.kubernetes.io/name: kubernetes-dashboard-api
+    app.kubernetes.io/component: api
+  annotations:
+  name: kubernetes-dashboard-api
+  namespace: {{.Namespace}}
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
       app.kubernetes.io/instance: k8s-tew
-      app.kubernetes.io/component: kubernetes-dashboard
+      app.kubernetes.io/part-of: kubernetes-dashboard
+      app.kubernetes.io/name: kubernetes-dashboard-api
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: kubernetes-dashboard
         app.kubernetes.io/instance: k8s-tew
-        app.kubernetes.io/component: kubernetes-dashboard
+        app.kubernetes.io/part-of: kubernetes-dashboard
+        app.kubernetes.io/name: kubernetes-dashboard-api
+        app.kubernetes.io/component: api
+      annotations:
+        checksum/config: 2376f1059077b98fd329820511a2978d3ac0e7ce106e08c38e54038cbe6696dd
     spec:
+      containers:
+        - name: kubernetes-dashboard-api
+          image: {{.KubernetesDashboardApiImage}}
+          imagePullPolicy: IfNotPresent
+          args:
+            - --namespace={{.Namespace}}
+            - --metrics-scraper-service-name=kubernetes-dashboard-metrics-scraper
+            - --disable-csrf-protection=true
+          env:
+            - name: CSRF_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: kubernetes-dashboard-csrf
+                  key: private.key
+          ports:
+            - containerPort: 8000
+              name: api
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp-volume
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
+            runAsGroup: 2001
+            runAsUser: 1001
+          resources:
+            limits:
+              cpu: 250m
+              memory: 400Mi
+            requests:
+              cpu: 100m
+              memory: 200Mi
+      automountServiceAccountToken: true
       securityContext:
+        runAsNonRoot: true
         seccompProfile:
           type: RuntimeDefault
-      serviceAccountName: kubernetes-dashboard
-      containers:
-      - name: kubernetes-dashboard
-        image: "{{.KubernetesDashboardImage}}"
-        imagePullPolicy: IfNotPresent
-        args:
-          - --tls-cert-file 
-          - kubernetes-dashboard.pem
-          - --tls-key-file 
-          - kubernetes-dashboard-key.pem
-          - --sidecar-host=http://127.0.0.1:8000
-        ports:
-        - name: https
-          containerPort: 8443
-          protocol: TCP
-        volumeMounts:
-        - mountPath: /tmp
-          name: tmp-volume
-        - name: certificates
-          mountPath: /etc/ssl/certs/ca.pem
-          subPath: ca.pem
-        - name: certificates
-          mountPath: /certs/kubernetes-dashboard.pem
-          subPath: kubernetes-dashboard.pem
-        - name: certificates
-          mountPath: /certs/kubernetes-dashboard-key.pem
-          subPath: kubernetes-dashboard-key.pem
-        livenessProbe:
-          httpGet:
-            scheme: HTTPS
-            path: /
-            port: 8443
-          initialDelaySeconds: 30
-          timeoutSeconds: 30
-        resources:
-          limits:
-            cpu: 2
-            memory: 200Mi
-          requests:
-            cpu: 100m
-            memory: 200Mi
-        securityContext:
-          allowPrivilegeEscalation: false
-          readOnlyRootFilesystem: true
-          runAsGroup: 2001
-          runAsUser: 1001
-      - name: dashboard-metrics-scraper
-        image: {{ .MetricsScraperImage }}
-        imagePullPolicy: IfNotPresent
-        ports:
-          - containerPort: 8000
-            protocol: TCP
-        livenessProbe:
-          httpGet:
-            scheme: HTTP
-            path: /
-            port: 8000
-          initialDelaySeconds: 30
-          timeoutSeconds: 30
-        volumeMounts:
-        - mountPath: /tmp
-          name: tmp-volume
-        securityContext:
-          allowPrivilegeEscalation: false
-          readOnlyRootFilesystem: true
-          runAsGroup: 2001
-          runAsUser: 1001
       volumes:
-      - name: certificates
-        configMap:
-          name: kubernetes-dashboard-certificates
-      - name: tmp-volume
-        emptyDir: {}
+        - emptyDir: {}
+          name: tmp-volume
+      serviceAccountName: kubernetes-dashboard-api
 
 ---
-kind: ConfigMap
-apiVersion: v1
+kind: Deployment
+apiVersion: apps/v1
 metadata:
   labels:
-    k8s-app: kubernetes-dashboard
-  name: kubernetes-dashboard-settings
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/part-of: kubernetes-dashboard
+    app.kubernetes.io/name: kubernetes-dashboard-auth
+    app.kubernetes.io/component: auth
+  annotations:
+  name: kubernetes-dashboard-auth
   namespace: {{.Namespace}}
-data:
-  _global: '{"clusterName":"{{.ClusterName}}","itemsPerPage":50,"labelsLimit":0,"logsAutoRefreshTimeInterval":2,"resourceAutoRefreshTimeInterval":5,"disableAccessDeniedNotifications":false}'
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: k8s-tew
+      app.kubernetes.io/part-of: kubernetes-dashboard
+      app.kubernetes.io/name: kubernetes-dashboard-auth
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: k8s-tew
+        app.kubernetes.io/part-of: kubernetes-dashboard
+        app.kubernetes.io/name: kubernetes-dashboard-auth
+        app.kubernetes.io/component: auth
+      annotations:
+        checksum/config: 88b160cda711814ba3aae2deeb6b97fcdadfaf9da7b8380c43cb1e2ae68e3dfb
+    spec:
+      containers:
+        - name: kubernetes-dashboard-auth
+          image: {{.KubernetesDashboardAuthImage}}
+          imagePullPolicy: IfNotPresent
+          args:
+          env:
+            - name: CSRF_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: kubernetes-dashboard-csrf
+                  key: private.key
+          ports:
+            - containerPort: 8000
+              name: auth
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp-volume
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
+            runAsGroup: 2001
+            runAsUser: 1001
+          resources:
+            limits:
+              cpu: 250m
+              memory: 400Mi
+            requests:
+              cpu: 100m
+              memory: 200Mi
+      automountServiceAccountToken: true
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      volumes:
+        - emptyDir: {}
+          name: tmp-volume
 
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  labels:
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/part-of: kubernetes-dashboard
+    app.kubernetes.io/name: kubernetes-dashboard-metrics-scraper
+    app.kubernetes.io/component: metrics-scraper
+  annotations:
+  name: kubernetes-dashboard-metrics-scraper
+  namespace: {{.Namespace}}
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: k8s-tew
+      app.kubernetes.io/part-of: kubernetes-dashboard
+      app.kubernetes.io/name: kubernetes-dashboard-metrics-scraper
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: k8s-tew
+        app.kubernetes.io/part-of: kubernetes-dashboard
+        app.kubernetes.io/name: kubernetes-dashboard-metrics-scraper
+        app.kubernetes.io/component: metrics-scraper
+      annotations:
+    spec:
+      containers:
+        - name: kubernetes-dashboard-metrics-scraper
+          image: {{.KubernetesDashboardMetricsScraperImage}}
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp-volume
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
+            runAsGroup: 2001
+            runAsUser: 1001
+          resources:
+            limits:
+              cpu: 250m
+              memory: 400Mi
+            requests:
+              cpu: 100m
+              memory: 200Mi
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8000
+              scheme: HTTP
+            initialDelaySeconds: 30
+            timeoutSeconds: 30
+      automountServiceAccountToken: true
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      volumes:
+        - emptyDir: {}
+          name: tmp-volume
+      serviceAccountName: kubernetes-dashboard-metrics-scraper
+
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  labels:
+    app.kubernetes.io/instance: k8s-tew
+    app.kubernetes.io/part-of: kubernetes-dashboard
+    app.kubernetes.io/name: kubernetes-dashboard-web
+    app.kubernetes.io/component: web
+  annotations:
+  name: kubernetes-dashboard-web
+  namespace: {{.Namespace}}
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: k8s-tew
+      app.kubernetes.io/part-of: kubernetes-dashboard
+      app.kubernetes.io/name: kubernetes-dashboard-web
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: k8s-tew
+        app.kubernetes.io/part-of: kubernetes-dashboard
+        app.kubernetes.io/name: kubernetes-dashboard-web
+        app.kubernetes.io/component: web
+      annotations:
+    spec:
+      containers:
+        - name: kubernetes-dashboard-web
+          image: {{.KubernetesDashboardWebImage}}
+          imagePullPolicy: IfNotPresent
+          args:
+            - --namespace={{.Namespace}}
+            - --settings-config-map-name=kubernetes-dashboard-web-settings
+            - --tls-cert-file 
+            - kubernetes-dashboard.pem
+            - --tls-key-file 
+            - kubernetes-dashboard-key.pem
+          ports:
+            - containerPort: 8000
+              name: web
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp-volume
+            - name: certificates
+              mountPath: /etc/ssl/certs/ca.pem
+              subPath: ca.pem
+            - name: certificates
+              mountPath: /certs/kubernetes-dashboard.pem
+              subPath: kubernetes-dashboard.pem
+            - name: certificates
+              mountPath: /certs/kubernetes-dashboard-key.pem
+              subPath: kubernetes-dashboard-key.pem
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
+            runAsGroup: 2001
+            runAsUser: 1001
+          resources:
+            limits:
+              cpu: 250m
+              memory: 400Mi
+            requests:
+              cpu: 100m
+              memory: 200Mi
+      automountServiceAccountToken: true
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      volumes:
+        - emptyDir: {}
+          name: tmp-volume
+        - name: certificates
+          configMap:
+            name: kubernetes-dashboard-certificates
+      serviceAccountName: kubernetes-dashboard-web
 
 ---
 apiVersion: v1
