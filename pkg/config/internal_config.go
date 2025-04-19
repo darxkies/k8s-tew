@@ -238,8 +238,6 @@ func (config *InternalConfig) registerAssetFiles() {
 	config.addAssetFile(utils.PemPrometheusKey, Labels{}, "", utils.DirectoryCertificates)
 	config.addAssetFile(utils.PemKubernetesDashboard, Labels{}, "", utils.DirectoryCertificates)
 	config.addAssetFile(utils.PemKubernetesDashboardKey, Labels{}, "", utils.DirectoryCertificates)
-	config.addAssetFile(utils.PemSnapshotValidationWebhook, Labels{}, "", utils.DirectoryCertificates)
-	config.addAssetFile(utils.PemSnapshotValidationWebhookKey, Labels{}, "", utils.DirectoryCertificates)
 
 	// Kubeconfig
 	config.addAssetFile(utils.KubeconfigAdmin, Labels{utils.NodeController, utils.NodeWorker, utils.NodeStorage}, "", utils.DirectoryK8sKubeConfig)

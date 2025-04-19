@@ -63,7 +63,6 @@ type Versions struct {
 	CSIDriverRegistrar                string `yaml:"csi-driver-registrar"`
 	CSISnapshotter                    string `yaml:"csi-snapshotter"`
 	CSISnapshotController             string `yaml:"csi-snapshot-controller"`
-	CSISnapshotValidationWebhook      string `yaml:"csi-snapshot-validation-webhook"`
 	CSIResizer                        string `yaml:"csi-resizer"`
 	CSICephPlugin                     string `yaml:"csi-ceph-plugin"`
 	WordPress                         string `yaml:"wordpress"`
@@ -130,7 +129,6 @@ func NewVersions() Versions {
 		CSICephPlugin:                     utils.VersionCsiCephPlugin,
 		CSISnapshotter:                    utils.VersionCsiSnapshotter,
 		CSISnapshotController:             utils.VersionCsiSnapshotController,
-		CSISnapshotValidationWebhook:      utils.VersionCsiSnapshotValidationWebhook,
 		CSIResizer:                        utils.VersionCsiResizer,
 		WordPress:                         utils.VersionWordpress,
 		MySQL:                             utils.VersionMysql,
@@ -173,7 +171,6 @@ func (versions Versions) GetImages() []Image {
 		{Name: versions.CSIDriverRegistrar, Features: Features{utils.FeatureStorage}},
 		{Name: versions.CSISnapshotter, Features: Features{utils.FeatureStorage}},
 		{Name: versions.CSISnapshotController, Features: Features{utils.FeatureStorage}},
-		{Name: versions.CSISnapshotValidationWebhook, Features: Features{utils.FeatureStorage}},
 		{Name: versions.CSIResizer, Features: Features{utils.FeatureStorage}},
 		{Name: versions.CSICephPlugin, Features: Features{utils.FeatureStorage}},
 		{Name: versions.FluentBit, Features: Features{utils.FeatureLogging, utils.FeatureStorage}},

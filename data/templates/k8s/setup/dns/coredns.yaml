@@ -15,7 +15,7 @@ data:
     .:53 {
         errors
         health {
-            lameduck 5s
+            lameduck 10s
         }
         ready
         kubernetes {{.ClusterDomain}} in-addr.arpa ip6.arpa {
@@ -108,11 +108,9 @@ spec:
     app.kubernetes.io/instance: "k8s-tew"
     k8s-app: coredns
     app.kubernetes.io/name: coredns
-  clusterIP: {{.ClusterDNSIP}}
   ports:
-  - {"name":"udp-53","port":53,"protocol":"UDP"}
-  - {"name":"tcp-53","port":53,"protocol":"TCP"}
-  - {"name": "metrics", "port": 9153, "protocol": "TCP"}
+  - {"name":"udp-53","port":53,"protocol":"UDP","targetPort":53}
+  - {"name":"tcp-53","port":53,"protocol":"TCP","targetPort":53}
   type: ClusterIP
 
 ---
@@ -168,6 +166,7 @@ spec:
         - {"containerPort":53,"name":"udp-53","protocol":"UDP"}
         - {"containerPort":53,"name":"tcp-53","protocol":"TCP"}
         - {"containerPort":9153,"name":"metrics","protocol":"TCP"}
+        
         livenessProbe:
           httpGet:
             path: /health
@@ -184,14 +183,18 @@ spec:
             port: 8181
             scheme: HTTP
           initialDelaySeconds: 30
-          periodSeconds: 10
+          periodSeconds: 5
           timeoutSeconds: 5
           successThreshold: 1
-          failureThreshold: 5
+          failureThreshold: 1
         securityContext:
+          allowPrivilegeEscalation: false
           capabilities:
             add:
             - NET_BIND_SERVICE
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
       volumes:
         - name: config-volume
           configMap:

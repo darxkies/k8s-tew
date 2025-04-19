@@ -119,7 +119,6 @@ After the initialization step the parameters of the cluster should be be adapted
       --version-csi-provisioner string                        CSI Provisioner version (default "registry.k8s.io/sig-storage/csi-provisioner:v4.0.0")
       --version-csi-resizer string                            CSI Resizer version (default "registry.k8s.io/sig-storage/csi-resizer:v1.10.0")
       --version-csi-snapshot-controller string                CSI Snapshot Controller  version (default "registry.k8s.io/sig-storage/snapshot-controller:v7.0.1")
-      --version-csi-snapshot-validation-webhook string        CSI Snapshot Validation Webhook  version (default "registry.k8s.io/sig-storage/snapshot-validation-webhook:v7.0.1")
       --version-csi-snapshotter string                        CSI Snapshotter version (default "registry.k8s.io/sig-storage/csi-snapshotter:v7.0.0")
       --version-elasticsearch string                          Elasticsearch version (default "docker.elastic.co/elasticsearch/elasticsearch:7.11.2")
       --version-etcd string                                   Etcd version (default "quay.io/coreos/etcd:v3.5.13")
