@@ -108,9 +108,11 @@ spec:
     app.kubernetes.io/instance: "k8s-tew"
     k8s-app: coredns
     app.kubernetes.io/name: coredns
+  clusterIP: {{.ClusterDNSIP}}
   ports:
   - {"name":"udp-53","port":53,"protocol":"UDP","targetPort":53}
   - {"name":"tcp-53","port":53,"protocol":"TCP","targetPort":53}
+  - {"name":"metrics","port": 9153,"protocol": "TCP"}
   type: ClusterIP
 
 ---
@@ -166,7 +168,6 @@ spec:
         - {"containerPort":53,"name":"udp-53","protocol":"UDP"}
         - {"containerPort":53,"name":"tcp-53","protocol":"TCP"}
         - {"containerPort":9153,"name":"metrics","protocol":"TCP"}
-        
         livenessProbe:
           httpGet:
             path: /health
