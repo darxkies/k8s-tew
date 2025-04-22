@@ -28,7 +28,9 @@ const CephDataPath = "/var/lib/ceph"
 type CephData struct {
 	Namespace                          string
 	CephClusterName                    string
-	CephPoolName                       string
+	CephRbdPoolName                    string
+	CephFsPoolName                     string
+	CephFsMetadataPoolName             string
 	MonitorKey                         string
 	ClientAdminKey                     string
 	ClientBootstrapMetadataServerKey   string
@@ -147,7 +149,9 @@ func (ceph *Ceph) Setup(namespace string) (*CephData, error) {
 	cephData := &CephData{}
 	cephData.Namespace = namespace
 	cephData.CephClusterName = ceph.config.Config.CephClusterName
-	cephData.CephPoolName = utils.CephRbdPoolName
+	cephData.CephRbdPoolName = utils.CephRbdPoolName
+	cephData.CephFsPoolName = utils.CephFsPoolName
+	cephData.CephFsMetadataPoolName = utils.CephFsMetadataPoolName
 
 	cephMonitoringKeyringFilename := ceph.config.GetFullLocalAssetFilename(utils.CephMonitorKeyring)
 
@@ -469,7 +473,7 @@ func (ceph *Ceph) RunSetup(dashboardUsername, dashboardPassword, radosgwUsername
 		fmt.Sprintf("%s osd pool application enable %s rbd", cephBinary, utils.CephRbdPoolName),
 		fmt.Sprintf("%s pool init %s", rbdBinary, utils.CephRbdPoolName),
 		fmt.Sprintf("%s osd pool create %s 8", cephBinary, utils.CephFsPoolName),
-		fmt.Sprintf("%s osd pool create %s_metadata 8", cephBinary, utils.CephFsPoolName),
+		fmt.Sprintf("%s osd pool create %s 8", cephBinary, utils.CephFsMetadataPoolName),
 		fmt.Sprintf("%s fs new cephfs %s_metadata %s", cephBinary, utils.CephFsPoolName, utils.CephFsPoolName),
 		fmt.Sprintf("%s fs subvolumegroup create %s %s", cephBinary, utils.CephFsPoolName, utils.CephFsSubgroupName),
 	}

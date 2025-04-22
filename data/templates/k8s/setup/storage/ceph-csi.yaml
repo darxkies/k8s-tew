@@ -2564,7 +2564,6 @@ status:
 apiVersion: snapshot.storage.k8s.io/v1
 kind: VolumeSnapshotClass
 metadata:
-  namespace: {{.Namespace}}
   name: csi-rbdplugin-snapclass
   annotations:
     snapshot.storage.kubernetes.io/is-default-class: "true"
@@ -2582,7 +2581,6 @@ parameters:
 apiVersion: snapshot.storage.k8s.io/v1
 kind: VolumeSnapshotClass
 metadata:
-  namespace: {{.Namespace}}
   name: csi-cephfsplugin-snapclass
   annotations:
     snapshot.storage.kubernetes.io/is-default-class: "true"

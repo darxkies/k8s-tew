@@ -3,7 +3,7 @@ package utils
 // Versions
 const KubernetesRegistry = "registry.k8s.io"
 const VersionConfig = "2.4.0"
-const VersionK8s = "v1.30.0"
+const VersionK8s = "v1.32.3"
 const VersionKubeAPIServer = KubernetesRegistry + "/kube-apiserver:" + VersionK8s
 const VersionKubeControllerManager = KubernetesRegistry + "/kube-controller-manager:" + VersionK8s
 const VersionKubeScheduler = KubernetesRegistry + "/kube-scheduler:" + VersionK8s
@@ -11,7 +11,7 @@ const VersionKubeProxy = KubernetesRegistry + "/kube-proxy:" + VersionK8s
 const VersionEtcd = "quay.io/coreos/etcd:v3.5.21"
 const VersionContainerd = "2.0.5"
 const VersionRunc = "1.2.6"
-const VersionCrictl = "1.32.0"
+const VersionCrictl = "1.33.0"
 const VersionHelm = "3.17.3"
 const VersionGobetween = "docker.io/yyyar/gobetween:0.8.1"
 const VersionVirtualIP = "docker.io/darxkies/virtual-ip:1.0.1"
@@ -388,6 +388,7 @@ const ServiceConfig = ServiceName + ".service"
 // Ceph
 const CephRbdPoolName = "cephrbd"
 const CephFsPoolName = "cephfs"
+const CephFsMetadataPoolName = "cephfs_metadata"
 const CephFsSubgroupName = "csi"
 const CephConfig = "ceph.conf"
 const CephClientAdminKeyring = "ceph.client.admin.keyring"

@@ -23,4 +23,5 @@
 [client.k8s-tew]
         key = {{.ClientK8STEWKey | unescape}}
         caps mon = "allow r"
-        caps osd = "allow rwx pool={{.CephPoolName}}"
+        caps osd = "allow rwx pool={{.CephRbdPoolName}}, allow class-read object_prefix rbd_children, allow rwx pool={{.CephFsPoolName}}, allow rwx pool={{.CephFsMetadataPoolName}}"
+        caps mgr = "allow rw"
