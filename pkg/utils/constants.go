@@ -3,7 +3,7 @@ package utils
 // Versions
 const KubernetesRegistry = "registry.k8s.io"
 const VersionConfig = "2.4.0"
-const VersionK8s = "v1.32.3"
+const VersionK8s = "v1.36.0"
 const VersionKubeAPIServer = KubernetesRegistry + "/kube-apiserver:" + VersionK8s
 const VersionKubeControllerManager = KubernetesRegistry + "/kube-controller-manager:" + VersionK8s
 const VersionKubeScheduler = KubernetesRegistry + "/kube-scheduler:" + VersionK8s
@@ -11,7 +11,7 @@ const VersionKubeProxy = KubernetesRegistry + "/kube-proxy:" + VersionK8s
 const VersionEtcd = "quay.io/coreos/etcd:v3.5.21"
 const VersionContainerd = "2.0.5"
 const VersionRunc = "1.2.6"
-const VersionCrictl = "1.33.0"
+const VersionCrictl = "1.36.0"
 const VersionHelm = "3.17.3"
 const VersionGobetween = "docker.io/yyyar/gobetween:0.8.1"
 const VersionVirtualIP = "docker.io/darxkies/virtual-ip:1.0.1"
@@ -124,7 +124,7 @@ const PortWordpress uint16 = 30100
 
 // URLs
 const K8sBaseName = "kubernetes-node-linux-amd64"
-const K8sDownloadUrl = "https://dl.k8s.io/release/{{.Versions.K8S}}/{{.Filename}}.tar.gz"
+const K8sBinaryDownloadUrl = "https://dl.k8s.io/release/{{.Versions.K8S}}/bin/linux/amd64/{{.Filename}}"
 const EtcdBaseName = "etcd-{{.Versions.Etcd | image_tag}}-linux-amd64"
 const EtcdDownloadUrl = "https://github.com/etcd-io/etcd/releases/download/{{.Versions.Etcd | image_tag}}/{{.Filename}}.tar.gz"
 const CniBaseName = "cni-plugins-amd64-v{{.Versions.CNI}}"

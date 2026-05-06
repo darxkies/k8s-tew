@@ -405,20 +405,11 @@ func (downloader Downloader) downloadEtcdBinaries() error {
 }
 
 func (downloader Downloader) downloadKubernetesBinaries() error {
-	kubernetesServerBin := path.Join("kubernetes", "node", "bin")
-
-	compressedFiles := []CompressedFile{
-		{
-			SourceFile: path.Join(kubernetesServerBin, utils.BinaryKubelet),
-			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.BinaryKubelet),
-		},
-		{
-			SourceFile: path.Join(kubernetesServerBin, utils.BinaryKubectl),
-			TargetFile: downloader.config.GetFullLocalAssetFilename(utils.BinaryKubectl),
-		},
+	if error := downloader.downloadExecutable(utils.K8sBinaryDownloadUrl, utils.BinaryKubelet, downloader.config.GetFullLocalAssetFilename(utils.BinaryKubelet)); error != nil {
+		return error
 	}
 
-	return downloader.downloadAndExtractTGZFiles(utils.K8sDownloadUrl, utils.K8sBaseName, compressedFiles, true)
+	return downloader.downloadExecutable(utils.K8sBinaryDownloadUrl, utils.BinaryKubectl, downloader.config.GetFullLocalAssetFilename(utils.BinaryKubectl))
 }
 
 func (downloader Downloader) downloadContainerdBinaries() error {
